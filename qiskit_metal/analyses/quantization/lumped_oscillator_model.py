@@ -18,7 +18,6 @@ from pint import UnitRegistry
 from pyEPR.calcs.convert import Convert
 
 from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
-from ..core import QAnalysis, QAnalysisRenderer
 from . import CapExtraction
 
 from ... import Dict
@@ -30,7 +29,7 @@ if not config.is_building_docs():
 
 # TODO: eliminate every reference to "renderer" in this file
 #  then change inheritance from QAnalysisRenderer to QAnalysis
-class LOManalysis(QAnalysisRenderer):
+class LOManalysis(CapExtraction):
     """Performs the LOM analysis on the user-provided capacitance matrix.
 
     Default Setup:
@@ -40,10 +39,20 @@ class LOManalysis(QAnalysisRenderer):
         * freq_readout (float): Coupling readout frequency (in GHz).
         * freq_bus (Union[list, float]): Coupling bus frequencies (in GHz).
             * freq_bus can be a list with the order they appear in the capMatrix.
+
+    Data Labels:
+        * lumped_oscillator (pd.DataFrame): Lumped oscillator result at the last simulation pass
+        * lumped_oscillator_all (dict): of pd.DataFrame. Lumped oscillator resulting
+            at every pass of the simulation
+
     """
     default_setup = Dict(lom=Dict(
         junctions=Dict(Lj=12, Cj=2), freq_readout=7.0, freq_bus=[6.0, 6.2]))
     """Default setup."""
+
+    # supported labels for data generated from the simulation
+    data_labels = ['lumped_oscillator', 'lumped_oscillator_all']
+    """Default data labels."""
 
     def __init__(self, design: 'QDesign', *args, **kwargs):
         """Initialize the analysis step to extract the LOM model from the system capacitance.
@@ -55,60 +64,53 @@ class LOManalysis(QAnalysisRenderer):
         # set design and renderer
         super().__init__(design, *args, **kwargs)
 
-        # input variables
-        self._capacitance_matrix = None
-        self._units = None
-        self._capacitance_all_passes = {}
-
-    def reset_variables(self):
-        """Code to set and reset the output variables for this analysis class.
-        This is called by the QAnalysis.__init__().
-        """
-        # pylint: disable=attribute-defined-outside-init
-        # output variables
-        self._lom_output = None  # last pass only
-        self._lom_output_all = None  # all the passes
-
     @property
-    def capacitance_matrix(self) -> pd.DataFrame:
-        """Returns the capacitance matrix as a pandas dataframe.
+    def lumped_oscillator(self) -> dict:
+        """Getter
 
         Returns:
-            pd.DataFrame: Capacitance Matrix from the last pass.
+            dict: Lumped oscillator result at the last simulation pass.
         """
-        return self._capacitance_matrix
-
-    @capacitance_matrix.setter
-    def capacitance_matrix(self, cap_mtrx: pd.DataFrame):
-        """Sets the capacitance matrix.
-
-        Args:
-            cap_mtrx (pd.DataFrame): Capactiance Matrix to store in the Analysis instance.
-        """
-        if isinstance(cap_mtrx, pd.DataFrame):
-            self._capacitance_matrix = cap_mtrx
-        else:
-            self.logger.warning(
-                'Unuspported type. Only accepts pandas dataframes')
-
-    @property
-    def lumped_oscillator(self) -> pd.DataFrame:
-        """Stores the output of the LOM analysis.
-
-        Returns:
-            dict: Pass number (keys) and their respective lump oscillator information (values).
-        """
-        return self._lom_output
+        return self.get_data('lumped_oscillator')
 
     @lumped_oscillator.setter
-    def lumped_oscillator(self, lom_dict: pd.DataFrame):
-        """Allows editing the output of the LOM analysis.
+    def lumped_oscillator(self, data: dict):
+        """Setter
 
         Args:
-            lom_dict (dict): Pass number (keys) and their respective
-                lump oscillator information (values).
+            data (dict): Lumped oscillator result at the last simulation pass.
         """
-        self._lom_output = lom_dict
+        if not isinstance(data, dict):
+            self.logger.warning(
+                'Unuspported type %s. Only accepts dict. Please try again.',
+                {type(data)})
+            return
+        self.set_data('lumped_oscillator', data)
+
+    @property
+    def lumped_oscillator_all(self) -> pd.DataFrame:
+        """Getter
+
+        Returns:
+            pd.DataFrame: each line corresponds to a simulation pass number
+                and the remainder of the data is the respective lump oscillator information.
+        """
+        return self.get_data('lumped_oscillator_all')
+
+    @lumped_oscillator_all.setter
+    def lumped_oscillator_all(self, data: pd.DataFrame):
+        """Setter
+
+        Args:
+            data (pd.DataFrame): each line corresponds to a simulation pass number
+                and the remainder of the data is the respective lump oscillator information.
+        """
+        if not isinstance(data, pd.DataFrame):
+            self.logger.warning(
+                'Unuspported type %s. Only accepts pd.DataFrame. Please try again.',
+                {type(data)})
+            return
+        self.set_data('lumped_oscillator_all', data)
 
     def run(self):  # pylint: disable=arguments-differ
         """Alias for run_lom().
@@ -123,7 +125,7 @@ class LOManalysis(QAnalysisRenderer):
             dict: Pass numbers (keys) and their respective capacitance matrices (values).
         """
         # wipe data from the previous run (if any)
-        self.reset_variables()
+        self.clear_data(self.data_labels)
 
         s = self.setup.lom
 
@@ -131,9 +133,10 @@ class LOManalysis(QAnalysisRenderer):
             self.logger.warning(
                 'Please initialize the capacitance_matrix before executing this method.'
             )
+            return
         else:
-            if not self._capacitance_all_passes:
-                self._capacitance_all_passes[1] = self.capacitance_matrix.values
+            if not self.capacitance_all_passes:
+                self.capacitance_all_passes[1] = self.capacitance_matrix.values
 
         ureg = UnitRegistry()
         ic_amps = Convert.Ic_from_Lj(s.junctions.Lj, 'nH', 'A')
@@ -150,22 +153,23 @@ class LOManalysis(QAnalysisRenderer):
 
         # get the LOM for every pass
         all_res = {}
-        for idx_cmat, df_cmat in self._capacitance_all_passes.items():
+        for idx_cmat, df_cmat in self.capacitance_all_passes.items():
             res = extract_transmon_coupled_Noscillator(
-                df_cmat[0],
+                df_cmat,
                 ic_amps,
                 cj,
                 num_cpads,
                 fbus,
                 fread,
                 g_scale=1,
-                print_info=bool(idx_cmat == len(self._capacitance_all_passes)))
+                print_info=bool(idx_cmat == len(self.capacitance_all_passes)))
             all_res[idx_cmat] = res
+        self.lumped_oscillator = all_res[len(self.capacitance_all_passes)]
         all_res = pd.DataFrame(all_res).transpose()
         all_res['χr MHz'] = abs(all_res['chi_in_MHz'].apply(lambda x: x[0]))
         all_res['gr MHz'] = abs(all_res['gbus'].apply(lambda x: x[0]))
-        self.lumped_oscillator = all_res
-        return self.lumped_oscillator
+        self.lumped_oscillator_all = all_res
+        return self.lumped_oscillator_all
 
     def plot_convergence(self, *args, **kwargs):
         """Plots alpha and frequency versus pass number, as well as convergence of delta (in %).
@@ -173,10 +177,10 @@ class LOManalysis(QAnalysisRenderer):
         It accepts the same inputs as run_lom(), to allow regenerating the LOM
         results before plotting them.
         """
-        if self._lom_output is None or args or kwargs:
+        if self.lumped_oscillator_all is None or args or kwargs:
             self.run_lom(*args, **kwargs)
         # TODO: remove analysis plots from pyEPR and move it here
-        self.renderer.plot_convergence_main(self._lom_output)
+        self.renderer.plot_convergence_main(self.lumped_oscillator_all)
 
     def plot_convergence_chi(self, *args, **kwargs):
         """Plot convergence of chi and g, both in MHz, as a function of pass number.
@@ -184,9 +188,9 @@ class LOManalysis(QAnalysisRenderer):
         It accepts the same inputs as run_lom(), to allow regenerating the LOM
         results before plotting them.
         """
-        if self._lom_output is None or args or kwargs:
+        if self.lumped_oscillator_all is None or args or kwargs:
             self.run_lom(*args, **kwargs)
-        self.renderer.plot_convergence_chi(self._lom_output)
+        self.renderer.plot_convergence_chi(self.lumped_oscillator_all)
 
 
 class CapExtractAndLOM(LOManalysis, CapExtraction):
@@ -213,9 +217,3 @@ class CapExtractAndLOM(LOManalysis, CapExtraction):
         """
         self.run_sim(*args, **kwargs)
         return self.run_lom()
-
-    def run_sim(self, *args, **kwargs):  # pylint: disable=signature-differs
-        """Overridden method to force run_sim() to also wipe the output variables of the analysis.
-        """
-        self.reset_variables()
-        super().run_sim(*args, **kwargs)

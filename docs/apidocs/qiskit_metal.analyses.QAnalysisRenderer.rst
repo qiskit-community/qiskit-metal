@@ -33,10 +33,9 @@ QAnalysisRenderer
    .. autosummary::
       :toctree: ../stubs/
    
+      QAnalysisRenderer.clear_data
       QAnalysisRenderer.close
       QAnalysisRenderer.print_run_args
-      QAnalysisRenderer.reset_variables
-      QAnalysisRenderer.reset_variables_sim
       QAnalysisRenderer.run
       QAnalysisRenderer.run_sim
       QAnalysisRenderer.save_run_args

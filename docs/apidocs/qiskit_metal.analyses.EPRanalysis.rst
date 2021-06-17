@@ -33,14 +33,13 @@ EPRanalysis
    .. autosummary::
       :toctree: ../stubs/
    
+      EPRanalysis.clear_data
       EPRanalysis.close
       EPRanalysis.epr_start
       EPRanalysis.get_frequencies
       EPRanalysis.get_stored_energy
       EPRanalysis.print_run_args
       EPRanalysis.report_hamiltonian
-      EPRanalysis.reset_variables
-      EPRanalysis.reset_variables_sim
       EPRanalysis.run
       EPRanalysis.run_analysis
       EPRanalysis.run_epr

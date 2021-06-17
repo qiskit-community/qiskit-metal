@@ -35,12 +35,11 @@ CapExtractAndLOM
    .. autosummary::
       :toctree: ../stubs/
    
+      CapExtractAndLOM.clear_data
       CapExtractAndLOM.close
       CapExtractAndLOM.plot_convergence
       CapExtractAndLOM.plot_convergence_chi
       CapExtractAndLOM.print_run_args
-      CapExtractAndLOM.reset_variables
-      CapExtractAndLOM.reset_variables_sim
       CapExtractAndLOM.run
       CapExtractAndLOM.run_lom
       CapExtractAndLOM.run_sim

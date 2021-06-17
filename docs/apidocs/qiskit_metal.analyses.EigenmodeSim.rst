@@ -35,14 +35,13 @@ EigenmodeSim
    .. autosummary::
       :toctree: ../stubs/
    
+      EigenmodeSim.clear_data
       EigenmodeSim.clear_fields
       EigenmodeSim.close
       EigenmodeSim.compute_convergences
       EigenmodeSim.plot_convergences
       EigenmodeSim.plot_fields
       EigenmodeSim.print_run_args
-      EigenmodeSim.reset_variables
-      EigenmodeSim.reset_variables_sim
       EigenmodeSim.run
       EigenmodeSim.run_sim
       EigenmodeSim.save_run_args

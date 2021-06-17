@@ -33,13 +33,12 @@ ImpedanceAnalysis
    .. autosummary::
       :toctree: ../stubs/
    
+      ImpedanceAnalysis.clear_data
       ImpedanceAnalysis.close
       ImpedanceAnalysis.get_admittance
       ImpedanceAnalysis.get_impedance
       ImpedanceAnalysis.get_scattering
       ImpedanceAnalysis.print_run_args
-      ImpedanceAnalysis.reset_variables
-      ImpedanceAnalysis.reset_variables_sim
       ImpedanceAnalysis.run
       ImpedanceAnalysis.run_sim
       ImpedanceAnalysis.save_run_args

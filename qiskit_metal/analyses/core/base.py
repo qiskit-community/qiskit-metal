@@ -14,6 +14,7 @@
 
 from abc import abstractmethod, ABC
 import inspect
+from typing import Any, Union
 
 from ... import Dict, logger
 from copy import deepcopy
@@ -41,12 +42,18 @@ class QAnalysis(ABC):
     default_setup = Dict()
     """Default setup."""
 
+    data_labels = list()
+    """Default data labels."""
+
     def __init__(self, *args, **kwargs):
         """Creates a new Analysis object with a setup derived from the default_setup Dict.
         """
         super().__init__(*args, **kwargs)
-        self._setup = self._gather_all_children_setup()
-        self.reset_variables()
+        self._setup, self._supported_data_labels = self._gather_from_all_children(
+        )
+
+        # first self.clear_data()
+        self._variables = Dict()
 
     @property
     def logger(self):
@@ -84,6 +91,71 @@ class QAnalysis(ABC):
         self._setup.run = None
         self._setup.run = Dict(kwargs)
 
+    def set_data(self, data_name: str, data: Any):
+        """Stores data in a structure for later retrieval.
+        Could be ouput, intermediate or even input data.
+        Current implementation uses Dict()
+
+        Args:
+            data_name (str): Label for the data. Used a storage key.
+            data (Any): Free format
+        """
+        if data_name not in self._supported_data_labels:
+            self.logger.warning(
+                'No %s in the list of supported variables. The variable will still be added. '
+                'However, make sure this was not a typo', {data_name})
+        self._variables[data_name] = data
+
+    def get_data(self, data_name: str = None):
+        """Retrieves the analysis module data.
+        Returns `None` if nothing is found.
+
+        Args:
+            data_name (str, optional): Label to query for data. If not specified, the
+            entire dictionary is returned. Defaults to None.
+
+        Returns:
+            Any: The data associated with the label, or the entire list of labels and data.
+        """
+        if data_name is None:
+            return self._variables
+        return self._variables[data_name]
+
+    def get_data_labels(self) -> list:
+        """Retrieves the list of data labels currently set. 
+        Returns `None` if nothing is found.
+
+        Returns:
+            list: list of data names
+        """
+        return self._variables.keys()
+
+    @property
+    def supported_data(self):
+        """Getter: Set that contains the names of the variables supported from the analysis.
+
+        Returns:
+            set: list of supported variable names.
+        """
+        return self._supported_data_labels
+
+    def clear_data(self, data_name: Union[str, list] = None):
+        """Clear data. Can optionally specify one or more labels to delete those labels and data.
+
+        Args:
+            data_name (Union[str, list], optional): Can list specific labels to clean.
+                Defaults to None.
+        """
+        if data_name is None:
+            self._variables = Dict()
+        else:
+            if isinstance(data_name, str):
+                self._variables[data_name] = None
+            else:
+                for name in data_name:
+                    if name in self._variables[name]:
+                        del self._variables[name]
+
     def print_run_args(self):
         """Prints the args and kwargs that were used in the last run() of this Analysis instance.
         """
@@ -110,7 +182,7 @@ class QAnalysis(ABC):
         """
         if isinstance(setup_dict, dict):
             # first reset the setup
-            self._setup = self._gather_all_children_setup()
+            self._setup, _ = self._gather_from_all_children()
             # then apply specified variables
             self.setup_update(**setup_dict)
         else:
@@ -139,26 +211,26 @@ class QAnalysis(ABC):
                 f'the section {section} does not exist in this analysis setup')
 
     @classmethod
-    def _gather_all_children_setup(cls):
+    def _gather_from_all_children(cls):
         """From the QAnalysis core class, traverse the child classes to
-        gather the default_setup for each child class.
+        gather the default_setup and data_labels for each child class.
 
-        If the key is the same, the setup option of the youngest child is used.
+        For default_setup: If the same key is found twice, the youngest child will be picked.
+
+        Returns:
+            (dict, set): dict = setup, set = supported_data_labels
         """
         setup_from_children = Dict()
+        labels_from_children = set()
         parents = inspect.getmro(cls)
 
-        # len-2: base.py is not expected to have default_setup dict to add to design class.
+        # len-2: base.py is not expected to have default_setup and data_labels.
         for child in parents[len(parents) - 2::-1]:
-            # The template default options are in a class dict attribute `default_setup`.
+            # The template default options are in the attribute `default_setup`.
             if hasattr(child, 'default_setup'):
                 setup_from_children.update(deepcopy(child.default_setup))
+            # The data_labels are in the attribute `data_labels`.
+            if hasattr(child, 'data_labels'):
+                labels_from_children.update(child.data_labels)
 
-        return setup_from_children
-
-    @abstractmethod
-    def reset_variables(self):
-        """Abstract method. Must be implemented by the subclass.
-        Code to set and reset the output variables for this analysis class.
-        This is called by the QAnalysis.__init__().
-        """
+        return setup_from_children, labels_from_children

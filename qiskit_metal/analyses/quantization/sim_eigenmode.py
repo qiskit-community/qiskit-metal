@@ -40,6 +40,10 @@ class EigenmodeSim(QAnalysisRenderer):
         * basis_order (int): Basis order. Defaults to 1.
         * vars (Dict): Variables (key) and values (value) to define in the renderer.
 
+    Data Labels:
+        * convergence_f (pd.DataFrame): Convergence of the eigenmode frequency.
+        * convergence_t (pd.DataFrame): Convergence of the eigenmode frequency.
+
     """
     default_setup = Dict(sim=Dict(min_freq_ghz=1,
                                   n_modes=1,
@@ -52,6 +56,10 @@ class EigenmodeSim(QAnalysisRenderer):
                                   vars=Dict(Lj='10 nH', Cj='0 fF')))
     """Default setup."""
 
+    # supported labels for data generated from the simulation
+    data_labels = ['convergence_t', 'convergence_f']
+    """Default data labels."""
+
     def __init__(self, design: 'QDesign', renderer_name: str = 'hfss'):
         """Compute eigenmode, then derive from it using the epr method.
 
@@ -63,26 +71,15 @@ class EigenmodeSim(QAnalysisRenderer):
         # set design and renderer
         super().__init__(design, renderer_name)
 
-    def reset_variables_sim(self):
-        """Code to set and reset the output variables for this analysis class
-        This is called by the QAnalysis.__init__().
-        """
-        # pylint: disable=attribute-defined-outside-init
-        # settings variables
-        self.setup_name = None
-
-        # output variables
-        self._convergence_t = None
-        self._convergence_f = None
-
     def _analyze(self):
         """Executes the analysis step of the Run. First it initializes the renderer setup
         to prepare for eignemode analysis, then it executes it. Finally it recovers the
         output of the analysis and stores it in self.convergence_t and self.convergence_f.
         """
-        self.setup_name = self.renderer.initialize_eigenmode(**self.setup.sim)
+        self.sim_setup_name = self.renderer.initialize_eigenmode(
+            **self.setup.sim)
 
-        self.renderer.analyze_setup(self.setup_name)
+        self.renderer.analyze_setup(self.sim_setup_name)
         self.compute_convergences()
 
     def run_sim(  # pylint: disable=arguments-differ
@@ -125,7 +122,7 @@ class EigenmodeSim(QAnalysisRenderer):
             del argm['self']
             self.save_run_args(**argm)
         # wipe data from the previous run (if any)
-        self.reset_variables_sim()
+        self.clear_data()
 
         if not self.renderer_initialized:
             self._initialize_renderer()
@@ -140,43 +137,53 @@ class EigenmodeSim(QAnalysisRenderer):
                                             box_plus_buffer=box_plus_buffer)
 
         self._analyze()
-        return renderer_design_name, self.setup_name
+        return renderer_design_name, self.sim_setup_name
 
     @property
-    def convergence_f(self):
-        """Convergence of the eigenmode frequency.
+    def convergence_f(self) -> pd.DataFrame:
+        """Getter
 
         Returns:
             pd.DataFrame: Convergence of the eigenmode frequency.
         """
-        return self._convergence_f
+        return self.get_data('convergence_f')
 
     @convergence_f.setter
-    def convergence_f(self, conv: pd.DataFrame):
-        """Sets the convergence of the eigenmode frequency.
+    def convergence_f(self, data: pd.DataFrame):
+        """Setter
 
         Args:
-            conv (pd.DataFrame): Convergence of the eigenmode frequency.
+            data (pd.DataFrame): Convergence of the eigenmode frequency.
         """
-        self._convergence_f = conv
+        if not isinstance(data, pd.DataFrame):
+            self.logger.warning(
+                'Unuspported type %s. Only accepts pandas dataframes. Please try again.',
+                {type(data)})
+            return
+        self.set_data('convergence_f', data)
 
     @property
-    def convergence_t(self):
-        """Convergence of the eigenmode frequency.
+    def convergence_t(self) -> pd.DataFrame:
+        """Getter
 
         Returns:
             pd.DataFrame: Convergence of the eigenmode frequency.
         """
-        return self._convergence_t
+        return self.get_data('convergence_t')
 
     @convergence_t.setter
-    def convergence_t(self, conv: pd.DataFrame):
-        """Sets the convergence of the eigenmode frequency.
+    def convergence_t(self, data: pd.DataFrame):
+        """Setter
 
         Args:
-            conv (pd.DataFrame): Convergence of the eigenmode frequency.
+            data (pd.DataFrame): Convergence of the eigenmode frequency.
         """
-        self._convergence_t = conv
+        if not isinstance(data, pd.DataFrame):
+            self.logger.warning(
+                'Unuspported type %s. Only accepts pandas dataframes. Please try again.',
+                {type(data)})
+            return
+        self.set_data('convergence_t', data)
 
     def compute_convergences(self, variation: str = None):
         """Convergence plots are computed as part of run(). However, in special cases
@@ -249,7 +256,7 @@ class EigenmodeSim(QAnalysisRenderer):
         Returns:
             None
         """
-        self.renderer.set_mode(eigenmode, self.setup_name)
+        self.renderer.set_mode(eigenmode, self.sim_setup_name)
         return self.renderer.plot_fields(*args,
                                          **kwargs,
                                          object_name=object_name)

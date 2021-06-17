@@ -35,12 +35,11 @@ LOManalysis
    .. autosummary::
       :toctree: ../stubs/
    
+      LOManalysis.clear_data
       LOManalysis.close
       LOManalysis.plot_convergence
       LOManalysis.plot_convergence_chi
       LOManalysis.print_run_args
-      LOManalysis.reset_variables
-      LOManalysis.reset_variables_sim
       LOManalysis.run
       LOManalysis.run_lom
       LOManalysis.run_sim

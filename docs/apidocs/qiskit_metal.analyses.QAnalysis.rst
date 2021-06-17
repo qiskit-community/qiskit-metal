@@ -32,8 +32,8 @@ QAnalysis
    .. autosummary::
       :toctree: ../stubs/
    
+      QAnalysis.clear_data
       QAnalysis.print_run_args
-      QAnalysis.reset_variables
       QAnalysis.run
       QAnalysis.save_run_args
       QAnalysis.setup_update

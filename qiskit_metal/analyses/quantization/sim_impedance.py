@@ -13,6 +13,7 @@
 # that they have been altered from the originals.
 
 from typing import Union, Tuple
+import pandas as pd
 
 from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
 
@@ -43,6 +44,12 @@ class ImpedanceAnalysis(QAnalysisRenderer):
             * type (str): Type of sweep. Defaults to "Fast".
             * save_fields (bool): Whether or not to save fields. Defaults to False.
 
+    Data Labels:
+        * sweep_name (str): Name given to the current sweep.
+        * param_z (pd.DataFrame): Impedence matrix.
+        * param_y (pd.DataFrame): Admittance matrix.
+        * param_s (pd.DataFrame): Scattering matrix.
+
     """
     default_setup = Dict(sim=Dict(freq_ghz=5,
                                   max_delta_s=0.1,
@@ -61,6 +68,10 @@ class ImpedanceAnalysis(QAnalysisRenderer):
                                                    save_fields=False)))
     """Default setup."""
 
+    # supported labels for data generated from the simulation
+    data_labels = ['sweep_name', 'params_z', 'params_y', 'params_s']
+    """Default data labels."""
+
     def __init__(self, design: 'QDesign', renderer_name: str = 'hfss'):
         """Compute drivenmodal and then extracts impedance, admittance and scattering paramters.
 
@@ -72,29 +83,15 @@ class ImpedanceAnalysis(QAnalysisRenderer):
         # set design and renderer
         super().__init__(design, renderer_name)
 
-    def reset_variables_sim(self):
-        """Code to set and reset the output variables for this analysis class.
-        This is called by the QAnalysis.__init__().
-        """
-        # pylint: disable=attribute-defined-outside-init
-        # settings variables
-        self.setup_name = None
-        self.sweep_name = None
-
-        # output variables
-        self._params_z = None
-        self._params_y = None
-        self._params_s = None
-
     def _analyze(self):
         """Executes the analysis step of the Run. First it initializes the renderer setup
         to prepare for drivenmodal analysis, then it executes it. Finally it recovers the
-        output of the analysis and stores it in self._params_z/_params_y/_params_s.
+        output of the analysis and stores it in self.params_z/params_y/params_s.
         """
-        self.setup_name, self.sweep_name = self.renderer.initialize_drivenmodal(
+        self.sim_setup_name, self.sweep_name = self.renderer.initialize_drivenmodal(
             **self.setup.sim)
 
-        self.renderer.analyze_sweep(self.sweep_name, self.setup_name)
+        self.renderer.analyze_sweep(self.sweep_name, self.sim_setup_name)
         # TODO: return the impedance, admittance and scattering matrices for later use
 
     def get_impedance(self, param_name: list = ['Z11', 'Z21']):
@@ -169,7 +166,7 @@ class ImpedanceAnalysis(QAnalysisRenderer):
             del argm['self']
             self.save_run_args(**argm)
         # wipe data from the previous run (if any)
-        self.reset_variables_sim()
+        self.clear_data()
 
         if not self.renderer_initialized:
             self._initialize_renderer()
@@ -184,4 +181,96 @@ class ImpedanceAnalysis(QAnalysisRenderer):
                                             box_plus_buffer=box_plus_buffer)
 
         self._analyze()
-        return renderer_design_name, self.setup_name
+        return renderer_design_name, self.sim_setup_name
+
+    @property
+    def sweep_name(self) -> str:
+        """Getter
+
+        Returns:
+            str: Name of the sweep being executed.
+        """
+        return self.get_data('sweep_name')
+
+    @sweep_name.setter
+    def sweep_name(self, data: str):
+        """Setter
+
+        Args:
+            data (str): Name of the sweep being executed.
+        """
+        if not isinstance(data, str):
+            self.logger.warning(
+                'Unuspported type %s. Only accepts str. Please try again.',
+                {type(data)})
+            return
+        self.set_data('sweep_name', data)
+
+    @property
+    def param_z(self) -> pd.DataFrame:
+        """Getter
+
+        Returns:
+            str: Impedance matrix.
+        """
+        return self.get_data('param_z')
+
+    @param_z.setter
+    def param_z(self, data: pd.DataFrame):
+        """Setter
+
+        Args:
+            data (pd.DataFrame): Impedance matrix.
+        """
+        if not isinstance(data, pd.DataFrame):
+            self.logger.warning(
+                'Unuspported type %s. Only accepts pd.DataFrame. Please try again.',
+                {type(data)})
+            return
+        self.set_data('param_z', data)
+
+    @property
+    def param_y(self) -> pd.DataFrame:
+        """Getter
+
+        Returns:
+            str: Admittance matrix.
+        """
+        return self.get_data('param_y')
+
+    @param_y.setter
+    def param_y(self, data: pd.DataFrame):
+        """Setter
+
+        Args:
+            data (pd.DataFrame): Admittance matrix.
+        """
+        if not isinstance(data, pd.DataFrame):
+            self.logger.warning(
+                'Unuspported type %s. Only accepts pd.DataFrame. Please try again.',
+                {type(data)})
+            return
+        self.set_data('param_y', data)
+
+    @property
+    def param_s(self) -> pd.DataFrame:
+        """Getter
+
+        Returns:
+            str: Scattering matrix.
+        """
+        return self.get_data('param_s')
+
+    @param_s.setter
+    def param_s(self, data: pd.DataFrame):
+        """Setter
+
+        Args:
+            data (pd.DataFrame): Scattering matrix.
+        """
+        if not isinstance(data, pd.DataFrame):
+            self.logger.warning(
+                'Unuspported type %s. Only accepts pd.DataFrame. Please try again.',
+                {type(data)})
+            return
+        self.set_data('param_s', data)

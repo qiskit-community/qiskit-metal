@@ -13,7 +13,6 @@
 # that they have been altered from the originals.
 
 from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
-from ..core import QAnalysis, QAnalysisRenderer
 from . import EigenmodeSim
 
 from ... import Dict
@@ -21,7 +20,7 @@ from ... import Dict
 
 # TODO: eliminate every reference to "renderer" in this file
 #  then change inheritance from QAnalysisRenderer to QAnalysis
-class EPRanalysis(QAnalysisRenderer):
+class EPRanalysis(EigenmodeSim):
     """From an input eigenmode dataset, apply the Energy Participation Ratio analysis method.
 
     Default Setup:
@@ -41,6 +40,12 @@ class EPRanalysis(QAnalysisRenderer):
         * cos_trunc (int): truncation of the cosine function
         * fock_trunc (int): truncation of the fock
         * sweep_variable (str): Variable to sweep during EPR
+
+    Data Labels:
+        * energy_elec (float): Name given to the current sweep.
+        * energy_mag (float): Impedence matrix.
+        * energy_elec_sub (float): Admittance matrix.
+
     """
     default_setup = Dict(epr=Dict(junctions=Dict(
         jj=Dict(Lj_variable='Lj', Cj_variable='Cj', rect='', line='')),
@@ -49,6 +54,10 @@ class EPRanalysis(QAnalysisRenderer):
                                   fock_trunc=7,
                                   sweep_variable='Lj'))
     """Default setup."""
+
+    # supported labels for data generated from the simulation
+    data_labels = ['energy_elec', 'energy_mag', 'energy_elec_sub']
+    """Default data labels."""
 
     def __init__(self, design: 'QDesign', *args, **kwargs):
         """Compute eigenmode, then derive from it using the epr method.
@@ -64,16 +73,75 @@ class EPRanalysis(QAnalysisRenderer):
         # TODO: define the input variables == define the output variables of the
         #  EigenmodeSim class. this will likely require to find them inside pinfo
 
-    def reset_variables(self):
-        """Code to set and reset the output variables for this analysis class.
-        This is called by the QAnalysis.__init__().
-        """
-        # pylint: disable=attribute-defined-outside-init
+    @property
+    def energy_elec(self) -> float:
+        """Getter
 
-        # output variables
-        self.energy_elec = None
-        self.energy_mag = None
-        self.energy_elec_sub = None
+        Returns:
+            float: Electric field energy stored in the system based on the eigenmode results.
+        """
+        return self.get_data('energy_elec')
+
+    @energy_elec.setter
+    def energy_elec(self, data: float):
+        """Setter
+
+        Args:
+            data (float): Electric field energy stored in the system based on the eigenmode results.
+        """
+        if not isinstance(data, float):
+            self.logger.warning(
+                'Unuspported type %s. Only accepts float. Please try again.',
+                {type(data)})
+            return
+        self.set_data('energy_elec', data)
+
+    @property
+    def energy_mag(self) -> float:
+        """Getter
+
+        Returns:
+            float: Magnetic field energy stored in the system based on the eigenmode results.
+        """
+        return self.get_data('energy_mag')
+
+    @energy_mag.setter
+    def energy_mag(self, data: float):
+        """Setter
+
+        Args:
+            data (float): Magnetic field energy stored in the system based on the eigenmode results.
+        """
+        if not isinstance(data, float):
+            self.logger.warning(
+                'Unuspported type %s. Only accepts float. Please try again.',
+                {type(data)})
+            return
+        self.set_data('energy_mag', data)
+
+    @property
+    def energy_elec_sub(self) -> float:
+        """Getter
+
+        Returns:
+            float: Electric field energy stored in the substrate based on the eigenmode results.
+        """
+        return self.get_data('energy_elec_sub')
+
+    @energy_elec_sub.setter
+    def energy_elec_sub(self, data: float):
+        """Setter
+
+        Args:
+            data (float): Electric field energy stored in the substrate based
+                on the eigenmode results.
+        """
+        if not isinstance(data, float):
+            self.logger.warning(
+                'Unuspported type %s. Only accepts float. Please try again.',
+                {type(data)})
+            return
+        self.set_data('energy_elec_sub', data)
 
     def run(self):  # pylint: disable=arguments-differ
         """Alias for run_lom().
@@ -85,7 +153,7 @@ class EPRanalysis(QAnalysisRenderer):
         and based on the setup values.
         """
         # wipe data from the previous run (if any)
-        self.reset_variables()
+        self.clear_data(self.data_labels)
 
         self.get_stored_energy(no_junctions)
         if not no_junctions:
@@ -179,9 +247,3 @@ class EigenmodeAndEPR(EPRanalysis, EigenmodeSim):
         """
         self.run_sim(*args, **kwargs)
         return self.run_epr()
-
-    def run_sim(self, *args, **kwargs):  # pylint: disable=signature-differs
-        """Overridden method to force run_sim() to also wipe the output variables of the analysis.
-        """
-        self.reset_variables()
-        super().run_sim(*args, **kwargs)

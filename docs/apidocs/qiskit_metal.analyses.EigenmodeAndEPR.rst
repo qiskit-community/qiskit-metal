@@ -35,6 +35,7 @@ EigenmodeAndEPR
    .. autosummary::
       :toctree: ../stubs/
    
+      EigenmodeAndEPR.clear_data
       EigenmodeAndEPR.clear_fields
       EigenmodeAndEPR.close
       EigenmodeAndEPR.compute_convergences
@@ -45,8 +46,6 @@ EigenmodeAndEPR
       EigenmodeAndEPR.plot_fields
       EigenmodeAndEPR.print_run_args
       EigenmodeAndEPR.report_hamiltonian
-      EigenmodeAndEPR.reset_variables
-      EigenmodeAndEPR.reset_variables_sim
       EigenmodeAndEPR.run
       EigenmodeAndEPR.run_analysis
       EigenmodeAndEPR.run_epr

@@ -34,10 +34,9 @@ CapExtraction
    .. autosummary::
       :toctree: ../stubs/
    
+      CapExtraction.clear_data
       CapExtraction.close
       CapExtraction.print_run_args
-      CapExtraction.reset_variables
-      CapExtraction.reset_variables_sim
       CapExtraction.run
       CapExtraction.run_sim
       CapExtraction.save_run_args

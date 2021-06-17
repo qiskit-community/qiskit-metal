@@ -24,11 +24,18 @@ class QAnalysisRenderer(QAnalysis):
     select and name renderers.
 
     Default Setup:
-        name (str): Name of simulation setup. Defaults to "Setup".
+        * name (str): Name of simulation setup. Defaults to "Setup".
+
+    Data Labels:
+        * sim_setup_name (str): Name given to the current setup.
     """
 
     default_setup = Dict(sim=Dict(name="Setup"))
     """Default setup"""
+
+    # supported labels for data generated from the simulation
+    data_labels = ['sim_setup_name']
+    """Default data labels."""
 
     def __init__(self, design: 'QDesign', renderer_name: str, *args, **kwargs):
         """Variables and method needed from all those Analysis types that need a renderer.
@@ -139,15 +146,25 @@ class QAnalysisRenderer(QAnalysis):
         You will be able to execute this with the alias run().
         """
 
-    def reset_variables(self):
-        """Alias for reset_variables_sim() necessary to implement super-class method, while
-        preventing method name collision when sim and non-sim QAnalysis classes are inherited.
-        """
-        self.reset_variables_sim()
+    @property
+    def sim_setup_name(self) -> str:
+        """Getter
 
-    @abstractmethod
-    def reset_variables_sim(self):
-        """Abstract method. Must be implemented by the subclass.
-        Code to set and reset the output variables for this analysis class.
-        This is called by the QAnalysis.__init__().
+        Returns:
+            str: Name of the setup being executed.
         """
+        return self.get_data('sim_setup_name')
+
+    @sim_setup_name.setter
+    def sim_setup_name(self, data: str):
+        """Setter
+
+        Args:
+            data (str): Name of the setup being executed.
+        """
+        if not isinstance(data, str):
+            self.logger.warning(
+                'Unuspported type %s. Only accepts str. Please try again.',
+                {type(data)})
+            return
+        self.set_data('sim_setup_name', data)
