@@ -112,7 +112,7 @@ class QAnalysis(ABC):
 
         Args:
             data_name (str, optional): Label to query for data. If not specified, the
-            entire dictionary is returned. Defaults to None.
+                entire dictionary is returned. Defaults to None.
 
         Returns:
             Any: The data associated with the label, or the entire list of labels and data.
