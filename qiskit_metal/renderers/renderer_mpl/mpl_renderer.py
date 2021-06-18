@@ -422,7 +422,7 @@ class QMplRenderer():
             circle_center + radius * np.array(
                 [np.cos(theta_start), np.sin(theta_start)])
         ])
-        for theta in np.linspace(theta_start, theta_end, points)[1:-1]:
+        for theta in np.linspace(theta_start, theta_end, points)[1:]:
             path = np.concatenate(
                 (path,
                  np.array([
@@ -430,48 +430,6 @@ class QMplRenderer():
                      np.array([np.cos(theta), np.sin(theta)])
                  ])))
         return path
-
-        # OLD CODE BELOW
-        # if np.array_equal(vertex_start, vertex_corner) or np.array_equal(
-        #         vertex_end, vertex_corner):
-        #     return False
-
-        # fillet_start = (radius / np.linalg.norm(vertex_start - vertex_corner) *
-        #                 (vertex_start - vertex_corner) + vertex_corner)
-        # path = np.array([fillet_start])
-        # # Calculate the angle of the corner, which is not necessarily 90 degrees
-        # end_angle = np.arccos(
-        #     np.dot(vertex_start - vertex_corner, vertex_end - vertex_corner) /
-        #     (np.linalg.norm(vertex_start - vertex_corner) *
-        #      np.linalg.norm(vertex_end - vertex_corner)))
-        # if end_angle == 0 or end_angle == np.pi:
-        #     return False
-        # # Determine direction so we know which way to fillet
-        # TODO - replace with generalized code accounting for different rotations
-        # direction = [
-        #     np.argmax(abs(vertex_start - vertex_corner)),
-        #     1 - np.argmax(abs(vertex_start - vertex_corner)),
-        # ]
-        # sign = np.array([
-        #     np.argmax([vertex_start[direction[0]],
-        #                vertex_corner[direction[0]]]),
-        #     np.argmax([vertex_corner[direction[1]], vertex_end[direction[1]]]),
-        # ])
-        # if direction[0] == 1 and sign[0] != sign[1]:
-        #     sign = 1 - sign
-        # sign = sign * 2 - 1
-
-        # # Populate the fillet corner, skipping the start point since it's already added
-        # for theta in np.arange(0, end_angle, end_angle / points)[1:]:
-        #     diff = [np.sin(theta) * radius, radius - np.cos(theta) * radius]
-        #     path = np.concatenate((
-        #         path,
-        #         np.array([[
-        #             fillet_start[0] + sign[0] * diff[direction[0]],
-        #             fillet_start[1] + sign[1] * diff[direction[1]],
-        #         ]]),
-        #     ))
-        # return path
 
     def render_path(self,
                     table: pd.DataFrame,
