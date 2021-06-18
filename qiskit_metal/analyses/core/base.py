@@ -86,14 +86,14 @@ class QAnalysis(ABC):
 
     def save_run_args(self, **kwargs):
         """Intended to be used to store the kwargs passed to the run() method,
-        for repeatibility and for later identification of the QAnalysis instance.
+        for repeatability and for later identification of the QAnalysis instance.
         """
         self._setup.run = None
         self._setup.run = Dict(kwargs)
 
     def set_data(self, data_name: str, data: Any):
         """Stores data in a structure for later retrieval.
-        Could be ouput, intermediate or even input data.
+        Could be output, intermediate or even input data.
         Current implementation uses Dict()
 
         Args:
@@ -122,7 +122,7 @@ class QAnalysis(ABC):
         return self._variables[data_name]
 
     def get_data_labels(self) -> list:
-        """Retrieves the list of data labels currently set. 
+        """Retrieves the list of data labels currently set.
         Returns `None` if nothing is found.
 
         Returns:

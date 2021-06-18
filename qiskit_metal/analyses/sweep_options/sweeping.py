@@ -1174,7 +1174,7 @@ class Sweeping():
     def _parse_text_from_q3d_convergence(
             self,
             gui_text: str) -> Tuple[Union[None, float], Union[None, float]]:
-        """Parse gui_text using apriori known formatting. Ansys-Q3D
+        """Parse gui_text using a priori known formatting. Ansys-Q3D
         solution-data provides gui_text.
 
         Args:

@@ -49,7 +49,7 @@ class QAnalysisRenderer(QAnalysis):
         # pointer to find renderers
         self.design = design
 
-        # verify renderer existance
+        # verify renderer existence
         self.renderer_name = renderer_name
         self.renderer = self.select_renderer(renderer_name)
 
@@ -142,7 +142,7 @@ class QAnalysisRenderer(QAnalysis):
     @abstractmethod
     def run_sim(self, *args, **kwargs):
         """Abstract method. Must be implemented by the subclass.
-        Write in here the code to launch the simualtions.
+        Write in here the code to launch the simulations.
         You will be able to execute this with the alias run().
         """
 
@@ -164,7 +164,7 @@ class QAnalysisRenderer(QAnalysis):
         """
         if not isinstance(data, str):
             self.logger.warning(
-                'Unuspported type %s. Only accepts str. Please try again.',
+                'Unsupported type %s. Only accepts str. Please try again.',
                 {type(data)})
             return
         self.set_data('sim_setup_name', data)

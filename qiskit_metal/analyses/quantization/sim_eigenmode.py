@@ -65,7 +65,7 @@ class EigenmodeSim(QAnalysisRenderer):
 
         Args:
             design (QDesign): Pointer to the main qiskit-metal design.
-                Used to access the Qrenderer.
+                Used to access the QRenderer.
             renderer_name (str, optional): Which renderer to use. Defaults to 'hfss'.
         """
         # set design and renderer
@@ -98,7 +98,7 @@ class EigenmodeSim(QAnalysisRenderer):
         After this method concludes you can inspect the output using this class properties.
 
         Args:
-            name (str): reference name for the somponents selection. If None,
+            name (str): reference name for the components selection. If None,
                 it will use the design.name. Defaults to None.
             components (Union[list, None], optional): List of components to render.
                 Defaults to None.
@@ -157,7 +157,7 @@ class EigenmodeSim(QAnalysisRenderer):
         """
         if not isinstance(data, pd.DataFrame):
             self.logger.warning(
-                'Unuspported type %s. Only accepts pandas dataframes. Please try again.',
+                'Unsupported type %s. Only accepts pandas dataframes. Please try again.',
                 {type(data)})
             return
         self.set_data('convergence_f', data)
@@ -180,7 +180,7 @@ class EigenmodeSim(QAnalysisRenderer):
         """
         if not isinstance(data, pd.DataFrame):
             self.logger.warning(
-                'Unuspported type %s. Only accepts pandas dataframes. Please try again.',
+                'Unsupported type %s. Only accepts pandas dataframes. Please try again.',
                 {type(data)})
             return
         self.set_data('convergence_t', data)

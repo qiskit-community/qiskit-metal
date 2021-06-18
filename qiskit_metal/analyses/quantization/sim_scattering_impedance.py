@@ -46,7 +46,7 @@ class ScatteringImpedanceSim(QAnalysisRenderer):
 
     Data Labels:
         * sweep_name (str): Name given to the current sweep.
-        * param_z (pd.DataFrame): Impedence matrix.
+        * param_z (pd.DataFrame): Impedance matrix.
         * param_y (pd.DataFrame): Admittance matrix.
         * param_s (pd.DataFrame): Scattering matrix.
 
@@ -77,7 +77,7 @@ class ScatteringImpedanceSim(QAnalysisRenderer):
 
         Args:
             design (QDesign): Pointer to the main qiskit-metal design.
-                Used to access the Qrenderer.
+                Used to access the QRenderer.
             renderer_name (str, optional): Which renderer to use. Defaults to 'hfss'.
         """
         # set design and renderer
@@ -95,7 +95,7 @@ class ScatteringImpedanceSim(QAnalysisRenderer):
         # TODO: return the impedance, admittance and scattering matrices for later use
 
     def get_impedance(self, param_name: list = ['Z11', 'Z21']):
-        """Create the impedence plot.
+        """Create the impedance plot.
 
         Args:
             param_name (list): List of strings describing which impedance values
@@ -105,7 +105,7 @@ class ScatteringImpedanceSim(QAnalysisRenderer):
         return self.renderer.plot_params(param_name)
 
     def get_admittance(self, param_name: list = ['Y11', 'Y21']):
-        """Create the impedence plot.
+        """Create the impedance plot.
 
         Args:
             param_name (list): List of strings describing which admittance values
@@ -140,7 +140,7 @@ class ScatteringImpedanceSim(QAnalysisRenderer):
         After this method concludes you can inspect the output using this class properties.
 
         Args:
-            name (str): reference name for the somponents selection. If None,
+            name (str): reference name for the components selection. If None,
                 it will use the design.name. Defaults to None.
             components (Union[list, None], optional): List of components to render.
                 Defaults to None.
@@ -201,7 +201,7 @@ class ScatteringImpedanceSim(QAnalysisRenderer):
         """
         if not isinstance(data, str):
             self.logger.warning(
-                'Unuspported type %s. Only accepts str. Please try again.',
+                'Unsupported type %s. Only accepts str. Please try again.',
                 {type(data)})
             return
         self.set_data('sweep_name', data)
@@ -224,7 +224,7 @@ class ScatteringImpedanceSim(QAnalysisRenderer):
         """
         if not isinstance(data, pd.DataFrame):
             self.logger.warning(
-                'Unuspported type %s. Only accepts pd.DataFrame. Please try again.',
+                'Unsupported type %s. Only accepts pd.DataFrame. Please try again.',
                 {type(data)})
             return
         self.set_data('param_z', data)
@@ -247,7 +247,7 @@ class ScatteringImpedanceSim(QAnalysisRenderer):
         """
         if not isinstance(data, pd.DataFrame):
             self.logger.warning(
-                'Unuspported type %s. Only accepts pd.DataFrame. Please try again.',
+                'Unsupported type %s. Only accepts pd.DataFrame. Please try again.',
                 {type(data)})
             return
         self.set_data('param_y', data)
@@ -270,7 +270,7 @@ class ScatteringImpedanceSim(QAnalysisRenderer):
         """
         if not isinstance(data, pd.DataFrame):
             self.logger.warning(
-                'Unuspported type %s. Only accepts pd.DataFrame. Please try again.',
+                'Unsupported type %s. Only accepts pd.DataFrame. Please try again.',
                 {type(data)})
             return
         self.set_data('param_s', data)
