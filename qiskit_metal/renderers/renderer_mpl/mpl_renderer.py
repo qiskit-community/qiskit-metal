@@ -407,8 +407,8 @@ class QMplRenderer():
 
         # Start and end sweep angles determined relative to midpoint angle
         # Swap them as needed to resolve ambiguity in arctan
-        theta_start = theta_mid - end_angle / 2
-        theta_end = theta_mid + end_angle / 2
+        theta_start = theta_mid - (np.pi - end_angle) / 2
+        theta_end = theta_mid + (np.pi - end_angle) / 2
         p1 = circle_center + radius * np.array(
             [np.cos(theta_start), np.sin(theta_start)])
         p2 = circle_center + radius * np.array(
