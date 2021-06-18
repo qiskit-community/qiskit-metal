@@ -20,10 +20,16 @@ EigenmodeAndEPR
    
       EigenmodeAndEPR.convergence_f
       EigenmodeAndEPR.convergence_t
+      EigenmodeAndEPR.data_labels
       EigenmodeAndEPR.default_setup
+      EigenmodeAndEPR.energy_elec
+      EigenmodeAndEPR.energy_elec_sub
+      EigenmodeAndEPR.energy_mag
       EigenmodeAndEPR.logger
       EigenmodeAndEPR.renderer_initialized
       EigenmodeAndEPR.setup
+      EigenmodeAndEPR.sim_setup_name
+      EigenmodeAndEPR.supported_data
    
    
 
@@ -40,6 +46,8 @@ EigenmodeAndEPR
       EigenmodeAndEPR.close
       EigenmodeAndEPR.compute_convergences
       EigenmodeAndEPR.epr_start
+      EigenmodeAndEPR.get_data
+      EigenmodeAndEPR.get_data_labels
       EigenmodeAndEPR.get_frequencies
       EigenmodeAndEPR.get_stored_energy
       EigenmodeAndEPR.plot_convergences
@@ -53,6 +61,7 @@ EigenmodeAndEPR
       EigenmodeAndEPR.save_run_args
       EigenmodeAndEPR.save_screenshot
       EigenmodeAndEPR.select_renderer
+      EigenmodeAndEPR.set_data
       EigenmodeAndEPR.setup_update
       EigenmodeAndEPR.spectrum_analysis
       EigenmodeAndEPR.start

@@ -18,12 +18,18 @@ CapExtractAndLOM
    .. autosummary::
       :toctree: ../stubs/
    
+      CapExtractAndLOM.capacitance_all_passes
       CapExtractAndLOM.capacitance_matrix
+      CapExtractAndLOM.data_labels
       CapExtractAndLOM.default_setup
       CapExtractAndLOM.logger
       CapExtractAndLOM.lumped_oscillator
+      CapExtractAndLOM.lumped_oscillator_all
       CapExtractAndLOM.renderer_initialized
       CapExtractAndLOM.setup
+      CapExtractAndLOM.sim_setup_name
+      CapExtractAndLOM.supported_data
+      CapExtractAndLOM.units
    
    
 
@@ -37,6 +43,8 @@ CapExtractAndLOM
    
       CapExtractAndLOM.clear_data
       CapExtractAndLOM.close
+      CapExtractAndLOM.get_data
+      CapExtractAndLOM.get_data_labels
       CapExtractAndLOM.plot_convergence
       CapExtractAndLOM.plot_convergence_chi
       CapExtractAndLOM.print_run_args
@@ -46,6 +54,7 @@ CapExtractAndLOM
       CapExtractAndLOM.save_run_args
       CapExtractAndLOM.save_screenshot
       CapExtractAndLOM.select_renderer
+      CapExtractAndLOM.set_data
       CapExtractAndLOM.setup_update
       CapExtractAndLOM.start
    
