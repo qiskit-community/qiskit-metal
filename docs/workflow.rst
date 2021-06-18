@@ -15,28 +15,54 @@ Near-term development roadmap:
    Let us know through github issues, slack channel messages, or by telling us in one of the tutorials. 
 
 
-In the near future we aim to (See near-term roadmap below):
+In the near future we aim to (see near-term roadmap image):
 
 * Add more quantum components
-   * Tunable couplers (community-driven)
+   * ✓ Tunable couplers (community-driven)
+   * ✓ Flux & control lines & terminations 
+   * ✓ Routing manual-driven at 45 degrees, etc. 
+   * ✓ Wirbonds in rendering
+   * Cross-overs
+   * Add JJ layout component
+      * Dolan single JJ 
+      * SQUID 
+      * Array 
    * Fluxonium (community-driven)
-   * Flux lines, control, etc. 
-   * Wirbonds, etc.
-   * Grow library of quantum devices
+   * Novel qubits (community-driven) 
    * . . .
-* Develop quantum analysis
+* Add & encahnce quantizaiton analysis & ease of use
    * Sweeping parameters, optimetrics 
+      * ✓ for lumped analysis
+      * ✓ for EPR analysis 
+      * for Z, S, Y analysis 
    * Impedence quantization
-   * Fully integreated pyEPR
+      * Add fitting of Z curves & extraction of ZPF
+   * Improve ease of use & integration of pyEPR analysis 
+      * and dissipative EPR analysis 
    * Updated lumped analysis code to more general circuits and couplers
-   * Better interfaces and abstractions
+   * Better analysis interfaces and abstractions 
    * . . .
-* Refactor and improve abstractions, interfaces, and data handling
-* Develop Ease of use and one-click solutions
-* More features in the GUI. Including customization of coloring layers, plotting options, more interactive component editing
+* Code & ease of use 
+   * Refactor and improve abstractions, interfaces, and data handling
+      * Improved modularity of analysis 
+      * 
+   * Develop ease of use and one-click solutions
+   * More features in the GUI
+      * ✓ Create components from the GUI library  
+      * Create 
+      * GUI to script 
+      * Including customization of coloring layers, plotting options, more interactive component editing
+* Features you request! So, let us know in the Slack channel :)
+
+
+Longer term:
+
+* Hamiltonian analysis 
+   * Pulse & gate analysis & time dynamics simulations 
+   * Integration with quantum analysis packages: qiskit pulse, qutip (interested in listing your package here? Let us know :) )
+   * Integration with scQubits 
 * Import from GDS
-* Integration with other quantum analysis packages: qiskit pulse, qutip, scQubits, pyEPR, ... (interested in listing your package here? let us know.)
-* User-requrested features: so, let us know :)
+* Features you request! So, let us know in the Slack channel :)
 
 
 *********************
