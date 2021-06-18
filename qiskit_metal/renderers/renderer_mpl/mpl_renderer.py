@@ -326,6 +326,8 @@ class QMplRenderer():
         if row["fillet"] == 0:  # zero radius, no need to fillet
             return row["geometry"]
         path = row["geometry"].coords
+        if len(path) <= 2:  # only start and end points, no need to fillet
+            return row["geometry"]
         newpath = np.array([path[0]])
 
         # Get list of vertices that can't be filleted
