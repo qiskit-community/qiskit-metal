@@ -58,7 +58,7 @@ class LOManalysis(LumpedElementsSim):
 
         Args:
             design (QDesign): Pointer to the main qiskit-metal design.
-                Used to access the Qrenderer.
+                Used to access the QRenderer.
             renderer_name (str, optional): Which renderer to use. Defaults to 'q3d'.
         """
         # set design and renderer
@@ -82,7 +82,7 @@ class LOManalysis(LumpedElementsSim):
         """
         if not isinstance(data, dict):
             self.logger.warning(
-                'Unuspported type %s. Only accepts dict. Please try again.',
+                'Unsupported type %s. Only accepts dict. Please try again.',
                 {type(data)})
             return
         self.set_data('lumped_oscillator', data)
@@ -107,15 +107,15 @@ class LOManalysis(LumpedElementsSim):
         """
         if not isinstance(data, pd.DataFrame):
             self.logger.warning(
-                'Unuspported type %s. Only accepts pd.DataFrame. Please try again.',
+                'Unsupported type %s. Only accepts pd.DataFrame. Please try again.',
                 {type(data)})
             return
         self.set_data('lumped_oscillator_all', data)
 
     def run(self, *args, **kwargs):
-        """Executes sequentually the system capacitance simulation and lom extraction by
+        """Executes sequentially the system capacitance simulation and lom extraction by
         executing the methods LumpedElementsSim.run_sim(`*args`, `**kwargs`) and LOManalysis.run_lom().
-        For imput parameter, see documentation for LumpedElementsSim.run_sim().
+        For input parameter, see documentation for LumpedElementsSim.run_sim().
 
         Returns:
             (dict): Pass numbers (keys) and respective lump oscillator information (values).

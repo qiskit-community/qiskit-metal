@@ -34,7 +34,7 @@ class EPRanalysis(EigenmodeSim):
                 * line (str): Name of renderer line spanning the length of rect
                     (voltage, orientation, ZPF).
         * dissipatives (Dict):
-            * keys (str): Categories of dissipatives that can appear in the syste. Possible keys
+            * keys (str): Categories of dissipattives that can appear in the system. Possible keys
                 are: 'dielectrics_bulk', 'dielectric_surfaces', 'resistive_surfaces', 'seams'.
             * values (list of str): Names of the shapes composing that dissipative.
         * cos_trunc (int): truncation of the cosine function
@@ -43,7 +43,7 @@ class EPRanalysis(EigenmodeSim):
 
     Data Labels:
         * energy_elec (float): Name given to the current sweep.
-        * energy_mag (float): Impedence matrix.
+        * energy_mag (float): Impedance matrix.
         * energy_elec_sub (float): Admittance matrix.
 
     """
@@ -65,7 +65,7 @@ class EPRanalysis(EigenmodeSim):
 
         Args:
             design (QDesign): Pointer to the main qiskit-metal design.
-                Used to access the Qrenderer.
+                Used to access the QRenderer.
             renderer_name (str, optional): Which renderer to use. Defaults to 'hfss'.
         """
         # set design and renderer
@@ -92,7 +92,7 @@ class EPRanalysis(EigenmodeSim):
         """
         if not isinstance(data, float):
             self.logger.warning(
-                'Unuspported type %s. Only accepts float. Please try again.',
+                'Unsupported type %s. Only accepts float. Please try again.',
                 {type(data)})
             return
         self.set_data('energy_elec', data)
@@ -115,7 +115,7 @@ class EPRanalysis(EigenmodeSim):
         """
         if not isinstance(data, float):
             self.logger.warning(
-                'Unuspported type %s. Only accepts float. Please try again.',
+                'Unsupported type %s. Only accepts float. Please try again.',
                 {type(data)})
             return
         self.set_data('energy_mag', data)
@@ -139,15 +139,15 @@ class EPRanalysis(EigenmodeSim):
         """
         if not isinstance(data, float):
             self.logger.warning(
-                'Unuspported type %s. Only accepts float. Please try again.',
+                'Unsupported type %s. Only accepts float. Please try again.',
                 {type(data)})
             return
         self.set_data('energy_elec_sub', data)
 
     def run(self, *args, **kwargs):
-        """Executes sequentually the system capacitance simulation and lom extraction
+        """Executes sequentially the system capacitance simulation and lom extraction
         executing the methods LumpedElementsSim.run_sim(`*args`, `**kwargs`) and LOManalysis.run_epr().
-        For imput parameter, see documentation for LumpedElementsSim.run_sim().
+        For input parameter, see documentation for LumpedElementsSim.run_sim().
 
         Returns:
             (dict): Pass numbers (keys) and respective lump oscillator information (values).
@@ -156,7 +156,7 @@ class EPRanalysis(EigenmodeSim):
         return self.run_epr()
 
     def run_epr(self, no_junctions=False):
-        """Executes the epr analysis from the extracted eigemode,
+        """Executes the epr analysis from the extracted eigenmode,
         and based on the setup values.
         """
         # wipe data from the previous run (if any)
