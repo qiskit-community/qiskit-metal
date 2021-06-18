@@ -59,8 +59,9 @@ class EPRanalysis(EigenmodeSim):
     data_labels = ['energy_elec', 'energy_mag', 'energy_elec_sub']
     """Default data labels."""
 
-    def __init__(self, design: 'QDesign', *args, **kwargs):
-        """Compute eigenmode, then derive from it using the epr method.
+    def __init__(self, design: 'QDesign', renderer_name: str = 'hfss'):
+        """Performs Energy Participation Ratio (EPR) analysis on a simulated or
+        user-provided eigenmode matrix.
 
         Args:
             design (QDesign): Pointer to the main qiskit-metal design.
@@ -68,7 +69,7 @@ class EPRanalysis(EigenmodeSim):
             renderer_name (str, optional): Which renderer to use. Defaults to 'hfss'.
         """
         # set design and renderer
-        super().__init__(design, *args, **kwargs)
+        super().__init__(design, renderer_name)
 
         # TODO: define the input variables == define the output variables of the
         #  EigenmodeSim class. this will likely require to find them inside pinfo
@@ -143,9 +144,15 @@ class EPRanalysis(EigenmodeSim):
             return
         self.set_data('energy_elec_sub', data)
 
-    def run(self):  # pylint: disable=arguments-differ
-        """Alias for run_lom().
+    def run(self, *args, **kwargs):
+        """Executes sequentually the system capacitance simulation and lom extraction
+        executing the methods LumpedElementsSim.run_sim(`*args`, `**kwargs`) and LOManalysis.run_epr().
+        For imput parameter, see documentation for LumpedElementsSim.run_sim().
+
+        Returns:
+            (dict): Pass numbers (keys) and respective lump oscillator information (values).
         """
+        self.run_sim(*args, **kwargs)
         return self.run_epr()
 
     def run_epr(self, no_junctions=False):
@@ -221,29 +228,3 @@ class EPRanalysis(EigenmodeSim):
         """
         system = self.epr_start(no_junctions=True)
         return self.renderer.epr_get_frequencies(**system)
-
-
-class EigenmodeAndEPR(EPRanalysis, EigenmodeSim):
-    """Compute eigenmode, then derive from it using the epr method.
-    """
-
-    def __init__(self, design: 'QDesign', renderer_name: str = 'hfss'):
-        """Compute eigenmode, then derive from it using the epr method.
-
-        Args:
-            design (QDesign): Pointer to the main qiskit-metal design. Used to access the Qrenderer.
-            renderer_name (str, optional): Which renderer to use. Defaults to 'hfss'.
-        """
-        # set design and renderer
-        super().__init__(design, renderer_name)
-
-    def run(self, *args, **kwargs):
-        """Executes sequentually the system capacitance simulation and lom extraction
-        executing the methods CapExtraction.run_sim(`*args`, `**kwargs`) and LOManalysis.run_lom().
-        For imput parameter, see documentation for CapExtraction.run_sim().
-
-        Returns:
-            (dict): Pass numbers (keys) and respective lump oscillator information (values).
-        """
-        self.run_sim(*args, **kwargs)
-        return self.run_epr()

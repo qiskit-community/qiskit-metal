@@ -21,7 +21,7 @@ from ... import Dict
 from ..core import QAnalysisRenderer
 
 
-class ImpedanceAnalysis(QAnalysisRenderer):
+class ScatteringImpedanceSim(QAnalysisRenderer):
     """Uses drivenmodal simulation to extract the impedance.
 
     Default Setup:

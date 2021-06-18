@@ -66,13 +66,11 @@ Quantization
 .. autosummary::
     :toctree:
 
-    CapExtractAndLOM
-    CapExtraction
-    EPRanalysis
-    EigenmodeAndEPR
-    EigenmodeSim
-    ImpedanceAnalysis
+    LumpedElementsSim
     LOManalysis
+    EigenmodeSim
+    EPRanalysis
+    ScatteringImpedanceSim
     lumped_capacitive
 
 """
@@ -84,13 +82,11 @@ from .core.base_with_renderer import QAnalysisRenderer
 from .em import cpw_calculations
 from .em import kappa_calculation
 from .quantization import lumped_capacitive
-from .quantization.energy_participation_ratio import EPRanalysis
-from .quantization.energy_participation_ratio import EigenmodeAndEPR
-from .quantization.lumped_oscillator_model import CapExtractAndLOM
-from .quantization.lumped_oscillator_model import LOManalysis
-from .quantization.sim_capacitive import CapExtraction
-from .quantization.sim_eigenmode import EigenmodeSim
-from .quantization.sim_impedance import ImpedanceAnalysis
+from .quantization import EPRanalysis
+from .quantization import LOManalysis
+from .quantization import LumpedElementsSim
+from .quantization import EigenmodeSim
+from .quantization import ScatteringImpedanceSim
 from .hamiltonian.transmon_charge_basis import Hcpb
 from .hamiltonian import HO_wavefunctions
 from .hamiltonian import transmon_analytics

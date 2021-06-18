@@ -18,7 +18,7 @@ from pint import UnitRegistry
 from pyEPR.calcs.convert import Convert
 
 from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
-from . import CapExtraction
+from . import LumpedElementsSim
 
 from ... import Dict
 from ... import config
@@ -28,9 +28,8 @@ if not config.is_building_docs():
 
 
 # TODO: eliminate every reference to "renderer" in this file
-#  then change inheritance from QAnalysisRenderer to QAnalysis
-class LOManalysis(CapExtraction):
-    """Performs the LOM analysis on the user-provided capacitance matrix.
+class LOManalysis(LumpedElementsSim):
+    """Performs Lumped Oscillator Model analysis on a simulated or user-provided capacitance matrix.
 
     Default Setup:
         * junctions (Dict)
@@ -54,15 +53,16 @@ class LOManalysis(CapExtraction):
     data_labels = ['lumped_oscillator', 'lumped_oscillator_all']
     """Default data labels."""
 
-    def __init__(self, design: 'QDesign', *args, **kwargs):
-        """Initialize the analysis step to extract the LOM model from the system capacitance.
+    def __init__(self, design: 'QDesign', renderer_name: str = 'q3d'):
+        """Initialize the Lumped Oscillator Model analysis.
 
         Args:
             design (QDesign): Pointer to the main qiskit-metal design.
                 Used to access the Qrenderer.
+            renderer_name (str, optional): Which renderer to use. Defaults to 'q3d'.
         """
         # set design and renderer
-        super().__init__(design, *args, **kwargs)
+        super().__init__(design, renderer_name)
 
     @property
     def lumped_oscillator(self) -> dict:
@@ -112,9 +112,15 @@ class LOManalysis(CapExtraction):
             return
         self.set_data('lumped_oscillator_all', data)
 
-    def run(self):  # pylint: disable=arguments-differ
-        """Alias for run_lom().
+    def run(self, *args, **kwargs):
+        """Executes sequentually the system capacitance simulation and lom extraction by
+        executing the methods LumpedElementsSim.run_sim(`*args`, `**kwargs`) and LOManalysis.run_lom().
+        For imput parameter, see documentation for LumpedElementsSim.run_sim().
+
+        Returns:
+            (dict): Pass numbers (keys) and respective lump oscillator information (values).
         """
+        self.run_sim(*args, **kwargs)
         return self.run_lom()
 
     def run_lom(self):
@@ -191,29 +197,3 @@ class LOManalysis(CapExtraction):
         if self.lumped_oscillator_all is None or args or kwargs:
             self.run_lom(*args, **kwargs)
         self.renderer.plot_convergence_chi(self.lumped_oscillator_all)
-
-
-class CapExtractAndLOM(LOManalysis, CapExtraction):
-    """Compute Capacitance matrix, then derive from it the lom parameters.
-    """
-
-    def __init__(self, design: 'QDesign', renderer_name: str = 'q3d'):
-        """Initialize class to simulate the capacitance matrix and extract the lom model.
-
-        Args:
-            design (QDesign): Pointer to the main qiskit-metal design. Used to access the Qrenderer.
-            renderer_name (str, optional): Which renderer to use. Defaults to 'q3d'.
-        """
-        # set design and renderer
-        super().__init__(design, renderer_name)
-
-    def run(self, *args, **kwargs):
-        """Executes sequentually the system capacitance simulation and lom extraction
-        executing the methods CapExtraction.run_sim(`*args`, `**kwargs`) and LOManalysis.run_lom().
-        For imput parameter, see documentation for CapExtraction.run_sim().
-
-        Returns:
-            (dict): Pass numbers (keys) and respective lump oscillator information (values).
-        """
-        self.run_sim(*args, **kwargs)
-        return self.run_lom()

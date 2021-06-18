@@ -979,11 +979,11 @@ class QHFSSRenderer(QAnsysRenderer):
                           variation: str = None,
                           fig: mpl.figure.Figure = None):
         """
-        (deprecated) use EigenmodeAndEPR.plot_convergences()
+        (deprecated) use EPRanalysis.plot_convergences()
         """
         print(
             'This method is deprecated. Change your scripts to use the equivalent method '
-            'plot_convergence() that has been moved inside the EigenmodeAndEPR class.'
+            'plot_convergence() that has been moved inside the EPRanalysis class.'
         )
 
     def get_f_convergence(self, variation: str = None, save_csv: bool = True):

@@ -22,7 +22,7 @@ from ..core import QAnalysisRenderer
 from ... import Dict
 
 
-class CapExtraction(QAnalysisRenderer):
+class LumpedElementsSim(QAnalysisRenderer):
     """Compute Capacitance matrix using the selected renderer.
 
     Default Setup:

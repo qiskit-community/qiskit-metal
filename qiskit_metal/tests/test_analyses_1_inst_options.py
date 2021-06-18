@@ -24,12 +24,10 @@ import unittest
 from qiskit_metal.analyses.core.base import QAnalysis
 from qiskit_metal.analyses.core.base_with_renderer import QAnalysisRenderer
 from qiskit_metal.analyses.quantization.energy_participation_ratio import EPRanalysis
-from qiskit_metal.analyses.quantization.energy_participation_ratio import EigenmodeAndEPR
 from qiskit_metal.analyses.quantization.lumped_oscillator_model import LOManalysis
-from qiskit_metal.analyses.quantization.lumped_oscillator_model import CapExtractAndLOM
-from qiskit_metal.analyses.quantization.sim_capacitive import CapExtraction
+from qiskit_metal.analyses.quantization.sim_lumped_elements import LumpedElementsSim
 from qiskit_metal.analyses.quantization.sim_eigenmode import EigenmodeSim
-from qiskit_metal.analyses.quantization.sim_impedance import ImpedanceAnalysis
+from qiskit_metal.analyses.quantization.sim_scattering_impedance import ScatteringImpedanceSim
 from qiskit_metal.analyses.hamiltonian.transmon_charge_basis import Hcpb
 from qiskit_metal.analyses.sweep_options.sweeping import Sweeping
 from qiskit_metal.tests.assertions import AssertionsMixin
@@ -84,35 +82,19 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         except Exception:
             self.fail("Sweeping failed.")
 
-    def test_analyses_instantiate_eigenmode_and_epr(self):
-        """Test instantiation of EigenmodeAndEPR."""
-        try:
-            design = designs.DesignPlanar()
-            EigenmodeAndEPR(design)
-        except Exception:
-            self.fail("EigenmodeAndEPR failed.")
-
-    def test_analyses_instantiate_capextractandlom(self):
-        """Test instantiation of CapExtractAndLOM."""
-        try:
-            design = designs.DesignPlanar()
-            CapExtractAndLOM(design)
-        except Exception:
-            self.fail("CapExtractAndLOM failed.")
-
-    def test_analyses_instantiate_capextraction(self):
-        """Test instantiation of CapExtraction."""
+    def test_analyses_instantiate_lumpedelementssim(self):
+        """Test instantiation of LumpedElementsSim."""
         design = designs.DesignPlanar()
 
         try:
-            CapExtraction(design)
+            LumpedElementsSim(design)
         except Exception:
-            self.fail("CapExtraction failed.")
+            self.fail("LumpedElementsSim failed.")
 
         try:
-            CapExtraction(design, 'capExtractName')
+            LumpedElementsSim(design, 'capExtractName')
         except Exception:
-            self.fail("CapExtraction(design, renderer_name) failed.")
+            self.fail("LumpedElementsSim(design, renderer_name) failed.")
 
     def test_analyses_instantiate_eigenmodesim(self):
         """Test instantiation of EigenmodeSim."""
@@ -128,21 +110,37 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         except Exception:
             self.fail("EigenmodeSim(design, renderer_name) failed.")
 
-    def test_analyses_instantiate_impedanceanalysis(self):
-        """Test instantiation of ImpedanceAnalysis."""
+    def test_analyses_instantiate_ScatteringImpedanceSim(self):
+        """Test instantiation of ScatteringImpedanceSim."""
         design = designs.DesignPlanar()
 
         try:
-            ImpedanceAnalysis(design)
+            ScatteringImpedanceSim(design)
         except Exception:
-            self.fail("ImpedanceAnalysis failed.")
+            self.fail("ScatteringImpedanceSim failed.")
 
         try:
-            ImpedanceAnalysis(design, 'impName')
+            ScatteringImpedanceSim(design, 'impName')
         except Exception:
-            self.fail("ImpedanceAnalysis(design, renderer_name) failed.")
+            self.fail("ScatteringImpedanceSim(design, renderer_name) failed.")
 
-    def test_analyses_qanlysis_default_setup(self):
+    def test_analyses_instantiate_lomanalysis(self):
+        """Test instantiation of LOManalysis."""
+        try:
+            design = designs.DesignPlanar()
+            LOManalysis(design)
+        except Exception:
+            self.fail("LOManalysis failed.")
+
+    def test_analyses_instantiate_epranalysis(self):
+        """Test instantiation of EPRanalysis."""
+        try:
+            design = designs.DesignPlanar()
+            EPRanalysis(design)
+        except Exception:
+            self.fail("EPRanalysis failed.")
+
+    def test_analyses_qanalysis_default_setup(self):
         """Test that the contents of default_setup in QAnalysis haven't accidentally changed."""
         default_setup = QAnalysis.default_setup
         self.assertEqual(len(default_setup), 0)
@@ -193,9 +191,9 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         self.assertEqual(default_setup['lom']['freq_readout'], 7.0)
         self.assertEqual(default_setup['lom']['freq_bus'], [6.0, 6.2])
 
-    def test_analyses_capextraction_default_setup(self):
-        """Test that the contents of default_setup in CapExtraction haven't accidentally change."""
-        default_setup = CapExtraction.default_setup
+    def test_analyses_lumpedelementssim_default_setup(self):
+        """Test that the contents of default_setup in LumpedElementsSim haven't accidentally change."""
+        default_setup = LumpedElementsSim.default_setup
 
         self.assertEqual(len(default_setup), 1)
         self.assertEqual(len(default_setup['sim']), 11)
@@ -233,10 +231,10 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         self.assertEqual(default_setup['sim']['vars']['Lj'], '10 nH')
         self.assertEqual(default_setup['sim']['vars']['Cj'], '0 fF')
 
-    def test_analyses_impedanceanalysis_default_setup(self):
-        """Test that the contents of default_setup in ImpedanceAnalysis haven't accidentally
+    def test_analyses_ScatteringImpedanceSim_default_setup(self):
+        """Test that the contents of default_setup in ScatteringImpedanceSim haven't accidentally
         changed."""
-        default_setup = ImpedanceAnalysis.default_setup
+        default_setup = ScatteringImpedanceSim.default_setup
 
         self.assertEqual(len(default_setup), 1)
         self.assertEqual(len(default_setup['sim']), 9)

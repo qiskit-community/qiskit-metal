@@ -16,8 +16,8 @@ from abc import abstractmethod, ABC
 import inspect
 from typing import Any, Union
 
-from ... import Dict, logger
 from copy import deepcopy
+from ... import Dict, logger
 
 
 class QAnalysis(ABC):
