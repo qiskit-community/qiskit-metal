@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file './main_window_ui.ui',
 # licensing of './main_window_ui.ui' applies.
 #
-# Created: Fri May 14 15:07:55 2021
+# Created: Wed Jun 16 14:29:02 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -505,15 +505,7 @@ class Ui_MainWindow(object):
         self.toolBarDesign.addAction(self.action_full_refresh)
         self.toolBarDesign.addAction(self.actionRebuild)
         self.toolBarDesign.addAction(self.actionBuildHistory)
-        self.toolBarDesign.addAction(self.actionDeveloperMode)
         self.toolBarDesign.addSeparator()
-        self.toolBarView.addAction(self.actionViewDummyLabel)
-        self.toolBarView.addAction(self.actionDesign)
-        self.toolBarView.addAction(self.actionVariables)
-        self.toolBarView.addSeparator()
-        self.toolBarView.addAction(self.actionConnectors)
-        self.toolBarView.addAction(self.actionLog)
-        self.toolBarView.addSeparator()
         self.toolBarView.addAction(self.actionToggleDocks)
         self.toolBarView.addAction(self.actionScreenshot)
         self.toolbar_renderers.addAction(self.actionGDS)
@@ -617,9 +609,6 @@ class Ui_MainWindow(object):
                                MainWindow.show_renderer_hfss)
         QtCore.QObject.connect(self.actionQ3D, QtCore.SIGNAL("triggered()"),
                                MainWindow.show_renderer_q3d)
-        QtCore.QObject.connect(self.actionDeveloperMode,
-                               QtCore.SIGNAL("toggled(bool)"),
-                               MainWindow.activate_developer_mode)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -1022,7 +1011,7 @@ class Ui_MainWindow(object):
             QtWidgets.QApplication.translate("MainWindow", "clickme", None, -1))
 
 
-from .widgets.qlibrary_display.tree_view_qlibrary import TreeViewQLibrary
 from .widgets.all_components.table_view_all_components import QTableView_AllComponents
+from .widgets.qlibrary_display.tree_view_qlibrary import TreeViewQLibrary
 from .widgets.log_widget.log_metal import QTextEditLogger
 from . import main_window_rc_rc
