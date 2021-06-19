@@ -185,14 +185,8 @@ class ComponentWidget(QTabWidget):
         self.ui.treeView.setHorizontalScrollMode(
             QAbstractItemView.ScrollPerPixel)
 
-        # Source Code
-        # palette = self.ui.textSource.palette()
-        # palette.color(palette.Text).name()
-        # palette.setColor(palette.Text, QColor('#000000'))
-        # palette.setColor(palette.WindowText, QColor('#000000'))
-        # self.ui.textSource.setPalette(palette)
         self.ui.textSource.setStyleSheet("""
-    color: #000000;
+            color: #000000;
             """)
         self.src_doc = create_QTextDocument(self.ui.textSource)
         self._html_css_lex = None  # type: pygments.formatters.html.HtmlFormatter
