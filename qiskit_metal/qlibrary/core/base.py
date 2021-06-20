@@ -528,7 +528,7 @@ class QComponent():
         """
 
         module = self._get_unique_class_name()
-        cls = '.'.join(module.split('.')[ :-1 ])
+        cls = '.'.join(module.split('.')[:-1])
         obj_name = module.split('.')[-1]
         comp_templ = self._component_template
 

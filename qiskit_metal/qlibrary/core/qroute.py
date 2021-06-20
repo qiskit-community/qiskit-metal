@@ -553,7 +553,7 @@ class QRoute(QComponent):
 
     def to_script(self) -> str:
         module = self._get_unique_class_name()
-        cls = '.'.join(module.split('.')[ :-1 ])
+        cls = '.'.join(module.split('.')[:-1])
         obj_name = module.split('.')[-1]
         obj_type = self.type
 
@@ -566,6 +566,7 @@ options=options,
 type='{obj_type}')
 {self.name}.meta = {self.metadata}
     """
+
 
 class QRouteLead:
     """A simple class to define a an array of points with some properties,

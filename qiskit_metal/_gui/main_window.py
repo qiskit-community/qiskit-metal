@@ -127,25 +127,37 @@ class QMainWindowExtension(QMainWindowExtensionBase):
             self.gui.refresh()
 
     @slot_catch_error()
-    def save_design_as(self, _=None):
-        """Handles click on Save Design As."""
+    def save_design_copy(self):
+        """Saves a separate copy of design under a different name"""
         filename = QFileDialog.getSaveFileName(
             None,
             'Select a new location to save Metal design to',
-            self.design.get_design_name() + '.metal',
-            selectedFilter='*.metal')[0]
+            self.design.get_design_name() + '.py',
+            selectedFilter='*.py')[0]
 
-        if filename:
-            self.gui.save_file(filename)
+        # save python script to file path
+        pyscript = self.design.to_python_script()
+        with open(filename, 'w') as f:
+            f.write(pyscript)
 
     @slot_catch_error()
     def save_design(self, _=None):
         """Handles click on save design."""
         if self.design:
-            if self.design.save_path:
-                self.gui.save_file()
-            else:
-                self.save_design_as()
+            # get file path
+            filename = self.design.save_path
+            if not filename:
+                filename = QFileDialog.getSaveFileName(
+                    None,
+                    'Select a new location to save Metal design to',
+                    self.design.get_design_name() + '.py',
+                    selectedFilter='*.py')[0]
+                self.design.save_path = filename
+            # save python script to file path
+            pyscript = self.design.to_python_script()
+            with open(filename, 'w') as f:
+                f.write(pyscript)
+
         else:
             self.logger.info('No design present.')
             QMessageBox.warning(self, 'Warning', 'No design present! Can'
