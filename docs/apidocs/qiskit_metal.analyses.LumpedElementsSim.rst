@@ -1,7 +1,7 @@
 ﻿
 
 LumpedElementsSim
-===================================
+=======================================
 
 .. currentmodule:: qiskit_metal.analyses
 

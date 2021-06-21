@@ -1,7 +1,7 @@
 ﻿
 
 ScatteringImpedanceSim
-=======================================
+============================================
 
 .. currentmodule:: qiskit_metal.analyses
 
