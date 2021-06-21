@@ -552,6 +552,13 @@ class QRoute(QComponent):
                                subtract=True)
 
     def to_script(self) -> str:
+        """
+
+        Returns: Code that if copy-pasted into a .py file would generate
+        an instance of this class with the same properties as the instance calling
+        this function
+
+        """
         module = self._get_unique_class_name()
         cls = '.'.join(module.split('.')[:-1])
         obj_name = module.split('.')[-1]
