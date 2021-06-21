@@ -57,6 +57,7 @@ LineTee
       LineTee.qgeometry_plot
       LineTee.qgeometry_table
       LineTee.rebuild
+      LineTee.to_script
    
 
    
