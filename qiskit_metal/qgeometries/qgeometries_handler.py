@@ -495,8 +495,7 @@ class QGeometryTables(object):
 
         # Create options TODO: Might want to modify this (component_name -> component_id)
         # Give warning if length is to be fillet's and not long enough.
-        self.check_lengths(geometry, kind, component_name, layer, chip,
-                           **other_options)
+        self.check_lengths(geometry, kind, component_name, **other_options)
 
         # Create options
         options = dict(component=component_name,
@@ -531,8 +530,7 @@ class QGeometryTables(object):
         #          verify_integrity=False, copy=False)
 
     def check_lengths(self, geometry: shapely.geometry.base.BaseGeometry,
-                      kind: str, component_name: str, layer: Union[int, str],
-                      chip: str, **other_options):
+                      kind: str, component_name: str, **other_options):
         """If user wants to fillet, check the line-segments to see if it is too
         short for fillet.
 
@@ -540,24 +538,9 @@ class QGeometryTables(object):
             geometry (shapely.geometry.base.BaseGeometry): The LineString to investigate.
             kind (str): Name of table, i.e. 'path', 'poly', 'junction, etc
             component_name (str): Is an integer id.
-            layer (Union[int, str]): Should be int, but getting a float, will cast to int when used.
-            chip (str): Name of chip, i.e. 'main'.
         """
 
         if 'fillet' in other_options.keys():
-            # fillet_scalar = 2.0    #Depreciated, moved to toolbox_python.utility_functions
-            # fillet_comparison_precision = 9  # used for np.round #Depreciated, moved to toolbox_python.utility_functions
-
-            # For now, don't let front end user edit this.
-            # if 'fillet_comparison_precision' in other_options.keys():
-            #     # The parse_value converts all ints to floats.
-            #     fillet_comparison_precision = int(self.parse_value(
-            #         other_options['fillet_comparison_precision']))
-
-            # Depreciated, moved to toolbox_python.utility_functions
-            # if 'fillet_scalar' in other_options.keys():
-            #     fillet_scalar = self.parse_value(
-            #         other_options['fillet_scalar'])
 
             fillet = other_options['fillet']
 
@@ -577,7 +560,7 @@ class QGeometryTables(object):
                         self.logger.warning(
                             f'For {kind} table, component={text_id}, key={key}'
                             f' has short segments that could cause issues with fillet. Values in {range_string} '
-                            f'are index(es) in shapley geometry.')
+                            f'are index(es) in shapely geometry.')
 
     def parse_value(self, value: Union[Any, List, Dict, Iterable]) -> Any:
         """Same as design.parse_value. See design for help.
@@ -627,7 +610,7 @@ class QGeometryTables(object):
         table_name: str = 'all'
     ) -> Union[GeoDataFrame, Dict_[str, GeoDataFrame]]:
         """Return the table for just a given component. If all, returns a
-        dictionary with kets as table names and tables of components as values.
+        dictionary with keys as table names and tables of components as values.
 
         Args:
             name (str): Name of component (case sensitive).  Defaults to 'all'.

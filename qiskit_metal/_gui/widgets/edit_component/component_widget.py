@@ -329,6 +329,22 @@ class ComponentWidget(QTabWidget):
             text_html = highlight(text, lexer, formatter)
             document.setHtml(text_html)
 
+            # Grab the highlight colour from pygment's HTML and use it as
+            # the background colour for the textSource widget
+            # Also set the text colour to black
+            wiget_background_html = '.highlight { background: '
+            newstr = self._html_css_lex[self._html_css_lex.
+                                        index(wiget_background_html) +
+                                        len(wiget_background_html):]
+            bg_color_1 = newstr[:newstr.find(';')]
+            bg_color_2 = newstr[:newstr.find('}')]
+            bg_color = bg_color_2 if len(bg_color_2) < len(
+                bg_color_1) else bg_color_1
+            self.ui.textSource.setStyleSheet(f"""
+            background-color: {bg_color}; 
+            color: #000000;
+            """)
+
         else:
             document.setPlainText(text)
 
