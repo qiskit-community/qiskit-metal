@@ -342,7 +342,12 @@ class ParameterEntryWindow(QMainWindow):
     def is_param_usable(param):
         """Determines if a given parameter is usable."""
         ignore_params = {
-            'self', 'design', 'make', 'kwargs', 'args', '_default_connection_pads',
+            'self',
+            'design',
+            'make',
+            'kwargs',
+            'args',
+            '_default_connection_pads',
         }
         if param.name in ignore_params:
             return False
