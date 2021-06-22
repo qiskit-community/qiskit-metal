@@ -185,14 +185,8 @@ class ComponentWidget(QTabWidget):
         self.ui.treeView.setHorizontalScrollMode(
             QAbstractItemView.ScrollPerPixel)
 
-        # Source Code
-        # palette = self.ui.textSource.palette()
-        # palette.color(palette.Text).name()
-        # palette.setColor(palette.Text, QColor('#000000'))
-        # palette.setColor(palette.WindowText, QColor('#000000'))
-        # self.ui.textSource.setPalette(palette)
         self.ui.textSource.setStyleSheet("""
-    color: #000000;
+            color: #000000;
             """)
         self.src_doc = create_QTextDocument(self.ui.textSource)
         self._html_css_lex = None  # type: pygments.formatters.html.HtmlFormatter
@@ -334,6 +328,22 @@ class ComponentWidget(QTabWidget):
             document.setDefaultStyleSheet(self._html_css_lex)
             text_html = highlight(text, lexer, formatter)
             document.setHtml(text_html)
+
+            # Grab the highlight colour from pygment's HTML and use it as
+            # the background colour for the textSource widget
+            # Also set the text colour to black
+            wiget_background_html = '.highlight { background: '
+            newstr = self._html_css_lex[self._html_css_lex.
+                                        index(wiget_background_html) +
+                                        len(wiget_background_html):]
+            bg_color_1 = newstr[:newstr.find(';')]
+            bg_color_2 = newstr[:newstr.find('}')]
+            bg_color = bg_color_2 if len(bg_color_2) < len(
+                bg_color_1) else bg_color_1
+            self.ui.textSource.setStyleSheet(f"""
+            background-color: {bg_color}; 
+            color: #000000;
+            """)
 
         else:
             document.setPlainText(text)

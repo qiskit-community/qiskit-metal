@@ -251,6 +251,20 @@ class ParameterEntryWindow(QMainWindow):
         text_source.ensureCursorVisible()
         text_source.setDocument(text_doc)
 
+        # set background colour to match that of formatter and text default to black
+        wiget_background_html = '.highlight { background: '
+        newstr = self._html_css_lex[self._html_css_lex.
+                                    index(wiget_background_html) +
+                                    len(wiget_background_html):]
+        bg_color_1 = newstr[:newstr.find(';')]
+        bg_color_2 = newstr[:newstr.find('}')]
+        bg_color = bg_color_2 if len(bg_color_2) < len(
+            bg_color_1) else bg_color_1
+        text_source.setStyleSheet(f"""
+        background-color: {bg_color}; 
+        color: #000000;
+        """)
+
         self.ui.tab_source.layout().addWidget(text_source)
 
     @QComponentParameterEntryExceptionDecorators.entry_exception_pop_up_warning
