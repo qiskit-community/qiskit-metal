@@ -322,17 +322,36 @@ class ParameterEntryWindow(QMainWindow):
                 options = self.qcomp_class.default_options
 
         if options is not None:
+            OPTIONS = 'options'
             # deepcopy so instance's options aren't pointing
             # to same dict as template_options nor default_options
             copied_options = copy.deepcopy(options)
-            param_dict['options'] = copied_options
+            param_dict[OPTIONS] = copied_options
+
+            # custom options for connection_pads
+            def_opt_dict_to_replace = {
+                '_default_connection_pads': ('connection_pads', {
+                    'a': {
+                        'loc_W': 1,
+                        'loc_H': -1,
+                        'pad_width': '200um',
+                        'pad_height': '100um',
+                        'pad_gap': '50um'
+                    }
+                })
+            }
+            for arg in def_opt_dict_to_replace.keys():
+                if arg in param_dict[OPTIONS]:
+                    param_dict[OPTIONS].pop(arg)
+                    param_dict[OPTIONS][def_opt_dict_to_replace[arg]
+                                        [0]] = def_opt_dict_to_replace[arg][1]
 
             # remove certain default options
             default_options_args_to_remove = {'_default_connection_pads'}
 
             for arg in default_options_args_to_remove:
-                if arg in param_dict['options']:
-                    param_dict['options'].pop(arg)
+                if arg in param_dict[OPTIONS]:
+                    param_dict[OPTIONS].pop(arg)
 
         self.param_dictionary = param_dict
         self.reset_param_dictionary = copy.deepcopy(param_dict)
