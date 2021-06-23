@@ -249,7 +249,8 @@ class Cheesing():
                                        layer=self.layer,
                                        datatype=self.datatype_cheese + 2)
             else:
-                a_poly = exterior_poly.fracture(max_points=self.max_points)
+                a_poly = exterior_poly.fracture(max_points=self.max_points,
+                                                precision=self.precision)
         else:
             hole_type = type(self.hole)
             self.logger.warning(f'The self.hole was not converted to gdspy; '

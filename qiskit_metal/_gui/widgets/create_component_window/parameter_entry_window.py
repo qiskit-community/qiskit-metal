@@ -323,6 +323,7 @@ class ParameterEntryWindow(QMainWindow):
 
         if options is not None:
             OPTIONS = 'options'
+
             # deepcopy so instance's options aren't pointing
             # to same dict as template_options nor default_options
             copied_options = copy.deepcopy(options)
@@ -353,6 +354,13 @@ class ParameterEntryWindow(QMainWindow):
                 if arg in param_dict[OPTIONS]:
                     param_dict[OPTIONS].pop(arg)
 
+            # remove certain default options
+            default_options_args_to_remove = {'_default_connection_pads'}
+
+            for arg in default_options_args_to_remove:
+                if arg in param_dict['options']:
+                    param_dict['options'].pop(arg)
+
         self.param_dictionary = param_dict
         self.reset_param_dictionary = copy.deepcopy(param_dict)
         self.model.init_load(param_dict)
@@ -361,7 +369,12 @@ class ParameterEntryWindow(QMainWindow):
     def is_param_usable(param):
         """Determines if a given parameter is usable."""
         ignore_params = {
-            'self', 'design', 'kwargs', 'args', '_default_connection_pads'
+            'self',
+            'design',
+            'make',
+            'kwargs',
+            'args',
+            '_default_connection_pads',
         }
         if param.name in ignore_params:
             return False
