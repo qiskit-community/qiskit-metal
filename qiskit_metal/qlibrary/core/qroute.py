@@ -77,8 +77,8 @@ class QRoute(QComponent):
         * layer: '1' -- Which layer this component should be rendered on.  Defaults to '1'.
         * trace_width: 'cpw_width' -- Defines the width of the line.  Defaults to 'cpw_width'.
 
-    How to specify *_jogged_extensions for the QRouteLeads
-        *_jogged_extensions have to be specified in an OrderedDict with incremental keys.
+    How to specify \*_jogged_extensions for the QRouteLeads:
+        \*_jogged_extensions have to be specified in an OrderedDict with incremental keys.
         the value of each key specifies the direction of the jog and the extension past the jog.
         For example:
 
