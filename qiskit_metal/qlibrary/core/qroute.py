@@ -459,14 +459,17 @@ class QRoute(QComponent):
                 if np.allclose(*pts[1:]):
                     pts = [None] + pts[0:2]
                     continue
+                # compare points once you have 3 unique points in pts
                 if pts[0] is not None:
-                    if all(mao.round(i[1]) == mao.round(pts[0][1]) for i in pts) \
-                            or all(mao.round(i[0]) == mao.round(pts[0][0]) for i in pts):
+                    # if all(mao.round(i[1]) == mao.round(pts[0][1]) for i in pts) \
+                    #         or all(mao.round(i[0]) == mao.round(pts[0][0]) for i in pts):
+                    if mao.aligned_pts(pts):
                         pts = [None] + [pts[0]] + [pts[2]]
+                # save a point once you successfully establish the three are not aligned,
+                #  and before it gets dropped in the next loop cycle
                 if pts[0] is not None:
-                    #save the point before it gets dropped in the next cycle
                     outarray.append(pts[0])
-            # save remainder points
+            # save the remainder non-aligned points
             if pts[1] is not None:
                 outarray.extend(pts[1:])
             else:

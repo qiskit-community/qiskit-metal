@@ -456,49 +456,6 @@ class QDesign():
         for _, obj in self._components.items():  # pylint: disable=unused-variable
             obj.rebuild()
 
-    def reload_and_rebuild_components(self, qis_abs_path: str):
-        """
-        Reload the module and class of a given component and updates
-        all class instances. Then rebuilds all QComponents of that class
-
-        Args:
-            qis_abs_path: Absolute to the QComponent source file to be reloaded
-
-        Raises:
-            QiskitMetalDesignError: The given name is a magic method not in the dictionary
-        """
-
-        try:
-            # runs so few times, it's fine to reload object multiple times
-            for comp in self.components:
-                imported_module = importlib.import_module(
-                    self.components[comp].__module__)
-                reloaded_module = importlib.reload(imported_module)
-
-                new_class = getattr(reloaded_module,
-                                    self.components[comp].__class__.__name__)
-
-                print(f"template options: {self.template_options}")
-                # pylint: disable=protected-access
-                if self.components[comp].__class__._get_unique_class_name(
-                ) in self.template_options:
-                    print(f"popping: {new_class}")
-                    # pylint: disable=protected-access
-                    self.template_options.pop(
-                        new_class._get_unique_class_name())
-
-                self.components[comp].__class__ = new_class
-
-                self.logger.debug(f'Finished reloading '
-                                  f'component_class_name={new_class.__name__}; '
-                                  f'component_module_name={imported_module}')
-            self.rebuild()
-
-        # pylint: disable=broad-except
-        except QiskitMetalDesignError as e:
-            self.logger.error(
-                f"Failed to refresh/rebuild {qis_abs_path} due to: {e}")
-
     def rename_component(self, component_id: int, new_component_name: str):
         """Rename component.  The component_id is expected.  However, if user
         passes a string for component_id, the method assumes the component_name

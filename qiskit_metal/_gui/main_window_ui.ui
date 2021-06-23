@@ -296,7 +296,6 @@
    <addaction name="action_full_refresh"/>
    <addaction name="actionRebuild"/>
    <addaction name="actionBuildHistory"/>
-   <addaction name="actionDeveloperMode"/>
    <addaction name="separator"/>
   </widget>
   <widget class="QToolBar" name="toolBarView">
@@ -1505,8 +1504,8 @@
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>502</x>
-     <y>878</y>
+     <x>546</x>
+     <y>826</y>
     </hint>
     <hint type="destinationlabel">
      <x>-1</x>
@@ -1557,8 +1556,8 @@
      <y>-1</y>
     </hint>
     <hint type="destinationlabel">
-     <x>502</x>
-     <y>878</y>
+     <x>546</x>
+     <y>826</y>
     </hint>
    </hints>
   </connection>
@@ -1653,8 +1652,8 @@
      <y>-1</y>
     </hint>
     <hint type="destinationlabel">
-     <x>502</x>
-     <y>878</y>
+     <x>546</x>
+     <y>826</y>
     </hint>
    </hints>
   </connection>
@@ -1717,8 +1716,8 @@
      <y>-1</y>
     </hint>
     <hint type="destinationlabel">
-     <x>144</x>
-     <y>632</y>
+     <x>188</x>
+     <y>611</y>
     </hint>
    </hints>
   </connection>
@@ -1733,8 +1732,8 @@
      <y>-1</y>
     </hint>
     <hint type="destinationlabel">
-     <x>144</x>
-     <y>632</y>
+     <x>188</x>
+     <y>611</y>
     </hint>
    </hints>
   </connection>
@@ -1818,22 +1817,6 @@
     </hint>
    </hints>
   </connection>
-  <connection>
-   <sender>actionDeveloperMode</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>activate_developer_mode()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>649</x>
-     <y>423</y>
-    </hint>
-   </hints>
-  </connection>
  </connections>
  <slots>
   <slot>showHelp()</slot>
@@ -1856,6 +1839,5 @@
   <slot>create_build_log_window()</slot>
   <slot>show_renderer_hfss()</slot>
   <slot>show_renderer_q3d()</slot>
-  <slot>activate_developer_mode()</slot>
  </slots>
 </ui>

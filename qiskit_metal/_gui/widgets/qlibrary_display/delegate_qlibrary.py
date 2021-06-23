@@ -19,8 +19,8 @@ import importlib
 import inspect
 import os
 
-from PySide2.QtCore import QAbstractItemModel, QAbstractProxyModel, QModelIndex, Qt, Signal
-from PySide2.QtGui import QPainter, QTextDocument
+from PySide2.QtCore import QAbstractItemModel, QAbstractProxyModel, QModelIndex, Signal
+from PySide2.QtGui import QPainter
 from PySide2.QtWidgets import QItemDelegate, QStyle, QStyleOptionViewItem, QWidget
 
 from qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary import QFileSystemLibraryModel
@@ -46,7 +46,6 @@ class LibraryDelegate(QItemDelegate):
         #  The Delegate may belong to a view using a ProxyModel but even so
         #  the source model for that Proxy Model(s) should be a QFileSystemLibraryModel
         self.source_model_type = QFileSystemLibraryModel
-        self.is_dev_mode = False  # Whether the MetalGUI is in Developer Mode or not
 
     def get_source_model(self, model: QAbstractItemModel, source_type: type):  # pylint: disable=R0201, no-self-use
         """
@@ -80,69 +79,20 @@ class LibraryDelegate(QItemDelegate):
     def paint(self, painter: QPainter, option: QStyleOptionViewItem,
               index: QModelIndex):
         """
-        Displays dirty files in red with corresponding rebuild buttons
-        if in developer mode (is_dev_mode). Otherwise, renders normally
+        Paints the Metal GUI QLibrary.
+        If hovering over a file with a tooltip, emits the tooltip signal
         Args:
             painter (QPainter): Current painter
             option (QStyleOptionViewItem): Current option
             index (QModelIndex): Current index of related model
+        Emits:
+            tool_tip_signal(str): The TOOLTIP for the QComponent being hovered over by the mouse
+
+
         """
 
         self.emit_tool_tip(option, index)
-
-        if self.is_dev_mode:
-            source_model = self.get_source_model(index.model(),
-                                                 self.source_model_type)
-
-            model = index.model()
-
-            # get data of filename
-            filename = str(
-                model.data(
-                    model.sibling(index.row(), source_model.FILENAME, index)))
-
-            if source_model.is_file_dirty(filename):
-                if index.column() == source_model.FILENAME:
-
-                    text = filename
-                    palette = option.palette
-                    document = QTextDocument()
-                    document.setDefaultFont(option.font)
-                    document.setHtml(f"<font color={'red'}>{text}</font>")
-                    background_color = palette.base().color()
-                    painter.save()
-                    painter.fillRect(option.rect, background_color)
-                    painter.translate(option.rect.x(), option.rect.y())
-                    document.drawContents(painter)
-                    painter.restore()
-
-                elif index.column() == source_model.REBUILD:
-                    if '.py' in filename:
-                        text = "rebuild"
-                        palette = option.palette
-                        document = QTextDocument()
-                        # needed to add Right Alignment:  qt bug :
-                        # https://bugreports.qt.io/browse/QTBUG-22851
-                        document.setTextWidth(option.rect.width())
-                        text_options = document.defaultTextOption()
-                        text_options.setTextDirection(Qt.RightToLeft)
-                        document.setDefaultTextOption(
-                            text_options)  # get right alignment
-                        document.setDefaultFont(option.font)
-                        document.setHtml(
-                            f'<font color={"red"}> <b> {text}</b> </font>')
-                        background_color = palette.base().color()
-                        painter.save()
-                        painter.fillRect(option.rect, background_color)
-                        painter.translate(option.rect.x(), option.rect.y())
-                        document.drawContents(painter)
-                        painter.restore()
-
-            else:
-                QItemDelegate.paint(self, painter, option, index)
-
-        else:
-            QItemDelegate.paint(self, painter, option, index)
+        QItemDelegate.paint(self, painter, option, index)
 
     def emit_tool_tip(self, option: QStyleOptionViewItem, index: QModelIndex):
         """
