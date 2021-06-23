@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file './endcap_q3d_ui.ui',
 # licensing of './endcap_q3d_ui.ui' applies.
 #
-# Created: Fri May 14 15:07:55 2021
+# Created: Wed Jun 16 14:29:01 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!

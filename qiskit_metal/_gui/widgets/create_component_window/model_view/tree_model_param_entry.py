@@ -430,7 +430,7 @@ class TreeModelParamEntry(QAbstractItemModel):
         """
         parent_node = self.nodeFromIndex(cur_index)
         if isinstance(parent_node, LeafNode):
-            return
+            parent_node = parent_node.parent
 
         new_node = BranchNode(key, parent_node)
         new_node.insertChild(LeafNode(fake_key, fake_value, new_node))

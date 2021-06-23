@@ -19,7 +19,7 @@ import os
 from pathlib import Path
 from typing import List, TYPE_CHECKING
 
-from PySide2.QtCore import QTimer, Qt, QSize
+from PySide2.QtCore import QTimer, Qt
 from PySide2.QtWidgets import (QDockWidget, QFileDialog, QLabel, QMainWindow,
                                QMessageBox)
 from PySide2.QtGui import QIcon, QPixmap
@@ -186,30 +186,6 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         """"Handles click on Build History button."""
         self.gui.gui_create_build_log_window()
 
-    @slot_catch_error()
-    def activate_developer_mode(self, ison: bool):
-        """
-        Sets the correct UI features for developer mode
-        Args:
-            ison: Whether developer mode is active
-
-        """
-        if ison:
-            QMessageBox.warning(
-                self, "Notice",
-                "If you're editing a component via an external IDE,"
-                " don't forget to refresh the component's file"
-                " in the Library before rebuilding so your changes"
-                " will take effect.")
-
-        self.gui.ui.dockLibrary_tree_view.set_dev_mode(ison)
-        self.gui.is_dev_mode = ison
-        self.gui._set_rebuild_unneeded()
-        # import rebuild
-        # rebuild.activate_developer_mode(RebuildAction, RebuildFunction, QLibraryTree)
-        # else:
-        #  deactivateDeveMode()
-
 
 class MetalGUI(QMainWindowBaseHandler):
     """Qiskit Metal Main GUI.
@@ -260,15 +236,6 @@ class MetalGUI(QMainWindowBaseHandler):
         self.variables_window = PropertyTableWidget(self, gui=self)
 
         self.build_log_window = None
-        self.is_dev_mode = False
-        self.action_rebuild_deactive_icon = QIcon()
-        self.action_rebuild_deactive_icon.addPixmap(QPixmap(":/rebuild"),
-                                                    QIcon.Normal, QIcon.Off)
-        self.action_rebuild_active_icon = QIcon()
-        self.action_rebuild_active_icon.addPixmap(QPixmap(":/rebuild_needed"),
-                                                  QIcon.Normal, QIcon.Off)
-        self.ui.actionRebuild.setIcon(self.action_rebuild_deactive_icon)
-        #self.ui.toolBarDesign.setIconSize(QSize(20,20))
 
         self._setup_component_widget()
         self._setup_plot_widget()
@@ -400,6 +367,9 @@ class MetalGUI(QMainWindowBaseHandler):
         self.ui.dockLog.parent().resizeDocks([self.ui.dockLog], [120],
                                              Qt.Vertical)
 
+        # toolBarView additions
+        self._add_additional_qactions_tool_bar_view()
+
         # Tab positions
         self.ui.tabWidget.setCurrentIndex(0)
 
@@ -408,6 +378,51 @@ class MetalGUI(QMainWindowBaseHandler):
         and main ui is loaded."""
         if self.component_window:
             self.component_window.setCurrentIndex(0)
+
+    def _add_additional_qactions_tool_bar_view(self):
+        """Add QActions to toolBarView that cannot be added via QDesign"""
+
+        # Library
+        self.dock_library_qaction = self.ui.dockLibrary.toggleViewAction()
+        library_icon = QIcon()
+        library_icon.addPixmap(QPixmap(":/component"), QIcon.Normal, QIcon.Off)
+        self.dock_library_qaction.setIcon(library_icon)
+        self.ui.toolBarView.insertAction(self.ui.actionToggleDocks,
+                                         self.dock_library_qaction)
+
+        # Design
+        self.dock_design_qaction = self.ui.dockDesign.toggleViewAction()
+        design_icon = QIcon()
+        design_icon.addPixmap(QPixmap(":/design"), QIcon.Normal, QIcon.Off)
+        self.dock_design_qaction.setIcon(design_icon)
+        self.ui.toolBarView.insertAction(self.ui.actionToggleDocks,
+                                         self.dock_design_qaction)
+
+        # Variables
+        self.dock_variables_qaction = self.ui.dockVariables.toggleViewAction()
+        variables_icon = QIcon()
+        variables_icon.addPixmap(QPixmap(":/variables"), QIcon.Normal,
+                                 QIcon.Off)
+        self.dock_variables_qaction.setIcon(variables_icon)
+        self.ui.toolBarView.insertAction(self.ui.actionToggleDocks,
+                                         self.dock_variables_qaction)
+
+        # Connectors
+        self.dock_connectors_qaction = self.ui.dockConnectors.toggleViewAction()
+        connectors_icon = QIcon()
+        connectors_icon.addPixmap(QPixmap(":/connectors"), QIcon.Normal,
+                                  QIcon.Off)
+        self.dock_connectors_qaction.setIcon(connectors_icon)
+        self.ui.toolBarView.insertAction(self.ui.actionToggleDocks,
+                                         self.dock_connectors_qaction)
+
+        # Log
+        self.dock_log_qaction = self.ui.dockLog.toggleViewAction()
+        log_icon = QIcon()
+        log_icon.addPixmap(QPixmap(":/log"), QIcon.Normal, QIcon.Off)
+        self.dock_log_qaction.setIcon(log_icon)
+        self.ui.toolBarView.insertAction(self.ui.actionToggleDocks,
+                                         self.dock_log_qaction)
 
     def _set_element_tab(self, yesno: bool):
         """Set the elements tabl to Elements or View.
@@ -497,20 +512,6 @@ class MetalGUI(QMainWindowBaseHandler):
             self.logger.error(
                 f"Unable to open param entry window due to Exception: {e} ")
 
-    def _refresh_component_build(self, qis_abs_path):
-        """Refresh build for a component along a given path.
-
-        Args:
-            qis_abs_path (str): Absolute component path.
-        """
-        self.design.reload_and_rebuild_components(qis_abs_path)
-        # Table models
-        self.ui.tableComponents.model().refresh()
-
-        # Redraw plots
-        self.refresh_plot()
-        self.autoscale()
-
     def _setup_library_widget(self):
         """
         Sets up the GUI's QLibrary display
@@ -548,10 +549,6 @@ class MetalGUI(QMainWindowBaseHandler):
 
         self.ui.dockLibrary_tree_view.qlibrary_filepath_signal.connect(
             self._create_new_component_object_from_qlibrary)
-        self.ui.dockLibrary_tree_view.qlibrary_rebuild_signal.connect(
-            self._refresh_component_build)
-        self.ui.dockLibrary_tree_view.qlibrary_file_dirtied_signal.connect(
-            self._set_rebuild_needed)
 
         self.ui.dockLibrary_tree_view.viewport().setAttribute(Qt.WA_Hover, True)
         self.ui.dockLibrary_tree_view.viewport().setMouseTracking(True)
@@ -567,15 +564,6 @@ class MetalGUI(QMainWindowBaseHandler):
         self.main_window.toggle_all_docks(do_hide)
         self.qApp.processEvents(
         )  # Process all events, so that if we take screenshot next it won't be partially updated
-
-    def _set_rebuild_needed(self):
-        if self.is_dev_mode:
-            self.main_window.ui.actionRebuild.setIcon(
-                self.action_rebuild_active_icon)
-
-    def _set_rebuild_unneeded(self):
-        self.main_window.ui.actionRebuild.setIcon(
-            self.action_rebuild_deactive_icon)
 
     ################################################
     # Plotting
@@ -618,28 +606,11 @@ class MetalGUI(QMainWindowBaseHandler):
         """
         Rebuild all components in the design from scratch and refresh the gui.
         """
-        self._set_rebuild_unneeded()
-        if self.is_dev_mode:
-            self.refresh_everything()
 
         self.design.rebuild()
         self.refresh()
         if autoscale:
             self.autoscale()
-
-    def refresh_everything(self):
-        """Refresh everything."""
-
-        df = self.ui.dockLibrary.library_model.dirtied_files
-        values = {list(df[k])[0] for k in df.keys()}
-
-        for file in values:  # dirtied_files size changes during clean_file
-            if '.py' in file:
-                file = file[file.index('qiskit_metal'):]
-                self.design.reload_and_rebuild_components(file)
-                self.ui.dockLibrary.library_model.clean_file(file)
-        self.refresh()
-        self.autoscale()
 
     def refresh(self):
         """Refreshes everything. Overkill in general.
