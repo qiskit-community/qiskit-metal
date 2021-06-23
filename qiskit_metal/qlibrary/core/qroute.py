@@ -296,6 +296,13 @@ class QRoute(QComponent):
                 lead.go_right(length)
             elif turn in ("straight", "D", "S"):
                 lead.go_straight(length)
+            elif turn in ("right45", "R45"):
+                lead.go_right45(length)
+            elif turn in ("left45", "L45"):
+                lead.go_left45(length)
+            elif ('A' or 'angle') in turn:
+                turn, angle = turn.split(',')
+                lead.go_angle(length, float(angle))
             else:
                 raise Exception(
                     "the first term needs to represent a direction in english, "
@@ -648,6 +655,37 @@ class QRouteLead:
         """
         self.direction = draw.Vector.rotate(self.direction, -1 * np.pi / 2)
         self.pts = np.append(self.pts, [self.pts[-1] + self.direction * length],
+                             axis=0)
+
+    def go_right45(self, length: float):
+        """Straight line at 45 angle clockwise w.r.t lead tip direction.
+
+        Args:
+            length(float): How much to move by
+        """
+        self.direction = draw.Vector.rotate(self.direction, -1 * np.pi / 4)
+        self.pts = np.append(self.pts, [self.pts[-1] + self.direction*length],
+                             axis=0)
+
+    def go_left45(self, length: float):
+        """Straight line at 45 angle counter-clockwise w.r.t lead tip direction.
+
+        Args:
+            length(float): How much to move by
+        """
+        self.direction = draw.Vector.rotate(self.direction, np.pi / 4)
+        self.pts = np.append(self.pts, [self.pts[-1] + self.direction*length],
+                             axis=0)
+
+    def go_angle(self, length: float, angle: float):
+        """ Straight line at any angle w.r.t lead tip direction.
+
+        Args:
+            length(float): How much to move by
+            angle(float): rotation angle w.r.t lead tip direction
+        """
+        self.direction = draw.Vector.rotate(self.direction, np.pi/180*angle)
+        self.pts = np.append(self.pts, [self.pts[-1] + self.direction*length],
                              axis=0)
 
     @property
