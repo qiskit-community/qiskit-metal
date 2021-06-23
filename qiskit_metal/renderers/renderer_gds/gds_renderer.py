@@ -2234,7 +2234,8 @@ class QGDSRenderer(QRenderer):
                                        datatype=10)
                 return a_poly
 
-            exterior_poly = exterior_poly.fracture(max_points=max_points,precision=precision)
+            exterior_poly = exterior_poly.fracture(max_points=max_points,
+                                                   precision=precision)
             return exterior_poly
         if isinstance(geom, shapely.geometry.LineString):
             #class gdspy.FlexPath(points, width, offset=0, corners='natural',
