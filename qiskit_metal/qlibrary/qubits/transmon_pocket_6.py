@@ -133,7 +133,8 @@ class TransmonPocket6(BaseQubit):
             cpw_extend='100um',
             pocket_extent='5um',
             pocket_rise='0um',
-            loc_W='+1',  # width location  only +-1 or 0
+            loc_W='+1',  # width location  only +-1 or 0,
+            loc_H='+1',  # height location  only +-1 or 0
         ))
     """Default drawing options"""
 
