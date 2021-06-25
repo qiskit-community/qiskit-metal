@@ -199,6 +199,11 @@ class QMplRenderer():
             'base': dict(linewidth=1, alpha=0.5, edgecolors='k'),
             'subtracted': dict(linestyle='--', color='gray'),
             'non-subtracted': dict()
+        },
+        'JJ': {
+            'base': dict(linewidth=1, alpha=0.2, edgecolors='k'),
+            'subtracted': dict(linestyle='--', color='gray'),
+            'non-subtracted': dict()
         }
     }
     """Styles"""
@@ -279,9 +284,7 @@ class QMplRenderer():
                                           resolution=int(self.options[
                                               'resolution'])),
                     axis=1)
-                kw = self.get_style('poly',
-                                    subtracted=subtracted,
-                                    extra=extra_kw)
+                kw = self.get_style('JJ', subtracted=subtracted, extra=extra_kw)
                 self.render_poly(table1, ax, subtracted=subtracted, extra_kw=kw)
             table1 = table[mask]
             if len(table1) > 0:
