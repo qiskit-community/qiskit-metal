@@ -114,12 +114,12 @@ class ScatteringImpedanceSim(QAnalysisRenderer):
         # TODO: move the plot in this analysis module. Renderer should recover the entire data
         return self.renderer.plot_params(param_name)
 
-    def get_scattering(self, param_name: list = ['S11', 'S21', 'S22']):
+    def get_scattering(self, param_name: list = ['S11', 'S21']):
         """Create the scattering plot.
 
         Args:
             param_name (list): List of strings describing which scattering values
-                to return. Defaults to ['S11', 'S21', 'S22'].
+                to return. Defaults to ['S11', 'S21'].
         """
         # TODO: move the plot in this analysis module. Renderer should recover the entire data
         return self.renderer.plot_params(param_name)
