@@ -66,17 +66,48 @@ Renderers
     3 Renderers/*
 
 
-.. ########
-.. Analysis
-.. ########
+########
+Analysis
+########
+
+--------------------------
+Core - EM and quantization
+--------------------------
+
+.. nbgallery::
+    :glob:
+
+    4 Analysis/4.0*
 
 
-.. .. nbgallery::
-..     :glob:
+-----------------
+Analysis examples
+-----------------
 
-..     analysis/*
+.. nbgallery::
+    :glob:
+
+    4 Analysis/4.1*
 
 
+-----------------
+Parametric sweeps
+-----------------
+
+.. nbgallery::
+    :glob:
+
+    4 Analysis/4.2*
+
+
+------------------
+Hamiltonian models
+------------------
+
+.. nbgallery::
+    :glob:
+
+    4 Analysis/4.3*
 
 
 
