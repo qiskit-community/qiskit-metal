@@ -186,8 +186,8 @@ class Sweeping():
                 f'Sweep will not be implemented.')
             return 2
 
-        a_hfss.add_drivenmodal_setup(**setup_args)
-        a_hfss.activate_drivenmodal_setup(setup_args.name)
+        a_hfss.new_ansys_setup(**setup_args)
+        a_hfss.activate_ansys_setup(setup_args.name)
         return 0
 
     def prep_eigenmode_setup(self, setup_args: Dict) -> int:
@@ -285,8 +285,8 @@ class Sweeping():
                 f'Sweep will not be implemented.')
             return 2
 
-        a_hfss.add_eigenmode_setup(**setup_args)
-        a_hfss.activate_eigenmode_setup(setup_args.name)
+        a_hfss.new_ansys_setup(**setup_args)
+        a_hfss.activate_ansys_setup(setup_args.name)
         return 0
 
     def warning_for_setup(self, setup_args: Dict, key: str, data_type: str):
@@ -430,8 +430,8 @@ class Sweeping():
                 f'Sweep will not be implemented.')
             return 2
 
-        a_q3d.add_q3d_setup(**setup_args)
-        a_q3d.activate_q3d_setup(setup_args.name)
+        a_q3d.new_ansys_setup(**setup_args)
+        a_q3d.activate_ansys_setup(setup_args.name)
         return 0
 
     def sweep_one_option_get_eigenmode_solution_data(
@@ -509,7 +509,7 @@ class Sweeping():
         a_hfss = self.design.renderers.hfss
         # Assume Ansys is open, with a project open.
         a_hfss.connect_ansys()
-        a_hfss.activate_eigenmode_design(design_name)
+        a_hfss.activate_ansys_design(design_name, 'eigenmode')
 
         a_hfss.clean_active_design()
 
@@ -762,7 +762,7 @@ class Sweeping():
         a_hfss = self.design.renderers.hfss
         # Assume Ansys is open, with a project open.
         a_hfss.connect_ansys()
-        a_hfss.activate_drivenmodal_design(design_name)
+        a_hfss.activate_ansys_design(design_name, 'drivenmodal')
 
         a_hfss.clean_active_design()
 
@@ -1066,7 +1066,7 @@ class Sweeping():
         a_q3d = self.design.renderers.q3d
         # Assume Ansys is open, with a project open.
         a_q3d.connect_ansys()
-        a_q3d.activate_q3d_design(design_name)
+        a_q3d.activate_ansys_design(design_name, 'capacitive')
 
         a_q3d.clean_active_design()
 

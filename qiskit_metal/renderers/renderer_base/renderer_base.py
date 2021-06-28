@@ -356,16 +356,19 @@ class QRenderer(ABC):
                            If False, will start a new one only if none exists.  Defaults to False.
 
         Returns:
-            bool: is the renderer initialized succesfully (thus usable?)
+            bool: is the renderer initialized successfully (thus usable?)
         """
 
+        # TODO: add code here to verify that Ansys is open. if not, then self.initiated=False
         if force or not self.initiated:
             if force and self.initiated:
                 # previously initialized renderer, try to shut it down
                 self._close_renderer()
 
-            # try to initialize the renderer
-            self.initiated = self._initiate_renderer()
+        # TODO: move the code line below to inside the `if force or not initiated`,
+        #  but only after the TODO before the `if` is completed
+        # try to initialize the renderer
+        self.initiated = self._initiate_renderer()
 
         return self.initiated
 
