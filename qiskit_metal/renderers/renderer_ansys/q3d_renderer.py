@@ -386,15 +386,19 @@ class QQ3DRenderer(QAnsysRenderer):
                                variation: str = '',
                                solution_kind: str = 'LastAdaptive',
                                pass_number: int = 1):
-        """Obtain capacitance matrix in a dataframe format.
+        """Obtain capacitance matrix after the analysis.
         Must be executed *after* analyze_setup.
 
         Args:
-            variation (str, optional): An empty string returns nominal variation. Otherwise need the list. Defaults to ''
+            variation (str, optional): An empty string returns nominal variation.
+                Otherwise need the list. Defaults to ''.
             solution_kind (str, optional): Solution type. Defaults to 'LastAdaptive'.
 				Set to 'AdaptivePass' to return the capacitance matrix of a specific pass.
             pass_number (int, optional): Which adaptive pass to acquire the capacitance
                 matrix from. Only in effect with 'AdaptivePass' chosen. Defaults to 1.
+
+        Returns:
+            pd.DataFrame, str: Capacitance matrix, and units.
         """
         if self.pinfo:
             df_cmat, user_units, _, _ = self.pinfo.setup.get_matrix(
@@ -402,6 +406,32 @@ class QQ3DRenderer(QAnsysRenderer):
                 solution_kind=solution_kind,
                 pass_number=pass_number)
             return df_cmat, user_units
+        return None, None
+
+    def get_capacitance_all_passes(self, variation: str = ''):
+        """Obtain a dictionary of the capacitance matrices from each simulation pass.
+        Must be executed *after* analyze_setup.
+
+        Args:
+            variation (str, optional): An empty string returns nominal variation.
+                Otherwise need the list. Defaults to ''.
+
+        Returns:
+            dict, str: dict of pd.DataFrames containing the capacitance matrix
+                for each simulation pass, and units.
+        """
+        # TODO: is there a way to get all of the matrices in one query?
+        #  If yes, change get_capacitance_matrix() to get all the matrices and delete this.
+        all_mtx = {}
+        for i in range(1, 1000):  #1000 is an arbitrary large number
+            try:
+                df_cmat, user_units = self.get_capacitance_matrix(
+                    variation, 'AdaptivePass', pass_number=i)
+                c_units = ureg(user_units).to('farads').magnitude
+                all_mtx[i] = df_cmat.values * c_units
+            except pd.errors.EmptyDataError:
+                break
+        return all_mtx, user_units
 
     def lumped_oscillator_vs_passes(self, *args, **kwargs):
         """

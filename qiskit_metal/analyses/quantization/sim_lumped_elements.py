@@ -90,15 +90,8 @@ class LumpedElementsSim(QAnalysisRenderer):
         self.capacitance_matrix, self.units = self.renderer.get_capacitance_matrix(
         )
         # extract the capacitance matrices for all passes
-        self.capacitance_all_passes = {}
-        for i in range(1, 1000):  #1000 is an arbitrary large number
-            try:
-                df_cmat, user_units = self.renderer.get_capacitance_matrix(
-                    solution_kind='AdaptivePass', pass_number=i)
-                c_units = ureg(user_units).to('farads').magnitude
-                self.capacitance_all_passes[i] = df_cmat.values * c_units
-            except pd.errors.EmptyDataError:
-                break
+        self.capacitance_all_passes, _ = self.renderer.get_capacitance_all_passes(
+        )
 
     def run_sim(  # pylint: disable=arguments-differ
             self,

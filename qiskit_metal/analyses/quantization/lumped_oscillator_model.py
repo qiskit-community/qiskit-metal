@@ -140,9 +140,8 @@ class LOManalysis(LumpedElementsSim):
                 'Please initialize the capacitance_matrix before executing this method.'
             )
             return
-        else:
-            if not self.capacitance_all_passes:
-                self.capacitance_all_passes[1] = self.capacitance_matrix.values
+        if not self.capacitance_all_passes:
+            self.capacitance_all_passes[1] = self.capacitance_matrix.values
 
         ureg = UnitRegistry()
         ic_amps = Convert.Ic_from_Lj(s.junctions.Lj, 'nH', 'A')
