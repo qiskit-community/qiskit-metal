@@ -11,16 +11,48 @@ Overview
     1 Overview/*
 
 
-.. ##########
-.. Components
-.. ##########
+##########
+Components
+##########
+
+-----------------
+Using QComponents
+-----------------
+
+.. nbgallery::
+    :glob:
+
+    2 From components to chip/2.0*
 
 
-.. .. nbgallery::
-..     :glob:
+---------------------------
+Routing between QComponents
+---------------------------
 
-..     components/*
+.. nbgallery::
+    :glob:
 
+    2 From components to chip/2.1*
+
+
+---------------------------------
+My first full quantum chip design
+---------------------------------
+
+.. nbgallery::
+    :glob:
+
+    2 From components to chip/2.2*
+
+
+----------------------------------
+How do I make my custom QComponent
+----------------------------------
+
+.. nbgallery::
+    :glob:
+
+    2 From components to chip/2.3*
 
 .. ########
 .. Analysis
