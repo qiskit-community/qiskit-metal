@@ -8,40 +8,40 @@ Overview
 .. nbgallery::
     :glob:
 
-    overview/*
+    1 Overview/*
 
 
-##########
-Components
-##########
+.. ##########
+.. Components
+.. ##########
 
 
-.. nbgallery::
-    :glob:
+.. .. nbgallery::
+..     :glob:
 
-    components/*
-
-
-########
-Analysis
-########
+..     components/*
 
 
-.. nbgallery::
-    :glob:
-
-    analysis/*
-
-
-#########
-Renderers
-#########
+.. ########
+.. Analysis
+.. ########
 
 
-.. nbgallery::
-    :glob:
+.. .. nbgallery::
+..     :glob:
 
-    renderers/*
+..     analysis/*
+
+
+.. #########
+.. Renderers
+.. #########
+
+
+.. .. nbgallery::
+..     :glob:
+
+..     renderers/*
 
 
 .. Hiding - Indices and tables
