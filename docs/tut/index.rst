@@ -110,6 +110,16 @@ Hamiltonian models
     4 Analysis/4.3*
 
 
+############
+Quick Topics
+############
+
+.. nbgallery::
+    :glob:
+
+    quick topics/*
+
+
 
 .. Hiding - Indices and tables
    :ref:`genindex`
