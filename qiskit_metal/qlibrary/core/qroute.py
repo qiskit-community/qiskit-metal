@@ -617,29 +617,6 @@ class QRoute(QComponent):
                                layer=p.layer,
                                subtract=True)
 
-    def to_script(self) -> str:
-        """
-
-        Returns: Code that if copy-pasted into a .py file would generate
-        an instance of this class with the same properties as the instance calling
-        this function
-
-        """
-        module = self._get_unique_class_name()
-        cls = '.'.join(module.split('.')[:-1])
-        obj_name = module.split('.')[-1]
-        obj_type = self.type
-
-        return f"""
-from {cls} import {obj_name} 
-options = {self.options}
-{self.name} = {obj_name}(design, 
-name='{self.name}',
-options=options,
-type='{obj_type}')
-{self.name}.meta = {self.metadata}
-    """
-
 
 class QRouteLead:
     """A simple class to define a an array of points with some properties,

@@ -15,6 +15,7 @@
 from copy import deepcopy
 from qiskit_metal.toolbox_python.attr_dict import Dict
 from .base import QComponent
+import pprint
 
 
 class BaseQubit(QComponent):
@@ -52,16 +53,14 @@ class BaseQubit(QComponent):
                  name: str = None,
                  options: Dict = None,
                  options_connection_pads: dict = None,
-                 make: bool = True):
+                 make: bool = True,
+                 **kwargs):
         """
         Args:
             design (QDesign): The parent design.
             name (str): Name of the component.
             options (dict): User options that will override the defaults.  Defaults to None.
-            component_template (dict): User can overwrite the template options for the component
-                                       that will be stored in the design, in design.template,
-                                       and used every time a new component is instantiated.
-                                       Defaults to None.
+            options_connection_pads(dict): User options for connection pads on qubit
             make (bool): True if the make function should be called at the end of the init.
                     Options be used in the make function to create the geometry.  Defaults to None.
         """
@@ -105,26 +104,3 @@ class BaseQubit(QComponent):
                     self.class_name]['_default_connection_pads'])
             self.options.connection_pads[name].update(
                 my_options_connection_pads)
-
-    def to_script(self) -> str:
-        """
-
-        Returns: Code that if copy-pasted into a .py file would generate
-        an instance of this class with the same properties as the instance calling
-        this function
-
-        """
-        module = self._get_unique_class_name()
-        cls = '.'.join(module.split('.')[:-1])
-        obj_name = module.split('.')[-1]
-        options_connection_pads = self.options['connection_pads']
-
-        return f"""
-from {cls} import {obj_name} 
-options = {self.options}
-{self.name} = {obj_name}(design, name='{self.name}', 
-options=options,
-options_connection_pads={options_connection_pads},
-make=True)
-{self.name}.meta = {self.metadata}
-    """

@@ -26,7 +26,7 @@ class MyQComponent(QComponent):
 	Use this class as a blueprint to put together for your components - have fun
     """
 
-    # Edit these to define your own tempate options for creation
+    # Edit these to define your own template options for creation
     # Default drawing options
     default_options = Dict(width='500um',
                            height='300um',

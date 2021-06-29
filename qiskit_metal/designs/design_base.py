@@ -1038,7 +1038,7 @@ class QDesign():
 
         return uses_table
 
-    def to_python_script(self, printout: bool = False):
+    def to_python_script(self, thin=True, printout: bool = False):
         """
         Generates a python script from current chip
         Args:
@@ -1047,22 +1047,36 @@ class QDesign():
         Returns:
             str: Python script for current chip
         """
-        python_script = """
+        header = """
 from qiskit_metal import designs, MetalGUI
 
 design = designs.DesignPlanar()
 
 gui = MetalGUI(design)
 """
-        for comp_name in self.components:
-            comp = self.components[comp_name]
-            python_script += comp.to_script()
-            python_script += """
-            """
-        python_script += """
+        footer = """
 gui.rebuild()
 gui.autoscale()
         """
+        # all imports at front
+        # option -- only the options of the component that are different from the default options are specified.
+        # vertically aligned dictionary (pretty print)
+        imports = set()
+        body = ""
+        for comp_name in self.components:
+            comp = self.components[comp_name]
+            i, c = comp.to_script(thin=True, is_part_of_chip=True)
+            imports.add(i)
+            body += c
+            body += """
+"""
+        str_import = ""
+        for i in imports:
+            str_import += f"""
+{i}
+"""
+
+        python_script = str_import + header + body + footer
         if printout:
             print(python_script)
         return python_script
