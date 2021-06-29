@@ -676,10 +676,22 @@ class QAnsysRenderer(QRendererAnalysis):
                 'Please install a more recent version of pyEPR (>=0.8.4.3)')
 
     def execute_design(self,
-                       design_name,
+                       design_name: str,
                        solution_type: str,
                        force_redraw: bool = False,
-                       **design_selection):
+                       **design_selection) -> str:
+        """It wraps the render_design() method to
+        1. skip rendering if the "selection" of components is left empty (re-uses selected design)
+        2. force design clearing and redraw if force_Redraw is set
+
+        Args:
+            design_name (str): Name to assign to the renderer design
+            solution_type (str): eigenmode, capacitive or drivenmodal
+            force_redraw (bool, optional): Force re-render the design. Defaults to False.
+
+        Returns:
+            str: final design name (a suffix might have been added to the provided name, in case of conflicts)
+        """
         # If a selection of components is not specified, we will use the previous design, if it exists
         done = False
         if 'selection' not in design_selection:
@@ -1584,12 +1596,23 @@ class QAnsysRenderer(QRendererAnalysis):
         self.epr_distributed_analysis.do_EPR_analysis()
 
     def epr_spectrum_analysis(self, cos_trunc: int = 8, fock_trunc: int = 7):
+        """Core epr analysis method.
+
+        Args:
+            cos_trunc (int, optional): truncation of the cosine. Defaults to 8.
+            fock_trunc (int, optional): truncation of the fock. Defaults to 7.
+        """
         self.epr_quantum_analysis = epr.QuantumAnalysis(
             self.epr_distributed_analysis.data_filename)
         self.epr_quantum_analysis.analyze_all_variations(cos_trunc=cos_trunc,
                                                          fock_trunc=fock_trunc)
 
-    def epr_report_hamiltonian(self, swp_variable, numeric=True):
+    def epr_report_hamiltonian(self, swp_variable: str = 'variation'):
+        """Reports in a markdown friendly table the hamiltonian results.
+
+        Args:
+            swp_variable (str, optional): Variable against which we swept. Defaults to 'variation'.
+        """
         self.epr_quantum_analysis.plot_hamiltonian_results(
             swp_variable=swp_variable)
         self.epr_quantum_analysis.report_results(swp_variable=swp_variable,
@@ -1597,7 +1620,19 @@ class QAnsysRenderer(QRendererAnalysis):
 
     def epr_get_frequencies(self,
                             junctions: dict = None,
-                            dissipatives: dict = None):
+                            dissipatives: dict = None) -> pd.DataFrame:
+        """Returns all frequencies and quality factors vs a variation.
+        It also initializes the systems for the epr analysis in terms of junctions and dissipatives
+
+        Args:
+            junctions (dict, optional): Each element of this dictionary describes one junction.
+                Defaults to dict().
+            dissipatives (dict, optional): Each element of this dictionary describes one dissipative.
+                Defaults to dict().
+
+        Returns:
+            pd.DataFrame: multi-index, frequency and quality factors for each variation point.
+        """
         # TODO: do I need to reset self.pinfo.junctions (does it keep the older analysis one)
         self.epr_start(junctions, dissipatives)
         return self.epr_distributed_analysis.get_ansys_frequencies_all()

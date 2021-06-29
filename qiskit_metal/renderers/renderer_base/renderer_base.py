@@ -153,7 +153,7 @@ class QRenderer(ABC):
         """
         Args:
             design (QDesign): The design
-            initiate (bool): True to initiate the renderer.  Defaults to True.
+            initiate (bool): True to initiate the renderer.  Defaults to False.
             render_template (Dict, optional): Typically used by GUI for template options for GDS.  Defaults to None.
             render_options (Dict, optional): Used to override all options.  Defaults to None.
         """
@@ -163,7 +163,7 @@ class QRenderer(ABC):
         self.status = 'Not Init'
 
         assert is_design(
-            design), "Erorr, for the design argument you must provide a\
+            design), "Error, for the design argument you must provide a\
                                    a child instance of Metal QDesign class."
 
         self._design = design
@@ -217,7 +217,7 @@ class QRenderer(ABC):
             if hasattr(child, 'default_options'):
                 options_from_children = {
                     **options_from_children,
-                    **child.default_options
+                    **child.default_options  # pylint: disable=no-member
                 }
         return options_from_children
 
