@@ -41,10 +41,12 @@ EPRanalysis
    .. autosummary::
       :toctree: ../stubs/
    
+      EPRanalysis.add_junction
       EPRanalysis.clear_data
       EPRanalysis.clear_fields
       EPRanalysis.close
       EPRanalysis.compute_convergences
+      EPRanalysis.del_junction
       EPRanalysis.epr_start
       EPRanalysis.get_data
       EPRanalysis.get_data_labels
