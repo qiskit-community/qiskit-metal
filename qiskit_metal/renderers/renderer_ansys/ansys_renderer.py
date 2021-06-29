@@ -627,7 +627,7 @@ class QAnsysRenderer(QRendererAnalysis):
 
     def plot_ansys_delete(self, names: list):
         """
-        (deprecated) Use delete_fields()
+        (deprecated) Use clear_fields()
         """
         self.logger.warning(
             'This method is deprecated. Change your scripts to use clear_fields()'

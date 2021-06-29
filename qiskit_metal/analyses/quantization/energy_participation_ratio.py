@@ -145,8 +145,8 @@ class EPRanalysis(EigenmodeSim):
         self.set_data('energy_elec_sub', data)
 
     def run(self, *args, **kwargs):
-        """Executes sequentially the system capacitance simulation and lom extraction
-        executing the methods LumpedElementsSim.run_sim(`*args`, `**kwargs`) and LOManalysis.run_epr().
+        """Executes sequentially the system capacitance simulation and lom extraction executing
+        the methods LumpedElementsSim.run_sim(`*args`, `**kwargs`) and LOManalysis.run_epr().
         For input parameter, see documentation for LumpedElementsSim.run_sim().
 
         Returns:
@@ -228,3 +228,43 @@ class EPRanalysis(EigenmodeSim):
         """
         system = self.epr_start(no_junctions=True)
         return self.renderer.epr_get_frequencies(**system)
+
+    def del_junction(self, name_junction='jj'):
+        """Remove a junction from the dictionary setup.epr.junctions
+
+        Args:
+            name_junction (str, optional): name of the junction to remove. Defaults to 'jj'.
+        """
+        if name_junction in self.setup.epr.junctions:
+            del self.setup.epr.junctions[name_junction]
+
+    def add_junction(self,
+                     name_junction="jj",
+                     lj_var="Lj",
+                     cj_var='Cj',
+                     rect='',
+                     line=''):
+        """Add a new junction for the EPR analysis
+
+        Args:
+            name_junction (str, optional): name of the junction. Defaults to "jj".
+            Lj_var (str, optional): Name of the simulator variable referring to
+                the inductance. Defaults to "Lj".
+            Cj_var (str, optional): Name of the simulator variable referring to
+                the capacitance. Defaults to 'Cj'.
+            rect (str, optional): Name of the rectangle representing the junction
+                in the simulation, as defined during rendering. Defaults to ''.
+            line (str, optional): Name of the line representing the junction
+                current flow in the simulation, as defined during rendering. Defaults to ''.
+        """
+        j_dic = self.setup.epr.junctions
+        if name_junction in j_dic:
+            self.logger.warning(
+                f"junction already defined. Overwriting {name_junction}")
+
+        j_dic[name_junction] = Dict({
+            'Lj_variable': lj_var,
+            'Cj_variable': cj_var,
+            'rect': rect,
+            'line': line
+        })
