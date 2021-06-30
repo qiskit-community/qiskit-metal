@@ -782,6 +782,18 @@ class QAnsysRenderer(QRendererAnalysis):
                     oProject = oDesktop.SetActiveProject(
                         self.pinfo.project_name)
                     oDesign = oProject.SetActiveDesign(design_name)
+                    current_solution_type = self.pinfo.design.solution_type.lower(
+                    )
+                    if current_solution_type == 'q3d':
+                        current_solution_type = 'capacitive'
+                    if current_solution_type != solution_type and solution_type is not None:
+                        self.logger.warning(
+                            f'The design_name={design_name} already exists, but it has solution_type=='
+                            f'{current_solution_type}, which is different from the requested=={solution_type}. '
+                            f'If you want a design with solution type=={solution_type}, please change the name '
+                            'requested for your design to one that does not exist. Alternatively, manually modify '
+                            f'the solution_type for design {design_name} from the Ansys GUI.'
+                        )
                 else:
                     self.logger.warning(
                         f'The design_name={design_name} was not in active project.  '
@@ -801,7 +813,7 @@ class QAnsysRenderer(QRendererAnalysis):
                     "Project not found, have you opened a project?")
         else:
             self.logger.warning(
-                "Have you run connect_ansys()?  Cannot find a reference to Ansys in QRenderer."
+                "Have you run start()?  Cannot find a reference to Ansys in QRenderer."
             )
 
     def new_ansys_setup(self, name: str, **other_setup):
