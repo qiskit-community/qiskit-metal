@@ -1078,7 +1078,8 @@ class QGDSRenderer(QRenderer):
 
         # Create a new GDS library file. It can contains multiple cells.
         self.lib = gdspy.GdsLibrary(
-            unit=float(self.parse_value(self.options.gds_unit)))
+            unit=float(self.parse_value(self.options.gds_unit)),
+            precision=float(self.parse_value(self.options.precision)))
 
         return self.lib
 
@@ -2244,7 +2245,8 @@ class QGDSRenderer(QRenderer):
                                        datatype=10)
                 return a_poly
 
-            exterior_poly = exterior_poly.fracture(max_points=max_points)
+            exterior_poly = exterior_poly.fracture(max_points=max_points,
+                                                   precision=precision)
             return exterior_poly
         if isinstance(geom, shapely.geometry.LineString):
             #class gdspy.FlexPath(points, width, offset=0, corners='natural',

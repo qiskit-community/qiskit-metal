@@ -385,7 +385,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['pocket_height'], '650um')
         self.assertEqual(options['orientation'], '0')
 
-        self.assertEqual(len(options['_default_connection_pads']), 11)
+        self.assertEqual(len(options['_default_connection_pads']), 12)
         self.assertEqual(options['_default_connection_pads']['pad_gap'], '15um')
         self.assertEqual(options['_default_connection_pads']['pad_width'],
                          '125um')
@@ -405,6 +405,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['_default_connection_pads']['pocket_rise'],
                          '0um')
         self.assertEqual(options['_default_connection_pads']['loc_W'], '+1')
+        self.assertEqual(options['_default_connection_pads']['loc_H'], '+1')
 
     def test_qlibrary_tunable_coupler_01_options(self):
         """Test that default_options of tunable_coupler_01 were not accidentally changed."""
