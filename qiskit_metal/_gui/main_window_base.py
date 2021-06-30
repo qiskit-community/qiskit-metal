@@ -80,43 +80,6 @@ class QMainWindowExtensionBase(QMainWindow):
         super().destroy(destroyWindow=destroyWindow,
                         destroySubWindows=destroySubWindows)
 
-    def set_force_close(self, ison: bool):
-        """Set method for force_close
-
-        Args:
-            ison (bool): value
-        """
-        self.force_close = ison
-
-    def closeEvent(self, event):
-        """whenever a window is closed.
-
-        Passed an event which we can choose to accept or reject.
-        """
-
-        if self.force_close:
-            super().closeEvent(event)
-            return
-
-        if self.ok_to_continue():
-            self.save_window_settings()
-            super().closeEvent(event)
-
-    def ok_to_continue(self):
-        """Determine if it ok to continue.
-
-        Returns:
-            bool: True to continue, False otherwise
-        """
-        if 1:
-            reply = QMessageBox.question(
-                self, "Qiskit Metal", "Save unsaved changes to design?",
-                QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
-            if reply == QMessageBox.Cancel:
-                return False
-            elif reply == QMessageBox.Yes:
-                return self.handler.save_file()  # TODO: in parent
-        return True
 
     def save_window_settings(self):
         """Save the window settings."""
