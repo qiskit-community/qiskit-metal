@@ -13,6 +13,7 @@
 # that they have been altered from the originals.
 """
 Josephson Junction (Dolan-Style)
+REFERENCE: G. Dolan, Applied Physics Letters 31, 337 (1977)
 """
 from qiskit_metal import draw, Dict
 from qiskit_metal.qlibrary.core.base import QComponent

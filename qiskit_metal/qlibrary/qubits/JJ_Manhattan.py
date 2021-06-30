@@ -13,6 +13,7 @@
 # that they have been altered from the originals.
 """
 Josephson Junction (Manhattan-Style)
+REFERENCE: I.M. Pop et al., Nature 508, 369-372 (2014)
 """
 from qiskit_metal import draw, Dict
 from qiskit_metal.qlibrary.core.base import QComponent
