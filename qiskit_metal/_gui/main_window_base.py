@@ -80,7 +80,6 @@ class QMainWindowExtensionBase(QMainWindow):
         super().destroy(destroyWindow=destroyWindow,
                         destroySubWindows=destroySubWindows)
 
-
     def save_window_settings(self):
         """Save the window settings."""
         self.logger.info('Saving window state')

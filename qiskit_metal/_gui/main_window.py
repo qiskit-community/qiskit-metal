@@ -230,6 +230,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
                 return True
         return True
 
+
 class MetalGUI(QMainWindowBaseHandler):
     """Qiskit Metal Main GUI.
 
@@ -683,7 +684,6 @@ class MetalGUI(QMainWindowBaseHandler):
     def autoscale(self):
         """Shortcut to autoscale all views."""
         self.plot_win.auto_scale()
-
 
     #########################################################
     # COMPONENT FUNCTIONS
