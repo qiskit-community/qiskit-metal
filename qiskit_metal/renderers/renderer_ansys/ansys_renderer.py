@@ -890,7 +890,7 @@ class QAnsysRenderer(QRendererAnalysis):
                             # When name is given, but not in design. So make a new setup with given name.
                             self.logger.warning(
                                 f'The setup_name={setup_name} was not in active design.  '
-                                f'Setups in active design are: \n{names_in_design}.  '
+                                f'Setups in active design are: \n{all_setup_names}.  '
                                 'A new setup will default values will be added to the design.  '
                             )
                             self.pinfo.setup = self.new_ansys_setup(
