@@ -200,7 +200,7 @@ class CircuitGraph:
         self._L_n_inv = None
 
         self._S_n = None
-        self._new_basis = None
+        self._node_jj_basis = None
 
     def __str__(self):
         #TODO
@@ -259,7 +259,7 @@ class CircuitGraph:
                                               choose_least_num_neg=True)
         S_n_inv = _extract_matrix_from_transform(t, self._junctions, self.idx)
         S_n = np.linalg.inv(S_n_inv)
-        self._new_basis = t.new_basis
+        self._node_jj_basis = t.node_jj_basis
         return S_n
 
     @property
@@ -281,14 +281,14 @@ class CircuitGraph:
 
     @property
     def node_jj_basis(self):
-        if self._new_basis is None:
+        if self._node_jj_basis is None:
             _ = self.S_n
-        _new_basis = self._new_basis
+        _node_jj_basis = self._node_jj_basis
         if self.ignore_grd_node:
-            _new_basis = [
-                _node for _node in _new_basis if _node != self._grd_node
+            _node_jj_basis = [
+                _node for _node in _node_jj_basis if _node != self._grd_node
             ]
-        return _new_basis
+        return _node_jj_basis
 
     @property
     def S_remove(self):
@@ -303,7 +303,7 @@ class CircuitGraph:
             if np.count_nonzero(v) != 1:
                 raise ValueError(
                     f'Nullspace column vector {v} has more than one non-zero element. \
-                                 Only indivudal nodes in the current flux [see self.new_basis] basis can be removed'
+                                 Only indivudal nodes in the current flux [see self.node_jj_basis] basis can be removed'
                 )
         return np.concatenate(_s_r, axis=1)
 
@@ -389,7 +389,7 @@ def _find_subsystem_mat_index(cg: CircuitGraph, subsystem, single_node=True):
     ss_nodes = subsystem.nodes
     idx = reduced_mat_idx
     node_idx = idx.get_indexer(ss_nodes)
-    subsystem_idx = node_idx[node_idx > 0]
+    subsystem_idx = node_idx[node_idx >= 0]
     if subsystem_idx.size != 1 and single_node:
         raise ValueError(
             f'One and ONLY one node in the reduced node-junction basis should map to the {subsystem.sys_type} subsystem.'
@@ -414,8 +414,11 @@ class Subsystem:
     solution, such as a transmon, a fluxonium or a quantum harmonic osccilator
     """
 
-    def __init__(self, name: str, sys_type: str, nodes: List[str],
-                 q_opts: dict):
+    def __init__(self,
+                 name: str,
+                 sys_type: str,
+                 nodes: List[str],
+                 q_opts: dict = None):
         self.name = name
         self.sys_type = sys_type
         self.nodes = nodes
@@ -474,7 +477,9 @@ class TransmonBuilder(QuantumBuilder):
         EC = Convert.Ec_from_Cs(1 / c_inv_k[ss_idx, ss_idx])
         Qzpf = 2 * ele
         qubit_opts = dict(EJ=EJ, EC=EC, ng=0.001, ncut=22, truncated_dim=10)
-        transmon = scq.Transmon({**qubit_opts, **subsystem.q_opts})
+        if subsystem.q_opts is not None:
+            qubit_opts = {**qubit_opts, **subsystem.q_opts}
+        transmon = scq.Transmon(**qubit_opts)
 
         subsystem._quantum_system = transmon
         subsystem._h_params = dict(EJ=EJ, EC=EC, Qzpf=Qzpf)
@@ -495,7 +500,7 @@ class ResonatorBuilder(QuantumBuilder):
         ss_idx = subsystem_idx[0]
         subsystem.system_params['subsystem_idx'] = ss_idx
 
-        f_res = subsystem.qops.get('f_res')
+        f_res = subsystem.q_opts.get('f_res')
         if f_res is None:
             raise ValueError('f_res is not defined.')
         res_opts = dict(E_osc=f_res, truncated_dim=4)
@@ -506,10 +511,6 @@ class ResonatorBuilder(QuantumBuilder):
             1j *
             (resonator.creation_operator() - resonator.annihilation_operator()),
             False)
-
-
-class CapCouplingBuilder(QuantumBuilder):
-    pass
 
 
 class Cell:
@@ -548,12 +549,10 @@ class CompositeSystem:
         self.num_cells = len(cells)
         self.grd_node = grd_node
 
-        self._nodes = list({ss.nodes for ss in self._subsystems})
-        self._c_list = [ss.cap_mat for ss in self._subsystems]
-        self._l_list = [ss.ind_dict for ss in self._subsystems]
-        self._jj = {
-            k: j for ss in self._subsystems for k, j in ss.jj_dict.items()
-        }
+        self._nodes = np.unique([c.nodes for c in self._cells]).tolist()
+        self._c_list = [c.cap_mat for c in self._cells]
+        self._l_list = [c.ind_dict for c in self._cells]
+        self._jj = {k: j for c in self._cells for k, j in c.jj_dict.items()}
 
         self._cg = None
 
