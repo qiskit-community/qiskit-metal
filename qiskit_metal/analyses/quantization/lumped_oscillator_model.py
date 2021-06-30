@@ -182,15 +182,20 @@ class CircuitGraph:
     units = {'capacitance': 'fF', 'inductance': 'nH'}
     _IGNORE_GRD_NODE = True
 
-    def __init__(self, nodes: Sequence, grd_node: str,
-                 cmats: List[pd.DataFrame], ind_lists: List[Dict[Tuple, float]],
-                 junctions: Mapping[Tuple[str, str], str]):
+    def __init__(self,
+                 nodes: Sequence,
+                 grd_node: str,
+                 cmats: List[pd.DataFrame],
+                 ind_lists: List[Dict[Tuple, float]],
+                 junctions: Mapping[Tuple[str, str], str],
+                 nodes_force_keep: Sequence = None):
 
         self.nodes = list(nodes)
         self.idx = pd.Index(self.nodes)
         self._grd_node = grd_node
         self.ignore_grd_node = CircuitGraph._IGNORE_GRD_NODE
         self.grd_idx = self.idx.get_indexer([grd_node])[0]
+        self.nodes_force_keep = nodes_force_keep
 
         self._c_graphs = [_df_cmat_to_adj_list(m) for m in cmats]
         self._ind_lists = ind_lists
@@ -292,19 +297,34 @@ class CircuitGraph:
 
     @property
     def S_remove(self):
-        # FIXME: take user input into account
+        nodes_force_keep = self.nodes_force_keep if self.nodes_force_keep else []
+        force_keep_idx = pd.Index(
+            self.node_jj_basis).get_indexer(nodes_force_keep)
+        if np.where(force_keep_idx < 0)[0].size:
+            bad_nodes = list(
+                np.array(nodes_force_keep)[np.where(force_keep_idx < 0)])
+            bad_nodes_str = ', '.join(bad_nodes)
+            raise ValueError(
+                f'nodes {bad_nodes_str} in input node_force_keep are not in the flux basis [self.node_jj_basis].'
+            )
+
         L_inv = self.L_inv
         _s_r = []
         null_space = Matrix(L_inv).nullspace()
         for _v in null_space:
             v = _v / _v.norm()
             v = np.array(v).astype(np.float64)
-            _s_r.append(v)
             if np.count_nonzero(v) != 1:
                 raise ValueError(
                     f'Nullspace column vector {v} has more than one non-zero element. \
                                  Only indivudal nodes in the current flux [see self.node_jj_basis] basis can be removed'
                 )
+
+            # if the node to be removed is in the list of nodes that are forced to be kept, don't remove
+            if np.where(force_keep_idx == np.where(v)[0][0])[0].size:
+                continue
+            _s_r.append(v)
+
         return np.concatenate(_s_r, axis=1)
 
     @property
@@ -541,13 +561,17 @@ class CompositeSystem:
     """Class representing the composite system which may consist of multiple subsystems and cells
     """
 
-    def __init__(self, subsystems: List[Subsystem], cells: List[Cell],
-                 grd_node: str):
+    def __init__(self,
+                 subsystems: List[Subsystem],
+                 cells: List[Cell],
+                 grd_node: str,
+                 nodes_force_keep: Sequence = None):
         self._subsystems = subsystems
         self.num_subsystems = len(subsystems)
         self._cells = cells
         self.num_cells = len(cells)
         self.grd_node = grd_node
+        self.nodes_force_keep = nodes_force_keep
 
         self._nodes = np.unique([c.nodes for c in self._cells]).tolist()
         self._c_list = [c.cap_mat for c in self._cells]
@@ -568,7 +592,8 @@ class CompositeSystem:
             c_list = self._c_list
             l_list = self._l_list
             jjs = self._jj
-            self._cg = CircuitGraph(nodes, grd_node, c_list, l_list, jjs)
+            self._cg = CircuitGraph(nodes, grd_node, c_list, l_list, jjs,
+                                    self.nodes_force_keep)
 
         return self._cg
 
