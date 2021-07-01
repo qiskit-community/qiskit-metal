@@ -188,6 +188,13 @@ You can resolve other warnings by deleting the following directories and rebuild
    * ``docs/build``
    * ``docs/stubs``
 
+**Q: How do I download a tutorial?**
+
+**A:** Navigate to the tutorial you want to download in the documentation.  Once you've done that follow these steps:
+
+   * At the top of the page there is a notice informing you where the tutorial was generated from with a link.  Click that link.
+   * Near the top of the notebook, you see a button that says `Raw`.  Right click `Raw`, select `Save link as` to download the `.ipynb` file.
+
 --------------------------------
 Connecting to 3rd party software
 --------------------------------
