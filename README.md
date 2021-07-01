@@ -104,8 +104,8 @@ Qiskit Metal is the work of [many people](https://github.com/Qiskit/qiskit-metal
 ## Changelog and Release Notes
 The changelog for a particular release is dynamically generated and gets
 written to the release page on Github for each release. For example, you can
-find the page for the `0.0.3` release here:
-https://github.com/Qiskit/qiskit-metal/releases/tag/0.0.3
+find the page for the `0.0.4` release here:
+https://github.com/Qiskit/qiskit-metal/releases/tag/0.0.4
 The changelog for the current release can be found in the releases tab:
 [![Releases](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)
 The changelog provides a quick overview of notable changes for a given
