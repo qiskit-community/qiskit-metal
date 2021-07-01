@@ -1,8 +1,8 @@
 # Qiskit Metal 
-[![License](https://img.shields.io/github/license/Qiskit/qiskit-metal.svg?style=popout-square)](https://opensource.org/licenses/Apache-2.0)<!--- long-description-skip-begin -->[![Release](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)<!--- long-description-skip-begin -->[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4618153.svg)](https://doi.org/10.5281/zenodo.4618153)[![join slack](https://img.shields.io/badge/slack-@qiskit-yellow.svg?logo=slack&style=popout-square)](https://ibm.co/joinqiskitslack)
+[![License](https://img.shields.io/github/license/Qiskit/qiskit-metal.svg?style=popout-square)](https://opensource.org/licenses/Apache-2.0)<!--- long-description-skip-begin -->[![Release](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)<!--- long-description-skip-begin -->[![join slack](https://img.shields.io/badge/slack-@qiskit-yellow.svg?logo=slack&style=popout-square)](https://ibm.co/joinqiskitslack)[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4618153.svg)](https://doi.org/10.5281/zenodo.4618153)
  
->![Welcome to Qiskit Metal!](docs/images/zkm_banner.png 'Welcome to Qiskit Metal')
- #### Qiskit Metal is an open-source framework for engineers and scientists to design superconducting quantum devices with ease.
+>![Welcome to Qiskit Metal!](https://github.com/Qiskit/qiskit-metal/blob/main/docs/images/zkm_banner.png 'Welcome to Qiskit Metal')
+> Qiskit Metal is an open-source framework for engineers and scientists to design superconducting quantum devices with ease.
 
 ## Installation
 We encourage installing Qiskit Metal via the pip tool (a python package manager).
@@ -49,7 +49,6 @@ $ python
 >>> gui.edit_component('Q1')
 >>> gui.autoscale()
 ```
->![Example Gui #2!](docs/images/readme_gui_example_2.png 'Example Gui #2')
 #### Change options.
 ```python
 >>> q1.options.pos_x = '0.5 mm'
