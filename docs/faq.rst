@@ -80,7 +80,6 @@ After downloading the wheels, install ``gdal`` first, then ``fiona``, then ``geo
 The Command Line Tools package for XCode should be already installed.
 If not, they can be installed with: ``xcode-select —install``
 
-
 **Q: Why can't qutip find my path?**
 
 **A:** ``qutip`` may have issues finding your path if using VSCode, resulting in a ``KeyError: 'physicalcpu'``. If the error occurs, please add your PATH to VSCode's settings as follows.
@@ -139,7 +138,11 @@ Then re-install the qiskit-metal package with pip, for example, if you are using
 Based on information that is available online, this problem does not appear to have a solution. However, it does not seem like this error affects Qiskit Metal's functionality.
 If you find problem with this, you might want to try using an older version of the dependency packages, beginning with lowering your python version to 3.7.x.
 
+**Q: Why am I seeing a Shiboken2 import error?**
 
+**A:** If you are seeing `'_int_pyside_extension' is not defined` or `Unable to import Shiboken2`, you must have used at some point in the past an older verions of PySide2, and you have now installed a more recent versio of PySide2, which is incompatible with the previous method calls.
+This problem can appear also if you are creating a new environments because the old library might be in the shared libraries. The problem is likely to occur if you forget to use the `--no-deps` installation flag.
+To resolve this problem, you need to forcefully uninstall or delete any trace of the old package. You can use any method you feel comfortable with (manual or automated). Some conda users have had succeeded by using a simple uninstall/install sequence: `conda uninstall pyside2`, `conda install -c conda-forge pyside2`
 
 .. _gui:
 
