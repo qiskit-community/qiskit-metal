@@ -21,11 +21,11 @@ Some of the dependencies, namely pyside2 and geopandas, might require manual ins
 We recommend to install qiskit-metal in a conda environment or venv, to prevent version conflicts with pre-existing package versions.
 
 ### Jupyter Notebook
-At the moment, we recommend using Jupyter notebook/lab to access all the Qiskit Metal features. These packages are not installed with the default dependencies to accommodate for users that intend to use centralized or customized installations.
+At this time, we recommend using Jupyter notebook/lab to be able to access all the Qiskit Metal features. Jupyter is not installed with the default dependencies, to accommodate those users intending to utilize a centralized or customized installation.
 
 If you require a fresh installation, please refer to either [anaconda.org](https://anaconda.org/) or [jupyter.org](https://jupyter.org/install).
 
-Unless you installed the entire `jupyter` package in your current environment, do not forget to create the appropriate kernel to make the environment (thus qiskit-metal)available to jupyter (instructions in the [FAQ](https://qiskit.org/documentation/metal/faq.html))
+Unless you installed the entire `jupyter` package in your current environment, do not forget to create the appropriate kernel to make the environment (thus qiskit-metal) available to jupyter (instructions in the [FAQ](https://qiskit.org/documentation/metal/faq.html))
 
 ## Creating Your First Quantum Component in Qiskit Metal:
 Now that Qiskit Metal is installed, it's time to begin working with it.
@@ -64,7 +64,7 @@ $ python
 >>> q1.options.pad_width  = '250 um'
 >>> q1.options.pad_gap    = '50 um'
 ```
-#### Update the component geoemtry, since we changed the options.
+#### Update the component geometry after changing the options.
 ```python
 >>> gui.rebuild()
 ```
