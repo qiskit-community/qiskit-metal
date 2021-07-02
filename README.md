@@ -55,7 +55,6 @@ $ python
 >>> gui.edit_component('Q1')
 >>> gui.autoscale()
 ```
-![Example Gui #2!](https://raw.githubusercontent.com/Qiskit/qiskit-metal/main/docs/images/readme_gui_example_2.png 'Example Gui #2')
 #### Change options.
 ```python
 >>> q1.options.pos_x = '0.5 mm'
