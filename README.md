@@ -53,14 +53,15 @@ $ python
 ```python
 >>> q1.options.pos_x = '0.5 mm'
 >>> q1.options.pos_y = '0.25 mm'
->>> q1.options.pad_height = '225 um'
->>> q1.options.pad_width  = '250 um'
->>> q1.options.pad_gap    = '50 um'
+>>> q1.options.pad_height = '90um'
+>>> q1.options.pad_width  = '455um'
+>>> q1.options.pad_gap    = '30 um'
 ```
 #### Update the component geoemtry, since we changed the options.
 ```python
 >>> gui.rebuild()
 ```
+![Example_Image!](https://raw.githubusercontent.com/Qiskit/qiskit-metal/main/docs/images/1_1_Birds_eye_view_of_Qiskit_Metal_example_image.jpg 'Example_Image') 
 #### Get a list of all the qcomponents in QDesign and then zoom on them.
 ```python
 >>> all_component_names = design.components.keys()
