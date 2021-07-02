@@ -20,6 +20,7 @@ To see the docstring of QComponent in Jupyter notebook, use:
 
 import logging
 import inspect
+import random
 from copy import deepcopy
 from typing import TYPE_CHECKING, Any, Iterable, List, Union, Tuple, Dict as Dict_
 from datetime import datetime
@@ -523,11 +524,13 @@ class QComponent():
     def to_script(self,
                   thin: bool = False,
                   is_part_of_chip: bool = False) -> (str, str):
-        # imports, body
-        # all imports at front
-        # option -- only the options of the component that are different from the default options are specified.
-        # vertically aligned dictionary (pretty print)
         """
+
+        Args:
+            thin: If true then any key in the QComponent's options whose value
+              is the same value as the default will not be included in the body
+            is_part_of_chip: If true, body will not include header code
+
 
         Returns: Code that if copy-pasted into a .py file would generate
         an instance of this class with the same properties as the instance calling
@@ -536,6 +539,7 @@ class QComponent():
         """
 
         def is_default_options(k):
+            """ Returns true if option's key value is the same as the default value """
             temp_option = self.get_template_options(self.design)
             def_options = self.default_options
 
@@ -635,13 +639,29 @@ gui = MetalGUI(design)
         else:
             str_meta_d = ""
 
+        ## cleaning up
+        strname = self.name
+        if not strname.isidentifier():
+            if "-" in strname:
+                strname = strname.replace("-", "")
+            if not strname.isidentifier():
+                strname = cls + str(random.randint(1000))
+
+        other_args = ""
+        if str_options != "":
+            other_args += """,
+""" + str_options
+
+        if str_params != "":
+            other_args += """,
+""" + str_params
+
         ## setting up instantiation
         body = f"""
 {str_failed}
-{self.name} = {obj_name}(
+{strname} = {obj_name}(
 design, 
-name='{self.name}',
-{str_options},{str_params}
+name='{strname}'{other_args}
 )
 {str_meta_d}
 """

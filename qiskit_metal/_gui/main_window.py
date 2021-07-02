@@ -132,8 +132,8 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         filename = QFileDialog.getSaveFileName(
             None,
             'Select a new location to save Metal design to',
-            self.design.get_design_name() + '.py',
-            selectedFilter='*.py')[0]
+            self.design.get_design_name() + '.metal.py',
+            selectedFilter='*.metal.py')[0]
 
         # save python script to file path
         pyscript = self.design.to_python_script()
@@ -144,14 +144,18 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     def save_design(self, _=None):
         """Handles click on save design."""
         if self.design:
+            QMessageBox.warning(
+                self, 'Warning', 'This  will save a .metal.py script '
+                'that needs to be copied into a jupyter notebook to run.'
+                'The "Load" button has not yet been implemented.')
             # get file path
             filename = self.design.save_path
             if not filename:
                 filename = QFileDialog.getSaveFileName(
                     None,
                     'Select a new location to save Metal design to',
-                    self.design.get_design_name() + '.py',
-                    selectedFilter='*.py')[0]
+                    self.design.get_design_name() + '.metal.py',
+                    selectedFilter='*.metal.py')[0]
                 self.design.save_path = filename
             # save python script to file path
             pyscript = self.design.to_python_script()

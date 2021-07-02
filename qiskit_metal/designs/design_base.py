@@ -1065,7 +1065,7 @@ gui.autoscale()
         body = ""
         for comp_name in self.components:
             comp = self.components[comp_name]
-            i, c = comp.to_script(thin=True, is_part_of_chip=True)
+            i, c = comp.to_script(thin=thin, is_part_of_chip=True)
             imports.add(i)
             body += c
             body += """
