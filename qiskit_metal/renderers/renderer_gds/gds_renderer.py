@@ -1780,7 +1780,7 @@ class QGDSRenderer(QRenderer):
             # pylint: disable=protected-access
             text_id = self.design._components[row.component]._name
             self.logger.warning(
-                f'In junction table, component={text_id} with key={row.key} '
+                f'In junction table, component={text_id} with name={row.name} '
                 f'has width={pad_height} smaller than cell dimension={jj_y_height}.'
             )
 
