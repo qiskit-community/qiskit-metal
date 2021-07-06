@@ -690,25 +690,21 @@ class QAnsysRenderer(QRendererAnalysis):
             force_redraw (bool, optional): Force re-render the design. Defaults to False.
 
         Returns:
-            str: final design name (a suffix might have been added to the provided name, in case of conflicts)
+            str: final design name (a suffix might have been added to the provided name,
+                in case of conflicts)
         """
-        # If a selection of components is not specified, we will use the previous design, if it exists
-        done = False
-        if 'selection' not in design_selection:
-            done = True
-        else:
+        # If a selection of components is not specified, use the active renderer-design
+        if 'selection' in design_selection:
             if design_selection['selection'] is None:
-                done = True
+                try:
+                    return self.pinfo.design.name
+                except AttributeError:
+                    # if no design exists, then we will proceed and render the full design instead
+                    pass
 
-        if done:
-            try:
-                return self.design.name
-            except AttributeError:
-                # if no design exists, then we will proceed and render the full design instead
-                pass
-
-        # full design rendering in a separate design file.
-        if force_redraw:
+        # either create a new one, or clear the active one, depending on force_redraw.
+        if force_redraw and (design_name in self.pinfo.project.get_design_names()):
+            self.activate_ansys_design(design_name, solution_type)
             self.clean_active_design()
         else:
             self.new_ansys_design(design_name, solution_type)

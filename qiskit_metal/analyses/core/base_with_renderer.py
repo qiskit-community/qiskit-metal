@@ -30,7 +30,7 @@ class QAnalysisRenderer(QAnalysis):
         * sim_setup_name (str): Name given to the current setup.
     """
 
-    default_setup = Dict(sim=Dict(name="Setup"))
+    default_setup = Dict(sim=Dict(name="Setup", reuse_selected_design=True))
     """Default setup"""
 
     # supported labels for data generated from the simulation
@@ -98,15 +98,19 @@ class QAnalysisRenderer(QAnalysis):
         Returns:
             (str): Final design name that the renderer used.
         """
+        # need a default renderer-design name. Use the name of the metal-design.
         base_name = self.design.name
+        # if a renderer-design name was provided as input to run(), use that as a base
         if "name" in design_selection:
             if design_selection["name"] is not None:
                 base_name = design_selection["name"]
             del design_selection["name"]
         design_name = base_name + "_" + self.renderer_name
-        design_name = self.renderer.execute_design(design_name,
-                                                   solution_type=solution_type,
-                                                   **design_selection)
+        design_name = self.renderer.execute_design(
+            design_name,
+            solution_type=solution_type,
+            force_redraw=self.setup.sim.reuse_selected_design,
+            **design_selection)
         return design_name
 
     def close(self):
