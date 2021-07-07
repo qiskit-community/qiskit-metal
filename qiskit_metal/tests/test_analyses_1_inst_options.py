@@ -151,8 +151,9 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         default_setup = QAnalysisRenderer.default_setup
 
         self.assertEqual(len(default_setup), 1)
-        self.assertEqual(len(default_setup['sim']), 1)
+        self.assertEqual(len(default_setup['sim']), 2)
         self.assertEqual(default_setup['sim']['name'], "Setup")
+        self.assertEqual(default_setup['sim']['reuse_selected_design'], True)
 
     def test_analyses_epranalysis_default_setup(self):
         """Test that the contents of default_setup in EPRanalysis haven't accidentally changed."""
