@@ -703,7 +703,8 @@ class QAnsysRenderer(QRendererAnalysis):
                     pass
 
         # either create a new one, or clear the active one, depending on force_redraw.
-        if force_redraw and (design_name in self.pinfo.project.get_design_names()):
+        if force_redraw and (design_name
+                             in self.pinfo.project.get_design_names()):
             self.activate_ansys_design(design_name, solution_type)
             self.clean_active_design()
         else:
