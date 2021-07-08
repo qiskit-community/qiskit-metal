@@ -1616,7 +1616,7 @@ class QAnsysRenderer(QRendererAnalysis):
         self.epr_quantum_analysis.analyze_all_variations(cos_trunc=cos_trunc,
                                                          fock_trunc=fock_trunc)
 
-    def epr_report_hamiltonian(self, swp_variable: str = 'variation'):
+    def epr_report_hamiltonian(self, swp_variable: str = 'variation', numeric=True):
         """Reports in a markdown friendly table the hamiltonian results.
 
         Args:
