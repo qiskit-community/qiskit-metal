@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2017, 2021.
+# (C) Copyright IBM 2017, 2020.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -11,4 +11,16 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""Impedance-based analyses."""
+"""
+====================================================
+Analyses (:mod:`qiskit_metal.analyses.base`)
+====================================================
+
+.. currentmodule:: qiskit_metal.analyses.base
+
+Module containing base classes and interfaces to be inherited by analyses classes.
+
+"""
+
+from .base import QAnalysis
+from .base_with_renderer import QAnalysisRenderer

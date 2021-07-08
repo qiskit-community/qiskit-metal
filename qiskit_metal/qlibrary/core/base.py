@@ -286,27 +286,27 @@ class QComponent():
     @classmethod
     def _gather_all_children_metadata(cls) -> dict:
         """From the QComponent core class, traverse the child classes to
-        gather the .default options for each child class.
+        gather the component_metadata for each child class.
 
         Note: if keys are the same for child and grandchild, grandchild will overwrite child
         Init method.
 
         Returns:
-            dict: options from all children
+            dict: Metadata from all children.
         """
 
-        options_from_children = {}
+        metadata_from_children = {}
         parents = inspect.getmro(cls)
-        # Base.py is not expected to have default_options dict to add to design class.
+        # Base.py is not expected to have component_metadata dict to add to design class.
         for child in parents[len(parents) - 2::-1]:
-            # There is a developer agreement so the defaults will be in dict named default_options.
+            # There is a developer agreement so the defaults will be in dict named component_metadata.
             if hasattr(child, 'component_metadata'):
-                options_from_children = {
-                    **options_from_children,
+                metadata_from_children = {
+                    **metadata_from_children,
                     **child.component_metadata
                 }
 
-        return options_from_children
+        return metadata_from_children
 
     @classmethod
     def _get_unique_class_name(cls) -> str:

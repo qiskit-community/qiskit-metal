@@ -46,41 +46,6 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         """Tie any loose ends."""
         pass
 
-    def test_analyses_instantiate_hcpb(self):
-        """Test instantiation of Hcpb in analytic_transmon.py."""
-        try:
-            Hcpb()
-        except Exception:
-            self.fail("Hcpb() failed")
-
-        try:
-            Hcpb(nlevels=15)
-        except Exception:
-            self.fail("Hcpb(nlevels=15) failed")
-
-        try:
-            Hcpb(nlevels=15, Ej=13971.3)
-        except Exception:
-            self.fail("Hcpb(nlevels=15, Ej=13971.3) failed")
-
-        try:
-            Hcpb(nlevels=15, Ej=13971.3, Ec=295.2)
-        except Exception:
-            self.fail("Hcpb(nlevels=15, Ej=13971.3, Ec=295.2) failed")
-
-        try:
-            Hcpb(nlevels=15, Ej=13971.3, Ec=295.2, ng=0.001)
-        except Exception:
-            self.fail("Hcpb(nlevels=15, Ej=13971.3, Ec=295.2, ng=0.001) failed")
-
-    def test_analyses_instantiate_sweeping(self):
-        """Test instantiation of Sweeping in analytic_transmon.py."""
-        try:
-            design = designs.DesignPlanar()
-            Sweeping(design)
-        except Exception:
-            self.fail("Sweeping failed")
-
     def test_analyses_cpw_guided_wavelength(self):
         """Test the functionality of guided_wavelength in
         cpw_calculations.py."""

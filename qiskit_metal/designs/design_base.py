@@ -156,6 +156,13 @@ class QDesign():
         # Need to add columns to Junction tables before create_tables().
         self._qgeometry.create_tables()
 
+        # Assign unique name to this design
+        self.name = self._assign_name_design()
+
+    def _assign_name_design(self, name: str = "Design") -> str:
+        # TODO: make this name unique, for when we will have multiple designs
+        return name
+
     @classmethod
     def _init_metadata(cls) -> Dict:
         """Initialize default metadata dictionary.
@@ -231,14 +238,14 @@ class QDesign():
         return self._qcomponent_latest_assigned_id
 
     @property
-    def net_info(self) -> pd.core.frame.DataFrame:
+    def net_info(self) -> pd.DataFrame:
         """Provides a copy of net_info table which holds all the connections,
-        of pins, within a design. An advanced user can use methods within the
-        class of design._qnet. Also, an advanced user can also directly edit
-        the table at design._qnet._net_info.
+		of pins, within a design. An advanced user can use methods within the
+		class of design._qnet. Also, an advanced user can also directly edit
+		the table at design._qnet._net_info.
 
         Returns:
-            pd.core.frame.DataFrame: copy of net_info table.
+            pd.DataFrame: copy of net_info table.
         """
         # pylint: disable=protected-access
         return self._qnet._net_info.copy(deep=True)
@@ -914,7 +921,7 @@ class QDesign():
 
                 # check if class_name is in module
                 if class_renderer is not None:
-                    a_renderer = class_renderer(self)
+                    a_renderer = class_renderer(self, initiate=False)
 
                     # register renderers here.
                     self._renderers[renderer_key] = a_renderer
