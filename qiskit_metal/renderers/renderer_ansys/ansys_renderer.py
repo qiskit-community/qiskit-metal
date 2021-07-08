@@ -1616,7 +1616,9 @@ class QAnsysRenderer(QRendererAnalysis):
         self.epr_quantum_analysis.analyze_all_variations(cos_trunc=cos_trunc,
                                                          fock_trunc=fock_trunc)
 
-    def epr_report_hamiltonian(self, swp_variable: str = 'variation', numeric=True):
+    def epr_report_hamiltonian(self,
+                               swp_variable: str = 'variation',
+                               numeric=True):
         """Reports in a markdown friendly table the hamiltonian results.
 
         Args:
@@ -1625,7 +1627,7 @@ class QAnsysRenderer(QRendererAnalysis):
         self.epr_quantum_analysis.plot_hamiltonian_results(
             swp_variable=swp_variable)
         self.epr_quantum_analysis.report_results(swp_variable=swp_variable,
-                                                 numeric=True)
+                                                 numeric=numeric)
 
     def epr_get_frequencies(self,
                             junctions: dict = None,
