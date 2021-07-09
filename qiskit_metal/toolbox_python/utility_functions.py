@@ -13,8 +13,6 @@
 # that they have been altered from the originals.
 """Simply utility functions to improve QOL of QM developers and QM users."""
 
-import importlib
-import inspect
 import logging
 import os
 import re
@@ -22,11 +20,13 @@ import sys
 import traceback
 import warnings
 from copy import deepcopy
-from typing import TYPE_CHECKING, Tuple
+from typing import Dict, List, TYPE_CHECKING, Tuple, Callable
+import inspect
 
 import pandas as pd
 
 from qiskit_metal.draw import Vector
+from qiskit_metal.toolbox_metal.exceptions import InputError
 
 if TYPE_CHECKING:
     from qiskit_metal import logger
@@ -536,3 +536,36 @@ def can_write_to_path(file: str) -> Tuple[int, str]:
         return 1, directory_name
     else:
         return 0, directory_name
+
+
+#####################################################################################
+# function signature
+
+
+def check_all_required_args_provided(func: Callable,
+                                     args: Dict,
+                                     raise_exception: bool = True) -> List:
+    """Check all required arguments of func are provided by args
+
+    Args:
+        func (Callable): function callable to check
+        args (Dict): dictionary of provided arguments
+        raise_exception (bool=True): raise InputError exception if missing args found
+
+    Returns:
+        List: list of missing argument names
+
+    """
+    provided_args = list(args.keys())
+    missing_args = []
+    for param in inspect.signature(func).parameters.values():
+        if param.name in provided_args or param.name == 'self':
+            continue
+        if param.default is inspect._empty and param.name not in provided_args:
+            missing_args.append(param.name)
+
+    if missing_args and raise_exception:
+        out = ', '.join(missing_args)
+        raise InputError(
+            f'Missing values for arguments {out} for {func.__qualname__}')
+    return missing_args

@@ -22,16 +22,83 @@ from typing import Any, List, Dict, Tuple, DefaultDict, Sequence, Mapping
 import numpy as np
 import pandas as pd
 import scqubits as scq
+from scqubits.core.transmon import Transmon
 from sympy import Matrix
+from scipy import optimize, integrate
 
 from pyEPR.calcs.convert import Convert
-from pyEPR.calcs.constants import e_el as ele
+from pyEPR.calcs.constants import e_el as ele, hbar
+
+from qiskit_metal.toolbox_python.utility_functions import check_all_required_args_provided
+from qiskit_metal import logger
 
 BasisTransform = namedtuple(
     'BasisTransform',
     ['orig_node_basis', 'node_jj_basis', 'num_negative_nodes'])
 
 Operator = namedtuple('Operator', ['op', 'add_hc'])
+
+
+class CouplingType:
+    CAPACITIVE = 'CAPACITIVE'
+    INDUCTIVE = 'INDUCTIVE'
+
+
+MHzRad = 2 * np.pi * 1e6
+GHzRad = 2 * np.pi * 1e9
+
+FEMTO = 1e-15
+ONE_OVER_FEMTO = 1e15
+
+
+def analyze_loaded_tl(fr, CL, vp, Z0, shorted=False):
+    """ Calculate charge operator zero point fluctuation, Q_zpf at the point of the loading
+    capacitor.
+    https://arxiv.org/pdf/2103.10344.pdf
+    equation 20
+
+    Args:
+        fr (float): TL resonator frequency in MHz
+        CL (float): loading capacitance in fF
+        vp (float): phase velocity in m/s
+        Z0 (float): characteristic impedance of the TL in ohm
+        shorted (boolean): default false; true if the other end of the TL is shorted false otherwise
+
+    Returns:
+        [type]: [description]
+    """
+    # Convert to SI
+    wr = fr * MHzRad
+    CL = CL * FEMTO
+    c = 1 / (Z0 * vp)  # cap/unit length
+
+    wL = 1 / (Z0 * CL)
+    phi = np.arctan(wr / wL)
+    k = wr / vp
+    utl = lambda z: np.cos(k * z + phi)
+    utl2 = lambda z: utl(z)**2
+    b = int(shorted)  # 1 for short on RHS
+    m = 1  # mode number
+
+    root_eq = lambda L: wr * L / vp + phi - m * np.pi - b * np.pi / 2  # = 0
+    sol = optimize.root(root_eq, [0.007], jac=False,
+                        method='hybr')  # in meters SI
+    Ltl = sol.x[0]
+
+    E_cap = 0.5 * CL * utl(0)**2 + 0.5 * c * integrate.quad(utl2, 0, Ltl)[0]
+    pCL = 0.5 * CL * utl(0)**2 / E_cap
+    Q_zpf = np.sqrt(hbar * wr / 2 * pCL * CL)
+
+    # using the uncertainty relationship that Q_zpf * Phi_zpf = hbar / 2
+    Phi_zpf = 0.5 * hbar / Q_zpf
+
+    if 0:  # analytic
+        innerprod = CL / c * utl(0)**2 + integrate.quad(utl2, 0, Ltl)[0]
+        Am = np.sqrt(Ltl / innerprod)
+        utl = lambda z: Am * np.cos(k * z + phi)
+        eta = Ltl
+
+    return Q_zpf, Phi_zpf, phi, Ltl
 
 
 def _product_no_duplicate(*args) -> List[List]:
@@ -424,14 +491,23 @@ def _process_input_gs(gs):
     return gs
 
 
-class QuantumSystemType:
-    TRANSMON = "TRANSMON"
-    RESONATOR = "RESONATOR"
+class QuantumSystemRegistry:
+    _system_registry = {}
+
+    @classmethod
+    def add_to_registry(cls, name, builder):
+        cls._system_registry[name] = builder
+
+    @classmethod
+    def registry(cls):
+        return cls._system_registry
 
 
 class Subsystem:
     """Class representing a subsystem that can typically be mapped to a quantum system with known
     solution, such as a transmon, a fluxonium or a quantum harmonic osccilator
+
+    frequencies if entered in q_opts need to be in GHz
     """
 
     def __init__(self,
@@ -467,19 +543,42 @@ class Subsystem:
         quantum_builder.make_quantum(self)
 
 
-class QuantumBuilder(ABC):
+class _QuantumBuilderMeta(type):
+
+    def __init__(cls, name, bases, attrs):
+        # register the class in the QuantumSystemType registry
+        # if it is not the base class, i.e. excluding QuantumBuilder
+        if bases:
+            sys_type = getattr(cls, 'system_type', None)
+            if sys_type is None:
+                raise AttributeError(
+                    'You need to define a type string for your QuantumBuilder class by assigning a "system_type" class attribute.'
+                    +
+                    ' For example, the "system_type" for the TransmonBuilder is "TRANSMON", FluxoniumBuilder "FLUXONIUM".'
+                )
+            QuantumSystemRegistry.add_to_registry(sys_type, cls)
+
+            logger.info(
+                '%s with system_type %s registered to QuantumSystemRegistry',
+                cls.__name__, sys_type)
+
+        super().__init__(name, bases, attrs)
+
+
+class QuantumBuilder(metaclass=_QuantumBuilderMeta):
 
     def __init__(self, cg: CircuitGraph):
         self.cg = cg
         self.nodes_keep = self.cg.get_nodes_keep()
         self.reduced_mat_idx = pd.Index(self.nodes_keep)
 
-    @abstractmethod
     def make_quantum(self, subsystem: Subsystem):
         raise NotImplementedError
 
 
 class TransmonBuilder(QuantumBuilder):
+
+    system_type = 'TRANSMON'
 
     # pylint: disable=protected-access
     def make_quantum(self, subsystem: Subsystem):
@@ -493,26 +592,31 @@ class TransmonBuilder(QuantumBuilder):
         ss_idx = subsystem_idx[0]
         subsystem.system_params['subsystem_idx'] = ss_idx
 
+        # EJ and EC are in MHz
         EJ = Convert.Ej_from_Lj(1 / l_inv_k[ss_idx, ss_idx])
         EC = Convert.Ec_from_Cs(1 / c_inv_k[ss_idx, ss_idx])
-        Qzpf = 2 * ele
+        Q_zpf = 2 * ele
         qubit_opts = dict(EJ=EJ, EC=EC, ng=0.001, ncut=22, truncated_dim=10)
         if subsystem.q_opts is not None:
             qubit_opts = {**qubit_opts, **subsystem.q_opts}
+        check_all_required_args_provided(scq.Transmon.__init__, qubit_opts)
         transmon = scq.Transmon(**qubit_opts)
 
         subsystem._quantum_system = transmon
-        subsystem._h_params = dict(EJ=EJ, EC=EC, Qzpf=Qzpf)
+        subsystem._h_params = dict(EJ=EJ, EC=EC, Q_zpf=Q_zpf)
         subsystem._h_params['default_charge_op'] = Operator(
             transmon.n_operator(), False)
 
 
-class ResonatorBuilder(QuantumBuilder):
+class FluxoniumBuilder(QuantumBuilder):
+
+    system_type = 'FLUXONIUM'
 
     # pylint: disable=protected-access
     def make_quantum(self, subsystem: Subsystem):
-        #TODO: Qzpf
         cg = self.cg
+        l_inv_k = cg.L_inv_k
+        c_inv_k = cg.C_inv_k
 
         subsystem_idx = _find_subsystem_mat_index(cg,
                                                   subsystem,
@@ -520,13 +624,55 @@ class ResonatorBuilder(QuantumBuilder):
         ss_idx = subsystem_idx[0]
         subsystem.system_params['subsystem_idx'] = ss_idx
 
+        # EJ and EC are in MHz
+        EJ = Convert.Ej_from_Lj(1 / l_inv_k[ss_idx, ss_idx])
+        EC = Convert.Ec_from_Cs(1 / c_inv_k[ss_idx, ss_idx])
+        Q_zpf = 2 * ele
+        qubit_opts = dict(EJ=EJ, EC=EC, cutoff=110, truncated_dim=10)
+        if subsystem.q_opts is not None:
+            qubit_opts = {**qubit_opts, **subsystem.q_opts}
+        check_all_required_args_provided(scq.Fluxonium.__init__, qubit_opts)
+        fluxonium = scq.Fluxonium(**qubit_opts)
+
+        subsystem._quantum_system = fluxonium
+        subsystem._h_params = dict(EJ=EJ, EC=EC, Q_zpf=Q_zpf)
+        subsystem._h_params['default_charge_op'] = Operator(
+            fluxonium.n_operator(), False)
+
+
+class ResonatorBuilder(QuantumBuilder):
+
+    system_type = 'RESONATOR'
+
+    # pylint: disable=protected-access
+    def make_quantum(self, subsystem: Subsystem):
+        cg = self.cg
+        c_inv_k = cg.C_inv_k
+
+        subsystem_idx = _find_subsystem_mat_index(cg,
+                                                  subsystem,
+                                                  single_node=True)
+        ss_idx = subsystem_idx[0]
+        subsystem.system_params['subsystem_idx'] = ss_idx
+        CL = 1 / c_inv_k[ss_idx, ss_idx]
+
         f_res = subsystem.q_opts.get('f_res')
         if f_res is None:
             raise ValueError('f_res is not defined.')
+        # convert to MHz
+        f_res *= 1000
+        vp = subsystem.q_opts.get('vp')
+        if vp is None:
+            raise ValueError('vp is not defined.')
+        Z0 = subsystem.q_opts.get('Z0')
+        if Z0 is None:
+            raise ValueError('Z0 is not defined.')
         res_opts = dict(E_osc=f_res, truncated_dim=4)
         resonator = scq.Oscillator({**res_opts, **subsystem.q_opts})
-
         subsystem._quantum_system = resonator
+
+        Q_zpf, _, _, _, = analyze_loaded_tl(f_res, CL, vp, Z0)
+        subsystem._h_params['Q_zpf'] = Q_zpf
         subsystem._h_params['default_charge_op'] = Operator(
             1j *
             (resonator.creation_operator() - resonator.annihilation_operator()),
@@ -610,10 +756,8 @@ class CompositeSystem:
 
         quantum_systems = []
         for sub in self._subsystems:
-            if sub.sys_type == QuantumSystemType.TRANSMON:
-                q_builder = TransmonBuilder(cg)
-            elif sub.sys_type == QuantumSystemType.RESONATOR:
-                q_builder = ResonatorBuilder(cg)
+            if sub.sys_type in QuantumSystemRegistry.registry():
+                q_builder = QuantumSystemRegistry.registry()[sub.sys_type](cg)
             else:
                 raise NotImplementedError
 
@@ -622,8 +766,30 @@ class CompositeSystem:
 
         return scq.HilbertSpace(quantum_systems)
 
-    def compute_gs(self):
-        raise NotImplementedError
+    def compute_gs(self, coupling_type: str = CouplingType.CAPACITIVE):
+        """compute g matrices from reduced C inverse matrix C^{-1}_{k} and reduced L inverse matrix L^{-1}_{k}
+        and zero point flucuations (Q_zpf, Phi_zpf)
+        """
+        cg = self.circuitGraph()
+        if coupling_type == CouplingType.CAPACITIVE:
+            c_inv_k = cg.C_inv_k
+            g = np.zeros_like(c_inv_k)
+            for ii in range(self.num_subsystems):
+                sub1 = self._subsystems[ii]
+                idx1 = sub1.system_params['subsystem_idx']
+                for jj in range(ii + 1, self.num_subsystems):
+                    sub2 = self._subsystems[jj]
+                    idx2 = sub2.system_params['subsystem_idx']
+                    c_i = c_inv_k[idx1, idx2]
+                    if c_i == 0:
+                        continue
+                    Q_zpf_1 = sub1.h_params['Q_zpf']
+                    Q_zpf_2 = sub2.h_params['Q_zpf']
+                    g[idx1, idx2] = c_i * Q_zpf_1 * Q_zpf_2 * \
+                                    ONE_OVER_FEMTO / hbar / MHzRad
+            return g
+        else:
+            raise NotImplementedError
 
     def add_interaction(self,
                         gs: Any = None,
@@ -640,7 +806,7 @@ class CompositeSystem:
         h = self.create_hilbertspace()
 
         if gs is None:
-            gs = self.compute_gs()
+            gs = self.compute_gs(coupling_type=CouplingType.CAPACITIVE)
         else:
             gs = _process_input_gs(gs)
 
