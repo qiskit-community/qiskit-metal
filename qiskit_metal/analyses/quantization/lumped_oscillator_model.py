@@ -15,14 +15,12 @@
 """
 # pylint: disable=invalid-name
 
-from abc import abstractmethod, ABC
 from collections import defaultdict, namedtuple
 from typing import Any, List, Dict, Tuple, DefaultDict, Sequence, Mapping
 
 import numpy as np
 import pandas as pd
 import scqubits as scq
-from scqubits.core.transmon import Transmon
 from sympy import Matrix
 from scipy import optimize, integrate
 
