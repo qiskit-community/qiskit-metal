@@ -46,7 +46,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
 
 
     .. image::
-        QComponent_Qubit_Transmon_Crossmon.png
+        TransmonCross.png
 
     BaseQubit Default Options:
         * pos_x: '0um' -- Where the center of the Crossmon should be located on chip
