@@ -666,7 +666,8 @@ class ResonatorBuilder(QuantumBuilder):
         if Z0 is None:
             raise ValueError('Z0 is not defined.')
         res_opts = dict(E_osc=f_res, truncated_dim=4)
-        resonator = scq.Oscillator({**res_opts, **subsystem.q_opts})
+        #FIXME should NOT pass in q_opts to Oscillator
+        resonator = scq.Oscillator(**res_opts)
         subsystem._quantum_system = resonator
 
         Q_zpf, _, _, _, = analyze_loaded_tl(f_res, CL, vp, Z0)
