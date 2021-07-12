@@ -20,9 +20,9 @@ from pathlib import Path
 from typing import List, TYPE_CHECKING
 
 from PySide2.QtCore import QTimer, Qt
-from PySide2.QtWidgets import (QDockWidget, QFileDialog, QLabel, QMainWindow,
-                               QMessageBox)
 from PySide2.QtGui import QIcon, QPixmap
+from PySide2.QtWidgets import QDialog, QDockWidget, QFileDialog, QLabel, QMainWindow, QMessageBox, QVBoxLayout
+
 from qiskit_metal._gui.widgets.qlibrary_display.delegate_qlibrary import LibraryDelegate
 from qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary import QFileSystemLibraryModel
 from qiskit_metal._gui.widgets.qlibrary_display.proxy_model_qlibrary import LibraryFileProxyModel
@@ -44,7 +44,7 @@ from .. import config, qlibrary
 from ..designs.design_base import QDesign
 
 if not config.is_building_docs():
-    from ..toolbox_metal.import_export import load_metal_design
+    pass
 
 if TYPE_CHECKING:
     from ..renderers.renderer_mpl.mpl_canvas import PlotCanvas
@@ -144,13 +144,14 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     def save_design(self, _=None):
         """Handles click on save design."""
         if self.design:
-            QMessageBox.warning(
-                self, 'Warning', 'This  will save a .metal.py script '
-                'that needs to be copied into a jupyter notebook to run.'
-                'The "Load" button has not yet been implemented.')
             # get file path
             filename = self.design.save_path
             if not filename:
+                QMessageBox.warning(
+                    self, 'Warning', 'This  will save a .metal.py script '
+                    'that needs to be copied into a jupyter notebook to run.'
+                    'The "Load" button has not yet been implemented.')
+
                 filename = QFileDialog.getSaveFileName(
                     None,
                     'Select a new location to save Metal design to',
@@ -162,6 +163,15 @@ class QMainWindowExtension(QMainWindowExtensionBase):
             with open(filename, 'w') as f:
                 f.write(pyscript)
 
+            #make it clear it's saving
+            saving_dialog = QDialog(self)
+            saving_dialog.setWindowModality(Qt.NonModal)
+            v = QVBoxLayout()
+            saving_dialog.setLayout(v)
+            v.addWidget(QLabel("Saving..."))
+            saving_dialog.open()
+            saving_dialog.show()
+            QTimer.singleShot(200, saving_dialog.close)
         else:
             self.logger.info('No design present.')
             QMessageBox.warning(self, 'Warning', 'No design present! Can'
