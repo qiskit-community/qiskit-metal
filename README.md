@@ -1,25 +1,31 @@
 # Qiskit Metal 
 [![License](https://img.shields.io/github/license/Qiskit/qiskit-metal.svg?style=popout-square)](https://opensource.org/licenses/Apache-2.0)<!--- long-description-skip-begin -->[![Release](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)<!--- long-description-skip-begin -->[![join slack](https://img.shields.io/badge/slack-@qiskit-yellow.svg?logo=slack&style=popout-square)](https://ibm.co/joinqiskitslack)[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4618153.svg)](https://doi.org/10.5281/zenodo.4618153)
  
->![Welcome to Qiskit Metal!](https://github.com/Qiskit/qiskit-metal/blob/main/docs/images/zkm_banner.png 'Welcome to Qiskit Metal')
+>![Welcome to Qiskit Metal!](https://raw.githubusercontent.com/Qiskit/qiskit-metal/main/docs/images/zkm_banner.png 'Welcome to Qiskit Metal')
 > Qiskit Metal is an open-source framework for engineers and scientists to design superconducting quantum devices with ease.
 
 ## Installation
-We encourage installing Qiskit Metal via the pip tool (a python package manager).
+If you are interested in customizing your experience, or if you are unable to install qiskit-metal using the `pip install` instructions below, consider installing directly the source code, following the instructions in the [documentation](https://qiskit.org/documentation/metal/installation.html) and/or the [installation instructions for developers](https://github.com/Qiskit/qiskit-metal/blob/main/README_developers.md).
+
+For normal use, please continue reading.
+
+### The Qiskit Metal deployed package
+You can install Qiskit Metal via the pip tool (a python package manager).
 ```bash
 pip install qiskit-metal
 ```
-PIP will handle all dependencies automatically and you will always install the latest (and well-tested) version. 
+PIP will handle most of the dependencies automatically and you will always install the latest (and well-tested) version of the package.
 
-It is also recommended that you make a new conda environment before installing:
+Some of the dependencies, namely pyside2 and geopandas, might require manual installation, depending on your specific system compatibility. If you encounter installation or execution errors, please refer first to the [FAQ](https://qiskit.org/documentation/metal/faq.html).
 
-```bash
-conda env create -n <env_name> environment.yml
-conda activate <env_name>
-python -m pip install --no-deps -e .
-```
-#### Source Code Installation
-To edit the code and truly customize the experience, if PyPI gives you trouble, or to install from source, follow the instructions in the [documentation](https://qiskit.org/documentation/metal/installation.html) and/or the [installation instructions for developers](/README_developers.md).
+We recommend to install qiskit-metal in a conda environment or venv, to prevent version conflicts with pre-existing package versions.
+
+### Jupyter Notebook
+At this time, we recommend using Jupyter notebook/lab to be able to access all the Qiskit Metal features. Jupyter is not installed with the default dependencies, to accommodate those users intending to utilize a centralized or customized installation.
+
+If you require a fresh installation, please refer to either [anaconda.org](https://anaconda.org/) or [jupyter.org](https://jupyter.org/install).
+
+Unless you installed the entire `jupyter` package in your current environment, do not forget to create the appropriate kernel to make the environment (thus qiskit-metal) available to jupyter (instructions in the [FAQ](https://qiskit.org/documentation/metal/faq.html))
 
 ## Creating Your First Quantum Component in Qiskit Metal:
 Now that Qiskit Metal is installed, it's time to begin working with it.
@@ -57,7 +63,7 @@ $ python
 >>> q1.options.pad_width  = '455um'
 >>> q1.options.pad_gap    = '30 um'
 ```
-#### Update the component geoemtry, since we changed the options.
+#### Update the component geometry after changing the options.
 ```python
 >>> gui.rebuild()
 ```
@@ -91,27 +97,24 @@ Use the slack channel.  Join [qiskit slack](https://ibm.co/joinqiskitslack) and 
 
 ## Contribution Guidelines
 If you'd like to contribute to Qiskit Metal, please take a look at our
-[contribution guidelines](CONTRIBUTING.md). This project adheres to Qiskit's [code of conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
+[contribution guidelines](https://github.com/Qiskit/qiskit-metal/blob/main/CONTRIBUTING.md). This project adheres to Qiskit's [code of conduct](https://github.com/Qiskit/qiskit-metal/blob/main/CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
 We use [GitHub issues](https://github.com/Qiskit/qiskit-metal/issues) for tracking requests and bugs. Please
 [join the Qiskit Slack community](https://ibm.co/joinqiskitslack)
 and use our [Qiskit Slack channel](https://qiskit.slack.com) for discussion and simple questions.
 For questions that are more suited for a forum we use the Qiskit tag in the [Stack Exchange](https://quantumcomputing.stackexchange.com/questions/tagged/qiskit).
 ## Next Steps
 Now you're set up and ready to check out some of the other examples from our
-[Qiskit Metal Tutorials](https://github.com/Qiskit/qiskit-metal/tutorials/) repository or [Qiskit Metal Documentation](https://qiskit.org/documentation/metal/tut/).
+[Qiskit Metal Tutorials](https://github.com/Qiskit/qiskit-metal/blob/main/tutorials/) repository or [Qiskit Metal Documentation](https://qiskit.org/documentation/metal/tut/).
 ## Authors and Citation
-Qiskit Metal is the work of [many people](https://github.com/Qiskit/qiskit-metal/pulse/monthly) who contribute to the project at different levels. Metal was conceived and developed by [Zlatko Minev](zlatko-minev.com) at IBM; then co-led with Thomas McConkey. If you use Qiskit Metal, please cite as per the included [BibTeX file](https://github.com/Qiskit/qiskit-metal/blob/main/Qiskit_Metal.bib). For icon attributions, see [here](/qiskit_metal/_gui/_imgs/icon_attributions.txt).
+Qiskit Metal is the work of [many people](https://github.com/Qiskit/qiskit-metal/pulse/monthly) who contribute to the project at different levels. Metal was conceived and developed by [Zlatko Minev](https://www.zlatko-minev.com) at IBM; then co-led with Thomas McConkey. If you use Qiskit Metal, please cite as per the included [BibTeX file](https://github.com/Qiskit/qiskit-metal/blob/main/Qiskit_Metal.bib). For icon attributions, see [here](https://github.com/Qiskit/qiskit-metal/blob/main/qiskit_metal/_gui/_imgs/icon_attributions.txt).
 ## Changelog and Release Notes
-The changelog for a particular release is dynamically generated and gets
-written to the release page on Github for each release. For example, you can
-find the page for the `0.0.4` release here:
-https://github.com/Qiskit/qiskit-metal/releases/tag/0.0.4
-The changelog for the current release can be found in the releases tab:
-[![Releases](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)
-The changelog provides a quick overview of notable changes for a given
-release.
-Additionally, as part of each release detailed release notes are written to
-document in detail what has changed as part of a release. This includes any
-documentation on potential breaking changes on upgrade and new features.
+The changelog provides a quick overview of notable changes for a given release.
+
+The changelog for a particular release can be found in the correspondent Github release page. For example, you can find the changelog for the `0.0.4` release [here](https://github.com/Qiskit/qiskit-metal/releases/tag/0.0.4)
+
+The changelog for all releases can be found in the release page: [![Releases](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)
+
+Additionally, as part of each release detailed release notes are written to document in detail what has changed as part of a release. This includes any documentation on potential breaking changes on upgrade and new features.
+
 ## License
-[Apache License 2.0](LICENSE.txt)
+[Apache License 2.0](https://github.com/Qiskit/qiskit-metal/blob/main/LICENSE.txt)

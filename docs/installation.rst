@@ -4,6 +4,15 @@
 Installation
 ************
 
+~~~~~~~~~~~~~~~~~~
+Basic Installation
+~~~~~~~~~~~~~~~~~~
+Please refer to the `PyPI deploy instructions <https://pypi.org/project/qiskit-metal/>`_
+
+~~~~~~~~~~~~~~~~~~~~~
+Advanced Installation
+~~~~~~~~~~~~~~~~~~~~~
+
 ==================
 Video Instructions
 ==================
@@ -69,7 +78,7 @@ Once you are in the folder that contains the `environemnt.yml` file, execute the
 
     conda env create -n <env_name> environment.yml
     conda activate <env_name>
-    python -m pip install -ve .
+    python -m pip install --no-deps -e .
 
 This creates a new environment with name `<env_name>` with all the necessary library dependencies.
 Then it activates the new environment.
@@ -77,7 +86,7 @@ Finally installs the local qiskit-metal code inside that environment.
 
 The `-e` flag install qiskit\_metal in `editable mode <https://pip.pypa.io/en/stable/reference/pip_install/#cmdoption-e>`_.
 
-The `-v` flag is for verbose.
+You can add the `-v` flag for verbose on-screen log information.
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Option 2: A pre-existing environment
@@ -90,7 +99,7 @@ To do so, execute these commands in the top-level of the repository:
 
     conda env update -n <env_name_exist> environment.yml
     conda activate <env_name_exist>
-    python -m pip install -ve .
+    python -m pip install --no-deps -e .
 
 Notes:
 
