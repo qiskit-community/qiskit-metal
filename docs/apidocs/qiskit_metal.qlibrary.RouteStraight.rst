@@ -68,6 +68,7 @@ RouteStraight
       RouteStraight.set_lead
       RouteStraight.set_lead_extension
       RouteStraight.set_pin
+      RouteStraight.to_script
    
 
    

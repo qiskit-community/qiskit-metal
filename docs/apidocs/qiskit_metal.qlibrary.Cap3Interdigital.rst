@@ -57,6 +57,7 @@ Cap3Interdigital
       Cap3Interdigital.qgeometry_plot
       Cap3Interdigital.qgeometry_table
       Cap3Interdigital.rebuild
+      Cap3Interdigital.to_script
    
 
    

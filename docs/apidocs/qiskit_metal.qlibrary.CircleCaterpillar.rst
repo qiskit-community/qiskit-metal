@@ -57,6 +57,7 @@ CircleCaterpillar
       CircleCaterpillar.qgeometry_plot
       CircleCaterpillar.qgeometry_table
       CircleCaterpillar.rebuild
+      CircleCaterpillar.to_script
    
 
    

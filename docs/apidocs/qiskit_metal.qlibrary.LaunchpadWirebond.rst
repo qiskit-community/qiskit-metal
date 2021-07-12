@@ -57,6 +57,7 @@ LaunchpadWirebond
       LaunchpadWirebond.qgeometry_plot
       LaunchpadWirebond.qgeometry_table
       LaunchpadWirebond.rebuild
+      LaunchpadWirebond.to_script
    
 
    
