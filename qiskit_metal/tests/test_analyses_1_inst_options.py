@@ -22,12 +22,12 @@ from pathlib import Path
 import unittest
 
 from qiskit_metal.analyses.core.base import QAnalysis
-from qiskit_metal.analyses.core.base_with_renderer import QAnalysisRenderer
+from qiskit_metal.analyses.core.simulation import QSimulation
 from qiskit_metal.analyses.quantization.energy_participation_ratio import EPRanalysis
 from qiskit_metal.analyses.quantization.lumped_oscillator_model import LOManalysis
-from qiskit_metal.analyses.quantization.sim_lumped_elements import LumpedElementsSim
-from qiskit_metal.analyses.quantization.sim_eigenmode import EigenmodeSim
-from qiskit_metal.analyses.quantization.sim_scattering_impedance import ScatteringImpedanceSim
+from qiskit_metal.analyses.simulation.lumped_elements import LumpedElementsSim
+from qiskit_metal.analyses.simulation.eigenmode import EigenmodeSim
+from qiskit_metal.analyses.simulation.scattering_impedance import ScatteringImpedanceSim
 from qiskit_metal.analyses.hamiltonian.transmon_charge_basis import Hcpb
 from qiskit_metal.analyses.sweep_options.sweeping import Sweeping
 from qiskit_metal.tests.assertions import AssertionsMixin
@@ -146,9 +146,9 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         self.assertEqual(len(default_setup), 0)
 
     def test_analyses_qanalysisrenderer_default_setup(self):
-        """Test that the contents of default_setup in QAnalysisRenderer haven't accidentally
+        """Test that the contents of default_setup in QSimulation haven't accidentally
         changed."""
-        default_setup = QAnalysisRenderer.default_setup
+        default_setup = QSimulation.default_setup
 
         self.assertEqual(len(default_setup), 1)
         self.assertEqual(len(default_setup['sim']), 2)

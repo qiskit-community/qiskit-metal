@@ -19,7 +19,7 @@ from . import QAnalysis
 from ... import Dict
 
 
-class QAnalysisRenderer(QAnalysis):
+class QSimulation(QAnalysis):
     """A subclass of `QAnalysis`, intended to standardize across all Analysis classes
     select and name renderers.
 

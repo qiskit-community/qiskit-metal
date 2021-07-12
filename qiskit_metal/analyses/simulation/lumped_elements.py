@@ -17,12 +17,11 @@ import pandas as pd
 from pyEPR.ansys import ureg
 from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
 
-from ..core import QAnalysisRenderer
-
 from ... import Dict
+from ..core import QSimulation
 
 
-class LumpedElementsSim(QAnalysisRenderer):
+class LumpedElementsSim(QSimulation):
     """Compute Capacitance matrix using the selected renderer.
 
     Default Setup:

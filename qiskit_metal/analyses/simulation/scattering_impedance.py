@@ -18,10 +18,10 @@ import pandas as pd
 from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
 
 from ... import Dict
-from ..core import QAnalysisRenderer
+from ..core import QSimulation
 
 
-class ScatteringImpedanceSim(QAnalysisRenderer):
+class ScatteringImpedanceSim(QSimulation):
     """Uses drivenmodal simulation to extract the impedance.
 
     Default Setup:

@@ -22,10 +22,10 @@ from pyEPR.reports import (plot_convergence_f_vspass, plot_convergence_max_df,
 from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
 
 from ... import Dict
-from ..core import QAnalysisRenderer
+from ..core import QSimulation
 
 
-class EigenmodeSim(QAnalysisRenderer):
+class EigenmodeSim(QSimulation):
     """Compute eigenmode, then derive from it using the epr method.
 
     Default Setup:

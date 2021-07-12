@@ -18,7 +18,7 @@ from pint import UnitRegistry
 from pyEPR.calcs.convert import Convert
 
 from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
-from . import LumpedElementsSim
+from ..simulation import LumpedElementsSim
 
 from ... import Dict
 from ... import config

@@ -23,8 +23,5 @@ Module containing all Qiskit Metal quantization analyses.
 """
 
 from .. import config
-from .sim_lumped_elements import LumpedElementsSim
 from .lumped_oscillator_model import LOManalysis
-from .sim_eigenmode import EigenmodeSim
 from .energy_participation_ratio import EPRanalysis
-from .sim_scattering_impedance import ScatteringImpedanceSim

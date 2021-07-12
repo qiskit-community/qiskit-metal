@@ -13,13 +13,13 @@
 # that they have been altered from the originals.
 
 from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
-from . import EigenmodeSim
+from ..simulation import EigenmodeSim
 
 from ... import Dict
 
 
 # TODO: eliminate every reference to "renderer" in this file
-#  then change inheritance from QAnalysisRenderer to QAnalysis
+#  then change inheritance from QSimulation to QAnalysis
 class EPRanalysis(EigenmodeSim):
     """From an input eigenmode dataset, apply the Energy Participation Ratio analysis method.
 

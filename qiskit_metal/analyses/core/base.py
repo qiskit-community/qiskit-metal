@@ -29,9 +29,9 @@ class QAnalysis(ABC):
         * Manipulates the setup dictionary to fine-tune the analysis parameters.
 
     For creator user:
-        * Creates a class that inherits this or the QAnalysisRenderer classes.
+        * Creates a class that inherits this or the QSimulation classes.
         * Implements the `run` and `run_***` methods to define the analysis procedures.
-        * Defines the methods to communicate with the QRenderers. (see QAnalysisRenderer)
+        * Defines the methods to communicate with the QRenderers. (see QSimulation)
         * Defines default_setup, which describes the parameteric interface to the analysis class.
 
     Default Setup:
