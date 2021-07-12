@@ -20,9 +20,9 @@ from pathlib import Path
 from typing import List, TYPE_CHECKING
 
 from PySide2.QtCore import QTimer, Qt
-from PySide2.QtWidgets import (QDockWidget, QFileDialog, QLabel, QMainWindow,
-                               QMessageBox)
 from PySide2.QtGui import QIcon, QPixmap
+from PySide2.QtWidgets import QDialog, QDockWidget, QFileDialog, QLabel, QMainWindow, QMessageBox, QVBoxLayout
+
 from qiskit_metal._gui.widgets.qlibrary_display.delegate_qlibrary import LibraryDelegate
 from qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary import QFileSystemLibraryModel
 from qiskit_metal._gui.widgets.qlibrary_display.proxy_model_qlibrary import LibraryFileProxyModel
@@ -44,7 +44,7 @@ from .. import config, qlibrary
 from ..designs.design_base import QDesign
 
 if not config.is_building_docs():
-    from ..toolbox_metal.import_export import load_metal_design
+    pass
 
 if TYPE_CHECKING:
     from ..renderers.renderer_mpl.mpl_canvas import PlotCanvas
@@ -127,25 +127,51 @@ class QMainWindowExtension(QMainWindowExtensionBase):
             self.gui.refresh()
 
     @slot_catch_error()
-    def save_design_as(self, _=None):
-        """Handles click on Save Design As."""
+    def save_design_copy(self):
+        """Saves a separate copy of design under a different name"""
         filename = QFileDialog.getSaveFileName(
             None,
             'Select a new location to save Metal design to',
-            self.design.get_design_name() + '.metal',
-            selectedFilter='*.metal')[0]
+            self.design.get_design_name() + '.metal.py',
+            selectedFilter='*.metal.py')[0]
 
-        if filename:
-            self.gui.save_file(filename)
+        # save python script to file path
+        pyscript = self.design.to_python_script()
+        with open(filename, 'w') as f:
+            f.write(pyscript)
 
     @slot_catch_error()
     def save_design(self, _=None):
         """Handles click on save design."""
         if self.design:
-            if self.design.save_path:
-                self.gui.save_file()
-            else:
-                self.save_design_as()
+            # get file path
+            filename = self.design.save_path
+            if not filename:
+                QMessageBox.warning(
+                    self, 'Warning', 'This  will save a .metal.py script '
+                    'that needs to be copied into a jupyter notebook to run.'
+                    'The "Load" button has not yet been implemented.')
+
+                filename = QFileDialog.getSaveFileName(
+                    None,
+                    'Select a new location to save Metal design to',
+                    self.design.get_design_name() + '.metal.py',
+                    selectedFilter='*.metal.py')[0]
+                self.design.save_path = filename
+            # save python script to file path
+            pyscript = self.design.to_python_script()
+            with open(filename, 'w') as f:
+                f.write(pyscript)
+
+            #make it clear it's saving
+            saving_dialog = QDialog(self)
+            saving_dialog.setWindowModality(Qt.NonModal)
+            v = QVBoxLayout()
+            saving_dialog.setLayout(v)
+            v.addWidget(QLabel("Saving..."))
+            saving_dialog.open()
+            saving_dialog.show()
+            QTimer.singleShot(200, saving_dialog.close)
         else:
             self.logger.info('No design present.')
             QMessageBox.warning(self, 'Warning', 'No design present! Can'
@@ -154,17 +180,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     @slot_catch_error()
     def load_design(self, _):
         """Handles click on loading metal design."""
-        filename = QFileDialog.getOpenFileName(
-            None,
-            'Select location to load Metal design from',
-            selectedFilter='*.metal')[0]
-        if filename:
-            self.logger.info(f'Attempting to load design file {filename}')
-            design = load_metal_design(filename)
-            self.logger.info(
-                f'Successfully loaded file. Now setting design into gui.')
-            self.handler.set_design(design)
-            self.logger.info(f'Successfully set design. Loaded and done.')
+        raise NotImplementedError()
 
     @slot_catch_error()
     def full_refresh(self, _=None):
@@ -185,6 +201,48 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     def create_build_log_window(self, _=None):
         """"Handles click on Build History button."""
         self.gui.gui_create_build_log_window()
+
+    @slot_catch_error()
+    def set_force_close(self, ison: bool):
+        """Set method for force_close
+
+        Args:
+            ison (bool): value
+        """
+        self.force_close = ison
+
+    @slot_catch_error()
+    def closeEvent(self, event):
+        """whenever a window is closed.
+
+        Passed an event which we can choose to accept or reject.
+        """
+
+        if self.force_close:
+            super().closeEvent(event)
+            return
+
+        if self.ok_to_continue():
+            self.save_window_settings()
+            super().closeEvent(event)
+
+    @slot_catch_error()
+    def ok_to_continue(self):
+        """Determine if it ok to continue.
+
+        Returns:
+            bool: True to continue, False otherwise
+        """
+        if 1:
+            reply = QMessageBox.question(
+                self, "Qiskit Metal", "Save unsaved changes to design?",
+                QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
+            if reply == QMessageBox.Cancel:
+                return False
+            elif reply == QMessageBox.Yes:
+                wait = self.save_design()
+                return True
+        return True
 
 
 class MetalGUI(QMainWindowBaseHandler):
@@ -640,16 +698,6 @@ class MetalGUI(QMainWindowBaseHandler):
     def autoscale(self):
         """Shortcut to autoscale all views."""
         self.plot_win.auto_scale()
-
-    #########################################################
-    # Design level
-    def save_file(self, filename: str = None):
-        """Save the file.
-
-        Args:
-            filename (str): Filename to save.  Defaults to None.
-        """
-        self.design.save_design(filename)
 
     #########################################################
     # COMPONENT FUNCTIONS
