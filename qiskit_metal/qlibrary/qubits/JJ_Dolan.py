@@ -22,6 +22,11 @@ from qiskit_metal.qlibrary.core.base import QComponent
 class jj_dolan(QComponent):
     """
     The base "JJ_Dolan" inherits the "QComponent" class.
+    
+    NOTE TO USER: Please be aware that when designing with this
+    qcomponent, one must take care in accounting for the junction
+    qgeometry when exporting to to GDS and/or to a simulator. This
+    qcomponent should not be rendered for EM simulation.
 
     This creates a "Dolan"-style Josephson Junction consisting
     of two non-overlapping metal rectangles each connected
