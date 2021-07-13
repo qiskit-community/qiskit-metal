@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file './main_window_ui.ui',
 # licensing of './main_window_ui.ui' applies.
 #
-# Created: Wed Jun 16 14:29:02 2021
+# Created: Sat Jun 19 22:02:30 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -583,9 +583,8 @@ class Ui_MainWindow(object):
                                self.tabWidget.setFocus)
         QtCore.QObject.connect(self.actionLog, QtCore.SIGNAL("triggered()"),
                                self.dockLog.raise_)
-        QtCore.QObject.connect(self.actionSaveAs,
-                               QtCore.SIGNAL("toggled(bool)"),
-                               MainWindow.save_design_as)
+        QtCore.QObject.connect(self.actionSaveAs, QtCore.SIGNAL("triggered()"),
+                               MainWindow.save_design_copy)
         QtCore.QObject.connect(self.actionClose_window,
                                QtCore.SIGNAL("triggered()"), MainWindow.close)
         QtCore.QObject.connect(self.actionSave_window_state,
@@ -1011,7 +1010,7 @@ class Ui_MainWindow(object):
             QtWidgets.QApplication.translate("MainWindow", "clickme", None, -1))
 
 
-from .widgets.all_components.table_view_all_components import QTableView_AllComponents
 from .widgets.qlibrary_display.tree_view_qlibrary import TreeViewQLibrary
 from .widgets.log_widget.log_metal import QTextEditLogger
+from .widgets.all_components.table_view_all_components import QTableView_AllComponents
 from . import main_window_rc_rc

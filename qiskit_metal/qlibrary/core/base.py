@@ -20,11 +20,14 @@ To see the docstring of QComponent in Jupyter notebook, use:
 
 import logging
 import inspect
+import random
 from copy import deepcopy
 from typing import TYPE_CHECKING, Any, Iterable, List, Union, Tuple, Dict as Dict_
 from datetime import datetime
 import pandas as pd
 import numpy as np
+import pprint
+from inspect import signature
 
 from qiskit_metal import draw
 from qiskit_metal import is_design, logger
@@ -125,7 +128,7 @@ class QComponent():
     All options should have string keys and preferrable string values.
     """
 
-    # Dummy private attribute used to check if an instanciated object is
+    # Dummy private attribute used to check if an instantiated object is
     # indeed a QComponent class. The problem is that the `isinstance`
     # built-in method fails when this module is reloaded.
     # Used by `is_component` to check.
@@ -175,6 +178,8 @@ class QComponent():
         # Make the id be None, which means it hasn't been added to design yet.
         self._id = None
         self._made = False
+
+        self._component_template = component_template
 
         # Status: used to handle building of a component and checking if it succeeded or failed.
         self.status = 'Not Built'
@@ -515,6 +520,153 @@ class QComponent():
             NotImplementedError: Overwrite this function by subclassing.
         """
         raise NotImplementedError()
+
+    def to_script(self,
+                  thin: bool = False,
+                  is_part_of_chip: bool = False) -> (str, str):
+        """
+
+        Args:
+            thin: If true then any key in the QComponent's options whose value
+              is the same value as the default will not be included in the body
+            is_part_of_chip: If true, body will not include header code
+
+
+        Returns: Code that if copy-pasted into a .py file would generate
+        an instance of this class with the same properties as the instance calling
+        this function
+
+        """
+
+        def is_default_options(k):
+            """ Returns true if option's key value is the same as the default value """
+            temp_option = self.get_template_options(self.design)
+            def_options = self.default_options
+
+            if (k in def_options and def_options[k] == self.options[k]):
+                return True
+
+            if (k in temp_option and temp_option[k] == self.options[k]):
+                return True
+
+            return False
+
+        module = self._get_unique_class_name()
+        cls = '.'.join(module.split('.')[:-1])
+        obj_name = module.split('.')[-1]
+
+        ### constructing imports ###
+
+        #header
+        if not is_part_of_chip:
+            header = """
+from qiskit_metal import designs, MetalGUI
+
+design = designs.DesignPlanar()
+
+gui = MetalGUI(design)
+            """
+        else:
+            header = ""
+
+        # component import
+        comp_import = f"""from {cls} import {obj_name}"""
+
+        full_import = header + comp_import
+
+        ### constructing qcomponent instantiation ###
+
+        ## setting up options
+        if thin:
+            body_options = {}
+            for k in self.options:
+                if not is_default_options(k):
+                    body_options[k] = self.options[k]
+        else:
+            body_options = self.options
+
+        if len(body_options) < 1:
+            str_options = ""
+        else:
+            pp = pprint.PrettyPrinter(width=41, compact=False)
+            str_options = f"""options={pp.pformat(body_options)}"""
+
+        ## setting up component-specific args
+        # get init from child?
+        to_ignore = {
+            'self', 'name', 'design', 'make', 'kwargs', 'options', 'args'
+        }
+        class_signature = signature(self.__class__.__init__)
+
+        failed = set()
+        params = dict()
+        str_params = ""
+        for _, param in class_signature.parameters.items():
+            if not param.name in to_ignore:
+                param_name = param.name
+                if param_name in self.__dict__:
+                    param_name = param.name
+                    param_val = self.__dict__[param.name]
+                    if type(param_val) is str:
+                        param_val = f"'{param_val}'"
+                    params[param_name] = param_val
+                elif '_' + param_name in self.__dict__:
+                    priv_param_name = '_' + param_name
+                    param_val = self.__dict__[priv_param_name]
+                    if type(param_val) is str:
+                        param_val = f"'{param_val}'"
+                    params[param_name] = param_val
+                else:
+                    failed.add(param_name)
+        for k, v in params.items():
+            str_params += f"""
+{k}={v},"""
+
+        str_failed = ""
+        if len(failed) > 0:
+            str_failed += """
+                       
+            # WARNING"""
+        for k in failed:
+            str_failed += f"""
+#{k} failed to have a value"""
+
+        ## setting up metadata
+        if len(self.metadata) > 1:
+            str_meta_d = f"""
+{self.name}.meta = {self.metadata}
+        """
+        else:
+            str_meta_d = ""
+
+        ## cleaning up
+        strname = self.name
+        if not strname.isidentifier():
+            if "-" in strname:
+                strname = strname.replace("-", "")
+            if not strname.isidentifier():
+                strname = cls + str(random.randint(1000))
+
+        other_args = ""
+        if str_options != "":
+            other_args += """,
+""" + str_options
+
+        if str_params != "":
+            other_args += """,
+""" + str_params
+
+        ## setting up instantiation
+        body = f"""
+{str_failed}
+{strname} = {obj_name}(
+design, 
+name='{strname}'{other_args}
+)
+{str_meta_d}
+"""
+
+        return full_import, body
 
     def rebuild(self):
         """Builds the QComponent.
