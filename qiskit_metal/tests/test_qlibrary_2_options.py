@@ -40,6 +40,8 @@ from qiskit_metal import designs
 from qiskit_metal.qlibrary.terminations.launchpad_wb import LaunchpadWirebond
 from qiskit_metal.qlibrary.terminations.launchpad_wb_coupled import LaunchpadWirebondCoupled
 from qiskit_metal.qlibrary.lumped.cap_3_interdigital import Cap3Interdigital
+from qiskit_metal.qlibrary.qubits.JJ_Dolan import jj_dolan
+from qiskit_metal.qlibrary.qubits.JJ_Manhattan import jj_manhattan
 from qiskit_metal.qlibrary.qubits import transmon_concentric
 from qiskit_metal.qlibrary.qubits import transmon_cross
 from qiskit_metal.qlibrary.qubits.transmon_cross_fl import TransmonCrossFL
@@ -750,6 +752,47 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['lead']['end_straight'], '0mm')
         self.assertEqual(options['lead']['start_jogged_extension'], '')
         self.assertEqual(options['lead']['end_jogged_extension'], '')
+
+    def test_qlibrary_jj_dolan_options(self):
+        """Test the default options of JJ_Dolan were not accidentially changed."""
+        design = designs.DesignPlanar()
+        my_jj_dolan = jj_dolan(design, name='test_jj_dolan', options={})
+        options = my_jj_dolan.default_options
+
+        self.assertEqual(len(options), 13)
+        self.assertEqual(options['JJ_pad_lower_width'], '25um')
+        self.assertEqual(options['JJ_pad_lower_height'], '10um')
+        self.assertEqual(options['JJ_pad_lower_pos_x'], '0')
+        self.assertEqual(options['JJ_pad_lower_pos_y'], '0')
+        self.assertEqual(options['finger_lower_width'], '1um')
+        self.assertEqual(options['finger_lower_height'], '20um')
+        self.assertEqual(options['extension'], '1um')
+        self.assertEqual(options['offset'], '2um')
+        self.assertEqual(options['second_metal_length'], '5um')
+        self.assertEqual(options['second_metal_width'], '1um')
+        self.assertEqual(options['x_pos'], '0um')
+        self.assertEqual(options['y_pos'], '0um')
+        self.assertEqual(options['layer'], '1')
+
+    def test_qlibrary_jj_manhattan_options(self):
+        """Test the default options of JJ_Manhattan were not accidentially changed."""
+        design = designs.DesignPlanar()
+        my_jj_manhattan = jj_manhattan(design,
+                                       name='test_jj_manhattan',
+                                       options={})
+        options = my_jj_manhattan.default_options
+
+        self.assertEqual(len(options), 10)
+        self.assertEqual(options['JJ_pad_lower_width'], '25um')
+        self.assertEqual(options['JJ_pad_lower_height'], '10um')
+        self.assertEqual(options['JJ_pad_lower_pos_x'], '0')
+        self.assertEqual(options['JJ_pad_lower_pos_y'], '0')
+        self.assertEqual(options['finger_lower_width'], '1um')
+        self.assertEqual(options['finger_lower_height'], '20um')
+        self.assertEqual(options['extension'], '1um')
+        self.assertEqual(options['x_pos'], '0um')
+        self.assertEqual(options['y_pos'], '0um')
+        self.assertEqual(options['layer'], '1')
 
 
 if __name__ == '__main__':
