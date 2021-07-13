@@ -57,6 +57,7 @@ jj_dolan
       jj_dolan.qgeometry_plot
       jj_dolan.qgeometry_table
       jj_dolan.rebuild
+      jj_dolan.to_script
    
 
    

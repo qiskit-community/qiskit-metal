@@ -57,6 +57,7 @@ jj_manhattan
       jj_manhattan.qgeometry_plot
       jj_manhattan.qgeometry_table
       jj_manhattan.rebuild
+      jj_manhattan.to_script
    
 
    
