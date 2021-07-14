@@ -17,7 +17,6 @@ import numpy as np
 from qiskit_metal import draw, Dict
 from qiskit_metal.qlibrary.core import BaseQubit
 
-
 class TransmonConcentric(BaseQubit):
     """The base `TrasmonConcentric` class .
 
