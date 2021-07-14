@@ -11,11 +11,14 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
+"""Concentric Transmon.
+"""
 
 from math import sin, cos
 import numpy as np
 from qiskit_metal import draw, Dict
 from qiskit_metal.qlibrary.core import BaseQubit
+
 
 class TransmonConcentric(BaseQubit):
     """The base `TrasmonConcentric` class .
