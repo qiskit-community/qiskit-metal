@@ -145,122 +145,112 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         default_setup = QAnalysis.default_setup
         self.assertEqual(len(default_setup), 0)
 
-    def test_analyses_qanalysisrenderer_default_setup(self):
+    def test_analyses_qsimulation_default_setup(self):
         """Test that the contents of default_setup in QSimulation haven't accidentally
         changed."""
         default_setup = QSimulation.default_setup
 
-        self.assertEqual(len(default_setup), 1)
-        self.assertEqual(len(default_setup['sim']), 2)
-        self.assertEqual(default_setup['sim']['name'], "Setup")
-        self.assertEqual(default_setup['sim']['reuse_selected_design'], True)
+        self.assertEqual(len(default_setup), 2)
+        self.assertEqual(default_setup['name'], "Setup")
+        self.assertEqual(default_setup['reuse_selected_design'], True)
 
     def test_analyses_epranalysis_default_setup(self):
         """Test that the contents of default_setup in EPRanalysis haven't accidentally changed."""
         default_setup = EPRanalysis.default_setup
 
-        self.assertEqual(len(default_setup), 1)
-        self.assertEqual(len(default_setup['epr']), 5)
-        self.assertEqual(len(default_setup['epr']['junctions']), 1)
-        self.assertEqual(len(default_setup['epr']['junctions']['jj']), 4)
-        self.assertEqual(len(default_setup['epr']['dissipatives']), 1)
+        self.assertEqual(len(default_setup), 5)
+        self.assertEqual(len(default_setup['junctions']), 1)
+        self.assertEqual(len(default_setup['junctions']['jj']), 4)
+        self.assertEqual(len(default_setup['dissipatives']), 1)
 
-        self.assertEqual(default_setup['epr']['junctions']['jj']['Lj_variable'],
-                         'Lj')
-        self.assertEqual(default_setup['epr']['junctions']['jj']['Cj_variable'],
-                         'Cj')
-        self.assertEqual(default_setup['epr']['junctions']['jj']['rect'], '')
-        self.assertEqual(default_setup['epr']['junctions']['jj']['line'], '')
+        self.assertEqual(default_setup['junctions']['jj']['Lj_variable'], 'Lj')
+        self.assertEqual(default_setup['junctions']['jj']['Cj_variable'], 'Cj')
+        self.assertEqual(default_setup['junctions']['jj']['rect'], '')
+        self.assertEqual(default_setup['junctions']['jj']['line'], '')
 
-        self.assertEqual(
-            default_setup['epr']['dissipatives']['dielectrics_bulk'], ['main'])
+        self.assertEqual(default_setup['dissipatives']['dielectrics_bulk'],
+                         ['main'])
 
-        self.assertEqual(default_setup['epr']['cos_trunc'], 8)
-        self.assertEqual(default_setup['epr']['fock_trunc'], 7)
-        self.assertEqual(default_setup['epr']['sweep_variable'], 'Lj')
+        self.assertEqual(default_setup['cos_trunc'], 8)
+        self.assertEqual(default_setup['fock_trunc'], 7)
+        self.assertEqual(default_setup['sweep_variable'], 'Lj')
 
     def test_analyses_lomanalysis_default_setup(self):
         """Test that the contents of default_setup in LOManalysis haven't accidentally changed."""
         default_setup = LOManalysis.default_setup
 
-        self.assertEqual(len(default_setup), 1)
-        self.assertEqual(len(default_setup['lom']), 3)
-        self.assertEqual(len(default_setup['lom']['junctions']), 2)
+        self.assertEqual(len(default_setup), 3)
+        self.assertEqual(len(default_setup['junctions']), 2)
 
-        self.assertEqual(default_setup['lom']['junctions']['Lj'], 12)
-        self.assertEqual(default_setup['lom']['junctions']['Cj'], 2)
-        self.assertEqual(default_setup['lom']['freq_readout'], 7.0)
-        self.assertEqual(default_setup['lom']['freq_bus'], [6.0, 6.2])
+        self.assertEqual(default_setup['junctions']['Lj'], 12)
+        self.assertEqual(default_setup['junctions']['Cj'], 2)
+        self.assertEqual(default_setup['freq_readout'], 7.0)
+        self.assertEqual(default_setup['freq_bus'], [6.0, 6.2])
 
     def test_analyses_lumpedelementssim_default_setup(self):
         """Test that the contents of default_setup in LumpedElementsSim haven't accidentally change."""
         default_setup = LumpedElementsSim.default_setup
 
-        self.assertEqual(len(default_setup), 1)
-        self.assertEqual(len(default_setup['sim']), 11)
+        self.assertEqual(len(default_setup), 11)
 
-        self.assertEqual(default_setup['sim']['freq_ghz'], 5.0)
-        self.assertEqual(default_setup['sim']['save_fields'], False)
-        self.assertEqual(default_setup['sim']['enabled'], True)
-        self.assertEqual(default_setup['sim']['max_passes'], 15)
-        self.assertEqual(default_setup['sim']['min_passes'], 2)
-        self.assertEqual(default_setup['sim']['min_converged_passes'], 2)
-        self.assertEqual(default_setup['sim']['percent_error'], 0.5)
-        self.assertEqual(default_setup['sim']['percent_refinement'], 30)
-        self.assertEqual(default_setup['sim']['auto_increase_solution_order'],
-                         True)
-        self.assertEqual(default_setup['sim']['solution_order'], 'High')
-        self.assertEqual(default_setup['sim']['solver_type'], 'Iterative')
+        self.assertEqual(default_setup['freq_ghz'], 5.0)
+        self.assertEqual(default_setup['save_fields'], False)
+        self.assertEqual(default_setup['enabled'], True)
+        self.assertEqual(default_setup['max_passes'], 15)
+        self.assertEqual(default_setup['min_passes'], 2)
+        self.assertEqual(default_setup['min_converged_passes'], 2)
+        self.assertEqual(default_setup['percent_error'], 0.5)
+        self.assertEqual(default_setup['percent_refinement'], 30)
+        self.assertEqual(default_setup['auto_increase_solution_order'], True)
+        self.assertEqual(default_setup['solution_order'], 'High')
+        self.assertEqual(default_setup['solver_type'], 'Iterative')
 
     def test_analyses_eigenmodesim_default_setup(self):
         """Test that the contents of default_setup in EigenmodeSim haven't accidentally changed."""
         default_setup = EigenmodeSim.default_setup
 
-        self.assertEqual(len(default_setup), 1)
-        self.assertEqual(len(default_setup['sim']), 9)
-        self.assertEqual(len(default_setup['sim']['vars']), 2)
+        self.assertEqual(len(default_setup), 9)
+        self.assertEqual(len(default_setup['vars']), 2)
 
-        self.assertEqual(default_setup['sim']['min_freq_ghz'], 1)
-        self.assertEqual(default_setup['sim']['n_modes'], 1)
-        self.assertEqual(default_setup['sim']['max_delta_f'], 0.5)
-        self.assertEqual(default_setup['sim']['max_passes'], 10)
-        self.assertEqual(default_setup['sim']['min_passes'], 1)
-        self.assertEqual(default_setup['sim']['min_converged'], 1)
-        self.assertEqual(default_setup['sim']['pct_refinement'], 30)
-        self.assertEqual(default_setup['sim']['basis_order'], 1)
+        self.assertEqual(default_setup['min_freq_ghz'], 1)
+        self.assertEqual(default_setup['n_modes'], 1)
+        self.assertEqual(default_setup['max_delta_f'], 0.5)
+        self.assertEqual(default_setup['max_passes'], 10)
+        self.assertEqual(default_setup['min_passes'], 1)
+        self.assertEqual(default_setup['min_converged'], 1)
+        self.assertEqual(default_setup['pct_refinement'], 30)
+        self.assertEqual(default_setup['basis_order'], 1)
 
-        self.assertEqual(default_setup['sim']['vars']['Lj'], '10 nH')
-        self.assertEqual(default_setup['sim']['vars']['Cj'], '0 fF')
+        self.assertEqual(default_setup['vars']['Lj'], '10 nH')
+        self.assertEqual(default_setup['vars']['Cj'], '0 fF')
 
     def test_analyses_ScatteringImpedanceSim_default_setup(self):
         """Test that the contents of default_setup in ScatteringImpedanceSim haven't accidentally
         changed."""
         default_setup = ScatteringImpedanceSim.default_setup
 
-        self.assertEqual(len(default_setup), 1)
-        self.assertEqual(len(default_setup['sim']), 9)
-        self.assertEqual(len(default_setup['sim']['vars']), 2)
-        self.assertEqual(len(default_setup['sim']['sweep_setup']), 7)
+        self.assertEqual(len(default_setup), 9)
+        self.assertEqual(len(default_setup['vars']), 2)
+        self.assertEqual(len(default_setup['sweep_setup']), 7)
 
-        self.assertEqual(default_setup['sim']['freq_ghz'], 5)
-        self.assertEqual(default_setup['sim']['max_delta_s'], 0.1)
-        self.assertEqual(default_setup['sim']['max_passes'], 10)
-        self.assertEqual(default_setup['sim']['min_passes'], 1)
-        self.assertEqual(default_setup['sim']['min_converged'], 1)
-        self.assertEqual(default_setup['sim']['pct_refinement'], 30)
-        self.assertEqual(default_setup['sim']['basis_order'], 1)
+        self.assertEqual(default_setup['freq_ghz'], 5)
+        self.assertEqual(default_setup['max_delta_s'], 0.1)
+        self.assertEqual(default_setup['max_passes'], 10)
+        self.assertEqual(default_setup['min_passes'], 1)
+        self.assertEqual(default_setup['min_converged'], 1)
+        self.assertEqual(default_setup['pct_refinement'], 30)
+        self.assertEqual(default_setup['basis_order'], 1)
 
-        self.assertEqual(default_setup['sim']['vars']['Lj'], '10 nH')
-        self.assertEqual(default_setup['sim']['vars']['Cj'], '0 fF')
+        self.assertEqual(default_setup['vars']['Lj'], '10 nH')
+        self.assertEqual(default_setup['vars']['Cj'], '0 fF')
 
-        self.assertEqual(default_setup['sim']['sweep_setup']['name'], 'Sweep')
-        self.assertEqual(default_setup['sim']['sweep_setup']['start_ghz'], 2.0)
-        self.assertEqual(default_setup['sim']['sweep_setup']['stop_ghz'], 8.0)
-        self.assertEqual(default_setup['sim']['sweep_setup']['count'], 101)
-        self.assertEqual(default_setup['sim']['sweep_setup']['step_ghz'], None)
-        self.assertEqual(default_setup['sim']['sweep_setup']['type'], 'Fast')
-        self.assertEqual(default_setup['sim']['sweep_setup']['save_fields'],
-                         False)
+        self.assertEqual(default_setup['sweep_setup']['name'], 'Sweep')
+        self.assertEqual(default_setup['sweep_setup']['start_ghz'], 2.0)
+        self.assertEqual(default_setup['sweep_setup']['stop_ghz'], 8.0)
+        self.assertEqual(default_setup['sweep_setup']['count'], 101)
+        self.assertEqual(default_setup['sweep_setup']['step_ghz'], None)
+        self.assertEqual(default_setup['sweep_setup']['type'], 'Fast')
+        self.assertEqual(default_setup['sweep_setup']['save_fields'], False)
 
 
 if __name__ == '__main__':

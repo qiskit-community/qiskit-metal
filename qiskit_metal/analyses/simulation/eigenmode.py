@@ -45,15 +45,15 @@ class EigenmodeSim(QSimulation):
         * convergence_t (pd.DataFrame): Convergence of the eigenmode frequency.
 
     """
-    default_setup = Dict(sim=Dict(min_freq_ghz=1,
-                                  n_modes=1,
-                                  max_delta_f=0.5,
-                                  max_passes=10,
-                                  min_passes=1,
-                                  min_converged=1,
-                                  pct_refinement=30,
-                                  basis_order=1,
-                                  vars=Dict(Lj='10 nH', Cj='0 fF')))
+    default_setup = Dict(min_freq_ghz=1,
+                         n_modes=1,
+                         max_delta_f=0.5,
+                         max_passes=10,
+                         min_passes=1,
+                         min_converged=1,
+                         pct_refinement=30,
+                         basis_order=1,
+                         vars=Dict(Lj='10 nH', Cj='0 fF'))
     """Default setup."""
 
     # supported labels for data generated from the simulation
@@ -76,8 +76,7 @@ class EigenmodeSim(QSimulation):
         to prepare for eignemode analysis, then it executes it. Finally it recovers the
         output of the analysis and stores it in self.convergence_t and self.convergence_f.
         """
-        self.sim_setup_name = self.renderer.initialize_eigenmode(
-            **self.setup.sim)
+        self.sim_setup_name = self.renderer.initialize_eigenmode(**self.setup)
 
         self.renderer.analyze_setup(self.sim_setup_name)
         self.compute_convergences()

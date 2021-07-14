@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2017, 2020.
+# (C) Copyright IBM 2017, 2021.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -30,7 +30,7 @@ class QSimulation(QAnalysis):
         * sim_setup_name (str): Name given to the current setup.
     """
 
-    default_setup = Dict(sim=Dict(name="Setup", reuse_selected_design=True))
+    default_setup = Dict(name="Setup", reuse_selected_design=True)
     """Default setup"""
 
     # supported labels for data generated from the simulation
@@ -109,7 +109,7 @@ class QSimulation(QAnalysis):
         design_name = self.renderer.execute_design(
             design_name,
             solution_type=solution_type,
-            force_redraw=self.setup.sim.reuse_selected_design,
+            force_redraw=self.setup.reuse_selected_design,
             **design_selection)
         return design_name
 

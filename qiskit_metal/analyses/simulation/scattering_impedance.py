@@ -51,21 +51,21 @@ class ScatteringImpedanceSim(QSimulation):
         * param_s (pd.DataFrame): Scattering matrix.
 
     """
-    default_setup = Dict(sim=Dict(freq_ghz=5,
-                                  max_delta_s=0.1,
-                                  max_passes=10,
-                                  min_passes=1,
-                                  min_converged=1,
-                                  pct_refinement=30,
-                                  basis_order=1,
-                                  vars=Dict(Lj='10 nH', Cj='0 fF'),
-                                  sweep_setup=Dict(name="Sweep",
-                                                   start_ghz=2.0,
-                                                   stop_ghz=8.0,
-                                                   count=101,
-                                                   step_ghz=None,
-                                                   type="Fast",
-                                                   save_fields=False)))
+    default_setup = Dict(freq_ghz=5,
+                         max_delta_s=0.1,
+                         max_passes=10,
+                         min_passes=1,
+                         min_converged=1,
+                         pct_refinement=30,
+                         basis_order=1,
+                         vars=Dict(Lj='10 nH', Cj='0 fF'),
+                         sweep_setup=Dict(name="Sweep",
+                                          start_ghz=2.0,
+                                          stop_ghz=8.0,
+                                          count=101,
+                                          step_ghz=None,
+                                          type="Fast",
+                                          save_fields=False))
     """Default setup."""
 
     # supported labels for data generated from the simulation
@@ -89,7 +89,7 @@ class ScatteringImpedanceSim(QSimulation):
         output of the analysis and stores it in self.params_z/params_y/params_s.
         """
         self.sim_setup_name, self.sweep_name = self.renderer.initialize_drivenmodal(
-            **self.setup.sim)
+            **self.setup)
 
         self.renderer.analyze_sweep(self.sweep_name, self.sim_setup_name)
         # TODO: return the impedance, admittance and scattering matrices for later use

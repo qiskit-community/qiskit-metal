@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2017, 2020.
+# (C) Copyright IBM 2017, 2021.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -188,18 +188,22 @@ class QAnalysis(ABC):
         else:
             print("The analysis setup has to be defined as a dictionary")
 
-    def setup_update(self, section: str, **kwargs):
+    def setup_update(self, section: str = None, **kwargs):
         """Intended to modify multiple setup settings at once, while retaining previous settings.
         If you intend to change a single setting, the better way is: `setup.setting1 = value`.
 
         Args:
             section (str): Setup section that contains the setup keys to update.
         """
-        if section in self._setup:
+        if section in self._setup or section is None:
             unsupported_keys = list()
             for k, v in kwargs.items():
-                if k in self._setup[section]:
-                    self._setup[section][k] = v
+                if section is None:
+                    s = self._setup
+                else:
+                    s = self._setup[section]
+                if k in s:
+                    s[k] = v
                 else:
                     unsupported_keys.append(k)
             if unsupported_keys:
