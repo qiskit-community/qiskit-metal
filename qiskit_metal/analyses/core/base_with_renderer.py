@@ -86,7 +86,8 @@ class QAnalysisRenderer(QAnalysis):
         """
         self.renderer.start()
 
-    def _render(self, solution_type, **design_selection) -> str:
+    def _render(self, solution_type, vars_to_initialize,
+                **design_selection) -> str:
         """Renders the design from qiskit metal into the selected renderer.
         First it decides the tentative name of the design. Then it runs the renderer method
         that executes the design rendering. It returns the final design name.
@@ -94,6 +95,7 @@ class QAnalysisRenderer(QAnalysis):
         Args:
             solution_type (str): The type of simulation solution to apply.
                 Supported so far: eigenmode, capacitive, drivenmodal
+            vars_to_initialize (Dict): The variables to initialize, i.e. Ljx, Cjx.
 
         Returns:
             (str): Final design name that the renderer used.
@@ -110,6 +112,7 @@ class QAnalysisRenderer(QAnalysis):
             design_name,
             solution_type=solution_type,
             force_redraw=self.setup.sim.reuse_selected_design,
+            vars_to_initialize=vars_to_initialize,
             **design_selection)
         return design_name
 
