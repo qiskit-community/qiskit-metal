@@ -57,6 +57,7 @@ NSquareSpiral
       NSquareSpiral.qgeometry_plot
       NSquareSpiral.qgeometry_table
       NSquareSpiral.rebuild
+      NSquareSpiral.to_script
    
 
    

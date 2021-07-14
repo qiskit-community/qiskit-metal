@@ -1022,7 +1022,7 @@ class QDesign():
         """Look at the metadata dict to get list of tables the component uses.
 
         Args:
-            a_metadata (dict): Use dict from gather_all_childern for metadata.
+            a_metadata (dict): Use dict from gather_all_children for metadata.
 
         Returns:
             list: List of tables, the component-developer, denoted as being used in metadata.
@@ -1037,3 +1037,46 @@ class QDesign():
                     uses_table.append(table_name)
 
         return uses_table
+
+    def to_python_script(self, thin=True, printout: bool = False):
+        """
+        Generates a python script from current chip
+        Args:
+            printout (bool): Whether to print the script
+
+        Returns:
+            str: Python script for current chip
+        """
+        header = """
+from qiskit_metal import designs, MetalGUI
+
+design = designs.DesignPlanar()
+
+gui = MetalGUI(design)
+"""
+        footer = """
+gui.rebuild()
+gui.autoscale()
+        """
+        # all imports at front
+        # option -- only the options of the component that are different from the default options are specified.
+        # vertically aligned dictionary (pretty print)
+        imports = set()
+        body = ""
+        for comp_name in self.components:
+            comp = self.components[comp_name]
+            i, c = comp.to_script(thin=thin, is_part_of_chip=True)
+            imports.add(i)
+            body += c
+            body += """
+"""
+        str_import = ""
+        for i in imports:
+            str_import += f"""
+{i}
+"""
+
+        python_script = str_import + header + body + footer
+        if printout:
+            print(python_script)
+        return python_script

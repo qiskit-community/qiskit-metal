@@ -57,6 +57,7 @@ RectangleHollow
       RectangleHollow.qgeometry_plot
       RectangleHollow.qgeometry_table
       RectangleHollow.rebuild
+      RectangleHollow.to_script
    
 
    

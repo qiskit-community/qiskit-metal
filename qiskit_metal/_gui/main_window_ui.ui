@@ -1659,9 +1659,9 @@
   </connection>
   <connection>
    <sender>actionSaveAs</sender>
-   <signal>toggled(bool)</signal>
+   <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
-   <slot>save_design_as()</slot>
+   <slot>save_design_copy()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -1831,7 +1831,7 @@
   <slot>full_refresh()</slot>
   <slot>rebuild()</slot>
   <slot>load_stylesheet_metal_dark()</slot>
-  <slot>save_design_as()</slot>
+  <slot>save_design_copy()</slot>
   <slot>save_window_settings()</slot>
   <slot>toggle_all_docks()</slot>
   <slot>new_qcomponent()</slot>

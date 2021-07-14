@@ -57,6 +57,7 @@ OpenToGround
       OpenToGround.qgeometry_plot
       OpenToGround.qgeometry_table
       OpenToGround.rebuild
+      OpenToGround.to_script
    
 
    
