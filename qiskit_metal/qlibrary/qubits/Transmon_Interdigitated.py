@@ -33,6 +33,9 @@ class TransmonInterdigitated(QComponent):
     capacitance of the structure. There are three coupling capacitor pads with qpins
     defined; these can be connected to other structures in a design using CPWs.
 
+    .. image::
+        TransmonInterdigitated.png
+
     Default Options:
         * pad_width: '1000um' -- width of the large rectanglular pads on either side
           of the junction

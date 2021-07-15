@@ -69,7 +69,7 @@ class TransmonPocket(BaseQubit):
                                             +1
 
     .. image::
-        QComponent_Qubit_Transmon_Pocket.png
+        TransmonPocket.png
 
     BaseQubit Default Options:
         * pos_x: '0um'
