@@ -36,9 +36,9 @@ class TransmonConcentric(BaseQubit):
         * pos_x: '0um'
         * pos_y: '0um'
         * connection_pads: empty Dict -- the dictionary which contains all active
-        connection lines for the qubit.
+          connection lines for the qubit.
         * _default_connection_pads: empty Dict -- the default values for the
-        (if any) connection lines of the qubit.
+          (if any) connection lines of the qubit.
 
     Default Options:
         * width: '1000um' -- Width of transmon pocket
@@ -50,12 +50,12 @@ class TransmonConcentric(BaseQubit):
         * jj_w: '10um' -- Josephson Junction width
         * res_s: '100um' -- Space between top electrode and readout resonator
         * res_ext: '100um' -- Extension of readout resonator in x-direction
-        beyond midpoint of transmon
+          beyond midpoint of transmon
         * fbl_rad: '100um' -- Radius of the flux bias line loop
         * fbl_sp: '100um' -- Spacing between metal pad and flux bias loop
         * fbl_gap: '80um' -- Space between parallel lines of the flux bias loop
         * fbl_ext: '300um' -- Run length of flux bias line between circular
-        loop and edge of pocket
+          loop and edge of pocket
         * pocket_w: '1500um' -- Transmon pocket width
         * pocket_h: '1000um' -- Transmon pocket height
         * position_x: '2.0mm' -- Translate component to be centered on this x-coordinate
