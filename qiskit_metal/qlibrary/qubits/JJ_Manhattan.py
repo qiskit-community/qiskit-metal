@@ -32,6 +32,9 @@ class jj_manhattan(QComponent):
     of two overlapping thin metal strips, each connected to a
     larger metallic pad region.
 
+    .. image::
+        JJManhattan.png
+
     Default Options:
         * JJ_pad_lower_width: '4um' -- width of lower JJ metal region
         * JJ_pad_lower_height: '2um' -- height of lower JJ metal region

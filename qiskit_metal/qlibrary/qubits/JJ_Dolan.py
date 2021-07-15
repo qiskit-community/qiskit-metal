@@ -34,6 +34,9 @@ class jj_dolan(QComponent):
     smaller rectangle drawn on a different metal level
     which overlaps part of one of the rectangular fingers.
 
+    .. image::
+        JJDolan.png
+
     Default Options:
         * JJ_pad_lower_width: '25um' -- width of lower JJ metal region
         * JJ_pad_lower_height: '10um' -- height of lower JJ metal region
