@@ -28,6 +28,7 @@ from pyEPR.calcs.convert import Convert
 from pyEPR.calcs.constants import e_el as ele, hbar
 
 from qiskit_metal.toolbox_python.utility_functions import check_all_required_args_provided
+from qiskit_metal.analyses.em.cpw_calculations import guided_wavelength
 from qiskit_metal import logger
 
 BasisTransform = namedtuple(
@@ -273,8 +274,29 @@ class CircuitGraph:
         self._node_jj_basis = None
 
     def __str__(self):
-        #TODO
-        pass
+        str_out = 'node_jj_basis:\n'
+        str_out += '-------------\n'
+        str_out += '\n'
+        str_out += f'{self.node_jj_basis}\n'
+        str_out += '\n'
+        str_out += 'nodes_keep:\n'
+        str_out += '-------------\n'
+        str_out += '\n'
+        str_out += f'{self.get_nodes_keep()}\n'
+        str_out += '\n'
+        str_out += '\n'
+        str_out += 'L_inv_k (reduced inverse inductance matrix):\n'
+        str_out += '-------------\n'
+        str_out += '\n'
+        str_out += f'{self.L_inv_k}\n'
+        str_out += '\n'
+        str_out += 'C_k (reduced capacitance matrix):\n'
+        str_out += '-------------\n'
+        str_out += '\n'
+        str_out += f'{self.C_k}\n'
+        str_out += '\n'
+
+        return str_out
 
     def _adj_list_to_mat(self, adj_list):
         idx = self.idx
@@ -641,6 +663,14 @@ class FluxoniumBuilder(QuantumBuilder):
 class ResonatorBuilder(QuantumBuilder):
 
     system_type = 'RESONATOR'
+    default_opts = {
+        'design': {
+            'line_width': 10 * 1e-6,  # FIXME: remove this
+            'line_gap': 6 * 1e-6,  # FIXME: remove this
+            'substrate_thickness': 750 * 1e-6,
+            'film_thickness': 200 * 1e-9
+        }
+    }
 
     # pylint: disable=protected-access
     def make_quantum(self, subsystem: Subsystem):
@@ -659,13 +689,16 @@ class ResonatorBuilder(QuantumBuilder):
             raise ValueError('f_res is not defined.')
         # convert to MHz
         f_res *= 1000
-        vp = subsystem.q_opts.get('vp')
-        if vp is None:
-            raise ValueError('vp is not defined.')
+
+        # FIXME: take design options from q_opts
+        lambdaG, _, _ = guided_wavelength(
+            f_res * 10**6, **ResonatorBuilder.default_opts['design'])
+        vp = f_res * MHzRad * lambdaG / (2 * np.pi)
+
         Z0 = subsystem.q_opts.get('Z0')
         if Z0 is None:
             raise ValueError('Z0 is not defined.')
-        res_opts = dict(E_osc=f_res, truncated_dim=4)
+        res_opts = dict(E_osc=f_res, truncated_dim=3)
         #FIXME should NOT pass in q_opts to Oscillator
         resonator = scq.Oscillator(**res_opts)
         subsystem._quantum_system = resonator
