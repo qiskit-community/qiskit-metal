@@ -331,7 +331,8 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
             design, 'my_name')
         options = my_transmon_concentric.default_options
 
-        self.assertEqual(len(options), 19)
+        self.assertEqual(len(options), 21)
+        self.assertEqual(options['chip'], 'main')
         self.assertEqual(options['width'], '1000um')
         self.assertEqual(options['height'], '1000um')
         self.assertEqual(options['layer'], '1')
@@ -351,6 +352,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['position_y'], '2.0mm')
         self.assertEqual(options['rotation'], '0.0')
         self.assertEqual(options['cpw_width'], '10.0um')
+        self.assertEqual(options['inductor_width'], '5.0um')
 
     def test_qlibrary_transmon_cross_fl_options(self):
         """Test that default_options of transmon_cross_fl were not accidentally changed."""

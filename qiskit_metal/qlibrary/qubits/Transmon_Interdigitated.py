@@ -11,8 +11,9 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
+"""Interdigitated Transmon.
+"""
 
-#from math import *
 from math import sin, cos
 from qiskit_metal import draw, Dict
 from qiskit_metal.qlibrary.core.base import QComponent
@@ -73,12 +74,14 @@ class TransmonInterdigitated(QComponent):
         * rotation: '0.0' -- the angle at which the entire structure is rotated
         * rotation_top_pad: '180' -- internal coordinate defining the angle of rotation
           between top and bottom pads
+        * inductor_width: '20.0um' -- the width of the Josephson Junction
         * layer: '1' -- all objects are drawn assuming they are part of the same layer on a
           the chip
     """
 
     # Default drawing options
-    default_options = Dict(pad_width='1000um',
+    default_options = Dict(chip="main",
+                           pad_width='1000um',
                            pad_height='300um',
                            finger_width='50um',
                            finger_height='100um',
@@ -102,6 +105,7 @@ class TransmonInterdigitated(QComponent):
                            position_y='0um',
                            rotation='0.0',
                            rotation_top_pad='180',
+                           inductor_width='20um',
                            layer='1')
     """Default drawing options"""
 
@@ -123,10 +127,11 @@ class TransmonInterdigitated(QComponent):
             p.finger_width, p.finger_height, p.pad_pos_x, p.pad_pos_y +
             0.49999 * (p.pad_height) + 0.49999 * (p.finger_height))
 
-        # draw the Josephson Junction
-        rect_jj = draw.rectangle(
-            p.jj_width, p.finger_space, p.pad_pos_x,
-            0.5 * (p.pad_height) + p.finger_height + 0.5 * (p.finger_space))
+        # draw the Josephson Junction as a LineString
+        rect_jj = draw.LineString([
+            (0, 0.5 * p.pad_height + p.finger_height),
+            (0, 0.5 * p.pad_height + p.finger_height + p.finger_space)
+        ])
 
         # draw the first comb to the right of the lower finger as a rectangle
         comb1_lower = draw.rectangle(
@@ -179,9 +184,9 @@ class TransmonInterdigitated(QComponent):
         top = draw.translate(bottom, 0.0, p.pad_height + p.finger_space)
         top = draw.rotate(top, p.rotation_top_pad)
 
-        # merge everything into a single design
-        design = draw.union(bottom, top, rect_jj, coupling_capacitor,
-                            cc_topleft, cc_topright)
+        # merge everything into a single design (except the JJ!)
+        design = draw.union(bottom, top, coupling_capacitor, cc_topleft,
+                            cc_topright)
 
         # draw the transmon pocket bounding box
         pocket = draw.rectangle(1.5 * p.pad_width, 5.0 * p.pad_height)
@@ -192,17 +197,30 @@ class TransmonInterdigitated(QComponent):
             design, 0.0,
             -0.5 * p.pad_height - p.finger_height - 0.5 * p.finger_space)
 
+        rect_jj = draw.translate(
+            rect_jj, 0.0,
+            -0.5 * p.pad_height - p.finger_height - 0.5 * p.finger_space)
+
         # now translate the final structure according to the user input
         design = draw.rotate(design, p.rotation, origin=(0, 0))
         design = draw.translate(design, p.position_x, p.position_y)
+
+        rect_jj = draw.rotate(rect_jj, p.rotation, origin=(0, 0))
+        rect_jj = draw.translate(rect_jj, p.position_x, p.position_y)
 
         pocket = draw.rotate(pocket, p.rotation, origin=(0, 0))
         pocket = draw.translate(pocket, p.position_x, p.position_y)
 
         geom = {'design': design}
         geom_pocket = {'pocket': pocket}
+        geom_jj = {'design': rect_jj}
         self.add_qgeometry('poly', geom, layer=p.layer, subtract=False)
         self.add_qgeometry('poly', geom_pocket, layer=p.layer, subtract=True)
+        self.add_qgeometry('junction',
+                           geom_jj,
+                           layer=p.layer,
+                           subtract=False,
+                           width=p.inductor_width)
 
         ###################################################################
 
