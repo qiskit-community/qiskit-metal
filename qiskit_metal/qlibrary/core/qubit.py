@@ -25,10 +25,6 @@ class BaseQubit(QComponent):
 
     Inherits components.QComponent class
 
-    GUI interfaceing
-        _img : set the name of the file such as 'Metal_Object.png'. YOu must place this
-        file in the qiskit_metal._gui._imgs directory
-
     Default Options:
         * pos_x: '0um'
         * pos_y: '0um'
@@ -36,12 +32,11 @@ class BaseQubit(QComponent):
         * _default_connection_pads: empty Dict -- The default values for the (if any) connection lines of the qubit.
     """
 
-    _img = 'Metal_Qubit.png'
     default_options = Dict(pos_x='0um',
                            pos_y='0um',
                            connection_pads=Dict(),
                            _default_connection_pads=Dict())
-    """Default drawing options"""
+    """Default options."""
 
     component_metadata = Dict(short_name='Q', _qgeometry_table_poly='True')
     """Component metadata"""

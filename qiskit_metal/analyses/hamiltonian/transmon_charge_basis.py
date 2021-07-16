@@ -52,7 +52,7 @@ class Hcpb:
             Ej (float): Josephson energy of the JJ
             Ec (float): Charging energy of the CPB
             ng (float): Offset charge of the CPB (ng=0.5 is the sweet spot).
-                        `ng` only needs to run betweren -0.5 and 0.5.
+                        `ng` only needs to run between -0.5 and 0.5.
                         `ng` is defined in units of cooper pairs (2e)
 
         Example use:

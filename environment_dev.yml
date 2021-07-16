@@ -1,0 +1,30 @@
+name: qiskit-metal
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python>=3.6, <=3.7.8
+  - pip
+  - addict
+  - cycler
+  - descartes
+  - docutils
+  - gdspy>=1.5.2
+  - geopandas
+  - ipython
+  - jedi>=0.17
+  - matplotlib
+  - numpy<1.20
+  - pandas
+  - pint
+  - pyepr-quantum>=0.8.4.5
+  - pygments
+  - pyqode.python
+  - pyside2==5.9.0a1
+  - qutip
+  - scipy
+  - shapely
+  - jupyter
+  - wheel
+  - pip:
+      - "--editable=git+https://github.com/jojurgens/pyqode.qt.git@master#egg=pyqode.qt"

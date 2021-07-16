@@ -11,3 +11,20 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
+"""
+====================================================
+Analyses (:mod:`qiskit_metal.analyses.quantization`)
+====================================================
+
+.. currentmodule:: qiskit_metal.analyses.quantization
+
+Module containing all Qiskit Metal quantization analyses.
+
+"""
+
+from .. import config
+from .sim_lumped_elements import LumpedElementsSim
+from .lumped_oscillator_model import LOManalysis
+from .sim_eigenmode import EigenmodeSim
+from .energy_participation_ratio import EPRanalysis
+from .sim_scattering_impedance import ScatteringImpedanceSim
