@@ -1530,6 +1530,10 @@ class QAnsysRenderer(QRendererAnalysis):
             if self.pinfo.design:
                 for k, v in variables.items():
                     self.pinfo.design.set_variable(k, v)
+            else:
+                self.logger.warning(
+                    'Please create a design before setting variables, otherwise all variables will be set to 0 during rendering by default.'
+                )
 
     # TODO: epr methods below should not be in the renderer, but in the analysis files.
     #  Thus needs to remove the dependency from pinfo, which is Ansys-specific.

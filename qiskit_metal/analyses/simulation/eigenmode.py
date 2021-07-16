@@ -126,7 +126,7 @@ class EigenmodeSim(QSimulation):
         if not self.renderer_initialized:
             self._initialize_renderer()
 
-        vars_to_initialize = self.setup.sim.vars
+        vars_to_initialize = self.setup.vars
         renderer_design_name = self._render(
             name=name,
             solution_type='eigenmode',
