@@ -127,7 +127,9 @@ html_static_path = ['_static']
 templates_path = ['_templates']
 html_css_files = ['style.css', 'custom.css', 'gallery.css']
 
-exclude_patterns = ['_build', 'build', '*.ipynb', '**.ipynb_checkpoints']
+exclude_patterns = [
+    '_build', 'build', '*.ipynb', '**.ipynb_checkpoints', '_utility'
+]
 
 nbsphinx_execute_arguments = [
     "--InlineBackend.figure_formats={'svg', 'pdf'}",

@@ -24,6 +24,9 @@ class CircleRaster(QComponent):
 
     Inherits QComponent class.
 
+    .. image::
+        CircleRaster.png
+
     Default Options:
         * radius: '300um'
         * pos_x: '0um'
