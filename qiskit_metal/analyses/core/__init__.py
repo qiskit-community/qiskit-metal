@@ -2,7 +2,7 @@
 
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2017, 2020.
+# (C) Copyright IBM 2017, 2021.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -13,14 +13,14 @@
 # that they have been altered from the originals.
 """
 ====================================================
-Analyses (:mod:`qiskit_metal.analyses.base`)
+Analyses (:mod:`qiskit_metal.analyses.core`)
 ====================================================
 
-.. currentmodule:: qiskit_metal.analyses.base
+.. currentmodule:: qiskit_metal.analyses.core
 
 Module containing base classes and interfaces to be inherited by analyses classes.
 
 """
 
 from .base import QAnalysis
-from .base_with_renderer import QAnalysisRenderer
+from .simulation import QSimulation

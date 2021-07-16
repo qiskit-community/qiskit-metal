@@ -57,7 +57,7 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
 
 
     .. image::
-        QComponent_Qubit_Transmon_Pocket_CL.png
+        TransmonPocketCL.png
 
 
     Charge Line:

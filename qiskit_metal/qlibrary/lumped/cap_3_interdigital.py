@@ -53,7 +53,7 @@ class Cap3Interdigital(QComponent):
                  |
 
     .. image::
-        ThreeFingerCap_V1.png
+        Cap3Interdigital.png
 
     Default Options:
         * layer: '1'

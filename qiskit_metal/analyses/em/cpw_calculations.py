@@ -48,7 +48,7 @@ def guided_wavelength(freq,
                       film_thickness,
                       dielectric_constant=11.45):
     """A simple calculator to determine the guided wavelength of a planar CPW
-    transmission line. Assumes the substrate has relative permability of 1.
+    transmission line. Assumes the substrate has relative permeability of 1.
     Assumes package grounds are far away.
 
     Args:

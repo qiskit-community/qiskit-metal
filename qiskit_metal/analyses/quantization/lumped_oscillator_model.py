@@ -18,7 +18,8 @@ from pint import UnitRegistry
 from pyEPR.calcs.convert import Convert
 
 from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
-from . import LumpedElementsSim
+from ..core import QAnalysis
+from ..simulation import LumpedElementsSim
 
 from ... import Dict
 from ... import config
@@ -28,7 +29,7 @@ if not config.is_building_docs():
 
 
 # TODO: eliminate every reference to "renderer" in this file
-class LOManalysis(LumpedElementsSim):
+class LOManalysis(QAnalysis):
     """Performs Lumped Oscillator Model analysis on a simulated or user-provided capacitance matrix.
 
     Default Setup:
@@ -45,8 +46,9 @@ class LOManalysis(LumpedElementsSim):
             at every pass of the simulation
 
     """
-    default_setup = Dict(lom=Dict(
-        junctions=Dict(Lj=12, Cj=2), freq_readout=7.0, freq_bus=[6.0, 6.2]))
+    default_setup = Dict(junctions=Dict(Lj=12, Cj=2),
+                         freq_readout=7.0,
+                         freq_bus=[6.0, 6.2])
     """Default setup."""
 
     # supported labels for data generated from the simulation
@@ -62,7 +64,9 @@ class LOManalysis(LumpedElementsSim):
             renderer_name (str, optional): Which renderer to use. Defaults to 'q3d'.
         """
         # set design and renderer
-        super().__init__(design, renderer_name)
+        self.sim = None if renderer_name is None else LumpedElementsSim(
+            design, renderer_name)
+        super().__init__()
 
     @property
     def lumped_oscillator(self) -> dict:
@@ -113,14 +117,16 @@ class LOManalysis(LumpedElementsSim):
         self.set_data('lumped_oscillator_all', data)
 
     def run(self, *args, **kwargs):
-        """Executes sequentially the system capacitance simulation and lom extraction by
-        executing the methods LumpedElementsSim.run_sim(`*args`, `**kwargs`) and LOManalysis.run_lom().
+        """Executes sequentially the system capacitance simulation (if a renderer was provided
+        at creation of this object) and lom extraction by executing the methods
+        LumpedElementsSim.run_sim(`*args`, `**kwargs`) and LOManalysis.run_lom().
         For input parameter, see documentation for LumpedElementsSim.run_sim().
 
         Returns:
             (dict): Pass numbers (keys) and respective lump oscillator information (values).
         """
-        self.run_sim(*args, **kwargs)
+        if isinstance(self.sim, LumpedElementsSim):
+            self.sim.run(*args, **kwargs)
         return self.run_lom()
 
     def run_lom(self):
@@ -131,17 +137,18 @@ class LOManalysis(LumpedElementsSim):
             dict: Pass numbers (keys) and their respective capacitance matrices (values).
         """
         # wipe data from the previous run (if any)
-        self.clear_data(self.data_labels)
+        self.clear_data()
 
-        s = self.setup.lom
+        s = self.setup
 
-        if self.capacitance_matrix is None:
+        if self.sim.capacitance_matrix is None:
             self.logger.warning(
                 'Please initialize the capacitance_matrix before executing this method.'
             )
             return
-        if not self.capacitance_all_passes:
-            self.capacitance_all_passes[1] = self.capacitance_matrix.values
+        if not self.sim.capacitance_all_passes:
+            self.sim.capacitance_all_passes[
+                1] = self.sim.capacitance_matrix.values
 
         ureg = UnitRegistry()
         ic_amps = Convert.Ic_from_Lj(s.junctions.Lj, 'nH', 'A')
@@ -158,7 +165,7 @@ class LOManalysis(LumpedElementsSim):
 
         # get the LOM for every pass
         all_res = {}
-        for idx_cmat, df_cmat in self.capacitance_all_passes.items():
+        for idx_cmat, df_cmat in self.sim.capacitance_all_passes.items():
             res = extract_transmon_coupled_Noscillator(
                 df_cmat,
                 ic_amps,
@@ -167,9 +174,10 @@ class LOManalysis(LumpedElementsSim):
                 fbus,
                 fread,
                 g_scale=1,
-                print_info=bool(idx_cmat == len(self.capacitance_all_passes)))
+                print_info=bool(
+                    idx_cmat == len(self.sim.capacitance_all_passes)))
             all_res[idx_cmat] = res
-        self.lumped_oscillator = all_res[len(self.capacitance_all_passes)]
+        self.lumped_oscillator = all_res[len(self.sim.capacitance_all_passes)]
         all_res = pd.DataFrame(all_res).transpose()
         all_res['χr MHz'] = abs(all_res['chi_in_MHz'].apply(lambda x: x[0]))
         all_res['gr MHz'] = abs(all_res['gbus'].apply(lambda x: x[0]))
@@ -184,8 +192,8 @@ class LOManalysis(LumpedElementsSim):
         """
         if self.lumped_oscillator_all is None or args or kwargs:
             self.run_lom(*args, **kwargs)
-        # TODO: remove analysis plots from pyEPR and move it here
-        self.renderer.plot_convergence_main(self.lumped_oscillator_all)
+        # TODO: copy plot_convergence_main() from pyEPR and move it here
+        self.sim.renderer.plot_convergence_main(self.lumped_oscillator_all)
 
     def plot_convergence_chi(self, *args, **kwargs):
         """Plot convergence of chi and g, both in MHz, as a function of pass number.
@@ -195,4 +203,5 @@ class LOManalysis(LumpedElementsSim):
         """
         if self.lumped_oscillator_all is None or args or kwargs:
             self.run_lom(*args, **kwargs)
-        self.renderer.plot_convergence_chi(self.lumped_oscillator_all)
+        # TODO: copy plot_convergence_main() from pyEPR and move it here
+        self.sim.renderer.plot_convergence_chi(self.lumped_oscillator_all)

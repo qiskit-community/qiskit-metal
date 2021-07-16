@@ -60,6 +60,7 @@ TransmonPocket6
       TransmonPocket6.qgeometry_plot
       TransmonPocket6.qgeometry_table
       TransmonPocket6.rebuild
+      TransmonPocket6.to_script
    
 
    
