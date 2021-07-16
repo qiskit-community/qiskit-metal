@@ -45,6 +45,9 @@ class CapNInterdigital(QComponent):
                     |
                     +
 
+    .. image::
+        CapNInterdigital.png
+
     Options:
         * north_width: '10um' -- The width of the 'north' portion of the CPW transmission line
         * north_gap: '6um' -- The dielectric gap of the 'north' portion of the CPW transmission line

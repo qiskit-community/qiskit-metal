@@ -102,7 +102,7 @@ class TransmonPocket6(BaseQubit):
                                             +1
 
     .. image::
-        QComponent_Qubit_Transmon_Pocket.png
+        TransmonPocket6.png
     """
 
     # Default drawing options

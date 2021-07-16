@@ -61,6 +61,7 @@ TransmonPocketCL
       TransmonPocketCL.qgeometry_plot
       TransmonPocketCL.qgeometry_table
       TransmonPocketCL.rebuild
+      TransmonPocketCL.to_script
    
 
    
