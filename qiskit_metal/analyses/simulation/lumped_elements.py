@@ -17,12 +17,11 @@ import pandas as pd
 from pyEPR.ansys import ureg
 from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
 
-from ..core import QAnalysisRenderer
-
 from ... import Dict
+from ..core import QSimulation
 
 
-class LumpedElementsSim(QAnalysisRenderer):
+class LumpedElementsSim(QSimulation):
     """Compute Capacitance matrix using the selected renderer.
 
     Default Setup:
@@ -47,17 +46,17 @@ class LumpedElementsSim(QAnalysisRenderer):
         * cap_all_passes (list of pd.DataFrame): intermediate value, for inspection.
 
     """
-    default_setup = Dict(sim=Dict(freq_ghz=5.,
-                                  save_fields=False,
-                                  enabled=True,
-                                  max_passes=15,
-                                  min_passes=2,
-                                  min_converged_passes=2,
-                                  percent_error=0.5,
-                                  percent_refinement=30,
-                                  auto_increase_solution_order=True,
-                                  solution_order='High',
-                                  solver_type='Iterative'))
+    default_setup = Dict(freq_ghz=5.,
+                         save_fields=False,
+                         enabled=True,
+                         max_passes=15,
+                         min_passes=2,
+                         min_converged_passes=2,
+                         percent_error=0.5,
+                         percent_refinement=30,
+                         auto_increase_solution_order=True,
+                         solution_order='High',
+                         solver_type='Iterative')
     """Default setup."""
 
     # supported labels for data generated from the simulation
@@ -81,8 +80,7 @@ class LumpedElementsSim(QAnalysisRenderer):
         Finally it recovers the output of the analysis and stores it in self.capacitance_matrix.
         """
         # pylint: disable=attribute-defined-outside-init
-        self.sim_setup_name = self.renderer.initialize_cap_extract(
-            **self.setup.sim)
+        self.sim_setup_name = self.renderer.initialize_cap_extract(**self.setup)
 
         self.renderer.analyze_setup(self.sim_setup_name)
 

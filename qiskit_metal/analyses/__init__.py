@@ -30,7 +30,7 @@ Analysis Core
     :toctree:
 
     QAnalysis
-    QAnalysisRenderer
+    QSimulation
 
 Hamiltonian
 -----------
@@ -66,27 +66,34 @@ Quantization
 .. autosummary::
     :toctree:
 
-    LumpedElementsSim
     LOManalysis
-    EigenmodeSim
     EPRanalysis
-    ScatteringImpedanceSim
     lumped_capacitive
+
+Simulation
+------------
+
+.. autosummary::
+    :toctree:
+
+    LumpedElementsSim
+    EigenmodeSim
+    ScatteringImpedanceSim
 
 """
 
 from .. import config
 
-from .core.base import QAnalysis
-from .core.base_with_renderer import QAnalysisRenderer
+from .core import QAnalysis
+from .core import QSimulation
 from .em import cpw_calculations
 from .em import kappa_calculation
 from .quantization import lumped_capacitive
 from .quantization import EPRanalysis
 from .quantization import LOManalysis
-from .quantization import LumpedElementsSim
-from .quantization import EigenmodeSim
-from .quantization import ScatteringImpedanceSim
+from .simulation import LumpedElementsSim
+from .simulation import EigenmodeSim
+from .simulation import ScatteringImpedanceSim
 from .hamiltonian.transmon_charge_basis import Hcpb
 from .hamiltonian import HO_wavefunctions
 from .hamiltonian import transmon_analytics

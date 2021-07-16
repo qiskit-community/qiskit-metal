@@ -13,14 +13,16 @@
 # that they have been altered from the originals.
 """
 ====================================================
-Analyses (:mod:`qiskit_metal.analyses.core`)
+Analysis (:mod:`qiskit_metal.analyses.simulation`)
 ====================================================
 
-.. currentmodule:: qiskit_metal.analyses.core
+.. currentmodule:: qiskit_metal.analyses.simulation
 
-Module containing base classes and interfaces to be inherited by analyses classes.
+Module containing all Qiskit Metal simulation analyses.
 
 """
 
-from .base import QAnalysis
-from .simulation import QSimulation
+from .. import config
+from .lumped_elements import LumpedElementsSim
+from .eigenmode import EigenmodeSim
+from .scattering_impedance import ScatteringImpedanceSim

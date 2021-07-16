@@ -13,14 +13,15 @@
 # that they have been altered from the originals.
 
 from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
-from . import EigenmodeSim
+from ..core import QAnalysis
+from ..simulation import EigenmodeSim
 
 from ... import Dict
 
 
 # TODO: eliminate every reference to "renderer" in this file
-#  then change inheritance from QAnalysisRenderer to QAnalysis
-class EPRanalysis(EigenmodeSim):
+#  then change inheritance from QSimulation to QAnalysis
+class EPRanalysis(QAnalysis):
     """From an input eigenmode dataset, apply the Energy Participation Ratio analysis method.
 
     Default Setup:
@@ -47,18 +48,19 @@ class EPRanalysis(EigenmodeSim):
         * energy_elec_sub (float): Admittance matrix.
 
     """
-    default_setup = Dict(epr=Dict(junctions=Dict(
+    default_setup = Dict(junctions=Dict(
         jj=Dict(Lj_variable='Lj', Cj_variable='Cj', rect='', line='')),
-                                  dissipatives=Dict(dielectrics_bulk=['main']),
-                                  cos_trunc=8,
-                                  fock_trunc=7,
-                                  sweep_variable='Lj'))
+                         dissipatives=Dict(dielectrics_bulk=['main']),
+                         cos_trunc=8,
+                         fock_trunc=7,
+                         sweep_variable='Lj')
     """Default setup."""
 
     # supported labels for data generated from the simulation
     data_labels = ['energy_elec', 'energy_mag', 'energy_elec_sub']
     """Default data labels."""
 
+    # TODO: renderer_name should default to None. Need to create a set renderer method
     def __init__(self, design: 'QDesign', renderer_name: str = 'hfss'):
         """Performs Energy Participation Ratio (EPR) analysis on a simulated or
         user-provided eigenmode matrix.
@@ -69,10 +71,9 @@ class EPRanalysis(EigenmodeSim):
             renderer_name (str, optional): Which renderer to use. Defaults to 'hfss'.
         """
         # set design and renderer
-        super().__init__(design, renderer_name)
-
-        # TODO: define the input variables == define the output variables of the
-        #  EigenmodeSim class. this will likely require to find them inside pinfo
+        self.sim = None if renderer_name is None else EigenmodeSim(
+            design, renderer_name)
+        super().__init__()
 
     @property
     def energy_elec(self) -> float:
@@ -152,7 +153,7 @@ class EPRanalysis(EigenmodeSim):
         Returns:
             (dict): Pass numbers (keys) and respective lump oscillator information (values).
         """
-        self.run_sim(*args, **kwargs)
+        self.sim.run_sim(*args, **kwargs)
         return self.run_epr()
 
     def run_epr(self, no_junctions=False):
@@ -160,14 +161,13 @@ class EPRanalysis(EigenmodeSim):
         and based on the setup values.
         """
         # wipe data from the previous run (if any)
-        self.clear_data(self.data_labels)
+        self.clear_data()
 
         self.get_stored_energy(no_junctions)
         if not no_junctions:
             self.run_analysis()
-            self.spectrum_analysis(self.setup.epr.cos_trunc,
-                                   self.setup.epr.fock_trunc)
-            self.report_hamiltonian(self.setup.epr.sweep_variable)
+            self.spectrum_analysis(self.setup.cos_trunc, self.setup.fock_trunc)
+            self.report_hamiltonian(self.setup.sweep_variable)
 
     # TODO: all the epr methods should not use the renderer. Now they are forced to because of the
     #  pyEPR dependency from pinfo. pinfo however is Ansys specific and cannot be generalized as-is
@@ -179,12 +179,12 @@ class EPRanalysis(EigenmodeSim):
         """
         # pandas cannot handle Dict so need to convert Dict to dict
         system = dict()
-        s = self.setup.epr
+        s = self.setup
         system['junctions'] = {} if no_junctions else {
             k: dict(v) for (k, v) in s.junctions.items()
         }
         system['dissipatives'] = dict(s.dissipatives)
-        self.renderer.epr_start(**system)
+        self.sim.renderer.epr_start(**system)
         return system
 
     def get_stored_energy(self, no_junctions=False):
@@ -192,7 +192,7 @@ class EPRanalysis(EigenmodeSim):
         """
         # execute EPR and energy extraction
         self.energy_elec, self.energy_elec_sub, self.energy_mag = \
-            self.renderer.epr_get_stored_energy(**self.epr_start(no_junctions))
+            self.sim.renderer.epr_get_stored_energy(**self.epr_start(no_junctions))
 
         # present a human-friendly output
         print(f"""
@@ -208,35 +208,35 @@ class EPRanalysis(EigenmodeSim):
         """Short-cut to the same-name method found in renderers.ansys_renderer.py.
         Eventually, the analysis code needs to be only here, and the renderer method deprecated.
         """
-        self.renderer.epr_run_analysis()
+        self.sim.renderer.epr_run_analysis()
 
     def spectrum_analysis(self, cos_trunc: int = 8, fock_trunc: int = 7):
         """Short-cut to the same-name method found in renderers.ansys_renderer.py.
         Eventually, the analysis code needs to be only here, and the renderer method deprecated.
         """
-        self.renderer.epr_spectrum_analysis(cos_trunc, fock_trunc)
+        self.sim.renderer.epr_spectrum_analysis(cos_trunc, fock_trunc)
 
     def report_hamiltonian(self, sweep_variable, numeric=True):
         """Short-cut to the same-name method found in renderers.ansys_renderer.py.
         Eventually, the analysis code needs to be only here, and the renderer method deprecated.
         """
-        self.renderer.epr_report_hamiltonian(sweep_variable, numeric)
+        self.sim.renderer.epr_report_hamiltonian(sweep_variable, numeric)
 
     def get_frequencies(self):
         """Short-cut to the same-name method found in renderers.ansys_renderer.py.
         Eventually, the analysis code needs to be only here, and the renderer method deprecated.
         """
         system = self.epr_start(no_junctions=True)
-        return self.renderer.epr_get_frequencies(**system)
+        return self.sim.renderer.epr_get_frequencies(**system)
 
     def del_junction(self, name_junction='jj'):
-        """Remove a junction from the dictionary setup.epr.junctions
+        """Remove a junction from the dictionary setup.junctions
 
         Args:
             name_junction (str, optional): name of the junction to remove. Defaults to 'jj'.
         """
-        if name_junction in self.setup.epr.junctions:
-            del self.setup.epr.junctions[name_junction]
+        if name_junction in self.setup.junctions:
+            del self.setup.junctions[name_junction]
 
     def add_junction(self,
                      name_junction="jj",
@@ -257,7 +257,7 @@ class EPRanalysis(EigenmodeSim):
             line (str, optional): Name of the line representing the junction
                 current flow in the simulation, as defined during rendering. Defaults to ''.
         """
-        j_dic = self.setup.epr.junctions
+        j_dic = self.setup.junctions
         if name_junction in j_dic:
             self.logger.warning(
                 f"junction already defined. Overwriting {name_junction}")
