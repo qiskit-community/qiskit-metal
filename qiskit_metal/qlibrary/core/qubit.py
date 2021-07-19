@@ -15,6 +15,7 @@
 from copy import deepcopy
 from qiskit_metal.toolbox_python.attr_dict import Dict
 from .base import QComponent
+import pprint
 
 
 class BaseQubit(QComponent):
@@ -47,16 +48,14 @@ class BaseQubit(QComponent):
                  name: str = None,
                  options: Dict = None,
                  options_connection_pads: dict = None,
-                 make: bool = True):
+                 make: bool = True,
+                 **kwargs):
         """
         Args:
             design (QDesign): The parent design.
             name (str): Name of the component.
             options (dict): User options that will override the defaults.  Defaults to None.
-            component_template (dict): User can overwrite the template options for the component
-                                       that will be stored in the design, in design.template,
-                                       and used every time a new component is instantiated.
-                                       Defaults to None.
+            options_connection_pads(dict): User options for connection pads on qubit
             make (bool): True if the make function should be called at the end of the init.
                     Options be used in the make function to create the geometry.  Defaults to None.
         """

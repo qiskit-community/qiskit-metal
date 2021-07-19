@@ -57,6 +57,7 @@ TransmonInterdigitated
       TransmonInterdigitated.qgeometry_plot
       TransmonInterdigitated.qgeometry_table
       TransmonInterdigitated.rebuild
+      TransmonInterdigitated.to_script
    
 
    

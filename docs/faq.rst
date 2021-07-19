@@ -59,7 +59,7 @@ Conda has valid ``gdal`` and ``fiona`` packages. Simply run:
 
 *python venv:*
 
-You will need to download and install the binary wheels from `here <https://www.lfd.uci.edu/~gohlke/pythonlibs/>_`.
+You will need to download and install the binary wheels from `here <https://www.lfd.uci.edu/~gohlke/pythonlibs/>`_.
 After downloading the wheels, install ``gdal`` first, then ``fiona``, then ``geopandas``. Finally re-install ``qiskit-metal``. Replace the wheel names in the example below with the names of the files you downloaded:
 
 .. code-block:: RST
@@ -79,7 +79,6 @@ After downloading the wheels, install ``gdal`` first, then ``fiona``, then ``geo
 
 The Command Line Tools package for XCode should be already installed.
 If not, they can be installed with: ``xcode-select —install``
-
 
 **Q: Why can't qutip find my path?**
 
@@ -116,12 +115,15 @@ Then open the applicable settings.json in your VS Code. (See how to open command
       "PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
       }
 
-**Q: Why is "xcb" found but not loaded?**
+**Q: Why are "xcb" or "windows" found but not loaded?**
 
 **A:** it has been observed for pip installation on fresh conda environments that this error might show up: ``Could not load the Qt platform plugin "xcb" in "" even though it was found.``
 
-Based on `this source <https://forum.qt.io/topic/93247/qt-qpa-plugin-could-not-load-the-qt-platform-plugin-xcb-in-even-though-it-was-found>`_ You might be able to resolve this error by installing the dependency with ``sudo apt-get install libxcb-xinerama0``
-An alternative might be to install an older version of python (and related dependencies)
+For `xcb`. Based on `this source <https://forum.qt.io/topic/93247/qt-qpa-plugin-could-not-load-the-qt-platform-plugin-xcb-in-even-though-it-was-found>`_ You might be able to resolve this error by installing the dependency with ``sudo apt-get install libxcb-xinerama0``
+
+For `windows`. This error intermittently shows in conda environments. It was found that the problem resolves if PySide2 is installed manually thorugh conda, with: `conda install pyside2`.
+
+if the methods above do not work, consider utilizing an older version of python (and related dependencies)
 
 **Q: Why am I not able to start Jupyter Lab in the new environment?**
 
@@ -139,7 +141,11 @@ Then re-install the qiskit-metal package with pip, for example, if you are using
 Based on information that is available online, this problem does not appear to have a solution. However, it does not seem like this error affects Qiskit Metal's functionality.
 If you find problem with this, you might want to try using an older version of the dependency packages, beginning with lowering your python version to 3.7.x.
 
+**Q: Why am I seeing a Shiboken2 import error?**
 
+**A:** If you are seeing `'_int_pyside_extension' is not defined` or `Unable to import Shiboken2`, you must have used at some point in the past an older verions of PySide2, and you have now installed a more recent versio of PySide2, which is incompatible with the previous method calls.
+This problem can appear also if you are creating a new environments because the old library might be in the shared libraries. The problem is likely to occur if you forget to use the `--no-deps` installation flag.
+To resolve this problem, you need to forcefully uninstall or delete any trace of the old package. You can use any method you feel comfortable with (manual or automated). Some conda users have had succeeded by using a simple uninstall/install sequence: `conda uninstall pyside2`, `conda install -c conda-forge pyside2`
 
 .. _gui:
 
