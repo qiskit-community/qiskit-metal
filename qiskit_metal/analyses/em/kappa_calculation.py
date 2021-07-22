@@ -77,7 +77,7 @@ def kappa_in(*argv):
         k01 = (1.0 - k0**2.0)**(0.5)
 
         # Calculation of the first resonant frequency of an ideal resonator
-        freq_res = (Z_res) * (ellipk(k0)) / (15.0 * eta * length * ellipk(k01))
+        freq_res = (Z_res) * (ellipk(k0**2.0)) / (15.0 * eta * length * ellipk(k01**2.0))
 
         # Calculation of kappa
         kappa = (2 / pi) * (freq**2.0) * (C_in**2.0) * (Z_tran**
