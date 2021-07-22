@@ -35,6 +35,8 @@ from qiskit_metal.draw.utility import to_vec3D
 from qiskit_metal.draw.basic import is_rectangle
 from qiskit_metal.renderers.renderer_base import QRendererAnalysis
 from qiskit_metal.toolbox_metal.parsing import is_true
+from qiskit_metal.renderers.renderer_ansys.hfss_renderer import QHFSSRenderer
+from qiskit_metal.renderers.renderer_ansys.q3d_renderer import QQ3DRenderer
 
 from qiskit_metal import Dict
 
@@ -231,6 +233,11 @@ class QAnsysRenderer(QRendererAnalysis):
         self._rapp = None
         self._rdesktop = None
 
+        
+        # Attributes to access Q3D and HFSS
+        self.q3d = QQ3DRenderer(design)
+        self.hfss = QHFSSRenderer(design)
+
     @property
     def initialized(self):
         """Returns True if initialized, False otherwise."""
@@ -291,6 +298,7 @@ class QAnsysRenderer(QRendererAnalysis):
 
         # return True to indicate successful completion
         return True
+
 
     def _close_renderer(self):
         """Not used by the gds renderer at this time. only returns True.
@@ -1645,3 +1653,6 @@ class QAnsysRenderer(QRendererAnalysis):
         # TODO: do I need to reset self.pinfo.junctions (does it keep the older analysis one)
         self.epr_start(junctions, dissipatives)
         return self.epr_distributed_analysis.get_ansys_frequencies_all()
+
+    self.hfss = QHFSSRenderer()
+    self.q3d = QQ3DRenderer()

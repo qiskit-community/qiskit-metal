@@ -16,6 +16,7 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Union, Tuple
 
+import re
 import logging
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -25,12 +26,28 @@ import pyEPR as epr
 from pyEPR.ansys import set_property, parse_units
 
 from qiskit_metal import Dict
+from qiskit_metal.renderers.renderer_base import QRenderer
 from qiskit_metal.draw.utility import to_vec3D
-from qiskit_metal.renderers.renderer_ansys.ansys_renderer import (
-    QAnsysRenderer, get_clean_name)
+
+def get_clean_name(name: str) -> str:
+    """Create a valid variable name from the given one by removing having it
+    begin with a letter or underscore followed by an unlimited string of
+    letters, numbers, and underscores.
+
+    Args:
+        name (str): Initial, possibly unusable, string to be modified.
+
+    Returns:
+        str: Variable name consistent with Python naming conventions.
+    """
+    # Remove invalid characters
+    name = re.sub('[^0-9a-zA-Z_]', '', name)
+    # Remove leading characters until we find a letter or underscore
+    name = re.sub('^[^a-zA-Z_]+', '', name)
+    return name
 
 
-class QHFSSRenderer(QAnsysRenderer):
+class QHFSSRenderer(QRenderer):
     """Subclass of QAnsysRenderer for running HFSS simulations.
 
     QAnsysRenderer Default Options:
@@ -1058,3 +1075,13 @@ class QHFSSRenderer(QAnsysRenderer):
                                 Check the HFSS error window. \t Error =  {e}")
 
             return None
+
+    def _close_renderer(self):
+        
+        # wipe local variables
+        self.epr_distributed_analysis
+        self.epr_quantum_analysis
+
+    def _initiate_renderer(self):
+        self.rapp = HfssApp()
+        self.rdesktop = self.rapp.get_app_desktop()

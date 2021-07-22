@@ -22,15 +22,16 @@ from pyEPR.ansys import ureg
 from pyEPR.reports import _plot_q3d_convergence_main, _plot_q3d_convergence_chi_f
 from pyEPR.calcs.convert import Convert
 from qiskit_metal import Dict
-from qiskit_metal.renderers.renderer_ansys.ansys_renderer import QAnsysRenderer
+from qiskit_metal.renderers.renderer_base import QRenderer
 from qiskit_metal.toolbox_metal.parsing import is_true
+from pyEPR.ansys import parse_units, HfssApp, release #Added Import
 
 from .. import config
 if not config.is_building_docs():
     from qiskit_metal.analyses.quantization.lumped_capacitive import extract_transmon_coupled_Noscillator
 
 
-class QQ3DRenderer(QAnsysRenderer):
+class QQ3DRenderer(QRenderer):
     """Subclass of QAnsysRenderer for running Q3D simulations.
 
     QAnsysRenderer Default Options:
@@ -480,3 +481,13 @@ class QQ3DRenderer(QAnsysRenderer):
             'This method is deprecated. Change your scripts to use activate_ansys_design()'
         )
         self.activate_ansys_design(name, 'capacitive')
+
+    def _close_renderer(self):
+        
+        # wipe local variables
+        self.epr_distributed_analysis
+        self.epr_quantum_analysis
+
+    def _initiate_renderer(self):
+        self.rapp = HfssApp()
+        self.rdesktop = self.rapp.get_app_desktop()

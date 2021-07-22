@@ -149,7 +149,8 @@ class QRenderer(ABC):
                  design: 'QDesign',
                  initiate=False,
                  render_template: Dict = None,
-                 render_options: Dict = None):
+                 render_options: Dict = None,
+                 options: Dict = None): #Added options:Dict = None to renderer_base class QRender
         """
         Args:
             design (QDesign): The design
