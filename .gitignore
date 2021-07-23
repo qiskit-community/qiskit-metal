@@ -114,6 +114,7 @@ tutorials/**/*.png
 tutorials/**/*.jpg
 tutorials/**/*.tif
 tutorials/**/*.csv
+docs/**/*.csv
 *.gds
 !tutorials/resources/**
 __pycache__
