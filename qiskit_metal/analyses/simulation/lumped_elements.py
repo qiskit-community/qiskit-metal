@@ -127,11 +127,14 @@ class LumpedElementsSim(QSimulation):
         if not self.renderer_initialized:
             self._initialize_renderer()
 
-        renderer_design_name = self._render(name=name,
-                                            solution_type='capacitive',
-                                            selection=components,
-                                            open_pins=open_terminations,
-                                            box_plus_buffer=box_plus_buffer)
+        vars_to_initialize = self.setup.vars
+        renderer_design_name = self._render(
+            name=name,
+            solution_type='capacitive',
+            selection=components,
+            open_pins=open_terminations,
+            box_plus_buffer=box_plus_buffer,
+            vars_to_initialize=vars_to_initialize)
 
         self._analyze()
         return renderer_design_name, self.sim_setup_name
