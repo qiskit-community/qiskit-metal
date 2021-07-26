@@ -56,7 +56,8 @@ class LumpedElementsSim(QSimulation):
                          percent_refinement=30,
                          auto_increase_solution_order=True,
                          solution_order='High',
-                         solver_type='Iterative')
+                         solver_type='Iterative',
+                         vars=Dict())
     """Default setup."""
 
     # supported labels for data generated from the simulation
