@@ -56,8 +56,7 @@ class LumpedElementsSim(QSimulation):
                          percent_refinement=30,
                          auto_increase_solution_order=True,
                          solution_order='High',
-                         solver_type='Iterative',
-                         vars=Dict())
+                         solver_type='Iterative')
     """Default setup."""
 
     # supported labels for data generated from the simulation
@@ -128,14 +127,12 @@ class LumpedElementsSim(QSimulation):
         if not self.renderer_initialized:
             self._initialize_renderer()
 
-        vars_to_initialize = self.setup.vars
-        renderer_design_name = self._render(
-            name=name,
-            solution_type='capacitive',
-            selection=components,
-            open_pins=open_terminations,
-            box_plus_buffer=box_plus_buffer,
-            vars_to_initialize=vars_to_initialize)
+        renderer_design_name = self._render(name=name,
+                                            solution_type='capacitive',
+                                            selection=components,
+                                            open_pins=open_terminations,
+                                            box_plus_buffer=box_plus_buffer,
+                                            vars_to_initialize=Dict())
 
         self._analyze()
         return renderer_design_name, self.sim_setup_name
