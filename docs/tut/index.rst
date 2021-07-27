@@ -1,6 +1,16 @@
 .. _tutorials-overview:
 
-`Tutorial Video Recordings <https://www.youtube.com/playlist?list=PLOFEBzvs-VvqHl5ZqVmhB_FcSqmLufsjb>`_
+.. raw:: html
+
+    <table>
+        <tr><td width="50%">
+        <a href="https://www.youtube.com/playlist?list=PLOFEBzvs-VvqHl5ZqVmhB_FcSqmLufsjb">
+        Click for Tutorial Video Recordings <br>
+	        <img src="https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg" width="100">
+        </a>
+        </td><td width="50%"></td></tr>
+    </table>
+
 
 ########
 Overview
@@ -121,7 +131,18 @@ Quick Topics
 
     quick-topics/*
 
-`Tutorial Video Recordings <https://www.youtube.com/playlist?list=PLOFEBzvs-VvqHl5ZqVmhB_FcSqmLufsjb>`_
+
+.. raw:: html
+
+    <table>
+        <tr><td width="50%">
+        <a href="https://www.youtube.com/playlist?list=PLOFEBzvs-VvqHl5ZqVmhB_FcSqmLufsjb">
+        Click for Tutorial Video Recordings <br>
+	        <img src="https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg" width="100">
+        </a>
+        </td><td width="50%"></td></tr>
+    </table>
+
 
 .. Hiding - Indices and tables
    :ref:`genindex`
