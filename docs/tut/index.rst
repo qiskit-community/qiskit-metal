@@ -1,5 +1,7 @@
 .. _tutorials-overview:
 
+`Tutorial Video Recordings <https://www.youtube.com/playlist?list=PLOFEBzvs-VvqHl5ZqVmhB_FcSqmLufsjb>`_
+
 ########
 Overview
 ########
@@ -119,7 +121,7 @@ Quick Topics
 
     quick-topics/*
 
-
+`Tutorial Video Recordings <https://www.youtube.com/playlist?list=PLOFEBzvs-VvqHl5ZqVmhB_FcSqmLufsjb>`_
 
 .. Hiding - Indices and tables
    :ref:`genindex`
