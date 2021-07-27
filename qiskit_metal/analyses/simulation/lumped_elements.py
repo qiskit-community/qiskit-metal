@@ -131,7 +131,8 @@ class LumpedElementsSim(QSimulation):
                                             solution_type='capacitive',
                                             selection=components,
                                             open_pins=open_terminations,
-                                            box_plus_buffer=box_plus_buffer)
+                                            box_plus_buffer=box_plus_buffer,
+                                            vars_to_initialize=Dict())
 
         self._analyze()
         return renderer_design_name, self.sim_setup_name
