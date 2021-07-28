@@ -67,7 +67,6 @@ class Ui_MainWindow(object):
         self.solnComboBox.setObjectName("solnComboBox")
         self.solnComboBox.addItem("")
         self.solnComboBox.addItem("")
-        self.solnComboBox.addItem("")
         self.solutionLabel = QtWidgets.QLabel(self.centralwidget)
         self.solutionLabel.setGeometry(QtCore.QRect(410, 420, 141, 16))
         self.solutionLabel.setAlignment(QtCore.Qt.AlignCenter)
@@ -123,10 +122,6 @@ class Ui_MainWindow(object):
         self.solnComboBox.setItemText(
             1,
             QtWidgets.QApplication.translate("MainWindow", "Driven Modal", None,
-                                             -1))
-        self.solnComboBox.setItemText(
-            2,
-            QtWidgets.QApplication.translate("MainWindow", "Q3D", None,
                                              -1))
         self.solutionLabel.setText(
             QtWidgets.QApplication.translate("MainWindow", "Solution type:",
