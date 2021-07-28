@@ -57,6 +57,7 @@ CapNInterdigitalTee
       CapNInterdigitalTee.qgeometry_plot
       CapNInterdigitalTee.qgeometry_table
       CapNInterdigitalTee.rebuild
+      CapNInterdigitalTee.to_script
    
 
    

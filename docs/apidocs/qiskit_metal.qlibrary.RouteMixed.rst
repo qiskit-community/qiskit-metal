@@ -77,6 +77,7 @@ RouteMixed
       RouteMixed.set_lead
       RouteMixed.set_lead_extension
       RouteMixed.set_pin
+      RouteMixed.to_script
       RouteMixed.trim_pts
       RouteMixed.unobstructed
       RouteMixed.unobstructed_close_up

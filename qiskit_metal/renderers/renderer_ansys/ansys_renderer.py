@@ -29,11 +29,11 @@ from scipy.spatial import distance
 
 import shapely
 import pyEPR as epr
-from pyEPR.ansys import parse_units, HfssApp
+from pyEPR.ansys import parse_units, HfssApp, release
 
 from qiskit_metal.draw.utility import to_vec3D
 from qiskit_metal.draw.basic import is_rectangle
-from qiskit_metal.renderers.renderer_base import QRenderer
+from qiskit_metal.renderers.renderer_base import QRendererAnalysis
 from qiskit_metal.toolbox_metal.parsing import is_true
 
 from qiskit_metal import Dict
@@ -48,14 +48,15 @@ def good_fillet_idxs(coords: list,
                      precision: int = 9,
                      isclosed: bool = False):
     """
-    Get list of vertex indices in a linestring (isclosed = False) or polygon (isclosed = True) that can be filleted based on
-    proximity to neighbors.
+    Get list of vertex indices in a linestring (isclosed = False) or polygon (isclosed = True)
+    that can be filleted based on proximity to neighbors.
 
     Args:
         coords (list): Ordered list of tuples of vertex coordinates.
         fradius (float): User-specified fillet radius from QGeometry table.
         precision (int, optional): Digits of precision used for round(). Defaults to 9.
-        isclosed (bool, optional): Boolean denoting whether the shape is a linestring or polygon. Defaults to False.
+        isclosed (bool, optional): Boolean denoting whether the shape is a linestring or
+            polygon. Defaults to False.
 
     Returns:
         list: List of indices of vertices that can be filleted.
@@ -87,9 +88,9 @@ def get_clean_name(name: str) -> str:
     return name
 
 
-class QAnsysRenderer(QRenderer):
+class QAnsysRenderer(QRendererAnalysis):
     """Extends QRenderer to export designs to Ansys using pyEPR. The methods
-    which a user will need for Ansys export should be found within this class.
+	which a user will need for Ansys export should be found within this class.
 
     Default Options:
         * Lj: '10nH' -- Lj has units of nanoHenries (nH)
@@ -120,8 +121,6 @@ class QAnsysRenderer(QRenderer):
         project_path=None,  # default project path; if None --> get active
         project_name=None,  # default project name
         design_name=None,  # default design name
-        # Ansys file extension for 2016 version and newer
-        ansys_file_extension='.aedt',
         # bounding_box_scale_x = 1.2, # Ratio of 'main' chip width to bounding box width
         # bounding_box_scale_y = 1.2, # Ratio of 'main' chip length to bounding box length
         x_buffer_width_mm=0.2,  # Buffer between max/min x and edge of ground plane, in mm
@@ -154,6 +153,41 @@ class QAnsysRenderer(QRenderer):
     name = 'ansys'
     """Name"""
 
+    default_setup = Dict(
+        drivenmodal=Dict(name="Setup",
+                         freq_ghz='5.0',
+                         max_delta_s='0.1',
+                         max_passes='10',
+                         min_passes='1',
+                         min_converged='1',
+                         pct_refinement='30',
+                         basis_order='1'),
+        eigenmode=Dict(name="Setup",
+                       min_freq_ghz='1',
+                       n_modes='1',
+                       max_delta_f='0.5',
+                       max_passes='10',
+                       min_passes='1',
+                       min_converged='1',
+                       pct_refinement='30',
+                       basis_order='-1'),
+        q3d=Dict(name='Setup',
+                 freq_ghz='5.0',
+                 save_fields='False',
+                 enabled='True',
+                 max_passes='15',
+                 min_passes='2',
+                 min_converged_passes='2',
+                 percent_error='0.5',
+                 percent_refinement='30',
+                 auto_increase_solution_order='True',
+                 solution_order='High',
+                 solver_type='Iterative'),
+        port_inductor_gap=
+        '10um'  # spacing between port and inductor if junction is drawn both ways
+    )
+    """Default setup."""
+
     # When additional columns are added to QGeometry, this is the example to populate it.
     # e.g. element_extensions = dict(
     #         base=dict(color=str, klayer=int),
@@ -177,43 +211,128 @@ class QAnsysRenderer(QRenderer):
                                   resistance=default_options['_Rj'],
                                   mesh_kw_jj=parse_units(
                                       default_options['max_mesh_length_jj'])))
-    """Element table data"""
+    """Element table data."""
 
-    def __init__(self,
-                 design: 'QDesign',
-                 initiate=True,
-                 render_template: Dict = None,
-                 render_options: Dict = None):
+    def __init__(self, design: 'QDesign', initiate=True, options: Dict = None):
         """Create a QRenderer for Ansys.
 
         Args:
             design (QDesign): Use QGeometry within QDesign to obtain elements for Ansys.
             initiate (bool, optional): True to initiate the renderer. Defaults to True.
-            render_template (Dict, optional): Typically used by GUI for template options for GDS. Defaults to None.
-            render_options (Dict, optional):  Used to override all options. Defaults to None.
+            options (Dict, optional):  Used to override all options. Defaults to None.
         """
-        super().__init__(design=design,
-                         initiate=initiate,
-                         render_template=render_template,
-                         render_options=render_options)
+        super().__init__(design=design, initiate=initiate, options=options)
 
         # Default behavior is to render all components unless a strict subset was chosen
         self.render_everything = True
 
         self._pinfo = None
+        # Connected to Ansys variables
+        self._rapp = None
+        self._rdesktop = None
+
+    @property
+    def initialized(self):
+        """Returns True if initialized, False otherwise."""
+        if self._pinfo:
+            if self._pinfo.project:
+                try:
+                    # this is because after previous pyEPR close(),
+                    # the pinfo.project becomes None, but the type is not None (method)
+                    # TODO: fix where appropriate, then remove this patch.
+                    self._pinfo.project.name
+                except AttributeError:
+                    return False
+                return True
+        return False
+
+    @property
+    def rapp(self):
+        return self._rapp
+
+    @rapp.setter
+    def rapp(self, app_com):
+        if self._rapp:
+            self._rapp.release()
+        self._rapp = app_com
+
+    @property
+    def rdesktop(self):
+        return self._rdesktop
+
+    @rdesktop.setter
+    def rdesktop(self, desktop_com):
+        if self._rdesktop:
+            self._rdesktop.release()
+        self._rdesktop = desktop_com
+
+    def _initiate_renderer(self):
+        """
+        Open a session of the default Ansys EDT.
+        Establishes the connection to the App and Desktop only.
+        """
+        # test if ansys is open
+        # import psutil
+        # booted = False
+        # for proc in psutil.process_iter():
+        #     if 'ansysedt' in proc.name():
+        #         booted = True
+
+        # if not booted:
+        #    self._open_ansys(*args, **kwargs)
+        # need to make it so that it waits for the Ansys boot to end
+        # after opening, should establish a connection (able to create a new project)
+
+        self.rapp = HfssApp()
+        self.rdesktop = self.rapp.get_app_desktop()
+        if self.rdesktop.project_count() == 0:
+            self.rdesktop.new_project()
+        self.connect_ansys()  # TODO: can this be done differently?
+
+        # return True to indicate successful completion
+        return True
+
+    def _close_renderer(self):
+        """Not used by the gds renderer at this time. only returns True.
+
+        Returns:
+            bool: True
+        """
+        # wipe local variables
+        self.epr_distributed_analysis = None
+        self.epr_quantum_analysis = None
+
+        # close COM connections to ansys
+        if self.rdesktop is not None:
+            self.rdesktop.release()
+        if self.rapp is not None:
+            self.rapp.release()
+        if self.pinfo:
+            self.disconnect_ansys()
+
+        return True
+
+    def close(self):
+        """Alias of _close_renderer()
+
+        Returns:
+            bool: True
+        """
+        return self._close_renderer()
 
     def open_ansys(self,
                    path: str = None,
                    executable: str = 'reg_ansysedt.exe',
                    path_var: str = 'ANSYSEM_ROOT202'):
-        """Open a session of Ansys. Default is version 2020 R2, but can be
-        overridden.
+        """Alternative method to open an Ansys session that allows to specify
+		which version to use. Default is version 2020 R2, but can be overridden.
 
         Args:
             path (str): Path to the Ansys executable. Defaults to None
             executable (str): Name of the ansys executable. Defaults to 'reg_ansysedt.exe'
-            path_var (str): Name of the OS environment variable that contains the path to the Ansys executable.
-                            Only used when path=None. Defaults to 'ANSYSEM_ROOT202' (Ansys ver. 2020 R2)
+            path_var (str): Name of the OS environment variable that contains the path to the
+                            Ansys executable. Only used when path=None.
+                            Defaults to 'ANSYSEM_ROOT202' (Ansys ver. 2020 R2)
         """
         if not system() == 'Windows':
             self.logger.warning(
@@ -227,10 +346,10 @@ class QAnsysRenderer(QRenderer):
                 path = os.environ[path_var]
             except KeyError:
                 self.logger.error(
-                    'environment variable %s not found. Is Ansys 2020 R2 installed on this machine? '
-                    'If yes, then create said environment variable. If you have a different version of Ansys, '
-                    'then pass to open_ansys() the path to its binary, or the env var that stores it.'
-                    % path_var)
+                    'environment variable %s not found. Is Ansys 2020 R2 installed on this '
+                    'machine? If yes, then create said environment variable. If you have a '
+                    'different version of Ansys, then pass to open_ansys() the path to its '
+                    'binary, or the env var that stores it.' % path_var)
                 raise
         else:
             path = os.path.abspath(path)
@@ -245,7 +364,8 @@ class QAnsysRenderer(QRenderer):
         Ansys COM, then checks for, and grab if present, an active project,
         design, and design setup.
 
-        If the optional parameters are provided: if present, opens the project file and design in Ansys.
+        If the optional parameters are provided: if present, opens the project file and design in
+        Ansys.
 
         Args:
             project_path (str, optional): Path without file name
@@ -265,6 +385,7 @@ class QAnsysRenderer(QRenderer):
         import pythoncom
         try:
             self._pinfo = epr.ProjectInfo(
+                do_connect=True,
                 project_path=self._options['project_path']
                 if not project_path else project_path,
                 project_name=self._options['project_name']
@@ -322,9 +443,9 @@ class QAnsysRenderer(QRenderer):
                     )
             else:
                 self.logger.warning(
-                    'Either you do not have a project loaded in Ansys, or you are not connected to it. '
-                    'Try executing hfss.connect_ansys(), or creating a new Ansys project. '
-                    'Also check the help file and other tutorials notebooks')
+                    'Either you do not have a project loaded in Ansys, or you are not connected '
+                    'to it. Try executing hfss.connect_ansys(), or creating a new Ansys project. '
+                    'Also check the help file and other guide notebooks')
         else:
             self.logger.warning(
                 'It does not look like you are connected to Ansys. Please use connect_ansys() '
@@ -347,7 +468,16 @@ class QAnsysRenderer(QRenderer):
             if self.pinfo.design:
                 return self.pinfo.design.modeler
 
-    def plot_ansys_fields(
+    def plot_ansys_fields(self, *args, **kwargs):
+        """
+        (deprecated) use plot_fields()
+        """
+        self.logger.warning(
+            'This method is deprecated. Change your scripts to use plot_fields()'
+        )
+        return self.plot_fields(*args, **kwargs)
+
+    def plot_fields(
         self,
         object_name: str,
         name: str = None,
@@ -371,37 +501,38 @@ class QAnsysRenderer(QRenderer):
             object_name (str): Used to plot on faces of.
             name (str, optional): "NAME:<PlotName>" Defaults to None.
             UserSpecifyName (int, optional): 0 if default name for plot is used, 1 otherwise.
-              Defaults to None.
+                Defaults to None.
             UserSpecifyFolder (int, optional): 0 if default folder for plot is used, 1 otherwise.
-              Defaults to None.
+                Defaults to None.
             QuantityName (str, optional): Type of plot to create. Possible values are
-              Mesh plots - "Mesh";
-              Field plots - "Mag_E", "Mag_H", "Mag_Jvol", "Mag_Jsurf","ComplexMag_E",
-              "ComplexMag_H", "ComplexMag_Jvol", "ComplexMag_Jsurf", "Vector_E", "Vector_H",
-              "Vector_Jvol", "Vector_Jsurf", "Vector_RealPoynting","Local_SAR", "Average_SAR".
-              Defaults to None.
+                Mesh plots - "Mesh";
+                Field plots - "Mag_E", "Mag_H", "Mag_Jvol", "Mag_Jsurf","ComplexMag_E",
+                "ComplexMag_H", "ComplexMag_Jvol", "ComplexMag_Jsurf", "Vector_E", "Vector_H",
+                "Vector_Jvol", "Vector_Jsurf", "Vector_RealPoynting","Local_SAR", "Average_SAR".
+                Defaults to None.
             PlotFolder (str, optional): Name of the folder to which the plot should be added.
-              Possible values are: "E Field",  "H Field", "Jvol", "Jsurf", "SARField", and
-              "MeshPlots". Defaults to None.
+                Possible values are: "E Field",  "H Field", "Jvol", "Jsurf", "SARField", and
+                "MeshPlots". Defaults to None.
             StreamlinePlot (bool, optional): Passed to CreateFieldPlot. Defaults to None.
             AdjacentSidePlot (bool, optional): Passed to CreateFieldPlot. Defaults to None.
             FullModelPlot (bool, optional): Passed to CreateFieldPlot. Defaults to None.
             IntrinsicVar (str, optional): Formatted string that specifies the frequency and phase
-              at which to make the plot.  For example: "Freq='1GHz' Phase='30deg'".
-              Defaults to None.
+                at which to make the plot.  For example: "Freq='1GHz' Phase='30deg'".
+                Defaults to None.
             PlotGeomInfo_0 (int, optional): 0th entry in list for "PlotGeomInfo:=",
-              <PlotGeomArray>. Defaults to None.
+                <PlotGeomArray>. Defaults to None.
             PlotGeomInfo_1 (str, optional): 1st entry in list for "PlotGeomInfo:=",
-              <PlotGeomArray>. Defaults to None.
+                <PlotGeomArray>. Defaults to None.
             PlotGeomInfo_2 (str, optional): 2nd entry in list for "PlotGeomInfo:=",
-              <PlotGeomArray>. Defaults to None.
+                <PlotGeomArray>. Defaults to None.
             PlotGeomInfo_3 (int, optional): 3rd entry in list for "PlotGeomInfo:=",
-              <PlotGeomArray>. Defaults to None.
+                <PlotGeomArray>. Defaults to None.
 
         Returns:
             NoneType: Return information from oFieldsReport.CreateFieldPlot().
             The method CreateFieldPlot() always returns None.
         """
+        self.modeler._modeler.ShowWindow()
         if not self.pinfo:
             self.logger.warning('pinfo is None.')
             return
@@ -495,8 +626,18 @@ class QAnsysRenderer(QRenderer):
         return oFieldsReport.CreateFieldPlot(args_list, "Field")
 
     def plot_ansys_delete(self, names: list):
-        """Delete plots from modeler window in Ansys. Does not throw an error
-        if names are missing.
+        """
+        (deprecated) Use clear_fields()
+        """
+        self.logger.warning(
+            'This method is deprecated. Change your scripts to use clear_fields()'
+        )
+        self.clear_fields(names)
+
+    def clear_fields(self, names: list):
+        """
+        Delete field plots from modeler window in Ansys.
+        Does not throw an error if names are missing.
 
         Can give multiple names, for example:
         hfss.plot_ansys_delete(['Mag_E1', 'Mag_E1_2'])
@@ -504,9 +645,9 @@ class QAnsysRenderer(QRenderer):
         Args:
             names (list): Names of plots to delete from modeler window.
         """
-        # (["Mag_E1"]
-        oFieldsReport = self.pinfo.design._fields_calc
-        return oFieldsReport.DeleteFieldPlot(names)
+        if not names:
+            names = list(self.pinfo.design._fields_calc.GetFieldPlotNames())
+        return self.pinfo.design._fields_calc.DeleteFieldPlot(names)
 
     def add_message(self, msg: str, severity: int = 0):
         """Add message to Message Manager box in Ansys.
@@ -527,11 +668,258 @@ class QAnsysRenderer(QRenderer):
         Returns:
             pathlib.WindowsPath: path to png formatted screenshot.
         """
+        self.modeler._modeler.ShowWindow()
         try:
             return self.pinfo.design.save_screenshot(path, show)
         except AttributeError:
             self.logger.error(
                 'Please install a more recent version of pyEPR (>=0.8.4.3)')
+
+    def execute_design(self,
+                       design_name: str,
+                       solution_type: str,
+                       vars_to_initialize: Dict,
+                       force_redraw: bool = False,
+                       **design_selection) -> str:
+        """It wraps the render_design() method to
+        1. skip rendering if the "selection" of components is left empty (re-uses selected design)
+        2. force design clearing and redraw if force_Redraw is set
+
+        Args:
+            design_name (str): Name to assign to the renderer design
+            solution_type (str): eigenmode, capacitive or drivenmodal
+            vars_to_initialize (Dict): Variables to initialize, i.e. Ljx, Cjx
+            force_redraw (bool, optional): Force re-render the design. Defaults to False.
+
+        Returns:
+            str: final design name (a suffix might have been added to the provided name,
+                in case of conflicts)
+        """
+        # If a selection of components is not specified, use the active renderer-design
+        if 'selection' in design_selection:
+            if design_selection['selection'] is None:
+                try:
+                    return self.pinfo.design.name
+                except AttributeError:
+                    # if no design exists, then we will proceed and render the full design instead
+                    pass
+
+        # either create a new one, or clear the active one, depending on force_redraw.
+        if force_redraw and (design_name
+                             in self.pinfo.project.get_design_names()):
+            self.activate_ansys_design(design_name, solution_type)
+            self.clean_active_design()
+        else:
+            self.new_ansys_design(design_name, solution_type)
+        self.set_variables(vars_to_initialize)
+        self.render_design(**design_selection)
+        return self.pinfo.design.name
+
+    def new_ansys_design(self,
+                         design_name: str,
+                         solution_type: str,
+                         connect: bool = True):
+        """Add an Ansys design with the given name to the Ansys project.
+        Valid solutions_type values are: 'capacitive' (q3d), 'eignemode' and 'drivenmodal' (hfss)
+
+        Args:
+            design_name (str): name of the Design to be created in Ansys
+            solution_type (str): defines type of Design and solution to be created in Ansys
+            connect (bool, optional): Should we connect qiskit-metal to this Ansy design? Defaults to True.
+
+        Returns(pyEPR.ansys.HfssDesign): The pointer to the design within Ansys.
+
+        """
+        if self.pinfo:
+            try:
+                if solution_type == 'capacitive':
+                    adesign = self.pinfo.project.new_q3d_design(design_name)
+                elif solution_type == 'eigenmode':
+                    adesign = self.pinfo.project.new_em_design(design_name)
+                elif solution_type == 'drivenmodal':
+                    adesign = self.pinfo.project.new_dm_design(design_name)
+                else:
+                    self.logger.error(
+                        f'The solution_type = {solution_type} is not supported by this renderer'
+                    )
+            except AttributeError:
+                if self.pinfo.project is None:
+                    self.logger.error('Project not found')
+                else:
+                    self.logger.error(
+                        'Please install a more recent version of pyEPR (>=0.8.4.4)'
+                    )
+                raise
+            if connect:
+                self.connect_ansys_design(adesign.name)
+            return adesign
+        else:
+            self.logger.info("You have to first connect to Ansys and to a project " \
+                            "before creating a new design. You can use renderer.connect_ansys()")
+
+    def activate_ansys_design(self,
+                              design_name: str,
+                              solution_type: str = None):
+        """Select a design with the given name from the open project.
+        If the design exists, that will be added WITHOUT altering the suffix of the design name.
+
+        Args:
+            name (str): Name of the new Ansys design
+        """
+
+        if self.pinfo:
+            if self.pinfo.project:
+                try:
+                    names_in_design = self.pinfo.project.get_design_names()
+                except AttributeError:
+                    self.logger.error(
+                        'Please install a more recent version of pyEPR (>=0.8.4.5)'
+                    )
+
+                if design_name in names_in_design:
+                    self.pinfo.connect_design(design_name)
+                    oDesktop = self.pinfo.design.parent.parent._desktop  # self.pinfo.design does not work
+                    oProject = oDesktop.SetActiveProject(
+                        self.pinfo.project_name)
+                    oDesign = oProject.SetActiveDesign(design_name)
+                    current_solution_type = self.pinfo.design.solution_type.lower(
+                    )
+                    if current_solution_type == 'q3d':
+                        current_solution_type = 'capacitive'
+                    if current_solution_type != solution_type and solution_type is not None:
+                        self.logger.warning(
+                            f'The design_name={design_name} already exists, but it has solution_type=='
+                            f'{current_solution_type}, which is different from the requested=={solution_type}. '
+                            f'If you want a design with solution type=={solution_type}, please change the name '
+                            'requested for your design to one that does not exist. Alternatively, manually modify '
+                            f'the solution_type for design {design_name} from the Ansys GUI.'
+                        )
+                else:
+                    self.logger.warning(
+                        f'The design_name={design_name} was not in active project.  '
+                        f'Designs in active project are: \n{names_in_design}.  '
+                        'A new design will be added to the project.  ')
+                    if solution_type is not None:
+                        adesign = self.new_ansys_design(
+                            design_name=design_name,
+                            solution_type=solution_type,
+                            connect=True)
+                    else:
+                        self.logger.error(
+                            'Please specify the solution_type, to determine what design to create'
+                        )
+            else:
+                self.logger.warning(
+                    "Project not found, have you opened a project?")
+        else:
+            self.logger.warning(
+                "Have you run start()?  Cannot find a reference to Ansys in QRenderer."
+            )
+
+    def new_ansys_setup(self, name: str, **other_setup):
+        """Determines the appropriate setup to be created based on the pinfo.design.solution_type.
+        make sure to set this variable before executing this method
+
+        Args:
+            name (str): name to give to the new setup
+
+        Returns:
+            pyEPR.ansys.HfssEMSetup: Pointer to the ansys setup object
+        """
+        #TODO: only use activate_ansys_setup?
+        if self.pinfo:
+            if self.pinfo.design:
+                if self.pinfo.design.solution_type == 'Eigenmode':
+                    setup = self.add_eigenmode_setup(name, **other_setup)
+                elif self.pinfo.design.solution_type == 'DrivenModal':
+                    setup = self.add_drivenmodal_setup(name, **other_setup)
+                elif self.pinfo.design.solution_type == 'Q3D':
+                    setup = self.add_q3d_setup(name, **other_setup)
+        return setup
+
+    def initialize_cap_extract(self, **kwargs):
+        """Any task that needs to occur before running a simulation, such as creating a setup
+
+        Returns:
+            str: Name of the setup that has been updated
+        """
+        setup = self.new_ansys_setup(**kwargs)  #TODO: activate_ansys_setup?
+        return setup.name
+
+    def initialize_eigenmode(self, vars: Dict = {}, **kwargs):
+        """Any task that needs to occur before running a simulation, such as creating a setup
+
+        Args:
+            vars (Dict, optional): list of parametric variables to set in the renderer.
+                Defaults to {}.
+
+        Returns:
+            str: Name of the setup that has been updated
+        """
+        self.set_variables(vars)
+        setup = self.new_ansys_setup(**kwargs)  #TODO: activate_ansys_setup?
+        return setup.name
+
+    def initialize_drivenmodal(self,
+                               sweep_setup: Dict,
+                               vars: Dict = {},
+                               **kwargs):
+        """Any task that needs to occur before running a simulation, such as creating a setup
+
+        Args:
+            sweep_setup (Dict): list of parametric variables to set the frequency sweep.
+            vars (Dict, optional): list of parametric variables to set in the renderer.
+                Defaults to {}.
+
+        Returns:
+            str: Name of the setup that has been updated
+        """
+        self.set_variables(vars)
+        setup = self.new_ansys_setup(**kwargs)  #TODO: activate_ansys_setup?
+        sweep = self.add_sweep(setup.name, **sweep_setup)
+        return setup.name, sweep.name
+
+    def activate_ansys_setup(self, setup_name: str):
+        """For active design, either get existing setup, make new setup with name,
+        or make new setup with default name.
+
+        Args:
+            setup_name (str, optional): If name exists for setup, then have pinfo reference it.
+              If name for setup does not exist, create a new setup with the name.
+              If name is None, create a new setup with default name.
+        """
+        if self.pinfo:
+            if self.pinfo.project:
+                if self.pinfo.design:
+                    # look for setup name, if not there, then add a new one
+                    if setup_name:
+                        all_setup_names = self.pinfo.design.get_setup_names()
+                        self.pinfo.setup_name = setup_name
+                        if setup_name in all_setup_names:
+                            # When name is given and in design. So have pinfo reference existing setup.
+                            self.pinfo.setup = self.pinfo.get_setup(setup_name)
+                        else:
+                            # When name is given, but not in design. So make a new setup with given name.
+                            self.logger.warning(
+                                f'The setup_name={setup_name} was not in active design.  '
+                                f'Setups in active design are: \n{all_setup_names}.  '
+                                'A new setup will default values will be added to the design.  '
+                            )
+                            self.pinfo.setup = self.new_ansys_setup(
+                                name=setup_name)
+                    else:
+                        self.logger.warning(f'Please specify a setup_name.')
+                else:
+                    self.logger.warning(
+                        "Design not found in selected project, have you opened a design?"
+                    )
+            else:
+                self.logger.warning(
+                    "Project not found, have you opened a project?")
+        else:
+            self.logger.warning(
+                "Have you run connect_ansys()?  Cannot find a reference to Ansys in QRenderer."
+            )
 
     def render_design(self,
                       selection: Union[list, None] = None,
@@ -594,12 +982,19 @@ class QAnsysRenderer(QRenderer):
         self.subtract_from_ground()
         self.add_mesh()
 
-    def render_tables(self):
+    def render_chip(self):
+        pass
+
+    def render_component(self):
+        pass
+
+    def render_tables(self, skip_junction: bool = False):
         """
         Render components in design grouped by table type (path, poly, or junction).
         """
         for table_type in self.design.qgeometry.get_element_types():
-            self.render_components(table_type)
+            if table_type != 'junction' or not skip_junction:
+                self.render_components(table_type)
 
     def render_components(self, table_type: str):
         """
@@ -1113,7 +1508,8 @@ class QAnsysRenderer(QRenderer):
                 design_name = self.pinfo.design_name
                 select_all = ','.join(self.pinfo.get_all_object_names())
 
-                oDesktop = self.pinfo.design.parent.parent._desktop  # self.pinfo.design does not work
+                # self.pinfo.design does not work, thus the following line
+                oDesktop = self.pinfo.design.parent.parent._desktop
                 oProject = oDesktop.SetActiveProject(project_name)
                 oDesign = oProject.SetActiveDesign(design_name)
 
@@ -1121,3 +1517,139 @@ class QAnsysRenderer(QRenderer):
                 oEditor = oDesign.SetActiveEditor("3D Modeler")
 
                 oEditor.Delete(["NAME:Selections", "Selections:=", select_all])
+
+    def set_variables(self, variables: Dict):
+        """Fixes the junction properties before setup. This is necessary becasue the eigenmode
+        analysis only considers the junction as a lumped CL element.
+
+        Args:
+            variables (Dict): dictionary of variables to set in Ansys. For example it could
+                contain 'Lj': '10 nH'
+        """
+        if self.pinfo:
+            if self.pinfo.design:
+                for k, v in variables.items():
+                    self.pinfo.design.set_variable(k, v)
+            else:
+                self.logger.warning(
+                    'Please create a design before setting variables, otherwise all variables will be set to 0 during rendering by default.'
+                )
+
+    # TODO: epr methods below should not be in the renderer, but in the analysis files.
+    #  Thus needs to remove the dependency from pinfo, which is Ansys-specific.
+
+    def epr_start(self, junctions: dict = None, dissipatives: dict = None):
+        """Use to initialize the epr analysis package by first identifying which are the junctions,
+        their electrical properties and their reference plane; then initialize the
+        DistributedAnalysis package, which can execute microwave analysis on eigenmode results.
+
+        Args:
+            junctions (dict, optional): Each element of this dictionary describes one junction.
+                Defaults to dict().
+            dissipatives (dict, optional): Each element of this dictionary describes one dissipative.
+                Defaults to dict().
+        """
+        if self.pinfo:
+            if junctions:
+                for k, v in junctions.items():
+                    self.pinfo.junctions[k] = v
+                # Check that valid names of variables and objects have been supplied
+                self.pinfo.validate_junction_info()
+            if dissipatives:
+                for k, v in dissipatives.items():
+                    self.pinfo.dissipative[k] = v
+
+            # Class handling microwave analysis on eigenmode solutions
+            self.epr_distributed_analysis = epr.DistributedAnalysis(self.pinfo)
+
+    def epr_get_stored_energy(self,
+                              junctions: dict = None,
+                              dissipatives: dict = None):
+        """Computes the energy stored in the system
+        pinfo must have a valid list of junctions and dissipatives to compute the energy stored
+        in the system. So please provide them here, or using epr_start()
+
+        Args:
+            junctions (dict, optional): Each element of this dictionary describes one junction.
+                Defaults to dict().
+            dissipatives (dict, optional): Each element of this dictionary describes one dissipative.
+                Defaults to dict().
+
+        Returns:
+            (float, float, float): energy_elec, energy_elec_substrate, energy_mag
+        """
+        if junctions is not None or dissipatives is not None:
+            self.epr_start(junctions, dissipatives)
+        elif self.epr_distributed_analysis is None:
+            self.epr_start()
+
+        if self.pinfo.dissipative['dielectrics_bulk'] is not None:
+            eprd = self.epr_distributed_analysis
+            energy_elec = eprd.calc_energy_electric()
+            energy_elec_substrate = eprd.calc_energy_electric(
+                None, self.pinfo.dissipative['dielectrics_bulk'][0])
+            energy_mag = eprd.calc_energy_magnetic()
+
+            return energy_elec, energy_elec_substrate, energy_mag
+        self.logger.error('dielectrics_bulk needs to be defined')
+
+    def epr_run_analysis(self,
+                         junctions: dict = None,
+                         dissipatives: dict = None):
+        """Executes the EPR analysis
+        pinfo must have a valid list of junctions and dissipatives to compute the energy stored
+        in the system. So please provide them here, or using epr_start()
+
+        Args:
+            junctions (dict, optional): Each element of this dictionary describes one junction.
+                Defaults to dict().
+            dissipatives (dict, optional): Each element of this dictionary describes one dissipative.
+                Defaults to dict().
+        """
+        if junctions is not None or dissipatives is not None:
+            self.epr_start(junctions, dissipatives)
+        self.epr_distributed_analysis.do_EPR_analysis()
+
+    def epr_spectrum_analysis(self, cos_trunc: int = 8, fock_trunc: int = 7):
+        """Core epr analysis method.
+
+        Args:
+            cos_trunc (int, optional): truncation of the cosine. Defaults to 8.
+            fock_trunc (int, optional): truncation of the fock. Defaults to 7.
+        """
+        self.epr_quantum_analysis = epr.QuantumAnalysis(
+            self.epr_distributed_analysis.data_filename)
+        self.epr_quantum_analysis.analyze_all_variations(cos_trunc=cos_trunc,
+                                                         fock_trunc=fock_trunc)
+
+    def epr_report_hamiltonian(self,
+                               swp_variable: str = 'variation',
+                               numeric=True):
+        """Reports in a markdown friendly table the hamiltonian results.
+
+        Args:
+            swp_variable (str, optional): Variable against which we swept. Defaults to 'variation'.
+        """
+        self.epr_quantum_analysis.plot_hamiltonian_results(
+            swp_variable=swp_variable)
+        self.epr_quantum_analysis.report_results(swp_variable=swp_variable,
+                                                 numeric=numeric)
+
+    def epr_get_frequencies(self,
+                            junctions: dict = None,
+                            dissipatives: dict = None) -> pd.DataFrame:
+        """Returns all frequencies and quality factors vs a variation.
+        It also initializes the systems for the epr analysis in terms of junctions and dissipatives
+
+        Args:
+            junctions (dict, optional): Each element of this dictionary describes one junction.
+                Defaults to dict().
+            dissipatives (dict, optional): Each element of this dictionary describes one dissipative.
+                Defaults to dict().
+
+        Returns:
+            pd.DataFrame: multi-index, frequency and quality factors for each variation point.
+        """
+        # TODO: do I need to reset self.pinfo.junctions (does it keep the older analysis one)
+        self.epr_start(junctions, dissipatives)
+        return self.epr_distributed_analysis.get_ansys_frequencies_all()

@@ -50,7 +50,21 @@ rst_prolog = """
 """.format(release)
 
 nbsphinx_prolog = """
-{% set docname = env.doc2path(env.docname, base=None) %}
+{% set docname = env.doc2path(env.docname, base=None)|replace("circuit-examples", "circuit-examples/") %}
+{% set docname = docname|replace("A.Qubits", "A.Qubits/") %}
+{% set docname = docname|replace("B.Resonators", "B.Resonators/") %}
+{% set docname = docname|replace("C.Composite-bi-partite", "C.Composite-bi-partite/") %}
+{% set docname = docname|replace("D.Qubit-couplers", "D.Qubit-couplers/") %}
+{% set docname = docname|replace("E.Input-output-coupling", "E.Input-output-coupling/") %}
+{% set docname = docname|replace("F.Small-quantum-chips", "F.Small-quantum-chips/") %}
+{% set docname = docname|replace("full-design-flow-examples", "full-design-flow-examples/") %}
+{% set docname = docname|replace("tut", "tut/") %}
+{% set docname = docname|replace("1-Overview", "1 Overview/") %}
+{% set docname = docname|replace("2-From-components-to-chip", "2-From-components-to-chip/") %}
+{% set docname = docname|replace("3-Renderers", "3-Renderers/") %}
+{% set docname = docname|replace("4-Analysis", "4-Analysis/") %}
+{% set docname = docname|replace("quick-topics", "quick-topics/") %}
+
 .. only:: html
     
     .. role:: raw-html(raw)
@@ -61,7 +75,9 @@ nbsphinx_prolog = """
         <br><br><br>
 
     .. note::
-        Run interactively in jupyter notebook.
+        This page was generated from `{{ docname }}`__.
+
+    __ https://github.com/Qiskit/qiskit-metal/blob/main/docs/{{ docname }}
 """
 
 nbsphinx_epilog = """
@@ -127,7 +143,9 @@ html_static_path = ['_static']
 templates_path = ['_templates']
 html_css_files = ['style.css', 'custom.css', 'gallery.css']
 
-exclude_patterns = ['_build', 'build', '*.ipynb', '**.ipynb_checkpoints']
+exclude_patterns = [
+    '_build', 'build', '*.ipynb', '**.ipynb_checkpoints', '_utility'
+]
 
 nbsphinx_execute_arguments = [
     "--InlineBackend.figure_formats={'svg', 'pdf'}",
@@ -139,6 +157,23 @@ nbsphinx_execute = os.getenv('QISKIT_DOCS_BUILD_TUTORIALS', 'never')
 source_suffix = ['.rst', '.ipynb']
 
 suppress_warnings = ['ref.ref']
+
+nbsphinx_thumbnails = {
+    'tut/quick-topics/Opening-documentation':
+        '_static/qt-open-docs.png',
+    'tut/4-Analysis/4.31-Plot-quantum-oscillator-wavefunction':
+        '_static/4-31-plotting-wavefunction.png',
+    'tut/4-Analysis/4.32-Transmon-analytics-HCPB':
+        '_static/4-32-transmon-hcpb.png',
+    'tut/4-Analysis/4.33-Transmon-analytics':
+        '_static/4-33-transmon-analytics.png',
+    'tut/4-Analysis/4.34-Transmon-qubit-CPB-hamiltonian-charge-basis':
+        '_static/4-34-transmon-cpb.png',
+    'tut/4-Analysis/4.15-CPW-kappa-calculation':
+        '_static/4-15-kappa-calc.png',
+    'tut/1-Overview/1.3-Saving-Your-Chip-Design':
+        '_static/1-3-save.png',
+}
 
 # -----------------------------------------------------------------------------
 # Autosummary

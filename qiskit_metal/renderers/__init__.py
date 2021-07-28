@@ -28,6 +28,7 @@ Renderer Base
 
     QRenderer
     QRendererGui
+    QRendererAnalysis
 
 
 MPL Renderer
@@ -73,6 +74,7 @@ from .. import config
 if config.is_building_docs():
     from .renderer_base.renderer_base import QRenderer
     from .renderer_base.renderer_gui_base import QRendererGui
+    from .renderer_base.rndr_analysis import QRendererAnalysis
 
     from .renderer_gds.gds_renderer import QGDSRenderer
     from .renderer_gds.make_cheese import Cheesing

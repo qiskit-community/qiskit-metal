@@ -167,8 +167,8 @@ class QNet():
 
         return all_net_id_deleted
 
-    def get_components_and_pins_for_netid(
-            self, net_id_search: int) -> pd.core.frame.DataFrame:
+    def get_components_and_pins_for_netid(self,
+                                          net_id_search: int) -> pd.DataFrame:
         """Search with a net_id to get component id and pin name.
 
         Args:

@@ -73,7 +73,7 @@ After downloading the wheels, install ``gdal`` first, then ``fiona``, then ``geo
 
 **A:** Based on: `this issue <https://github.com/Toblerity/Shapely/pull/1108>`_, this is a known bug with the ``shapely`` package <1.8. that should be fixed with a more recent shapely package. Meanwhile, you can use the shapely package from conda by installing it as ``conda install shapely`` before installing ``qiskit-metal``, which installs the missing file as a dependency.
 
-**Q: Why do I have an inactive developer path on MacOs?**
+**Q: Why do I have an invalid active developer path on MacOs?**
 
 **A:** If you are seeing: ``xcrun: error: invalid active developer path (/Library/Developer/CommandLineTools), missing xcrun at /Library/Developer/CommandLineTools/usr/bin/xcrun`` you may be missing the Command Line Tools.
 
@@ -194,6 +194,13 @@ You can resolve other warnings by deleting the following directories and rebuild
    * ``docs/build``
    * ``docs/stubs``
 
+**Q: How do I download a tutorial?**
+
+**A:** Navigate to the tutorial you want to download in the documentation.  Once you've done that follow these steps:
+
+   * At the top of the page there is a notice informing you where the tutorial was generated from with a link.  Click that link.
+   * Near the top of the notebook, you see a button that says `Raw`.  Right click `Raw`, select `Save link as` to download the `.ipynb` file.
+
 --------------------------------
 Connecting to 3rd party software
 --------------------------------
@@ -205,3 +212,13 @@ Connecting to 3rd party software
 Activate an Ansys design by double clicking on it in the Project Manager panel.
 
 If the error persists, there may be one or more hidden Ansys windows in the background. Close them via the task manager and try again.
+
+**Why am I getting a win32com error?**
+
+If you have run a EnsureDispatch command as part of qiskit-metal or independently in your conda environment, you might later encounter errors such as ``AttributeError: module 'win32com.xxx' has no attribute 'CLSIDToClassMap'``.
+
+To resolve this, you will need to delete the temporary module python files that EnsureDispach creates as part of COM object method retrieval.
+
+To do so, delete the entire folder `gen_py` or just the file in it that corresponds to your error message.
+
+Note that this folder might show up in different paths, depending on the OS and setup. You should in general be able to find it at this path: $env:LOCALAPPDATA\Temp\gen_py

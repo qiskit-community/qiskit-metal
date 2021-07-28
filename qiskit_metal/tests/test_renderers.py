@@ -50,51 +50,13 @@ class TestRenderers(unittest.TestCase):
         """Tie any loose ends."""
         pass
 
-    def test_renderer_instantiate_qrenderer(self):
-        """Test instantiation of QRenderer in renderer_base.py."""
-        design = designs.DesignPlanar()
-        try:
-            QRenderer(design)
-        except Exception:
-            self.fail("QRender(design) failed")
-
-        try:
-            QRenderer(design, initiate=False)
-        except Exception:
-            self.fail("QRenderer(design, initiate=False) failed")
-
-        try:
-            QRenderer(design, initiate=False, render_template={})
-        except Exception:
-            self.fail(
-                "QRenderer(design, initiate=False, render_template={}) failed")
-
-        try:
-            QRenderer(design, initiate=False, render_options={})
-        except Exception:
-            self.fail(
-                "QRenderer(design, initiate=False, render_options={}) failed")
-
     def test_renderer_instanitate_qansys_renderer(self):
         """Test instantiation of QAnsysRenderer in ansys_renderer.py"""
         design = designs.DesignPlanar()
         try:
-            QAnsysRenderer(design)
+            QAnsysRenderer(design, initiate=False)
         except Exception:
             self.fail("QAnsysRenderer() failed")
-
-    def test_renderer_instantiate_qrenderer_gui(self):
-        """Test instantiation of QRendererGui in renderer_gui_base.py."""
-        design = designs.DesignPlanar()
-        try:
-            QRendererGui(None, design)
-        except Exception:
-            self.fail("QRenderGui(None, design) failed")
-
-        try:
-            QRendererGui(None, design, initiate=False)
-        except Exception:
-            self.fail("QRenderGui(None, design, initiate=False) failed")
 
     def test_renderer_instantiate_gdsrender(self):
         """Test instantiation of QGDSRenderer in gds_renderer.py."""
@@ -149,10 +111,10 @@ class TestRenderers(unittest.TestCase):
     def test_renderer_qansys_renderer_options(self):
         """Test that defaults in QAnsysRenderer were not accidentally changed."""
         design = designs.DesignPlanar()
-        renderer = QAnsysRenderer(design)
+        renderer = QAnsysRenderer(design, initiate=False)
         options = renderer.default_options
 
-        self.assertEqual(len(options), 14)
+        self.assertEqual(len(options), 13)
         self.assertEqual(options['Lj'], '10nH')
         self.assertEqual(options['Cj'], 0)
         self.assertEqual(options['_Rj'], 0)
@@ -160,7 +122,6 @@ class TestRenderers(unittest.TestCase):
         self.assertEqual(options['project_path'], None)
         self.assertEqual(options['project_name'], None)
         self.assertEqual(options['design_name'], None)
-        self.assertEqual(options['ansys_file_extension'], '.aedt')
         self.assertEqual(options['x_buffer_width_mm'], 0.2)
         self.assertEqual(options['y_buffer_width_mm'], 0.2)
         self.assertEqual(options['wb_threshold'], '400um')
@@ -195,6 +156,49 @@ class TestRenderers(unittest.TestCase):
         self.assertEqual(options['plot_ansys_fields_options']['PlotGeomInfo_3'],
                          "1")
 
+    def test_renderer_qansysrenderer_default_setup(self):
+        """Test that default_setup in QAnsysRenderer have not been accidentally changed."""
+        default_setup = QAnsysRenderer.default_setup
+
+        self.assertEqual(len(default_setup), 4)
+        self.assertEqual(len(default_setup['drivenmodal']), 8)
+        self.assertEqual(len(default_setup['eigenmode']), 9)
+        self.assertEqual(len(default_setup['q3d']), 12)
+        self.assertEqual(default_setup['port_inductor_gap'], '10um')
+
+        self.assertEqual(default_setup['drivenmodal']['name'], "Setup")
+        self.assertEqual(default_setup['drivenmodal']['freq_ghz'], '5.0')
+        self.assertEqual(default_setup['drivenmodal']['max_delta_s'], '0.1')
+        self.assertEqual(default_setup['drivenmodal']['max_passes'], '10')
+        self.assertEqual(default_setup['drivenmodal']['min_passes'], '1')
+        self.assertEqual(default_setup['drivenmodal']['min_converged'], '1')
+        self.assertEqual(default_setup['drivenmodal']['pct_refinement'], '30')
+        self.assertEqual(default_setup['drivenmodal']['basis_order'], '1')
+
+        self.assertEqual(default_setup['eigenmode']['name'], "Setup")
+        self.assertEqual(default_setup['eigenmode']['min_freq_ghz'], '1')
+        self.assertEqual(default_setup['eigenmode']['n_modes'], '1')
+        self.assertEqual(default_setup['eigenmode']['max_delta_f'], '0.5')
+        self.assertEqual(default_setup['eigenmode']['max_passes'], '10')
+        self.assertEqual(default_setup['eigenmode']['min_passes'], '1')
+        self.assertEqual(default_setup['eigenmode']['min_converged'], '1')
+        self.assertEqual(default_setup['eigenmode']['pct_refinement'], '30')
+        self.assertEqual(default_setup['eigenmode']['basis_order'], '-1')
+
+        self.assertEqual(default_setup['q3d']['name'], 'Setup')
+        self.assertEqual(default_setup['q3d']['freq_ghz'], '5.0')
+        self.assertEqual(default_setup['q3d']['save_fields'], 'False')
+        self.assertEqual(default_setup['q3d']['enabled'], 'True')
+        self.assertEqual(default_setup['q3d']['max_passes'], '15')
+        self.assertEqual(default_setup['q3d']['min_passes'], '2')
+        self.assertEqual(default_setup['q3d']['min_converged_passes'], '2')
+        self.assertEqual(default_setup['q3d']['percent_error'], '0.5')
+        self.assertEqual(default_setup['q3d']['percent_refinement'], '30')
+        self.assertEqual(default_setup['q3d']['auto_increase_solution_order'],
+                         'True')
+        self.assertEqual(default_setup['q3d']['solution_order'], 'High')
+        self.assertEqual(default_setup['q3d']['solver_type'], 'Iterative')
+
     def test_renderer_qq3d_render_options(self):
         """Test that defaults in QQ3DRenderer were not accidentally changed."""
         design = designs.DesignPlanar()
@@ -203,30 +207,9 @@ class TestRenderers(unittest.TestCase):
 
         self.assertEqual(renderer.name, 'q3d')
 
-        self.assertEqual(len(options), 4)
-        self.assertEqual(len(options['add_setup']), 12)
-        self.assertEqual(len(options['get_capacitance_matrix']), 3)
+        self.assertEqual(len(options), 2)
         self.assertEqual(options['material_type'], 'pec')
         self.assertEqual(options['material_thickness'], '200nm')
-
-        self.assertEqual(options['add_setup']['freq_ghz'], '5.0')
-        self.assertEqual(options['add_setup']['name'], 'Setup')
-        self.assertEqual(options['add_setup']['save_fields'], 'False')
-        self.assertEqual(options['add_setup']['enabled'], 'True')
-        self.assertEqual(options['add_setup']['max_passes'], '15')
-        self.assertEqual(options['add_setup']['min_passes'], '2')
-        self.assertEqual(options['add_setup']['min_converged_passes'], '2')
-        self.assertEqual(options['add_setup']['percent_error'], '0.5')
-        self.assertEqual(options['add_setup']['percent_refinement'], '30')
-        self.assertEqual(options['add_setup']['auto_increase_solution_order'],
-                         'True')
-        self.assertEqual(options['add_setup']['solution_order'], 'High')
-        self.assertEqual(options['add_setup']['solver_type'], 'Iterative')
-
-        self.assertEqual(options['get_capacitance_matrix']['variation'], '')
-        self.assertEqual(options['get_capacitance_matrix']['solution_kind'],
-                         'AdaptivePass')
-        self.assertEqual(options['get_capacitance_matrix']['pass_number'], '3')
 
     def test_renderer_hfss_render_options(self):
         """Test that defaults in QHFSSRender were not accidentally changed."""
@@ -235,29 +218,8 @@ class TestRenderers(unittest.TestCase):
         options = renderer.hfss_options
 
         self.assertEqual(renderer.name, 'hfss')
-        self.assertEqual(len(options), 3)
-        self.assertEqual(len(options['drivenmodal_setup']), 8)
-        self.assertEqual(len(options['eigenmode_setup']), 9)
+        self.assertEqual(len(options), 1)
         self.assertEqual(options['port_inductor_gap'], '10um')
-
-        self.assertEqual(options['drivenmodal_setup']['freq_ghz'], '5')
-        self.assertEqual(options['drivenmodal_setup']['name'], "Setup")
-        self.assertEqual(options['drivenmodal_setup']['max_delta_s'], '0.1')
-        self.assertEqual(options['drivenmodal_setup']['max_passes'], '10')
-        self.assertEqual(options['drivenmodal_setup']['min_passes'], '1')
-        self.assertEqual(options['drivenmodal_setup']['min_converged'], '1')
-        self.assertEqual(options['drivenmodal_setup']['pct_refinement'], '30')
-        self.assertEqual(options['drivenmodal_setup']['basis_order'], '1')
-
-        self.assertEqual(options['eigenmode_setup']['name'], "Setup")
-        self.assertEqual(options['eigenmode_setup']['min_freq_ghz'], '1')
-        self.assertEqual(options['eigenmode_setup']['n_modes'], '1')
-        self.assertEqual(options['eigenmode_setup']['max_delta_f'], '0.5')
-        self.assertEqual(options['eigenmode_setup']['max_passes'], '10')
-        self.assertEqual(options['eigenmode_setup']['min_passes'], '1')
-        self.assertEqual(options['eigenmode_setup']['min_converged'], '1')
-        self.assertEqual(options['eigenmode_setup']['pct_refinement'], '30')
-        self.assertEqual(options['eigenmode_setup']['basis_order'], '-1')
 
     def test_renderer_gdsrenderer_options(self):
         """Test that default_options in QGDSRenderer were not accidentally
@@ -318,25 +280,23 @@ class TestRenderers(unittest.TestCase):
     def test_renderer_ansys_renderer_name_delim(self):
         """Test NAME_DELIM in QAnsysRenderer."""
         design = designs.DesignPlanar()
-        renderer = QAnsysRenderer(design)
+        renderer = QAnsysRenderer(design, initiate=False)
         self.assertEqual(renderer.NAME_DELIM, '_')
 
     def test_renderer_ansys_renderer_name(self):
         """Test name in QAnsysRenderer."""
         design = designs.DesignPlanar()
-        renderer = QAnsysRenderer(design)
+        renderer = QAnsysRenderer(design, initiate=False)
         self.assertEqual(renderer.name, 'ansys')
 
     def test_renderer_renderer_base_name(self):
         """Test name in QRenderer."""
-        design = designs.DesignPlanar()
-        renderer = QRenderer(design)
+        renderer = QRenderer
         self.assertEqual(renderer.name, 'base')
 
     def test_renderer_renderer_gui_base_name(self):
         """Test name in QRenderer."""
-        design = designs.DesignPlanar()
-        renderer = QRendererGui(None, design)
+        renderer = QRendererGui
         self.assertEqual(renderer.name, 'guibase')
 
     def test_renderer_gdsrenderer_inclusive_bound(self):
@@ -391,8 +351,7 @@ class TestRenderers(unittest.TestCase):
 
     def test_renderer_renderer_base_element_table_data(self):
         """Test element_table_data in QRenderer."""
-        design = designs.DesignPlanar()
-        renderer = QRenderer(design)
+        renderer = QRenderer
         etd = renderer.element_table_data
 
         self.assertEqual(len(etd), 0)
@@ -400,7 +359,7 @@ class TestRenderers(unittest.TestCase):
     def test_renderer_ansys_renderer_element_table_data(self):
         """Test element_table_data in QAnsysRenderer."""
         design = designs.DesignPlanar()
-        renderer = QAnsysRenderer(design)
+        renderer = QAnsysRenderer(design, initiate=False)
         etd = renderer.element_table_data
 
         self.assertEqual(len(etd), 2)

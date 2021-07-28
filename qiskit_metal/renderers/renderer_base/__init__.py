@@ -14,3 +14,4 @@
 """"""
 
 from .renderer_base import QRenderer
+from .rndr_analysis import QRendererAnalysis

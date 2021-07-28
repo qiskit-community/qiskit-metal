@@ -47,6 +47,8 @@ from qiskit_metal.qlibrary.tlines.mixed_path import RouteMixed
 from qiskit_metal.qlibrary.terminations.launchpad_wb import LaunchpadWirebond
 from qiskit_metal.qlibrary.terminations.launchpad_wb_coupled import LaunchpadWirebondCoupled
 from qiskit_metal.qlibrary.lumped.cap_3_interdigital import Cap3Interdigital
+from qiskit_metal.qlibrary.qubits.JJ_Dolan import jj_dolan
+from qiskit_metal.qlibrary.qubits.JJ_Manhattan import jj_manhattan
 from qiskit_metal.qlibrary.qubits.transmon_concentric import TransmonConcentric
 from qiskit_metal.qlibrary.qubits.transmon_cross import TransmonCross
 from qiskit_metal.qlibrary.qubits.transmon_cross_fl import TransmonCrossFL
@@ -810,6 +812,43 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
             self.fail(
                 "TunableCoupler01(design, \"my_name3\", options={}, make=False)"
             )
+
+    def test_qlibrary_qubits_jj_dolan_instantiate(self):
+        """Test the instantiaion of jj_dolan."""
+        design = designs.DesignPlanar()
+        try:
+            jj_dolan
+        except Exception:
+            self.fail("jj_dolan failed")
+
+        try:
+            jj_dolan(design, "my_name2", options={})
+        except Exception:
+            self.fail("jj_dolan(design, \"my_name2\", options={})")
+
+        try:
+            jj_dolan(design, "my_name3", options={}, make=False)
+        except Exception:
+            self.fail("jj_dolan(design, \"my_name3\", options={}, make=False)")
+
+    def test_qlibrary_qubits_jj_manhattan_instantiate(self):
+        """Test the instantiaion of jj_dolan."""
+        design = designs.DesignPlanar()
+        try:
+            jj_manhattan
+        except Exception:
+            self.fail("jj_manhattan failed")
+
+        try:
+            jj_manhattan(design, "my_name2", options={})
+        except Exception:
+            self.fail("jj_manhattan(design, \"my_name2\", options={})")
+
+        try:
+            jj_manhattan(design, "my_name3", options={}, make=False)
+        except Exception:
+            self.fail(
+                "jj_manhattan(design, \"my_name3\", options={}, make=False)")
 
 
 if __name__ == '__main__':
