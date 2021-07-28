@@ -158,6 +158,23 @@ source_suffix = ['.rst', '.ipynb']
 
 suppress_warnings = ['ref.ref']
 
+nbsphinx_thumbnails = {
+    'tut/quick-topics/Opening-documentation':
+        '_static/qt-open-docs.png',
+    'tut/4-Analysis/4.31-Plot-quantum-oscillator-wavefunction':
+        '_static/4-31-plotting-wavefunction.png',
+    'tut/4-Analysis/4.32-Transmon-analytics-HCPB':
+        '_static/4-32-transmon-hcpb.png',
+    'tut/4-Analysis/4.33-Transmon-analytics':
+        '_static/4-33-transmon-analytics.png',
+    'tut/4-Analysis/4.34-Transmon-qubit-CPB-hamiltonian-charge-basis':
+        '_static/4-34-transmon-cpb.png',
+    'tut/4-Analysis/4.15-CPW-kappa-calculation':
+        '_static/4-15-kappa-calc.png',
+    'tut/1-Overview/1.3-Saving-Your-Chip-Design':
+        '_static/1-3-save.png',
+}
+
 # -----------------------------------------------------------------------------
 # Autosummary
 # -----------------------------------------------------------------------------
