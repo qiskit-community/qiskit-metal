@@ -440,12 +440,12 @@ class Ui_MainWindow(object):
                          QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionHFSS.setIcon(icon26)
         self.actionHFSS.setObjectName("actionHFSS")
-        self.actionQ3D = QtWidgets.QAction(MainWindow)
-        icon27 = QtGui.QIcon()
-        icon27.addPixmap(QtGui.QPixmap(":/renderer/_imgs/renderers/Q3D.png"),
-                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.actionQ3D.setIcon(icon27)
-        self.actionQ3D.setObjectName("actionQ3D")
+        #self.actionQ3D = QtWidgets.QAction(MainWindow)
+        #icon27 = QtGui.QIcon()
+        #icon27.addPixmap(QtGui.QPixmap(":/renderer/_imgs/renderers/Q3D.png"),
+        #                 QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        #self.actionQ3D.setIcon(icon27)
+        #self.actionQ3D.setObjectName("actionQ3D")
         self.actionBuildHistory = QtWidgets.QAction(MainWindow)
         icon28 = QtGui.QIcon()
         icon28.addPixmap(QtGui.QPixmap(":/build_history"), QtGui.QIcon.Normal,
@@ -510,7 +510,7 @@ class Ui_MainWindow(object):
         self.toolBarView.addAction(self.actionScreenshot)
         self.toolbar_renderers.addAction(self.actionGDS)
         self.toolbar_renderers.addAction(self.actionHFSS)
-        self.toolbar_renderers.addAction(self.actionQ3D)
+        #self.toolbar_renderers.addAction(self.actionQ3D)
 
         self.retranslateUi(MainWindow)
         self.tabWidget.setCurrentIndex(1)
@@ -607,8 +607,8 @@ class Ui_MainWindow(object):
                                MainWindow.show_renderer_gds)
         QtCore.QObject.connect(self.actionHFSS, QtCore.SIGNAL("triggered()"),
                                MainWindow.show_renderer_hfss)
-        QtCore.QObject.connect(self.actionQ3D, QtCore.SIGNAL("triggered()"),
-                               MainWindow.show_renderer_q3d)
+        #QtCore.QObject.connect(self.actionQ3D, QtCore.SIGNAL("triggered()"),
+        #                       MainWindow.show_renderer_q3d)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -994,8 +994,8 @@ class Ui_MainWindow(object):
                                              -1))
         self.actionHFSS.setText(
             QtWidgets.QApplication.translate("MainWindow", "HFSS", None, -1))
-        self.actionQ3D.setText(
-            QtWidgets.QApplication.translate("MainWindow", "Q3D", None, -1))
+        #self.actionQ3D.setText(
+            #QtWidgets.QApplication.translate("MainWindow", "Q3D", None, -1))
         self.actionBuildHistory.setText(
             QtWidgets.QApplication.translate("MainWindow", "Build History",
                                              None, -1))
