@@ -29,10 +29,9 @@ from scipy import optimize, integrate
 from pyEPR.calcs.convert import Convert
 from pyEPR.calcs.constants import e_el as ele, hbar
 
-from qiskit_metal.toolbox_python.utility_functions import check_all_required_args_provided, get_all_args
+from qiskit_metal.toolbox_python.utility_functions import get_all_args
 from qiskit_metal.analyses.em.cpw_calculations import guided_wavelength
 from qiskit_metal.analyses.hamiltonian.states_energies import extract_energies
-from qiskit_metal.toolbox_metal.exceptions import InputError
 
 from qiskit_metal import logger
 
@@ -968,7 +967,6 @@ class CompositeSystem:
         names = self.names
         f01s, chi_mat = extract_energies(ham)
         f01s = f01s / 1000
-        chi_mat = chi_mat
 
         print('')
         print('system frequencies in GHz:')
