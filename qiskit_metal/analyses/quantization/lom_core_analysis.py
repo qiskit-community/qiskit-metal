@@ -16,10 +16,12 @@
 # pylint: disable=invalid-name
 
 from collections import defaultdict, namedtuple
-from typing import Any, List, Dict, Tuple, DefaultDict, Sequence, Mapping
+from typing import Any, List, Dict, Tuple, DefaultDict, Sequence, Mapping, Union
+import argparse
 
 import numpy as np
 import pandas as pd
+import qutip
 import scqubits as scq
 from sympy import Matrix
 from scipy import optimize, integrate
@@ -27,8 +29,11 @@ from scipy import optimize, integrate
 from pyEPR.calcs.convert import Convert
 from pyEPR.calcs.constants import e_el as ele, hbar
 
-from qiskit_metal.toolbox_python.utility_functions import check_all_required_args_provided
+from qiskit_metal.toolbox_python.utility_functions import check_all_required_args_provided, get_all_args
 from qiskit_metal.analyses.em.cpw_calculations import guided_wavelength
+from qiskit_metal.analyses.hamiltonian.states_energies import extract_energies
+from qiskit_metal.toolbox_metal.exceptions import InputError
+
 from qiskit_metal import logger
 
 BasisTransform = namedtuple(
@@ -46,6 +51,7 @@ class CouplingType:
 MHzRad = 2 * np.pi * 1e6
 GHzRad = 2 * np.pi * 1e9
 
+NANO = 1e-9
 FEMTO = 1e-15
 ONE_OVER_FEMTO = 1e15
 
@@ -596,11 +602,43 @@ class QuantumBuilder(metaclass=_QuantumBuilderMeta):
         raise NotImplementedError
 
 
+class QuantumBuilderOptions(argparse.Namespace):
+
+    def set_from_input(self, input_opts: Dict):
+        for k, v in input_opts.items():
+            setattr(self, k, v)
+
+    def view_as(self, group: Union[str, type]):
+        if isinstance(group, str):
+            return getattr(self, group, None)
+        elif isinstance(group, type):
+            opts = {}
+            args = get_all_args(group.__init__)
+            for arg in args:
+                opts[arg] = getattr(self, arg, None)
+            return opts
+
+
+def set_builder_options(func):
+
+    def wrapper(self, subsystem):
+        dflt_opts = getattr(self, 'default_opts', {})
+        build_options = QuantumBuilderOptions(**dflt_opts)
+        build_options.set_from_input(subsystem.q_opts)
+        setattr(self, 'builder_options', build_options)
+        func(self, subsystem)
+
+    return wrapper
+
+
 class TransmonBuilder(QuantumBuilder):
 
     system_type = 'TRANSMON'
+    default_opts = {'ng': 0.001, 'ncut': 22, 'truncated_dim': 10}
 
     # pylint: disable=protected-access
+    # pylint: disable=no-member
+    @set_builder_options
     def make_quantum(self, subsystem: Subsystem):
         cg = self.cg
         l_inv_k = cg.L_inv_k
@@ -616,11 +654,10 @@ class TransmonBuilder(QuantumBuilder):
         EJ = Convert.Ej_from_Lj(1 / l_inv_k[ss_idx, ss_idx])
         EC = Convert.Ec_from_Cs(1 / c_inv_k[ss_idx, ss_idx])
         Q_zpf = 2 * ele
-        qubit_opts = dict(EJ=EJ, EC=EC, ng=0.001, ncut=22, truncated_dim=10)
-        if subsystem.q_opts is not None:
-            qubit_opts = {**qubit_opts, **subsystem.q_opts}
-        check_all_required_args_provided(scq.Transmon.__init__, qubit_opts)
-        transmon = scq.Transmon(**qubit_opts)
+        builder_options = self.builder_options
+        builder_options.EJ = EJ
+        builder_options.EC = EC
+        transmon = scq.Transmon(**builder_options.view_as(scq.Transmon))
 
         subsystem._quantum_system = transmon
         subsystem._h_params = dict(EJ=EJ, EC=EC, Q_zpf=Q_zpf)
@@ -631,11 +668,13 @@ class TransmonBuilder(QuantumBuilder):
 class FluxoniumBuilder(QuantumBuilder):
 
     system_type = 'FLUXONIUM'
+    default_opts = {'cutoff': 110, 'truncated_dim': 10}
 
     # pylint: disable=protected-access
+    # pylint: disable=no-member
+    @set_builder_options
     def make_quantum(self, subsystem: Subsystem):
         cg = self.cg
-        l_inv_k = cg.L_inv_k
         c_inv_k = cg.C_inv_k
 
         subsystem_idx = _find_subsystem_mat_index(cg,
@@ -645,34 +684,40 @@ class FluxoniumBuilder(QuantumBuilder):
         subsystem.system_params['subsystem_idx'] = ss_idx
 
         # EJ and EC are in MHz
-        EJ = Convert.Ej_from_Lj(1 / l_inv_k[ss_idx, ss_idx])
         EC = Convert.Ec_from_Cs(1 / c_inv_k[ss_idx, ss_idx])
         Q_zpf = 2 * ele
-        qubit_opts = dict(EJ=EJ, EC=EC, cutoff=110, truncated_dim=10)
-        if subsystem.q_opts is not None:
-            qubit_opts = {**qubit_opts, **subsystem.q_opts}
-        check_all_required_args_provided(scq.Fluxonium.__init__, qubit_opts)
-        fluxonium = scq.Fluxonium(**qubit_opts)
+        builder_options = self.builder_options
+        builder_options.EC = EC
+        fluxonium = scq.Fluxonium(**builder_options.view_as(scq.Fluxonium))
 
         subsystem._quantum_system = fluxonium
-        subsystem._h_params = dict(EJ=EJ, EC=EC, Q_zpf=Q_zpf)
+        subsystem._h_params = dict(EJ=builder_options.EJ,
+                                   EC=builder_options.EC,
+                                   EL=builder_options.EL,
+                                   flux=builder_options.flux,
+                                   Q_zpf=Q_zpf)
         subsystem._h_params['default_charge_op'] = Operator(
             fluxonium.n_operator(), False)
 
 
-class ResonatorBuilder(QuantumBuilder):
+class TLResonatorBuilder(QuantumBuilder):
 
-    system_type = 'RESONATOR'
+    system_type = 'TL_RESONATOR'
     default_opts = {
+        'Z0': 50,
+        'vp': 'use_design',  # phase velocity
         'design': {
-            'line_width': 10 * 1e-6,  # FIXME: remove this
-            'line_gap': 6 * 1e-6,  # FIXME: remove this
+            'line_width': 10 * 1e-6,
+            'line_gap': 6 * 1e-6,
             'substrate_thickness': 750 * 1e-6,
             'film_thickness': 200 * 1e-9
-        }
+        },
+        'truncated_dim': 3
     }
 
     # pylint: disable=protected-access
+    # pylint: disable=no-member
+    @set_builder_options
     def make_quantum(self, subsystem: Subsystem):
         cg = self.cg
         c_inv_k = cg.C_inv_k
@@ -684,26 +729,68 @@ class ResonatorBuilder(QuantumBuilder):
         subsystem.system_params['subsystem_idx'] = ss_idx
         CL = 1 / c_inv_k[ss_idx, ss_idx]
 
-        f_res = subsystem.q_opts.get('f_res')
-        if f_res is None:
-            raise ValueError('f_res is not defined.')
+        builder_options = self.builder_options
+        f_res = builder_options.f_res
+        Z0 = builder_options.Z0
         # convert to MHz
         f_res *= 1000
+        builder_options.E_osc = f_res
 
-        # FIXME: take design options from q_opts
-        lambdaG, _, _ = guided_wavelength(
-            f_res * 10**6, **ResonatorBuilder.default_opts['design'])
-        vp = f_res * MHzRad * lambdaG / (2 * np.pi)
+        if builder_options.vp == 'use_design':
+            lambdaG, _, _ = guided_wavelength(f_res * 10**6,
+                                              **builder_options.design)
+            vp = f_res * MHzRad * lambdaG / (2 * np.pi)
+        else:
+            vp = float(builder_options.vp)
 
-        Z0 = subsystem.q_opts.get('Z0')
-        if Z0 is None:
-            raise ValueError('Z0 is not defined.')
-        res_opts = dict(E_osc=f_res, truncated_dim=3)
-        #FIXME should NOT pass in q_opts to Oscillator
-        resonator = scq.Oscillator(**res_opts)
+        resonator = scq.Oscillator(**builder_options.view_as(scq.Oscillator))
         subsystem._quantum_system = resonator
 
         Q_zpf, _, _, _, = analyze_loaded_tl(f_res, CL, vp, Z0)
+        subsystem._h_params['Q_zpf'] = Q_zpf
+        subsystem._h_params['default_charge_op'] = Operator(
+            1j *
+            (resonator.creation_operator() - resonator.annihilation_operator()),
+            False)
+
+
+class LumpedResonatorBuilder(QuantumBuilder):
+
+    system_type = 'LUMPED_RESONATOR'
+    default_opts = {'truncated_dim': 3}
+
+    # pylint: disable=protected-access
+    # pylint: disable=no-member
+    @set_builder_options
+    def make_quantum(self, subsystem: Subsystem):
+        cg = self.cg
+        l_inv_k = cg.L_inv_k
+        c_inv_k = cg.C_inv_k
+
+        subsystem_idx = _find_subsystem_mat_index(cg,
+                                                  subsystem,
+                                                  single_node=True)
+        ss_idx = subsystem_idx[0]
+        subsystem.system_params['subsystem_idx'] = ss_idx
+
+        builder_options = self.builder_options
+
+        # TODO: should we be more explicit about units?
+        # assume l_inv_k is in 1/nH and c_inv_k is in 1/fF
+        l = 1 / l_inv_k[ss_idx, ss_idx] * NANO
+        c = 1 / c_inv_k[ss_idx, ss_idx] * FEMTO
+
+        # resonant angular frequency in radians/s
+        w_res = 1 / np.sqrt(l * c)
+        # convert to MHz
+        f_res = w_res / MHzRad
+        builder_options.E_osc = f_res
+
+        Z = np.sqrt(l / c)
+        Q_zpf = np.sqrt(hbar / (2 * Z))
+        resonator = scq.Oscillator(**builder_options.view_as(scq.Oscillator))
+        subsystem._quantum_system = resonator
+
         subsystem._h_params['Q_zpf'] = Q_zpf
         subsystem._h_params['default_charge_op'] = Operator(
             1j *
@@ -746,6 +833,7 @@ class CompositeSystem:
                  nodes_force_keep: Sequence = None):
         self._subsystems = subsystems
         self.num_subsystems = len(subsystems)
+        self.names = [sub.name for sub in self._subsystems]
         self._cells = cells
         self.num_cells = len(cells)
         self.grd_node = grd_node
@@ -875,3 +963,18 @@ class CompositeSystem:
                                       op2=(q2_op, q2),
                                       add_hc=add_hc1 or add_hc2)
         return h
+
+    def print_results(self, ham: qutip.Qobj):
+        names = self.names
+        f01s, chi_mat = extract_energies(ham)
+        f01s = f01s / 1000
+        chi_mat = chi_mat
+
+        print('')
+        print('system frequencies in GHz:')
+        print('--------------------------')
+        print(dict(zip(names, f01s)))
+        print()
+        print('Chi matrices in MHz')
+        print('--------------------------')
+        print(_make_cmat_df(chi_mat, names))

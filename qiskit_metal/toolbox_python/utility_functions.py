@@ -569,3 +569,12 @@ def check_all_required_args_provided(func: Callable,
         raise InputError(
             f'Missing values for arguments {out} for {func.__qualname__}')
     return missing_args
+
+
+def get_all_args(func: Callable):
+    args = []
+    for param in inspect.signature(func).parameters.values():
+        if param.name == 'self':
+            continue
+        args.append(param.name)
+    return args
