@@ -5,7 +5,7 @@
     <table>
         <tr><td width="30%">
         <a href="https://www.youtube.com/playlist?list=PLOFEBzvs-VvqHl5ZqVmhB_FcSqmLufsjb">
-        Click for Tutorial Video Recordings <br>
+        Click for Video Tutorials <br><br>
 	        <img src="https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg" width="100">
         </a>
         </td><td width="70%"></td></tr>
@@ -137,7 +137,7 @@ Quick Topics
     <table>
         <tr><td width="30%">
         <a href="https://www.youtube.com/playlist?list=PLOFEBzvs-VvqHl5ZqVmhB_FcSqmLufsjb">
-        Click for Tutorial Video Recordings <br>
+        Click for Video Tutorials <br><br>
 	        <img src="https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg" width="100">
         </a>
         </td><td width="70%"></td></tr>
