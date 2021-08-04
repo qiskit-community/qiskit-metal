@@ -24,6 +24,7 @@ import numpy as np
 import pandas as pd
 import pyEPR as epr
 from pyEPR.ansys import set_property, parse_units
+from pyEPR.ansys import parse_units, HfssApp, release #Added Import
 
 from qiskit_metal import Dict
 from qiskit_metal.renderers.renderer_base import QRenderer
