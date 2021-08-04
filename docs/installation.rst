@@ -19,13 +19,14 @@ Video Instructions
 
 .. raw:: html
 
+    <a href="https://www.youtube.com/watch?v=sYVDtnJb-ZM&ab_channel=Qiskit">
+    Click for YouTube Video</a><br><br>
     <table>
-        <tr><td width="30%">
+        <tr><td width="22%">
         <a href="https://www.youtube.com/watch?v=sYVDtnJb-ZM&ab_channel=Qiskit">
-        Click for YouTube Video <br><br>
 	        <img src="https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg" width="100">
         </a>
-        </td><td width="70%"></td></tr>
+        </td><td width="78%"></td></tr>
     </table>
 
 =================
