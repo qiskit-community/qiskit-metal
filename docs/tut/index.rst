@@ -3,12 +3,12 @@
 .. raw:: html
 
     <table>
-        <tr><td width="50%">
+        <tr><td width="30%">
         <a href="https://www.youtube.com/playlist?list=PLOFEBzvs-VvqHl5ZqVmhB_FcSqmLufsjb">
         Click for Tutorial Video Recordings <br>
 	        <img src="https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg" width="100">
         </a>
-        </td><td width="50%"></td></tr>
+        </td><td width="70%"></td></tr>
     </table>
 
 
@@ -135,12 +135,12 @@ Quick Topics
 .. raw:: html
 
     <table>
-        <tr><td width="50%">
+        <tr><td width="30%">
         <a href="https://www.youtube.com/playlist?list=PLOFEBzvs-VvqHl5ZqVmhB_FcSqmLufsjb">
         Click for Tutorial Video Recordings <br>
 	        <img src="https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg" width="100">
         </a>
-        </td><td width="50%"></td></tr>
+        </td><td width="70%"></td></tr>
     </table>
 
 
