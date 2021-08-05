@@ -92,10 +92,8 @@ class QAnalysis(ABC):
         """
 
     def run_sweep(self, *args, **kwargs):
-        """User requests sweeper based on arguments from 
+        """User requests sweeper based on arguments from
         Sweeper.run_sweep().
-
-
         """
         if not self._sweeper:
             self._initialize_sweep()

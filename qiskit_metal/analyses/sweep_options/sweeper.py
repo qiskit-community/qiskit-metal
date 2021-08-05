@@ -5,11 +5,12 @@ from typing import Tuple, Union
 class Sweeper():
 
     def __init__(self, parent):
+
+        # Reference to the instance (or child or grandchild) of QAnalysis.
         self.parent = parent
 
         #For easy access, make a reference to QDesign.
         self.design = parent.sim.design
-        zz = 5  #for breakpoint
 
     def run_sweep(self,
                   qcomp_name: str,
@@ -51,11 +52,12 @@ class Sweeper():
             * 2 option_name is empty.
             * 3 option_name is not found as key in Dict.
             * 4 option_sweep is empty, need at least one entry.
+            * 5 last key in option_name is not in Dict.
          
         """
         """
         These may not be used.
-            * 5 last key in option_name is not in Dict.
+            
             * 6 project not in app
             * 7 design not in app
             * 8 setup not implement, check the setup_args.
@@ -68,15 +70,29 @@ class Sweeper():
         if check_result != 0:
             return all_sweep, check_result
 
-        # Deal with setup here.
+        #  Add a solution setup here with some error checking.
 
         # For every entry in option_sweep, go through this loop and get
         # data to return.
         # Note: Analysis interface will prepare the workspace and if the
         #       workspace exist, the workspace will be cleared.
 
-        zz = 5  #for breakpoint
+        len_sweep = len(option_sweep) - 1
+        for index, item in enumerate(option_sweep):
+            # Last item in list.
+            if option_path[-1] in a_value.keys():
+                a_value[option_path[-1]] = item
+            else:
+                self.design.logger.warning(
+                    f'Key="{option_path[-1]}" is not in dict.')
+                return all_sweep, 5
 
+            self.design.rebuild()
+            self.parent.sim.run(name=design_name,
+                                components=qcomp_render,
+                                open_terminations=endcaps_render)
+
+            zz = 5  #for breakpoint
         return all_sweep, 0
 
     # ####### Error checking user input.
