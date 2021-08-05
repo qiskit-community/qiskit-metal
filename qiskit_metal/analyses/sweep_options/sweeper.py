@@ -136,7 +136,12 @@ class Sweeper():
         Args:
             sweep_values (Dict): [description]
         """
-        #self.parent.run_lom()
+
+        ## Put some try catch and see if you can continue, if there is an error.
+        self.parent.run_lom()
+
+        for item in self.parent.data_labels:
+            sweep_values[item] = self.parent.get_data(item)
 
         zz = 5  #for breakpoint
 
