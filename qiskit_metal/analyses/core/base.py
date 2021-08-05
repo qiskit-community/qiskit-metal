@@ -17,7 +17,8 @@ import inspect
 from typing import Any, Union
 
 from copy import deepcopy
-from ... import Dict, logger
+from qiskit_metal import logger, Dict
+from qiskit_metal.analyses.sweep_options.sweeper import Sweeper
 
 
 class QAnalysis(ABC):
@@ -55,6 +56,12 @@ class QAnalysis(ABC):
         # first self.clear_data()
         self._variables = Dict()
 
+        # Keep a reference to Sweeper class.
+        self._sweeper = None
+
+    def _initialize_sweep(self):
+        self._sweeper = Sweeper(self)
+
     @property
     def logger(self):
         """Returns the logger."""
@@ -83,6 +90,18 @@ class QAnalysis(ABC):
         Make sure the name of the method `run_***()` does not conflict with that of another
         QAnalysis subclass, in case you expect them to be both inherited from the same subclass.
         """
+
+    def run_sweep(self, *args, **kwargs):
+        """User requests sweeper based on arguments from 
+        Sweeper.run_sweep().
+
+
+        """
+        if not self._sweeper:
+            self._initialize_sweep()
+
+        # Need to get the data and return code as to how things ended.
+        self._sweeper.run_sweep(*args, **kwargs)
 
     def save_run_args(self, **kwargs):
         """Intended to be used to store the kwargs passed to the run() method,
