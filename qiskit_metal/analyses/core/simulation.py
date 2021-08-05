@@ -14,9 +14,8 @@
 
 from abc import abstractmethod
 from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
-
-from . import QAnalysis
-from ... import Dict
+from qiskit_metal.analyses.core import QAnalysis
+from qiskit_metal import Dict
 
 
 class QSimulation(QAnalysis):
