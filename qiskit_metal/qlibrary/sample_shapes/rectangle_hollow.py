@@ -21,6 +21,9 @@ class RectangleHollow(QComponent):
 
     Inherits QComponent class.
 
+    .. image::
+        RectangleHollow.png
+
     Default Options:
         * width: '500um'
         * height: '300um'

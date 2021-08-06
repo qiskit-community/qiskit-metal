@@ -105,6 +105,8 @@ Qubits
 .. autosummary::
     :toctree:
 
+    jj_dolan
+    jj_manhattan
     TransmonConcentric
     TransmonCross
     TransmonCrossFL
@@ -157,6 +159,8 @@ if config.is_building_docs():
     from .tlines.anchored_path import RouteAnchors
     from .tlines.mixed_path import RouteMixed
     from .tlines.pathfinder import RoutePathfinder
+    from .qubits.JJ_Dolan import jj_dolan
+    from .qubits.JJ_Manhattan import jj_manhattan
     from .qubits.transmon_concentric import TransmonConcentric
     from .qubits.transmon_cross import TransmonCross
     from .qubits.transmon_cross_fl import TransmonCrossFL

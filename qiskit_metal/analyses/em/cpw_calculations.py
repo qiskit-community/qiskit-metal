@@ -48,7 +48,7 @@ def guided_wavelength(freq,
                       film_thickness,
                       dielectric_constant=11.45):
     """A simple calculator to determine the guided wavelength of a planar CPW
-    transmission line. Assumes the substrate has relative permability of 1.
+    transmission line. Assumes the substrate has relative permeability of 1.
     Assumes package grounds are far away.
 
     Args:
@@ -244,4 +244,4 @@ def elliptic_int_constants(s, w, h):
         (np.pi * (s + 2 * w)) / (4 * h)))
     k11 = np.sqrt(1 - k1**2)
 
-    return ellipk(k0), ellipk(k01), ellipk(k1), ellipk(k11)
+    return ellipk(k0**2.0), ellipk(k01**2.0), ellipk(k1**2.0), ellipk(k11**2.0)

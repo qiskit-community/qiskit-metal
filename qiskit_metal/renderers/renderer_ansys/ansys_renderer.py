@@ -372,7 +372,7 @@ class QAnsysRenderer(QRendererAnalysis):
         Ansys COM, then checks for, and grab if present, an active project,
         design, and design setup.
 
-        If the optional parameters are provided: if present, opens the project file and design in 
+        If the optional parameters are provided: if present, opens the project file and design in
         Ansys.
 
         Args:
@@ -645,7 +645,7 @@ class QAnsysRenderer(QRendererAnalysis):
     def clear_fields(self, names: list):
         """
         Delete field plots from modeler window in Ansys.
-        Does not throw an error if names are missing. 
+        Does not throw an error if names are missing.
 
         Can give multiple names, for example:
         hfss.plot_ansys_delete(['Mag_E1', 'Mag_E1_2'])
@@ -686,6 +686,7 @@ class QAnsysRenderer(QRendererAnalysis):
     def execute_design(self,
                        design_name: str,
                        solution_type: str,
+                       vars_to_initialize: Dict,
                        force_redraw: bool = False,
                        **design_selection) -> str:
         """It wraps the render_design() method to
@@ -695,6 +696,7 @@ class QAnsysRenderer(QRendererAnalysis):
         Args:
             design_name (str): Name to assign to the renderer design
             solution_type (str): eigenmode, capacitive or drivenmodal
+            vars_to_initialize (Dict): Variables to initialize, i.e. Ljx, Cjx
             force_redraw (bool, optional): Force re-render the design. Defaults to False.
 
         Returns:
@@ -717,6 +719,7 @@ class QAnsysRenderer(QRendererAnalysis):
             self.clean_active_design()
         else:
             self.new_ansys_design(design_name, solution_type)
+        self.set_variables(vars_to_initialize)
         self.render_design(**design_selection)
         return self.pinfo.design.name
 
@@ -885,11 +888,11 @@ class QAnsysRenderer(QRendererAnalysis):
         return setup.name, sweep.name
 
     def activate_ansys_setup(self, setup_name: str):
-        """For active design, either get existing setup, make new setup with name, 
+        """For active design, either get existing setup, make new setup with name,
         or make new setup with default name.
 
         Args:
-            setup_name (str, optional): If name exists for setup, then have pinfo reference it. 
+            setup_name (str, optional): If name exists for setup, then have pinfo reference it.
               If name for setup does not exist, create a new setup with the name.
               If name is None, create a new setup with default name.
         """
@@ -1535,7 +1538,10 @@ class QAnsysRenderer(QRendererAnalysis):
             if self.pinfo.design:
                 for k, v in variables.items():
                     self.pinfo.design.set_variable(k, v)
-                    self.pinfo.design.set_variable(k, v)
+            else:
+                self.logger.warning(
+                    'Please create a design before setting variables, otherwise all variables will be set to 0 during rendering by default.'
+                )
 
     # TODO: epr methods below should not be in the renderer, but in the analysis files.
     #  Thus needs to remove the dependency from pinfo, which is Ansys-specific.
@@ -1624,7 +1630,9 @@ class QAnsysRenderer(QRendererAnalysis):
         self.epr_quantum_analysis.analyze_all_variations(cos_trunc=cos_trunc,
                                                          fock_trunc=fock_trunc)
 
-    def epr_report_hamiltonian(self, swp_variable: str = 'variation'):
+    def epr_report_hamiltonian(self,
+                               swp_variable: str = 'variation',
+                               numeric=True):
         """Reports in a markdown friendly table the hamiltonian results.
 
         Args:
@@ -1633,7 +1641,7 @@ class QAnsysRenderer(QRendererAnalysis):
         self.epr_quantum_analysis.plot_hamiltonian_results(
             swp_variable=swp_variable)
         self.epr_quantum_analysis.report_results(swp_variable=swp_variable,
-                                                 numeric=True)
+                                                 numeric=numeric)
 
     def epr_get_frequencies(self,
                             junctions: dict = None,

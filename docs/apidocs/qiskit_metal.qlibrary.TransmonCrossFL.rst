@@ -61,6 +61,7 @@ TransmonCrossFL
       TransmonCrossFL.qgeometry_plot
       TransmonCrossFL.qgeometry_table
       TransmonCrossFL.rebuild
+      TransmonCrossFL.to_script
    
 
    

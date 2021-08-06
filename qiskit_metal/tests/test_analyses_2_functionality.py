@@ -50,14 +50,14 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         """Test the functionality of guided_wavelength in
         cpw_calculations.py."""
         # Setup expected test results
-        test_a_expected = (0.024356252567915772, 2.4617087473867807,
-                           0.49998001152009985)
-        test_b_expected = (0.029017096287462227, 2.459879883274635,
-                           0.49994733413732906)
-        test_c_expected = (0.021364843468278626, 2.8063861122606597,
-                           0.49998001152009985)
-        test_d_expected = (0.025454109889274948, 2.804206147418523,
-                           0.49994733413732906)
+        test_a_expected = (0.024345363624151843, 2.46280979514796,
+                           0.49998185730956207)
+        test_b_expected = (0.02900577391226639, 2.460840094957294,
+                           0.4999524962937447)
+        test_c_expected = (0.02135485699188455, 2.807698502630373,
+                           0.49998185730956207)
+        test_d_expected = (0.025443724808268103, 2.805350708925153,
+                           0.4999524962937447)
 
         # Generate actual result data
         test_a_actual = cpw_calculations.guided_wavelength(
@@ -89,9 +89,9 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
     def test_analyses_cpw_lumped_cpw(self):
         """Test the functionality of lumped_cpw in cpw_calculations.py."""
         # Setup expected test results
-        expected = (0.03756048636141296, 3.858281044369713e-07,
-                    2.887792953700545e-11, 0.0, 115.58830718715625,
-                    1.0000000003871512, 2.887792953700545e-11)
+        expected = (0.04160856394637145, 3.7752144497164426e-07,
+                    2.9513334836287544e-11, 0.0, 113.09975672923031,
+                    1.0000000003871512, 2.9513334836287544e-11)
 
         # Generate actual result data
         result = cpw_calculations.lumped_cpw(1000000.75,
@@ -148,10 +148,10 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         """Test the functionality of elliptic_int_constants in
         cpw_calculations.py."""
         # Setup expected test results
-        test_a_expected = (1.8173686928723873, 2.536427762586688,
-                           1.8173447681250923, 2.5364957731769597)
-        test_b_expected = (1.8451651823831046, 2.462845861327711,
-                           1.8451017251588104, 2.4630023824949374)
+        test_a_expected = (1.6629724332436984, 2.2424412123997364,
+                           1.6629580628562461, 2.2425032046815248)
+        test_b_expected = (1.6800926134149732, 2.1758110550759615,
+                           1.6800526015534265, 2.175951807571837)
 
         # Generate actual result data
         test_a_actual = cpw_calculations.elliptic_int_constants(

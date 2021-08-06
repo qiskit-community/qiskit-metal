@@ -21,6 +21,9 @@ class OpenToGround(QComponent):
 
     Inherits `QComponent` class.
 
+    .. image::
+        OpenToGround.png
+
     Default Options:
         * width: '10um' -- The width of the 'cpw' terminating to ground (this is merely
           for the purpose of generating a value to pass to the pin)
