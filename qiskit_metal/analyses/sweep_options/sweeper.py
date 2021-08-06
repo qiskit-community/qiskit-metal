@@ -81,9 +81,11 @@ class Sweeper():
                                 open_terminations=open_terminations,
                                 box_plus_buffer=box_plus_buffer,
                                 ignored_jjs=ignored_jjs)
-            except:
-                self.parent.design.logger.warning(
-                    f'For class {self.parent.__class__.__name__}, run() did not execute as expected.'
+            except Exception as ex:
+                template = "An exception of type {0} occurred. Arguments:\n{1!r}"
+                message = template.format(type(ex).__name__, ex.args)
+                self.design.logger.warning(
+                    f'For class {self.parent.__class__.__name__}, run() did not execute as expected: {message}'
                 )
 
             self.populate_all_sweep(all_sweep, item, option_name)
