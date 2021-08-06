@@ -76,11 +76,17 @@ class Sweeper():
             self.design.rebuild()
 
             try:
-                self.parent.run(name=design_name,
-                                components=qcomp_render,
-                                open_terminations=open_terminations,
-                                box_plus_buffer=box_plus_buffer,
-                                ignored_jjs=ignored_jjs)
+                if ignored_jjs:
+                    self.parent.run(name=design_name,
+                                    components=qcomp_render,
+                                    open_terminations=open_terminations,
+                                    box_plus_buffer=box_plus_buffer,
+                                    ignored_jjs=ignored_jjs)
+                else:
+                    self.parent.run(name=design_name,
+                                    components=qcomp_render,
+                                    open_terminations=open_terminations,
+                                    box_plus_buffer=box_plus_buffer)
             except Exception as ex:
                 template = "An exception of type {0} occurred. Arguments:\n{1!r}"
                 message = template.format(type(ex).__name__, ex.args)
