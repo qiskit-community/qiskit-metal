@@ -1,4 +1,4 @@
-from qiskit_metal import logger, Dict
+from qiskit_metal import Dict
 from typing import Tuple, Union
 
 
@@ -17,9 +17,7 @@ class Sweeper():
                   option_name: str,
                   option_sweep: list,
                   qcomp_render: list,
-                  endcaps_render: list,
-                  setup_args: Dict = None,
-                  leave_last_design: bool = True,
+                  open_terminations: list,
                   design_name: str = "Sweep_default",
                   box_plus_buffer: bool = True) -> Tuple[Dict, int]:
         """Ansys will be opened, if not already open, with an inserted project.  
@@ -31,13 +29,9 @@ class Sweeper():
             option_sweep (list): Each entry in the list is a value for
                         option_name.
             qcomp_render (list): The component to render to Q3D.
-            endcaps_render (list): Identify which kind of pins. Follow the
-                        details from renderer QQ3DRenderer.render_design.
-            setup_args (Dict): Hold the arguments for  Q3d setup() as
-                        key/values to pass to Ansys.
-                        If None, default Setup will be used.
-            leave_last_design (bool) : In Q3d, after the last sweep, should
-                        the design be cleared?
+            open_terminations (list): Identify which kind of pins. Follow the
+                        details from renderer QQ3DRenderer.render_design, or
+                        QHFSSRenderer.render_design.
             design_name(str): Name of design (workspace) to use in project.
             box_plus_buffer(bool): Render the entire chip or create a
                         box_plus_buffer around the components which are rendered.
@@ -53,15 +47,7 @@ class Sweeper():
             * 2 option_name is empty.
             * 3 option_name is not found as key in Dict.
             * 4 option_sweep is empty, need at least one entry.
-            * 5 last key in option_name is not in Dict.
-         
-        """
-        """
-        These may not be used.
-            
-            * 6 project not in app
-            * 7 design not in app
-            * 8 setup not implement, check the setup_args.
+            * 5 last key in option_name is not in Dict. 
         """
         #Dict of all swept information.
         all_sweep = Dict()
@@ -70,14 +56,6 @@ class Sweeper():
             qcomp_name, option_name, option_sweep)
         if check_result != 0:
             return all_sweep, check_result
-
-        #  Add a solution setup here with some error checking.
-        self.apply_user_setup(setup_args)
-
-        # For every entry in option_sweep, go through this loop and get
-        # data to return.
-        # Note: Analysis interface will prepare the workspace and if the
-        #       workspace exist, the workspace will be cleared.
 
         len_sweep = len(option_sweep) - 1
         for index, item in enumerate(option_sweep):
@@ -90,26 +68,25 @@ class Sweeper():
                 return all_sweep, 5
 
             self.design.rebuild()
-            self.parent.sim.run(name=design_name,
+
+            try:
+                self.parent.run(name=design_name,
                                 components=qcomp_render,
-                                open_terminations=endcaps_render)
+                                open_terminations=open_terminations,
+                                box_plus_buffer=box_plus_buffer)
+            except:
+                self.parent.design.logger.warning(
+                    f'For class {self.parent.__class__.__name__}, run() did not execute as expected.'
+                )
+
             self.populate_all_sweep(all_sweep, item, option_name)
 
             zz = 5  #for breakpoint
         return all_sweep, 0
 
-    # #### Based on render, do error checking and apply user's setup.
-    def apply_user_setup(self, setup_args: Dict):
-        #self.parent.sim.render.renderer_name =="q3d"
-        # Do error checking of values chosen by user.
-        zz = 5  #for breakpoint
-
     # #######  Populate all_sweep
     def populate_all_sweep(self, all_sweep: Dict, item: str, option_name: str):
-        """Populate the Dict passed in all_sweep.  
-       
-        For self as "q3d":  get convergence and capacitance information,
-        populate all_sweep for each item which corresponds to option_name.
+        """Populate the Dict passed in all_sweep from QAnalysis.  
 
         Args:
             all_sweep (Dict): Reference to hold each item which corresponds
@@ -120,30 +97,12 @@ class Sweeper():
         """
         sweep_values = Dict()
         sweep_values['option_name'] = option_name
-        sweep_values['variables'] = self.parent.sim._variables
-        for item in self.parent.data_labels:
-            sweep_values[item] = self.parent.get_data(item)
+        sweep_values['variables'] = self.parent._variables
 
-        # Add logic to manipulate based on what simulation is being run.
-        if self.parent.sim.renderer.name == "q3d":
-            self.populate_q3d_all_sweep(sweep_values)
+        if hasattr(self.parent, 'sim'):
+            sweep_values['sim_variables'] = self.parent.sim._variables
 
         all_sweep[item] = sweep_values
-
-    def populate_q3d_all_sweep(self, sweep_values: Dict):
-        """[summary]
-
-        Args:
-            sweep_values (Dict): [description]
-        """
-
-        ## Put some try catch and see if you can continue, if there is an error.
-        self.parent.run_lom()
-
-        for item in self.parent.data_labels:
-            sweep_values[item] = self.parent.get_data(item)
-
-        zz = 5  #for breakpoint
 
     # ####### Error checking user input.
 

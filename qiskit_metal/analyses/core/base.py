@@ -98,8 +98,8 @@ class QAnalysis(ABC):
         if not self._sweeper:
             self._initialize_sweep()
 
-        # Need to get the data and return code as to how things ended.
-        self._sweeper.run_sweep(*args, **kwargs)
+        all_sweep, return_code = self._sweeper.run_sweep(*args, **kwargs)
+        return all_sweep, return_code
 
     def save_run_args(self, **kwargs):
         """Intended to be used to store the kwargs passed to the run() method,
