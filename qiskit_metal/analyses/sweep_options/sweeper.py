@@ -23,6 +23,7 @@ class Sweeper():
                   option_sweep: list,
                   qcomp_render: list,
                   open_terminations: list,
+                  ignored_jjs: Union[list, None] = None,
                   design_name: str = "Sweep_default",
                   box_plus_buffer: bool = True) -> Tuple[Dict, int]:
         """Ansys will be opened, if not already open, with an inserted project.  
@@ -78,7 +79,8 @@ class Sweeper():
                 self.parent.run(name=design_name,
                                 components=qcomp_render,
                                 open_terminations=open_terminations,
-                                box_plus_buffer=box_plus_buffer)
+                                box_plus_buffer=box_plus_buffer,
+                                ignored_jjs=ignored_jjs)
             except:
                 self.parent.design.logger.warning(
                     f'For class {self.parent.__class__.__name__}, run() did not execute as expected.'
