@@ -4,7 +4,12 @@ from typing import Tuple, Union
 
 class Sweeper():
 
-    def __init__(self, parent):
+    def __init__(self, parent: QAnalysis):
+        """Connect to the QAnalysis child we sweeping can happen.
+
+        Args:
+            parent (QAnalysis): Will not be just QAnalysis, but a child or grandchild, etc. of QAnalysis.
+        """
 
         # Reference to the instance (or child or grandchild) of QAnalysis.
         self.parent = parent
