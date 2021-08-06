@@ -221,15 +221,17 @@ class QAnsysRenderer(QRendererAnalysis):
             initiate (bool, optional): True to initiate the renderer. Defaults to True.
             options (Dict, optional):  Used to override all options. Defaults to None.
         """
+        # Variables to connect to Ansys
+        self._rapp = None
+        self._rdesktop = None
+
+        # Initialize renderer
         super().__init__(design=design, initiate=initiate, options=options)
 
         # Default behavior is to render all components unless a strict subset was chosen
         self.render_everything = True
 
         self._pinfo = None
-        # Connected to Ansys variables
-        self._rapp = None
-        self._rdesktop = None
 
     @property
     def initialized(self):
@@ -451,6 +453,16 @@ class QAnsysRenderer(QRendererAnalysis):
                 'It does not look like you are connected to Ansys. Please use connect_ansys() '
                 'and make sure self.pinfo is set. There must be a project open in Ansys first.'
             )
+
+    def get_active_design_name(self):
+        """Returns the name of the Ansys Design Object
+
+        Returns:
+            (str): Name of the active Ansys Design
+        """
+        if self.pinfo:
+            if self.pinfo.project:
+                return self.pinfo.project.get_active_design().name
 
     @property
     def pinfo(self) -> epr.ProjectInfo:

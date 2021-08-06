@@ -61,13 +61,13 @@ class EPRanalysis(QAnalysis):
     """Default data labels."""
 
     # TODO: renderer_name should default to None. Need to create a set renderer method
-    def __init__(self, design: 'QDesign', renderer_name: str = 'hfss'):
+    def __init__(self, design: 'QDesign' = None, renderer_name: str = 'hfss'):
         """Performs Energy Participation Ratio (EPR) analysis on a simulated or
         user-provided eigenmode matrix.
 
         Args:
             design (QDesign): Pointer to the main qiskit-metal design.
-                Used to access the QRenderer.
+                Used to access the QRenderer. Defaults to None.
             renderer_name (str, optional): Which renderer to use. Defaults to 'hfss'.
         """
         # set design and renderer

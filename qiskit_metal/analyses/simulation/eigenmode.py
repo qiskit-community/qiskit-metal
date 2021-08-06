@@ -60,12 +60,12 @@ class EigenmodeSim(QSimulation):
     data_labels = ['convergence_t', 'convergence_f']
     """Default data labels."""
 
-    def __init__(self, design: 'QDesign', renderer_name: str = 'hfss'):
+    def __init__(self, design: 'QDesign' = None, renderer_name: str = 'hfss'):
         """Compute eigenmode, then derive from it using the epr method.
 
         Args:
             design (QDesign): Pointer to the main qiskit-metal design.
-                Used to access the QRenderer.
+                Used to access the QRenderer. Defaults to None.
             renderer_name (str, optional): Which renderer to use. Defaults to 'hfss'.
         """
         # set design and renderer

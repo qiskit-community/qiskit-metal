@@ -55,12 +55,12 @@ class LOManalysis(QAnalysis):
     data_labels = ['lumped_oscillator', 'lumped_oscillator_all']
     """Default data labels."""
 
-    def __init__(self, design: 'QDesign', renderer_name: str = 'q3d'):
+    def __init__(self, design: 'QDesign' = None, renderer_name: str = 'q3d'):
         """Initialize the Lumped Oscillator Model analysis.
 
         Args:
             design (QDesign): Pointer to the main qiskit-metal design.
-                Used to access the QRenderer.
+                Used to access the QRenderer. Defaults to None.
             renderer_name (str, optional): Which renderer to use. Defaults to 'q3d'.
         """
         # set design and renderer

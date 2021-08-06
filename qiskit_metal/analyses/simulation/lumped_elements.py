@@ -63,12 +63,12 @@ class LumpedElementsSim(QSimulation):
     data_labels = ['cap_matrix', 'cap_all_passes', 'units']
     """Default data labels."""
 
-    def __init__(self, design: 'QDesign', renderer_name: str = 'q3d'):
+    def __init__(self, design: 'QDesign' = None, renderer_name: str = 'q3d'):
         """Initialize the class to extract the capacitance matrix.
 
         Args:
             design (QDesign): Pointer to the main qiskit-metal design.
-                Used to access the QRenderer.
+                Used to access the QRenderer. Defaults to None.
             renderer_name (str, optional): Which renderer to use. Defaults to 'q3d'.
         """
         # set design and renderer
