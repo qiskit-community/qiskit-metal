@@ -457,7 +457,21 @@ class TreeModelParamEntry(QAbstractItemModel):
 
         # remove from parent
         if (cur_node.name, cur_node) in cur_node.parent.children:
+
             cur_node.parent.children.remove((cur_node.name, cur_node))
+
+            # cleaning up dangling branches
+            parent = old_parent = cur_node.parent
+            if len(parent.children) < 1:
+                while len(parent.children) < 2:
+                    old_parent = parent
+                    parent = old_parent.parent
+                    old_parent.children = []
+
+                if len(old_parent.children) < 1:
+                    print(f"removing {old_parent.name} from {parent.name}")
+                    parent.children.remove((old_parent.name, old_parent))
+
         else:
             raise Exception(
                 "Internal Model Exception: unable to find parent of child node to be deleted."
