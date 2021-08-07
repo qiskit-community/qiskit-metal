@@ -17,15 +17,16 @@ class Sweeper():
         #For easy access, make a reference to QDesign.
         self.design = parent.sim.design
 
-    def run_sweep(self,
-                  qcomp_name: str,
-                  option_name: str,
-                  option_sweep: list,
-                  qcomp_render: list,
-                  open_terminations: list,
-                  ignored_jjs: Union[list, None] = None,
-                  design_name: str = "Sweep_default",
-                  box_plus_buffer: bool = True) -> Tuple[Dict, int]:
+    def run_sweep(self, *args, **kwarg) -> Tuple[Dict, int]:
+        # def run_sweep(self,
+        #               qcomp_name: str,
+        #               option_name: str,
+        #               option_sweep: list,
+        #               qcomp_render: list,
+        #               open_terminations: list,
+        #               ignored_jjs: Union[list, None] = None,
+        #               design_name: str = "Sweep_default",
+        #               box_plus_buffer: bool = True) -> Tuple[Dict, int]:
         """Ansys will be opened, if not already open, with an inserted project.  
         A design will be inserted by this method. 
 
@@ -38,6 +39,8 @@ class Sweeper():
             open_terminations (list): Identify which kind of pins. Follow the
                         details from renderer QQ3DRenderer.render_design, or
                         QHFSSRenderer.render_design.
+            ignored_jjs (Union[list,None]): This is not used by all renderers,
+                         just hfss.
             design_name(str): Name of design (workspace) to use in project.
             box_plus_buffer(bool): Render the entire chip or create a
                         box_plus_buffer around the components which are rendered.
@@ -55,16 +58,31 @@ class Sweeper():
             * 4 option_sweep is empty, need at least one entry.
             * 5 last key in option_name is not in Dict. 
         """
+
         #Dict of all swept information.
         all_sweep = Dict()
 
         option_path, a_value, check_result = self.error_check_sweep_input(
-            qcomp_name, option_name, option_sweep)
+            args[0], args[1], args[2])
         if check_result != 0:
             return all_sweep, check_result
 
-        len_sweep = len(option_sweep) - 1
-        for index, item in enumerate(option_sweep):
+        clean_kwargs = Dict()
+        clean_kwargs['components'] = args[3]
+        clean_kwargs['open_terminations'] = args[4]
+
+        if 'design_name' in kwarg:
+            clean_kwargs['name'] = kwarg['design_name']
+            del kwarg['design_name']
+        else:
+            clean_kwargs['name'] = "Sweep_default"
+
+        if 'box_plus_buffer' not in kwarg:
+            clean_kwargs['box_plus_buffer'] = True
+
+        two_dict = {**clean_kwargs, **kwarg}
+
+        for _, item in enumerate(args[2]):
             # Last item in list.
             if option_path[-1] in a_value.keys():
                 a_value[option_path[-1]] = item
@@ -76,17 +94,18 @@ class Sweeper():
             self.design.rebuild()
 
             try:
-                if ignored_jjs:
-                    self.parent.run(name=design_name,
-                                    components=qcomp_render,
-                                    open_terminations=open_terminations,
-                                    box_plus_buffer=box_plus_buffer,
-                                    ignored_jjs=ignored_jjs)
-                else:
-                    self.parent.run(name=design_name,
-                                    components=qcomp_render,
-                                    open_terminations=open_terminations,
-                                    box_plus_buffer=box_plus_buffer)
+                self.parent.run(**two_dict)
+                # if ignored_jjs:
+                #     self.parent.run(name=design_name,
+                #                     components=qcomp_render,
+                #                     open_terminations=open_terminations,
+                #                     box_plus_buffer=box_plus_buffer,
+                #                     ignored_jjs=ignored_jjs)
+                # else:
+                #     self.parent.run(name=design_name,
+                #                     components=qcomp_render,
+                #                     open_terminations=open_terminations,
+                #                     box_plus_buffer=box_plus_buffer)
             except Exception as ex:
                 template = "An exception of type {0} occurred. Arguments:\n{1!r}"
                 message = template.format(type(ex).__name__, ex.args)
