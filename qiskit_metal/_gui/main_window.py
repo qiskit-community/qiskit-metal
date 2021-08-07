@@ -225,6 +225,8 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         if self.ok_to_continue():
             self.save_window_settings()
             super().closeEvent(event)
+        else:
+            event.ignore()
 
     @slot_catch_error()
     def ok_to_continue(self):
