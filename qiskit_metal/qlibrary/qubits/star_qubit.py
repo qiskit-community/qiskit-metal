@@ -16,6 +16,7 @@
 from qiskit_metal import draw, Dict  # , QComponent
 from qiskit_metal.qlibrary.core import QComponent
 from shapely.geometry import CAP_STYLE
+import numpy as np
 
 
 class StarQubit(QComponent):
@@ -36,42 +37,59 @@ class StarQubit(QComponent):
     """
 
     default_options = dict(
-        radius='300um',
-        y1 = '-100um',
-        y2 = '-300um',
-        x1 = '-50um',
-        x2 = '50um',
-        x3 = '120um',
-        x4 = '-120um',
-        a1 = '-130um',
-        a2 = '-300um',
-        a3 = '300um',
-        b1 = '-25um',
-        b2 = '25um',
-        b3 = '75um',
-        b4 = '-75um',
-        b5 = '-300um',
-        b6 = '300um',    
-        c1 = '-115um',
-        c2 = '-300um',
-        c3 = '300um',
-        d1 = '-40um',
-        d2 = '40um',
-        d3 = '100um',
-        d4 = '-100um',
-        d5 = '-300um',
-        d6 = '300um', 
+        radius='300um', # radius of the circle defining the star shape
+        y1 = '-100um', # y-coordinate of the trapezoid
+        y2 = '-300um', # y-coordinate of the trapezoid
+        x1 = '-50um', # x-coordinate of the trapezoid
+        x2 = '50um', # x-coordinate of the trapezoid
+        x3 = '120um', # x-coordinate of the trapezoid
+        x4 = '-120um', # x-coordinate of the trapezoid
+        a1 = '-130um', # y-coordinate of the polygon defining the coupling resonator
+        a2 = '-300um', # y-coordinate of the polygon defining the coupling resonator
+        a3 = '300um', # y-coordinate of the polygon defining the coupling resonator
+        b1 = '-25um', # x-coordinate of the polygon defining the coupling resonator
+        b2 = '25um', # x-coordinate of the polygon defining the coupling resonator
+        b3 = '75um', # x-coordinate of the polygon defining the coupling resonator
+        b4 = '-75um', # x-coordinate of the polygon defining the coupling resonator
+        b5 = '-300um', # x-coordinate of the polygon defining the coupling resonator
+        b6 = '300um', # x-coordinate of the polygon defining the coupling resonator   
+        c1 = '-115um', # y-coordinate of the polygon defining the readout resonator
+        c2 = '-300um', # y-coordinate of the polygon defining the readout resonator
+        c3 = '300um', # y-coordinate of the polygon defining the readout resonator
+        d1 = '-40um', # x-coordinate of the polygon defining the readout resonator
+        d2 = '40um', # x-coordinate of the polygon defining the readout resonator
+        d3 = '100um', # x-coordinate of the polygon defining the readout resonator
+        d4 = '-100um', # x-coordinate of the polygon defining the readout resonator
+        d5 = '-300um', # x-coordinate of the polygon defining the readout resonator
+        d6 = '300um', # x-coordinate of the polygon defining the readout resonator
+        junc_w = '120um', # junction width
+        junc_h = '5um', # junction height
         pocket_w='70um',  # connector pocket width
         pocket_h='150um',  # connector pocket height    
-        rotation1 = '72.0',
-        rotation2 = '144.0',
-        rotation3 = '216.0',
-        rotation4 = '288.0',
+        pocket_w1='2um',  # connector pocket width
+        pocket_h1='20um',  # connector pocket height 
+        pocket_w2='2um',  # connector pocket width
+        pocket_h2='20um',  # connector pocket height 
+        rotation1 = '72.0', # rotation for one of the coupling resonators 
+        rotation2 = '144.0', # rotation for the readout resonator
+        rotation3 = '216.0', # rotation for one of the coupling resonators 
+        rotation4 = '288.0', # rotation for one of the coupling resonators 
         pos_x='0um',
         pos_y='0um',
         resolution='16',
         cap_style='round',  # round, flat, square
         # join_style = 'round', # round, mitre, bevel
+        # Connections
+        p1_in = (0,0),
+        p1_out = (0, 100),
+        p2_in = (0,0),
+        p2_out = (0, 100),
+        p3_in = (0,0),
+        p3_out = (0, 100),
+        p4_in = (0,0),
+        p4_out = (0, 100),
+        p5_in = (0,0),
+        p5_out = (0, 100),
         # General
         subtract='False',
         helper='False',
@@ -113,48 +131,38 @@ class StarQubit(QComponent):
         trap_5 = draw.rotate(trap_5, p.rotation4, origin=(0, 0))
 
         # Define the connectors
-        coordsA = [(p.b1,p.a1),(p.b2,p.a1),(p.b3,p.a2),(p.b6,p.a2),(p.b6,p.a3),(p.b5,p.a3),(p.b5,p.a2),(p.b4,p.a2)]
-        trap_a = draw.Polygon(coordsA)
-        coordsB = [(p.b1,p.a1),(p.b2,p.a1),(p.b3,p.a2),(p.b6,p.a2),(p.b6,p.a3),(p.b5,p.a3),(p.b5,p.a2),(p.b4,p.a2)]
-        trap_b = draw.Polygon(coordsB)
-        trap_b = draw.rotate(trap_b, p.rotation1, origin=(0, 0))
-        coordsC = [(p.d1,p.c1),(p.d2,p.c1),(p.d3,p.c2),(p.d6,p.c2),(p.d6,p.c3),(p.d5,p.c3),(p.d5,p.c2),(p.d4,p.c2)]
-        trap_c = draw.Polygon(coordsC)
+        coords_coupling_resonator = [(p.b1,p.a1),(p.b2,p.a1),(p.b3,p.a2),(p.b6,p.a2),(p.b6,p.a3),(p.b5,p.a3),(p.b5,p.a2),(p.b4,p.a2)]
+        trap_a = draw.Polygon(coords_coupling_resonator)
+        trap_b = draw.rotate(trap_a, p.rotation1, origin=(0, 0))
+        trap_d = draw.rotate(trap_a, p.rotation3, origin=(0, 0))
+        trap_e = draw.rotate(trap_a, p.rotation4, origin=(0, 0))
+        coords_readout = [(p.d1,p.c1),(p.d2,p.c1),(p.d3,p.c2),(p.d6,p.c2),(p.d6,p.c3),(p.d5,p.c3),(p.d5,p.c2),(p.d4,p.c2)]
+        trap_c = draw.Polygon(coords_readout)
         trap_c = draw.rotate(trap_c, p.rotation2, origin=(0, 0))
-        coordsD = [(p.b1,p.a1),(p.b2,p.a1),(p.b3,p.a2),(p.b6,p.a2),(p.b6,p.a3),(p.b5,p.a3),(p.b5,p.a2),(p.b4,p.a2)]
-        trap_d = draw.Polygon(coordsD)
-        trap_d = draw.rotate(trap_d, p.rotation3, origin=(0, 0))
-        coordsE = [(p.b1,p.a1),(p.b2,p.a1),(p.b3,p.a2),(p.b6,p.a2),(p.b6,p.a3),(p.b5,p.a3),(p.b5,p.a2),(p.b4,p.a2)]
-        trap_e = draw.Polygon(coordsE)
-        trap_e = draw.rotate(trap_e, p.rotation4, origin=(0, 0))
+        rect1 = draw.rectangle(p.pocket_w1, p.pocket_h1)
+        rect1 = draw.translate(rect1, xoff=p.b2, yoff=p.a3)
+        rect2 = draw.rectangle(p.pocket_w2, p.pocket_h2)
+        rect2 = draw.translate(rect2, xoff=p.b1, yoff=p.a3)
+
 
         # Define contacts
         pocket1 = draw.rectangle(p.pocket_w, p.pocket_h)
         pocket1 = draw.translate(pocket1, yoff=p.y2)
+        pocket2 = draw.rotate(pocket1, p.rotation1, origin=(0, 0))
+        pocket3 = draw.rotate(pocket1, p.rotation2, origin=(0, 0))
+        pocket4 = draw.rotate(pocket1, p.rotation3, origin=(0, 0))
+        pocket5 = draw.rotate(pocket1, p.rotation4, origin=(0, 0))
 
-        pocket2 = draw.rectangle(p.pocket_w, p.pocket_h)
-        pocket2 = draw.translate(pocket2, yoff=p.y2)
-        pocket2 = draw.rotate(pocket2, p.rotation1, origin=(0, 0))
+        #junction
+        pocket6 = draw.rectangle(p.junc_w, p.junc_h)
+        pocket6 = draw.translate(pocket6, yoff=1.05*(p.a3))
 
-        pocket3 = draw.rectangle(p.pocket_w, p.pocket_h)
-        pocket3 = draw.translate(pocket3, yoff=p.y2)
-        pocket3 = draw.rotate(pocket3, p.rotation2, origin=(0, 0))
-
-        pocket4 = draw.rectangle(p.pocket_w, p.pocket_h)
-        pocket4 = draw.translate(pocket4, yoff=p.y2)
-        pocket4 = draw.rotate(pocket4, p.rotation3, origin=(0, 0))
-
-        pocket5 = draw.rectangle(p.pocket_w, p.pocket_h)
-        pocket5 = draw.translate(pocket5, yoff=p.y2)
-        pocket5 = draw.rotate(pocket5, p.rotation4, origin=(0, 0))
-
-
+        # Join all trapezoids
+        traps = draw.union(trap_1, trap_2, trap_3, trap_4, trap_5)
         # Subtract
-        total1 = draw.subtract(circle, trap_1)
-        total2 = draw.subtract(total1, trap_2)
-        total3 = draw.subtract(total2, trap_3)
-        total4 = draw.subtract(total3, trap_4)
-        total = draw.subtract(total4, trap_5)
+        total1 = draw.subtract(circle, traps)
+        # Add connection to the junction
+        total = draw.union(total1, rect1, rect2)
 
         contact1 = draw.subtract(circle,trap_a)
         contact1 = draw.union(contact1,pocket1)
@@ -193,8 +201,50 @@ class StarQubit(QComponent):
                            helper=p.helper,
                            layer=p.layer,
                            chip=p.chip)
-        self.add_qgeometry('junction', {'circle': contact5},
+        self.add_qgeometry('poly', {'circle': contact5},
                            subtract=p.subtract,
                            helper=p.helper,
                            layer=p.layer,
                            chip=p.chip)
+        self.add_qgeometry('junction', {'circle': pocket6},
+                           subtract=p.subtract,
+                           helper=p.helper,
+                           layer=p.layer,
+                           chip=p.chip,
+                           width=p.junc_h)
+#########################################################################################
+        # Add Qpin connections
+        p1_in=(0,0.8*p.y2)
+        p1_out=(0,1.2*p.y2)
+        self.add_pin('pin1',
+                     points=np.array([p1_in, p1_out]),
+                     width=0.01,
+                     input_as_norm=True)
+
+        # Define second pin
+        #p2_in=()
+        #p2_out=()
+        #self.add_pin('pin2',
+        #             points=np.array([p2_in, p2_out]),
+        #             width=0.01,
+        #             input_as_norm=True)
+
+        # Define third pin
+        #p3_in=draw.rotate(0.8*p.y2,p.rotation2, origin=(0, 0))
+        #p3_out=draw.rotate(1.2*p.y2,p.rotation2, origin=(0, 0))
+        #self.add_pin('pin3',
+        #             points=np.array([p3_in, p3_out]),
+        #             width=0.01,
+        #             input_as_norm=True)
+        #p4_in=draw.rotate(0.8*p.y2,p.rotation3, origin=(0, 0))
+        #p4_out=draw.rotate(1.2*p.y2,p.rotation3, origin=(0, 0))
+        #self.add_pin('pin4',
+        #             points=np.array([p4_in, p4_out]),
+        #             width=0.01,
+        #             input_as_norm=True)
+        #p5_in=draw.rotate(0.8*p.y2,p.rotation4, origin=(0, 0))
+        #p5_out=draw.rotate(1.2*p.y2,p.rotation4, origin=(0, 0))
+        #self.add_pin('pin5',
+        #             points=np.array([p5_in, p5_out]),
+        #             width=0.01,
+        #             input_as_norm=True)
