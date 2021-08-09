@@ -469,7 +469,6 @@ class TreeModelParamEntry(QAbstractItemModel):
                     old_parent.children = []
 
                 if len(old_parent.children) < 1:
-                    print(f"removing {old_parent.name} from {parent.name}")
                     parent.children.remove((old_parent.name, old_parent))
 
         else:
