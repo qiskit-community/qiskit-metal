@@ -88,6 +88,7 @@ class QMainWindowExtensionBase(QMainWindow):
         self.settings.setValue('geometry', self.saveGeometry())
         self.settings.setValue('windowState', self.saveState())
         self.settings.setValue('stylesheet', self.handler._stylesheet)
+        print("settings successfully saved yippee!")
 
     def restore_window_settings(self):
         """Call a Qt built-in function to restore values from the settings

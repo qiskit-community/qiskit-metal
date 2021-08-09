@@ -222,28 +222,32 @@ class QMainWindowExtension(QMainWindowExtensionBase):
             super().closeEvent(event)
             return
 
-        if self.ok_to_continue():
+        will_close = self.ok_to_close()
+        print(f"close sesame {will_close}")
+        if will_close:
+            print(f"continuing into the end")
             self.save_window_settings()
             super().closeEvent(event)
         else:
             event.ignore()
 
     @slot_catch_error()
-    def ok_to_continue(self):
+    def ok_to_close(self):
         """Determine if it ok to continue.
 
         Returns:
             bool: True to continue, False otherwise
         """
-        if 1:
-            reply = QMessageBox.question(
-                self, "Qiskit Metal", "Save unsaved changes to design?",
-                QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
-            if reply == QMessageBox.Cancel:
-                return False
-            elif reply == QMessageBox.Yes:
-                wait = self.save_design()
-                return True
+        reply = QMessageBox.question(
+            self, "Qiskit Metal", "Save unsaved changes to design?",
+            QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
+        if reply == QMessageBox.Cancel:
+            return False
+        elif reply == QMessageBox.Yes:
+            print(" was yes'd")
+            wait = self.save_design()
+            return True
+        print("neither was true nor was false")
         return True
 
 
