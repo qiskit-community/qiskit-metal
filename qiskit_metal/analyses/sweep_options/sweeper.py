@@ -18,15 +18,6 @@ class Sweeper():
         self.design = parent.sim.design
 
     def run_sweep(self, *args, **kwarg) -> Tuple[Dict, int]:
-        # def run_sweep(self,
-        #               qcomp_name: str,
-        #               option_name: str,
-        #               option_sweep: list,
-        #               qcomp_render: list,
-        #               open_terminations: list,
-        #               ignored_jjs: Union[list, None] = None,
-        #               design_name: str = "Sweep_default",
-        #               box_plus_buffer: bool = True) -> Tuple[Dict, int]:
         """Ansys will be opened, if not already open, with an inserted project.  
         A design will be inserted by this method. 
 
@@ -39,6 +30,14 @@ class Sweeper():
             open_terminations (list): Identify which kind of pins. Follow the
                         details from renderer QQ3DRenderer.render_design, or
                         QHFSSRenderer.render_design.
+            port_list (list): List of tuples of jj's that shouldn't
+                            be rendered.  Follow details from
+                            renderer in QHFSSRenderer.render_design.
+            jj_to_port (list): List of junctions (qcomp, qgeometry_name,
+                                impedance, draw_ind) to render as lumped ports
+                                or as lumped port in parallel with a sheet
+                                inductance.    Follow details from renderer
+                                in QHFSSRenderer.render_design.
             ignored_jjs (Union[list,None]): This is not used by all renderers,
                          just hfss.
             design_name(str): Name of design (workspace) to use in project.
