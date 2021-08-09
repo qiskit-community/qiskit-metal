@@ -214,37 +214,39 @@ class StarQubit(QComponent):
                            width=p.junc_h)
 #########################################################################################
         # Add Qpin connections
-        p1_in=(0,0.8*p.y2)
-        p1_out=(0,1.2*p.y2)
+        p_in=(0,p.y2)
+        p_out=(0,1.25*p.y2)
+        pins=draw.LineString([p_in, p_out])
+        
         self.add_pin('pin1',
-                     points=np.array([p1_in, p1_out]),
+                     pins.coords,
                      width=0.01,
                      input_as_norm=True)
 
         # Define second pin
-        #p2_in=()
-        #p2_out=()
-        #self.add_pin('pin2',
-        #             points=np.array([p2_in, p2_out]),
-        #             width=0.01,
-        #             input_as_norm=True)
+        pins2=draw.rotate(pins, p.rotation1, origin=(0, 0))
+        self.add_pin('pin2',
+                     pins2.coords,
+                     width=0.01,
+                     input_as_norm=True)
 
         # Define third pin
-        #p3_in=draw.rotate(0.8*p.y2,p.rotation2, origin=(0, 0))
-        #p3_out=draw.rotate(1.2*p.y2,p.rotation2, origin=(0, 0))
-        #self.add_pin('pin3',
-        #             points=np.array([p3_in, p3_out]),
-        #             width=0.01,
-        #             input_as_norm=True)
-        #p4_in=draw.rotate(0.8*p.y2,p.rotation3, origin=(0, 0))
-        #p4_out=draw.rotate(1.2*p.y2,p.rotation3, origin=(0, 0))
-        #self.add_pin('pin4',
-        #             points=np.array([p4_in, p4_out]),
-        #             width=0.01,
-        #             input_as_norm=True)
-        #p5_in=draw.rotate(0.8*p.y2,p.rotation4, origin=(0, 0))
-        #p5_out=draw.rotate(1.2*p.y2,p.rotation4, origin=(0, 0))
-        #self.add_pin('pin5',
-        #             points=np.array([p5_in, p5_out]),
-        #             width=0.01,
-        #             input_as_norm=True)
+        pins3=draw.rotate(pins, p.rotation2, origin=(0, 0))
+        self.add_pin('pin3',
+                     pins3.coords,
+                     width=0.01,
+                     input_as_norm=True)
+
+        # Define fourth pin
+        pins4=draw.rotate(pins, p.rotation3, origin=(0, 0))
+        self.add_pin('pin4',
+                     pins4.coords,
+                     width=0.01,
+                     input_as_norm=True)
+
+        # Define fifth pin
+        pins5=draw.rotate(pins, p.rotation4, origin=(0, 0))
+        self.add_pin('pin5',
+                     pins5.coords,
+                     width=0.01,
+                     input_as_norm=True)
