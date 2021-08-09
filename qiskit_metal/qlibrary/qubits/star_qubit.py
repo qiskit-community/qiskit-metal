@@ -80,16 +80,6 @@ class StarQubit(QComponent):
         cap_style='round',  # round, flat, square
         # join_style = 'round', # round, mitre, bevel
         # Connections
-        p1_in = (0,0),
-        p1_out = (0, 100),
-        p2_in = (0,0),
-        p2_out = (0, 100),
-        p3_in = (0,0),
-        p3_out = (0, 100),
-        p4_in = (0,0),
-        p4_out = (0, 100),
-        p5_in = (0,0),
-        p5_out = (0, 100),
         # General
         subtract='False',
         helper='False',
