@@ -150,7 +150,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         changed."""
         default_setup = QSimulation.default_setup
 
-        self.assertEqual(len(default_setup), 2)
+        self.assertEqual(len(default_setup), 3)
         self.assertEqual(default_setup['name'], "Setup")
         self.assertEqual(default_setup['reuse_selected_design'], True)
 
