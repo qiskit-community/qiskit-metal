@@ -15,7 +15,12 @@ class Sweeper():
         self.parent = parent
 
         #For easy access, make a reference to QDesign.
-        self.design = parent.sim.design
+        if hasattr(self.parent, 'sim'):
+            self.design = parent.sim.design
+        elif hasattr(self.parent, 'design'):
+            self.design = parent.design
+        else:
+            self.design = None
 
     def run_sweep(self, *args, **kwarg) -> Tuple[Dict, int]:
         """Ansys will be opened, if not already open, with an inserted project.  
@@ -112,7 +117,7 @@ class Sweeper():
                     f'For class {self.parent.__class__.__name__}, run() did not execute as expected: {message}'
                 )
 
-            self.populate_all_sweep(all_sweep, item, option_name)
+            self.populate_all_sweep(all_sweep, item, args[1])
 
             zz = 5  #for breakpoint
         return all_sweep, 0
