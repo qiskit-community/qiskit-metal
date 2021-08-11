@@ -31,7 +31,7 @@ class Sweeper():
             option_name (str): The option within qcomp_name to sweep.
             option_sweep (list): Each entry in the list is a value for
                         option_name.
-            qcomp_render (list): The component to render to Q3D.
+            qcomp_render (list): The component to render to simulation software.
             open_terminations (list): Identify which kind of pins. Follow the
                         details from renderer QQ3DRenderer.render_design, or
                         QHFSSRenderer.render_design.
@@ -61,30 +61,44 @@ class Sweeper():
             * 3 option_name is not found as key in Dict.
             * 4 option_sweep is empty, need at least one entry.
             * 5 last key in option_name is not in Dict. 
+            * 6 need to have at least three arguments
         """
-
         #Dict of all swept information.
         all_sweep = Dict()
+        previous_run = Dict()
 
-        option_path, a_value, check_result = self.error_check_sweep_input(
-            args[0], args[1], args[2])
+        # if two_dict is not empty, then use
+        if self.parent.sim.setup.run:
+            previous_run = self.parent.sim.setup.run
+
+        if len(args) >= 3:
+            option_path, a_value, check_result = self.error_check_sweep_input(
+                args[0], args[1], args[2])
+        else:
+            return all_sweep, 6
+
         if check_result != 0:
             return all_sweep, check_result
 
         clean_kwargs = Dict()
-        clean_kwargs['components'] = args[3]
-        clean_kwargs['open_terminations'] = args[4]
+        if len(args) > 3:
+            clean_kwargs['components'] = args[3]
+        if len(args) > 4:
+            clean_kwargs['open_terminations'] = args[4]
 
         if 'design_name' in kwarg:
             clean_kwargs['name'] = kwarg['design_name']
             del kwarg['design_name']
+        elif 'name' in previous_run:
+            if previous_run['name'] is None:
+                clean_kwargs['name'] = "Sweep_default"
         else:
             clean_kwargs['name'] = "Sweep_default"
 
-        if 'box_plus_buffer' not in kwarg:
+        if 'box_plus_buffer' not in previous_run and 'box_plus_buffer' not in kwarg:
             clean_kwargs['box_plus_buffer'] = True
 
-        two_dict = {**clean_kwargs, **kwarg}
+        all_dicts = {**previous_run, **clean_kwargs, **kwarg}
 
         for _, item in enumerate(args[2]):
             # Last item in list.
@@ -98,18 +112,7 @@ class Sweeper():
             self.design.rebuild()
 
             try:
-                self.parent.run(**two_dict)
-                # if ignored_jjs:
-                #     self.parent.run(name=design_name,
-                #                     components=qcomp_render,
-                #                     open_terminations=open_terminations,
-                #                     box_plus_buffer=box_plus_buffer,
-                #                     ignored_jjs=ignored_jjs)
-                # else:
-                #     self.parent.run(name=design_name,
-                #                     components=qcomp_render,
-                #                     open_terminations=open_terminations,
-                #                     box_plus_buffer=box_plus_buffer)
+                self.parent.run(**all_dicts)
             except Exception as ex:
                 template = "An exception of type {0} occurred. Arguments:\n{1!r}"
                 message = template.format(type(ex).__name__, ex.args)
@@ -119,7 +122,6 @@ class Sweeper():
 
             self.populate_all_sweep(all_sweep, item, args[1])
 
-            zz = 5  #for breakpoint
         return all_sweep, 0
 
     # #######  Populate all_sweep
