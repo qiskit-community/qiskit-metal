@@ -27,6 +27,8 @@ renderers_to_load = Dict(
               class_name='QHFSSRenderer'),
     q3d=Dict(path_name='qiskit_metal.renderers.renderer_ansys.q3d_renderer',
              class_name='QQ3DRenderer'),
+    ansys=Dict(path_name='qiskit_metal.renderers.renderer_ansys.ansys_renderer',
+             class_name='QAnsysRenderer'),
     gds=Dict(path_name='qiskit_metal.renderers.renderer_gds.gds_renderer',
              class_name='QGDSRenderer'),
 )

@@ -73,7 +73,7 @@ class QHFSSRenderer(QRenderer):
     )
     """HFSS Options"""
 
-    def __init__(self, design: 'QDesign', initiate=True, options: Dict = None):
+    def __init__(self, parent, design: 'QDesign', initiate=True, options: Dict = None):
         """Create a QRenderer for HFSS simulations, subclassed from QAnsysRenderer.
 
         Args:
@@ -81,6 +81,7 @@ class QHFSSRenderer(QRenderer):
             initiate (bool, optional): True to initiate the renderer. Defaults to True.
             options (Dict, optional):  Used to override all options. Defaults to None.
         """
+        self.parent = parent
         super().__init__(design=design, initiate=initiate, options=options)
 
         self.current_sweep = None
@@ -1079,10 +1080,8 @@ class QHFSSRenderer(QRenderer):
 
     def _close_renderer(self):
         
-        # wipe local variables
-        self.epr_distributed_analysis
-        self.epr_quantum_analysis
+        print("Hfss Close")
 
     def _initiate_renderer(self):
-        self.rapp = HfssApp()
-        self.rdesktop = self.rapp.get_app_desktop()
+        
+        print("Hfss Open")

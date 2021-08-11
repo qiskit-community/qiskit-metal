@@ -170,18 +170,18 @@ class QRenderer(ABC):
         self._design = design
         self.initiated = False
 
-        if initiate:
-            self.start()
-
-        # Register as an instantiated renderer.
-        QRenderer.__instantiated_renderers__[self.name] = self
-
         # Options
         self._options = Dict()
         self.update_options(render_options=render_options,
                             render_template=render_template)
 
         self.status = 'Init Completed'
+        
+        if initiate:
+            self.start()
+
+        # Register as an instantiated renderer.
+        QRenderer.__instantiated_renderers__[self.name] = self
 
     @property
     def options(self) -> Dict:

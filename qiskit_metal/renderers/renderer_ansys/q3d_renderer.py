@@ -51,8 +51,8 @@ class QQ3DRenderer(QRenderer):
     """name"""
 
     q3d_options = Dict(material_type='pec', material_thickness='200nm')
-
-    def __init__(self, design: 'QDesign', initiate=True, options: Dict = None):
+    
+    def __init__(self, parent, design: 'QDesign', initiate=True, options: Dict = None):
         """Create a QRenderer for Q3D simulations, subclassed from
         QAnsysRenderer.
 
@@ -61,6 +61,7 @@ class QQ3DRenderer(QRenderer):
             initiate (bool, optional): True to initiate the renderer. Defaults to True.
             options (Dict, optional):  Used to override all options. Defaults to None.
         """
+        self.parent = parent
         super().__init__(design=design, initiate=initiate, options=options)
         QQ3DRenderer.load()
 
@@ -205,7 +206,7 @@ class QQ3DRenderer(QRenderer):
             solution_order (str, optional): Solution order. Defaults to None.
             solver_type (str, optional): Solver type. Defaults to None.
         """
-        su = self.default_setup.q3d
+        su = self.parent.default_setup.q3d
 
         if not name:
             name = self.parse_value(su['name'])
@@ -484,10 +485,8 @@ class QQ3DRenderer(QRenderer):
 
     def _close_renderer(self):
         
-        # wipe local variables
-        self.epr_distributed_analysis
-        self.epr_quantum_analysis
+        print("Q3D Close")
 
     def _initiate_renderer(self):
-        self.rapp = HfssApp()
-        self.rdesktop = self.rapp.get_app_desktop()
+        
+        print("Q3d Open")

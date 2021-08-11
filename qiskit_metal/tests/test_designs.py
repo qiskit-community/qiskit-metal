@@ -513,7 +513,7 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
         self.assertEqual(result['q3d_resistance'], 0)
         self.assertAlmostEqual(result['q3d_mesh_kw_jj'], 7e-06, places=6)
         self.assertEqual(result['gds_cell_name'], 'my_other_junction')
-        self.assertEqual(result['hfss_wire_bonds'], False)
+        self.assertEqual(result['ansys_wire_bonds'], False)
         self.assertEqual(result['q3d_wire_bonds'], False)
 
 

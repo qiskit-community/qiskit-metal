@@ -223,7 +223,7 @@ class QAnsysRenderer(QRendererAnalysis):
             initiate (bool, optional): True to initiate the renderer. Defaults to True.
             options (Dict, optional):  Used to override all options. Defaults to None.
         """
-        super().__init__(design=design, initiate=initiate, options=options)
+        
 
         # Default behavior is to render all components unless a strict subset was chosen
         self.render_everything = True
@@ -233,11 +233,11 @@ class QAnsysRenderer(QRendererAnalysis):
         self._rapp = None
         self._rdesktop = None
 
-        
+        super().__init__(design=design, initiate=initiate, options=options)
         # Attributes to access Q3D and HFSS
-        self.q3d = QQ3DRenderer(design)
-        self.hfss = QHFSSRenderer(design)
-
+        self.q3d = QQ3DRenderer(self, design)
+        self.hfss = QHFSSRenderer(self, design)
+        
     @property
     def initialized(self):
         """Returns True if initialized, False otherwise."""
@@ -842,8 +842,13 @@ class QAnsysRenderer(QRendererAnalysis):
                 elif self.pinfo.design.solution_type == 'DrivenModal':
                     setup = self.add_drivenmodal_setup(name, **other_setup)
                 elif self.pinfo.design.solution_type == 'Q3D':
-                    setup = self.add_q3d_setup(name, **other_setup)
+                    setup = self.add_q3d_setup.parent(name, **other_setup)
         return setup
+
+    def add_q3d_setup(self, *args, **kwargs):
+        self.q3d.add_q3d_setup(*args, **kwargs)
+        
+        
 
     def initialize_cap_extract(self, **kwargs):
         """Any task that needs to occur before running a simulation, such as creating a setup
@@ -1469,7 +1474,7 @@ class QAnsysRenderer(QRendererAnalysis):
         wb_offset = parse_units(self._options['wb_offset'])
 
         #selecting only the qgeometry which meet criteria
-        wb_table = table.loc[table['hfss_wire_bonds'] == True]
+        wb_table = table.loc[table['ansys_wire_bonds'] == True]
         wb_table2 = wb_table.loc[wb_table['subtract'] == True]
 
         #looping through each qgeometry
@@ -1661,6 +1666,3 @@ class QAnsysRenderer(QRendererAnalysis):
         # TODO: do I need to reset self.pinfo.junctions (does it keep the older analysis one)
         self.epr_start(junctions, dissipatives)
         return self.epr_distributed_analysis.get_ansys_frequencies_all()
-
-    self.hfss = QHFSSRenderer()
-    self.q3d = QQ3DRenderer()
