@@ -72,9 +72,12 @@ class Sweeper():
         #Dict of all swept information.
         all_sweep = Dict()
         previous_run = Dict()
+        clean_kwargs = Dict()
+        use_previous_run = False
 
-        # Decide if we want to use the previous run based on inputs given.
-        if len(args) = 3 or len(kwarg) = 0:
+        # Decide if we use the previous run based on inputs given.
+        if len(args) == 3 and len(kwarg) == 0:
+            use_previous_run = True
             # Do not populate the previous_run if more than minimum required is passed.
             if hasattr(self.parent, 'sim'):
                 if self.parent.sim.setup.run:
@@ -91,25 +94,55 @@ class Sweeper():
         if check_result != 0:
             return all_sweep, check_result
 
-        clean_kwargs = Dict()
         if len(args) > 3:
             clean_kwargs['components'] = args[3]
         if len(args) > 4:
             clean_kwargs['open_terminations'] = args[4]
 
         if 'design_name' in kwarg:
+            #means use_previous_run=False
             clean_kwargs['name'] = kwarg['design_name']
             del kwarg['design_name']
-        elif 'name' in previous_run:
-            if previous_run['name'] is None:
-                clean_kwargs['name'] = "Sweep_default"
         else:
             clean_kwargs['name'] = "Sweep_default"
 
-        if 'box_plus_buffer' not in previous_run and 'box_plus_buffer' not in kwarg:
+        if use_previous_run and 'box_plus_buffer' not in previous_run:
+            clean_kwargs['box_plus_buffer'] = True
+
+        if not use_previous_run and 'box_plus_buffer' not in kwarg:
             clean_kwargs['box_plus_buffer'] = True
 
         all_dicts = {**previous_run, **clean_kwargs, **kwarg}
+
+        all_sweep, check_result = self.iterate_option_sweep(
+            args,
+            all_dicts=all_dicts,
+            option_path=option_path,
+            a_value=a_value,
+            all_sweep=all_sweep)
+
+        return all_sweep, check_result
+
+    def iterate_option_sweep(self, args: list, all_dicts: Dict,
+                             option_path: list, a_value: Dict,
+                             all_sweep: Dict) -> Tuple[Dict, int]:
+        """Iterate through the values that user gave in option_sweep.  
+
+        Args:
+            args (Dict): Holds the three mandatory arguments in an expected sequence.
+            all_dicts (Dict): User arguments manipulated to account for using previous_run. 
+            option_path (list):  The list has traversed the option Dict.
+            a_value (Dict): Has the value from the dictionary of the searched key.
+            all_sweep (Dict): Will be populated during the iteration. 
+
+        Returns:
+            Tuple[Dict, int]: The dict key is each value of option_sweep, the
+            value is the solution-data for each sweep.
+            The int is the observation of searching for data from arguments as
+            defined below.
+             * 0 Have list of capacitance matrix.
+             * 5 last key in option_name is not in Dict. 
+        """
 
         for _, item in enumerate(args[2]):
             # Last item in list.
