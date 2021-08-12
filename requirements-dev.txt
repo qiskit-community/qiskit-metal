@@ -13,10 +13,10 @@ yapf
 sphinx
 numpydoc
 sphinx-automodapi
-jupyter_sphinx
-nbsphinx
+jupyter-sphinx==0.3.1
+nbsphinx==0.8.1
 qiskit-sphinx-theme
-jupyter_nbgallery==2.0.0
+jupyter-nbgallery==2.0.0
 
 # Unit tests
 pytest
