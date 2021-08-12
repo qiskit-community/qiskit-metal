@@ -26,6 +26,12 @@ class Sweeper():
         """Ansys will be opened, if not already open, with an inserted project.  
         A design will be inserted by this method. 
 
+        There are two ways to pass arguments.  You can use the previous run or 
+        use updated arguments.  With both scenarios, qcomp_name, option_name, and 
+        option_sweep must be passed.
+
+        For the previous run, the arguments are all but the three required.  
+
         Args:
             qcomp_name (str): A component that contains the option to be swept.
             option_name (str): The option within qcomp_name to sweep.
@@ -67,9 +73,14 @@ class Sweeper():
         all_sweep = Dict()
         previous_run = Dict()
 
-        # if two_dict is not empty, then use
-        if self.parent.sim.setup.run:
-            previous_run = self.parent.sim.setup.run
+        # Decide if we want to use the previous run based on inputs given.
+        if len(args) = 3 or len(kwarg) = 0:
+            # Do not populate the previous_run if more than minimum required is passed.
+            if hasattr(self.parent, 'sim'):
+                if self.parent.sim.setup.run:
+                    previous_run = self.parent.sim.setup.run
+            elif self.parent.setup.run:
+                previous_run = self.parent.setup.run
 
         if len(args) >= 3:
             option_path, a_value, check_result = self.error_check_sweep_input(
