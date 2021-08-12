@@ -604,8 +604,9 @@ class QuantumBuilder(metaclass=_QuantumBuilderMeta):
 class QuantumBuilderOptions(argparse.Namespace):
 
     def set_from_input(self, input_opts: Dict):
-        for k, v in input_opts.items():
-            setattr(self, k, v)
+        if input_opts is not None and len(input_opts):
+            for k, v in input_opts.items():
+                setattr(self, k, v)
 
     def view_as(self, group: Union[str, type]):
         if isinstance(group, str):
@@ -843,6 +844,8 @@ class CompositeSystem:
         self._l_list = [c.ind_dict for c in self._cells]
         self._jj = {k: j for c in self._cells for k, j in c.jj_dict.items()}
 
+        self.quantum_subsystems = []
+
         self._cg = None
 
     def circuitGraph(self) -> CircuitGraph:
@@ -883,11 +886,15 @@ class CompositeSystem:
             sub.quantumfy(q_builder)
             quantum_systems.append(sub.quantum_system)
 
+        self.quantum_subsystems = quantum_systems
         return scq.HilbertSpace(quantum_systems)
 
-    def compute_gs(self, coupling_type: str = CouplingType.CAPACITIVE):
+    def _compute_gs(self, coupling_type: str = CouplingType.CAPACITIVE):
         """compute g matrices from reduced C inverse matrix C^{-1}_{k} and reduced L inverse matrix L^{-1}_{k}
         and zero point flucuations (Q_zpf, Phi_zpf)
+
+        Note: the resulting matrix is in the basis of nodes_keep, which may not be in the same order of
+        subsystems
         """
         cg = self.circuitGraph()
         if coupling_type == CouplingType.CAPACITIVE:
@@ -906,9 +913,26 @@ class CompositeSystem:
                     Q_zpf_2 = sub2.h_params['Q_zpf']
                     g[idx1, idx2] = c_i * Q_zpf_1 * Q_zpf_2 * \
                                     ONE_OVER_FEMTO / hbar / MHzRad
+                    g[idx2, idx1] = g[idx1, idx2]
             return g
         else:
             raise NotImplementedError
+
+    def get_gs(self, coupling_type: str = CouplingType.CAPACITIVE):
+        """
+        Print the g matrix in the order of subsystems
+        """
+        _g = self._compute_gs(coupling_type=coupling_type)
+        g = np.zeros_like(_g)
+        for ii in range(self.num_subsystems):
+            sub1 = self._subsystems[ii]
+            idx1 = sub1.system_params['subsystem_idx']
+            for jj in range(ii + 1, self.num_subsystems):
+                sub2 = self._subsystems[jj]
+                idx2 = sub2.system_params['subsystem_idx']
+                g[ii, jj] = _g[idx1, idx2]
+                g[jj, ii] = _g[idx1, idx2]
+        return g
 
     def add_interaction(self,
                         gs: Any = None,
@@ -925,7 +949,7 @@ class CompositeSystem:
         h = self.create_hilbertspace()
 
         if gs is None:
-            gs = self.compute_gs(coupling_type=CouplingType.CAPACITIVE)
+            gs = self._compute_gs(coupling_type=CouplingType.CAPACITIVE)
         else:
             gs = _process_input_gs(gs)
 
@@ -963,9 +987,16 @@ class CompositeSystem:
                                       add_hc=add_hc1 or add_hc2)
         return h
 
-    def print_results(self, ham: qutip.Qobj):
+    def print_results(self, hilbertspace: scq.HilbertSpace, evals_count=10):
         names = self.names
-        f01s, chi_mat = extract_energies(ham)
+
+        evals, evecs = hilbertspace.eigensys(evals_count=evals_count)
+        esys_array = np.empty(shape=(2,), dtype=object)
+        esys_array[0] = evals
+        esys_array[1] = evecs
+
+        f01s, chi_mat = extract_energies(
+            esys_array, mode_size=hilbertspace.hamiltonian().dims[0])
         f01s = f01s / 1000
 
         print('')
@@ -976,3 +1007,4 @@ class CompositeSystem:
         print('Chi matrices in MHz')
         print('--------------------------')
         print(_make_cmat_df(chi_mat, names))
+        return _make_cmat_df(chi_mat, names)
