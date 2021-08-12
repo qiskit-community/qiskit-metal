@@ -18,7 +18,7 @@ from typing import Any, Union
 
 from copy import deepcopy
 from qiskit_metal import logger, Dict
-from qiskit_metal.analyses.sweep_options.sweeper import Sweeper
+from qiskit_metal.analyses.sweeper_and_optimization.sweeper import Sweeper
 
 
 class QAnalysis(ABC):
