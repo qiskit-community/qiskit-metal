@@ -20,6 +20,7 @@ __license__ = "Apache 2.0"
 __copyright__ = 'Copyright IBM 2019-2020'
 __author__ = 'Zlatko Minev, Thomas McConkey, and them IBM Quantum Team'
 __status__ = "Development"
+delete_me = None
 
 ###########################################################################
 ### Windows OS catch for library geopandas not installed with setup.py
