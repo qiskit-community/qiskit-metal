@@ -8,7 +8,7 @@ Qubits
 .. nbgallery::
     :glob:
 
-    A.Qubits/*
+    qubits/*
 
 
 ##########
@@ -19,7 +19,7 @@ Resonators
 .. nbgallery::
     :glob:
     
-    B.Resonators/*
+    resonators/*
 
 
 ############################
@@ -30,7 +30,7 @@ Composite Bi-Partite Systems
 .. nbgallery::
     :glob:
     
-    C.Composite-bi-partite/*
+    composite-bi-partite/*
 
 
 ##############
@@ -41,7 +41,7 @@ Qubit Couplers
 .. nbgallery::
     :glob:
     
-    D.Qubit-couplers/*
+    qubit-couplers/*
 
 
 ####################
@@ -52,7 +52,7 @@ Input-Ouput Coupling
 .. nbgallery::
     :glob:
     
-    E.Input-output-coupling/*
+    input-output-coupling/*
 
 
 ###################
@@ -63,7 +63,7 @@ Small Quantum Chips
 .. nbgallery::
     :glob:
     
-    F.Small-quantum-chips/*
+    small-quantum-chips/*
 
 
 ###########
@@ -74,7 +74,7 @@ Design Flow
 .. nbgallery::
     :glob:
 
-    full-design-flow-examples/*
+    design-flow/*
 
 
 .. Hiding - Indices and tables

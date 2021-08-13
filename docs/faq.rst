@@ -59,7 +59,7 @@ Conda has valid ``gdal`` and ``fiona`` packages. Simply run:
 
 *python venv:*
 
-You will need to download and install the binary wheels from `here <https://www.lfd.uci.edu/~gohlke/pythonlibs/>`_.
+You will need to download and install the binary wheels from `here <https://www.lfd.uci.edu/~gohlke/pythonlibs/>_`.
 After downloading the wheels, install ``gdal`` first, then ``fiona``, then ``geopandas``. Finally re-install ``qiskit-metal``. Replace the wheel names in the example below with the names of the files you downloaded:
 
 .. code-block:: RST
@@ -73,7 +73,7 @@ After downloading the wheels, install ``gdal`` first, then ``fiona``, then ``geo
 
 **A:** Based on: `this issue <https://github.com/Toblerity/Shapely/pull/1108>`_, this is a known bug with the ``shapely`` package <1.8. that should be fixed with a more recent shapely package. Meanwhile, you can use the shapely package from conda by installing it as ``conda install shapely`` before installing ``qiskit-metal``, which installs the missing file as a dependency.
 
-**Q: Why do I have an invalid active developer path on MacOs?**
+**Q: Why do I have an inactive developer path on MacOs?**
 
 **A:** If you are seeing: ``xcrun: error: invalid active developer path (/Library/Developer/CommandLineTools), missing xcrun at /Library/Developer/CommandLineTools/usr/bin/xcrun`` you may be missing the Command Line Tools.
 
@@ -115,15 +115,12 @@ Then open the applicable settings.json in your VS Code. (See how to open command
       "PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
       }
 
-**Q: Why are "xcb" or "windows" found but not loaded?**
+**Q: Why is "xcb" found but not loaded?**
 
 **A:** it has been observed for pip installation on fresh conda environments that this error might show up: ``Could not load the Qt platform plugin "xcb" in "" even though it was found.``
 
-For `xcb`. Based on `this source <https://forum.qt.io/topic/93247/qt-qpa-plugin-could-not-load-the-qt-platform-plugin-xcb-in-even-though-it-was-found>`_ You might be able to resolve this error by installing the dependency with ``sudo apt-get install libxcb-xinerama0``
-
-For `windows`. This error intermittently shows in conda environments. It was found that the problem resolves if PySide2 is installed manually thorugh conda, with: `conda install pyside2`.
-
-if the methods above do not work, consider utilizing an older version of python (and related dependencies)
+Based on `this source <https://forum.qt.io/topic/93247/qt-qpa-plugin-could-not-load-the-qt-platform-plugin-xcb-in-even-though-it-was-found>`_ You might be able to resolve this error by installing the dependency with ``sudo apt-get install libxcb-xinerama0``
+An alternative might be to install an older version of python (and related dependencies)
 
 **Q: Why am I not able to start Jupyter Lab in the new environment?**
 
@@ -146,12 +143,6 @@ If you find problem with this, you might want to try using an older version of t
 **A:** If you are seeing `'_int_pyside_extension' is not defined` or `Unable to import Shiboken2`, you must have used at some point in the past an older verions of PySide2, and you have now installed a more recent versio of PySide2, which is incompatible with the previous method calls.
 This problem can appear also if you are creating a new environments because the old library might be in the shared libraries. The problem is likely to occur if you forget to use the `--no-deps` installation flag.
 To resolve this problem, you need to forcefully uninstall or delete any trace of the old package. You can use any method you feel comfortable with (manual or automated). Some conda users have had succeeded by using a simple uninstall/install sequence: `conda uninstall pyside2`, `conda install -c conda-forge pyside2`
-
-**Q: Why is my MAC installation flagging a bad "convert"?**
-
-**A:** MAC OS Catalina requires a 64 bit `convert` binary file. You might have the 32 bit one. Try reinstalling imagemagick. Note that you might need to force the install using:
-
-``brew link --overwrite imagemagick``
 
 .. _gui:
 
@@ -200,13 +191,6 @@ You can resolve other warnings by deleting the following directories and rebuild
    * ``docs/build``
    * ``docs/stubs``
 
-**Q: How do I download a tutorial?**
-
-**A:** Navigate to the tutorial you want to download in the documentation.  Once you've done that follow these steps:
-
-   * At the top of the page there is a notice informing you where the tutorial was generated from with a link.  Click that link.
-   * Near the top of the notebook, you see a button that says `Raw`.  Right click `Raw`, select `Save link as` to download the `.ipynb` file.
-
 --------------------------------
 Connecting to 3rd party software
 --------------------------------
@@ -218,13 +202,3 @@ Connecting to 3rd party software
 Activate an Ansys design by double clicking on it in the Project Manager panel.
 
 If the error persists, there may be one or more hidden Ansys windows in the background. Close them via the task manager and try again.
-
-**Why am I getting a win32com error?**
-
-If you have run a EnsureDispatch command as part of qiskit-metal or independently in your conda environment, you might later encounter errors such as ``AttributeError: module 'win32com.xxx' has no attribute 'CLSIDToClassMap'``.
-
-To resolve this, you will need to delete the temporary module python files that EnsureDispach creates as part of COM object method retrieval.
-
-To do so, delete the entire folder `gen_py` or just the file in it that corresponds to your error message.
-
-Note that this folder might show up in different paths, depending on the OS and setup. You should in general be able to find it at this path: $env:LOCALAPPDATA\Temp\gen_py

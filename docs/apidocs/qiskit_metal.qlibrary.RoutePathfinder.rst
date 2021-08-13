@@ -72,7 +72,6 @@ RoutePathfinder
       RoutePathfinder.set_lead
       RoutePathfinder.set_lead_extension
       RoutePathfinder.set_pin
-      RoutePathfinder.to_script
       RoutePathfinder.trim_pts
       RoutePathfinder.unobstructed
       RoutePathfinder.unobstructed_close_up

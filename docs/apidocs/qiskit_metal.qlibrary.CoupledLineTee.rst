@@ -57,7 +57,6 @@ CoupledLineTee
       CoupledLineTee.qgeometry_plot
       CoupledLineTee.qgeometry_table
       CoupledLineTee.rebuild
-      CoupledLineTee.to_script
    
 
    

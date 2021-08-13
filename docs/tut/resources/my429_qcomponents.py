@@ -35,6 +35,7 @@ class MyQComponent1(QComponent):
                            subtract=False)
         self.add_pin('in', rect.exterior.coords[:-3:-1],
                      0.1)  #name, tangent, width
+		test = None
 
 
 class MyQComponent2(QComponent):

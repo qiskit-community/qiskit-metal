@@ -60,7 +60,6 @@ TransmonCross
       TransmonCross.qgeometry_plot
       TransmonCross.qgeometry_table
       TransmonCross.rebuild
-      TransmonCross.to_script
    
 
    

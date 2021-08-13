@@ -57,7 +57,6 @@ ShortToGround
       ShortToGround.qgeometry_plot
       ShortToGround.qgeometry_table
       ShortToGround.rebuild
-      ShortToGround.to_script
    
 
    

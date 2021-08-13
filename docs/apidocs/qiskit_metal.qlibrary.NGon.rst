@@ -57,7 +57,6 @@ NGon
       NGon.qgeometry_plot
       NGon.qgeometry_table
       NGon.rebuild
-      NGon.to_script
    
 
    

@@ -69,7 +69,6 @@ RouteFramed
       RouteFramed.set_lead
       RouteFramed.set_lead_extension
       RouteFramed.set_pin
-      RouteFramed.to_script
       RouteFramed.totlength
    
 

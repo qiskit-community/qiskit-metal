@@ -57,7 +57,6 @@ ResonatorCoilRect
       ResonatorCoilRect.qgeometry_plot
       ResonatorCoilRect.qgeometry_table
       ResonatorCoilRect.rebuild
-      ResonatorCoilRect.to_script
    
 
    

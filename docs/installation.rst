@@ -4,29 +4,19 @@
 Installation
 ************
 
-~~~~~~~~~~~~~~~~~~
-Basic Installation
-~~~~~~~~~~~~~~~~~~
-Please refer to the `PyPI deploy instructions <https://pypi.org/project/qiskit-metal/>`_
-
-~~~~~~~~~~~~~~~~~~~~~
-Advanced Installation
-~~~~~~~~~~~~~~~~~~~~~
-
 ==================
 Video Instructions
 ==================
 
 .. raw:: html
 
-    <a href="https://www.youtube.com/watch?v=sYVDtnJb-ZM&ab_channel=Qiskit">
-    Click for YouTube Video</a><br><br>
     <table>
-        <tr><td width="22%">
+        <tr><td width="50%">
         <a href="https://www.youtube.com/watch?v=sYVDtnJb-ZM&ab_channel=Qiskit">
+        Click for YouTube Video <br>
 	        <img src="https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg" width="100">
         </a>
-        </td><td width="78%"></td></tr>
+        </td><td width="50%"></td></tr>
     </table>
 
 =================
@@ -79,7 +69,7 @@ Once you are in the folder that contains the `environemnt.yml` file, execute the
 
     conda env create -n <env_name> environment.yml
     conda activate <env_name>
-    python -m pip install --no-deps -e .
+    python -m pip install -ve .
 
 This creates a new environment with name `<env_name>` with all the necessary library dependencies.
 Then it activates the new environment.
@@ -87,7 +77,7 @@ Finally installs the local qiskit-metal code inside that environment.
 
 The `-e` flag install qiskit\_metal in `editable mode <https://pip.pypa.io/en/stable/reference/pip_install/#cmdoption-e>`_.
 
-You can add the `-v` flag for verbose on-screen log information.
+The `-v` flag is for verbose.
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Option 2: A pre-existing environment
@@ -100,7 +90,7 @@ To do so, execute these commands in the top-level of the repository:
 
     conda env update -n <env_name_exist> environment.yml
     conda activate <env_name_exist>
-    python -m pip install --no-deps -e .
+    python -m pip install -ve .
 
 Notes:
 

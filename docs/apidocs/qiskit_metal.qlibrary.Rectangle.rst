@@ -57,7 +57,6 @@ Rectangle
       Rectangle.qgeometry_plot
       Rectangle.qgeometry_table
       Rectangle.rebuild
-      Rectangle.to_script
    
 
    

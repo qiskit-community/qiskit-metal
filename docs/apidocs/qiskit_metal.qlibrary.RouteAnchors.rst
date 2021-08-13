@@ -71,7 +71,6 @@ RouteAnchors
       RouteAnchors.set_lead
       RouteAnchors.set_lead_extension
       RouteAnchors.set_pin
-      RouteAnchors.to_script
       RouteAnchors.trim_pts
       RouteAnchors.unobstructed
       RouteAnchors.unobstructed_close_up

@@ -24,13 +24,13 @@ Qiskit Metal | Quantum Device Design & Analysis (Q-EDA) |version|
 **Qiskit Metal | for quantum device design & analysis (`Qiskit Metal`)**
 is an open-source framework (and library) for the design of superconducting quantum 
 chips and devices.
-Call it quantum EDA (Q-EDA) and analysis. Qiskit Metal is:
+Call it quantum EDA (Q-EDA) and analysis. Qiksit Metal is:
 
 * Open source
 * Community-driven
 * A python API and a front-end visual GUI interface
 * Leverages existing tools and aims to seamlessly interconnect for quantum analysis
-* licensed under Apache 2.0. IBM reserves no copyright over outputs of qiskit-metal.
+* Qiskit-metal is licensed under Apache 2.0. IBM reserves no copyright over outputs of qiskit-metal.
 * Community-oriented and tutorial-driven, join the `#metal <https://qiskit.slack.com/archives/C01R8KP5WP7>`_ Slack.
 
 

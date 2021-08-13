@@ -57,7 +57,6 @@ TransmonConcentric
       TransmonConcentric.qgeometry_plot
       TransmonConcentric.qgeometry_table
       TransmonConcentric.rebuild
-      TransmonConcentric.to_script
    
 
    

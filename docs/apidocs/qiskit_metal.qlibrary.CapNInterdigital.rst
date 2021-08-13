@@ -57,7 +57,6 @@ CapNInterdigital
       CapNInterdigital.qgeometry_plot
       CapNInterdigital.qgeometry_table
       CapNInterdigital.rebuild
-      CapNInterdigital.to_script
    
 
    

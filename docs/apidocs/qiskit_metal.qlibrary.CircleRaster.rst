@@ -57,7 +57,6 @@ CircleRaster
       CircleRaster.qgeometry_plot
       CircleRaster.qgeometry_table
       CircleRaster.rebuild
-      CircleRaster.to_script
    
 
    
