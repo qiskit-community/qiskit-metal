@@ -21,6 +21,7 @@ __copyright__ = 'Copyright IBM 2019-2020'
 __author__ = 'Zlatko Minev, Thomas McConkey, and them IBM Quantum Team'
 __status__ = "Development"
 
+
 ###########################################################################
 ### Windows OS catch for library geopandas not installed with setup.py
 
