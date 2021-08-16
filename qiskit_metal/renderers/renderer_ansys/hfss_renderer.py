@@ -483,9 +483,9 @@ class QHFSSRenderer(QRenderer):
         if not basis_order:
             basis_order = int(self.parse_value(dsu['basis_order']))
 
-        if self.pinfo:
-            if self.pinfo.design:
-                return self.pinfo.design.create_dm_setup(
+        if self.parent.pinfo:
+            if self.parent.pinfo.design:
+                return self.parent.pinfo.design.create_dm_setup(
                     freq_ghz=freq_ghz,
                     name=name,
                     max_delta_s=max_delta_s,
@@ -569,9 +569,9 @@ class QHFSSRenderer(QRenderer):
         if not basis_order:
             basis_order = int(self.parse_value(esu['basis_order']))
 
-        if self.pinfo:
-            if self.pinfo.design:
-                return self.pinfo.design.create_em_setup(
+        if self.parent.pinfo:
+            if self.parent.pinfo.design:
+                return self.parent.pinfo.design.create_em_setup(
                     name=name,
                     min_freq_ghz=min_freq_ghz,
                     n_modes=n_modes,
@@ -599,18 +599,18 @@ class QHFSSRenderer(QRenderer):
 
             Note, that these two are currently NOT implemented:
             Ansys API named EditSetup not documented for HFSS, and
-            self.pinfo.setup does not have all the property variables used for Setup.
+            self.parent.pinfo.setup does not have all the property variables used for Setup.
             * min_passes (int, optional): Minimum number of passes. Defaults to 1.
             * min_converged (int, optional): Minimum number of converged passes. Defaults to 1.
         """
 
-        if self.pinfo:
-            if self.pinfo.project:
-                if self.pinfo.design:
-                    if self.pinfo.design.solution_type == 'Eigenmode':
-                        if self.pinfo.setup_name != setup_args.name:
+        if self.parent.pinfo:
+            if self.parent.pinfo.project:
+                if self.parent.pinfo.design:
+                    if self.parent.pinfo.design.solution_type == 'Eigenmode':
+                        if self.parent.pinfo.setup_name != setup_args.name:
                             self.design.logger.warning(
-                                f'The name of active setup={self.pinfo.setup_name} does not match'
+                                f'The name of active setup={self.parent.pinfo.setup_name} does not match'
                                 f'the name of of setup_args.name={setup_args.name}. '
                                 f'To use this method, activate the desired Setup before editing it. The '
                                 f'setup_args was not used to update the active Setup.'
@@ -623,14 +623,14 @@ class QHFSSRenderer(QRenderer):
                             if key == "n_modes":
                                 #EditSetup  not documented, this is just attempt to use.
                                 #args_editsetup = ["NAME:" + setup_args.name,["NumModes:=", setup_args.n_modes]]
-                                #self.pinfo.setup._setup_module.EditSetup([setup_args.name, args_editsetup])
+                                #self.parent.pinfo.setup._setup_module.EditSetup([setup_args.name, args_editsetup])
                                 if value < 0 or value > 20 or not isinstance(
                                         value, int):
                                     self.logger.warning(
                                         f'Value of n_modes={value} must be integer from 1 to 20.'
                                     )
                                 else:
-                                    self.pinfo.setup.n_modes = value
+                                    self.parent.pinfo.setup.n_modes = value
                                     continue
                             if key == "min_freq_ghz":
                                 if not isinstance(value, int):
@@ -638,7 +638,7 @@ class QHFSSRenderer(QRenderer):
                                         'The value for min_freq_ghz should be an int. '
                                         f'The present value is {value}.')
                                 else:
-                                    self.pinfo.setup.min_freq = f'{value}GHz'
+                                    self.parent.pinfo.setup.min_freq = f'{value}GHz'
                                     continue
                             if key == 'max_delta_f':
                                 if not isinstance(value, float):
@@ -646,7 +646,7 @@ class QHFSSRenderer(QRenderer):
                                         'The value for max_delta_f should be float. '
                                         f'The present value is {value}.')
                                 else:
-                                    self.pinfo.setup.delta_f = value
+                                    self.parent.pinfo.setup.delta_f = value
                                     continue
                             if key == 'max_passes':
                                 if not isinstance(value, int):
@@ -654,7 +654,7 @@ class QHFSSRenderer(QRenderer):
                                         'The value for max_passes should be an int. '
                                         f'The present value is {value}.')
                                 else:
-                                    self.pinfo.setup.passes = value
+                                    self.parent.pinfo.setup.passes = value
                                     continue
                             if key == 'pct_refinement':
                                 if not isinstance(value, int):
@@ -662,7 +662,7 @@ class QHFSSRenderer(QRenderer):
                                         'The value for pct_refinement should be an int. '
                                         f'The present value is {value}.')
                                 else:
-                                    self.pinfo.setup.pct_refinement = value
+                                    self.parent.pinfo.setup.pct_refinement = value
                                     continue
                             if key == 'basis_order':
                                 if not isinstance(value, int):
@@ -670,7 +670,7 @@ class QHFSSRenderer(QRenderer):
                                         'The value for basis_order should be an int. '
                                         f'The present value is {value}.')
                                 else:
-                                    self.pinfo.setup.basis_order = value
+                                    self.parent.pinfo.setup.basis_order = value
                                     continue
 
                             self.design.logger.warning(
@@ -711,19 +711,19 @@ class QHFSSRenderer(QRenderer):
 
             Note, that these three are currently NOT implemented:
             Ansys API named EditSetup not documented for HFSS, and
-            self.pinfo.setup does not have all the property variables used for Setup.
+            self.parent.pinfo.setup does not have all the property variables used for Setup.
             * max_delta_s (float, optional): Absolute value of maximum difference in scattering parameter S. Defaults to 0.1.
             * min_passes (int, optional): Minimum number of passes. Defaults to 1.
             * min_converged (int, optional): Minimum number of converged passes. Defaults to 1.
         """
 
-        if self.pinfo:
-            if self.pinfo.project:
-                if self.pinfo.design:
-                    if self.pinfo.design.solution_type == 'DrivenModal':
-                        if self.pinfo.setup_name != setup_args.name:
+        if self.parent.pinfo:
+            if self.parent.pinfo.project:
+                if self.parent.pinfo.design:
+                    if self.parent.pinfo.design.solution_type == 'DrivenModal':
+                        if self.parent.pinfo.setup_name != setup_args.name:
                             self.design.logger.warning(
-                                f'The name of active setup={self.pinfo.setup_name} does not match'
+                                f'The name of active setup={self.parent.pinfo.setup_name} does not match'
                                 f'the name of of setup_args.name={setup_args.name}. '
                                 f'To use this method, activate the desired Setup before editing it. The '
                                 f'setup_args was not used to update the active Setup.'
@@ -739,7 +739,7 @@ class QHFSSRenderer(QRenderer):
                                         'The value for freq_ghz should be an float. '
                                         f'The present value is {value}.')
                                 else:
-                                    self.pinfo.setup.solution_freq = f'{value}GHz'
+                                    self.parent.pinfo.setup.solution_freq = f'{value}GHz'
                                     continue
                             if key == 'max_passes':
                                 if not isinstance(value, int):
@@ -747,7 +747,7 @@ class QHFSSRenderer(QRenderer):
                                         'The value for passes should be an int. '
                                         f'The present value is {value}.')
                                 else:
-                                    self.pinfo.setup.passes = value
+                                    self.parent.pinfo.setup.passes = value
                                     continue
                             if key == 'pct_refinement':
                                 if not isinstance(value, int):
@@ -755,7 +755,7 @@ class QHFSSRenderer(QRenderer):
                                         'The value for pct_refinement should be an int. '
                                         f'The present value is {value}.')
                                 else:
-                                    self.pinfo.setup.pct_refinement = value
+                                    self.parent.pinfo.setup.pct_refinement = value
                                     continue
                             if key == 'basis_order':
                                 if not isinstance(value, int):
@@ -763,7 +763,7 @@ class QHFSSRenderer(QRenderer):
                                         'The value for basis_order should be an int. '
                                         f'The present value is {value}.')
                                 else:
-                                    self.pinfo.setup.basis_order = value
+                                    self.parent.pinfo.setup.basis_order = value
                                     continue
 
                             self.design.logger.warning(
@@ -797,20 +797,20 @@ class QHFSSRenderer(QRenderer):
             mode (int): Identify a mode from 1 to n_modes.
             setup_name (str): Select a setup from the active design.
         """
-        if self.pinfo:
-            if self.pinfo.project:
-                if self.pinfo.design:
-                    # double parent, becasue self.pinfo.design does not work
-                    o_desktop = self.pinfo.design.parent.parent._desktop
+        if self.parent.pinfo:
+            if self.parent.pinfo.project:
+                if self.parent.pinfo.design:
+                    # double parent, becasue self.parent.pinfo.design does not work
+                    o_desktop = self.parent.pinfo.design.parent.parent._desktop
                     o_project = o_desktop.SetActiveProject(
-                        self.pinfo.project_name)
+                        self.parent.pinfo.project_name)
                     o_design = o_project.GetActiveDesign()
                     if o_design.GetSolutionType() == 'Eigenmode':
                         # The set_mode() method is in HfssEMDesignSolutions
                         #  class in pyEPR.
                         # The class HfssEMDesignSolutions is instantiated by
                         #  get_setup() and create_em_setup().
-                        setup = self.pinfo.get_setup(setup_name)
+                        setup = self.parent.pinfo.get_setup(setup_name)
                         if 0 < int(mode) <= int(setup.n_modes):
                             setup_solutions = setup.get_solutions()
                             if setup_solutions:
@@ -847,8 +847,8 @@ class QHFSSRenderer(QRenderer):
         Args:
             setup_name (str): Name of setup.
         """
-        if self.pinfo:
-            setup = self.pinfo.get_setup(setup_name)
+        if self.parent.pinfo:
+            setup = self.parent.pinfo.get_setup(setup_name)
             setup.analyze(setup_name)
 
     def add_sweep(self,
@@ -878,8 +878,8 @@ class QHFSSRenderer(QRenderer):
             save_fields (bool, optional): Whether or not to save fields.
                                 Defaults to False.
         """
-        if self.pinfo:
-            setup = self.pinfo.get_setup(setup_name)
+        if self.parent.pinfo:
+            setup = self.parent.pinfo.get_setup(setup_name)
             return setup.insert_sweep(start_ghz=start_ghz,
                                       stop_ghz=stop_ghz,
                                       count=count,
@@ -895,8 +895,8 @@ class QHFSSRenderer(QRenderer):
             sweep_name (str): Name of sweep to analyze.
             setup_name (str): Name of setup to analyze.
         """
-        if self.pinfo:
-            setup = self.pinfo.get_setup(setup_name)
+        if self.parent.pinfo:
+            setup = self.parent.pinfo.get_setup(setup_name)
             sweep = setup.get_sweep(sweep_name)
             sweep.analyze_sweep()
             self.current_sweep = sweep
@@ -973,8 +973,8 @@ class QHFSSRenderer(QRenderer):
             and saves Hamiltonian parameters from an HFSS simulation.
             It allows one to calculate dissipation.
         """
-        if self.pinfo:
-            return epr.DistributedAnalysis(self.pinfo)
+        if self.parent.pinfo:
+            return epr.DistributedAnalysis(self.parent.pinfo)
 
     def get_convergences(self, variation: str = None):
         """Get convergence for convergence_t, convergence_f, and text from GUI for solution data.
@@ -989,8 +989,8 @@ class QHFSSRenderer(QRenderer):
             2nd DataFrame: Convergence_f
             3rd str: Text from GUI of solution data.
         """
-        if self.pinfo:
-            convergence_t, text = self.pinfo.setup.get_convergence(variation)
+        if self.parent.pinfo:
+            convergence_t, text = self.parent.pinfo.setup.get_convergence(variation)
             convergence_f = self.get_f_convergence([])  # TODO; Fix variation []
             return convergence_t, convergence_f, text
 
@@ -1025,9 +1025,9 @@ class QHFSSRenderer(QRenderer):
         Returns:
             pd.DataFrame: Returns a convergence vs pass number of the eigenemode frequencies.
         """
-        if self.pinfo:
-            o_design = self.pinfo.design
-            setup = self.pinfo.setup
+        if self.parent.pinfo:
+            o_design = self.parent.pinfo.design
+            setup = self.parent.pinfo.setup
 
             if not o_design.solution_type == 'Eigenmode':
                 return None

@@ -484,6 +484,9 @@ class QAnsysRenderer(QRendererAnalysis):
             'This method is deprecated. Change your scripts to use plot_fields()'
         )
         return self.plot_fields(*args, **kwargs)
+    
+    def analyze_setup(self, *args, **kwargs):
+        return self.q3d.analyze_setup(*args, **kwargs)
 
     def plot_fields(
         self,
@@ -842,11 +845,11 @@ class QAnsysRenderer(QRendererAnalysis):
                 elif self.pinfo.design.solution_type == 'DrivenModal':
                     setup = self.add_drivenmodal_setup(name, **other_setup)
                 elif self.pinfo.design.solution_type == 'Q3D':
-                    setup = self.add_q3d_setup.parent(name, **other_setup)
+                    setup = self.add_q3d_setup(name, **other_setup)
         return setup
 
     def add_q3d_setup(self, *args, **kwargs):
-        self.q3d.add_q3d_setup(*args, **kwargs)
+        return self.q3d.add_q3d_setup(*args, **kwargs)
         
         
 
@@ -934,66 +937,79 @@ class QAnsysRenderer(QRendererAnalysis):
                 "Have you run connect_ansys()?  Cannot find a reference to Ansys in QRenderer."
             )
 
-    def render_design(self,
-                      selection: Union[list, None] = None,
-                      open_pins: Union[list, None] = None,
-                      box_plus_buffer: bool = True):
-        """Initiate rendering of components in design contained in selection,
-        assuming they're valid. Components are rendered before the chips they
-        reside on, and subtraction of negative shapes is performed at the very
-        end.
+    # def render_design(self,
+    #                   selection: Union[list, None] = None,
+    #                   open_pins: Union[list, None] = None,
+    #                   box_plus_buffer: bool = True):
+    #     """Initiate rendering of components in design contained in selection,
+    #     assuming they're valid. Components are rendered before the chips they
+    #     reside on, and subtraction of negative shapes is performed at the very
+    #     end.
 
-        First obtain a list of IDs of components to render and a corresponding case, denoted by self.qcomp_ids
-        and self.case, respectively. If self.case == 1, all components in QDesign are to be rendered.
-        If self.case == 0, a strict subset of components in QDesign are to be rendered. Otherwise, if
-        self.case == 2, one or more component names in selection cannot be found in QDesign.
+    #     First obtain a list of IDs of components to render and a corresponding case, denoted by self.qcomp_ids
+    #     and self.case, respectively. If self.case == 1, all components in QDesign are to be rendered.
+    #     If self.case == 0, a strict subset of components in QDesign are to be rendered. Otherwise, if
+    #     self.case == 2, one or more component names in selection cannot be found in QDesign.
 
-        Chip_subtract_dict consists of component names (keys) and a set of all elements within each component that
-        will eventually be subtracted from the ground plane. Add objects that are perfect conductors and/or have
-        meshing to self.assign_perfE and self.assign_mesh, respectively; both are initialized as empty lists. Note
-        that these objects are "refreshed" each time render_design is called (as opposed to in the init function)
-        to clear QAnsysRenderer of any leftover items from the last call to render_design.
+    #     Chip_subtract_dict consists of component names (keys) and a set of all elements within each component that
+    #     will eventually be subtracted from the ground plane. Add objects that are perfect conductors and/or have
+    #     meshing to self.assign_perfE and self.assign_mesh, respectively; both are initialized as empty lists. Note
+    #     that these objects are "refreshed" each time render_design is called (as opposed to in the init function)
+    #     to clear QAnsysRenderer of any leftover items from the last call to render_design.
 
-        Among the components selected for export, there may or may not be unused (unconnected) pins.
-        The second parameter, open_pins, contains tuples of the form (component_name, pin_name) that
-        specify exactly which pins should be open rather than shorted during the simulation. Both the
-        component and pin name must be specified because the latter could be shared by multiple
-        components. All pins in this list are rendered with an additional endcap in the form of a
-        rectangular cutout, to be subtracted from its respective plane.
+    #     Among the components selected for export, there may or may not be unused (unconnected) pins.
+    #     The second parameter, open_pins, contains tuples of the form (component_name, pin_name) that
+    #     specify exactly which pins should be open rather than shorted during the simulation. Both the
+    #     component and pin name must be specified because the latter could be shared by multiple
+    #     components. All pins in this list are rendered with an additional endcap in the form of a
+    #     rectangular cutout, to be subtracted from its respective plane.
 
-        The final parameter, box_plus_buffer, determines how the chip is drawn. When set to True, it takes the
-        minimum rectangular bounding box of all rendered components and adds a buffer of x_buffer_width_mm and
-        y_buffer_width_mm horizontally and vertically, respectively, to the chip size. The center of the chip
-        lies at the midpoint x/y coordinates of the minimum rectangular bounding box and may change depending
-        on which components are rendered and how they're positioned. If box_plus_buffer is False, however, the
-        chip position and dimensions are taken from the chip info dictionary found in QDesign, irrespective
-        of what's being rendered. While this latter option is faster because it doesn't require calculating a
-        bounding box, it runs the risk of rendered components being too close to the edge of the chip or even
-        falling outside its boundaries.
+    #     The final parameter, box_plus_buffer, determines how the chip is drawn. When set to True, it takes the
+    #     minimum rectangular bounding box of all rendered components and adds a buffer of x_buffer_width_mm and
+    #     y_buffer_width_mm horizontally and vertically, respectively, to the chip size. The center of the chip
+    #     lies at the midpoint x/y coordinates of the minimum rectangular bounding box and may change depending
+    #     on which components are rendered and how they're positioned. If box_plus_buffer is False, however, the
+    #     chip position and dimensions are taken from the chip info dictionary found in QDesign, irrespective
+    #     of what's being rendered. While this latter option is faster because it doesn't require calculating a
+    #     bounding box, it runs the risk of rendered components being too close to the edge of the chip or even
+    #     falling outside its boundaries.
 
-        Args:
-            selection (Union[list, None], optional): List of components to render. Defaults to None.
-            open_pins (Union[list, None], optional): List of tuples of pins that are open. Defaults to None.
-            box_plus_buffer (bool): Either calculate a bounding box based on the location of rendered geometries
-                                     or use chip size from design class.
-        """
-        self.qcomp_ids, self.case = self.get_unique_component_ids(selection)
+    #     Args:
+    #         selection (Union[list, None], optional): List of components to render. Defaults to None.
+    #         open_pins (Union[list, None], optional): List of tuples of pins that are open. Defaults to None.
+    #         box_plus_buffer (bool): Either calculate a bounding box based on the location of rendered geometries
+    #                                  or use chip size from design class.
+    #     """
+    #     self.qcomp_ids, self.case = self.get_unique_component_ids(selection)
 
-        if self.case == 2:
-            self.logger.warning(
-                'Unable to proceed with rendering. Please check selection.')
-            return
+    #     if self.case == 2:
+    #         self.logger.warning(
+    #             'Unable to proceed with rendering. Please check selection.')
+    #         return
 
-        self.chip_subtract_dict = defaultdict(set)
-        self.assign_perfE = []
-        self.assign_mesh = []
+    #     self.chip_subtract_dict = defaultdict(set)
+    #     self.assign_perfE = []
+    #     self.assign_mesh = []
 
-        self.render_tables()
-        self.add_endcaps(open_pins)
+    #     self.render_tables()
+    #     self.add_endcaps(open_pins)
 
-        self.render_chips(box_plus_buffer=box_plus_buffer)
-        self.subtract_from_ground()
-        self.add_mesh()
+    #     self.render_chips(box_plus_buffer=box_plus_buffer)
+    #     self.subtract_from_ground()
+    #     self.add_mesh()
+
+    def render_design(self, *args, **kwargs):
+
+        if self.pinfo:
+            if self.pinfo.design:
+                if self.pinfo.design.solution_type == 'Eigenmode':
+                    return self.hfss.render_design(*args, **kwargs)
+                elif self.pinfo.design.solution_type == 'DrivenModal':
+                    return self.hfss.render_design(*args, **kwargs)
+                elif self.pinfo.design.solution_type == 'Q3D':
+                    return self.q3d.render_design(*args, **kwargs)
+                
+
 
     def render_chip(self):
         pass
@@ -1449,7 +1465,7 @@ class QAnsysRenderer(QRendererAnalysis):
 
     def add_mesh(self):
         """Add mesh to all elements in self.assign_mesh."""
-        if self.assign_mesh:
+        if self.q3d.assign_mesh:
             self.modeler.mesh_length(
                 'small_mesh',
                 self.assign_mesh,
@@ -1548,6 +1564,12 @@ class QAnsysRenderer(QRendererAnalysis):
                     'Please create a design before setting variables, otherwise all variables will be set to 0 during rendering by default.'
                 )
 
+    def get_capacitance_matrix(self, *args, **kwargs):
+        return self.q3d.get_capacitance_matrix(*args, **kwargs)
+
+    def get_capacitance_all_passes(self, *args, **kwargs):
+        return self.q3d.get_capacitance_all_passes(*args, **kwargs)
+        
     # TODO: epr methods below should not be in the renderer, but in the analysis files.
     #  Thus needs to remove the dependency from pinfo, which is Ansys-specific.
 
