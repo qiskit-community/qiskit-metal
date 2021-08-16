@@ -15,7 +15,6 @@
 from abc import abstractmethod, ABC
 from datetime import date
 import inspect
-from qiskit_metal.dashboard.ad_toolbox import datatable_to_df
 from typing import Any, Union
 
 from copy import deepcopy
