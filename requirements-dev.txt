@@ -1,3 +1,8 @@
+# Patches
+jupyterlab-server==2.6.2
+notebook==6.4.2
+websocket-client==1.1.1
+
 # Dev tools
 jupyter
 jupyterlab
@@ -14,7 +19,7 @@ sphinx
 numpydoc
 sphinx-automodapi
 jupyter_sphinx
-nbsphinx
+nbsphinx==0.8.6
 qiskit-sphinx-theme
 jupyter_nbgallery
 
