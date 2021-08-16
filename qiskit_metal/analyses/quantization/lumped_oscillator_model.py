@@ -13,7 +13,7 @@
 # that they have been altered from the originals.
 
 import pandas as pd
-from pint import UnitRegistry
+from pint import UnitRegistry, _DEFAULT_REGISTRY
 
 from pyEPR.calcs.convert import Convert
 
@@ -196,3 +196,6 @@ class LOManalysis(LumpedElementsSim):
         if self.lumped_oscillator_all is None or args or kwargs:
             self.run_lom(*args, **kwargs)
         self.renderer.plot_convergence_chi(self.lumped_oscillator_all)
+
+    def plot(self, mode: str = "notebook", default_graph_data: dict = None):
+        return super().plot(mode=mode, default_graph_data=default_graph_data)

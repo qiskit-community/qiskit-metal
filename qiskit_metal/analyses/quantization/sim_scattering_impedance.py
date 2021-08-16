@@ -274,3 +274,8 @@ class ScatteringImpedanceSim(QAnalysisRenderer):
                 {type(data)})
             return
         self.set_data('param_s', data)
+
+    def plot(self, mode: str = "notebook", default_graph_data: dict = None):
+        if default_graph_data is None:
+            default_graph_data = {}
+        return super().plot(mode=mode, default_graph_data=default_graph_data)

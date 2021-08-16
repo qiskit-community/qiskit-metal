@@ -268,3 +268,6 @@ class EPRanalysis(EigenmodeSim):
             'rect': rect,
             'line': line
         })
+
+    def plot(self, mode: str = "notebook", default_graph_data: dict = None):
+        return super().plot(mode=mode, default_graph_data=default_graph_data)

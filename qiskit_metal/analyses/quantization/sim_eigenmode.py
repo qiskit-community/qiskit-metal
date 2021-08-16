@@ -20,6 +20,7 @@ from pyEPR.reports import (plot_convergence_f_vspass, plot_convergence_max_df,
                            plot_convergence_maxdf_vs_sol,
                            plot_convergence_solved_elem)
 from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
+from ...dashboard.ad_toolbox import merge_df
 
 from ... import Dict
 from ..core import QAnalysisRenderer
@@ -269,3 +270,18 @@ class EigenmodeSim(QAnalysisRenderer):
             names (list, optional): Names of field plots to delete. Defaults to None.
         """
         return self.renderer.clear_fields(names)
+
+    def plot(self, mode: str = "notebook", default_graph_data: dict = None):
+        if default_graph_data is None:
+            default_graph_data = {}
+            default_graph_data[
+                "Eigenmode f vs. pass [GHz]"] = self.convergence_f
+
+            default_graph_data[
+                "Max Delta Freq. '%' and Solved Elements (1000s)"] = merge_df(
+                    self.convergence_f, self.convergence_t["Max Delta Freq. %"])
+            # print(default_graph_data)
+            # default_graph_data["Max Delta Freg. %"] = [
+            #     self.convergence_t["Max Delta Freq. %"]
+            # ]
+        return super().plot(mode=mode, default_graph_data=default_graph_data)

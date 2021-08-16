@@ -13,10 +13,14 @@
 # that they have been altered from the originals.
 
 from abc import abstractmethod, ABC
+from datetime import date
 import inspect
+from qiskit_metal.dashboard.ad_toolbox import datatable_to_df
 from typing import Any, Union
 
 from copy import deepcopy
+
+from numpy import array
 from ... import Dict, logger
 
 
@@ -54,6 +58,7 @@ class QAnalysis(ABC):
 
         # first self.clear_data()
         self._variables = Dict()
+        # self.re = Dict()
 
     @property
     def logger(self):

@@ -17,6 +17,7 @@ from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
 
 from . import QAnalysis
 from ... import Dict
+from ...dashboard.analysis_dashboard import AnalysisDashboard
 
 
 class QAnalysisRenderer(QAnalysis):
@@ -168,3 +169,15 @@ class QAnalysisRenderer(QAnalysis):
                 {type(data)})
             return
         self.set_data('sim_setup_name', data)
+
+    @abstractmethod
+    def plot(self, mode: str = "notebook", default_graph_data: dict = None):
+        """Abstract method. Must be implemented by the subclass.
+        This method will launch the AnalysisDashboard.
+
+        Args:
+            mode (str, optional): Mode to open the dashboard. Enter "notebook" to open inline within a jupyter ntoebook or "web" to open on a browser. Defaults to "notebook".
+            graph_data (dict, optional): A dict containing information to be inlcuded in the premade data section of the analysis dashboard. Defaults to None.
+        """
+        dash = AnalysisDashboard(mode, self, default_graph_data)
+        dash.run_app()
