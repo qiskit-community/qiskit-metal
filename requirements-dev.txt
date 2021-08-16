@@ -1,5 +1,4 @@
 # Patches
-jupyterlab-server==2.6.2
 notebook==6.4.2
 
 # Dev tools
