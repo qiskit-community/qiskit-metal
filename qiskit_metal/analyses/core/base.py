@@ -60,6 +60,8 @@ class QAnalysis(ABC):
         self._sweeper = None
 
     def _initialize_sweep(self):
+        """Create a new instance of Sweeper
+        """
         self._sweeper = Sweeper(self)
 
     @property
