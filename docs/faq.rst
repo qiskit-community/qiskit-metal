@@ -147,6 +147,12 @@ If you find problem with this, you might want to try using an older version of t
 This problem can appear also if you are creating a new environments because the old library might be in the shared libraries. The problem is likely to occur if you forget to use the `--no-deps` installation flag.
 To resolve this problem, you need to forcefully uninstall or delete any trace of the old package. You can use any method you feel comfortable with (manual or automated). Some conda users have had succeeded by using a simple uninstall/install sequence: `conda uninstall pyside2`, `conda install -c conda-forge pyside2`
 
+**Q: Why is my MAC installation flagging a bad "convert"?**
+
+**A:** MAC OS Catalina requires a 64 bit `convert` binary file. You might have the 32 bit one. Try reinstalling imagemagick. Note that you might need to force the install using:
+
+``brew link --overwrite imagemagick``
+
 .. _gui:
 
 -------------------------------------
