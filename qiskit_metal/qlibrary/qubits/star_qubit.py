@@ -100,7 +100,7 @@ class StarQubit(QComponent):
         pocket_w= p.connector_length  # connector pocket width
         pocket_h=p.connector_length*2  # connector pocket height    
         pocket_w1=p.gap_couplers  # Connector to the JJ
-        pocket_h1=p.center_radius + p.gap_readout  # Connector to the JJ  
+        pocket_h1=p.center_radius # Connector to the JJ  
         rotation1 = 72.0 # rotation for one of the coupling resonators 
         rotation2 = 144.0 # rotation for the readout resonator
         rotation3 = 216.0 # rotation for one of the coupling resonators 
@@ -172,11 +172,17 @@ class StarQubit(QComponent):
         pocket6 = draw.translate(pocket6, yoff=1.2*(a3))
 
         # Define the final structure based on use input on how many connectors are needed
-        #for i in range (p.number_of_connectors):
+        if (p.number_of_connectors) ==0:
+            traps = trap_3
+        elif (p.number_of_connectors) ==1:
+            traps = draw.union(trap_1, trap_3)
+        elif (p.number_of_connectors) ==2:
+            traps = draw.union(trap_1, trap_2, trap_3)
+        elif (p.number_of_connectors) ==3:
+            traps = draw.union(trap_1, trap_2, trap_3, trap_4)
+        elif (p.number_of_connectors) ==4:
+            traps = draw.union(trap_1, trap_2, trap_3, trap_4, trap_5)
 
-
-        # Join all trapezoids
-        traps = draw.union(trap_1, trap_2, trap_3, trap_4, trap_5)
         # Subtract
         total1 = draw.subtract(circle, traps)
         # Add connection to the junction
@@ -193,37 +199,197 @@ class StarQubit(QComponent):
         contact5 = draw.subtract(circle,trap_e)
         contact5 = draw.union(contact5,pocket5)
 
-        # add qgeometry
+        #########################################################################################
+        # Add geometry and Qpin connections
+        p_in=(0,y2)
+        p_out=(0,1.25*y2)
+        pins=draw.LineString([p_in, p_out])
+
         self.add_qgeometry('poly', {'circle': total},
                            subtract=p.subtract,
                            helper=p.helper,
                            layer=p.layer,
                            chip=p.chip)
-        self.add_qgeometry('poly', {'circle': contact1},
-                           subtract=p.subtract,
-                           helper=p.helper,
-                           layer=p.layer,
-                           chip=p.chip)
-        self.add_qgeometry('poly', {'circle': contact2},
-                           subtract=p.subtract,
-                           helper=p.helper,
-                           layer=p.layer,
-                           chip=p.chip)
-        self.add_qgeometry('poly', {'circle': contact3},
-                           subtract=p.subtract,
-                           helper=p.helper,
-                           layer=p.layer,
-                           chip=p.chip)
-        self.add_qgeometry('poly', {'circle': contact4},
-                           subtract=p.subtract,
-                           helper=p.helper,
-                           layer=p.layer,
-                           chip=p.chip)
-        self.add_qgeometry('poly', {'circle': contact5},
-                           subtract=p.subtract,
-                           helper=p.helper,
-                           layer=p.layer,
-                           chip=p.chip)
+        if (p.number_of_connectors) ==0:
+            self.add_qgeometry('poly', {'circle': contact3},
+                            subtract=p.subtract,
+                            helper=p.helper,
+                            layer=p.layer,
+                            chip=p.chip)
+
+            pins3=draw.rotate(pins, rotation2, origin=(0, 0))
+            self.add_pin('pin3',
+                     pins3.coords,
+                     width=0.01,
+                     input_as_norm=True)
+        
+        elif (p.number_of_connectors) ==1:
+            self.add_qgeometry('poly', {'circle': contact1},
+                            subtract=p.subtract,
+                            helper=p.helper,
+                            layer=p.layer,
+                            chip=p.chip)
+            self.add_qgeometry('poly', {'circle': contact3},
+                            subtract=p.subtract,
+                            helper=p.helper,
+                            layer=p.layer,
+                            chip=p.chip)
+            # Add pin connections
+            self.add_pin('pin1',
+                     pins.coords,
+                     width=0.01,
+                     input_as_norm=True)
+
+            pins3=draw.rotate(pins, rotation2, origin=(0, 0))
+            self.add_pin('pin3',
+                     pins3.coords,
+                     width=0.01,
+                     input_as_norm=True)
+
+
+        elif (p.number_of_connectors) ==2:
+            self.add_qgeometry('poly', {'circle': contact1},
+                            subtract=p.subtract,
+                            helper=p.helper,
+                            layer=p.layer,
+                            chip=p.chip)
+            self.add_qgeometry('poly', {'circle': contact2},
+                            subtract=p.subtract,
+                            helper=p.helper,
+                            layer=p.layer,
+                            chip=p.chip)
+            self.add_qgeometry('poly', {'circle': contact3},
+                            subtract=p.subtract,
+                            helper=p.helper,
+                            layer=p.layer,
+                            chip=p.chip)
+            # Add pin connections
+            self.add_pin('pin1',
+                        pins.coords,
+                        width=0.01,
+                        input_as_norm=True)
+
+            # Define second pin
+            pins2=draw.rotate(pins, rotation1, origin=(0, 0))
+            self.add_pin('pin2',
+                        pins2.coords,
+                        width=0.01,
+                        input_as_norm=True)
+
+            # Define third pin
+            pins3=draw.rotate(pins, rotation2, origin=(0, 0))
+            self.add_pin('pin3',
+                        pins3.coords,
+                        width=0.01,
+                        input_as_norm=True)
+
+        elif (p.number_of_connectors) ==3:
+            self.add_qgeometry('poly', {'circle': contact1},
+                            subtract=p.subtract,
+                            helper=p.helper,
+                            layer=p.layer,
+                            chip=p.chip)
+            self.add_qgeometry('poly', {'circle': contact2},
+                            subtract=p.subtract,
+                            helper=p.helper,
+                            layer=p.layer,
+                            chip=p.chip)
+            self.add_qgeometry('poly', {'circle': contact3},
+                            subtract=p.subtract,
+                            helper=p.helper,
+                            layer=p.layer,
+                            chip=p.chip)
+            self.add_qgeometry('poly', {'circle': contact4},
+                            subtract=p.subtract,
+                            helper=p.helper,
+                            layer=p.layer,
+                            chip=p.chip)
+            # Add pin connections
+            self.add_pin('pin1',
+                        pins.coords,
+                        width=0.01,
+                        input_as_norm=True)
+
+            # Define second pin
+            pins2=draw.rotate(pins, rotation1, origin=(0, 0))
+            self.add_pin('pin2',
+                        pins2.coords,
+                        width=0.01,
+                        input_as_norm=True)
+
+            # Define third pin
+            pins3=draw.rotate(pins, rotation2, origin=(0, 0))
+            self.add_pin('pin3',
+                        pins3.coords,
+                        width=0.01,
+                        input_as_norm=True)
+
+            # Define fourth pin
+            pins4=draw.rotate(pins, rotation3, origin=(0, 0))
+            self.add_pin('pin4',
+                        pins4.coords,
+                        width=0.01,
+                        input_as_norm=True)
+
+        elif (p.number_of_connectors) ==4:
+            self.add_qgeometry('poly', {'circle': contact1},
+                            subtract=p.subtract,
+                            helper=p.helper,
+                            layer=p.layer,
+                            chip=p.chip)
+            self.add_qgeometry('poly', {'circle': contact2},
+                            subtract=p.subtract,
+                            helper=p.helper,
+                            layer=p.layer,
+                            chip=p.chip)
+            self.add_qgeometry('poly', {'circle': contact3},
+                            subtract=p.subtract,
+                            helper=p.helper,
+                            layer=p.layer,
+                            chip=p.chip)
+            self.add_qgeometry('poly', {'circle': contact4},
+                            subtract=p.subtract,
+                            helper=p.helper,
+                            layer=p.layer,
+                            chip=p.chip)
+            self.add_qgeometry('poly', {'circle': contact5},
+                            subtract=p.subtract,
+                            helper=p.helper,
+                            layer=p.layer,
+                            chip=p.chip)   
+            # Add pin connections
+            self.add_pin('pin1',
+                        pins.coords,
+                        width=0.01,
+                        input_as_norm=True)
+
+            # Define second pin
+            pins2=draw.rotate(pins, rotation1, origin=(0, 0))
+            self.add_pin('pin2',
+                        pins2.coords,
+                        width=0.01,
+                        input_as_norm=True)
+
+            # Define third pin
+            pins3=draw.rotate(pins, rotation2, origin=(0, 0))
+            self.add_pin('pin3',
+                        pins3.coords,
+                        width=0.01,
+                        input_as_norm=True)
+
+            # Define fourth pin
+            pins4=draw.rotate(pins, rotation3, origin=(0, 0))
+            self.add_pin('pin4',
+                        pins4.coords,
+                        width=0.01,
+                        input_as_norm=True)
+
+            # Define fifth pin
+            pins5=draw.rotate(pins, rotation4, origin=(0, 0))
+            self.add_pin('pin5',
+                        pins5.coords,
+                        width=0.01,
+                        input_as_norm=True)
         self.add_qgeometry('junction', {'circle': pocket6},
                            subtract=p.subtract,
                            helper=p.helper,
@@ -235,41 +401,3 @@ class StarQubit(QComponent):
                            helper=p.helper,
                            layer=p.layer,
                            chip=p.chip)
-#########################################################################################
-        # Add Qpin connections
-        p_in=(0,y2)
-        p_out=(0,1.25*y2)
-        pins=draw.LineString([p_in, p_out])
-        
-        self.add_pin('pin1',
-                     pins.coords,
-                     width=0.01,
-                     input_as_norm=True)
-
-        # Define second pin
-        pins2=draw.rotate(pins, rotation1, origin=(0, 0))
-        self.add_pin('pin2',
-                     pins2.coords,
-                     width=0.01,
-                     input_as_norm=True)
-
-        # Define third pin
-        pins3=draw.rotate(pins, rotation2, origin=(0, 0))
-        self.add_pin('pin3',
-                     pins3.coords,
-                     width=0.01,
-                     input_as_norm=True)
-
-        # Define fourth pin
-        pins4=draw.rotate(pins, rotation3, origin=(0, 0))
-        self.add_pin('pin4',
-                     pins4.coords,
-                     width=0.01,
-                     input_as_norm=True)
-
-        # Define fifth pin
-        pins5=draw.rotate(pins, rotation4, origin=(0, 0))
-        self.add_pin('pin5',
-                     pins5.coords,
-                     width=0.01,
-                     input_as_norm=True)
