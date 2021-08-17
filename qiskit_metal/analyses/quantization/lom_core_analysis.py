@@ -147,6 +147,15 @@ def _df_cmat_to_adj_list(df_cmat: pd.DataFrame) -> DefaultDict(list):
     return graph
 
 
+def _cj_dict_to_adj_list(cj_dict: Dict[Tuple, float]) -> DefaultDict(list):
+    graph = defaultdict(list)
+    for (n1, n2), c in cj_dict.items():
+        graph[n1].append((n2, -c))
+        graph[n1].append((n1, c))
+        graph[n2].append((n2, c))
+    return graph
+
+
 def _remove_row_col_at_idx(mat, idx):
     """
     remove row and column in a matrix corresponding an index
@@ -259,6 +268,7 @@ class CircuitGraph:
                  cmats: List[pd.DataFrame],
                  ind_lists: List[Dict[Tuple, float]],
                  junctions: Mapping[Tuple[str, str], str],
+                 cj_dicts: List[Dict[Tuple, float]] = None,
                  nodes_force_keep: Sequence = None):
 
         self.nodes = list(nodes)
@@ -269,6 +279,11 @@ class CircuitGraph:
         self.nodes_force_keep = nodes_force_keep
 
         self._c_graphs = [_df_cmat_to_adj_list(m) for m in cmats]
+        if cj_dicts is not None:
+            for cj_dict in cj_dicts:
+                if cj_dict is not None:
+                    self._c_graphs.append(_cj_dict_to_adj_list(cj_dict))
+
         self._ind_lists = ind_lists
         self._junctions = junctions
 
@@ -311,8 +326,9 @@ class CircuitGraph:
             for n2, w in adj_list[n1]:
                 r = idx.get_indexer([n1])[0]
                 c = idx.get_indexer([n2])[0]
-                mat[r, c] = w
-                mat[c, r] = w
+                mat[r, c] += w
+                if r != c:
+                    mat[c, r] += w
         return mat
 
     def _inductance_list_to_Linv_mat(self, ind_dict):
@@ -805,11 +821,13 @@ class Cell:
     """
 
     def __init__(self, options: Dict):
-        self._node_rename = options['node_rename']
+        self._node_rename = options.get('node_rename', {})
         self.cap_mat = _rename_nodes_in_df(self._node_rename,
                                            options['cap_mat'])
         self.ind_dict = None
         self.jj_dict = None
+        self.cj_dict = None
+
         if 'ind_dict' in options:
             self.ind_dict = _rename_nodes_in_dict(self._node_rename,
                                                   options['ind_dict'])
@@ -818,6 +836,10 @@ class Cell:
         if 'jj_dict' in options:
             self.jj_dict = _rename_nodes_in_dict(self._node_rename,
                                                  options['jj_dict'])
+
+        if 'cj_dict' in options:
+            self.cj_dict = _rename_nodes_in_dict(self._node_rename,
+                                                 options['cj_dict'])
 
         self.nodes = self.cap_mat.columns.values.tolist()
 
@@ -839,10 +861,25 @@ class CompositeSystem:
         self.grd_node = grd_node
         self.nodes_force_keep = nodes_force_keep
 
-        self._nodes = np.unique([c.nodes for c in self._cells]).tolist()
-        self._c_list = [c.cap_mat for c in self._cells]
-        self._l_list = [c.ind_dict for c in self._cells]
         self._jj = {k: j for c in self._cells for k, j in c.jj_dict.items()}
+        _jj_to_node_map = dict(zip(self._jj.values(), self._jj.keys()))
+
+        _cell_nodes = np.unique([c.nodes for c in self._cells]).tolist()
+        _sys_nodes = []
+        for sub in self._subsystems:
+            for n in sub.nodes:
+                if n not in _jj_to_node_map:
+                    _sys_nodes.append(n)
+                else:
+                    _sys_nodes.extend(list(_jj_to_node_map[n]))
+        if len(set(_sys_nodes)) != len(_sys_nodes):
+            raise ValueError('Subsystems should not have overlapping nodes.')
+        _non_sys_nodes = [n for n in _cell_nodes if n not in _sys_nodes]
+        self._nodes = _sys_nodes + _non_sys_nodes
+
+        self._c_list = [c.cap_mat for c in self._cells]
+        self._cj_dicts = [c.cj_dict for c in self._cells]
+        self._l_list = [c.ind_dict for c in self._cells]
 
         self.quantum_subsystems = []
 
@@ -858,10 +895,11 @@ class CompositeSystem:
             nodes = self._nodes
             grd_node = self.grd_node
             c_list = self._c_list
+            cj_dicts = self._cj_dicts
             l_list = self._l_list
             jjs = self._jj
             self._cg = CircuitGraph(nodes, grd_node, c_list, l_list, jjs,
-                                    self.nodes_force_keep)
+                                    cj_dicts, self.nodes_force_keep)
 
         return self._cg
 
@@ -889,7 +927,9 @@ class CompositeSystem:
         self.quantum_subsystems = quantum_systems
         return scq.HilbertSpace(quantum_systems)
 
-    def _compute_gs(self, coupling_type: str = CouplingType.CAPACITIVE):
+    def compute_gs(self,
+                   coupling_type: str = CouplingType.CAPACITIVE,
+                   print_labels=True):
         """compute g matrices from reduced C inverse matrix C^{-1}_{k} and reduced L inverse matrix L^{-1}_{k}
         and zero point flucuations (Q_zpf, Phi_zpf)
 
@@ -914,25 +954,12 @@ class CompositeSystem:
                     g[idx1, idx2] = c_i * Q_zpf_1 * Q_zpf_2 * \
                                     ONE_OVER_FEMTO / hbar / MHzRad
                     g[idx2, idx1] = g[idx1, idx2]
+
+            if print_labels:
+                print(f'subsystems: {self.names}')
             return g
         else:
             raise NotImplementedError
-
-    def get_gs(self, coupling_type: str = CouplingType.CAPACITIVE):
-        """
-        Print the g matrix in the order of subsystems
-        """
-        _g = self._compute_gs(coupling_type=coupling_type)
-        g = np.zeros_like(_g)
-        for ii in range(self.num_subsystems):
-            sub1 = self._subsystems[ii]
-            idx1 = sub1.system_params['subsystem_idx']
-            for jj in range(ii + 1, self.num_subsystems):
-                sub2 = self._subsystems[jj]
-                idx2 = sub2.system_params['subsystem_idx']
-                g[ii, jj] = _g[idx1, idx2]
-                g[jj, ii] = _g[idx1, idx2]
-        return g
 
     def add_interaction(self,
                         gs: Any = None,
@@ -949,7 +976,8 @@ class CompositeSystem:
         h = self.create_hilbertspace()
 
         if gs is None:
-            gs = self._compute_gs(coupling_type=CouplingType.CAPACITIVE)
+            gs = self.compute_gs(coupling_type=CouplingType.CAPACITIVE,
+                                 print_labels=False)
         else:
             gs = _process_input_gs(gs)
 
