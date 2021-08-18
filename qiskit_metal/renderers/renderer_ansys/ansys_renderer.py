@@ -296,6 +296,15 @@ class QAnsysRenderer(QRendererAnalysis):
             self.rdesktop.new_project()
         self.connect_ansys()  # TODO: can this be done differently?
 
+        if self.pinfo:
+            if self.pinfo.design:
+                if self.pinfo.design.solution_type == 'Eigenmode':
+                    self.solver = self.hfss
+                elif self.pinfo.design.solution_type == 'DrivenModal':
+                    self.solver = self.hfss
+                elif self.pinfo.design.solution_type == 'Q3D':
+                    self.solver = self.q3d
+
         # return True to indicate successful completion
         return True
 
@@ -486,7 +495,7 @@ class QAnsysRenderer(QRendererAnalysis):
         return self.plot_fields(*args, **kwargs)
     
     def analyze_setup(self, *args, **kwargs):
-        return self.q3d.analyze_setup(*args, **kwargs)
+        return self.solver.analyze_setup(*args, **kwargs)
 
     def plot_fields(
         self,
@@ -849,7 +858,7 @@ class QAnsysRenderer(QRendererAnalysis):
         return setup
 
     def add_q3d_setup(self, *args, **kwargs):
-        return self.q3d.add_q3d_setup(*args, **kwargs)
+        return self.solver.add_q3d_setup(*args, **kwargs)
         
         
 
@@ -946,14 +955,14 @@ class QAnsysRenderer(QRendererAnalysis):
     #     reside on, and subtraction of negative shapes is performed at the very
     #     end.
 
-    #     First obtain a list of IDs of components to render and a corresponding case, denoted by self.qcomp_ids
-    #     and self.case, respectively. If self.case == 1, all components in QDesign are to be rendered.
-    #     If self.case == 0, a strict subset of components in QDesign are to be rendered. Otherwise, if
-    #     self.case == 2, one or more component names in selection cannot be found in QDesign.
+    #     First obtain a list of IDs of components to render and a corresponding case, denoted by self.solver.qcomp_ids
+    #     and self.solver.case, respectively. If self.solver.case == 1, all components in QDesign are to be rendered.
+    #     If self.solver.case == 0, a strict subset of components in QDesign are to be rendered. Otherwise, if
+    #     self.solver.case == 2, one or more component names in selection cannot be found in QDesign.
 
     #     Chip_subtract_dict consists of component names (keys) and a set of all elements within each component that
     #     will eventually be subtracted from the ground plane. Add objects that are perfect conductors and/or have
-    #     meshing to self.assign_perfE and self.assign_mesh, respectively; both are initialized as empty lists. Note
+    #     meshing to self.solver.assign_perfE and self.assign_mesh, respectively; both are initialized as empty lists. Note
     #     that these objects are "refreshed" each time render_design is called (as opposed to in the init function)
     #     to clear QAnsysRenderer of any leftover items from the last call to render_design.
 
@@ -980,15 +989,15 @@ class QAnsysRenderer(QRendererAnalysis):
     #         box_plus_buffer (bool): Either calculate a bounding box based on the location of rendered geometries
     #                                  or use chip size from design class.
     #     """
-    #     self.qcomp_ids, self.case = self.get_unique_component_ids(selection)
+    #     self.solver.qcomp_ids, self.solver.case = self.get_unique_component_ids(selection)
 
-    #     if self.case == 2:
+    #     if self.solver.case == 2:
     #         self.logger.warning(
     #             'Unable to proceed with rendering. Please check selection.')
     #         return
 
-    #     self.chip_subtract_dict = defaultdict(set)
-    #     self.assign_perfE = []
+    #     self.solver.chip_subtract_dict = defaultdict(set)
+    #     self.solver.assign_perfE = []
     #     self.assign_mesh = []
 
     #     self.render_tables()
@@ -999,17 +1008,7 @@ class QAnsysRenderer(QRendererAnalysis):
     #     self.add_mesh()
 
     def render_design(self, *args, **kwargs):
-
-        if self.pinfo:
-            if self.pinfo.design:
-                if self.pinfo.design.solution_type == 'Eigenmode':
-                    return self.hfss.render_design(*args, **kwargs)
-                elif self.pinfo.design.solution_type == 'DrivenModal':
-                    return self.hfss.render_design(*args, **kwargs)
-                elif self.pinfo.design.solution_type == 'Q3D':
-                    return self.q3d.render_design(*args, **kwargs)
-                
-
+        return self.solver.render_design(*args, **kwargs)
 
     def render_chip(self):
         pass
@@ -1034,8 +1033,8 @@ class QAnsysRenderer(QRendererAnalysis):
         """
         table = self.design.qgeometry.tables[table_type]
 
-        if self.case == 0:  # Render a subset of components using mask
-            mask = table['component'].isin(self.qcomp_ids)
+        if self.solver.case == 0:  # Render a subset of components using mask
+            mask = table['component'].isin(self.solver.qcomp_ids)
             table = table[mask]
 
         for _, qgeom in table.iterrows():
@@ -1169,16 +1168,16 @@ class QAnsysRenderer(QRendererAnalysis):
                     interior_points_3d[:-1], closed=True)
                 self.modeler.subtract(name, [inner_shape])
 
-        # Input chip info into self.chip_subtract_dict
-        if qgeom.chip not in self.chip_subtract_dict:
-            self.chip_subtract_dict[qgeom.chip] = set()
+        # Input chip info into self.solver.chip_subtract_dict
+        if qgeom.chip not in self.solver.chip_subtract_dict:
+            self.solver.chip_subtract_dict[qgeom.chip] = set()
 
         if qgeom['subtract']:
-            self.chip_subtract_dict[qgeom.chip].add(name)
+            self.solver.chip_subtract_dict[qgeom.chip].add(name)
 
         # Potentially add to list of elements to metallize
         elif not qgeom['helper']:
-            self.assign_perfE.append(name)
+            self.solver.assign_perfE.append(name)
 
     def render_element_path(self, qgeom: pd.Series):
         """Render a path-type element.
@@ -1252,14 +1251,14 @@ class QAnsysRenderer(QRendererAnalysis):
                     )
                 raise error
 
-        if qgeom.chip not in self.chip_subtract_dict:
-            self.chip_subtract_dict[qgeom.chip] = set()
+        if qgeom.chip not in self.solver.chip_subtract_dict:
+            self.solver.chip_subtract_dict[qgeom.chip] = set()
 
         if qgeom['subtract']:
-            self.chip_subtract_dict[qgeom.chip].add(name)
+            self.solver.chip_subtract_dict[qgeom.chip].add(name)
 
         elif qgeom['width'] and (not qgeom['helper']):
-            self.assign_perfE.append(name)
+            self.solver.assign_perfE.append(name)
 
     def add_endcaps(self, open_pins: Union[list, None] = None):
         """Create endcaps (rectangular cutouts) for all pins in the list
@@ -1290,7 +1289,7 @@ class QAnsysRenderer(QRendererAnalysis):
                                               x_size=width + 2 * gap,
                                               y_size=gap,
                                               name=endcap_name)
-            self.chip_subtract_dict[pin_dict['chip']].add(endcap_name)
+            self.solver.chip_subtract_dict[pin_dict['chip']].add(endcap_name)
 
     def get_chip_names(self) -> List[str]:
         """
@@ -1299,11 +1298,12 @@ class QAnsysRenderer(QRendererAnalysis):
         Returns:
             List[str]: Chips to render.
         """
-        if self.case == 2:  # One or more components not in QDesign.
+
+        if self.solver.case == 2:  # One or more components not in QDesign.
             self.logger.warning('One or more components not found.')
             return []
         chip_names = set()
-        if self.case == 1:  # All components rendered.
+        if self.solver.case == 1:  # All components rendered.
             comps = self.design.components
             for qcomp in comps:
                 if 'chip' not in comps[qcomp].options:
@@ -1315,7 +1315,7 @@ class QAnsysRenderer(QRendererAnalysis):
                 chip_names.add(comps[qcomp].options.chip)
         else:  # Strict subset rendered.
             icomps = self.design._components
-            for qcomp_id in self.qcomp_ids:
+            for qcomp_id in self.solver.qcomp_ids:
                 if 'chip' not in icomps[qcomp_id].options:
                     self.chip_designation_error()
                     return []
@@ -1348,16 +1348,16 @@ class QAnsysRenderer(QRendererAnalysis):
         """
         Determine the max/min x/y coordinates of the smallest rectangular, axis-aligned
         bounding box that will enclose a selection of components to render, given by
-        self.qcomp_ids. This method is only used when box_plus_buffer is True.
+        self.solver.qcomp_ids. This method is only used when box_plus_buffer is True.
 
         Returns:
             Tuple[float]: min x, min y, max x, and max y coordinates of bounding box.
         """
         min_x_main = min_y_main = float('inf')
         max_x_main = max_y_main = float('-inf')
-        if self.case == 2:  # One or more components not in QDesign.
+        if self.solver.case == 2:  # One or more components not in QDesign.
             self.logger.warning('One or more components not found.')
-        elif self.case == 1:  # All components rendered.
+        elif self.solver.case == 1:  # All components rendered.
             for qcomp in self.design.components:
                 min_x, min_y, max_x, max_y = self.design.components[
                     qcomp].qgeometry_bounds()
@@ -1366,7 +1366,7 @@ class QAnsysRenderer(QRendererAnalysis):
                 max_x_main = max(max_x, max_x_main)
                 max_y_main = max(max_y, max_y_main)
         else:  # Strict subset rendered.
-            for qcomp_id in self.qcomp_ids:
+            for qcomp_id in self.solver.qcomp_ids:
                 min_x, min_y, max_x, max_y = self.design._components[
                     qcomp_id].qgeometry_bounds()
                 min_x_main = min(min_x, min_x_main)
@@ -1379,7 +1379,7 @@ class QAnsysRenderer(QRendererAnalysis):
                      draw_sample_holder: bool = True,
                      box_plus_buffer: bool = True):
         """
-        Render all chips containing components in self.qcomp_ids.
+        Render all chips containing components in self.solver.qcomp_ids.
 
         Args:
             draw_sample_holder (bool, optional): Option to draw vacuum box around chip. Defaults to True.
@@ -1437,15 +1437,15 @@ class QAnsysRenderer(QRendererAnalysis):
                 [self.cc_x, self.cc_y, (vac_height[0] - vac_height[1]) / 2],
                 [self.cw_x, self.cw_y, sum(vac_height)],
                 name='sample_holder')
-        if self.chip_subtract_dict[chip_name]:
+        if self.solver.chip_subtract_dict[chip_name]:
             # Any layer which has subtract=True qgeometries will have a ground plane
             # TODO: Material property assignment may become layer-dependent.
-            self.assign_perfE.append(f'ground_{chip_name}_plane')
+            self.solver.assign_perfE.append(f'ground_{chip_name}_plane')
 
     def subtract_from_ground(self):
         """For each chip, subtract all "negative" shapes residing on its
         surface if any such shapes exist."""
-        for chip, shapes in self.chip_subtract_dict.items():
+        for chip, shapes in self.solver.chip_subtract_dict.items():
             if shapes:
                 import pythoncom
                 try:
@@ -1465,7 +1465,7 @@ class QAnsysRenderer(QRendererAnalysis):
 
     def add_mesh(self):
         """Add mesh to all elements in self.assign_mesh."""
-        if self.q3d.assign_mesh:
+        if self.solver.assign_mesh:
             self.modeler.mesh_length(
                 'small_mesh',
                 self.assign_mesh,
@@ -1565,11 +1565,11 @@ class QAnsysRenderer(QRendererAnalysis):
                 )
 
     def get_capacitance_matrix(self, *args, **kwargs):
-        return self.q3d.get_capacitance_matrix(*args, **kwargs)
+        return self.solver.get_capacitance_matrix(*args, **kwargs)
 
     def get_capacitance_all_passes(self, *args, **kwargs):
-        return self.q3d.get_capacitance_all_passes(*args, **kwargs)
-        
+        return self.solver.get_capacitance_all_passes(*args, **kwargs)
+
     # TODO: epr methods below should not be in the renderer, but in the analysis files.
     #  Thus needs to remove the dependency from pinfo, which is Ansys-specific.
 

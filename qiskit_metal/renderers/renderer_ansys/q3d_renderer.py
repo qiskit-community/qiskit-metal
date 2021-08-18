@@ -156,7 +156,7 @@ class QQ3DRenderer(QRenderer):
         """
         self.boundaries.AssignThinConductor([
             "NAME:" + (name if name else "ThinCond1"), "Objects:=",
-            self.parent.assign_perfE, "Material:=", material_type if material_type else
+            self.assign_perfE, "Material:=", material_type if material_type else
             self.q3d_options['material_type'], "Thickness:=",
             thickness if thickness else self.q3d_options['material_thickness']
         ])
