@@ -22,15 +22,16 @@ from pyEPR.ansys import ureg
 from pyEPR.reports import _plot_q3d_convergence_main, _plot_q3d_convergence_chi_f
 from pyEPR.calcs.convert import Convert
 from qiskit_metal import Dict
-from qiskit_metal.renderers.renderer_ansys.ansys_renderer import QAnsysRenderer
+from qiskit_metal.renderers.renderer_base import QRenderer
 from qiskit_metal.toolbox_metal.parsing import is_true
+from pyEPR.ansys import parse_units, HfssApp, release #Added Import
 
 from .. import config
 if not config.is_building_docs():
     from qiskit_metal.analyses.quantization.lumped_capacitive import extract_transmon_coupled_Noscillator
 
 
-class QQ3DRenderer(QAnsysRenderer):
+class QQ3DRenderer(QRenderer):
     """Subclass of QAnsysRenderer for running Q3D simulations.
 
     QAnsysRenderer Default Options:
@@ -50,8 +51,8 @@ class QQ3DRenderer(QAnsysRenderer):
     """name"""
 
     q3d_options = Dict(material_type='pec', material_thickness='200nm')
-
-    def __init__(self, design: 'QDesign', initiate=True, options: Dict = None):
+    
+    def __init__(self, parent, design: 'QDesign', initiate=True, options: Dict = None):
         """Create a QRenderer for Q3D simulations, subclassed from
         QAnsysRenderer.
 
@@ -60,6 +61,7 @@ class QQ3DRenderer(QAnsysRenderer):
             initiate (bool, optional): True to initiate the renderer. Defaults to True.
             options (Dict, optional):  Used to override all options. Defaults to None.
         """
+        self.parent = parent
         super().__init__(design=design, initiate=initiate, options=options)
         QQ3DRenderer.load()
 
@@ -70,9 +72,9 @@ class QQ3DRenderer(QAnsysRenderer):
         Returns:
             win32com.client.CDispatch: COMObject GetModule, obtained by running within pyEPR: design.GetModule("BoundarySetup")
         """
-        if self.pinfo:
-            if self.pinfo.design:
-                return self.pinfo.design._boundaries
+        if self.parent.pinfo:
+            if self.parent.pinfo.design:
+                return self.parent.pinfo.design._boundaries
 
     def render_design(self,
                       selection: Union[list, None] = None,
@@ -128,13 +130,13 @@ class QQ3DRenderer(QAnsysRenderer):
         self.assign_perfE = []
         self.assign_mesh = []
 
-        self.render_tables(skip_junction=True)
-        self.add_endcaps(open_pins)
+        self.parent.render_tables(skip_junction=True)
+        self.parent.add_endcaps(open_pins)
 
-        self.render_chips(draw_sample_holder=False,
+        self.parent.render_chips(draw_sample_holder=False,
                           box_plus_buffer=box_plus_buffer)
-        self.subtract_from_ground()
-        self.add_mesh()
+        self.parent.subtract_from_ground()
+        self.parent.add_mesh()
 
         self.assign_thin_conductor()
         self.assign_nets()
@@ -187,6 +189,8 @@ class QQ3DRenderer(QAnsysRenderer):
                       solver_type: str = None,
                       *args,
                       **kwargs):
+                      
+
         """Create a solution setup in Ansys Q3D. If user does not provide
         arguments, they will be obtained from q3d_options dict.
 
@@ -204,7 +208,7 @@ class QQ3DRenderer(QAnsysRenderer):
             solution_order (str, optional): Solution order. Defaults to None.
             solver_type (str, optional): Solver type. Defaults to None.
         """
-        su = self.default_setup.q3d
+        su = self.parent.default_setup.q3d
 
         if not name:
             name = self.parse_value(su['name'])
@@ -233,9 +237,9 @@ class QQ3DRenderer(QAnsysRenderer):
         if not solver_type:
             solver_type = self.parse_value(su['solver_type'])
 
-        if self.pinfo:
-            if self.pinfo.design:
-                return self.pinfo.design.create_q3d_setup(
+        if self.parent.pinfo:
+            if self.parent.pinfo.design:
+                return self.parent.pinfo.design.create_q3d_setup(
                     freq_ghz=freq_ghz,
                     name=name,
                     save_fields=save_fields,
@@ -265,7 +269,7 @@ class QQ3DRenderer(QAnsysRenderer):
             Note, that these 7 arguments are currently NOT implemented:
             Ansys API named EditSetup requires all arguments to be passed, but
             presently have no way to read all of the setup.
-            Also, self.pinfo.setup does not have all the @property variables
+            Also, self.parent.pinfo.setup does not have all the @property variables
             used for Setup.
             * save_fields (bool, optional): Whether or not to save fields. Defaults to False.
             * enabled (bool, optional): Whether or not setup is enabled. Defaults to True.
@@ -276,13 +280,13 @@ class QQ3DRenderer(QAnsysRenderer):
             * solver_type (str, optional): Solver type. Defaults to 'Iterative'.
         """
 
-        if self.pinfo:
-            if self.pinfo.project:
-                if self.pinfo.design:
-                    if self.pinfo.design.solution_type == 'Q3D':
-                        if self.pinfo.setup_name != setup_args.name:
+        if self.parent.pinfo:
+            if self.parent.pinfo.project:
+                if self.parent.pinfo.design:
+                    if self.parent.pinfo.design.solution_type == 'Q3D':
+                        if self.parent.pinfo.setup_name != setup_args.name:
                             self.design.logger.warning(
-                                f'The name of active setup={self.pinfo.setup_name} does not match'
+                                f'The name of active setup={self.parent.pinfo.setup_name} does not match'
                                 f'the name of of setup_args.name={setup_args.name}. '
                                 f'To use this method, activate the desired Setup before editing it. '
                                 f'The setup_args was not used to update the active Setup.'
@@ -318,9 +322,9 @@ class QQ3DRenderer(QAnsysRenderer):
                                     #         "Solver Type:=", "Iterative"
                                     #     ]
                                     # ]
-                                    # self.pinfo.design._setup_module.EditSetup(
+                                    # self.parent.pinfo.design._setup_module.EditSetup(
                                     #     setup_args.name, args_editsetup)
-                                    self.pinfo.setup.frequency = f"{value}GHz"
+                                    self.parent.pinfo.setup.frequency = f"{value}GHz"
                                     continue
                             if key == 'max_passes':
                                 if not isinstance(value, int):
@@ -328,7 +332,7 @@ class QQ3DRenderer(QAnsysRenderer):
                                         'The value for max_passes should be an int. '
                                         f'The present value is {value}.')
                                 else:
-                                    self.pinfo.setup.max_pass = value
+                                    self.parent.pinfo.setup.max_pass = value
                                     continue
 
                             if key == 'min_passes':
@@ -337,7 +341,7 @@ class QQ3DRenderer(QAnsysRenderer):
                                         'The value for min_passes should be an int. '
                                         f'The present value is {value}.')
                                 else:
-                                    self.pinfo.setup.min_pass = value
+                                    self.parent.pinfo.setup.min_pass = value
                                     continue
 
                             if key == 'percent_error':
@@ -346,7 +350,7 @@ class QQ3DRenderer(QAnsysRenderer):
                                         'The value for percent_error should be a float. '
                                         f'The present value is {value}.')
                                 else:
-                                    self.pinfo.setup.pct_error = value
+                                    self.parent.pinfo.setup.pct_error = value
                                     continue
 
                             self.design.logger.warning(
@@ -378,8 +382,8 @@ class QQ3DRenderer(QAnsysRenderer):
         Args:
             setup_name (str): Name of setup.
         """
-        if self.pinfo:
-            setup = self.pinfo.get_setup(setup_name)
+        if self.parent.pinfo:
+            setup = self.parent.pinfo.get_setup(setup_name)
             setup.analyze(setup_name)
 
     def get_capacitance_matrix(self,
@@ -400,8 +404,8 @@ class QQ3DRenderer(QAnsysRenderer):
         Returns:
             pd.DataFrame, str: Capacitance matrix, and units.
         """
-        if self.pinfo:
-            df_cmat, user_units, _, _ = self.pinfo.setup.get_matrix(
+        if self.parent.pinfo:
+            df_cmat, user_units, _, _ = self.parent.pinfo.setup.get_matrix(
                 variation=variation,
                 solution_kind=solution_kind,
                 pass_number=pass_number)
@@ -480,3 +484,11 @@ class QQ3DRenderer(QAnsysRenderer):
             'This method is deprecated. Change your scripts to use activate_ansys_design()'
         )
         self.activate_ansys_design(name, 'capacitive')
+
+    def _close_renderer(self):
+        
+        print("Q3D Close")
+
+    def _initiate_renderer(self):
+        
+        print("Q3d Open")

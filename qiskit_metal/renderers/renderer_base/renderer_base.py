@@ -149,7 +149,8 @@ class QRenderer(ABC):
                  design: 'QDesign',
                  initiate=False,
                  render_template: Dict = None,
-                 render_options: Dict = None):
+                 render_options: Dict = None,
+                 options: Dict = None): #Added options:Dict = None to renderer_base class QRender
         """
         Args:
             design (QDesign): The design
@@ -169,18 +170,18 @@ class QRenderer(ABC):
         self._design = design
         self.initiated = False
 
-        if initiate:
-            self.start()
-
-        # Register as an instantiated renderer.
-        QRenderer.__instantiated_renderers__[self.name] = self
-
         # Options
         self._options = Dict()
         self.update_options(render_options=render_options,
                             render_template=render_template)
 
         self.status = 'Init Completed'
+        
+        if initiate:
+            self.start()
+
+        # Register as an instantiated renderer.
+        QRenderer.__instantiated_renderers__[self.name] = self
 
     @property
     def options(self) -> Dict:
