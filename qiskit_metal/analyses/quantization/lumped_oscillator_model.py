@@ -200,5 +200,5 @@ class LOManalysis(LumpedElementsSim):
     def dashboard(self,
                   mode: str = "notebook",
                   default_graph_data: dict = None):
-        return dashboard().plot(mode=mode,
-                                default_graph_data=default_graph_data)
+        return super().dashboard(mode=mode,
+                                 default_graph_data=default_graph_data)
