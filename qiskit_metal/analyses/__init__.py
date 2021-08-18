@@ -58,7 +58,7 @@ Sweeping Options
 .. autosummary::
     :toctree:
 
-    Sweeping
+    Sweeper
 
 Quantization
 ------------
@@ -98,4 +98,4 @@ from .hamiltonian.transmon_charge_basis import Hcpb
 from .hamiltonian import HO_wavefunctions
 from .hamiltonian import transmon_analytics
 from .hamiltonian.transmon_CPB_analytic import Hcpb_analytic
-from .sweep_options.sweeping import Sweeping
+from .sweep_and_optimize.sweeper import Sweeper
