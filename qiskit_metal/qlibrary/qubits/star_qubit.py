@@ -114,7 +114,7 @@ class StarQubit(QComponent):
         )
 
         circle_outer = draw.Point(p.pos_x, p.pos_y).buffer(
-            p.radius*1.2,
+            p.radius*(1+(p.connector_length/p.radius)),
             resolution=int(p.resolution),
             cap_style=getattr(CAP_STYLE, p.cap_style)
         )
