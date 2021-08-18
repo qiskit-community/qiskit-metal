@@ -269,5 +269,8 @@ class EPRanalysis(EigenmodeSim):
             'line': line
         })
 
-    def plot(self, mode: str = "notebook", default_graph_data: dict = None):
-        return super().plot(mode=mode, default_graph_data=default_graph_data)
+    def dashboard(self,
+                  mode: str = "notebook",
+                  default_graph_data: dict = None):
+        return super().dashboard(mode=mode,
+                                 default_graph_data=default_graph_data)

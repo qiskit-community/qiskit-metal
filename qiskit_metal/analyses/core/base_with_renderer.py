@@ -171,7 +171,7 @@ class QAnalysisRenderer(QAnalysis):
         self.set_data('sim_setup_name', data)
 
     @abstractmethod
-    def plot(self, mode: str = "notebook", default_graph_data: dict = None):
+    def dashboard(self, mode: str = "notebook", default_graph_data: dict = None):
         """Abstract method. Must be implemented by the subclass.
         This method will launch the AnalysisDashboard.
 

@@ -18,6 +18,7 @@ from pyEPR.ansys import ureg
 from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
 
 from ..core import QAnalysisRenderer
+from ...dashboard.ad_toolbox import concat_df_cols
 
 from ... import Dict
 
@@ -209,7 +210,13 @@ class LumpedElementsSim(QAnalysisRenderer):
             return
         self.set_data('units', data)
 
-    def plot(self, mode: str = "notebook", default_graph_data: dict = None):
+    def dashboard(self,
+                  mode: str = "notebook",
+                  default_graph_data: dict = None):
+        print(self.get_data())
         if default_graph_data is None:
             default_graph_data = {}
-        return super().plot(mode=mode, default_graph_data=default_graph_data)
+            # default_graph_data["Delta % vs. Solved Elements (1000s)"] = concat_df_cols()
+
+            default_graph_data["Delta %"]
+        return super().dashboard(mode=mode, default_graph_data=default_graph_data)

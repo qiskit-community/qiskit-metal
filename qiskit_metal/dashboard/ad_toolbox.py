@@ -66,8 +66,9 @@ def browse_datatable_to_df(table_data, columns):
 
 
 def row_exists(value, df):
-    """Checks if a row with the value is contained in the DataFrame extracted using the selected_datatable_to_df
-        method. This avoids duplicate rows being added to the selected data DataTable
+    """Checks if a row with the value is contained in the DataFrame extracted using the
+        selected_datatable_to_df method. This avoids duplicate rows being added to the
+        selected data DataTable
 
     Args:
         value (str): the value being checked for in the df
@@ -83,14 +84,37 @@ def row_exists(value, df):
     return False
 
 
-def merge_df(*args):
+def concat_df_rows(*args):
+    """Concatenates DataFrames together vertically. "Stacks" the DataFrames on top of each other
+
+    Returns:
+        pd.DataFrame: a DataFrame containing all the DataFrames inputted
+    """
     if len(args) > 1:
-        df1 = pd.DataFrame(args[0])
-        args = args[1:]
-        for arg in args:
-            df2 = pd.DataFrame(arg)
+        df1 = args[0]
+        argss = args[1:]
+        for arg in argss:
+            df2 = arg
             new_cols = {x: y for x, y in zip(df1.columns, df2.columns)}
             df_out = df2.append(df1.rename(columns=new_cols))
+            df1 = df_out
+        print(df_out)
+        return df_out
+    return args
+
+
+def concat_df_cols(*args):
+    """Concatenates DataFrames together horizontally. "Places" the DataFrames next to each other
+
+    Returns:
+        pd.DataFrame: a DataFrame containing all the DataFrames inputted
+    """
+    if len(args) > 1:
+        df1 = args[0]
+        argss = args[1:]
+        for arg in argss:
+            df2 = arg
+            df_out = pd.concat([df1, df2], axis=1)
             df1 = df_out
         return df_out
     return args

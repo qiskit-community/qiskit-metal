@@ -20,7 +20,7 @@ import pandas as pd
 import numpy as np
 from traitlets.traitlets import default
 
-from .ad_toolbox import create_dropdown_table, selected_datatable_to_df, browse_datatable_to_df, row_exists, merge_df
+from .ad_toolbox import create_dropdown_table, selected_datatable_to_df, browse_datatable_to_df, row_exists, concat_df_rows
 
 
 class AnalysisDashboard():
@@ -72,12 +72,13 @@ class AnalysisDashboard():
         self.app.layout = dbc.Container([
             dbc.Row(dbc.Col(html.H3("Premade graphs")), className="mb-2"),
             dbc.Row([
-                dbc.Col(
-                    dcc.Graph(figure=px.scatter(self.default_graph_data[graph]).
-                              update_traces(mode='lines+markers')))
-                for graph in self.default_graph_data
+                dbc.Col(dcc.Graph(figure=px.scatter(
+                    self.default_graph_data[graph], title=graph).update_traces(
+                        mode='lines+markers')),
+                        width=4) for graph in self.default_graph_data
             ], "default-graph-container"),
-            dbc.Row(dbc.Col(html.H3("Browse data")), className="mb-2"),
+            dbc.Row(dbc.Col(html.H3("Create graphs")), className="mb-2"),
+            dbc.Row(dbc.Col(html.H5("Browse data")), className="mb-2"),
             dbc.Row([
                 dbc.Col(
                     dcc.Dropdown(
@@ -125,7 +126,8 @@ class AnalysisDashboard():
             dbc.Row(dbc.Col(
                 dbc.Button("New graph", "add-graph-button", color="success")),
                     className="mb-2"),
-        ])
+        ],
+                                        fluid=True)
 
         @self.app.callback(
             Output("dataframe-dropdown-secondary-container", "children"),
@@ -251,7 +253,7 @@ class AnalysisDashboard():
                                 df_data.append(dict_dfs[df].iloc[row, column])
                             df = pd.DataFrame([df_data])
                             df.insert(0, "Data", key)
-                            table_df = merge_df(df, table_df)
+                            table_df = concat_df_rows(df, table_df)
                 else:  # hanldes adding-all-rows, add-all-columns, and add-seleceted-data
                     if selected_rows:
                         for selected_row in selected_rows:
@@ -262,7 +264,7 @@ class AnalysisDashboard():
                                 df_data = [row[col] for col in row]
                                 df = pd.DataFrame([df_data])
                                 df.insert(0, "Data", key)
-                                table_df = merge_df(df, table_df)
+                                table_df = concat_df_rows(df, table_df)
                     if selected_columns:
                         for selected_column in selected_columns:
                             key = "{}_c{}".format(dropdown_values[0],
@@ -274,7 +276,7 @@ class AnalysisDashboard():
                                 ]
                                 df = pd.DataFrame([df_data])
                                 df.insert(0, "Data", key)
-                                table_df = merge_df(df, table_df)
+                                table_df = concat_df_rows(df, table_df)
             table = dash_table.DataTable(id="selected-data-datatable",
                                          columns=[{
                                              "name": str(i),

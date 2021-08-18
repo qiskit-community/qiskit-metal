@@ -197,5 +197,8 @@ class LOManalysis(LumpedElementsSim):
             self.run_lom(*args, **kwargs)
         self.renderer.plot_convergence_chi(self.lumped_oscillator_all)
 
-    def plot(self, mode: str = "notebook", default_graph_data: dict = None):
-        return super().plot(mode=mode, default_graph_data=default_graph_data)
+    def dashboard(self,
+                  mode: str = "notebook",
+                  default_graph_data: dict = None):
+        return dashboard().plot(mode=mode,
+                                default_graph_data=default_graph_data)
