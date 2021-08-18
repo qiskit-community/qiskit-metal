@@ -50,6 +50,7 @@ ScatteringImpedanceSim
       ScatteringImpedanceSim.print_run_args
       ScatteringImpedanceSim.run
       ScatteringImpedanceSim.run_sim
+      ScatteringImpedanceSim.run_sweep
       ScatteringImpedanceSim.save_run_args
       ScatteringImpedanceSim.save_screenshot
       ScatteringImpedanceSim.select_renderer

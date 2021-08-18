@@ -58,7 +58,7 @@ Sweeping Options
 .. autosummary::
     :toctree:
 
-    Sweeping
+    Sweeper
 
 Quantization
 ------------

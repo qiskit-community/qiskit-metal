@@ -3,6 +3,8 @@ from typing import Tuple, Union
 
 
 class Sweeper():
+    """The methods allow users to sweep a variable in a components's options.
+    Need access to renderers which are registered in QDesign."""
 
     def __init__(self, parent):
         """Connect to the QAnalysis child we sweeping can happen.
@@ -140,8 +142,9 @@ class Sweeper():
             value is the solution-data for each sweep.
             The int is the observation of searching for data from arguments as
             defined below.
-             * 0 Have list of capacitance matrix.
-             * 5 last key in option_name is not in Dict. 
+
+                * 0 Have list of capacitance matrix.
+                * 5 last key in option_name is not in Dict. 
         """
 
         for _, item in enumerate(args[2]):
