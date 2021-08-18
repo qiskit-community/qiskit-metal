@@ -216,7 +216,7 @@ class LumpedElementsSim(QAnalysisRenderer):
         print(self.get_data())
         if default_graph_data is None:
             default_graph_data = {}
-            # default_graph_data["Delta % vs. Solved Elements (1000s)"] = concat_df_cols()
-
-            default_graph_data["Delta %"]
-        return super().dashboard(mode=mode, default_graph_data=default_graph_data)
+            # Add the plots here desired to be plotted in the Premade section of the dashboard
+            # See sim_eigenmode dashboard method for reference.
+        return super().dashboard(mode=mode,
+                                 default_graph_data=default_graph_data)

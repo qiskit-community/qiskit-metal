@@ -288,4 +288,5 @@ class EigenmodeSim(QAnalysisRenderer):
             default_graph_data["Max Delta Freg. %"] = convergence_t[
                 "Max Delta Freq. %"].to_frame()
 
-        return super().dashboard(mode=mode, default_graph_data=default_graph_data)
+        return super().dashboard(mode=mode,
+                                 default_graph_data=default_graph_data)
