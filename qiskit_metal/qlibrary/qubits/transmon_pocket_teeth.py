@@ -12,9 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-
 # Contributers: Figen YILMAZ, Li-Chieh Hsiao, Dr Christian K Andersen
-
 """Transmon Pocket 6.
 
 .. code-block::
@@ -128,9 +126,11 @@ class TransmonPocketTeeth(BaseQubit):
         pad_height='90um',
         pocket_width='650um',
         pocket_height='650um',
-        coupled_pad_height='150um', # coupled_pad belongs to the teeth part and both teeth will have the same height. Teeth are symetric. 
-        coupled_pad_width='20um',   # Again for the teeth, the part on the same pad will have the same width. 
-        coupled_pad_gap='40um',     # One can arrange the gap between the teeth.
+        coupled_pad_height=
+        '150um',  # coupled_pad belongs to the teeth part and both teeth will have the same height. Teeth are symetric. 
+        coupled_pad_width=
+        '20um',  # Again for the teeth, the part on the same pad will have the same width. 
+        coupled_pad_gap='40um',  # One can arrange the gap between the teeth.
 
         # 90 has dipole aligned along the +X axis,
         # while 0 has dipole aligned along the +Y axis
@@ -177,44 +177,68 @@ class TransmonPocketTeeth(BaseQubit):
 
         # self.p allows us to directly access parsed values (string -> numbers) form the user option
         p = self.p
-      #  pcop = self.p.coupled_pads[name]  # parser on connector options
+        #  pcop = self.p.coupled_pads[name]  # parser on connector options
 
         # since we will reuse these options, parse them once and define them as variables
         pad_width = p.pad_width
         pad_height = p.pad_height
         pad_gap = p.pad_gap
-        coupled_pad_height = p.coupled_pad_height 
-        coupled_pad_width = p.coupled_pad_width 
+        coupled_pad_height = p.coupled_pad_height
+        coupled_pad_width = p.coupled_pad_width
         coupled_pad_gap = p.coupled_pad_gap
-
-                                 
 
         # make the pads as rectangles (shapely polygons)
         pad = draw.rectangle(pad_width, pad_height)
-              
+
         pad_top = draw.translate(pad, 0, +(pad_height + pad_gap) / 2.)
         # Here, you make your pads round. Not sharp shape on the left and right sides and also this should be the same for the bottom pad as the top pad.
-        circ_left_top = draw.Point(-pad_width/2., +(pad_height + pad_gap) / 2.).buffer(pad_height/2, resolution=16, cap_style=CAP_STYLE.round)
-        circ_right_top = draw.Point(pad_width/2., +(pad_height + pad_gap) / 2.).buffer(pad_height/2, resolution=16, cap_style=CAP_STYLE.round)
-        # In here you create the teeth part and then you union them as one with the pad. Teeth only belong to top pad. 
-        coupled_pad = draw.rectangle(coupled_pad_width, coupled_pad_height+pad_height)
-        coupler_pad_round = draw.Point(0., (coupled_pad_height+pad_height)/2).buffer(coupled_pad_width/2, resolution=16, cap_style=CAP_STYLE.round)
+        circ_left_top = draw.Point(-pad_width / 2., +(pad_height + pad_gap) /
+                                   2.).buffer(pad_height / 2,
+                                              resolution=16,
+                                              cap_style=CAP_STYLE.round)
+        circ_right_top = draw.Point(pad_width / 2., +(pad_height + pad_gap) /
+                                    2.).buffer(pad_height / 2,
+                                               resolution=16,
+                                               cap_style=CAP_STYLE.round)
+        # In here you create the teeth part and then you union them as one with the pad. Teeth only belong to top pad.
+        coupled_pad = draw.rectangle(coupled_pad_width,
+                                     coupled_pad_height + pad_height)
+        coupler_pad_round = draw.Point(0., (coupled_pad_height + pad_height) /
+                                       2).buffer(coupled_pad_width / 2,
+                                                 resolution=16,
+                                                 cap_style=CAP_STYLE.round)
         coupled_pad = draw.union(coupled_pad, coupler_pad_round)
-        coupled_pad_left = draw.translate(coupled_pad, -(coupled_pad_width/2. + coupled_pad_gap/2.), +coupled_pad_height/2. +pad_height + pad_gap/2.-pad_height/2 )
-        coupled_pad_right = draw.translate(coupled_pad, (coupled_pad_width/2. + coupled_pad_gap/2.), +coupled_pad_height/2. +pad_height + pad_gap/2.-pad_height/2 )
+        coupled_pad_left = draw.translate(
+            coupled_pad, -(coupled_pad_width / 2. + coupled_pad_gap / 2.),
+            +coupled_pad_height / 2. + pad_height + pad_gap / 2. -
+            pad_height / 2)
+        coupled_pad_right = draw.translate(
+            coupled_pad, (coupled_pad_width / 2. + coupled_pad_gap / 2.),
+            +coupled_pad_height / 2. + pad_height + pad_gap / 2. -
+            pad_height / 2)
         pad_top_tmp = draw.union([circ_left_top, pad_top, circ_right_top])
         # The coupler pads are only created if low_W=0 and low_H=+1
         for name in self.options.connection_pads:
-            if self.options.connection_pads[name]['loc_W']==0 and self.options.connection_pads[name]['loc_H']==+1:
-                pad_top_tmp = draw.union([circ_left_top, coupled_pad_left, pad_top, coupled_pad_right, circ_right_top])
+            if self.options.connection_pads[name][
+                    'loc_W'] == 0 and self.options.connection_pads[name][
+                        'loc_H'] == +1:
+                pad_top_tmp = draw.union([
+                    circ_left_top, coupled_pad_left, pad_top, coupled_pad_right,
+                    circ_right_top
+                ])
         pad_top = pad_top_tmp
         # Round part for the bottom pad. And again you should unite all of them.
         pad_bot = draw.translate(pad, 0, -(pad_height + pad_gap) / 2.)
-        circ_left_bot = draw.Point(-pad_width/2, -(pad_height + pad_gap) / 2.).buffer(pad_height/2, resolution=16, cap_style=CAP_STYLE.round)
-        circ_right_bot = draw.Point(pad_width/2, -(pad_height + pad_gap) / 2.).buffer(pad_height/2, resolution=16, cap_style=CAP_STYLE.round)
+        circ_left_bot = draw.Point(-pad_width / 2, -(pad_height + pad_gap) /
+                                   2.).buffer(pad_height / 2,
+                                              resolution=16,
+                                              cap_style=CAP_STYLE.round)
+        circ_right_bot = draw.Point(pad_width / 2, -(pad_height + pad_gap) /
+                                    2.).buffer(pad_height / 2,
+                                               resolution=16,
+                                               cap_style=CAP_STYLE.round)
         pad_bot = draw.union([pad_bot, circ_left_bot, circ_right_bot])
 
-    
         rect_jj = draw.LineString([(0, -pad_gap / 2), (0, +pad_gap / 2)])
         # the draw.rectangle representing the josephson junction
         # rect_jj = draw.rectangle(p.inductor_width, pad_gap)
