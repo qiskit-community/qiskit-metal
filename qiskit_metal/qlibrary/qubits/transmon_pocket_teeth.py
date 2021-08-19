@@ -13,23 +13,7 @@
 # that they have been altered from the originals.
 
 # Contributers: Figen YILMAZ, Li-Chieh Hsiao, Dr Christian K Andersen
-"""Transmon Pocket 6.
-
-.. code-block::
-     _________________________________
-    |______ ____    _|_    __________|          
-    |      |____|  |___|   |____|    |
-    |        __________________      |
-    |       |                  |     |
-    |       |__________________|     |
-    |                 |              |
-    |                 x              |
-    |        _________|________      |
-    |       |                  |     |
-    |       |__________________|     |
-    |        ______                  |
-    |_______|______|                 |
-    |________________________________|
+"""Transmon Pocket Teeth.
 """
 
 import numpy as np
@@ -44,8 +28,7 @@ class TransmonPocketTeeth(BaseQubit):
     Inherits `BaseQubit` class
 
     Description:
-        Create a standard pocket transmon qubit for a ground plane.
-        Can have variable number of connection pads, up to 6. 
+        Create a standard pocket transmon qubit for a ground plane with teeth
         Here we use the 'Teeth' shape which ones connected to top pad and one connection pad.
 
     Options:
@@ -53,6 +36,7 @@ class TransmonPocketTeeth(BaseQubit):
         (e.g., '30um')
 
     Pocket:
+        * chip               - the chip
         * pos_x / pos_y      - where the center of the pocket should be located on chip
           (where the 'junction' is)
         * pad_gap            - the distance between the two charge islands, which is also the
@@ -110,7 +94,7 @@ class TransmonPocketTeeth(BaseQubit):
                                             +1
 
     .. image::
-        QComponent_Qubit_Transmon_Pocket_Teeth.png
+        Transmon_Pocket_Teeth.png
     """
 
     #_img = 'transmon_pocket1.png'
@@ -158,7 +142,7 @@ class TransmonPocketTeeth(BaseQubit):
                               _qgeometry_table_junction='True')
     """Component metadata"""
 
-    TOOLTIP = """Transmon pocket with 6 connection pads."""
+    TOOLTIP = """Transmon pocket with teeth pads."""
 
     def make(self):
         """Define the way the options are turned into QGeometry.
