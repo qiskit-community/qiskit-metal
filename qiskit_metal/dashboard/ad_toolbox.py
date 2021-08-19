@@ -98,7 +98,6 @@ def concat_df_rows(*args):
             new_cols = {x: y for x, y in zip(df1.columns, df2.columns)}
             df_out = df2.append(df1.rename(columns=new_cols))
             df1 = df_out
-        print(df_out)
         return df_out
     return args
 

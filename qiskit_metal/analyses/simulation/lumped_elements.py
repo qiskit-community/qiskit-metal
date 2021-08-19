@@ -214,7 +214,6 @@ class LumpedElementsSim(QSimulation):
     def dashboard(self,
                   mode: str = "notebook",
                   default_graph_data: dict = None):
-        print(self.get_data())
         if default_graph_data is None:
             default_graph_data = {}
             # Add the plots here desired to be plotted in the Premade section of the dashboard
