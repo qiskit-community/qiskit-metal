@@ -202,11 +202,12 @@ class TransmonPocketTeeth(BaseQubit):
         coupled_pad = draw.union(coupled_pad, coupler_pad_round)
         coupled_pad_left = draw.translate(coupled_pad, -(coupled_pad_width/2. + coupled_pad_gap/2.), +coupled_pad_height/2. +pad_height + pad_gap/2.-pad_height/2 )
         coupled_pad_right = draw.translate(coupled_pad, (coupled_pad_width/2. + coupled_pad_gap/2.), +coupled_pad_height/2. +pad_height + pad_gap/2.-pad_height/2 )
-        pad_top = draw.union([circ_left_top, pad_top, circ_right_top, coupled_pad_left, coupled_pad_right ])
-        #for name in self.options.connection_pads:
-        #    if self.options.connection_pads[name]['loc_W']==0 and self.options.connection_pads[name]['loc_H']==+1:
-        #        pad_top_tmp = draw.union([circ_left_top, coupled_pad_left, pad_top, coupled_pad_right, circ_right_top])
-        #pad_top = pad_top_tmp
+        pad_top_tmp = draw.union([circ_left_top, pad_top, circ_right_top])
+        # The coupler pads are only created if low_W=0 and low_H=+1
+        for name in self.options.connection_pads:
+            if self.options.connection_pads[name]['loc_W']==0 and self.options.connection_pads[name]['loc_H']==+1:
+                pad_top_tmp = draw.union([circ_left_top, coupled_pad_left, pad_top, coupled_pad_right, circ_right_top])
+        pad_top = pad_top_tmp
         # Round part for the bottom pad. And again you should unite all of them.
         pad_bot = draw.translate(pad, 0, -(pad_height + pad_gap) / 2.)
         circ_left_bot = draw.Point(-pad_width/2, -(pad_height + pad_gap) / 2.).buffer(pad_height/2, resolution=16, cap_style=CAP_STYLE.round)
