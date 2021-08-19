@@ -13,11 +13,16 @@
 # that they have been altered from the originals.
 
 from abc import abstractmethod, ABC
+from datetime import date
 import inspect
 from typing import Any, Union
 
 from copy import deepcopy
+
+from numpy import array
 from ... import Dict, logger
+
+from ...dashboard.analysis_dashboard import AnalysisDashboard
 
 
 class QAnalysis(ABC):
@@ -54,6 +59,7 @@ class QAnalysis(ABC):
 
         # first self.clear_data()
         self._variables = Dict()
+        # self.re = Dict()
 
     @property
     def logger(self):
@@ -238,3 +244,17 @@ class QAnalysis(ABC):
                 labels_from_children.update(child.data_labels)
 
         return setup_from_children, labels_from_children
+
+    @abstractmethod
+    def dashboard(self,
+                  mode: str = "notebook",
+                  default_graph_data: dict = None):
+        """Abstract method. Must be implemented by the subclass.
+        This method will launch the AnalysisDashboard.
+
+        Args:
+            mode (str, optional): Mode to open the dashboard. Enter "notebook" to open inline within a jupyter ntoebook or "web" to open on a browser. Defaults to "notebook".
+            graph_data (dict, optional): A dict containing information to be inlcuded in the premade data section of the analysis dashboard. Defaults to None.
+        """
+        dash = AnalysisDashboard(mode, self, default_graph_data)
+        dash.run_app()

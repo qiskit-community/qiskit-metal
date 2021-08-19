@@ -139,6 +139,7 @@ from . import designs
 from . import draw
 from . import renderers
 from . import qgeometries
+from . import dashboard
 from . import analyses
 from . import toolbox_python
 from . import toolbox_metal

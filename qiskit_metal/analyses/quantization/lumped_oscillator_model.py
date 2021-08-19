@@ -13,7 +13,7 @@
 # that they have been altered from the originals.
 
 import pandas as pd
-from pint import UnitRegistry
+from pint import UnitRegistry, _DEFAULT_REGISTRY
 
 from pyEPR.calcs.convert import Convert
 
@@ -205,3 +205,13 @@ class LOManalysis(QAnalysis):
             self.run_lom(*args, **kwargs)
         # TODO: copy plot_convergence_main() from pyEPR and move it here
         self.sim.renderer.plot_convergence_chi(self.lumped_oscillator_all)
+
+    def dashboard(self,
+                  mode: str = "notebook",
+                  default_graph_data: dict = None):
+        if default_graph_data is None:
+            default_graph_data = {}
+            # Add the plots here desired to be plotted in the Premade section of the dashboard
+            # See sim_eigenmode dashboard method for reference.
+        return super().dashboard(mode=mode,
+                                 default_graph_data=default_graph_data)
