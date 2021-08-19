@@ -217,6 +217,6 @@ class LumpedElementsSim(QSimulation):
         if default_graph_data is None:
             default_graph_data = {}
             # Add the plots here desired to be plotted in the Premade section of the dashboard
-            # See sim_eigenmode dashboard method for reference.
+            # See eigenmode.py dashboard method for reference.
         return super().dashboard(mode=mode,
                                  default_graph_data=default_graph_data)
