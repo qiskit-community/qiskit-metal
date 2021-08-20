@@ -45,7 +45,7 @@ class SQUID_LOOP(QComponent):
     lower.) 
     
     .. image::
-    SQUID_LOOP.png
+        SQUID_LOOP.png
 
     Default Options:
         * plate1_width: '5.5um' -- width of plate1 (left)  
