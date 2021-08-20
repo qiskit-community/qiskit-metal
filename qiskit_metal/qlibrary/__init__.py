@@ -115,6 +115,7 @@ Qubits
     TransmonPocketCL
     TransmonPocket6
     TunableCoupler01
+    SQUID_LOOP
 
 
 Submodules
@@ -168,5 +169,6 @@ if config.is_building_docs():
     from .qubits.transmon_pocket import TransmonPocket
     from .qubits.transmon_pocket_cl import TransmonPocketCL
     from .qubits.transmon_pocket_6 import TransmonPocket6
+    from .qubits.SQUID_loop import SQUID_LOOP
 
     from .tlines import anchored_path

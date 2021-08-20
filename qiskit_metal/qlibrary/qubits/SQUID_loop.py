@@ -43,6 +43,9 @@ class SQUID_LOOP(QComponent):
     segment c, segment d and plate 2. The two JJs are locatd between
     segments and a and b (and also between segments a lower and b
     lower.) 
+    
+    .. image::
+    SQUID_LOOP.png
 
     Default Options:
         * plate1_width: '5.5um' -- width of plate1 (left)  
