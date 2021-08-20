@@ -48,6 +48,7 @@ from qiskit_metal.qlibrary.qubits.transmon_cross_fl import TransmonCrossFL
 from qiskit_metal.qlibrary.qubits import transmon_pocket
 from qiskit_metal.qlibrary.qubits import transmon_pocket_cl
 from qiskit_metal.qlibrary.qubits.transmon_pocket_6 import TransmonPocket6
+from qiskit_metal.qlibrary.qubits.transmon_pocket_teeth import TransmonPocketTeeth
 from qiskit_metal.qlibrary.couplers.tunable_coupler_01 import TunableCoupler01
 from qiskit_metal.qlibrary import _template
 from qiskit_metal.tests.assertions import AssertionsMixin
@@ -387,6 +388,50 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['pad_height'], '90um')
         self.assertEqual(options['pocket_width'], '650um')
         self.assertEqual(options['pocket_height'], '650um')
+        self.assertEqual(options['orientation'], '0')
+
+        self.assertEqual(len(options['_default_connection_pads']), 12)
+        self.assertEqual(options['_default_connection_pads']['pad_gap'], '15um')
+        self.assertEqual(options['_default_connection_pads']['pad_width'],
+                         '125um')
+        self.assertEqual(options['_default_connection_pads']['pad_height'],
+                         '30um')
+        self.assertEqual(options['_default_connection_pads']['pad_cpw_shift'],
+                         '0um')
+        self.assertEqual(options['_default_connection_pads']['pad_cpw_extent'],
+                         '25um')
+        self.assertEqual(options['_default_connection_pads']['cpw_width'],
+                         '10um')
+        self.assertEqual(options['_default_connection_pads']['cpw_gap'], '6um')
+        self.assertEqual(options['_default_connection_pads']['cpw_extend'],
+                         '100um')
+        self.assertEqual(options['_default_connection_pads']['pocket_extent'],
+                         '5um')
+        self.assertEqual(options['_default_connection_pads']['pocket_rise'],
+                         '0um')
+        self.assertEqual(options['_default_connection_pads']['loc_W'], '+1')
+        self.assertEqual(options['_default_connection_pads']['loc_H'], '+1')
+
+    def test_qlibrary_transmon_pocket_teeth_options(self):
+        """Test that default_options of transmon_pocket_teeth were not accidentally changed."""
+        # Setup expected test results
+        design = designs.DesignPlanar()
+        transmon_pocket_teeth = TransmonPocketTeeth(design, 'my_name')
+        options = transmon_pocket_teeth.default_options
+
+        self.assertEqual(len(options), 14)
+        self.assertEqual(options['chip'], 'main')
+        self.assertEqual(options['pos_x'], '0um')
+        self.assertEqual(options['pos_y'], '0um')
+        self.assertEqual(options['pad_gap'], '30um')
+        self.assertEqual(options['inductor_width'], '20um')
+        self.assertEqual(options['pad_width'], '455um')
+        self.assertEqual(options['pad_height'], '90um')
+        self.assertEqual(options['pocket_width'], '650um')
+        self.assertEqual(options['pocket_height'], '650um')
+        self.assertEqual(options['coupled_pad_height'], '150um')
+        self.assertEqual(options['coupled_pad_width'], '20um')
+        self.assertEqual(options['coupled_pad_gap'], '40um')
         self.assertEqual(options['orientation'], '0')
 
         self.assertEqual(len(options['_default_connection_pads']), 12)

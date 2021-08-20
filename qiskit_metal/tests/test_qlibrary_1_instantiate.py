@@ -55,6 +55,7 @@ from qiskit_metal.qlibrary.qubits.transmon_cross_fl import TransmonCrossFL
 from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 from qiskit_metal.qlibrary.qubits.transmon_pocket_cl import TransmonPocketCL
 from qiskit_metal.qlibrary.qubits.transmon_pocket_6 import TransmonPocket6
+from qiskit_metal.qlibrary.qubits.transmon_pocket_teeth import TransmonPocketTeeth
 from qiskit_metal.qlibrary.couplers.tunable_coupler_01 import TunableCoupler01
 from qiskit_metal import designs
 from qiskit_metal.qlibrary._template import MyQComponent
@@ -786,6 +787,32 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         except Exception:
             self.fail(
                 "TransmonPocket6(design, \"my_name3\", options={}, make=False)")
+
+    def test_qlibrary_qubits_transmon_pocket_teeth(self):
+        """Test the instantiation of TransmonPocketTeeth."""
+        design = designs.DesignPlanar()
+        try:
+            TransmonPocketTeeth
+        except Exception:
+            self.fail("TransmonPocketTeeth failed")
+
+        try:
+            TransmonPocketTeeth(design, "my_name")
+        except Exception:
+            self.fail("TransmonPocketTeeth(design, \"my_name\") failed")
+
+        try:
+            TransmonPocketTeeth(design, "my_name2", options={})
+        except Exception:
+            self.fail(
+                "TransmonPocketTeeth(design, \"my_name2\", options={}) failed")
+
+        try:
+            TransmonPocketTeeth(design, "my_name3", options={}, make=False)
+        except Exception:
+            self.fail(
+                "TransmonPocketTeeth(design, \"my_name3\", options={}, make=False)"
+            )
 
     def test_qlibrary_qubits_tunable_coupler_01(self):
         """Test the instantiation of TunableCoupler01."""
