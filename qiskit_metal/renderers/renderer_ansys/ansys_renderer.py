@@ -289,7 +289,7 @@ class QAnsysRenderer(QRendererAnalysis):
         #    self._open_ansys(*args, **kwargs)
         # need to make it so that it waits for the Ansys boot to end
         # after opening, should establish a connection (able to create a new project)
-
+        #self.solver = ()
         self.rapp = HfssApp()
         self.rdesktop = self.rapp.get_app_desktop()
         if self.rdesktop.project_count() == 0:
@@ -855,7 +855,7 @@ class QAnsysRenderer(QRendererAnalysis):
                         self.pinfo.design.delete_setup(name)
 
                 if self.pinfo.design.solution_type == 'Eigenmode':
-                    setup = self.add_eigenmode_setup(name, **other_setup)
+                    setup = self.solver.add_eigenmode_setup(name, **other_setup)
                 elif self.pinfo.design.solution_type == 'DrivenModal':
                     setup = self.add_drivenmodal_setup(name, **other_setup)
                 elif self.pinfo.design.solution_type == 'Q3D':
@@ -865,7 +865,8 @@ class QAnsysRenderer(QRendererAnalysis):
     def add_q3d_setup(self, *args, **kwargs):
         return self.solver.add_q3d_setup(*args, **kwargs)
         
-        
+    def get_convergences(self, *args, **kwargs):
+        return self.solver.get_convergences(*args, **kwargs)
 
     def initialize_cap_extract(self, **kwargs):
         """Any task that needs to occur before running a simulation, such as creating a setup
@@ -1013,6 +1014,7 @@ class QAnsysRenderer(QRendererAnalysis):
     #     self.subtract_from_ground()
     #     self.add_mesh()
 
+
     def render_design(self, *args, **kwargs):
         return self.solver.render_design(*args, **kwargs)
 
@@ -1108,7 +1110,7 @@ class QAnsysRenderer(QRendererAnalysis):
                                                    qc_chip_z, **ansys_options)
         axis = 'x' if abs(x1 - x0) > abs(y1 - y0) else 'y'
         self.modeler.rename_obj(poly_ansys, 'JJ_rect_' + name)
-        self.assign_mesh.append('JJ_rect_' + name)
+        self.solver.assign_mesh.append('JJ_rect_' + name)
 
         # Draw line
         poly_jj = self.modeler.draw_polyline([endpoints_3d[0], endpoints_3d[1]],
@@ -1296,7 +1298,7 @@ class QAnsysRenderer(QRendererAnalysis):
                                               y_size=gap,
                                               name=endcap_name)
             self.solver.chip_subtract_dict[pin_dict['chip']].add(endcap_name)
-
+            
     def get_chip_names(self) -> List[str]:
         """
         Obtain a list of chips on which the selection of components, if valid, resides.
@@ -1474,7 +1476,7 @@ class QAnsysRenderer(QRendererAnalysis):
         if self.solver.assign_mesh:
             self.modeler.mesh_length(
                 'small_mesh',
-                self.assign_mesh,
+                self.solver.assign_mesh,
                 MaxLength=self._options['max_mesh_length_jj'])
 
     #Still implementing

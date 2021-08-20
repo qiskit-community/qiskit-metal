@@ -72,6 +72,53 @@ class QHFSSRenderer(QRenderer):
         '10um'  # spacing between port and inductor if junction is drawn both ways
     )
     """HFSS Options"""
+    def create_ports(self, port_list: list):
+        """Add ports and their respective impedances in Ohms to designated pins
+        in port_list. Port_list is formatted as [(qcomp_0, pin_0, impedance_0),
+        (qcomp_1, pin_1, impedance_1), ...].
+
+        Args:
+            port_list (list): List of tuples of pins to be rendered as ports.
+        """
+        for qcomp, pin, impedance in port_list:
+            port_name = f'Port_{qcomp}_{pin}'
+            pdict = self.design.components[qcomp].pins[pin]
+            midpt, gap_size, norm_vec, width = pdict['middle'], pdict['gap'], \
+                                               pdict['normal'], pdict['width']
+            width = parse_units(width)
+            endpoints = parse_units([midpt, midpt + gap_size * norm_vec])
+            endpoints_3d = to_vec3D(endpoints, 0)  # Set z height to 0
+            x0, y0 = endpoints_3d[0][:2]
+            x1, y1 = endpoints_3d[1][:2]
+            if abs(y1 - y0) > abs(x1 - x0):
+                # Junction runs vertically up/down
+                x_min, x_max = x0 - width / 2, x0 + width / 2
+                y_min, y_max = min(y0, y1), max(y0, y1)
+            else:
+                # Junction runs horizontally left/right
+                x_min, x_max = min(x0, x1), max(x0, x1)
+                y_min, y_max = y0 - width / 2, y0 + width / 2
+
+            # Draw rectangle
+            self.logger.debug(f'Drawing a rectangle: {port_name}')
+            poly_ansys = self.modeler.draw_rect_corner([x_min, y_min, 0],
+                                                       x_max - x_min,
+                                                       y_max - y_min, 0,
+                                                       **dict(transparency=0.0))
+            axis = 'x' if abs(x1 - x0) > abs(y1 - y0) else 'y'
+            poly_ansys.make_lumped_port(axis,
+                                        z0=str(impedance) + 'ohm',
+                                        name=f'LumpPort_{qcomp}_{pin}')
+            self.modeler.rename_obj(poly_ansys, port_name)
+
+            # Draw line
+            lump_line = self.modeler.draw_polyline(
+                [endpoints_3d[0], endpoints_3d[1]],
+                closed=False,
+                **dict(color=(128, 0, 128)))
+            lump_line = lump_line.rename(f'voltage_line_{port_name}')
+            lump_line.show_direction = True
+            #return self.port_list
 
     def __init__(self, parent, design: 'QDesign', initiate=True, options: Dict = None):
         """Create a QRenderer for HFSS simulations, subclassed from QAnsysRenderer.
@@ -193,19 +240,20 @@ class QHFSSRenderer(QRenderer):
         if ignored_jjs:
             self.jj_to_ignore = {(qcomp, qelt) for qcomp, qelt in ignored_jjs}
 
-        self.render_tables()
+        self.parent.render_tables()
         if port_list:
-            self.add_endcaps(open_pins +
+            self.parent.add_endcaps(open_pins +
                              [(qcomp, pin) for qcomp, pin, _ in port_list])
         else:
-            self.add_endcaps(open_pins)
+            self.parent.add_endcaps(open_pins)
 
-        self.render_chips(box_plus_buffer=box_plus_buffer)
-        self.subtract_from_ground()
-        self.add_mesh()
+        self.parent.render_chips(box_plus_buffer=box_plus_buffer)
+        self.parent.subtract_from_ground()
+        self.parent.add_mesh()
         self.metallize()
         if port_list:
             self.create_ports(port_list)
+
 
     def create_ports(self, port_list: list):
         """Add ports and their respective impedances in Ohms to designated pins
@@ -253,6 +301,7 @@ class QHFSSRenderer(QRenderer):
                 **dict(color=(128, 0, 128)))
             lump_line = lump_line.rename(f'voltage_line_{port_name}')
             lump_line.show_direction = True
+            #return self.port_list
 
     def render_element_junction(self, qgeom: pd.Series):
         """
@@ -395,7 +444,7 @@ class QHFSSRenderer(QRenderer):
                                      r=qgeom['hfss_resistance'],
                                      name='Lj_' + inductor_name)
         self.modeler.rename_obj(poly_ansys, 'JJ_rect_' + inductor_name)
-        self.assign_mesh.append('JJ_rect_' + inductor_name)
+        self.parent.assign_mesh.append('JJ_rect_' + inductor_name)
         # Draw line for inductor.
         if axis == 'x':
             ymid = (ymin + ymax) / 2
@@ -411,7 +460,7 @@ class QHFSSRenderer(QRenderer):
 
     def metallize(self):
         """Assign metallic property to all shapes in self.assign_perfE list."""
-        self.modeler.assign_perfect_E(self.assign_perfE)
+        self.parent.modeler.assign_perfect_E(self.assign_perfE)
 
     def add_drivenmodal_design(self, name: str, connect: bool = True):
         """
@@ -548,7 +597,7 @@ class QHFSSRenderer(QRenderer):
             pct_refinement (int, optional): Percent refinement. Defaults to 30.
             basis_order (int, optional): Basis order. Defaults to -1.
         """
-        esu = self.default_setup.eigenmode
+        esu = self.parent.default_setup.eigenmode
 
         if not name:
             name = self.parse_value(esu['name'])
