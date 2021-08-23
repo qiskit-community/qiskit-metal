@@ -166,7 +166,7 @@ class QRenderer(ABC):
         if design is None:
             print(
                 "INFO: A Qiskit Metal design was not provided. Creating an empty design instance"
-                " to make the renderer proceed. (Developers: resolve with github Issue 647)"
+                " to make the renderer proceed. (Developers: Remove need 4 dummy design, github Issue 631)"
             )
             design = designs.DesignPlanar({}, True)
         assert is_design(
