@@ -49,6 +49,7 @@ EigenmodeSim
       EigenmodeSim.print_run_args
       EigenmodeSim.run
       EigenmodeSim.run_sim
+      EigenmodeSim.run_sweep
       EigenmodeSim.save_run_args
       EigenmodeSim.save_screenshot
       EigenmodeSim.select_renderer

@@ -14,9 +14,8 @@
 
 from abc import abstractmethod
 from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
-
-from . import QAnalysis
-from ... import Dict
+from qiskit_metal.analyses.core import QAnalysis
+from qiskit_metal import Dict
 
 
 class QSimulation(QAnalysis):
@@ -30,7 +29,9 @@ class QSimulation(QAnalysis):
         * sim_setup_name (str): Name given to the current setup.
     """
 
-    default_setup = Dict(name="Setup", reuse_selected_design=True)
+    default_setup = Dict(name="Setup",
+                         reuse_selected_design=True,
+                         reuse_setup=True)
     """Default setup"""
 
     # supported labels for data generated from the simulation
