@@ -20,9 +20,9 @@ from pathlib import Path
 from typing import List, TYPE_CHECKING
 
 from PySide2.QtCore import QTimer, Qt
-from PySide2.QtWidgets import (QDockWidget, QFileDialog, QLabel, QMainWindow,
-                               QMessageBox)
 from PySide2.QtGui import QIcon, QPixmap
+from PySide2.QtWidgets import QDialog, QDockWidget, QFileDialog, QLabel, QMainWindow, QMessageBox, QVBoxLayout
+
 from qiskit_metal._gui.widgets.qlibrary_display.delegate_qlibrary import LibraryDelegate
 from qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary import QFileSystemLibraryModel
 from qiskit_metal._gui.widgets.qlibrary_display.proxy_model_qlibrary import LibraryFileProxyModel
@@ -44,7 +44,7 @@ from .. import config, qlibrary
 from ..designs.design_base import QDesign
 
 if not config.is_building_docs():
-    from ..toolbox_metal.import_export import load_metal_design
+    pass
 
 if TYPE_CHECKING:
     from ..renderers.renderer_mpl.mpl_canvas import PlotCanvas
@@ -127,25 +127,51 @@ class QMainWindowExtension(QMainWindowExtensionBase):
             self.gui.refresh()
 
     @slot_catch_error()
-    def save_design_as(self, _=None):
-        """Handles click on Save Design As."""
+    def save_design_copy(self):
+        """Saves a separate copy of design under a different name"""
         filename = QFileDialog.getSaveFileName(
             None,
             'Select a new location to save Metal design to',
-            self.design.get_design_name() + '.metal',
-            selectedFilter='*.metal')[0]
+            self.design.get_design_name() + '.metal.py',
+            selectedFilter='*.metal.py')[0]
 
-        if filename:
-            self.gui.save_file(filename)
+        # save python script to file path
+        pyscript = self.design.to_python_script()
+        with open(filename, 'w') as f:
+            f.write(pyscript)
 
     @slot_catch_error()
     def save_design(self, _=None):
         """Handles click on save design."""
         if self.design:
-            if self.design.save_path:
-                self.gui.save_file()
-            else:
-                self.save_design_as()
+            # get file path
+            filename = self.design.save_path
+            if not filename:
+                QMessageBox.warning(
+                    self, 'Warning', 'This  will save a .metal.py script '
+                    'that needs to be copied into a jupyter notebook to run.'
+                    'The "Load" button has not yet been implemented.')
+
+                filename = QFileDialog.getSaveFileName(
+                    None,
+                    'Select a new location to save Metal design to',
+                    self.design.get_design_name() + '.metal.py',
+                    selectedFilter='*.metal.py')[0]
+                self.design.save_path = filename
+            # save python script to file path
+            pyscript = self.design.to_python_script()
+            with open(filename, 'w') as f:
+                f.write(pyscript)
+
+            #make it clear it's saving
+            saving_dialog = QDialog(self)
+            saving_dialog.setWindowModality(Qt.NonModal)
+            v = QVBoxLayout()
+            saving_dialog.setLayout(v)
+            v.addWidget(QLabel("Saving..."))
+            saving_dialog.open()
+            saving_dialog.show()
+            QTimer.singleShot(200, saving_dialog.close)
         else:
             self.logger.info('No design present.')
             QMessageBox.warning(self, 'Warning', 'No design present! Can'
@@ -154,17 +180,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     @slot_catch_error()
     def load_design(self, _):
         """Handles click on loading metal design."""
-        filename = QFileDialog.getOpenFileName(
-            None,
-            'Select location to load Metal design from',
-            selectedFilter='*.metal')[0]
-        if filename:
-            self.logger.info(f'Attempting to load design file {filename}')
-            design = load_metal_design(filename)
-            self.logger.info(
-                f'Successfully loaded file. Now setting design into gui.')
-            self.handler.set_design(design)
-            self.logger.info(f'Successfully set design. Loaded and done.')
+        raise NotImplementedError()
 
     @slot_catch_error()
     def full_refresh(self, _=None):
@@ -187,28 +203,48 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         self.gui.gui_create_build_log_window()
 
     @slot_catch_error()
-    def activate_developer_mode(self, ison: bool):
-        """
-        Sets the correct UI features for developer mode
+    def set_force_close(self, ison: bool):
+        """Set method for force_close
+
         Args:
-            ison: Whether developer mode is active
-
+            ison (bool): value
         """
-        if ison:
-            QMessageBox.warning(
-                self, "Notice",
-                "If you're editing a component via an external IDE,"
-                " don't forget to refresh the component's file"
-                " in the Library before rebuilding so your changes"
-                " will take effect.")
+        self.force_close = ison
 
-        self.gui.ui.dockLibrary_tree_view.set_dev_mode(ison)
-        self.gui.is_dev_mode = ison
-        self.gui._set_rebuild_unneeded()
-        # import rebuild
-        # rebuild.activate_developer_mode(RebuildAction, RebuildFunction, QLibraryTree)
-        # else:
-        #  deactivateDeveMode()
+    @slot_catch_error()
+    def closeEvent(self, event):
+        """whenever a window is closed.
+
+        Passed an event which we can choose to accept or reject.
+        """
+
+        if self.force_close:
+            super().closeEvent(event)
+            return
+
+        will_close = self.ok_to_close()
+        if will_close:
+            self.save_window_settings()
+            super().closeEvent(event)
+        else:
+            event.ignore()
+
+    def ok_to_close(self):
+        """Determine if it ok to continue.
+
+        Returns:
+            bool: True to continue, False otherwise
+        """
+        reply = QMessageBox.question(
+            self, "Qiskit Metal", "Save unsaved changes to design?",
+            QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
+
+        if reply == QMessageBox.Cancel:
+            return False
+        elif reply == QMessageBox.Yes:
+            wait = self.save_design()
+            return True
+        return True
 
 
 class MetalGUI(QMainWindowBaseHandler):
@@ -260,15 +296,6 @@ class MetalGUI(QMainWindowBaseHandler):
         self.variables_window = PropertyTableWidget(self, gui=self)
 
         self.build_log_window = None
-        self.is_dev_mode = False
-        self.action_rebuild_deactive_icon = QIcon()
-        self.action_rebuild_deactive_icon.addPixmap(QPixmap(":/rebuild"),
-                                                    QIcon.Normal, QIcon.Off)
-        self.action_rebuild_active_icon = QIcon()
-        self.action_rebuild_active_icon.addPixmap(QPixmap(":/rebuild_needed"),
-                                                  QIcon.Normal, QIcon.Off)
-        self.ui.actionRebuild.setIcon(self.action_rebuild_deactive_icon)
-        #self.ui.toolBarDesign.setIconSize(QSize(20,20))
 
         self._setup_component_widget()
         self._setup_plot_widget()
@@ -545,20 +572,6 @@ class MetalGUI(QMainWindowBaseHandler):
             self.logger.error(
                 f"Unable to open param entry window due to Exception: {e} ")
 
-    def _refresh_component_build(self, qis_abs_path):
-        """Refresh build for a component along a given path.
-
-        Args:
-            qis_abs_path (str): Absolute component path.
-        """
-        self.design.reload_and_rebuild_components(qis_abs_path)
-        # Table models
-        self.ui.tableComponents.model().refresh()
-
-        # Redraw plots
-        self.refresh_plot()
-        self.autoscale()
-
     def _setup_library_widget(self):
         """
         Sets up the GUI's QLibrary display
@@ -596,10 +609,6 @@ class MetalGUI(QMainWindowBaseHandler):
 
         self.ui.dockLibrary_tree_view.qlibrary_filepath_signal.connect(
             self._create_new_component_object_from_qlibrary)
-        self.ui.dockLibrary_tree_view.qlibrary_rebuild_signal.connect(
-            self._refresh_component_build)
-        self.ui.dockLibrary_tree_view.qlibrary_file_dirtied_signal.connect(
-            self._set_rebuild_needed)
 
         self.ui.dockLibrary_tree_view.viewport().setAttribute(Qt.WA_Hover, True)
         self.ui.dockLibrary_tree_view.viewport().setMouseTracking(True)
@@ -615,15 +624,6 @@ class MetalGUI(QMainWindowBaseHandler):
         self.main_window.toggle_all_docks(do_hide)
         self.qApp.processEvents(
         )  # Process all events, so that if we take screenshot next it won't be partially updated
-
-    def _set_rebuild_needed(self):
-        if self.is_dev_mode:
-            self.main_window.ui.actionRebuild.setIcon(
-                self.action_rebuild_active_icon)
-
-    def _set_rebuild_unneeded(self):
-        self.main_window.ui.actionRebuild.setIcon(
-            self.action_rebuild_deactive_icon)
 
     ################################################
     # Plotting
@@ -666,28 +666,11 @@ class MetalGUI(QMainWindowBaseHandler):
         """
         Rebuild all components in the design from scratch and refresh the gui.
         """
-        self._set_rebuild_unneeded()
-        if self.is_dev_mode:
-            self.refresh_everything()
 
         self.design.rebuild()
         self.refresh()
         if autoscale:
             self.autoscale()
-
-    def refresh_everything(self):
-        """Refresh everything."""
-
-        df = self.ui.dockLibrary.library_model.dirtied_files
-        values = {list(df[k])[0] for k in df.keys()}
-
-        for file in values:  # dirtied_files size changes during clean_file
-            if '.py' in file:
-                file = file[file.index('qiskit_metal'):]
-                self.design.reload_and_rebuild_components(file)
-                self.ui.dockLibrary.library_model.clean_file(file)
-        self.refresh()
-        self.autoscale()
 
     def refresh(self):
         """Refreshes everything. Overkill in general.
@@ -717,16 +700,6 @@ class MetalGUI(QMainWindowBaseHandler):
     def autoscale(self):
         """Shortcut to autoscale all views."""
         self.plot_win.auto_scale()
-
-    #########################################################
-    # Design level
-    def save_file(self, filename: str = None):
-        """Save the file.
-
-        Args:
-            filename (str): Filename to save.  Defaults to None.
-        """
-        self.design.save_design(filename)
 
     #########################################################
     # COMPONENT FUNCTIONS

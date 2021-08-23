@@ -24,6 +24,9 @@ class CircleCaterpillar(QComponent):
 
     Inherits QComponent class.
 
+    .. image::
+        CircleCaterpillar.png
+
     Default Options:
         * segments: '5'
         * distance: '1.2'

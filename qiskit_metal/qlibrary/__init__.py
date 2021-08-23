@@ -105,6 +105,8 @@ Qubits
 .. autosummary::
     :toctree:
 
+    jj_dolan
+    jj_manhattan
     TransmonConcentric
     TransmonCross
     TransmonCrossFL
@@ -112,6 +114,7 @@ Qubits
     TransmonPocket
     TransmonPocketCL
     TransmonPocket6
+    TransmonPocketTeeth
     TunableCoupler01
 
 
@@ -157,6 +160,8 @@ if config.is_building_docs():
     from .tlines.anchored_path import RouteAnchors
     from .tlines.mixed_path import RouteMixed
     from .tlines.pathfinder import RoutePathfinder
+    from .qubits.JJ_Dolan import jj_dolan
+    from .qubits.JJ_Manhattan import jj_manhattan
     from .qubits.transmon_concentric import TransmonConcentric
     from .qubits.transmon_cross import TransmonCross
     from .qubits.transmon_cross_fl import TransmonCrossFL
@@ -164,5 +169,6 @@ if config.is_building_docs():
     from .qubits.transmon_pocket import TransmonPocket
     from .qubits.transmon_pocket_cl import TransmonPocketCL
     from .qubits.transmon_pocket_6 import TransmonPocket6
+    from .qubits.transmon_pocket_teeth import TransmonPocketTeeth
 
     from .tlines import anchored_path

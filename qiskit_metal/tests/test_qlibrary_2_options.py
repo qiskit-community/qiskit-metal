@@ -40,12 +40,15 @@ from qiskit_metal import designs
 from qiskit_metal.qlibrary.terminations.launchpad_wb import LaunchpadWirebond
 from qiskit_metal.qlibrary.terminations.launchpad_wb_coupled import LaunchpadWirebondCoupled
 from qiskit_metal.qlibrary.lumped.cap_3_interdigital import Cap3Interdigital
+from qiskit_metal.qlibrary.qubits.JJ_Dolan import jj_dolan
+from qiskit_metal.qlibrary.qubits.JJ_Manhattan import jj_manhattan
 from qiskit_metal.qlibrary.qubits import transmon_concentric
 from qiskit_metal.qlibrary.qubits import transmon_cross
 from qiskit_metal.qlibrary.qubits.transmon_cross_fl import TransmonCrossFL
 from qiskit_metal.qlibrary.qubits import transmon_pocket
 from qiskit_metal.qlibrary.qubits import transmon_pocket_cl
 from qiskit_metal.qlibrary.qubits.transmon_pocket_6 import TransmonPocket6
+from qiskit_metal.qlibrary.qubits.transmon_pocket_teeth import TransmonPocketTeeth
 from qiskit_metal.qlibrary.couplers.tunable_coupler_01 import TunableCoupler01
 from qiskit_metal.qlibrary import _template
 from qiskit_metal.tests.assertions import AssertionsMixin
@@ -329,7 +332,8 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
             design, 'my_name')
         options = my_transmon_concentric.default_options
 
-        self.assertEqual(len(options), 19)
+        self.assertEqual(len(options), 21)
+        self.assertEqual(options['chip'], 'main')
         self.assertEqual(options['width'], '1000um')
         self.assertEqual(options['height'], '1000um')
         self.assertEqual(options['layer'], '1')
@@ -349,6 +353,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['position_y'], '2.0mm')
         self.assertEqual(options['rotation'], '0.0')
         self.assertEqual(options['cpw_width'], '10.0um')
+        self.assertEqual(options['inductor_width'], '5.0um')
 
     def test_qlibrary_transmon_cross_fl_options(self):
         """Test that default_options of transmon_cross_fl were not accidentally changed."""
@@ -385,7 +390,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['pocket_height'], '650um')
         self.assertEqual(options['orientation'], '0')
 
-        self.assertEqual(len(options['_default_connection_pads']), 11)
+        self.assertEqual(len(options['_default_connection_pads']), 12)
         self.assertEqual(options['_default_connection_pads']['pad_gap'], '15um')
         self.assertEqual(options['_default_connection_pads']['pad_width'],
                          '125um')
@@ -405,6 +410,51 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['_default_connection_pads']['pocket_rise'],
                          '0um')
         self.assertEqual(options['_default_connection_pads']['loc_W'], '+1')
+        self.assertEqual(options['_default_connection_pads']['loc_H'], '+1')
+
+    def test_qlibrary_transmon_pocket_teeth_options(self):
+        """Test that default_options of transmon_pocket_teeth were not accidentally changed."""
+        # Setup expected test results
+        design = designs.DesignPlanar()
+        transmon_pocket_teeth = TransmonPocketTeeth(design, 'my_name')
+        options = transmon_pocket_teeth.default_options
+
+        self.assertEqual(len(options), 14)
+        self.assertEqual(options['chip'], 'main')
+        self.assertEqual(options['pos_x'], '0um')
+        self.assertEqual(options['pos_y'], '0um')
+        self.assertEqual(options['pad_gap'], '30um')
+        self.assertEqual(options['inductor_width'], '20um')
+        self.assertEqual(options['pad_width'], '455um')
+        self.assertEqual(options['pad_height'], '90um')
+        self.assertEqual(options['pocket_width'], '650um')
+        self.assertEqual(options['pocket_height'], '650um')
+        self.assertEqual(options['coupled_pad_height'], '150um')
+        self.assertEqual(options['coupled_pad_width'], '20um')
+        self.assertEqual(options['coupled_pad_gap'], '40um')
+        self.assertEqual(options['orientation'], '0')
+
+        self.assertEqual(len(options['_default_connection_pads']), 12)
+        self.assertEqual(options['_default_connection_pads']['pad_gap'], '15um')
+        self.assertEqual(options['_default_connection_pads']['pad_width'],
+                         '125um')
+        self.assertEqual(options['_default_connection_pads']['pad_height'],
+                         '30um')
+        self.assertEqual(options['_default_connection_pads']['pad_cpw_shift'],
+                         '0um')
+        self.assertEqual(options['_default_connection_pads']['pad_cpw_extent'],
+                         '25um')
+        self.assertEqual(options['_default_connection_pads']['cpw_width'],
+                         '10um')
+        self.assertEqual(options['_default_connection_pads']['cpw_gap'], '6um')
+        self.assertEqual(options['_default_connection_pads']['cpw_extend'],
+                         '100um')
+        self.assertEqual(options['_default_connection_pads']['pocket_extent'],
+                         '5um')
+        self.assertEqual(options['_default_connection_pads']['pocket_rise'],
+                         '0um')
+        self.assertEqual(options['_default_connection_pads']['loc_W'], '+1')
+        self.assertEqual(options['_default_connection_pads']['loc_H'], '+1')
 
     def test_qlibrary_tunable_coupler_01_options(self):
         """Test that default_options of tunable_coupler_01 were not accidentally changed."""
@@ -749,6 +799,47 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['lead']['end_straight'], '0mm')
         self.assertEqual(options['lead']['start_jogged_extension'], '')
         self.assertEqual(options['lead']['end_jogged_extension'], '')
+
+    def test_qlibrary_jj_dolan_options(self):
+        """Test the default options of JJ_Dolan were not accidentially changed."""
+        design = designs.DesignPlanar()
+        my_jj_dolan = jj_dolan(design, name='test_jj_dolan', options={})
+        options = my_jj_dolan.default_options
+
+        self.assertEqual(len(options), 13)
+        self.assertEqual(options['JJ_pad_lower_width'], '25um')
+        self.assertEqual(options['JJ_pad_lower_height'], '10um')
+        self.assertEqual(options['JJ_pad_lower_pos_x'], '0')
+        self.assertEqual(options['JJ_pad_lower_pos_y'], '0')
+        self.assertEqual(options['finger_lower_width'], '1um')
+        self.assertEqual(options['finger_lower_height'], '20um')
+        self.assertEqual(options['extension'], '1um')
+        self.assertEqual(options['offset'], '2um')
+        self.assertEqual(options['second_metal_length'], '5um')
+        self.assertEqual(options['second_metal_width'], '1um')
+        self.assertEqual(options['x_pos'], '0um')
+        self.assertEqual(options['y_pos'], '0um')
+        self.assertEqual(options['layer'], '1')
+
+    def test_qlibrary_jj_manhattan_options(self):
+        """Test the default options of JJ_Manhattan were not accidentially changed."""
+        design = designs.DesignPlanar()
+        my_jj_manhattan = jj_manhattan(design,
+                                       name='test_jj_manhattan',
+                                       options={})
+        options = my_jj_manhattan.default_options
+
+        self.assertEqual(len(options), 10)
+        self.assertEqual(options['JJ_pad_lower_width'], '25um')
+        self.assertEqual(options['JJ_pad_lower_height'], '10um')
+        self.assertEqual(options['JJ_pad_lower_pos_x'], '0')
+        self.assertEqual(options['JJ_pad_lower_pos_y'], '0')
+        self.assertEqual(options['finger_lower_width'], '1um')
+        self.assertEqual(options['finger_lower_height'], '20um')
+        self.assertEqual(options['extension'], '1um')
+        self.assertEqual(options['x_pos'], '0um')
+        self.assertEqual(options['y_pos'], '0um')
+        self.assertEqual(options['layer'], '1')
 
 
 if __name__ == '__main__':

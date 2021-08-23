@@ -46,7 +46,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
 
 
     .. image::
-        QComponent_Qubit_Transmon_Crossmon.png
+        TransmonCross.png
 
     BaseQubit Default Options:
         * pos_x: '0um' -- Where the center of the Crossmon should be located on chip
@@ -70,8 +70,6 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
             * connector_location: '0' -- 0 => 'west' arm, 90 => 'north' arm, 180 => 'east' arm
     """
 
-    #_img = 'Metal_Crossmon.png'
-
     default_options = Dict(
         pos_x='0um',
         pos_y='0um',
@@ -89,7 +87,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
             connector_location=
             '0'  # 0 => 'west' arm, 90 => 'north' arm, 180 => 'east' arm
         ))
-    """Default drawing options"""
+    """Default options."""
 
     component_metadata = Dict(short_name='Cross',
                               _qgeometry_table_poly='True',

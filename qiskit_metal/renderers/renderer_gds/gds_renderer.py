@@ -317,6 +317,21 @@ class QGDSRenderer(QRenderer):
 
         QGDSRenderer.load()
 
+    def _initiate_renderer(self):
+        """Not used by the gds renderer at this time. only returns True.
+        """
+        return True
+
+    def _close_renderer(self):
+        """Not used by the gds renderer at this time. only returns True.
+        """
+        return True
+
+    def render_design(self):
+        """Export the design to GDS."""
+        self.export_to_gds(file_name=self.design.name, highlight_qcomponents=[])
+        pass
+
     def _check_bounding_box_scale(self):
         """Some error checking for bounding_box_scale_x and
         bounding_box_scale_y numbers."""
@@ -338,10 +353,10 @@ class QGDSRenderer(QRenderer):
             self.options[
                 'bounding_box_scale_y'] = QGDSRenderer.default_options.bounding_box_scale_y
             self.logger.warning(
-                f'Expected float and number greater than or equal to 1.0 for '
-                f'bounding_box_scale_y.  User provided '
+                'Expected float and number greater than or equal to 1.0 for '
+                'bounding_box_scale_y.  User provided '
                 f'bounding_box_scale_y = {bounding_box_scale_y}, '
-                f'using default_options.bounding_box_scale_y.')
+                'using default_options.bounding_box_scale_y.')
 
     @staticmethod
     def _clear_library():
@@ -361,7 +376,7 @@ class QGDSRenderer(QRenderer):
         if status:
             return 1
 
-        self.logger.warning(f'Not able to write to directory.'
+        self.logger.warning('Not able to write to directory.'
                             f'File:"{file}" not written.'
                             f' Checked directory:"{directory_name}".')
         return 0
@@ -1063,7 +1078,8 @@ class QGDSRenderer(QRenderer):
 
         # Create a new GDS library file. It can contains multiple cells.
         self.lib = gdspy.GdsLibrary(
-            unit=float(self.parse_value(self.options.gds_unit)))
+            unit=float(self.parse_value(self.options.gds_unit)),
+            precision=float(self.parse_value(self.options.precision)))
 
         return self.lib
 
@@ -1381,11 +1397,10 @@ class QGDSRenderer(QRenderer):
 
         Args:
             sub_df (geopandas.GeoDataFrame): The subset of QGeometry tables
-                                                for each chip, and layer,
-            and only if the layer has a ground plane.
+                for each chip, and layer, and only if the layer has a ground plane.
             chip_name (str): Name of chip.
             no_cheese_buffer (float): Will be used for fillet and
-                                    size of buffer.
+                size of buffer.
 
         Returns:
             Union[None, shapely.geometry.multipolygon.MultiPolygon]: The
@@ -1700,14 +1715,12 @@ class QGDSRenderer(QRenderer):
             lib.remove(ground_cell)
 
     def _get_linestring_characteristics(
-            self,
-            row: 'pandas.core.frame.Pandas') -> Tuple[Tuple, float, float]:
+            self, row: 'pandas.Pandas') -> Tuple[Tuple, float, float]:
         """Given a row in the Junction table, give the characteristics of
         LineString in row.geometry.
 
         Args:
-            row (pandas.core.frame.Pandas): A row from Junction table
-                                        of QGeometry.
+            row (pandas.Pandas): A row from Junction table of QGeometry.
 
         Returns:
             Tuple:
@@ -1732,17 +1745,16 @@ class QGDSRenderer(QRenderer):
         return center, rotation, magnitude
 
     def _give_rotation_center_twopads(
-            self, row: 'pandas.core.frame.Pandas',
+            self, row: 'pandas.Pandas',
             a_cell_bounding_box: 'numpy.ndarray') -> Tuple:
         """Calculate the angle for rotation, center of LineString in
         row.geometry, and if needed create two pads to connect the junction to
         qubit.
 
         Args:
-            row (pandas.core.frame.Pandas): A row from Junction table
-                                            of QGeometry.
+            row (pandas.Pandas): A row from Junction table of QGeometry.
             a_cell_bounding_box (numpy.ndarray): Give the bounding box of cell
-                                             used in row.gds_cell_name.
+                used in row.gds_cell_name.
 
         Returns:
             Tuple:
@@ -1779,7 +1791,7 @@ class QGDSRenderer(QRenderer):
             # pylint: disable=protected-access
             text_id = self.design._components[row.component]._name
             self.logger.warning(
-                f'In junction table, component={text_id} with key={row.key} '
+                f'In junction table, component={text_id} with name={row.name} '
                 f'has width={pad_height} smaller than cell dimension={jj_y_height}.'
             )
 
@@ -2233,7 +2245,8 @@ class QGDSRenderer(QRenderer):
                                        datatype=10)
                 return a_poly
 
-            exterior_poly = exterior_poly.fracture(max_points=max_points)
+            exterior_poly = exterior_poly.fracture(max_points=max_points,
+                                                   precision=precision)
             return exterior_poly
         if isinstance(geom, shapely.geometry.LineString):
             #class gdspy.FlexPath(points, width, offset=0, corners='natural',

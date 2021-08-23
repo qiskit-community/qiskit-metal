@@ -44,7 +44,7 @@ def dot(vector_1: np.array, vector_2: np.array) -> float:
     Returns:
         float: Rounded dot product
     """
-    return np.round(np.dot(vector_1, vector_2), DECIMAL_PRECISION)
+    return round(np.dot(vector_1, vector_2))
 
 
 # pylint: disable=redefined-builtin
@@ -70,4 +70,24 @@ def cross(vector_1: np.array, vector_2: np.array) -> float:
     Returns:
         float: Rounded cross product
     """
-    return np.round(np.cross(vector_1, vector_2), DECIMAL_PRECISION)
+    return round(np.cross(vector_1, vector_2))
+
+
+def aligned_pts(points: list) -> bool:
+    """Are the three points aligned? with decimal_precision.
+
+    Args:
+        points (list): of 3 points expressed as list or np.array
+
+    Returns:
+        bool: True if they are aligned. False otherwise
+    """
+    if len(points) != 3:
+        raise Exception(
+            "Ambiguous. You can only pass exactly 3 points to this method")
+    v1 = points[1] - points[0]
+    v1_dir = v1 / np.linalg.norm(v1)
+    v2 = points[2] - points[1]
+    v2_dir = v2 / np.linalg.norm(v2)
+    result = dot(v1_dir, v2_dir)
+    return True if result == 1 else False

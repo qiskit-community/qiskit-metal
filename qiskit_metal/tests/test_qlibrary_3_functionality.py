@@ -40,11 +40,14 @@ from qiskit_metal.qlibrary.tlines.framed_path import RouteFramed
 from qiskit_metal.qlibrary.tlines.meandered import RouteMeander
 from qiskit_metal.qlibrary.tlines import straight_path
 from qiskit_metal import designs
+from qiskit_metal.qlibrary.qubits.JJ_Dolan import jj_dolan
+from qiskit_metal.qlibrary.qubits.JJ_Manhattan import jj_manhattan
 from qiskit_metal.qlibrary.qubits import transmon_pocket_cl
 from qiskit_metal.qlibrary.qubits import transmon_pocket
 from qiskit_metal.qlibrary.qubits import transmon_cross
 from qiskit_metal.qlibrary.qubits import transmon_cross_fl
 from qiskit_metal.qlibrary.qubits import transmon_pocket_6
+from qiskit_metal.qlibrary.qubits.transmon_pocket_teeth import TransmonPocketTeeth
 from qiskit_metal.qlibrary.couplers import tunable_coupler_01
 from qiskit_metal.tests.assertions import AssertionsMixin
 
@@ -334,6 +337,16 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         self.assertEqual(metadata['_qgeometry_table_path'], 'True')
         self.assertEqual(metadata['_qgeometry_table_junction'], 'True')
 
+    def test_qlibrary_transmon_pocket_teeth_component_metadata(self):
+        """Test component_metadata in qubits.transmon_pcket_teeth.py."""
+        component = TransmonPocketTeeth
+        metadata = component.component_metadata
+        self.assertEqual(len(metadata), 4)
+        self.assertEqual(metadata['short_name'], 'Pocket')
+        self.assertEqual(metadata['_qgeometry_table_poly'], 'True')
+        self.assertEqual(metadata['_qgeometry_table_path'], 'True')
+        self.assertEqual(metadata['_qgeometry_table_junction'], 'True')
+
     def test_qlibrary_transmon_coupler_01_component_metadata(self):
         """Test component_metadata in qubits.tunable_coupler_01.py."""
         component = tunable_coupler_01.TunableCoupler01
@@ -343,6 +356,20 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         self.assertEqual(metadata['_qgeometry_table_poly'], 'True')
         self.assertEqual(metadata['_qgeometry_table_path'], 'True')
         self.assertEqual(metadata['_qgeometry_table_junction'], 'True')
+
+    def test_qlibrary_qubit_jj_dolan_component_metadata(self):
+        """Test component_metadata in jj_dolan."""
+        component = jj_dolan
+        metadata = component.component_metadata
+        self.assertEqual(len(metadata), 1)
+        self.assertEqual(metadata['short_name'], 'component')
+
+    def test_qlibrary_qubit_jj_manhattan_component_metadata(self):
+        """Test component_metadata in jj_dolan."""
+        component = jj_manhattan
+        metadata = component.component_metadata
+        self.assertEqual(len(metadata), 1)
+        self.assertEqual(metadata['short_name'], 'component')
 
     def test_qlibrary_qcomponent_get_pin_names(self):
         """Test getting all the pin names."""

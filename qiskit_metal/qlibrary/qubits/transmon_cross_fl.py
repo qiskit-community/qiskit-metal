@@ -50,6 +50,9 @@ class TransmonCrossFL(TransmonCross):  # pylint: disable=invalid-name
         * t_offset -        degree by which the tail of the T is offset from the center
         * t_width -         width of the flux line's transmission line center trace
         * t_gap -           dielectric gap of the flux line's transmission line
+
+    .. image::
+        TransmonCrossFL.png
     """
 
     component_metadata = Dict(short_name='Q',

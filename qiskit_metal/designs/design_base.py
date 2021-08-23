@@ -156,6 +156,13 @@ class QDesign():
         # Need to add columns to Junction tables before create_tables().
         self._qgeometry.create_tables()
 
+        # Assign unique name to this design
+        self.name = self._assign_name_design()
+
+    def _assign_name_design(self, name: str = "Design") -> str:
+        # TODO: make this name unique, for when we will have multiple designs
+        return name
+
     @classmethod
     def _init_metadata(cls) -> Dict:
         """Initialize default metadata dictionary.
@@ -231,14 +238,14 @@ class QDesign():
         return self._qcomponent_latest_assigned_id
 
     @property
-    def net_info(self) -> pd.core.frame.DataFrame:
+    def net_info(self) -> pd.DataFrame:
         """Provides a copy of net_info table which holds all the connections,
-        of pins, within a design. An advanced user can use methods within the
-        class of design._qnet. Also, an advanced user can also directly edit
-        the table at design._qnet._net_info.
+		of pins, within a design. An advanced user can use methods within the
+		class of design._qnet. Also, an advanced user can also directly edit
+		the table at design._qnet._net_info.
 
         Returns:
-            pd.core.frame.DataFrame: copy of net_info table.
+            pd.DataFrame: copy of net_info table.
         """
         # pylint: disable=protected-access
         return self._qnet._net_info.copy(deep=True)
@@ -455,49 +462,6 @@ class QDesign():
         """Remakes all components with their current parameters."""
         for _, obj in self._components.items():  # pylint: disable=unused-variable
             obj.rebuild()
-
-    def reload_and_rebuild_components(self, qis_abs_path: str):
-        """
-        Reload the module and class of a given component and updates
-        all class instances. Then rebuilds all QComponents of that class
-
-        Args:
-            qis_abs_path: Absolute to the QComponent source file to be reloaded
-
-        Raises:
-            QiskitMetalDesignError: The given name is a magic method not in the dictionary
-        """
-
-        try:
-            # runs so few times, it's fine to reload object multiple times
-            for comp in self.components:
-                imported_module = importlib.import_module(
-                    self.components[comp].__module__)
-                reloaded_module = importlib.reload(imported_module)
-
-                new_class = getattr(reloaded_module,
-                                    self.components[comp].__class__.__name__)
-
-                print(f"template options: {self.template_options}")
-                # pylint: disable=protected-access
-                if self.components[comp].__class__._get_unique_class_name(
-                ) in self.template_options:
-                    print(f"popping: {new_class}")
-                    # pylint: disable=protected-access
-                    self.template_options.pop(
-                        new_class._get_unique_class_name())
-
-                self.components[comp].__class__ = new_class
-
-                self.logger.debug(f'Finished reloading '
-                                  f'component_class_name={new_class.__name__}; '
-                                  f'component_module_name={imported_module}')
-            self.rebuild()
-
-        # pylint: disable=broad-except
-        except QiskitMetalDesignError as e:
-            self.logger.error(
-                f"Failed to refresh/rebuild {qis_abs_path} due to: {e}")
 
     def rename_component(self, component_id: int, new_component_name: str):
         """Rename component.  The component_id is expected.  However, if user
@@ -957,7 +921,7 @@ class QDesign():
 
                 # check if class_name is in module
                 if class_renderer is not None:
-                    a_renderer = class_renderer(self)
+                    a_renderer = class_renderer(self, initiate=False)
 
                     # register renderers here.
                     self._renderers[renderer_key] = a_renderer
@@ -1065,7 +1029,7 @@ class QDesign():
         """Look at the metadata dict to get list of tables the component uses.
 
         Args:
-            a_metadata (dict): Use dict from gather_all_childern for metadata.
+            a_metadata (dict): Use dict from gather_all_children for metadata.
 
         Returns:
             list: List of tables, the component-developer, denoted as being used in metadata.
@@ -1080,3 +1044,46 @@ class QDesign():
                     uses_table.append(table_name)
 
         return uses_table
+
+    def to_python_script(self, thin=True, printout: bool = False):
+        """
+        Generates a python script from current chip
+        Args:
+            printout (bool): Whether to print the script
+
+        Returns:
+            str: Python script for current chip
+        """
+        header = """
+from qiskit_metal import designs, MetalGUI
+
+design = designs.DesignPlanar()
+
+gui = MetalGUI(design)
+"""
+        footer = """
+gui.rebuild()
+gui.autoscale()
+        """
+        # all imports at front
+        # option -- only the options of the component that are different from the default options are specified.
+        # vertically aligned dictionary (pretty print)
+        imports = set()
+        body = ""
+        for comp_name in self.components:
+            comp = self.components[comp_name]
+            i, c = comp.to_script(thin=thin, is_part_of_chip=True)
+            imports.add(i)
+            body += c
+            body += """
+"""
+        str_import = ""
+        for i in imports:
+            str_import += f"""
+{i}
+"""
+
+        python_script = str_import + header + body + footer
+        if printout:
+            print(python_script)
+        return python_script

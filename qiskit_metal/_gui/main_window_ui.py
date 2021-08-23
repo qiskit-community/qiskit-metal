@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file './main_window_ui.ui',
 # licensing of './main_window_ui.ui' applies.
 #
-# Created: Mon Jun  7 17:21:02 2021
+# Created: Sat Jun 19 22:02:30 2021
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -505,10 +505,7 @@ class Ui_MainWindow(object):
         self.toolBarDesign.addAction(self.action_full_refresh)
         self.toolBarDesign.addAction(self.actionRebuild)
         self.toolBarDesign.addAction(self.actionBuildHistory)
-        self.toolBarDesign.addAction(self.actionDeveloperMode)
         self.toolBarDesign.addSeparator()
-        self.toolBarView.addSeparator()
-        self.toolBarView.addSeparator()
         self.toolBarView.addAction(self.actionToggleDocks)
         self.toolBarView.addAction(self.actionScreenshot)
         self.toolbar_renderers.addAction(self.actionGDS)
@@ -586,9 +583,8 @@ class Ui_MainWindow(object):
                                self.tabWidget.setFocus)
         QtCore.QObject.connect(self.actionLog, QtCore.SIGNAL("triggered()"),
                                self.dockLog.raise_)
-        QtCore.QObject.connect(self.actionSaveAs,
-                               QtCore.SIGNAL("toggled(bool)"),
-                               MainWindow.save_design_as)
+        QtCore.QObject.connect(self.actionSaveAs, QtCore.SIGNAL("triggered()"),
+                               MainWindow.save_design_copy)
         QtCore.QObject.connect(self.actionClose_window,
                                QtCore.SIGNAL("triggered()"), MainWindow.close)
         QtCore.QObject.connect(self.actionSave_window_state,
@@ -612,9 +608,6 @@ class Ui_MainWindow(object):
                                MainWindow.show_renderer_hfss)
         QtCore.QObject.connect(self.actionQ3D, QtCore.SIGNAL("triggered()"),
                                MainWindow.show_renderer_q3d)
-        QtCore.QObject.connect(self.actionDeveloperMode,
-                               QtCore.SIGNAL("toggled(bool)"),
-                               MainWindow.activate_developer_mode)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -1018,6 +1011,6 @@ class Ui_MainWindow(object):
 
 
 from .widgets.qlibrary_display.tree_view_qlibrary import TreeViewQLibrary
-from .widgets.all_components.table_view_all_components import QTableView_AllComponents
 from .widgets.log_widget.log_metal import QTextEditLogger
+from .widgets.all_components.table_view_all_components import QTableView_AllComponents
 from . import main_window_rc_rc

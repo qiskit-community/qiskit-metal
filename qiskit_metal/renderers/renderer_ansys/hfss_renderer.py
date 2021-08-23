@@ -25,9 +25,7 @@ import numpy as np
 import pandas as pd
 import pyEPR as epr
 from pyEPR.ansys import set_property, parse_units
-from pyEPR.reports import (plot_convergence_f_vspass, plot_convergence_max_df,
-                           plot_convergence_maxdf_vs_sol,
-                           plot_convergence_solved_elem)
+
 from qiskit_metal import Dict
 from qiskit_metal.draw.utility import to_vec3D
 from qiskit_metal.renderers.renderer_ansys.ansys_renderer import (
@@ -54,52 +52,20 @@ class QHFSSRenderer(QAnsysRenderer):
     """Name"""
 
     hfss_options = Dict(
-        drivenmodal_setup=Dict(freq_ghz='5',
-                               name="Setup",
-                               max_delta_s='0.1',
-                               max_passes='10',
-                               min_passes='1',
-                               min_converged='1',
-                               pct_refinement='30',
-                               basis_order='1'),
-        eigenmode_setup=Dict(name="Setup",
-                             min_freq_ghz='1',
-                             n_modes='1',
-                             max_delta_f='0.5',
-                             max_passes='10',
-                             min_passes='1',
-                             min_converged='1',
-                             pct_refinement='30',
-                             basis_order='-1'),
         port_inductor_gap=
         '10um'  # spacing between port and inductor if junction is drawn both ways
     )
     """HFSS Options"""
 
-    def __init__(self,
-                 design: 'QDesign',
-                 initiate=True,
-                 render_template: Dict = None,
-                 render_options: Dict = None):
-        """Create a QRenderer for HFSS simulations, subclassed from
-        QAnsysRenderer.
+    def __init__(self, design: 'QDesign', initiate=True, options: Dict = None):
+        """Create a QRenderer for HFSS simulations, subclassed from QAnsysRenderer.
 
         Args:
             design (QDesign): Use QGeometry within QDesign to obtain elements for Ansys.
             initiate (bool, optional): True to initiate the renderer. Defaults to True.
-            render_template (Dict, optional): Typically used by GUI for template options for GDS. Defaults to None.
-            render_options (Dict, optional): Used to override all options. Defaults to None.
+            options (Dict, optional):  Used to override all options. Defaults to None.
         """
-        super().__init__(design=design,
-                         initiate=initiate,
-                         render_template=render_template,
-                         render_options=render_options)
-
-        self.chip_subtract_dict = defaultdict(set)
-        self.assign_perfE = []
-        self.assign_mesh = []
-        self.jj_lumped_ports = {}
-        self.jj_to_ignore = set()
+        super().__init__(design=design, initiate=initiate, options=options)
 
         self.current_sweep = None
 
@@ -431,133 +397,62 @@ class QHFSSRenderer(QAnsysRenderer):
         self.modeler.assign_perfect_E(self.assign_perfE)
 
     def add_drivenmodal_design(self, name: str, connect: bool = True):
-        """Add a driven modal design with the given name to the project.
-
-        Args:
-            name (str): Name of the new driven modal design
-            connect (bool, optional): Should we connect this session to this design? Defaults to True
         """
-        if self.pinfo:
-            adesign = self.pinfo.project.new_dm_design(name)
-            if connect:
-                self.connect_ansys_design(adesign.name)
-            return adesign
-        else:
-            self.logger.info("Are you mad?? You have to connect to ansys and a project " \
-                            "first before creating a new design . Use self.connect_ansys()")
+        (deprecated) use new_ansys_design()
+        """
+        self.logger.warning(
+            'This method is deprecated. Change your scripts to use new_ansys_design()'
+        )
+        self.new_ansys_design(name, 'drivenmodal', connect)
 
     def activate_drivenmodal_design(self, name: str = "MetalHFSSDrivenModal"):
-        """Add a hfss drivenmodal design with the given name to the project.
-        If the design exists, that will be added WITHOUT altering the suffix of
-        the design name.
-
-        Args:
-            name (str): Name of the new q3d design
-
         """
-        if self.pinfo:
-            if self.pinfo.project:
-                try:
-                    names_in_design = self.pinfo.project.get_design_names()
-                except AttributeError:
-                    self.logger.error(
-                        'Please install a more recent version of pyEPR (>=0.8.4.5)'
-                    )
-
-                if name in names_in_design:
-                    self.pinfo.connect_design(name)
-                    oDesktop = self.pinfo.design.parent.parent._desktop  # self.pinfo.design does not work
-                    oProject = oDesktop.SetActiveProject(
-                        self.pinfo.project_name)
-                    oDesign = oProject.SetActiveDesign(name)
-                else:
-                    self.logger.warning(
-                        f'The name={name} was not in active project.  '
-                        'A new design will be inserted to the project.  '
-                        f'Names in active project are: \n{names_in_design}.  ')
-                    adesign = self.add_drivenmodal_design(name=name,
-                                                          connect=True)
-
-            else:
-                self.logger.warning(
-                    "Project not available, have you opened a project?")
-        else:
-            self.logger.warning(
-                "Have you run connect_ansys()?  Cannot find a reference to Ansys in QRenderer."
-            )
+        (deprecated) use activate_ansys_design()
+        """
+        self.logger.warning(
+            'This method is deprecated. Change your scripts to use activate_ansys_design()'
+        )
+        self.activate_ansys_design(name, 'drivenmodal')
 
     def activate_drivenmodal_setup(self, setup_name_activate: str = None):
-        """For active design, either get existing setup, make new setup with
-        name, or make new setup with default name.
-
-        Args:
-            setup_name_activate (str, optional): If name exists for setup, then have pinfo
-                reference it.  If name for setup does not exist, create a new setup with the name.
-                If name is None, create a new setup with default name.
         """
-        if self.pinfo:
-            if self.pinfo.project:
-                if self.pinfo.design:
-                    # look for setup name, if not there, then add a new one
-                    if setup_name_activate:
-                        all_setup_names = self.pinfo.design.get_setup_names()
-                        self.pinfo.setup_name = setup_name_activate
-                        if setup_name_activate in all_setup_names:
-                            # When name is given and in design. So have pinfo reference existing setup.
-                            self.pinfo.setup = self.pinfo.get_setup(
-                                self.pinfo.setup_name)
-                        else:
-                            # When name is given, but not in design. So make a new setup with given name.
-                            self.pinfo.setup = self.add_drivenmodal_setup(
-                                name=self.pinfo.setup_name)
-                    else:
-                        # When name is not given, so use default name for setup.
-                        # default name is "Setup"
-                        self.pinfo.setup = self.add_drivenmodal_setup()
-                        self.pinfo.setup_name = self.pinfo.setup.name
-
-                else:
-                    self.logger.warning(
-                        " The design within a project is not available, have you opened a design?"
-                    )
-            else:
-                self.logger.warning(
-                    "Project not available, have you opened a project?")
-        else:
-            self.logger.warning(
-                "Have you run connect_ansys()?  Cannot find a reference to Ansys in QRenderer."
-            )
+        (deprecated) use activate_ansys_setup()
+        """
+        self.logger.warning(
+            'This method is deprecated. Change your scripts to use activate_ansys_setup()'
+        )
+        self.activate_ansys_setup(setup_name_activate)
 
     def add_drivenmodal_setup(self,
-                              freq_ghz: int = None,
                               name: str = None,
+                              freq_ghz: int = None,
                               max_delta_s: float = None,
                               max_passes: int = None,
                               min_passes: int = None,
                               min_converged: int = None,
                               pct_refinement: int = None,
-                              basis_order: int = None):
-        """Create a solution setup in Ansys HFSS Driven Modal.   If user does
-        not provide arguments, they will be obtained from hfss_options dict.
-
+                              basis_order: int = None,
+                              *args,
+                              **kwargs):
+        """Create a solution setup in Ansys HFSS Driven Modal. If user does
+        not provide arguments, they will be obtained from default_setup dict.  
+        
         Args:
-            freq_ghz (float, optional): Frequency in GHz. Defaults to 5.
-            name (str, optional): Name of driven modal setup. Defaults to "Setup".
-            max_delta_s (float, optional): Absolute value of maximum
-                    difference in scattering parameter S. Defaults to 0.1.
-            max_passes (int, optional): Maximum number of passes. Defaults to 10.
-            min_passes (int, optional): Minimum number of passes. Defaults to 1.
-            min_converged (int, optional): Minimum number of converged passes.
-                                            Defaults to 1.
-            pct_refinement (int, optional): Percent refinement. Defaults to 30.
-            basis_order (int, optional): Basis order. Defaults to 1.
+            name (str, optional): Name of driven modal setup. Defaults to None.
+            freq_ghz (int, optional): Frequency in GHz. Defaults to None.
+            max_delta_s (float, optional): Absolute value of maximum difference in scattering parameter S. Defaults to None.
+            max_passes (int, optional): Maximum number of passes. Defaults to None.
+            min_passes (int, optional): Minimum number of passes. Defaults to None.
+            min_converged (int, optional): Minimum number of converged passes. Defaults to None.
+            pct_refinement (int, optional): Percent refinement. Defaults to None.
+            basis_order (int, optional): Basis order. Defaults to None.
         """
-        dsu = self.hfss_options.drivenmodal_setup  #driven_modal set up.
+        dsu = self.default_setup.drivenmodal
 
-        if not freq_ghz:
-            freq_ghz = float(self.parse_value(dsu['freq_ghz']))
         if not name:
             name = self.parse_value(dsu['name'])
+        if not freq_ghz:
+            freq_ghz = int(self.parse_value(dsu['freq_ghz']))
         if not max_delta_s:
             max_delta_s = float(self.parse_value(dsu['max_delta_s']))
         if not max_passes:
@@ -584,104 +479,31 @@ class QHFSSRenderer(QAnsysRenderer):
                     basis_order=basis_order)
 
     def add_eigenmode_design(self, name: str, connect: bool = True):
-        """Add an eigenmode design with the given name to the project.
-
-        Args:
-            name (str): Name of the new eigenmode design
-            connect (bool, optional): Should we connect this session to this design? Defaults to True
-
-        Returns(pyEPR.ansys.HfssDesign): A eigenmode  within Ansys.
         """
-        if self.pinfo:
-            adesign = self.pinfo.project.new_em_design(name)
-            if connect:
-                self.connect_ansys_design(adesign.name)
-            return adesign
-        else:
-            self.logger.info("Are you mad?? You have to connect to ansys and a project " \
-                            "first before creating a new design . Use self.connect_ansys()")
+        (deprecated) use new_ansys_design()
+        """
+        self.logger.warning(
+            'This method is deprecated. Change your scripts to use new_ansys_design()'
+        )
+        self.new_ansys_design(name, 'eigenmode', connect)
 
     def activate_eigenmode_design(self, name: str = "MetalHFSSEigenmode"):
-        """Add a hfss eigenmode design with the given name to the project.  If
-        the design exists, that will be added WITHOUT altering the suffix of
-        the design name.
-
-        Args:
-            name (str): Name of the new q3d design
         """
-        if self.pinfo:
-            if self.pinfo.project:
-                try:
-                    names_in_design = self.pinfo.project.get_design_names()
-                except AttributeError:
-                    self.logger.error(
-                        'Please install a more recent version of pyEPR (>=0.8.4.5)'
-                    )
-
-                if name in names_in_design:
-                    self.pinfo.connect_design(name)
-                    oDesktop = self.pinfo.design.parent.parent._desktop  # self.pinfo.design does not work
-                    oProject = oDesktop.SetActiveProject(
-                        self.pinfo.project_name)
-                    oDesign = oProject.SetActiveDesign(name)
-                else:
-                    self.logger.warning(
-                        f'The name={name} was not in active project.  '
-                        'A new design will be inserted to the project.  '
-                        f'Names in active project are: \n{names_in_design}.  ')
-                    adesign = self.add_eigenmode_design(name=name, connect=True)
-
-            else:
-                self.logger.warning(
-                    "Project not available, have you opened a project?")
-        else:
-            self.logger.warning(
-                "Have you run connect_ansys()?  Cannot find a reference to Ansys in QRenderer."
-            )
+        (deprecated) use activate_ansys_design()
+        """
+        self.logger.warning(
+            'This method is deprecated. Change your scripts to use activate_ansys_design()'
+        )
+        self.activate_ansys_design(name, 'eigenmode')
 
     def activate_eigenmode_setup(self, setup_name_activate: str = None):
-        """For active design, either get existing setup, make new setup with
-        name, or make new setup with default name.
-
-        Args:
-            setup_name_activate (str, optional): If name exists for setup, then have pinfo
-                reference it.  If name for setup does not exist, create a new setup with the
-                name.  If name is None, create a new setup with default name.
         """
-        if self.pinfo:
-            if self.pinfo.project:
-                if self.pinfo.design:
-                    # look for setup name, if not there, then add a new one
-                    if setup_name_activate:
-                        all_setup_names = self.pinfo.design.get_setup_names()
-                        self.pinfo.setup_name = setup_name_activate
-                        if setup_name_activate in all_setup_names:
-                            # When name is given and in design.
-                            # So have pinfo reference existing setup.
-                            self.pinfo.setup = self.pinfo.get_setup(
-                                self.pinfo.setup_name)
-                        else:
-                            # When name is given, but not in design.
-                            # So make a new setup with given name.
-                            self.pinfo.setup = self.add_eigenmode_setup(
-                                name=self.pinfo.setup_name)
-                    else:
-                        # When name is not given, so use default name for setup.
-                        # default name is "Setup"
-                        self.pinfo.setup = self.add_eigenmode_setup()
-                        self.pinfo.setup_name = self.pinfo.setup.name
-
-                else:
-                    self.logger.warning(
-                        " The design within a project is not available, have you opened a design?"
-                    )
-            else:
-                self.logger.warning(
-                    "Project not available, have you opened a project?")
-        else:
-            self.logger.warning(
-                "Have you run connect_ansys()?  Cannot find a reference to Ansys in QRenderer."
-            )
+        (deprecated) use activate_ansys_setup()
+        """
+        self.logger.warning(
+            'This method is deprecated. Change your scripts to use activate_ansys_setup()'
+        )
+        self.activate_ansys_setup(setup_name_activate)
 
     def add_eigenmode_setup(self,
                             name: str = None,
@@ -692,7 +514,9 @@ class QHFSSRenderer(QAnsysRenderer):
                             min_passes: int = None,
                             min_converged: int = None,
                             pct_refinement: int = None,
-                            basis_order: int = None):
+                            basis_order: int = None,
+                            *args,
+                            **kwargs):
         """Create a solution setup in Ansys HFSS Eigenmode.  If user does not
         provide arguments, they will be obtained from hfss_options dict.
 
@@ -707,7 +531,7 @@ class QHFSSRenderer(QAnsysRenderer):
             pct_refinement (int, optional): Percent refinement. Defaults to 30.
             basis_order (int, optional): Basis order. Defaults to -1.
         """
-        esu = self.hfss_options.eigenmode_setup
+        esu = self.default_setup.eigenmode
 
         if not name:
             name = self.parse_value(esu['name'])
@@ -959,16 +783,16 @@ class QHFSSRenderer(QAnsysRenderer):
         if self.pinfo:
             if self.pinfo.project:
                 if self.pinfo.design:
-                    # self.pinfo.design does not work
-                    oDesktop = self.pinfo.design.parent.parent._desktop
-                    oProject = oDesktop.SetActiveProject(
+                    # double parent, becasue self.pinfo.design does not work
+                    o_desktop = self.pinfo.design.parent.parent._desktop
+                    o_project = o_desktop.SetActiveProject(
                         self.pinfo.project_name)
-                    oDesign = oProject.GetActiveDesign()
-                    if oDesign.GetSolutionType() == 'Eigenmode':
+                    o_design = o_project.GetActiveDesign()
+                    if o_design.GetSolutionType() == 'Eigenmode':
                         # The set_mode() method is in HfssEMDesignSolutions
-                        # class in pyEPR.
+                        #  class in pyEPR.
                         # The class HfssEMDesignSolutions is instantiated by
-                        # get_setup() and create_em_setup().
+                        #  get_setup() and create_em_setup().
                         setup = self.pinfo.get_setup(setup_name)
                         if 0 < int(mode) <= int(setup.n_modes):
                             setup_solutions = setup.get_solutions()
@@ -1008,7 +832,7 @@ class QHFSSRenderer(QAnsysRenderer):
         """
         if self.pinfo:
             setup = self.pinfo.get_setup(setup_name)
-            setup.analyze()
+            setup.analyze(setup_name)
 
     def add_sweep(self,
                   setup_name="Setup",
@@ -1143,143 +967,96 @@ class QHFSSRenderer(QAnsysRenderer):
             variation = "scale_factor='1.2001'". Defaults to None.
 
         Returns:
-            tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame, str]:
+            tuple[pandas.DataFrame, pandas.DataFrame, str]:
             1st DataFrame: Convergence_t
             2nd DataFrame: Convergence_f
             3rd str: Text from GUI of solution data.
         """
         if self.pinfo:
-            design = self.pinfo.design
-            setup = self.pinfo.setup
-            convergence_t, text = setup.get_convergence(variation)
-            convergence_f = hfss_report_f_convergence(
-                design, setup, self.logger, [])  # TODO; Fix variation []
+            convergence_t, text = self.pinfo.setup.get_convergence(variation)
+            convergence_f = self.get_f_convergence([])  # TODO; Fix variation []
             return convergence_t, convergence_f, text
 
     def plot_convergences(self,
                           variation: str = None,
                           fig: mpl.figure.Figure = None):
-        """Plot the convergences in Ansys window.
+        """
+        (deprecated) use EPRanalysis.plot_convergences()
+        """
+        print(
+            'This method is deprecated. Change your scripts to use the equivalent method '
+            'plot_convergence() that has been moved inside the EPRanalysis class.'
+        )
+
+    def get_f_convergence(self, variation: str = None, save_csv: bool = True):
+        """Create a report inside HFSS to plot the converge of frequency and
+        style it. Saves report to csv file.
+
+        .. code-block:: text
+
+                re(Mode(1)) [g]	re(Mode(2)) [g]	re(Mode(3)) [g]
+            Pass []
+            1	4.643101	4.944204	5.586289
+            2	5.114490	5.505828	6.242423
+            3	5.278594	5.604426	6.296777
 
         Args:
-            variation (str, optional): Information from pyEPR; variation should be in the form
-            variation = "scale_factor='1.2001'". Defaults to None.
-            fig (matplotlib.figure.Figure, optional): A mpl figure. Defaults to None.
+            variation ('str', optional): Information from pyEPR; variation should be in the form
+                variation = "scale_factor='1.2001'". Defaults to None.
+            save_csv (bool, optional): Save to file? Defaults to True.
+
+        Returns:
+            pd.DataFrame: Returns a convergence vs pass number of the eigenemode frequencies.
         """
         if self.pinfo:
-            convergence_t, convergence_f, _ = self.get_convergences(variation)
-            hfss_plot_convergences_report(convergence_t,
-                                          convergence_f,
-                                          fig=fig,
-                                          _display=True)
+            o_design = self.pinfo.design
+            setup = self.pinfo.setup
 
+            if not o_design.solution_type == 'Eigenmode':
+                return None
 
-def hfss_plot_convergences_report(convergence_t: pd.core.frame.DataFrame,
-                                  convergence_f: pd.core.frame.DataFrame,
-                                  fig: mpl.figure.Figure = None,
-                                  _display=True):
-    """Plot convergence frequency vs. pass number if fig is None. Plot delta
-    frequency and solved elements vs. pass number. Plot delta frequency vs.
-    solved elements.
+            report = o_design._reporter  # reporter OModule for Ansys
 
-    Args:
-        convergence_t (pandas.core.frame.DataFrame): Convergence vs pass number of the eigenemode freqs.
-        convergence_f (pandas.core.frame.DataFrame): Convergence vs pass number of the eigenemode freqs.
-        fig (matplotlib.figure.Figure, optional): A mpl figure. Defaults to None.
-        _display (bool, optional): Display the plot? Defaults to True.
-    """
+            # Create report
+            n_modes = int(setup.n_modes)
+            ycomp = [f"re(Mode({i}))" for i in range(1, 1 + n_modes)]
 
-    if fig is None:
-        fig = plt.figure(figsize=(11, 3.))
+            params = ["Pass:=", ["All"]] + variation
+            report_name = "Freq. vs. pass"
+            if report_name in report.GetAllReportNames():
+                report.DeleteReports([report_name])
 
-        # Grid spec and axes;    height_ratios=[4, 1], wspace=0.5
-        gs = mpl.gridspec.GridSpec(1, 3, width_ratios=[1.2, 1.5, 1])
-        axs = [fig.add_subplot(gs[i]) for i in range(3)]
+            solutions = setup.get_solutions()
+            solutions.create_report(report_name,
+                                    "Pass",
+                                    ycomp,
+                                    params,
+                                    pass_name='AdaptivePass')
 
-        ax0t = axs[1].twinx()
-        plot_convergence_f_vspass(axs[0], convergence_f)
-        plot_convergence_max_df(axs[1], convergence_t.iloc[:, 1])
-        plot_convergence_solved_elem(ax0t, convergence_t.iloc[:, 0])
-        plot_convergence_maxdf_vs_sol(axs[2], convergence_t.iloc[:, 1],
-                                      convergence_t.iloc[:, 0])
+            # Properties of lines
+            curves = [
+                f"{report_name}:re(Mode({i})):Curve1"
+                for i in range(1, 1 + n_modes)
+            ]
+            set_property(report, 'Attributes', curves, 'Line Width', 3)
+            set_property(report, 'Scaling', f"{report_name}:AxisY1",
+                         'Auto Units', False)
+            set_property(report, 'Scaling', f"{report_name}:AxisY1", 'Units',
+                         'g')
+            set_property(report, 'Legend', f"{report_name}:Legend",
+                         'Show Solution Name', False)
 
-        fig.tight_layout(w_pad=0.1)  # pad=0.0, w_pad=0.1, h_pad=1.0)
+            if save_csv:  # Save
+                try:
+                    path = Path().absolute(
+                    ) / 'hfss_eig_f_convergence.csv'  # TODO: Determine better path
+                    report.ExportToFile(report_name, path)
+                    self.logger.info(f'Saved convergences to {path}')
+                    return pd.read_csv(path, index_col=0)
+                except Exception as e:
+                    self.logger.error(
+                        f"Error could not save and export hfss plot to {path}.\
+                                Is the plot made in HFSS with the correct name.\
+                                Check the HFSS error window. \t Error =  {e}")
 
-        # if _display:
-        #     from IPython.display import display
-        #     display(fig)
-
-
-def hfss_report_f_convergence(oDesign: epr.ansys.HfssDesign,
-                              setup: epr.ansys.HfssEMSetup,
-                              logger: logging.Logger,
-                              variation: str = None,
-                              save_csv: bool = True):
-    """Create a report inside HFSS to plot the converge of frequency and style
-    it. Saves report to csv file.
-
-    .. code-block:: text
-
-            re(Mode(1)) [g]     re(Mode(2)) [g] re(Mode(3)) [g]
-        Pass []
-        1       4.643101        4.944204        5.586289
-        2       5.114490        5.505828        6.242423
-        3       5.278594        5.604426        6.296777
-
-    Args:
-        oDesign (pyEPR.ansys.HfssDesign): Active design within Ansys.
-        setup (pyEPR.ansys.HfssEMSetup): The setup of active project and design within Ansys.
-        logger (logging.Logger): To give feedback to user.
-        variation ('str', optional): Information from pyEPR; variation should be in the form
-            variation = "scale_factor='1.2001'". Defaults to None.
-        save_csv (bool, optional): Save to file? Defaults to True.
-
-    Returns:
-        pd.core.frame.DataFrame: Returns a convergence vs pass number of the eigenemode frequencies.
-    """
-
-    if not oDesign.solution_type == 'Eigenmode':
-        return None
-
-    report = oDesign._reporter  # reporter OModule for Ansys
-
-    # Create report
-    n_modes = int(setup.n_modes)
-    ycomp = [f"re(Mode({i}))" for i in range(1, 1 + n_modes)]
-
-    params = ["Pass:=", ["All"]] + variation
-    report_name = "Freq. vs. pass"
-    if report_name in report.GetAllReportNames():
-        report.DeleteReports([report_name])
-
-    solutions = setup.get_solutions()
-    solutions.create_report(report_name,
-                            "Pass",
-                            ycomp,
-                            params,
-                            pass_name='AdaptivePass')
-
-    # Properties of lines
-    curves = [
-        f"{report_name}:re(Mode({i})):Curve1" for i in range(1, 1 + n_modes)
-    ]
-    set_property(report, 'Attributes', curves, 'Line Width', 3)
-    set_property(report, 'Scaling', f"{report_name}:AxisY1", 'Auto Units',
-                 False)
-    set_property(report, 'Scaling', f"{report_name}:AxisY1", 'Units', 'g')
-    set_property(report, 'Legend', f"{report_name}:Legend",
-                 'Show Solution Name', False)
-
-    if save_csv:  # Save
-        try:
-            path = Path().absolute(
-            ) / 'hfss_eig_f_convergence.csv'  # TODO: Determine better path
-            report.ExportToFile(report_name, path)
-            logger.info(f'Saved convergences to {path}')
-            return pd.read_csv(path, index_col=0)
-        except Exception as e:
-            logger.error(f"Error could not save and export hfss plot to {path}.\
-                           Is the plot made in HFSS with the correct name.\
-                           Check the HFSS error window. \t Error =  {e}")
-
-    return None
+            return None

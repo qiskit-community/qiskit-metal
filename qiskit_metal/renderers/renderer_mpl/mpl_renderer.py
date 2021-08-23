@@ -37,7 +37,6 @@ from shapely.geometry import CAP_STYLE, JOIN_STYLE, LineString
 
 from ... import Dict
 from ...designs import QDesign
-from ..renderer_base.renderer_gui_base import QRendererGui
 from .mpl_interaction import MplInteraction, PanAndZoom
 from .mpl_toolbox import _axis_set_watermark_img, clear_axis, get_prop_cycle
 
@@ -199,6 +198,11 @@ class QMplRenderer():
             'base': dict(linewidth=1, alpha=0.5, edgecolors='k'),
             'subtracted': dict(linestyle='--', color='gray'),
             'non-subtracted': dict()
+        },
+        'JJ': {
+            'base': dict(linewidth=1, alpha=0.2, edgecolors='k'),
+            'subtracted': dict(linestyle='--', color='gray'),
+            'non-subtracted': dict()
         }
     }
     """Styles"""
@@ -279,9 +283,7 @@ class QMplRenderer():
                                           resolution=int(self.options[
                                               'resolution'])),
                     axis=1)
-                kw = self.get_style('poly',
-                                    subtracted=subtracted,
-                                    extra=extra_kw)
+                kw = self.get_style('JJ', subtracted=subtracted, extra=extra_kw)
                 self.render_poly(table1, ax, subtracted=subtracted, extra_kw=kw)
             table1 = table[mask]
             if len(table1) > 0:
@@ -326,6 +328,8 @@ class QMplRenderer():
         if row["fillet"] == 0:  # zero radius, no need to fillet
             return row["geometry"]
         path = row["geometry"].coords
+        if len(path) <= 2:  # only start and end points, no need to fillet
+            return row["geometry"]
         newpath = np.array([path[0]])
 
         # Get list of vertices that can't be filleted
@@ -363,45 +367,72 @@ class QMplRenderer():
             radius (float): Fillet radius.
             points (int): Number of points to draw in the fillet corner.
         """
+        # Start, corner, and end vertices must be distinct
         if np.array_equal(vertex_start, vertex_corner) or np.array_equal(
                 vertex_end, vertex_corner):
             return False
 
-        fillet_start = (radius / np.linalg.norm(vertex_start - vertex_corner) *
-                        (vertex_start - vertex_corner) + vertex_corner)
-        path = np.array([fillet_start])
-        # Calculate the angle of the corner, which is not necessarily 90 degrees
-        end_angle = np.arccos(
-            np.dot(vertex_start - vertex_corner, vertex_end - vertex_corner) /
-            (np.linalg.norm(vertex_start - vertex_corner) *
-             np.linalg.norm(vertex_end - vertex_corner)))
-        if end_angle == 0 or end_angle == np.pi:
+        # Vectors pointing from corner to start and end vertices, respectively
+        # Also calculate their lengths and unit vectors
+        sc_vec = vertex_start - vertex_corner
+        ec_vec = vertex_end - vertex_corner
+        sc_norm = np.linalg.norm(sc_vec)
+        ec_norm = np.linalg.norm(ec_vec)
+        sc_uvec = sc_vec / sc_norm
+        ec_uvec = ec_vec / ec_norm
+
+        # Angle between previous unit vectors
+        end_angle = np.arccos(np.dot(sc_uvec, ec_uvec))
+
+        # Start, corner, and end vertices can't be collinear
+        if (end_angle == 0) or (end_angle == np.pi):
             return False
-        # Determine direction so we know which way to fillet
-        # TODO - replace with generalized code accounting for different rotations
-        direction = [
-            np.argmax(abs(vertex_start - vertex_corner)),
-            1 - np.argmax(abs(vertex_start - vertex_corner)),
-        ]
-        sign = np.array([
-            np.argmax([vertex_start[direction[0]],
-                       vertex_corner[direction[0]]]),
-            np.argmax([vertex_corner[direction[1]], vertex_end[direction[1]]]),
-        ])
-        if direction[0] == 1 and sign[0] != sign[1]:
-            sign = 1 - sign
-        sign = sign * 2 - 1
+
+        # Fillet circle must be small enough to fit inside corner
+        if radius / np.tan(end_angle / 2) > min(sc_norm, ec_norm):
+            return False
+
+        # Unit vector pointing from corner vertex to center of fillet circle
+        net_uvec = (sc_uvec + ec_uvec) / np.linalg.norm(sc_uvec + ec_uvec)
+
+        # Coordinates of center of fillet circle
+        circle_center = vertex_corner + net_uvec * radius / np.sin(
+            end_angle / 2)
+
+        # Deltas represent displacement from corner vertex to circle center
+        # Midpoint angle from circle center to corner, wrt to horizontal extending from former
+        # Note: arctan is fine for angles in range (-pi / 2, pi / 2] but needs extra pi factor otherwise
+        delta_x = vertex_corner[0] - circle_center[0]
+        delta_y = vertex_corner[1] - circle_center[1]
+        if delta_x:
+            theta_mid = np.arctan(delta_y / delta_x) + np.pi * int(delta_x < 0)
+        else:
+            theta_mid = np.pi * ((1 - 2 * int(delta_y < 0)) + int(delta_y < 0))
+
+        # Start and end sweep angles determined relative to midpoint angle
+        # Swap them as needed to resolve ambiguity in arctan
+        theta_start = theta_mid - (np.pi - end_angle) / 2
+        theta_end = theta_mid + (np.pi - end_angle) / 2
+        p1 = circle_center + radius * np.array(
+            [np.cos(theta_start), np.sin(theta_start)])
+        p2 = circle_center + radius * np.array(
+            [np.cos(theta_end), np.sin(theta_end)])
+        if np.linalg.norm(vertex_start - p2) < np.linalg.norm(vertex_start -
+                                                              p1):
+            theta_start, theta_end = theta_end, theta_start
 
         # Populate the fillet corner, skipping the start point since it's already added
-        for theta in np.arange(0, end_angle, end_angle / points)[1:]:
-            diff = [np.sin(theta) * radius, radius - np.cos(theta) * radius]
-            path = np.concatenate((
-                path,
-                np.array([[
-                    fillet_start[0] + sign[0] * diff[direction[0]],
-                    fillet_start[1] + sign[1] * diff[direction[1]],
-                ]]),
-            ))
+        path = np.array([
+            circle_center + radius * np.array(
+                [np.cos(theta_start), np.sin(theta_start)])
+        ])
+        for theta in np.linspace(theta_start, theta_end, points)[1:]:
+            path = np.concatenate(
+                (path,
+                 np.array([
+                     circle_center + radius *
+                     np.array([np.cos(theta), np.sin(theta)])
+                 ])))
         return path
 
     def render_path(self,

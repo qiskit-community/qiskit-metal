@@ -72,6 +72,7 @@ RouteMeander
       RouteMeander.set_lead
       RouteMeander.set_lead_extension
       RouteMeander.set_pin
+      RouteMeander.to_script
    
 
    

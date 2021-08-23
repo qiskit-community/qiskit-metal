@@ -24,6 +24,10 @@ class Rectangle(QComponent):
 
     The class will add default_options class Dict to QComponent class before calling make.
 
+    .. image::
+        Rectangle.png
+
+
     Default Options:
         * width: '500um'
         * height: '300um'

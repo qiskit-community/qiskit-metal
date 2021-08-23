@@ -102,10 +102,8 @@ class TransmonPocket6(BaseQubit):
                                             +1
 
     .. image::
-        QComponent_Qubit_Transmon_Pocket.png
+        TransmonPocket6.png
     """
-
-    #_img = 'transmon_pocket1.png'
 
     # Default drawing options
     default_options = Dict(
@@ -133,7 +131,8 @@ class TransmonPocket6(BaseQubit):
             cpw_extend='100um',
             pocket_extent='5um',
             pocket_rise='0um',
-            loc_W='+1',  # width location  only +-1 or 0
+            loc_W='+1',  # width location  only +-1 or 0,
+            loc_H='+1',  # height location  only +-1 or 0
         ))
     """Default drawing options"""
 

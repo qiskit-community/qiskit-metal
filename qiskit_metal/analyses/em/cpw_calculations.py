@@ -48,7 +48,7 @@ def guided_wavelength(freq,
                       film_thickness,
                       dielectric_constant=11.45):
     """A simple calculator to determine the guided wavelength of a planar CPW
-    transmission line. Assumes the substrate has relative permiability of 1.
+    transmission line. Assumes the substrate has relative permeability of 1.
     Assumes package grounds are far away.
 
     Args:
@@ -57,7 +57,7 @@ def guided_wavelength(freq,
         line_gap (float): The width of the CPW gap (dielectric space), in meters (eg. 6*10**-6).
         substrate_thickness (float): Thickness of the dielectric substrate, in meters (eg. 760*10**-6).
         film_thickness (float): Thickness of the thin film, in meters (eg. 200*10**-9).
-        dielectric_constant (float): The relative permitivity of the substrate.
+        dielectric_constant (float): The relative permittivity of the substrate.
             Defaults to 11.45, the value for Silicon at cryogenic temperatures.
 
     Returns:
@@ -108,7 +108,7 @@ def lumped_cpw(freq,
         line_gap (float): The width of the CPW gap (dielectric space), in meters (eg. 6*10**-6).
         substrate_thickness (float): Thickness of the dielectric substrate, in meters (eg. 760*10**-6).
         film_thickness (float): Thickness of the thin film, in meters (eg. 200*10**-9).
-        dielectric_constant (float, optional): The relative permitivity of the substrate.
+        dielectric_constant (float, optional): The relative permittivity of the substrate.
             Defaults to 11.45, the value for silicon at cryogenic temperatures.
         loss_tangent (float, optional): The loss tangent of the dielectric.
             Defaults to 10**-6, reasonable quality silicon.
@@ -125,10 +125,10 @@ def lumped_cpw(freq,
         * Lk (float): The series kinetic inductance, in Henries.
         * Lext (float): The series geometric external inductance, in Henries.
         * C (float): The shunt capacitance, in Farads.
-        * G (float): The shunt admitance, in Siemens. #NOTE:double check if right units
+        * G (float): The shunt admittance, in Siemens. #NOTE:double check if right units
         * Z0 (float): sqrt(L / C)
         * etfSqrt**2: Effective Dielectric Constant
-        * Cstar: External Inducatance
+        * Cstar: External Inductance
 
     ::
 
@@ -196,10 +196,10 @@ def effective_dielectric_constant(freq, s, w, h, t, q, Kk0, Kk01, eRD=11.45):
         q (float): Filling factor of the CPW in question
         Kk0 (float): The complete elliptic integral for k0
         Kk01 (float): The complete elliptic integral for k01
-        eRD (float, optional): The relative permitivity of the substrate. Defaults to 11.45.
+        eRD (float, optional): The relative permittivity of the substrate. Defaults to 11.45.
 
     Returns:
-        float: etfSqrt is the effective permitivity for a CPW transmission line, considering
+        float: etfSqrt is the effective permittivity for a CPW transmission line, considering
         film and substrate thickness.
     """
 
@@ -244,4 +244,4 @@ def elliptic_int_constants(s, w, h):
         (np.pi * (s + 2 * w)) / (4 * h)))
     k11 = np.sqrt(1 - k1**2)
 
-    return ellipk(k0), ellipk(k01), ellipk(k1), ellipk(k11)
+    return ellipk(k0**2.0), ellipk(k01**2.0), ellipk(k1**2.0), ellipk(k11**2.0)

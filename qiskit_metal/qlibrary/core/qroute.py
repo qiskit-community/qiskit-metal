@@ -20,6 +20,7 @@ from typing import List, Tuple, Union, AnyStr
 from collections.abc import Mapping
 from qiskit_metal.toolbox_metal import math_and_overrides as mao
 import math
+import re
 
 
 class QRoutePoint:
@@ -65,16 +66,49 @@ class QRoute(QComponent):
             * end_pin=Dict -- Component and pin string pair. Define which pin to start from
                 * component: '' -- Name of component to end on, which has a pin
                 * pin: '' -- Name of pin used for pin_end
-        * fillet: '0'
         * lead: Dict
             * start_straight: '0mm' -- Lead-in, defined as the straight segment extension from start_pin.  Defaults to 0.1um.
             * end_straight: '0mm' -- Lead-out, defined as the straight segment extension from end_pin.  Defaults to 0.1um.
             * start_jogged_extension: '' -- Lead-in, jogged extension of lead-in. Described as list of tuples
             * end_jogged_extension: '' -- Lead-out, jogged extension of lead-out. Described as list of tuples
+        * fillet: '0'
         * total_length: '7mm'
         * chip: 'main' -- Which chip is this component attached to.  Defaults to 'main'.
         * layer: '1' -- Which layer this component should be rendered on.  Defaults to '1'.
         * trace_width: 'cpw_width' -- Defines the width of the line.  Defaults to 'cpw_width'.
+
+    How to specify \*_jogged_extensions for the QRouteLeads:
+        \*_jogged_extensions have to be specified in an OrderedDict with incremental keys.
+        the value of each key specifies the direction of the jog and the extension past the jog.
+        For example:
+
+        .. code-block:: python
+            :linenos:
+
+            jogs = OrderedDict()
+            jogs[0] = ["R", '200um']
+            jogs[1] = ["R", '200um']
+            jogs[2] = ["L", '200um']
+            jogs[3] = ["L", '500um']
+            jogs[4] = ["R", '200um']
+            jogs_other = ....
+            
+            options = {'lead': {
+                'start_straight': '0.3mm',
+                'end_straight': '0.3mm',
+                'start_jogged_extension': jogs,
+                'end_jogged_extension': jogs_other
+            }}
+
+        The jog direction can be specified in several ways. Feel free to pick the one more
+        convenient for your coding style:
+
+        >> "L", "L#", "R", "R#", #, "#", "A,#", "left", "left#", "right", "right#"
+
+        where # is any signed or unsigned integer or floating point value.
+        For example the following will all lead to the same turn:
+
+        >> "L", "L90", "R-90", 90, "90", "A,90", "left", "left90", "right-90"
     """
 
     component_metadata = Dict(short_name='route', _qgeometry_table_path='True')
@@ -114,16 +148,21 @@ class QRoute(QComponent):
         Before that, it adds the variables that are needed to support routing.
 
         Args:
-            type (string): Supports Route (single layer trace) and CPW (adds the gap around it). Defaults to "CPW".
-
-        Attributes:
-            head (QRouteLead()): Stores sequential points to start the route
-            tail (QRouteLead()): (optional) Stores sequential points to terminate the route
-            intermediate_pts: (list or numpy Nx2 or dict) Sequence of points between and other than head and tail.  Defaults to None.
-                              Type could be either list or numpy Nx2, or dict/OrderedDict nesting lists or numpy Nx2
-            start_pin_name (string): Head pin name.  Defaults to "start".
-            end_pin_name (string): Tail pin name.  Defaults to "end".
+            design (QDesign): The parent design.
+            name (str): Name of the component. Auto-named if possible.
+            options (dict): User options that will override the defaults.  Defaults to None.
+            type (string): Supports Route (single layer trace) and CPW (adds the gap around it).
+                Defaults to "CPW".
         """
+        # Class key Attributes:
+        #     * head (QRouteLead()): Stores sequential points to start the route.
+        #     * tail (QRouteLead()): (optional) Stores sequential points to terminate the route.
+        #     * intermediate_pts: (list or numpy Nx2 or dict) Sequence of points between and other
+        #         than head and tail.  Defaults to None. Type could be either list or numpy Nx2,
+        #         or dict/OrderedDict nesting lists or numpy Nx2.
+        #     * start_pin_name (string): Head pin name.  Defaults to "start".
+        #     * end_pin_name (string): Tail pin name.  Defaults to "end".
+
         self.head = QRouteLead()
         self.tail = QRouteLead()
 
@@ -290,18 +329,42 @@ class QRoute(QComponent):
 
         # then change the lead by adding points
         for turn, length in options_lead.values():
-            if turn in ("left", "L"):
+            if isinstance(turn, (float, int)):
+                # turn is a number indicating the angle
+                lead.go_angle(length, turn)
+            elif re.search(r'^[-+]?(\d+\.\d+|\d+)$', turn):
+                # turn is a string of a number indicating the angle
+                lead.go_angle(length, float(turn))
+            elif turn in ("left", "L"):
+                # implicit turn -90 degrees
                 lead.go_left(length)
             elif turn in ("right", "R"):
+                # implicit turn 90 degrees
                 lead.go_right(length)
             elif turn in ("straight", "D", "S"):
+                # implicit 0 degrees movement
                 lead.go_straight(length)
+            elif re.search(r'^(left|L)[-+]?(\d+\.\d+|\d+)$', turn):
+                # left turn by the specified int/float degrees. can be signed
+                angle = re.sub(r'^(left|L)', "", turn)
+                lead.go_angle(length, float(angle))
+            elif re.search(r'^(right|R)[-+]?(\d+\.\d+|\d+)$', turn):
+                # right turn by the specified int/float degrees. can be signed
+                angle = re.sub(r'^(right|R)', "", turn)
+                lead.go_angle(length, -1 * float(angle))
+            elif ('A' or 'angle') in turn:
+                # turn by the specified int/float degrees. Positive numbers turn left.
+                turn, angle = turn.split(',')
+                lead.go_angle(length, float(angle))
             else:
                 raise Exception(
-                    "the first term needs to represent a direction in english, "
-                    +
-                    "the second term should be a string indicating the length" +
-                    "the pair that caused this error is" + turn + ":" + length)
+                    f"\nThe input string {turn} is not supported. Please specify the jog turn "
+                    "using one of the supported formats:\n\"L\", \"L#\", \"R\", \"R#\", #, "
+                    "\"#\", \"A,#\", \"left\", \"left#\", \"right\", \"right#\""
+                    "\nwhere # is any signed or unsigned integer or floating point value.\n"
+                    "For example the following will all lead to the same turn:\n"
+                    "\"L\", \"L90\", \"R-90\", 90, "
+                    "\"90\", \"A,90\", \"left\", \"left90\", \"right-90\"")
 
         # return the last QRoutePoint of the lead
         return lead.get_tip()
@@ -396,14 +459,17 @@ class QRoute(QComponent):
                 if np.allclose(*pts[1:]):
                     pts = [None] + pts[0:2]
                     continue
+                # compare points once you have 3 unique points in pts
                 if pts[0] is not None:
-                    if all(mao.round(i[1]) == mao.round(pts[0][1]) for i in pts) \
-                            or all(mao.round(i[0]) == mao.round(pts[0][0]) for i in pts):
+                    # if all(mao.round(i[1]) == mao.round(pts[0][1]) for i in pts) \
+                    #         or all(mao.round(i[0]) == mao.round(pts[0][0]) for i in pts):
+                    if mao.aligned_pts(pts):
                         pts = [None] + [pts[0]] + [pts[2]]
+                # save a point once you successfully establish the three are not aligned,
+                #  and before it gets dropped in the next loop cycle
                 if pts[0] is not None:
-                    #save the point before it gets dropped in the next cycle
                     outarray.append(pts[0])
-            # save remainder points
+            # save the remainder non-aligned points
             if pts[1] is not None:
                 outarray.extend(pts[1:])
             else:
@@ -621,6 +687,37 @@ class QRouteLead:
             length (float): How much to move by
         """
         self.direction = draw.Vector.rotate(self.direction, -1 * np.pi / 2)
+        self.pts = np.append(self.pts, [self.pts[-1] + self.direction * length],
+                             axis=0)
+
+    def go_right45(self, length: float):
+        """Straight line at 45 angle clockwise w.r.t lead tip direction.
+
+        Args:
+            length(float): How much to move by
+        """
+        self.direction = draw.Vector.rotate(self.direction, -1 * np.pi / 4)
+        self.pts = np.append(self.pts, [self.pts[-1] + self.direction * length],
+                             axis=0)
+
+    def go_left45(self, length: float):
+        """Straight line at 45 angle counter-clockwise w.r.t lead tip direction.
+
+        Args:
+            length(float): How much to move by
+        """
+        self.direction = draw.Vector.rotate(self.direction, np.pi / 4)
+        self.pts = np.append(self.pts, [self.pts[-1] + self.direction * length],
+                             axis=0)
+
+    def go_angle(self, length: float, angle: float):
+        """ Straight line at any angle w.r.t lead tip direction.
+
+        Args:
+            length(float): How much to move by
+            angle(float): rotation angle w.r.t lead tip direction
+        """
+        self.direction = draw.Vector.rotate(self.direction, np.pi / 180 * angle)
         self.pts = np.append(self.pts, [self.pts[-1] + self.direction * length],
                              axis=0)
 
