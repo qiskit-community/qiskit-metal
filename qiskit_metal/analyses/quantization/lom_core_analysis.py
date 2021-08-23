@@ -235,25 +235,42 @@ def _transform_to_junction_flux_basis(orig_nodes,
 
 
 class LabeledNdarray(np.ndarray):
+    """np.ndarray subclass that shows labels when the array is printed.
 
-    def __new__(cls, input_array, labels=None):
+    The constructor only accepts a square matrix. Sliced LabeledNdarray will still be
+    a LabeledNdarray but the labels are not preserved: if the resulting matrix is still
+    a square matrix, the labels will just be [0, 1, ...<array_row_number>-1]; and if the
+    the resulting marix is not a square matrix, there will be no labels.
+
+    """
+
+    def __new__(cls, input_array: np.ndarray, labels=None):
         if input_array.shape[0] != input_array.shape[1]:
-            raise ValueError('LabeledNdarray only supports square matrices.')
+            raise ValueError(
+                'LabeledNdarray constructor only supports square matrices.')
         obj = np.asarray(input_array).view(cls)
         obj.labels = labels if labels is not None else [
-            str(x) for x in range(obj.size)
+            str(x) for x in range(obj.shape[0])
         ]
         return obj
 
     def __array_finalize__(self, obj):
         if obj is None:
             return
-        self.labels = getattr(obj, 'labels', [str(x) for x in range(obj.size)])
+        if self.shape != obj.shape:
+            self.labels = [str(x) for x in range(self.shape[0])]
+        else:
+            self.labels = getattr(obj, 'labels',
+                                  [str(x) for x in range(self.shape[0])])
 
     def __repr__(self):
+        if len(self.shape) == 1 or self.shape[0] != self.shape[1]:
+            return f'{self.view(np.ndarray)}'
         return f'{_make_cmat_df(self, self.labels)}'
 
     def __str__(self):
+        if len(self.shape) == 1 or self.shape[0] != self.shape[1]:
+            return f'{self.view(np.ndarray)}'
         return f'{_make_cmat_df(self, self.labels)}'
 
 
