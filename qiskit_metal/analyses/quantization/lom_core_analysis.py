@@ -237,6 +237,8 @@ def _transform_to_junction_flux_basis(orig_nodes,
 class LabeledNdarray(np.ndarray):
 
     def __new__(cls, input_array, labels=None):
+        if input_array.shape[0] != input_array.shape[1]:
+            raise ValueError('LabeledNdarray only supports square matrices.')
         obj = np.asarray(input_array).view(cls)
         obj.labels = labels if labels is not None else [
             str(x) for x in range(obj.size)
