@@ -53,16 +53,17 @@ class LOManalysis(QAnalysis):
     data_labels = ['lumped_oscillator', 'lumped_oscillator_all']
     """Default data labels."""
 
-    def __init__(self, design: 'QDesign' = None, renderer_name: str = 'q3d'):
+    def __init__(self, design: 'QDesign' = None, renderer_name: str = None):
         """Initialize the Lumped Oscillator Model analysis.
 
         Args:
             design (QDesign): Pointer to the main qiskit-metal design.
                 Used to access the QRenderer. Defaults to None.
-            renderer_name (str, optional): Which renderer to use. Defaults to 'q3d'.
+            renderer_name (str, optional): Which renderer to use. Valid entries: 'q3d'.
+                Defaults to None.
         """
         # set design and renderer
-        self.sim = None if renderer_name is None else LumpedElementsSim(
+        self.sim = Dict() if renderer_name is None else LumpedElementsSim(
             design, renderer_name)
         super().__init__()
 
@@ -139,10 +140,10 @@ class LOManalysis(QAnalysis):
 
         s = self.setup
 
-        if self.sim.capacitance_matrix is None:
+        if not self.sim.capacitance_matrix:
             self.logger.warning(
                 'Please initialize the capacitance_matrix before executing this method.'
-            )
+                '`self.sim.capacitance_matrix = pd.DataFrame(...)`')
             return
         if not self.sim.capacitance_all_passes:
             self.sim.capacitance_all_passes[
