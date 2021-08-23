@@ -21,7 +21,6 @@ import argparse
 
 import numpy as np
 import pandas as pd
-import qutip
 import scqubits as scq
 from sympy import Matrix
 from scipy import optimize, integrate
@@ -235,6 +234,27 @@ def _transform_to_junction_flux_basis(orig_nodes,
     return _transforms
 
 
+class LabeledNdarray(np.ndarray):
+
+    def __new__(cls, input_array, labels=None):
+        obj = np.asarray(input_array).view(cls)
+        obj.labels = labels if labels is not None else [
+            str(x) for x in range(obj.size)
+        ]
+        return obj
+
+    def __array_finalize__(self, obj):
+        if obj is None:
+            return
+        self.labels = getattr(obj, 'labels', [str(x) for x in range(obj.size)])
+
+    def __repr__(self):
+        return f'{_make_cmat_df(self, self.labels)}'
+
+    def __str__(self):
+        return f'{_make_cmat_df(self, self.labels)}'
+
+
 #----------------------------------------------------------------------------------------------------
 
 
@@ -353,7 +373,7 @@ class CircuitGraph:
         C_n = np.zeros((dim, dim))
         for c_g in self._c_graphs:
             C_n += self._adj_list_to_mat(c_g)
-        return C_n
+        return LabeledNdarray(C_n, self.orig_node_basis)
 
     @property
     @_maybe_remove_grd_node_then_cache
@@ -362,7 +382,7 @@ class CircuitGraph:
         L_n_inv = np.zeros((dim, dim))
         for l_dict in self._ind_lists:
             L_n_inv += self._inductance_list_to_Linv_mat(l_dict)
-        return L_n_inv
+        return LabeledNdarray(L_n_inv, self.orig_node_basis)
 
     @property
     @_maybe_remove_grd_node_then_cache
@@ -377,11 +397,13 @@ class CircuitGraph:
 
     @property
     def C(self):
-        return self.S_n.T.dot(self.C_n).dot(self.S_n)
+        return LabeledNdarray(
+            self.S_n.T.dot(self.C_n).dot(self.S_n), self.node_jj_basis)
 
     @property
     def L_inv(self):
-        return self.S_n.T.dot(self.L_n_inv).dot(self.S_n)
+        return LabeledNdarray(
+            self.S_n.T.dot(self.L_n_inv).dot(self.S_n), self.node_jj_basis)
 
     @property
     def orig_node_basis(self):
@@ -466,7 +488,8 @@ class CircuitGraph:
         """
         s_keep = self.S_keep
         l_inv = self.L_inv
-        return s_keep.T.dot(l_inv).dot(s_keep)
+        return LabeledNdarray(
+            s_keep.T.dot(l_inv).dot(s_keep), self.get_nodes_keep())
 
     @property
     def C_k(self):
@@ -479,14 +502,15 @@ class CircuitGraph:
         c = self.C
         _inner = c.dot(s_r).dot(np.linalg.inv(s_r.T.dot(c.dot(s_r)))).dot(
             s_r.T.dot(c))
-        return s_k.T.dot(c - _inner).dot(s_k)
+        return LabeledNdarray(
+            s_k.T.dot(c - _inner).dot(s_k), self.get_nodes_keep())
 
     @property
     def C_inv_k(self):
         c_k = self.C_k
         if np.linalg.matrix_rank(c_k) < c_k.shape[0]:
             raise ValueError('C_k is rank deficient hence can\'t be inverted')
-        return np.linalg.inv(self.C_k)
+        return LabeledNdarray(np.linalg.inv(self.C_k), self.get_nodes_keep())
 
 
 #----------------------------------------------------------------------------------------------------
@@ -927,9 +951,7 @@ class CompositeSystem:
         self.quantum_subsystems = quantum_systems
         return scq.HilbertSpace(quantum_systems)
 
-    def compute_gs(self,
-                   coupling_type: str = CouplingType.CAPACITIVE,
-                   print_labels=True):
+    def compute_gs(self, coupling_type: str = CouplingType.CAPACITIVE):
         """compute g matrices from reduced C inverse matrix C^{-1}_{k} and reduced L inverse matrix L^{-1}_{k}
         and zero point flucuations (Q_zpf, Phi_zpf)
 
@@ -955,9 +977,7 @@ class CompositeSystem:
                                     ONE_OVER_FEMTO / hbar / MHzRad
                     g[idx2, idx1] = g[idx1, idx2]
 
-            if print_labels:
-                print(f'subsystems: {self.names}')
-            return g
+            return LabeledNdarray(g, self.names)
         else:
             raise NotImplementedError
 
@@ -976,8 +996,7 @@ class CompositeSystem:
         h = self.create_hilbertspace()
 
         if gs is None:
-            gs = self.compute_gs(coupling_type=CouplingType.CAPACITIVE,
-                                 print_labels=False)
+            gs = self.compute_gs(coupling_type=CouplingType.CAPACITIVE)
         else:
             gs = _process_input_gs(gs)
 
@@ -1015,7 +1034,12 @@ class CompositeSystem:
                                       add_hc=add_hc1 or add_hc2)
         return h
 
-    def print_results(self, hilbertspace: scq.HilbertSpace, evals_count=10):
+    def hamiltonian_results(self,
+                            hilbertspace: scq.HilbertSpace,
+                            evals_count=10,
+                            print_info=True):
+        ham_res = {}
+
         names = self.names
 
         evals, evecs = hilbertspace.eigensys(evals_count=evals_count)
@@ -1026,13 +1050,16 @@ class CompositeSystem:
         f01s, chi_mat = extract_energies(
             esys_array, mode_size=hilbertspace.hamiltonian().dims[0])
         f01s = f01s / 1000
+        ham_res['fQ_in_Ghz'] = dict(zip(names, f01s))
+        ham_res['chi_in_MHz'] = LabeledNdarray(chi_mat, names)
 
-        print('')
-        print('system frequencies in GHz:')
-        print('--------------------------')
-        print(dict(zip(names, f01s)))
-        print()
-        print('Chi matrices in MHz')
-        print('--------------------------')
-        print(_make_cmat_df(chi_mat, names))
-        return _make_cmat_df(chi_mat, names)
+        if print_info:
+            print('')
+            print('system frequencies in GHz:')
+            print('--------------------------')
+            print(ham_res['fQ_in_Ghz'])
+            print()
+            print('Chi matrices in MHz')
+            print('--------------------------')
+            print(ham_res['chi_in_MHz'])
+        return ham_res
