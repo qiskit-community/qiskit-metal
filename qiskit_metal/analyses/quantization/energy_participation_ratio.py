@@ -71,7 +71,9 @@ class EPRanalysis(QAnalysis):
             renderer_name (str, optional): Which renderer to use. Valid entries: 'hfss'.
                 Defaults to None.
         """
-        # set design and renderer
+        # QAnalysis are expected to either run simulation or use pre-saved sim outputs
+        # we use a Dict() to store the sim outputs previously saved. Its key names need
+        # to match those found in the correspondent simulation class.
         self.sim = Dict() if renderer_name is None else EigenmodeSim(
             design, renderer_name)
         super().__init__()
@@ -270,3 +272,12 @@ class EPRanalysis(QAnalysis):
             'rect': rect,
             'line': line
         })
+
+    def load_simulation_data(self, data_name: str, data):
+        """Load simulation data for the following analysis. This will override any data found
+
+        Args:
+            data_name (str): name of the variable
+            data (Any): simulation output
+        """
+        self.sim[data_name] = data

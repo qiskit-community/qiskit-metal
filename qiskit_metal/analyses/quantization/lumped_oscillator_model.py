@@ -62,7 +62,9 @@ class LOManalysis(QAnalysis):
             renderer_name (str, optional): Which renderer to use. Valid entries: 'q3d'.
                 Defaults to None.
         """
-        # set design and renderer
+        # QAnalysis are expected to either run simulation or use pre-saved sim outputs
+        # we use a Dict() to store the sim outputs previously saved. Its key names need
+        # to match those found in the correspondent simulation class.
         self.sim = Dict() if renderer_name is None else LumpedElementsSim(
             design, renderer_name)
         super().__init__()
@@ -204,3 +206,12 @@ class LOManalysis(QAnalysis):
             self.run_lom(*args, **kwargs)
         # TODO: copy plot_convergence_main() from pyEPR and move it here
         self.sim.renderer.plot_convergence_chi(self.lumped_oscillator_all)
+
+    def load_simulation_data(self, data_name: str, data):
+        """Load simulation data for the following analysis. This will override any data found
+
+        Args:
+            data_name (str): name of the variable
+            data (Any): simulation output
+        """
+        self.sim[data_name] = data
