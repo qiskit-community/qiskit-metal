@@ -841,6 +841,11 @@ class QAnsysRenderer(QRendererAnalysis):
         #TODO: only use activate_ansys_setup?
         if self.pinfo:
             if self.pinfo.design:
+                if 'reuse_setup' in other_setup:
+                    if other_setup['reuse_setup']:
+                        # delete_setup will check if setup exists, before deleting.
+                        self.pinfo.design.delete_setup(name)
+
                 if self.pinfo.design.solution_type == 'Eigenmode':
                     setup = self.add_eigenmode_setup(name, **other_setup)
                 elif self.pinfo.design.solution_type == 'DrivenModal':
@@ -855,6 +860,7 @@ class QAnsysRenderer(QRendererAnalysis):
         Returns:
             str: Name of the setup that has been updated
         """
+
         setup = self.new_ansys_setup(**kwargs)  #TODO: activate_ansys_setup?
         return setup.name
 

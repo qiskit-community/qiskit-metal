@@ -147,11 +147,11 @@ class EPRanalysis(QAnalysis):
 
     def run(self, *args, **kwargs):
         """Executes sequentially the system capacitance simulation and lom extraction executing
-        the methods LumpedElementsSim.run_sim(`*args`, `**kwargs`) and LOManalysis.run_epr().
-        For input parameter, see documentation for LumpedElementsSim.run_sim().
+        the methods EigenmodeSim.run_sim(`*args`, `**kwargs`) and EPRanalysis.run_epr().
+        For input parameter, see documentation for EigenmodeSim.run_sim().
 
         Returns:
-            (dict): Pass numbers (keys) and respective lump oscillator information (values).
+            (dict): Pass numbers (keys) and respective energy participation ratio (values).
         """
         self.sim.run_sim(*args, **kwargs)
         return self.run_epr()
