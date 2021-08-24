@@ -44,14 +44,15 @@ class StarQubit(QComponent):
         connector_length='75um', # Length of the rectangular part of the connector
         trap_offset='20um', #The offset between coordinates of the trpezoid to define the side wall angle
         junc_w = '120um', # junction width
-        junc_h = '10um', # junction height  
-        rotation1 = '72.0', # rotation for one of the coupling resonators 
-        rotation2 = '144.0', # rotation for the readout resonator
-        rotation3 = '216.0', # rotation for one of the coupling resonators 
-        rotation4 = '288.0', # rotation for one of the coupling resonators 
+        junc_h = '30um', # junction height  
+        rotation1 = '0.0', # rotation for one of the coupling resonators '36.0', '0.0',
+        rotation2 = '72.0', # rotation for the readout resonator '108.0','72.0',
+        rotation3 = '144.0', # rotation for one of the coupling resonators '180.0','144.0',
+        rotation4 = '216.0', # rotation for one of the coupling resonators'252.0','216.0',
+        rotation5 = '288.0', # rotation for one of the coupling resonators '324.0','288.0',
         pos_x='0um',
         pos_y='0um',
-        number_of_connectors='4', # Total number of coupling resonators
+        number_of_connectors='1', # Total number of coupling resonators
         resolution='16',
         cap_style='round',  # round, flat, square
         # join_style = 'round', # round, mitre, bevel
@@ -73,19 +74,19 @@ class StarQubit(QComponent):
         p = self.p  # p for parsed parameters. Access to the parsed options.
 
         # Extracting coordinated from the user input values
-        y1 = -p.center_radius # y-coordinate of the trapezoid
-        y2 = -p.radius # y-coordinate of the trapezoid
-        x1 = -p.center_radius/2 # x-coordinate of the trapezoid
-        x2 = p.center_radius/2 # x-coordinate of the trapezoid
-        x3 = p.center_radius + p.trap_offset # x-coordinate of the trapezoid
-        x4 = -(p.center_radius + p.trap_offset) # x-coordinate of the trapezoid
+        y1 = -p.center_radius # y-coordinate of the trapezoid to subtract from circle
+        y2 = -p.radius # y-coordinate of the trapezoid to subtract from circle
+        x1 = -p.center_radius/2 # x-coordinate of the trapezoid to subtract from circle
+        x2 = p.center_radius/2 # x-coordinate of the trapezoid to subtract from circle
+        x3 = p.center_radius + p.trap_offset # x-coordinate of the trapezoid to subtract from circle
+        x4 = -(p.center_radius + p.trap_offset) # x-coordinate of the trapezoid to subtract from circle
         a1 = -(p.center_radius+p.gap_couplers) # y-coordinate of the polygon defining the coupling resonator
         a2 = -p.radius # y-coordinate of the polygon defining the coupling resonator
         a3 = p.radius # y-coordinate of the polygon defining the coupling resonator
-        b1 = -p.center_radius/4 # x-coordinate of the polygon defining the coupling resonator
-        b2 = p.center_radius/4 # x-coordinate of the polygon defining the coupling resonator
-        b3 = (p.center_radius-p.gap_couplers) # x-coordinate of the polygon defining the coupling resonator
-        b4 = -(p.center_radius-p.gap_couplers) # x-coordinate of the polygon defining the coupling resonator
+        b1 = -(p.center_radius/4) # x-coordinate of the polygon defining the coupling resonator
+        b2 = (p.center_radius/4) # x-coordinate of the polygon defining the coupling resonator
+        b3 = (p.center_radius-(p.gap_couplers)) # x-coordinate of the polygon defining the coupling resonator
+        b4 = -(p.center_radius-(p.gap_couplers)) # x-coordinate of the polygon defining the coupling resonator
         b5 = -p.radius # x-coordinate of the polygon defining the coupling resonator
         b6 = p.radius # x-coordinate of the polygon defining the coupling resonator   
         c1 = -(p.center_radius+p.gap_readout) # y-coordinate of the polygon defining the readout resonator
@@ -100,11 +101,7 @@ class StarQubit(QComponent):
         pocket_w= p.connector_length  # connector pocket width
         pocket_h=p.connector_length*2  # connector pocket height    
         pocket_w1=p.gap_couplers  # Connector to the JJ
-        pocket_h1=p.center_radius # Connector to the JJ  
-        rotation1 = 72.0 # rotation for one of the coupling resonators 
-        rotation2 = 144.0 # rotation for the readout resonator
-        rotation3 = 216.0 # rotation for one of the coupling resonators 
-        rotation4 = 288.0 # rotation for one of the coupling resonators
+        pocket_h1=p.center_radius # Connector to the JJ
 
         # create a circle
         circle = draw.Point(p.pos_x, p.pos_y).buffer(
@@ -120,56 +117,64 @@ class StarQubit(QComponent):
         )
         #join_style = getattr(JOIN_STYLE, p.join_style)
         # create the trapezoids
-        coords1 = [(x1,y1),(x2,y1),(x3,y2),(x4,y2)]
-        trap_1 = draw.Polygon(coords1)
-        coords2 = [(x1,y1),(x2,y1),(x3,y2),(x4,y2)]
-        trap_2 = draw.Polygon(coords2)
-        trap_2 = draw.rotate(trap_2, rotation1, origin=(0, 0))
-        coords3 = [(x1,y1),(x2,y1),(x3,y2),(x4,y2)]
-        trap_3 = draw.Polygon(coords3)
-        trap_3 = draw.rotate(trap_3, rotation2, origin=(0, 0))
-        coords4 = [(x1,y1),(x2,y1),(x3,y2),(x4,y2)]
-        trap_4 = draw.Polygon(coords4)
-        trap_4 = draw.rotate(trap_4, rotation3, origin=(0, 0))
-        coords5 = [(x1,y1),(x2,y1),(x3,y2),(x4,y2)]
-        trap_5 = draw.Polygon(coords5)
-        trap_5 = draw.rotate(trap_5, rotation4, origin=(0, 0))
+        coords1 = [((x1 + p.pos_x),(y1 + p.pos_y)),((x2 + p.pos_x),(y1 + p.pos_y)),((x3 + p.pos_x),(y2 + p.pos_y)),((x4 + p.pos_x),(y2 + p.pos_y))]
+        trap_0 = draw.Polygon(coords1)
+        trap_1 = draw.rotate(trap_0, p.rotation1, origin=(p.pos_x, p.pos_y))
+        trap_2 = draw.rotate(trap_0, p.rotation2, origin=(p.pos_x, p.pos_y))
+        trap_3 = draw.rotate(trap_0, p.rotation3, origin=(p.pos_x, p.pos_y))
+        trap_4 = draw.rotate(trap_0, p.rotation4, origin=(p.pos_x, p.pos_y))
+        trap_5 = draw.rotate(trap_0, p.rotation5, origin=(p.pos_x, p.pos_y))
 
         # Define the connectors
-        coords_coupling_resonator = [(b1,a1),(b2,a1),(b3,a2),(b6,a2),(b6,a3),(b5,a3),(b5,a2),(b4,a2)]
-        trap_a = draw.Polygon(coords_coupling_resonator)
-        trap_b = draw.rotate(trap_a, rotation1, origin=(0, 0))
-        trap_d = draw.rotate(trap_a, rotation3, origin=(0, 0))
-        trap_e = draw.rotate(trap_a, rotation4, origin=(0, 0))
-        coords_readout = [(d1,c1),(d2,c1),(d3,c2),(d6,c2),(d6,c3),(d5,c3),(d5,c2),(d4,c2)]
+        coords_coupling_resonator = [((b1 + p.pos_x),(a1 + p.pos_y)),((b2 + p.pos_x),(a1 + p.pos_y)),((b3 + p.pos_x),(a2 + p.pos_y)),((b6 + p.pos_x),(a2 + p.pos_y)),((b6 + p.pos_x),(a3 + p.pos_y)),((b5 + p.pos_x),(a3 + p.pos_y)),((b5 + p.pos_x),(a2 + p.pos_y)),((b4 + p.pos_x),(a2 + p.pos_y))]
+        trap_z = draw.Polygon(coords_coupling_resonator)
+        trap_a = draw.rotate(trap_z, p.rotation1, origin=(p.pos_x, p.pos_y))
+        trap_b = draw.rotate(trap_z, p.rotation2, origin=(p.pos_x, p.pos_y))
+        trap_d = draw.rotate(trap_z, p.rotation4, origin=(p.pos_x, p.pos_y))
+        trap_e = draw.rotate(trap_z, p.rotation5, origin=(p.pos_x, p.pos_y))
+        coords_readout = [((d1 + p.pos_x),(c1 + p.pos_y)),((d2 + p.pos_x),(c1 + p.pos_y)),((d3 + p.pos_x),(c2 + p.pos_y)),((d6 + p.pos_x),(c2 + p.pos_y)),((d6 + p.pos_x),(c3 + p.pos_y)),((d5 + p.pos_x),(c3 + p.pos_y)),((d5 + p.pos_x),(c2 + p.pos_y)),((d4 + p.pos_x),(c2 + p.pos_y))]
         trap_c = draw.Polygon(coords_readout)
-        trap_c = draw.rotate(trap_c, rotation2, origin=(0, 0))
+        trap_c = draw.rotate(trap_c, p.rotation3, origin=(p.pos_x, p.pos_y))
         rect1 = draw.rectangle(pocket_w1, pocket_h1)
-        rect1 = draw.translate(rect1, xoff=b2, yoff=a3)
+        rect1 = draw.translate(rect1, xoff=b2, yoff=p.radius)
+        rect1 = draw.rotate(rect1, p.rotation1, origin=(p.pos_x, p.pos_y))
         rect2 = draw.rectangle(pocket_w1, pocket_h1)
-        rect2 = draw.translate(rect2, xoff=b1, yoff=a3)
+        rect2 = draw.translate(rect2, xoff=b1, yoff=p.radius)
+        rect2 = draw.rotate(rect2, p.rotation1, origin=(p.pos_x, p.pos_y))
 
 
         # Define contacts
-        pocket1 = draw.rectangle(pocket_w, pocket_h)
-        pocket1 = draw.translate(pocket1, yoff=y2)
-        pocket2 = draw.rotate(pocket1, rotation1, origin=(0, 0))
-        pocket3 = draw.rotate(pocket1, rotation2, origin=(0, 0))
-        pocket4 = draw.rotate(pocket1, rotation3, origin=(0, 0))
-        pocket5 = draw.rotate(pocket1, rotation4, origin=(0, 0))
+        pocket0 = draw.rectangle(pocket_w, pocket_h)
+        pocket0 = draw.translate(pocket0, xoff=p.pos_x, yoff=(y2 + p.pos_y))
+        pocket1 = draw.rotate(pocket0, p.rotation1, origin=(p.pos_x, p.pos_y))
+        pocket2 = draw.rotate(pocket0, p.rotation2, origin=(p.pos_x, p.pos_y))
+        pocket3 = draw.rotate(pocket0, p.rotation3, origin=(p.pos_x, p.pos_y))
+        pocket4 = draw.rotate(pocket0, p.rotation4, origin=(p.pos_x, p.pos_y))
+        pocket5 = draw.rotate(pocket0, p.rotation5, origin=(p.pos_x, p.pos_y))
 
         #Connectors for the ground plane
-        pocketA = draw.rectangle(pocket_w*1.4, pocket_h)
-        pocketA = draw.translate(pocketA, yoff=y2)
-        pocketB = draw.rotate(pocketA, rotation1, origin=(0, 0))
-        pocketC = draw.rotate(pocketA, rotation2, origin=(0, 0))
-        pocketD = draw.rotate(pocketA, rotation3, origin=(0, 0))
-        pocketE = draw.rotate(pocketA, rotation4, origin=(0, 0))
-        circle_outer = draw.union(circle_outer,pocketA,pocketB,pocketC,pocketD,pocketE)
+        pocketZ = draw.rectangle(pocket_w*1.4, pocket_h)
+        pocketZ = draw.translate(pocketZ, xoff=p.pos_x, yoff=(y2 + p.pos_y))
+        pocketA = draw.rotate(pocketZ, p.rotation1, origin=(p.pos_x, p.pos_y))
+        pocketB = draw.rotate(pocketZ, p.rotation2, origin=(p.pos_x, p.pos_y))
+        pocketC = draw.rotate(pocketZ, p.rotation3, origin=(p.pos_x, p.pos_y))
+        pocketD = draw.rotate(pocketZ, p.rotation4, origin=(p.pos_x, p.pos_y))
+        pocketE = draw.rotate(pocketZ, p.rotation5, origin=(p.pos_x, p.pos_y))
+        if (p.number_of_connectors) ==0:
+            circle_outer = draw.union(circle_outer,pocketC)
+        elif (p.number_of_connectors) ==1:
+            circle_outer = draw.union(circle_outer,pocketA,pocketC)
+        elif (p.number_of_connectors) ==2:
+            circle_outer = draw.union(circle_outer,pocketA,pocketB,pocketC)
+        elif (p.number_of_connectors) ==3:
+            circle_outer = draw.union(circle_outer,pocketA,pocketB,pocketC,pocketD)
+        elif (p.number_of_connectors) ==4:
+            circle_outer = draw.union(circle_outer,pocketA,pocketB,pocketC,pocketD,pocketE)
 
         #junction
         pocket6 = draw.rectangle(p.junc_w, p.junc_h)
-        pocket6 = draw.translate(pocket6, yoff=1.2*(a3))
+        pocket6 = draw.translate(pocket6, yoff=(p.pos_y + 1.2*(p.radius)))
+        pocket6 = draw.rotate(pocket6, p.rotation1, origin=(p.pos_x, p.pos_y))
 
         # Define the final structure based on use input on how many connectors are needed
         if (p.number_of_connectors) ==0:
@@ -201,9 +206,14 @@ class StarQubit(QComponent):
 
         #########################################################################################
         # Add geometry and Qpin connections
-        p_in=(0,y2)
-        p_out=(0,1.25*y2)
+        p_in=(p.pos_y,(p.pos_y + p.radius))
+        p_out=(p.pos_y,1.25*(p.pos_y + p.radius))
         pins=draw.LineString([p_in, p_out])
+        pins1=draw.rotate(pins, p.rotation1, origin=(p.pos_x, p.pos_y))
+        pins2=draw.rotate(pins, p.rotation2, origin=(p.pos_x, p.pos_y))
+        pins3=draw.rotate(pins, p.rotation3, origin=(p.pos_x, p.pos_y))
+        pins4=draw.rotate(pins, p.rotation4, origin=(p.pos_x, p.pos_y))
+        pins5=draw.rotate(pins, p.rotation5, origin=(p.pos_x, p.pos_y))
 
         self.add_qgeometry('poly', {'circle': total},
                            subtract=p.subtract,
@@ -217,7 +227,6 @@ class StarQubit(QComponent):
                             layer=p.layer,
                             chip=p.chip)
 
-            pins3=draw.rotate(pins, rotation2, origin=(0, 0))
             self.add_pin('pin3',
                      pins3.coords,
                      width=0.01,
@@ -236,11 +245,10 @@ class StarQubit(QComponent):
                             chip=p.chip)
             # Add pin connections
             self.add_pin('pin1',
-                     pins.coords,
+                     pins1.coords,
                      width=0.01,
                      input_as_norm=True)
 
-            pins3=draw.rotate(pins, rotation2, origin=(0, 0))
             self.add_pin('pin3',
                      pins3.coords,
                      width=0.01,
@@ -265,19 +273,18 @@ class StarQubit(QComponent):
                             chip=p.chip)
             # Add pin connections
             self.add_pin('pin1',
-                        pins.coords,
-                        width=0.01,
-                        input_as_norm=True)
+                     pins1.coords,
+                     width=0.01,
+                     input_as_norm=True)
 
             # Define second pin
-            pins2=draw.rotate(pins, rotation1, origin=(0, 0))
+            
             self.add_pin('pin2',
                         pins2.coords,
                         width=0.01,
                         input_as_norm=True)
 
             # Define third pin
-            pins3=draw.rotate(pins, rotation2, origin=(0, 0))
             self.add_pin('pin3',
                         pins3.coords,
                         width=0.01,
@@ -306,26 +313,23 @@ class StarQubit(QComponent):
                             chip=p.chip)
             # Add pin connections
             self.add_pin('pin1',
-                        pins.coords,
-                        width=0.01,
-                        input_as_norm=True)
+                     pins1.coords,
+                     width=0.01,
+                     input_as_norm=True)
 
             # Define second pin
-            pins2=draw.rotate(pins, rotation1, origin=(0, 0))
             self.add_pin('pin2',
                         pins2.coords,
                         width=0.01,
                         input_as_norm=True)
 
             # Define third pin
-            pins3=draw.rotate(pins, rotation2, origin=(0, 0))
             self.add_pin('pin3',
                         pins3.coords,
                         width=0.01,
                         input_as_norm=True)
 
             # Define fourth pin
-            pins4=draw.rotate(pins, rotation3, origin=(0, 0))
             self.add_pin('pin4',
                         pins4.coords,
                         width=0.01,
@@ -359,33 +363,30 @@ class StarQubit(QComponent):
                             chip=p.chip)   
             # Add pin connections
             self.add_pin('pin1',
-                        pins.coords,
-                        width=0.01,
-                        input_as_norm=True)
+                     pins1.coords,
+                     width=0.01,
+                     input_as_norm=True)
 
             # Define second pin
-            pins2=draw.rotate(pins, rotation1, origin=(0, 0))
             self.add_pin('pin2',
                         pins2.coords,
                         width=0.01,
                         input_as_norm=True)
 
             # Define third pin
-            pins3=draw.rotate(pins, rotation2, origin=(0, 0))
             self.add_pin('pin3',
                         pins3.coords,
                         width=0.01,
                         input_as_norm=True)
 
             # Define fourth pin
-            pins4=draw.rotate(pins, rotation3, origin=(0, 0))
             self.add_pin('pin4',
                         pins4.coords,
                         width=0.01,
                         input_as_norm=True)
 
             # Define fifth pin
-            pins5=draw.rotate(pins, rotation4, origin=(0, 0))
+            
             self.add_pin('pin5',
                         pins5.coords,
                         width=0.01,
