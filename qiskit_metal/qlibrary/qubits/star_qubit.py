@@ -43,7 +43,6 @@ class StarQubit(QComponent):
         gap_readout='10um', # Gap between the star and the readout resonator
         connector_length='75um', # Length of the rectangular part of the connector
         trap_offset='20um', #The offset between coordinates of the trpezoid to define the side wall angle
-        junc_w = '120um', # junction width
         junc_h = '30um', # junction height  
         rotation1 = '0.0', # rotation for one of the coupling resonators '36.0', '0.0',
         rotation2 = '72.0', # rotation for the readout resonator '108.0','72.0',
@@ -136,10 +135,10 @@ class StarQubit(QComponent):
         trap_c = draw.Polygon(coords_readout)
         trap_c = draw.rotate(trap_c, p.rotation3, origin=(p.pos_x, p.pos_y))
         rect1 = draw.rectangle(pocket_w1, pocket_h1)
-        rect1 = draw.translate(rect1, xoff=b2, yoff=p.radius)
+        rect1 = draw.translate(rect1, xoff=p.pos_x + b2*1.1, yoff=p.radius)
         rect1 = draw.rotate(rect1, p.rotation1, origin=(p.pos_x, p.pos_y))
         rect2 = draw.rectangle(pocket_w1, pocket_h1)
-        rect2 = draw.translate(rect2, xoff=b1, yoff=p.radius)
+        rect2 = draw.translate(rect2, xoff=p.pos_x + b1*1.1, yoff=p.radius)
         rect2 = draw.rotate(rect2, p.rotation1, origin=(p.pos_x, p.pos_y))
 
 
@@ -172,8 +171,8 @@ class StarQubit(QComponent):
             circle_outer = draw.union(circle_outer,pocketA,pocketB,pocketC,pocketD,pocketE)
 
         #junction
-        pocket6 = draw.rectangle(p.junc_w, p.junc_h)
-        pocket6 = draw.translate(pocket6, yoff=(p.pos_y + 1.2*(p.radius)))
+        pocket6 = draw.LineString([[p.pos_x+b1-(pocket_h1/2), p.pos_y], [p.pos_x+b2+(pocket_h1/2), p.pos_y]])
+        pocket6 = draw.translate(pocket6, yoff=(p.pos_y + 1.15*(p.radius)))
         pocket6 = draw.rotate(pocket6, p.rotation1, origin=(p.pos_x, p.pos_y))
 
         # Define the final structure based on use input on how many connectors are needed
@@ -391,7 +390,7 @@ class StarQubit(QComponent):
                         pins5.coords,
                         width=0.01,
                         input_as_norm=True)
-        self.add_qgeometry('junction', {'circle': pocket6},
+        self.add_qgeometry('junction', {'poly': pocket6},
                            subtract=p.subtract,
                            helper=p.helper,
                            layer=p.layer,
