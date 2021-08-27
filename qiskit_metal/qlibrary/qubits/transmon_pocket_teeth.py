@@ -106,7 +106,7 @@ class TransmonPocketTeeth(BaseQubit):
         pos_y='0um',
         pad_gap='30um',
         inductor_width='20um',
-        pad_width='455um',
+        pad_width='400um',
         pad_height='90um',
         pocket_width='650um',
         pocket_height='650um',
