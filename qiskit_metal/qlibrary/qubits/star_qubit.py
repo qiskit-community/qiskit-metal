@@ -214,13 +214,13 @@ class StarQubit(QComponent):
         pins4=draw.rotate(pins, p.rotation4, origin=(p.pos_x, p.pos_y))
         pins5=draw.rotate(pins, p.rotation5, origin=(p.pos_x, p.pos_y))
 
-        self.add_qgeometry('poly', {'circle': total},
+        self.add_qgeometry('poly', {'circle1': total},
                            subtract=p.subtract,
                            helper=p.helper,
                            layer=p.layer,
                            chip=p.chip)
         if (p.number_of_connectors) ==0:
-            self.add_qgeometry('poly', {'circle': contact3},
+            self.add_qgeometry('poly', {'contact3': contact3},
                             subtract=p.subtract,
                             helper=p.helper,
                             layer=p.layer,
@@ -232,12 +232,12 @@ class StarQubit(QComponent):
                      input_as_norm=True)
         
         elif (p.number_of_connectors) ==1:
-            self.add_qgeometry('poly', {'circle': contact1},
+            self.add_qgeometry('poly', {'contact1': contact1},
                             subtract=p.subtract,
                             helper=p.helper,
                             layer=p.layer,
                             chip=p.chip)
-            self.add_qgeometry('poly', {'circle': contact3},
+            self.add_qgeometry('poly', {'contact3': contact3},
                             subtract=p.subtract,
                             helper=p.helper,
                             layer=p.layer,
@@ -255,17 +255,17 @@ class StarQubit(QComponent):
 
 
         elif (p.number_of_connectors) ==2:
-            self.add_qgeometry('poly', {'circle': contact1},
+            self.add_qgeometry('poly', {'contact1': contact1},
                             subtract=p.subtract,
                             helper=p.helper,
                             layer=p.layer,
                             chip=p.chip)
-            self.add_qgeometry('poly', {'circle': contact2},
+            self.add_qgeometry('poly', {'contact2': contact2},
                             subtract=p.subtract,
                             helper=p.helper,
                             layer=p.layer,
                             chip=p.chip)
-            self.add_qgeometry('poly', {'circle': contact3},
+            self.add_qgeometry('poly', {'contact3': contact3},
                             subtract=p.subtract,
                             helper=p.helper,
                             layer=p.layer,
@@ -290,22 +290,22 @@ class StarQubit(QComponent):
                         input_as_norm=True)
 
         elif (p.number_of_connectors) ==3:
-            self.add_qgeometry('poly', {'circle': contact1},
+            self.add_qgeometry('poly', {'contact1': contact1},
                             subtract=p.subtract,
                             helper=p.helper,
                             layer=p.layer,
                             chip=p.chip)
-            self.add_qgeometry('poly', {'circle': contact2},
+            self.add_qgeometry('poly', {'contact2': contact2},
                             subtract=p.subtract,
                             helper=p.helper,
                             layer=p.layer,
                             chip=p.chip)
-            self.add_qgeometry('poly', {'circle': contact3},
+            self.add_qgeometry('poly', {'contact3': contact3},
                             subtract=p.subtract,
                             helper=p.helper,
                             layer=p.layer,
                             chip=p.chip)
-            self.add_qgeometry('poly', {'circle': contact4},
+            self.add_qgeometry('poly', {'contact4': contact4},
                             subtract=p.subtract,
                             helper=p.helper,
                             layer=p.layer,
@@ -335,27 +335,27 @@ class StarQubit(QComponent):
                         input_as_norm=True)
 
         elif (p.number_of_connectors) ==4:
-            self.add_qgeometry('poly', {'circle': contact1},
+            self.add_qgeometry('poly', {'contact1': contact1},
                             subtract=p.subtract,
                             helper=p.helper,
                             layer=p.layer,
                             chip=p.chip)
-            self.add_qgeometry('poly', {'circle': contact2},
+            self.add_qgeometry('poly', {'contact2': contact2},
                             subtract=p.subtract,
                             helper=p.helper,
                             layer=p.layer,
                             chip=p.chip)
-            self.add_qgeometry('poly', {'circle': contact3},
+            self.add_qgeometry('poly', {'contact3': contact3},
                             subtract=p.subtract,
                             helper=p.helper,
                             layer=p.layer,
                             chip=p.chip)
-            self.add_qgeometry('poly', {'circle': contact4},
+            self.add_qgeometry('poly', {'contact4': contact4},
                             subtract=p.subtract,
                             helper=p.helper,
                             layer=p.layer,
                             chip=p.chip)
-            self.add_qgeometry('poly', {'circle': contact5},
+            self.add_qgeometry('poly', {'contact5': contact5},
                             subtract=p.subtract,
                             helper=p.helper,
                             layer=p.layer,
@@ -390,13 +390,14 @@ class StarQubit(QComponent):
                         pins5.coords,
                         width=0.01,
                         input_as_norm=True)
+                        
         self.add_qgeometry('junction', {'poly': pocket6},
                            subtract=p.subtract,
                            helper=p.helper,
                            layer=p.layer,
                            chip=p.chip,
                            width=p.junc_h)
-        self.add_qgeometry('poly', {'circle': circle_outer},
+        self.add_qgeometry('poly', {'circle2': circle_outer},
                            subtract=True,
                            helper=p.helper,
                            layer=p.layer,
