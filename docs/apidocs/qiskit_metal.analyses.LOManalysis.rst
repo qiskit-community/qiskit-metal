@@ -44,6 +44,7 @@ LOManalysis
       LOManalysis.print_run_args
       LOManalysis.run
       LOManalysis.run_lom
+      LOManalysis.run_sweep
       LOManalysis.save_run_args
       LOManalysis.set_data
       LOManalysis.setup_update

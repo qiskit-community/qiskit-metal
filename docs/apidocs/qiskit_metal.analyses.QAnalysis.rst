@@ -39,6 +39,7 @@ QAnalysis
       QAnalysis.get_data_labels
       QAnalysis.print_run_args
       QAnalysis.run
+      QAnalysis.run_sweep
       QAnalysis.save_run_args
       QAnalysis.set_data
       QAnalysis.setup_update

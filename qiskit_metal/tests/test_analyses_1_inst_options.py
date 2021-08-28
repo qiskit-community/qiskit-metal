@@ -29,7 +29,7 @@ from qiskit_metal.analyses.simulation.lumped_elements import LumpedElementsSim
 from qiskit_metal.analyses.simulation.eigenmode import EigenmodeSim
 from qiskit_metal.analyses.simulation.scattering_impedance import ScatteringImpedanceSim
 from qiskit_metal.analyses.hamiltonian.transmon_charge_basis import Hcpb
-from qiskit_metal.analyses.sweep_options.sweeping import Sweeping
+
 from qiskit_metal.tests.assertions import AssertionsMixin
 from qiskit_metal import designs
 
@@ -73,14 +73,6 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
             Hcpb(nlevels=15, Ej=13971.3, Ec=295.2, ng=0.001)
         except Exception:
             self.fail("Hcpb(nlevels=15, Ej=13971.3, Ec=295.2, ng=0.001) failed")
-
-    def test_analyses_instantiate_sweeping(self):
-        """Test instantiation of Sweeping in analytic_transmon.py."""
-        try:
-            design = designs.DesignPlanar()
-            Sweeping(design)
-        except Exception:
-            self.fail("Sweeping failed.")
 
     def test_analyses_instantiate_lumpedelementssim(self):
         """Test instantiation of LumpedElementsSim."""
@@ -150,7 +142,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         changed."""
         default_setup = QSimulation.default_setup
 
-        self.assertEqual(len(default_setup), 2)
+        self.assertEqual(len(default_setup), 3)
         self.assertEqual(default_setup['name'], "Setup")
         self.assertEqual(default_setup['reuse_selected_design'], True)
 

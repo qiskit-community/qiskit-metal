@@ -50,6 +50,7 @@ EPRanalysis
       EPRanalysis.run
       EPRanalysis.run_analysis
       EPRanalysis.run_epr
+      EPRanalysis.run_sweep
       EPRanalysis.save_run_args
       EPRanalysis.set_data
       EPRanalysis.setup_update
