@@ -11,7 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""This is the CircleCaterpillar module."""
+"""This is the StarQubit module."""
 
 from qiskit_metal import draw, Dict  # , QComponent
 from qiskit_metal.qlibrary.core import QComponent
