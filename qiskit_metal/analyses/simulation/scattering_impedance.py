@@ -72,12 +72,12 @@ class ScatteringImpedanceSim(QSimulation):
     data_labels = ['sweep_name', 'params_z', 'params_y', 'params_s']
     """Default data labels."""
 
-    def __init__(self, design: 'QDesign', renderer_name: str = 'hfss'):
+    def __init__(self, design: 'QDesign' = None, renderer_name: str = 'hfss'):
         """Compute drivenmodal and then extracts impedance, admittance and scattering paramters.
 
         Args:
             design (QDesign): Pointer to the main qiskit-metal design.
-                Used to access the QRenderer.
+                Used to access the QRenderer. Defaults to None.
             renderer_name (str, optional): Which renderer to use. Defaults to 'hfss'.
         """
         # set design and renderer

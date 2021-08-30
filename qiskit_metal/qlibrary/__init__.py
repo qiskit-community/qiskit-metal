@@ -116,6 +116,7 @@ Qubits
     TransmonPocket6
     TransmonPocketTeeth
     TunableCoupler01
+    SQUID_LOOP
 
 
 Submodules
@@ -170,5 +171,6 @@ if config.is_building_docs():
     from .qubits.transmon_pocket_cl import TransmonPocketCL
     from .qubits.transmon_pocket_6 import TransmonPocket6
     from .qubits.transmon_pocket_teeth import TransmonPocketTeeth
+    from .qubits.SQUID_loop import SQUID_LOOP
 
     from .tlines import anchored_path

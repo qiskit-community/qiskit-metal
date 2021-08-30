@@ -49,6 +49,7 @@ from qiskit_metal.qlibrary.qubits import transmon_pocket
 from qiskit_metal.qlibrary.qubits import transmon_pocket_cl
 from qiskit_metal.qlibrary.qubits.transmon_pocket_6 import TransmonPocket6
 from qiskit_metal.qlibrary.qubits.transmon_pocket_teeth import TransmonPocketTeeth
+from qiskit_metal.qlibrary.qubits.SQUID_loop import SQUID_LOOP
 from qiskit_metal.qlibrary.couplers.tunable_coupler_01 import TunableCoupler01
 from qiskit_metal.qlibrary import _template
 from qiskit_metal.tests.assertions import AssertionsMixin
@@ -455,6 +456,34 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
                          '0um')
         self.assertEqual(options['_default_connection_pads']['loc_W'], '+1')
         self.assertEqual(options['_default_connection_pads']['loc_H'], '+1')
+
+    def test_qlibrary_squid_loop_options(self):
+        """Test that default_options of squid loop were not accidentally changed."""
+        # Setup expected test results
+        design = designs.DesignPlanar()
+        squid_loop = SQUID_LOOP(design, 'my_name')
+        options = squid_loop.default_options
+
+        self.assertEqual(len(options), 19)
+        self.assertEqual(options['plate1_width'], '5.5um')
+        self.assertEqual(options['plate1_height'], '40um')
+        self.assertEqual(options['plate1_x_pos'], '0')
+        self.assertEqual(options['plate1_y_pos'], '0')
+        self.assertEqual(options['squid_gap'], '10um')
+        self.assertEqual(options['segment_a_length'], '10um')
+        self.assertEqual(options['segment_a_width'], '1um')
+        self.assertEqual(options['JJ_gap'], '0.5um')
+        self.assertEqual(options['segment_b_length'], '5um')
+        self.assertEqual(options['segment_b_width'], '1um')
+        self.assertEqual(options['segment_c_width'], '1um')
+        self.assertEqual(options['segment_d_length'], '10um')
+        self.assertEqual(options['segment_d_width'], '2um')
+        self.assertEqual(options['plate2_width'], '6um')
+        self.assertEqual(options['plate2_height'], '30um')
+        self.assertEqual(options['rotation'], '0.0')
+        self.assertEqual(options['x_pos'], '0.0')
+        self.assertEqual(options['y_pos'], '0.0')
+        self.assertEqual(options['layer'], '1')
 
     def test_qlibrary_tunable_coupler_01_options(self):
         """Test that default_options of tunable_coupler_01 were not accidentally changed."""
