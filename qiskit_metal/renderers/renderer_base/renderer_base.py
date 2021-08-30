@@ -22,6 +22,7 @@ from abc import abstractmethod, ABC
 
 from qiskit_metal.designs import is_design
 from qiskit_metal.qgeometries import QGeometryTables
+from qiskit_metal import designs
 
 from ... import Dict
 
@@ -162,23 +163,29 @@ class QRenderer(ABC):
 
         self.status = 'Not Init'
 
+        if design is None:
+            print(
+                "INFO: A Qiskit Metal design was not provided. Creating an empty design instance"
+                " to make the renderer proceed. (Developers: Remove need 4 dummy design, github Issue 631)"
+            )
+            design = designs.DesignPlanar({}, True)
         assert is_design(
             design), "Error, for the design argument you must provide a\
                                    a child instance of Metal QDesign class."
 
         self._design = design
-        self.initiated = False
-
-        if initiate:
-            self.start()
-
-        # Register as an instantiated renderer.
-        QRenderer.__instantiated_renderers__[self.name] = self
 
         # Options
         self._options = Dict()
         self.update_options(render_options=render_options,
                             render_template=render_template)
+
+        self.initiated = False
+        if initiate:
+            self.start()
+
+        # Register as an instantiated renderer.
+        QRenderer.__instantiated_renderers__[self.name] = self
 
         self.status = 'Init Completed'
 

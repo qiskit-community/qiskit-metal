@@ -14,8 +14,11 @@
 
 from abc import abstractmethod
 from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
-from qiskit_metal.analyses.core import QAnalysis
 from qiskit_metal import Dict
+from qiskit_metal import config
+
+from . import QAnalysis
+import importlib
 
 
 class QSimulation(QAnalysis):
@@ -38,25 +41,39 @@ class QSimulation(QAnalysis):
     data_labels = ['sim_setup_name']
     """Default data labels."""
 
-    def __init__(self, design: 'QDesign', renderer_name: str, *args, **kwargs):
+    def __init__(self,
+                 design: 'QDesign' = None,
+                 renderer_name: str = None,
+                 *args,
+                 **kwargs):
         """Variables and method needed from all those Analysis types that need a renderer.
 
         Args:
-            design (QDesign): The Metal design you are working on.
-            renderer_name (str): Name of the renderer you intend to use.
+            design (QDesign): The Metal design you are working on. Defaults to None.
+            renderer_name (str): Name of the renderer you intend to use. Defaults to None.
         """
         super().__init__(*args, **kwargs)
 
         # pointer to find renderers
         self.design = design
+        if self.design is None:
+            self.logger.info(
+                "You did not specify a design, so you will need to provide manual inputs"
+                " for the analysis.")
 
         # verify renderer existence
         self.renderer_name = renderer_name
-        self.renderer = self.select_renderer(renderer_name)
+        self.renderer = None
+        if self.renderer_name is None:
+            self.logger.info(
+                "You did not specify a renderer, so you are expected to manually provide "
+                " the analysis input information.")
+        else:
+            self.renderer = self.select_renderer(renderer_name)
 
     def select_renderer(self, renderer_name: str):
-        """Makes sure the renderer has been registered with qiskit-metal. If yes it sets the
-        analysis class variables to be able to reach it easily. Else it throws an error.
+        """Makes sure the renderer exists in qiskit-metal. If yes it sets the analysis 
+        class variables to be able to reach it easily. Else it throws an error.
 
         Args:
             renderer_name (str): Name of the renderer you intend to use.
@@ -64,17 +81,53 @@ class QSimulation(QAnalysis):
         Returns:
             (QRenderer): The renderer to be used in the analysis.
         """
-        # did user select a usable renderer (registered)?
         try:
-            renderer = self.design.renderers[renderer_name]
-            if not renderer:
-                self.design.logger.error(
-                    f"Cannot find the renderer \"{renderer_name}\" registered with qiskit-metal"
-                )
+            if self.design is None:
+                # we want to setup a renderer from scratch
+
+                # renderer_ref will be {} id renderer_name does not exist
+                renderer_ref = config.renderers_to_load[renderer_name]
+                if not renderer_ref:
+                    raise KeyError  #needed because this is a Dict, not a dict
+                if not (renderer_ref.path_name and renderer_ref.class_name):
+                    self.logger.warning(
+                        f'The renderer={renderer_name} is not properly configured in'
+                        ' config.renderers_to_load. Please add the missing information'
+                        ' (Tip: needs to have both a path_name and a class_name keys).'
+                    )
+                    return None
+
+                # if the path_name exists, grab the class
+                if importlib.util.find_spec(renderer_ref.path_name):
+                    class_renderer = getattr(
+                        importlib.import_module(renderer_ref.path_name),
+                        renderer_ref.class_name, None)
+
+                    # if the class_name exists, then create the renderer object
+                    if class_renderer is not None:
+                        renderer = class_renderer(None)
+                    else:
+                        self.logger.warning(
+                            f'Could not find the class={renderer_ref.class_name} '
+                            f'in the renderer={renderer_name}')
+                else:
+                    self.logger.warning(
+                        f'Could not find the renderer={renderer_name} '
+                        f'at the path={renderer_ref.path_name}.')
+
+            else:
+                # the renderer would have been already registered within the design object
+                renderer = self.design.renderers[renderer_name]
+                if not renderer:
+                    self.design.logger.error(
+                        f"Cannot find the renderer \"{renderer_name}\" registered with qiskit-metal"
+                    )
+                    return None
         except KeyError:
             self.design.logger.error(
                 f"Cannot find a renderer {renderer_name} registered with qiskit-metal"
             )
+            return None
         return renderer
 
     def start(self):
@@ -101,6 +154,8 @@ class QSimulation(QAnalysis):
         Returns:
             (str): Final design name that the renderer used.
         """
+        if self.design is None:
+            return self.renderer.get_active_design_name()
         # need a default renderer-design name. Use the name of the metal-design.
         base_name = self.design.name
         # if a renderer-design name was provided as input to run(), use that as a base
