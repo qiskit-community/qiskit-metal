@@ -254,6 +254,13 @@ class LabeledNdarray(np.ndarray):
         ]
         return obj
 
+    def to_dataframe(self):
+        if len(self.shape) == 1 or self.shape[0] != self.shape[1]:
+            raise ValueError(
+                'Only square matrices are labeled and can be exported to dataframe.'
+            )
+        return _make_cmat_df(self, self.labels)
+
     def __array_finalize__(self, obj):
         if obj is None:
             return
