@@ -29,7 +29,7 @@ class TransmonPocketTeeth(BaseQubit):
 
     Description:
         Create a standard pocket transmon qubit for a ground plane with teeth
-        Here we use the 'Teeth' shape which ones connected to top pad and one connection pad.
+        Here we use the 'Teeth' shape which ones connected to the top pad and one connection pad.
 
     Options:
         Convention: Values (unless noted) are strings with units included,
@@ -106,7 +106,7 @@ class TransmonPocketTeeth(BaseQubit):
         pos_y='0um',
         pad_gap='30um',
         inductor_width='20um',
-        pad_width='455um',
+        pad_width='400um',
         pad_height='90um',
         pocket_width='650um',
         pocket_height='650um',
@@ -114,15 +114,15 @@ class TransmonPocketTeeth(BaseQubit):
         '150um',  # coupled_pad belongs to the teeth part and both teeth will have the same height. Teeth are symetric. 
         coupled_pad_width=
         '20um',  # Again for the teeth, the part on the same pad will have the same width. 
-        coupled_pad_gap='40um',  # One can arrange the gap between the teeth.
+        coupled_pad_gap='50um',  # One can arrange the gap between the teeth.
 
         # 90 has dipole aligned along the +X axis,
         # while 0 has dipole aligned along the +Y axis
         orientation='0',
         _default_connection_pads=Dict(
             pad_gap='15um',
-            pad_width='125um',
-            pad_height='30um',
+            pad_width='20um',
+            pad_height='150um',
             pad_cpw_shift='0um',
             pad_cpw_extent='25um',
             cpw_width='10um',

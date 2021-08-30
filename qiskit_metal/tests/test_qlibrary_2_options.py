@@ -426,21 +426,21 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['pos_y'], '0um')
         self.assertEqual(options['pad_gap'], '30um')
         self.assertEqual(options['inductor_width'], '20um')
-        self.assertEqual(options['pad_width'], '455um')
+        self.assertEqual(options['pad_width'], '400um')
         self.assertEqual(options['pad_height'], '90um')
         self.assertEqual(options['pocket_width'], '650um')
         self.assertEqual(options['pocket_height'], '650um')
         self.assertEqual(options['coupled_pad_height'], '150um')
         self.assertEqual(options['coupled_pad_width'], '20um')
-        self.assertEqual(options['coupled_pad_gap'], '40um')
+        self.assertEqual(options['coupled_pad_gap'], '50um')
         self.assertEqual(options['orientation'], '0')
 
         self.assertEqual(len(options['_default_connection_pads']), 12)
         self.assertEqual(options['_default_connection_pads']['pad_gap'], '15um')
         self.assertEqual(options['_default_connection_pads']['pad_width'],
-                         '125um')
+                         '20um')
         self.assertEqual(options['_default_connection_pads']['pad_height'],
-                         '30um')
+                         '150um')
         self.assertEqual(options['_default_connection_pads']['pad_cpw_shift'],
                          '0um')
         self.assertEqual(options['_default_connection_pads']['pad_cpw_extent'],
