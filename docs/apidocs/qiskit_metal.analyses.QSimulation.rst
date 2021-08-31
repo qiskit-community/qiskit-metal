@@ -43,6 +43,7 @@ QSimulation
       QSimulation.print_run_args
       QSimulation.run
       QSimulation.run_sim
+      QSimulation.run_sweep
       QSimulation.save_run_args
       QSimulation.save_screenshot
       QSimulation.select_renderer

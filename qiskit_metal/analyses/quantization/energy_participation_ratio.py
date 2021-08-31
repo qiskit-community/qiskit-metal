@@ -61,17 +61,20 @@ class EPRanalysis(QAnalysis):
     """Default data labels."""
 
     # TODO: renderer_name should default to None. Need to create a set renderer method
-    def __init__(self, design: 'QDesign', renderer_name: str = 'hfss'):
+    def __init__(self, design: 'QDesign' = None, renderer_name: str = None):
         """Performs Energy Participation Ratio (EPR) analysis on a simulated or
         user-provided eigenmode matrix.
 
         Args:
             design (QDesign): Pointer to the main qiskit-metal design.
-                Used to access the QRenderer.
-            renderer_name (str, optional): Which renderer to use. Defaults to 'hfss'.
+                Used to access the QRenderer. Defaults to None.
+            renderer_name (str, optional): Which renderer to use. Valid entries: 'hfss'.
+                Defaults to None.
         """
-        # set design and renderer
-        self.sim = None if renderer_name is None else EigenmodeSim(
+        # QAnalysis are expected to either run simulation or use pre-saved sim outputs
+        # we use a Dict() to store the sim outputs previously saved. Its key names need
+        # to match those found in the correspondent simulation class.
+        self.sim = Dict() if renderer_name is None else EigenmodeSim(
             design, renderer_name)
         super().__init__()
 
@@ -153,7 +156,8 @@ class EPRanalysis(QAnalysis):
         Returns:
             (dict): Pass numbers (keys) and respective energy participation ratio (values).
         """
-        self.sim.run_sim(*args, **kwargs)
+        if isinstance(self.sim, EigenmodeSim):
+            self.sim.run(*args, **kwargs)
         return self.run_epr()
 
     def run_epr(self, no_junctions=False):
@@ -268,3 +272,12 @@ class EPRanalysis(QAnalysis):
             'rect': rect,
             'line': line
         })
+
+    def load_simulation_data(self, data_name: str, data):
+        """Load simulation data for the following analysis. This will override any data found
+
+        Args:
+            data_name (str): name of the variable
+            data (Any): simulation output
+        """
+        self.sim[data_name] = data

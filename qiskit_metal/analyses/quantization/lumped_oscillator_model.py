@@ -18,11 +18,9 @@ from pint import UnitRegistry
 from pyEPR.calcs.convert import Convert
 
 from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
-from ..core import QAnalysis
-from ..simulation import LumpedElementsSim
-
-from ... import Dict
-from ... import config
+from qiskit_metal.analyses.core import QAnalysis
+from qiskit_metal.analyses.simulation import LumpedElementsSim
+from qiskit_metal import Dict, config
 
 if not config.is_building_docs():
     from .lumped_capacitive import extract_transmon_coupled_Noscillator
@@ -55,16 +53,19 @@ class LOManalysis(QAnalysis):
     data_labels = ['lumped_oscillator', 'lumped_oscillator_all']
     """Default data labels."""
 
-    def __init__(self, design: 'QDesign', renderer_name: str = 'q3d'):
+    def __init__(self, design: 'QDesign' = None, renderer_name: str = None):
         """Initialize the Lumped Oscillator Model analysis.
 
         Args:
             design (QDesign): Pointer to the main qiskit-metal design.
-                Used to access the QRenderer.
-            renderer_name (str, optional): Which renderer to use. Defaults to 'q3d'.
+                Used to access the QRenderer. Defaults to None.
+            renderer_name (str, optional): Which renderer to use. Valid entries: 'q3d'.
+                Defaults to None.
         """
-        # set design and renderer
-        self.sim = None if renderer_name is None else LumpedElementsSim(
+        # QAnalysis are expected to either run simulation or use pre-saved sim outputs
+        # we use a Dict() to store the sim outputs previously saved. Its key names need
+        # to match those found in the correspondent simulation class.
+        self.sim = Dict() if renderer_name is None else LumpedElementsSim(
             design, renderer_name)
         super().__init__()
 
@@ -141,10 +142,10 @@ class LOManalysis(QAnalysis):
 
         s = self.setup
 
-        if self.sim.capacitance_matrix is None:
+        if not self.sim.capacitance_matrix:
             self.logger.warning(
                 'Please initialize the capacitance_matrix before executing this method.'
-            )
+                '`self.sim.capacitance_matrix = pd.DataFrame(...)`')
             return
         if not self.sim.capacitance_all_passes:
             self.sim.capacitance_all_passes[
@@ -205,3 +206,12 @@ class LOManalysis(QAnalysis):
             self.run_lom(*args, **kwargs)
         # TODO: copy plot_convergence_main() from pyEPR and move it here
         self.sim.renderer.plot_convergence_chi(self.lumped_oscillator_all)
+
+    def load_simulation_data(self, data_name: str, data):
+        """Load simulation data for the following analysis. This will override any data found
+
+        Args:
+            data_name (str): name of the variable
+            data (Any): simulation output
+        """
+        self.sim[data_name] = data

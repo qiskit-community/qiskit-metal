@@ -46,6 +46,7 @@ LumpedElementsSim
       LumpedElementsSim.print_run_args
       LumpedElementsSim.run
       LumpedElementsSim.run_sim
+      LumpedElementsSim.run_sweep
       LumpedElementsSim.save_run_args
       LumpedElementsSim.save_screenshot
       LumpedElementsSim.select_renderer

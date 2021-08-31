@@ -221,15 +221,17 @@ class QAnsysRenderer(QRendererAnalysis):
             initiate (bool, optional): True to initiate the renderer. Defaults to True.
             options (Dict, optional):  Used to override all options. Defaults to None.
         """
+        # Variables to connect to Ansys
+        self._rapp = None
+        self._rdesktop = None
+
+        # Initialize renderer
         super().__init__(design=design, initiate=initiate, options=options)
 
         # Default behavior is to render all components unless a strict subset was chosen
         self.render_everything = True
 
         self._pinfo = None
-        # Connected to Ansys variables
-        self._rapp = None
-        self._rdesktop = None
 
     @property
     def initialized(self):
@@ -392,15 +394,15 @@ class QAnsysRenderer(QRendererAnalysis):
                 if not project_name else project_name,
                 design_name=self._options['design_name']
                 if not design_name else design_name)
-        except pythoncom.com_error as error:
+        except pythoncom.com_error as error:  # pylint: disable=no-member
             print("com_error: ", error)
             hr, msg, exc, arg = error.args
             if msg == "Invalid class string":  # and hr == -2147221005 and exc is None and arg is None
                 self.logger.error(
                     "pyEPR cannot find the Ansys COM. Ansys installation might not have registered it. "
-                    "To verify if this is the problem, execute the following: ",
-                    "`print(win32com.client.Dispatch('AnsoftHfss.HfssScriptInterface'))` ",
-                    "If the print-out is not `<COMObject ...>` then Ansys COM is not registered, ",
+                    "To verify if this is the problem, execute the following: "
+                    "`print(win32com.client.Dispatch('AnsoftHfss.HfssScriptInterface'))` "
+                    "If the print-out is not `<COMObject ...>` then Ansys COM is not registered, "
                     "and you will need to look into correcting your Ansys installation."
                 )
             raise error
@@ -451,6 +453,16 @@ class QAnsysRenderer(QRendererAnalysis):
                 'It does not look like you are connected to Ansys. Please use connect_ansys() '
                 'and make sure self.pinfo is set. There must be a project open in Ansys first.'
             )
+
+    def get_active_design_name(self):
+        """Returns the name of the Ansys Design Object
+
+        Returns:
+            (str): Name of the active Ansys Design
+        """
+        if self.pinfo:
+            if self.pinfo.project:
+                return self.pinfo.project.get_active_design().name
 
     @property
     def pinfo(self) -> epr.ProjectInfo:
@@ -829,6 +841,11 @@ class QAnsysRenderer(QRendererAnalysis):
         #TODO: only use activate_ansys_setup?
         if self.pinfo:
             if self.pinfo.design:
+                if 'reuse_setup' in other_setup:
+                    if other_setup['reuse_setup']:
+                        # delete_setup will check if setup exists, before deleting.
+                        self.pinfo.design.delete_setup(name)
+
                 if self.pinfo.design.solution_type == 'Eigenmode':
                     setup = self.add_eigenmode_setup(name, **other_setup)
                 elif self.pinfo.design.solution_type == 'DrivenModal':
@@ -843,6 +860,7 @@ class QAnsysRenderer(QRendererAnalysis):
         Returns:
             str: Name of the setup that has been updated
         """
+
         setup = self.new_ansys_setup(**kwargs)  #TODO: activate_ansys_setup?
         return setup.name
 
