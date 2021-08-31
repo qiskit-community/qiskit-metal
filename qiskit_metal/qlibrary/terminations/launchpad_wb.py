@@ -25,7 +25,7 @@ from qiskit_metal.qlibrary.core import QComponent
 # Define class and options for the launch geometry
 
 
-class LaunchpadWirebond(QComponent):
+class LaunchpadWirebondFreeShape(QComponent):
     """Launch pad to feed/read signals to/from the chip.
 
     Inherits 'QComponent' class.
@@ -64,9 +64,12 @@ class LaunchpadWirebond(QComponent):
 
     Default Options:
         * layer: '1'
-        * trace_width: 'cpw_width' -- Center trace width of the terminating transmission line
-        * trace_gap: 'cpw_gap' -- Gap of the transmission line
-        * lead_length: '25um' -- Length of the cpw line attached to the end of the launch pad
+        * trace_width: Width of the trace of the launch pad
+        * trace_height: Height of the trace of the launch pad
+        * trace_gap: Gap of the launch pad (the gray area)
+        * lead_length: -- 'cpw_width' -- Length of the cpw line attached to the end of the launch pad, should be same as cpw_width
+        * neck_height: Height of the necking part
+        * cpw_gap: -- 'cpw_gap' -- gap of the transmission line
         * pos_x: '0um' -- Where the center of the pocket should be located on chip
         * pos_y: '0um' -- Where the center of the pocket should be located on chip
         * orientation: '0' -- 90 for 90 degree turn
@@ -74,9 +77,12 @@ class LaunchpadWirebond(QComponent):
 
     default_options = Dict(
         layer='1',
-        trace_width='cpw_width',
-        trace_gap='cpw_gap',
-        lead_length='25um',
+        trace_width ='300um',
+        trace_height='300um',
+        trace_gap   ='300um',
+        lead_length ='cpw_width',
+        neck_height ='200um',
+        cpw_gap     ='cpw_gap',
         pos_x='0um',
         pos_y='0um',
         orientation='0'  #90 for 90 degree turn
@@ -90,37 +96,43 @@ class LaunchpadWirebond(QComponent):
         component."""
 
         p = self.p
-        trace_width = p.trace_width
-        trace_width_half = trace_width / 2
-        lead_length = p.lead_length
+
+        trace_width  = p.trace_width
+        trace_height = p.trace_height
+        trace_gap    = p.trace_gap
+        lead_length  = p.lead_length
+        neck_height  = p.neck_height 
+        cpw_gap = p.cpw_gap
+        
         trace_gap = p.trace_gap
-        #########################################################
+                #########################################################
 
         # Geometry of main launch structure
-        launch_pad = draw.Polygon([(0, trace_width_half),
-                                   (-.122, trace_width_half + .035),
-                                   (-.202, trace_width_half + .035),
-                                   (-.202, -trace_width_half - .035),
-                                   (-.122, -trace_width_half - .035),
-                                   (0, -trace_width_half),
-                                   (lead_length, -trace_width_half),
-                                   (lead_length, +trace_width_half),
-                                   (0, trace_width_half)])
+        # The shape is a polygon and we prepare this point as orientation is 0 degree
+        launch_pad = draw.Polygon([(0, lead_length/2.),
+                                   (-neck_height, trace_width/2.),
+                                   (-(trace_height+neck_height), trace_width/2.),
+                                   (-(trace_height+neck_height), -trace_width/2.),
+                                   (-neck_height, -trace_width/2.),
+                                   (0, -lead_length/2.)
+                                   ]
+                                   )
 
         # Geometry pocket (gap)
-        pocket = draw.Polygon([(0, trace_width_half + trace_gap),
-                               (-.122, trace_width_half + trace_gap + .087),
-                               (-.25, trace_width_half + trace_gap + .087),
-                               (-.25, -trace_width_half - trace_gap - .087),
-                               (-.122, -trace_width_half - trace_gap - .087),
-                               (0, -trace_width_half - trace_gap),
-                               (lead_length, -trace_width_half - trace_gap),
-                               (lead_length, +trace_width_half + trace_gap),
-                               (0, trace_width_half + trace_gap)])
+        # Same way applied for pocket
+        pocket = draw.Polygon([(0, lead_length/2.+cpw_gap),
+                               (-neck_height, (trace_width+trace_gap)/2.),
+                               (-(trace_height+neck_height+trace_gap/2), (trace_width+trace_gap)/2.),
+                               (-(trace_height+neck_height+trace_gap/2), -(trace_width+trace_gap)/2.),
+                               (-neck_height, -(trace_width+trace_gap)/2.),
+                               (0, -(lead_length/2.+cpw_gap))
+                              ]
+                            )
 
         # These variables are used to graphically locate the pin locations
-        main_pin_line = draw.LineString([(lead_length, trace_width_half),
-                                         (lead_length, -trace_width_half)])
+        # Since there is no coupled pad or anything else pin should be on the launch pad. Because transmission line will start ecxatly from the beginnig point of pin
+        main_pin_line = draw.LineString([(0, lead_length/2.),
+                                         (0, -lead_length/2.)])
 
         # Create polygon object list
         polys1 = [main_pin_line, launch_pad, pocket]
