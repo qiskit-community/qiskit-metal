@@ -25,7 +25,7 @@ from qiskit_metal.qlibrary.core import QComponent
 # Define class and options for the launch geometry
 
 
-class LaunchpadWirebondFreeShape(QComponent):
+class LaunchpadWirebond(QComponent):
     """Launch pad to feed/read signals to/from the chip.
 
     Inherits 'QComponent' class.
@@ -77,12 +77,12 @@ class LaunchpadWirebondFreeShape(QComponent):
 
     default_options = Dict(
         layer='1',
-        trace_width ='300um',
+        trace_width='300um',
         trace_height='300um',
-        trace_gap   ='300um',
-        lead_length ='cpw_width',
-        neck_height ='200um',
-        cpw_gap     ='cpw_gap',
+        trace_gap='300um',
+        lead_length='cpw_width',
+        neck_height='200um',
+        cpw_gap='cpw_gap',
         pos_x='0um',
         pos_y='0um',
         orientation='0'  #90 for 90 degree turn
@@ -97,42 +97,40 @@ class LaunchpadWirebondFreeShape(QComponent):
 
         p = self.p
 
-        trace_width  = p.trace_width
+        trace_width = p.trace_width
         trace_height = p.trace_height
-        trace_gap    = p.trace_gap
-        lead_length  = p.lead_length
-        neck_height  = p.neck_height 
-        cpw_gap = p.cpw_gap
-        
         trace_gap = p.trace_gap
-                #########################################################
+        lead_length = p.lead_length
+        neck_height = p.neck_height
+        cpw_gap = p.cpw_gap
+
+        trace_gap = p.trace_gap
+        #########################################################
 
         # Geometry of main launch structure
         # The shape is a polygon and we prepare this point as orientation is 0 degree
-        launch_pad = draw.Polygon([(0, lead_length/2.),
-                                   (-neck_height, trace_width/2.),
-                                   (-(trace_height+neck_height), trace_width/2.),
-                                   (-(trace_height+neck_height), -trace_width/2.),
-                                   (-neck_height, -trace_width/2.),
-                                   (0, -lead_length/2.)
-                                   ]
-                                   )
+        launch_pad = draw.Polygon([
+            (0, lead_length / 2.), (-neck_height, trace_width / 2.),
+            (-(trace_height + neck_height), trace_width / 2.),
+            (-(trace_height + neck_height), -trace_width / 2.),
+            (-neck_height, -trace_width / 2.), (0, -lead_length / 2.)
+        ])
 
         # Geometry pocket (gap)
         # Same way applied for pocket
-        pocket = draw.Polygon([(0, lead_length/2.+cpw_gap),
-                               (-neck_height, (trace_width+trace_gap)/2.),
-                               (-(trace_height+neck_height+trace_gap/2), (trace_width+trace_gap)/2.),
-                               (-(trace_height+neck_height+trace_gap/2), -(trace_width+trace_gap)/2.),
-                               (-neck_height, -(trace_width+trace_gap)/2.),
-                               (0, -(lead_length/2.+cpw_gap))
-                              ]
-                            )
+        pocket = draw.Polygon([(0, lead_length / 2. + cpw_gap),
+                               (-neck_height, (trace_width + trace_gap) / 2.),
+                               (-(trace_height + neck_height + trace_gap / 2),
+                                (trace_width + trace_gap) / 2.),
+                               (-(trace_height + neck_height + trace_gap / 2),
+                                -(trace_width + trace_gap) / 2.),
+                               (-neck_height, -(trace_width + trace_gap) / 2.),
+                               (0, -(lead_length / 2. + cpw_gap))])
 
         # These variables are used to graphically locate the pin locations
         # Since there is no coupled pad or anything else pin should be on the launch pad. Because transmission line will start ecxatly from the beginnig point of pin
-        main_pin_line = draw.LineString([(0, lead_length/2.),
-                                         (0, -lead_length/2.)])
+        main_pin_line = draw.LineString([(0, lead_length / 2.),
+                                         (0, -lead_length / 2.)])
 
         # Create polygon object list
         polys1 = [main_pin_line, launch_pad, pocket]
