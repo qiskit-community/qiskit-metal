@@ -759,11 +759,14 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         launch_v1 = LaunchpadWirebond(design, 'my_name')
         options = launch_v1.default_options
 
-        self.assertEqual(len(options), 7)
+        self.assertEqual(len(options), 10)
         self.assertEqual(options['layer'], '1')
-        self.assertEqual(options['trace_width'], 'cpw_width')
-        self.assertEqual(options['trace_gap'], 'cpw_gap')
-        self.assertEqual(options['lead_length'], '25um')
+        self.assertEqual(options['trace_width'], '300um')
+        self.assertEqual(options['trace_height'], '300um')
+        self.assertEqual(options['trace_gap'], '300um')
+        self.assertEqual(options['lead_length'], 'cpw_width')
+        self.assertEqual(options['neck_height'], '200um')
+        self.assertEqual(options['cpw_gap'], 'cpw_gap')
         self.assertEqual(options['pos_x'], '0um')
         self.assertEqual(options['pos_y'], '0um')
         self.assertEqual(options['orientation'], '0')
