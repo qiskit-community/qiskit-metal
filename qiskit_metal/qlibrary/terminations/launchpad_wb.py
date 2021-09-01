@@ -135,8 +135,7 @@ class LaunchpadWirebond(QComponent):
                                (0, -(trace_width_half + trace_gap)),
                                (lead_length, -(trace_width_half + trace_gap)),
                                (lead_length, trace_width_half + trace_gap),
-                               (0, trace_width_half + trace_gap)
-                               ])
+                               (0, trace_width_half + trace_gap)])
 
         # These variables are used to graphically locate the pin locations
         main_pin_line = draw.LineString([(lead_length, trace_width_half),
