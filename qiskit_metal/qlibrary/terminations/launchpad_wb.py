@@ -103,6 +103,9 @@ class LaunchpadWirebond(QComponent):
         pad_height = p.pad_height
         pad_gap = p.pad_gap
         trace_width = p.trace_width
+        trace_width_half = trace_width / 2.
+        pad_width_half = pad_width / 2.
+        lead_length = p.lead_length
         taper_height = p.taper_height
         trace_gap = p.trace_gap
 
@@ -112,27 +115,32 @@ class LaunchpadWirebond(QComponent):
         # Geometry of main launch structure
         # The shape is a polygon and we prepare this point as orientation is 0 degree
         launch_pad = draw.Polygon([
-            (0, trace_width / 2.), (-taper_height, pad_width / 2.),
-            (-(pad_height + taper_height), pad_width / 2.),
-            (-(pad_height + taper_height), -pad_width / 2.),
-            (-taper_height, -pad_width / 2.), (0, -trace_width / 2.)
+            (0, trace_width_half), (-taper_height, pad_width_half),
+            (-(pad_height + taper_height), pad_width_half),
+            (-(pad_height + taper_height), -pad_width_half),
+            (-taper_height, -pad_width_half), (0, -trace_width_half),
+            (lead_length, -trace_width_half), (lead_length, trace_width_half),
+            (0, trace_width_half)
         ])
 
         # Geometry pocket (gap)
         # Same way applied for pocket
-        pocket = draw.Polygon([(0, trace_width / 2. + trace_gap),
-                               (-taper_height, (pad_width / 2.) + pad_gap),
+        pocket = draw.Polygon([(0, trace_width_half + trace_gap),
+                               (-taper_height, pad_width_half + pad_gap),
                                (-(pad_height + taper_height + pad_gap),
-                                (pad_width / 2.) + pad_gap),
+                                pad_width_half + pad_gap),
                                (-(pad_height + taper_height + pad_gap),
-                                -((pad_width / 2.) + pad_gap)),
-                               (-taper_height, -((pad_width / 2.) + pad_gap)),
-                               (0, -(trace_width / 2. + trace_gap))])
+                                -(pad_width_half + pad_gap)),
+                               (-taper_height, -(pad_width_half + pad_gap)),
+                               (0, -(trace_width_half + trace_gap)),
+                               (lead_length, -(trace_width_half + trace_gap)),
+                               (lead_length, trace_width_half + trace_gap),
+                               (0, trace_width_half + trace_gap)
+                               ])
 
         # These variables are used to graphically locate the pin locations
-        # Since there is no coupled pad or anything else pin should be on the launch pad. Because transmission line will start ecxatly from the beginnig point of pin
-        main_pin_line = draw.LineString([(0, trace_width / 2.),
-                                         (0, -trace_width / 2.)])
+        main_pin_line = draw.LineString([(lead_length, trace_width_half),
+                                         (lead_length, -trace_width_half)])
 
         # Create polygon object list
         polys1 = [main_pin_line, launch_pad, pocket]
@@ -153,4 +161,4 @@ class LaunchpadWirebond(QComponent):
                            layer=p.layer)
 
         # Generates the pins
-        self.add_pin('tie', main_pin_line.coords, pad_width)
+        self.add_pin('tie', main_pin_line.coords, trace_width)
