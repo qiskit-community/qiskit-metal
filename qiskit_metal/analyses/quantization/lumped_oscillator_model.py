@@ -148,9 +148,9 @@ class LOManalysis(QAnalysis):
                     'Please initialize the capacitance_matrix before executing this method.'
                     '`self.sim.capacitance_matrix = pd.DataFrame(...)`')
                 return
-        if self.sim.capacitance_all_passes in ({}, None):
-            self.sim.capacitance_all_passes[
-                1] = self.sim.capacitance_matrix.values
+            if self.sim.capacitance_all_passes == {}:
+                self.sim.capacitance_all_passes[
+                    1] = self.sim.capacitance_matrix.values
 
         ureg = UnitRegistry()
         ic_amps = Convert.Ic_from_Lj(s.junctions.Lj, 'nH', 'A')
