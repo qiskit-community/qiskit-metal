@@ -21,6 +21,8 @@ Join the [Qiskit](https://ibm.co/joinqiskitslack) `#metal` slack channel to requ
 | May 13 | Tutorial | [Quantum Analysis 101](https://youtu.be/QIr2Rlj1cpI) |
 | May 20 | Tutorial | [Introduction to the transmon qubit](https://youtu.be/6KgOaU1BAxg) |
 | May 27 | Tutorial | [Physics of the Cooper Pair Box Transmon](https://youtu.be/Ql8AS4Iay-Q) |
-| June 3 | Tutorial | <ul><li>Parametric Sweeps</li><li>Github contribution how-to</li> |
-| June 10 | >Break< | No tutorial |
-| June 17 &rightarrow; July 29 | TBD | Topics to schedule:<ul><li>Analysis deep dives (as needed)</li><li>QRenderers: How to use, modify and add new renderers</li><li>...</li></ul> |
+| June 3 | Tutorial | <ul><li>[Parametric Sweeps](https://youtu.be/ZRsk5dvH1K0)</li><li>[Github contribution how-to](https://youtu.be/rJWo1Pt19vI)</li> |
+| June 10 &rightarrow; July 8 | >Break< | No tutorials |
+| July 15 | Tutorial | <ul><li>[Energy Participation Ratio in Qiskit Metal](https://youtu.be/HJNKG5z6Jys)</li><li>[New Feature sneak peek - LOM analysis for composite systems](https://youtu.be/XpnTJSBjb8E)</li><li>[New Feature - Export design to script](https://youtu.be/JpoD3SjObHc)</li></ul> |
+| July 22 &rightarrow; Sept 16 | >Break< | No tutorials |
+| Sept 23 &rightarrow; ... | TBD | Topics to schedule:<ul><li>Analysis deep dives (as needed)</li><li>QRenderers: How to use, modify and add new renderers</li><li>Making a component from scratch</li><li>New analysis render structure and architecture</li><li>...</li></ul> |
