@@ -49,6 +49,7 @@ from qiskit_metal.qlibrary.qubits import transmon_pocket
 from qiskit_metal.qlibrary.qubits import transmon_pocket_cl
 from qiskit_metal.qlibrary.qubits.transmon_pocket_6 import TransmonPocket6
 from qiskit_metal.qlibrary.qubits.transmon_pocket_teeth import TransmonPocketTeeth
+from qiskit_metal.qlibrary.qubits.SQUID_loop import SQUID_LOOP
 from qiskit_metal.qlibrary.couplers.tunable_coupler_01 import TunableCoupler01
 from qiskit_metal.qlibrary import _template
 from qiskit_metal.tests.assertions import AssertionsMixin
@@ -425,21 +426,21 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['pos_y'], '0um')
         self.assertEqual(options['pad_gap'], '30um')
         self.assertEqual(options['inductor_width'], '20um')
-        self.assertEqual(options['pad_width'], '455um')
+        self.assertEqual(options['pad_width'], '400um')
         self.assertEqual(options['pad_height'], '90um')
         self.assertEqual(options['pocket_width'], '650um')
         self.assertEqual(options['pocket_height'], '650um')
         self.assertEqual(options['coupled_pad_height'], '150um')
         self.assertEqual(options['coupled_pad_width'], '20um')
-        self.assertEqual(options['coupled_pad_gap'], '40um')
+        self.assertEqual(options['coupled_pad_gap'], '50um')
         self.assertEqual(options['orientation'], '0')
 
         self.assertEqual(len(options['_default_connection_pads']), 12)
         self.assertEqual(options['_default_connection_pads']['pad_gap'], '15um')
         self.assertEqual(options['_default_connection_pads']['pad_width'],
-                         '125um')
+                         '20um')
         self.assertEqual(options['_default_connection_pads']['pad_height'],
-                         '30um')
+                         '150um')
         self.assertEqual(options['_default_connection_pads']['pad_cpw_shift'],
                          '0um')
         self.assertEqual(options['_default_connection_pads']['pad_cpw_extent'],
@@ -455,6 +456,34 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
                          '0um')
         self.assertEqual(options['_default_connection_pads']['loc_W'], '+1')
         self.assertEqual(options['_default_connection_pads']['loc_H'], '+1')
+
+    def test_qlibrary_squid_loop_options(self):
+        """Test that default_options of squid loop were not accidentally changed."""
+        # Setup expected test results
+        design = designs.DesignPlanar()
+        squid_loop = SQUID_LOOP(design, 'my_name')
+        options = squid_loop.default_options
+
+        self.assertEqual(len(options), 19)
+        self.assertEqual(options['plate1_width'], '5.5um')
+        self.assertEqual(options['plate1_height'], '40um')
+        self.assertEqual(options['plate1_x_pos'], '0')
+        self.assertEqual(options['plate1_y_pos'], '0')
+        self.assertEqual(options['squid_gap'], '10um')
+        self.assertEqual(options['segment_a_length'], '10um')
+        self.assertEqual(options['segment_a_width'], '1um')
+        self.assertEqual(options['JJ_gap'], '0.5um')
+        self.assertEqual(options['segment_b_length'], '5um')
+        self.assertEqual(options['segment_b_width'], '1um')
+        self.assertEqual(options['segment_c_width'], '1um')
+        self.assertEqual(options['segment_d_length'], '10um')
+        self.assertEqual(options['segment_d_width'], '2um')
+        self.assertEqual(options['plate2_width'], '6um')
+        self.assertEqual(options['plate2_height'], '30um')
+        self.assertEqual(options['rotation'], '0.0')
+        self.assertEqual(options['x_pos'], '0.0')
+        self.assertEqual(options['y_pos'], '0.0')
+        self.assertEqual(options['layer'], '1')
 
     def test_qlibrary_tunable_coupler_01_options(self):
         """Test that default_options of tunable_coupler_01 were not accidentally changed."""
@@ -730,11 +759,15 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         launch_v1 = LaunchpadWirebond(design, 'my_name')
         options = launch_v1.default_options
 
-        self.assertEqual(len(options), 7)
+        self.assertEqual(len(options), 11)
         self.assertEqual(options['layer'], '1')
         self.assertEqual(options['trace_width'], 'cpw_width')
         self.assertEqual(options['trace_gap'], 'cpw_gap')
         self.assertEqual(options['lead_length'], '25um')
+        self.assertEqual(options['pad_width'], '80um')
+        self.assertEqual(options['pad_height'], '80um')
+        self.assertEqual(options['pad_gap'], '58um')
+        self.assertEqual(options['taper_height'], '122um')
         self.assertEqual(options['pos_x'], '0um')
         self.assertEqual(options['pos_y'], '0um')
         self.assertEqual(options['orientation'], '0')

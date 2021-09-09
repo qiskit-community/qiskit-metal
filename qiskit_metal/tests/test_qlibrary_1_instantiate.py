@@ -56,6 +56,7 @@ from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 from qiskit_metal.qlibrary.qubits.transmon_pocket_cl import TransmonPocketCL
 from qiskit_metal.qlibrary.qubits.transmon_pocket_6 import TransmonPocket6
 from qiskit_metal.qlibrary.qubits.transmon_pocket_teeth import TransmonPocketTeeth
+from qiskit_metal.qlibrary.qubits.SQUID_loop import SQUID_LOOP
 from qiskit_metal.qlibrary.couplers.tunable_coupler_01 import TunableCoupler01
 from qiskit_metal import designs
 from qiskit_metal.qlibrary._template import MyQComponent
@@ -813,6 +814,30 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
             self.fail(
                 "TransmonPocketTeeth(design, \"my_name3\", options={}, make=False)"
             )
+
+    def test_qlibrary_qubits_squid_loop(self):
+        """Test the instantiation of SQUID_LOOP."""
+        design = designs.DesignPlanar()
+        try:
+            SQUID_LOOP
+        except Exception:
+            self.fail("SQUID_LOOP failed")
+
+        try:
+            SQUID_LOOP(design, "my_name")
+        except Exception:
+            self.fail("SQUID_LOOP(design, \"my_name\") failed")
+
+        try:
+            SQUID_LOOP(design, "my_name2", options={})
+        except Exception:
+            self.fail("SQUID_LOOP(design, \"my_name2\", options={}) failed")
+
+        try:
+            SQUID_LOOP(design, "my_name3", options={}, make=False)
+        except Exception:
+            self.fail(
+                "SQUID_LOOP(design, \"my_name3\", options={}, make=False)")
 
     def test_qlibrary_qubits_tunable_coupler_01(self):
         """Test the instantiation of TunableCoupler01."""

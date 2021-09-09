@@ -64,9 +64,13 @@ class LaunchpadWirebond(QComponent):
 
     Default Options:
         * layer: '1'
-        * trace_width: 'cpw_width' -- Center trace width of the terminating transmission line
+        * trace_width: 'cpw_width' -- Width of the transmission line attached to the launch pad
         * trace_gap: 'cpw_gap' -- Gap of the transmission line
-        * lead_length: '25um' -- Length of the cpw line attached to the end of the launch pad
+        * lead_length: '25um' -- Length of the transmission line attached to the launch pad
+        * pad_width: '80um' -- Width of the launch pad
+        * pad_height: '80um' -- Height of the launch pad
+        * pad_gap: '58um' -- Gap of the launch pad
+        * taper_height: '122um' -- Height of the taper from the launch pad to the transmission line
         * pos_x: '0um' -- Where the center of the pocket should be located on chip
         * pos_y: '0um' -- Where the center of the pocket should be located on chip
         * orientation: '0' -- 90 for 90 degree turn
@@ -77,6 +81,10 @@ class LaunchpadWirebond(QComponent):
         trace_width='cpw_width',
         trace_gap='cpw_gap',
         lead_length='25um',
+        pad_width='80um',
+        pad_height='80um',
+        pad_gap='58um',
+        taper_height='122um',
         pos_x='0um',
         pos_y='0um',
         orientation='0'  #90 for 90 degree turn
@@ -90,32 +98,43 @@ class LaunchpadWirebond(QComponent):
         component."""
 
         p = self.p
+
+        pad_width = p.pad_width
+        pad_height = p.pad_height
+        pad_gap = p.pad_gap
         trace_width = p.trace_width
-        trace_width_half = trace_width / 2
+        trace_width_half = trace_width / 2.
+        pad_width_half = pad_width / 2.
         lead_length = p.lead_length
+        taper_height = p.taper_height
         trace_gap = p.trace_gap
+
+        pad_gap = p.pad_gap
         #########################################################
 
         # Geometry of main launch structure
-        launch_pad = draw.Polygon([(0, trace_width_half),
-                                   (-.122, trace_width_half + .035),
-                                   (-.202, trace_width_half + .035),
-                                   (-.202, -trace_width_half - .035),
-                                   (-.122, -trace_width_half - .035),
-                                   (0, -trace_width_half),
-                                   (lead_length, -trace_width_half),
-                                   (lead_length, +trace_width_half),
-                                   (0, trace_width_half)])
+        # The shape is a polygon and we prepare this point as orientation is 0 degree
+        launch_pad = draw.Polygon([
+            (0, trace_width_half), (-taper_height, pad_width_half),
+            (-(pad_height + taper_height), pad_width_half),
+            (-(pad_height + taper_height), -pad_width_half),
+            (-taper_height, -pad_width_half), (0, -trace_width_half),
+            (lead_length, -trace_width_half), (lead_length, trace_width_half),
+            (0, trace_width_half)
+        ])
 
         # Geometry pocket (gap)
+        # Same way applied for pocket
         pocket = draw.Polygon([(0, trace_width_half + trace_gap),
-                               (-.122, trace_width_half + trace_gap + .087),
-                               (-.25, trace_width_half + trace_gap + .087),
-                               (-.25, -trace_width_half - trace_gap - .087),
-                               (-.122, -trace_width_half - trace_gap - .087),
-                               (0, -trace_width_half - trace_gap),
-                               (lead_length, -trace_width_half - trace_gap),
-                               (lead_length, +trace_width_half + trace_gap),
+                               (-taper_height, pad_width_half + pad_gap),
+                               (-(pad_height + taper_height + pad_gap),
+                                pad_width_half + pad_gap),
+                               (-(pad_height + taper_height + pad_gap),
+                                -(pad_width_half + pad_gap)),
+                               (-taper_height, -(pad_width_half + pad_gap)),
+                               (0, -(trace_width_half + trace_gap)),
+                               (lead_length, -(trace_width_half + trace_gap)),
+                               (lead_length, trace_width_half + trace_gap),
                                (0, trace_width_half + trace_gap)])
 
         # These variables are used to graphically locate the pin locations
