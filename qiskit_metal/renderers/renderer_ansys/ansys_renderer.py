@@ -47,9 +47,10 @@ if not config.is_building_docs():
     )
 
 
-def good_fillet_idxs(
-    coords: list, fradius: float, precision: int = 9, isclosed: bool = False
-):
+def good_fillet_idxs(coords: list,
+                     fradius: float,
+                     precision: int = 9,
+                     isclosed: bool = False):
     """
     Get list of vertex indices in a linestring (isclosed = False) or polygon (isclosed = True)
     that can be filleted based on proximity to neighbors.
@@ -66,11 +67,11 @@ def good_fillet_idxs(
     """
     if isclosed:
         return toggle_numbers(
-            bad_fillet_idxs(coords, fradius, precision, isclosed=True), len(coords)
-        )
+            bad_fillet_idxs(coords, fradius, precision, isclosed=True),
+            len(coords))
     return toggle_numbers(
-        bad_fillet_idxs(coords, fradius, precision, isclosed=False), len(coords)
-    )[1:-1]
+        bad_fillet_idxs(coords, fradius, precision, isclosed=False),
+        len(coords))[1:-1]
 
 
 def get_clean_name(name: str) -> str:
@@ -192,7 +193,8 @@ class QAnsysRenderer(QRendererAnalysis):
             solution_order="High",
             solver_type="Iterative",
         ),
-        port_inductor_gap="10um",  # spacing between port and inductor if junction is drawn both ways
+        port_inductor_gap=
+        "10um",  # spacing between port and inductor if junction is drawn both ways
     )
     """Default setup."""
 
@@ -350,8 +352,7 @@ class QAnsysRenderer(QRendererAnalysis):
             self.logger.warning(
                 "You are using %s, but this is a renderer to Ansys, which only runs on Windows. "
                 "Expect any sort of Errors if you try to work with this renderer beyond this point."
-                % system()
-            )
+                % system())
 
         import subprocess
 
@@ -363,8 +364,7 @@ class QAnsysRenderer(QRendererAnalysis):
                     "environment variable %s not found. Is Ansys 2020 R2 installed on this "
                     "machine? If yes, then create said environment variable. If you have a "
                     "different version of Ansys, then pass to open_ansys() the path to its "
-                    "binary, or the env var that stores it." % path_var
-                )
+                    "binary, or the env var that stores it." % path_var)
                 raise
         else:
             path = os.path.abspath(path)
@@ -393,8 +393,7 @@ class QAnsysRenderer(QRendererAnalysis):
             self.logger.warning(
                 "You are using %s, but this is a renderer to Ansys, which only runs on Windows. "
                 "Expect any sort of Errors if you try to work with this renderer beyond this point."
-                % system()
-            )
+                % system())
 
         # pyEPR does not like extensions
         if project_name:
@@ -406,21 +405,17 @@ class QAnsysRenderer(QRendererAnalysis):
             self._pinfo = epr.ProjectInfo(
                 do_connect=True,
                 project_path=self._options["project_path"]
-                if not project_path
-                else project_path,
+                if not project_path else project_path,
                 project_name=self._options["project_name"]
-                if not project_name
-                else project_name,
+                if not project_name else project_name,
                 design_name=self._options["design_name"]
-                if not design_name
-                else design_name,
+                if not design_name else design_name,
             )
         except pythoncom.com_error as error:
             print("com_error: ", error)
             hr, msg, exc, arg = error.args
-            if (
-                msg == "Invalid class string"
-            ):  # and hr == -2147221005 and exc is None and arg is None
+            if (msg == "Invalid class string"
+               ):  # and hr == -2147221005 and exc is None and arg is None
                 self.logger.error(
                     "pyEPR cannot find the Ansys COM. Ansys installation might not have registered it. "
                     "To verify if this is the problem, execute the following: ",
@@ -436,8 +431,7 @@ class QAnsysRenderer(QRendererAnalysis):
             self.pinfo.disconnect()
         else:
             self.logger.warning(
-                "This renderer appears to be already disconnected from Ansys"
-            )
+                "This renderer appears to be already disconnected from Ansys")
 
     def new_ansys_project(self):
         """Creates a new empty project in Ansys."""
@@ -471,8 +465,7 @@ class QAnsysRenderer(QRendererAnalysis):
                 self.logger.warning(
                     "Either you do not have a project loaded in Ansys, or you are not connected "
                     "to it. Try executing hfss.connect_ansys(), or creating a new Ansys project. "
-                    "Also check the help file and other guide notebooks"
-                )
+                    "Also check the help file and other guide notebooks")
         else:
             self.logger.warning(
                 "It does not look like you are connected to Ansys. Please use connect_ansys() "
@@ -580,9 +573,8 @@ class QAnsysRenderer(QRendererAnalysis):
             return
 
         # TODO: This is just a prototype - should add features and flexibility.
-        oFieldsReport = (
-            self.pinfo.design._fields_calc
-        )  # design.GetModule("FieldsReporter")
+        oFieldsReport = (self.pinfo.design._fields_calc
+                        )  # design.GetModule("FieldsReporter")
         oModeler = self.pinfo.design._modeler  # design.SetActiveEditor("3D Modeler")
         setup = self.pinfo.setup
 
@@ -611,7 +603,8 @@ class QAnsysRenderer(QRendererAnalysis):
         if not StreamlinePlot:
             StreamlinePlot = is_true(self.parse_value(paf["StreamlinePlot"]))
         if not AdjacentSidePlot:
-            AdjacentSidePlot = is_true(self.parse_value(paf["AdjacentSidePlot"]))
+            AdjacentSidePlot = is_true(self.parse_value(
+                paf["AdjacentSidePlot"]))
         if not FullModelPlot:
             FullModelPlot = is_true(self.parse_value(paf["FullModelPlot"]))
         if not IntrinsicVar:
@@ -704,8 +697,7 @@ class QAnsysRenderer(QRendererAnalysis):
             return self.pinfo.design.save_screenshot(path, show)
         except AttributeError:
             self.logger.error(
-                "Please install a more recent version of pyEPR (>=0.8.4.3)"
-            )
+                "Please install a more recent version of pyEPR (>=0.8.4.3)")
 
     def execute_design(
         self,
@@ -739,7 +731,8 @@ class QAnsysRenderer(QRendererAnalysis):
                     pass
 
         # either create a new one, or clear the active one, depending on force_redraw.
-        if force_redraw and (design_name in self.pinfo.project.get_design_names()):
+        if force_redraw and (design_name
+                             in self.pinfo.project.get_design_names()):
             self.activate_ansys_design(design_name, solution_type)
             self.clean_active_design()
         else:
@@ -748,9 +741,10 @@ class QAnsysRenderer(QRendererAnalysis):
         self.render_design(**design_selection)
         return self.pinfo.design.name
 
-    def new_ansys_design(
-        self, design_name: str, solution_type: str, connect: bool = True
-    ):
+    def new_ansys_design(self,
+                         design_name: str,
+                         solution_type: str,
+                         connect: bool = True):
         """Add an Ansys design with the given name to the Ansys project.
         Valid solutions_type values are: 'capacitive' (q3d), 'eignemode' and 'drivenmodal' (hfss)
 
@@ -791,7 +785,9 @@ class QAnsysRenderer(QRendererAnalysis):
                 "before creating a new design. You can use renderer.connect_ansys()"
             )
 
-    def activate_ansys_design(self, design_name: str, solution_type: str = None):
+    def activate_ansys_design(self,
+                              design_name: str,
+                              solution_type: str = None):
         """Select a design with the given name from the open project.
         If the design exists, that will be added WITHOUT altering the suffix of the design name.
 
@@ -810,18 +806,17 @@ class QAnsysRenderer(QRendererAnalysis):
 
                 if design_name in names_in_design:
                     self.pinfo.connect_design(design_name)
-                    oDesktop = (
-                        self.pinfo.design.parent.parent._desktop
-                    )  # self.pinfo.design does not work
-                    oProject = oDesktop.SetActiveProject(self.pinfo.project_name)
+                    oDesktop = (self.pinfo.design.parent.parent._desktop
+                               )  # self.pinfo.design does not work
+                    oProject = oDesktop.SetActiveProject(
+                        self.pinfo.project_name)
                     oDesign = oProject.SetActiveDesign(design_name)
-                    current_solution_type = self.pinfo.design.solution_type.lower()
+                    current_solution_type = self.pinfo.design.solution_type.lower(
+                    )
                     if current_solution_type == "q3d":
                         current_solution_type = "capacitive"
-                    if (
-                        current_solution_type != solution_type
-                        and solution_type is not None
-                    ):
+                    if (current_solution_type != solution_type and
+                            solution_type is not None):
                         self.logger.warning(
                             f"The design_name={design_name} already exists, but it has solution_type=="
                             f"{current_solution_type}, which is different from the requested=={solution_type}. "
@@ -833,8 +828,7 @@ class QAnsysRenderer(QRendererAnalysis):
                     self.logger.warning(
                         f"The design_name={design_name} was not in active project.  "
                         f"Designs in active project are: \n{names_in_design}.  "
-                        "A new design will be added to the project.  "
-                    )
+                        "A new design will be added to the project.  ")
                     if solution_type is not None:
                         adesign = self.new_ansys_design(
                             design_name=design_name,
@@ -846,7 +840,8 @@ class QAnsysRenderer(QRendererAnalysis):
                             "Please specify the solution_type, to determine what design to create"
                         )
             else:
-                self.logger.warning("Project not found, have you opened a project?")
+                self.logger.warning(
+                    "Project not found, have you opened a project?")
         else:
             self.logger.warning(
                 "Have you run start()?  Cannot find a reference to Ansys in QRenderer."
@@ -902,7 +897,10 @@ class QAnsysRenderer(QRendererAnalysis):
         setup = self.new_ansys_setup(**kwargs)  # TODO: activate_ansys_setup?
         return setup.name
 
-    def initialize_drivenmodal(self, sweep_setup: Dict, vars: Dict = {}, **kwargs):
+    def initialize_drivenmodal(self,
+                               sweep_setup: Dict,
+                               vars: Dict = {},
+                               **kwargs):
         """Any task that needs to occur before running a simulation, such as creating a setup
 
         Args:
@@ -944,7 +942,8 @@ class QAnsysRenderer(QRendererAnalysis):
                                 f"Setups in active design are: \n{all_setup_names}.  "
                                 "A new setup will default values will be added to the design.  "
                             )
-                            self.pinfo.setup = self.new_ansys_setup(name=setup_name)
+                            self.pinfo.setup = self.new_ansys_setup(
+                                name=setup_name)
                     else:
                         self.logger.warning(f"Please specify a setup_name.")
                 else:
@@ -952,7 +951,8 @@ class QAnsysRenderer(QRendererAnalysis):
                         "Design not found in selected project, have you opened a design?"
                     )
             else:
-                self.logger.warning("Project not found, have you opened a project?")
+                self.logger.warning(
+                    "Project not found, have you opened a project?")
         else:
             self.logger.warning(
                 "Have you run connect_ansys()?  Cannot find a reference to Ansys in QRenderer."
@@ -1007,8 +1007,7 @@ class QAnsysRenderer(QRendererAnalysis):
 
         if self.case == 2:
             self.logger.warning(
-                "Unable to proceed with rendering. Please check selection."
-            )
+                "Unable to proceed with rendering. Please check selection.")
             return
 
         self.chip_subtract_dict = defaultdict(set)
@@ -1146,32 +1145,30 @@ class QAnsysRenderer(QRendererAnalysis):
 
         name = f"{qc_elt}{QAnsysRenderer.NAME_DELIM}{qc_name}"
 
-        points = parse_units(
-            list(qc_shapely.exterior.coords)
-        )  # list of 2d point tuples
+        points = parse_units(list(
+            qc_shapely.exterior.coords))  # list of 2d point tuples
         points_3d = to_vec3D(points, qc_chip_z)
 
         if is_rectangle(qc_shapely):  # Draw as rectangle
             self.logger.debug(f"Drawing a rectangle: {name}")
             x_min, y_min, x_max, y_max = qc_shapely.bounds
             poly_ansys = self.modeler.draw_rect_corner(
-                *parse_units(
-                    [
-                        [x_min, y_min, self.design.get_chip_z(qgeom.chip)],
-                        x_max - x_min,
-                        y_max - y_min,
-                        0,
-                    ]
-                ),
+                *parse_units([
+                    [x_min, y_min,
+                     self.design.get_chip_z(qgeom.chip)],
+                    x_max - x_min,
+                    y_max - y_min,
+                    0,
+                ]),
                 **ansys_options,
             )
             self.modeler.rename_obj(poly_ansys, name)
 
         else:
             # Draw general closed poly
-            poly_ansys = self.modeler.draw_polyline(
-                points_3d[:-1], closed=True, **ansys_options
-            )
+            poly_ansys = self.modeler.draw_polyline(points_3d[:-1],
+                                                    closed=True,
+                                                    **ansys_options)
             # rename: handle bug if the name of the cut already exits and is used to make a cut
             poly_ansys = poly_ansys.rename(name)
 
@@ -1190,10 +1187,10 @@ class QAnsysRenderer(QRendererAnalysis):
         # Subtract interior shapes, if any
         if len(qc_shapely.interiors) > 0:
             for i, x in enumerate(qc_shapely.interiors):
-                interior_points_3d = to_vec3D(parse_units(list(x.coords)), qc_chip_z)
+                interior_points_3d = to_vec3D(parse_units(list(x.coords)),
+                                              qc_chip_z)
                 inner_shape = self.modeler.draw_polyline(
-                    interior_points_3d[:-1], closed=True
-                )
+                    interior_points_3d[:-1], closed=True)
                 self.modeler.subtract(name, [inner_shape])
 
         # Input chip info into self.chip_subtract_dict
@@ -1229,9 +1226,9 @@ class QAnsysRenderer(QRendererAnalysis):
         points_3d = to_vec3D(points, qc_chip_z)
 
         try:
-            poly_ansys = self.modeler.draw_polyline(
-                points_3d, closed=False, **ansys_options
-            )
+            poly_ansys = self.modeler.draw_polyline(points_3d,
+                                                    closed=False,
+                                                    **ansys_options)
         except AttributeError:
             if self.modeler is None:
                 self.logger.error(
@@ -1256,14 +1253,15 @@ class QAnsysRenderer(QRendererAnalysis):
         if qc_width:
             x0, y0 = points[0]
             x1, y1 = points[1]
-            vlen = math.sqrt((x1 - x0) ** 2 + (y1 - y0) ** 2)
-            p0 = np.array([x0, y0, qc_chip_z]) + qc_width / (2 * vlen) * np.array(
-                [y0 - y1, x1 - x0, 0]
-            )
-            p1 = np.array([x0, y0, qc_chip_z]) + qc_width / (2 * vlen) * np.array(
-                [y1 - y0, x0 - x1, 0]
-            )
-            shortline = self.modeler.draw_polyline([p0, p1], closed=False)  # sweepline
+            vlen = math.sqrt((x1 - x0)**2 + (y1 - y0)**2)
+            p0 = np.array([
+                x0, y0, qc_chip_z
+            ]) + qc_width / (2 * vlen) * np.array([y0 - y1, x1 - x0, 0])
+            p1 = np.array([
+                x0, y0, qc_chip_z
+            ]) + qc_width / (2 * vlen) * np.array([y1 - y0, x0 - x1, 0])
+            shortline = self.modeler.draw_polyline([p0, p1],
+                                                   closed=False)  # sweepline
             import pythoncom
 
             try:
@@ -1311,13 +1309,15 @@ class QAnsysRenderer(QRendererAnalysis):
             # If this assumption is not satisfied, draw_rect_center no longer works -> must use draw_polyline
             endcap_name = f"endcap_{comp}_{pin}"
             if abs(normal[0]) > abs(normal[1]):
-                self.modeler.draw_rect_center(
-                    rect_mid, x_size=gap, y_size=width + 2 * gap, name=endcap_name
-                )
+                self.modeler.draw_rect_center(rect_mid,
+                                              x_size=gap,
+                                              y_size=width + 2 * gap,
+                                              name=endcap_name)
             else:
-                self.modeler.draw_rect_center(
-                    rect_mid, x_size=width + 2 * gap, y_size=gap, name=endcap_name
-                )
+                self.modeler.draw_rect_center(rect_mid,
+                                              x_size=width + 2 * gap,
+                                              y_size=gap,
+                                              name=endcap_name)
             self.chip_subtract_dict[pin_dict["chip"]].add(endcap_name)
 
     def get_chip_names(self) -> List[str]:
@@ -1388,8 +1388,7 @@ class QAnsysRenderer(QRendererAnalysis):
         elif self.case == 1:  # All components rendered.
             for qcomp in self.design.components:
                 min_x, min_y, max_x, max_y = self.design.components[
-                    qcomp
-                ].qgeometry_bounds()
+                    qcomp].qgeometry_bounds()
                 min_x_main = min(min_x, min_x_main)
                 min_y_main = min(min_y, min_y_main)
                 max_x_main = max(max_x, max_x_main)
@@ -1397,17 +1396,16 @@ class QAnsysRenderer(QRendererAnalysis):
         else:  # Strict subset rendered.
             for qcomp_id in self.qcomp_ids:
                 min_x, min_y, max_x, max_y = self.design._components[
-                    qcomp_id
-                ].qgeometry_bounds()
+                    qcomp_id].qgeometry_bounds()
                 min_x_main = min(min_x, min_x_main)
                 min_y_main = min(min_y, min_y_main)
                 max_x_main = max(max_x, max_x_main)
                 max_y_main = max(max_y, max_y_main)
         return min_x_main, min_y_main, max_x_main, max_y_main
 
-    def render_chips(
-        self, draw_sample_holder: bool = True, box_plus_buffer: bool = True
-    ):
+    def render_chips(self,
+                     draw_sample_holder: bool = True,
+                     box_plus_buffer: bool = True):
         """
         Render all chips containing components in self.qcomp_ids.
 
@@ -1422,30 +1420,22 @@ class QAnsysRenderer(QRendererAnalysis):
         for chip_name in chip_list:
             if box_plus_buffer:  # Get bounding box of components first
                 min_x_main, min_y_main, max_x_main, max_y_main = parse_units(
-                    self.get_min_bounding_box()
-                )
-                self.cw_x.update(
-                    {chip_name: max_x_main - min_x_main}
-                )  # chip width along x
-                self.cw_y.update(
-                    {chip_name: max_y_main - min_y_main}
-                )  # chip width along y
+                    self.get_min_bounding_box())
+                self.cw_x.update({chip_name: max_x_main - min_x_main
+                                 })  # chip width along x
+                self.cw_y.update({chip_name: max_y_main - min_y_main
+                                 })  # chip width along y
                 self.cw_x[chip_name] += 2 * parse_units(
-                    self._options["x_buffer_width_mm"]
-                )
+                    self._options["x_buffer_width_mm"])
                 self.cw_y[chip_name] += 2 * parse_units(
-                    self._options["y_buffer_width_mm"]
-                )
-                self.cc_x.update(
-                    {chip_name: (max_x_main + min_x_main) / 2}
-                )  # x coord of chip center
-                self.cc_y.update(
-                    {chip_name: (max_y_main + min_y_main) / 2}
-                )  # y coord of chip center
+                    self._options["y_buffer_width_mm"])
+                self.cc_x.update({chip_name:
+                    (max_x_main + min_x_main) / 2})  # x coord of chip center
+                self.cc_y.update({chip_name:
+                    (max_y_main + min_y_main) / 2})  # y coord of chip center
             else:  # Adhere to chip placement and dimensions in QDesign
                 p = self.design.get_chip_size(
-                    chip_name
-                )  # x/y center/width same for all chips
+                    chip_name)  # x/y center/width same for all chips
                 self.cw_x.update({chip_name: parse_units(p["size_x"])})
                 self.cw_y.update({chip_name: parse_units(p["size_y"])})
                 self.cc_x.update({chip_name: parse_units(p["center_x"])})
@@ -1462,8 +1452,7 @@ class QAnsysRenderer(QRendererAnalysis):
             else:
                 p = self.design.get_chip_size(chip_list[0])
             vac_height = parse_units(
-                [p["sample_holder_top"], p["sample_holder_bottom"]]
-            )
+                [p["sample_holder_top"], p["sample_holder_bottom"]])
             # very simple algorithm to build the vacuum box. It could be made better in the future
             # assuming that both
             cc_x = np.array([item for item in self.cc_x.values()])
@@ -1471,8 +1460,10 @@ class QAnsysRenderer(QRendererAnalysis):
             cw_x = np.array([item for item in self.cw_x.values()])
             cw_y = np.array([item for item in self.cw_y.values()])
 
-            cc_x_left, cc_x_right = np.min(cc_x - cw_x / 2), np.max(cc_x + cw_x / 2)
-            cc_y_left, cc_y_right = np.min(cc_y - cw_y / 2), np.max(cc_y + cw_y / 2)
+            cc_x_left, cc_x_right = np.min(cc_x - cw_x / 2), np.max(cc_x +
+                                                                    cw_x / 2)
+            cc_y_left, cc_y_right = np.min(cc_y - cw_y / 2), np.max(cc_y +
+                                                                    cw_y / 2)
 
             cc_x = (cc_x_left + cc_x_right) / 2
             cc_y = (cc_y_left + cc_y_right) / 2
@@ -1590,7 +1581,8 @@ class QAnsysRenderer(QRendererAnalysis):
                     # finds the orthonormal (for orientation)
                     wb_perp = np.cross(norm_z, wb_vec)[:2]
                     # finds the first wirebond to place (rest are in the loop)
-                    wb_pos_step = parse_units(wb_pos + i_p) + (wb_vec * wb_offset)
+                    wb_pos_step = parse_units(wb_pos + i_p) + (wb_vec *
+                                                               wb_offset)
                     # Other input values could be modified, kept to minimal selection for automation
                     # for the time being. Loops to place N wirebonds based on length of path section.
                     for wb_i in range(wb_count):
@@ -1598,7 +1590,8 @@ class QAnsysRenderer(QRendererAnalysis):
                             pos=wb_pos_step + parse_units(wb_pos * wb_i),
                             ori=wb_perp,
                             width=parse_units(width * self._options["wb_size"]),
-                            height=parse_units(width * self._options["wb_size"]),
+                            height=parse_units(width *
+                                               self._options["wb_size"]),
                             z=0,
                             wire_diameter="0.015mm",
                             NumSides=6,
@@ -1669,7 +1662,9 @@ class QAnsysRenderer(QRendererAnalysis):
             # Class handling microwave analysis on eigenmode solutions
             self.epr_distributed_analysis = epr.DistributedAnalysis(self.pinfo)
 
-    def epr_get_stored_energy(self, junctions: dict = None, dissipatives: dict = None):
+    def epr_get_stored_energy(self,
+                              junctions: dict = None,
+                              dissipatives: dict = None):
         """Computes the energy stored in the system
         pinfo must have a valid list of junctions and dissipatives to compute the energy stored
         in the system. So please provide them here, or using epr_start()
@@ -1692,14 +1687,15 @@ class QAnsysRenderer(QRendererAnalysis):
             eprd = self.epr_distributed_analysis
             energy_elec = eprd.calc_energy_electric()
             energy_elec_substrate = eprd.calc_energy_electric(
-                None, self.pinfo.dissipative["dielectrics_bulk"][0]
-            )
+                None, self.pinfo.dissipative["dielectrics_bulk"][0])
             energy_mag = eprd.calc_energy_magnetic()
 
             return energy_elec, energy_elec_substrate, energy_mag
         self.logger.error("dielectrics_bulk needs to be defined")
 
-    def epr_run_analysis(self, junctions: dict = None, dissipatives: dict = None):
+    def epr_run_analysis(self,
+                         junctions: dict = None,
+                         dissipatives: dict = None):
         """Executes the EPR analysis
         pinfo must have a valid list of junctions and dissipatives to compute the energy stored
         in the system. So please provide them here, or using epr_start()
@@ -1722,26 +1718,26 @@ class QAnsysRenderer(QRendererAnalysis):
             fock_trunc (int, optional): truncation of the fock. Defaults to 7.
         """
         self.epr_quantum_analysis = epr.QuantumAnalysis(
-            self.epr_distributed_analysis.data_filename
-        )
-        self.epr_quantum_analysis.analyze_all_variations(
-            cos_trunc=cos_trunc, fock_trunc=fock_trunc
-        )
+            self.epr_distributed_analysis.data_filename)
+        self.epr_quantum_analysis.analyze_all_variations(cos_trunc=cos_trunc,
+                                                         fock_trunc=fock_trunc)
 
-    def epr_report_hamiltonian(self, swp_variable: str = "variation", numeric=True):
+    def epr_report_hamiltonian(self,
+                               swp_variable: str = "variation",
+                               numeric=True):
         """Reports in a markdown friendly table the hamiltonian results.
 
         Args:
             swp_variable (str, optional): Variable against which we swept. Defaults to 'variation'.
         """
-        self.epr_quantum_analysis.plot_hamiltonian_results(swp_variable=swp_variable)
-        self.epr_quantum_analysis.report_results(
-            swp_variable=swp_variable, numeric=numeric
-        )
+        self.epr_quantum_analysis.plot_hamiltonian_results(
+            swp_variable=swp_variable)
+        self.epr_quantum_analysis.report_results(swp_variable=swp_variable,
+                                                 numeric=numeric)
 
-    def epr_get_frequencies(
-        self, junctions: dict = None, dissipatives: dict = None
-    ) -> pd.DataFrame:
+    def epr_get_frequencies(self,
+                            junctions: dict = None,
+                            dissipatives: dict = None) -> pd.DataFrame:
         """Returns all frequencies and quality factors vs a variation.
         It also initializes the systems for the epr analysis in terms of junctions and dissipatives
 

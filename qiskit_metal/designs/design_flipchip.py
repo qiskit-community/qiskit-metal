@@ -13,7 +13,6 @@
 # that they have been altered from the originals.
 
 # The code is modified from DesignPlanar to implement flipchip-compatible QDesign class. (SK/Chalmers/20210610)
-
 """Module containing Basic Qiskit Metal FlipChip design for CPW type
 geometry."""
 
@@ -55,11 +54,9 @@ class DesignFlipChip(QDesign):
             enable_renderers=enable_renderers,
         )
         self.variables[
-            "sample_holder_top"
-        ] = "890um"  # how tall is the vacuum above z=0
+            "sample_holder_top"] = "890um"  # how tall is the vacuum above z=0
         self.variables[
-            "sample_holder_bottom"
-        ] = "1650um"  # how tall is the vacuum below z=0
+            "sample_holder_bottom"] = "1650um"  # how tall is the vacuum below z=0
         self.add_chip_info()
 
     def add_chip_info(self):
@@ -75,12 +72,12 @@ class DesignFlipChip(QDesign):
         """
         # Reinitilise self._chips, then add two chips
         self._chips = {}
-        self._chips["C_chip"] = Dict(
-            material="silicon", layer_start="0", layer_end="2048"
-        )
-        self._chips["Q_chip"] = Dict(
-            material="silicon", layer_start="0", layer_end="2048"
-        )
+        self._chips["C_chip"] = Dict(material="silicon",
+                                     layer_start="0",
+                                     layer_end="2048")
+        self._chips["Q_chip"] = Dict(material="silicon",
+                                     layer_start="0",
+                                     layer_end="2048")
 
         self._chips["C_chip"]["size"] = Dict(
             center_x="0.0mm",
@@ -127,18 +124,12 @@ class DesignFlipChip(QDesign):
             if "size" in self._chips[chip_name]:
 
                 size = self.parse_value(self.chips[chip_name]["size"])
-                if (
-                    "center_x" in size
-                    and "center_y" in size
-                    and "size_x" in size
-                    and "size_y" in size
-                ):
-                    if (
-                        type(size.center_x) in [int, float]
-                        and type(size.center_y) in [int, float]
-                        and type(size.size_x) in [int, float]
-                        and type(size.size_y) in [int, float]
-                    ):
+                if ("center_x" in size and "center_y" in size and
+                        "size_x" in size and "size_y" in size):
+                    if (type(size.center_x) in [int, float] and
+                            type(size.center_y) in [int, float] and
+                            type(size.size_x) in [int, float] and
+                            type(size.size_y) in [int, float]):
                         x_y_location = (
                             size["center_x"] - (size["size_x"] / 2.0),
                             size["center_y"] - (size["size_y"] / 2.0),
@@ -149,20 +140,16 @@ class DesignFlipChip(QDesign):
 
                     self.logger.warning(
                         f'Size information within self.chips[{chip_name}]["size"]'
-                        f" is NOT an int or float."
-                    )
+                        f" is NOT an int or float.")
                     return x_y_location, 2
 
-                self.logger.warning(
-                    "center_x or center_y or size_x or size_y "
-                    f' NOT in self._chips[{chip_name}]["size"]'
-                )
+                self.logger.warning("center_x or center_y or size_x or size_y "
+                                    f' NOT in self._chips[{chip_name}]["size"]')
                 return x_y_location, 2
 
             self.logger.warning(
                 f"Information for size in NOT in self._chips[{chip_name}]"
-                ' dict. Return "None" in tuple.'
-            )
+                ' dict. Return "None" in tuple.')
             return x_y_location, 2
 
         self.logger.warning(

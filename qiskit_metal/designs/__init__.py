@@ -13,7 +13,6 @@
 # that they have been altered from the originals.
 
 # modified by Chalmers/SK 20210611 to add DesignFlipChip
-
 """
 =================================================
 Designs (:mod:`qiskit_metal.designs`)
