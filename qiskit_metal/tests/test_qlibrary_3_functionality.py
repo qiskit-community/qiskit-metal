@@ -186,13 +186,14 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         """Test get_template_options in base.py."""
         design = designs.DesignPlanar()
 
-        self.assertEqual(
-            QComponent.get_template_options(design),
-            Dict(pos_x='0.0um',
-                 pos_y='0.0um',
-                 orientation='0.0',
-                 chip='main',
-                 layer='1'))
+        expected = {
+            'pos_x': '0.0um',
+            'pos_y': '0.0um',
+            'orientation': '0.0',
+            'chip': 'main',
+            'layer': '1'
+        }
+        self.assertEqual(QComponent.get_template_options(design), expected)
 
         expected = {'connection_pads': {}, '_default_connection_pads': {}}
         self.assertEqual(BaseQubit.get_template_options(design), expected)

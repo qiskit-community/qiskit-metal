@@ -223,9 +223,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(len(options), 5)
         self.assertEqual(options['fillet'], '0')
         self.assertEqual(options['total_length'], '7mm')
-        self.assertEqual(options['layer'], '1')
         self.assertEqual(options['trace_width'], 'cpw_width')
-        self.assertEqual(options['chip'], 'main')
 
         self.assertEqual(len(options['pin_inputs']), 2)
         self.assertEqual(len(options['pin_inputs']['start_pin']), 2)
@@ -705,8 +703,6 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(len(options), 5)
         self.assertEqual(options['fillet'], '0')
         self.assertEqual(options['total_length'], '7mm')
-        self.assertEqual(options['chip'], 'main')
-        self.assertEqual(options['layer'], '1')
         self.assertEqual(options['trace_width'], 'cpw_width')
 
         self.assertEqual(len(options['pin_inputs']), 2)
@@ -749,7 +745,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
                                        options={})
         options = my_jj_manhattan.default_options
 
-        self.assertEqual(len(options), 10)
+        self.assertEqual(len(options), 7)
         self.assertEqual(options['JJ_pad_lower_width'], '25um')
         self.assertEqual(options['JJ_pad_lower_height'], '10um')
         self.assertEqual(options['JJ_pad_lower_pos_x'], '0')
