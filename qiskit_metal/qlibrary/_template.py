@@ -21,12 +21,7 @@ class MyQComponent(QComponent):
 
     # Edit these to define your own tempate options for creation
     # Default drawing options
-    default_options = Dict(width='500um',
-                           height='300um',
-                           pos_x='0um',
-                           pos_y='0um',
-                           orientation='0',
-                           layer='1')
+    default_options = Dict(width='500um', height='300um')
     """Default drawing options"""
 
     # Name prefix of component, if user doesn't provide name

@@ -66,12 +66,8 @@ class CoupledLineTee(QComponent):
                            coupling_length='100um',
                            down_length='100um',
                            fillet='25um',
-                           pos_x='0um',
-                           pos_y='0um',
                            mirror=False,
-                           open_termination=True,
-                           chip='main',
-                           layer='1')
+                           open_termination=True)
     """Default connector options"""
 
     TOOLTIP = """Generates a three pin (+) 
