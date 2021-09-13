@@ -72,6 +72,12 @@ class QComponent():
         * The class provides the interfaces for the component (creator user)
 
     Default Options:
+        * pos_x/_y: '0.0um' -- The x/y position of the center of the QComponent.
+        * orientation: '0.0' -- The primary direction in degrees of the QComponent.
+          Expressed counter-clockwise orientation.
+        * chip: 'main' -- Chip holding the QComponent.
+        * layer: '1' -- Manufacturing layer used for the QComponent.
+
         Nested default options can be overwritten with the update function.
         The following code demonstrates how the update works.
 
@@ -109,12 +115,11 @@ class QComponent():
     """
     # pylint: disable=too-many-instance-attributes
 
-    default_options = Dict(
-        # Note: If something is added here, _gather_all_children_options(cls) needs to be changed.
-        # Intended for future use, for components that do not normally take pins as inputs
-        # to be able to have an input pin and be moved/rotated based on said input.
-        # pin_inputs = Dict()
-    )
+    default_options = Dict(pos_x='0.0um',
+                           pos_y='0.0um',
+                           orientation='0.0',
+                           chip='main',
+                           layer='1')
     """Default drawing options"""
 
     component_metadata = Dict()
@@ -274,7 +279,7 @@ class QComponent():
             dict: options from all children
         """
 
-        options_from_children = {}
+        options_from_children = cls.default_options
         parents = inspect.getmro(cls)
 
         # len-2: base.py is not expected to have default_options dict to add to design class.

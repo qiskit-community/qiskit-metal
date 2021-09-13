@@ -49,15 +49,9 @@ class CoupledLineTee(QComponent):
           note: this includes the distance of the curved second of the second line
         * down_length: '100um' -- The length of the hanging part of the resonator, including the curved region
         * fillet: '25um'
-        * pos_x: '0um' -- The x position of the ground termination.
-        * pos_y: '0um' -- The y position of the ground termination.
-        * rotation: '0' -- The direction of the termination. 0 degrees is +x, following a
-          counter-clockwise rotation (eg. 90 is +y)
         * mirror: False -- Flips the hanger around the y-axis
         * open_termination: True -- sets if the termination of the second line at the coupling side
           is an open to ground or short to ground
-        * chip: 'main' -- The chip the pin should be on.
-        * layer: '1' -- Layer the pin is on. Does not have any practical impact to the short.
     """
     component_metadata = Dict(short_name='cpw', _qgeometry_table_path='True')
     """Component metadata"""
@@ -74,7 +68,6 @@ class CoupledLineTee(QComponent):
                            fillet='25um',
                            pos_x='0um',
                            pos_y='0um',
-                           rotation='0',
                            mirror=False,
                            open_termination=True,
                            chip='main',
@@ -129,7 +122,7 @@ class CoupledLineTee(QComponent):
 
         #Rotate and Translate
         c_items = [prime_cpw, second_cpw, second_cpw_etch]
-        c_items = draw.rotate(c_items, p.rotation, origin=(0, 0))
+        c_items = draw.rotate(c_items, p.orientation, origin=(0, 0))
         c_items = draw.translate(c_items, p.pos_x, p.pos_y)
         [prime_cpw, second_cpw, second_cpw_etch] = c_items
 

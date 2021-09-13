@@ -73,8 +73,6 @@ class QRoute(QComponent):
             * end_jogged_extension: '' -- Lead-out, jogged extension of lead-out. Described as list of tuples
         * fillet: '0'
         * total_length: '7mm'
-        * chip: 'main' -- Which chip is this component attached to.  Defaults to 'main'.
-        * layer: '1' -- Which layer this component should be rendered on.  Defaults to '1'.
         * trace_width: 'cpw_width' -- Defines the width of the line.  Defaults to 'cpw_width'.
 
     How to specify \*_jogged_extensions for the QRouteLeads:
@@ -129,8 +127,6 @@ class QRoute(QComponent):
                   start_jogged_extension='',
                   end_jogged_extension=''),
         total_length='7mm',
-        chip='main',
-        layer='1',
         trace_width='cpw_width')
     """Default options"""
 
@@ -180,6 +176,9 @@ class QRoute(QComponent):
 
         # regular QComponent boot, including the run of make()
         super().__init__(design, name, options, **kwargs)
+        self.options.pop("pos_x", None)
+        self.options.pop("pos_y", None)
+        self.options.pop("orientation", None)
 
     def _add_route_specific_options(self, options):
         """Enriches the default_options to support different types of route

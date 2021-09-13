@@ -188,12 +188,7 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
 
         self.assertEqual(QComponent.get_template_options(design), {})
 
-        expected = {
-            'pos_x': '0um',
-            'pos_y': '0um',
-            'connection_pads': {},
-            '_default_connection_pads': {}
-        }
+        expected = {'connection_pads': {}, '_default_connection_pads': {}}
         self.assertEqual(BaseQubit.get_template_options(design), expected)
 
     def test_qlibrary_qubit_component_metadata(self):

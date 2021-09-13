@@ -25,7 +25,7 @@ class MyQComponent(QComponent):
                            height='300um',
                            pos_x='0um',
                            pos_y='0um',
-                           rotation='0',
+                           orientation='0',
                            layer='1')
     """Default drawing options"""
 
@@ -45,6 +45,6 @@ class MyQComponent(QComponent):
         # Create some raw geometry
         # Use autocompletion for the `draw.` module (use tab key)
         rect = draw.rectangle(p.width, p.height, p.pos_x, p.pos_y)
-        rect = draw.rotate(rect, p.rotation)
+        rect = draw.rotate(rect, p.orientation)
         geom = {'my_polygon': rect}
         self.add_qgeometry('poly', geom, layer=p.layer, subtract=False)
