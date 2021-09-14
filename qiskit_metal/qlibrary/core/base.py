@@ -32,6 +32,7 @@ from inspect import signature
 from qiskit_metal import draw
 from qiskit_metal import is_design, logger
 
+import qiskit_metal.qlibrary as qlibrary
 from qiskit_metal import config
 from qiskit_metal.draw import BaseGeometry
 from qiskit_metal.toolbox_python.attr_dict import Dict
@@ -195,7 +196,7 @@ class QComponent():
 
         self._design = design  # reference to parent
         # pylint: disable=literal-comparison
-        if self._delete_evaluation(name) is 'NameInUse':
+        if self._delete_evaluation(name) == 'NameInUse':
             raise ValueError(
                 f"{name} already exists! Please choose a different name for your new QComponent"
             )
@@ -263,7 +264,7 @@ class QComponent():
     @classmethod
     def _gather_all_children_options(cls) -> dict:
         """From the QComponent core class, traverse the child classes to
-        gather the .default options for each child class.
+        gather the `default_options` for each child class.
 
         Collects the options starting with the basecomponent,
         and stepping through the children.
@@ -279,7 +280,7 @@ class QComponent():
             dict: options from all children
         """
 
-        options_from_children = cls.default_options
+        options_from_children = {}
         parents = inspect.getmro(cls)
 
         # len-2: base.py is not expected to have default_options dict to add to design class.
@@ -290,6 +291,11 @@ class QComponent():
                     **options_from_children,
                     **child.default_options
                 }
+
+        if qlibrary.core.qroute.QRoute in parents:
+            options_from_children.pop("pos_x", None)
+            options_from_children.pop("pos_y", None)
+            options_from_children.pop("orientation", None)
 
         return options_from_children
 
@@ -467,7 +473,6 @@ class QComponent():
         if template_key not in design.template_options:
             cls._register_class_with_design(design, template_key,
                                             renderer_and_component_template)
-            # design, template_key, component_template)
 
         if template_key not in design.template_options:
             logger_ = logger_ or design.logger
@@ -528,7 +533,7 @@ class QComponent():
 
     def to_script(self,
                   thin: bool = False,
-                  is_part_of_chip: bool = False) -> (str, str):
+                  is_part_of_chip: bool = False) -> Tuple:
         """
 
         Args:

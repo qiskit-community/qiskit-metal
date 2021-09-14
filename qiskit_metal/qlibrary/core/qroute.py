@@ -176,9 +176,6 @@ class QRoute(QComponent):
 
         # regular QComponent boot, including the run of make()
         super().__init__(design, name, options, **kwargs)
-        self.options.pop("pos_x", None)
-        self.options.pop("pos_y", None)
-        self.options.pop("orientation", None)
 
     def _add_route_specific_options(self, options):
         """Enriches the default_options to support different types of route
