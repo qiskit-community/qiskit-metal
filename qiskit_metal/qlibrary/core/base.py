@@ -283,7 +283,7 @@ class QComponent():
         options_from_children = {}
         parents = inspect.getmro(cls)
 
-        # len-2: base.py is not expected to have default_options dict to add to design class.
+        # len-2: generic "object" does not have default_options.
         for child in parents[len(parents) - 2::-1]:
             # The template default options are in a class dict attribute `default_options`.
             if hasattr(child, 'default_options'):
