@@ -16,6 +16,7 @@
 
 import logging
 import os
+import webbrowser
 from pathlib import Path
 from typing import List, TYPE_CHECKING
 
@@ -114,6 +115,17 @@ class QMainWindowExtension(QMainWindowExtensionBase):
 
     def delete_all_components(self):
         """Delete all components."""
+
+        # yesnoMsg = QMessageBox()
+        # yesnoMsg.setWindowTitle("Delete all components?");
+        # yesnoMsg.setText("Are you sure you want to clear all Metal components?");
+        # # yesnoMsg.setStyleSheet("QPushButton {font-size:16px;}")
+        # yesnoMsg.setStyleSheet("font-size:16px;")
+        # yesnoMsg.setStandardButtons(QMessageBox.Yes);
+        # yesnoMsg.addButton(QMessageBox.No);
+        # yesnoMsg.setDefaultButton(QMessageBox.No);
+        # ret = yesnoMsg.exec()
+
         ret = QMessageBox.question(
             self,
             'Delete all components?',
@@ -201,6 +213,11 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     def create_build_log_window(self, _=None):
         """"Handles click on Build History button."""
         self.gui.gui_create_build_log_window()
+
+    @slot_catch_error()
+    def open_web_help(self, _=None):
+        """"Handles click on Build History button."""
+        webbrowser.open('https://qiskit.org/documentation/metal/', new=1)
 
     @slot_catch_error()
     def set_force_close(self, ison: bool):

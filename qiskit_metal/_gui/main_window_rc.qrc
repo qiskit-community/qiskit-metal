@@ -33,6 +33,7 @@
     <file alias="metal_logo">_imgs/metal_logo.png</file>
     <file alias="refresh">_imgs/refresh.png</file>
     <file alias="rebuild_needed">_imgs/v2-flat/rebuild_needed.png</file>
+    <file alias="browser">_imgs/browser.png</file>
   </qresource>
   <qresource prefix="renderer">
     <file>_imgs/renderers/HFSS.png</file>

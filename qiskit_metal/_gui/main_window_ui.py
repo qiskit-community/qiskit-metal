@@ -415,8 +415,10 @@ class Ui_MainWindow(object):
         self.actionMetal_Window = QtWidgets.QAction(MainWindow)
         self.actionMetal_Window.setEnabled(False)
         self.actionMetal_Window.setObjectName("actionMetal_Window")
+        
         self.actionViewDummyLabel = QtWidgets.QAction(MainWindow)
         self.actionViewDummyLabel.setObjectName("actionViewDummyLabel")
+        
         self.actionVariables = QtWidgets.QAction(MainWindow)
         self.actionVariables.setCheckable(True)
         self.actionVariables.setChecked(False)
@@ -425,33 +427,39 @@ class Ui_MainWindow(object):
                          QtGui.QIcon.Off)
         self.actionVariables.setIcon(icon24)
         self.actionVariables.setObjectName("actionVariables")
+        
         self.actionToggleDocks = QtWidgets.QAction(MainWindow)
         self.actionToggleDocks.setIcon(icon6)
         self.actionToggleDocks.setObjectName("actionToggleDocks")
+        
         self.actionGDS = QtWidgets.QAction(MainWindow)
         icon25 = QtGui.QIcon()
         icon25.addPixmap(QtGui.QPixmap(":/renderer/_imgs/renderers/GDS.png"),
                          QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionGDS.setIcon(icon25)
         self.actionGDS.setObjectName("actionGDS")
+        
         self.actionHFSS = QtWidgets.QAction(MainWindow)
         icon26 = QtGui.QIcon()
         icon26.addPixmap(QtGui.QPixmap(":/renderer/_imgs/renderers/HFSS.png"),
                          QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionHFSS.setIcon(icon26)
         self.actionHFSS.setObjectName("actionHFSS")
+        
         self.actionQ3D = QtWidgets.QAction(MainWindow)
         icon27 = QtGui.QIcon()
         icon27.addPixmap(QtGui.QPixmap(":/renderer/_imgs/renderers/Q3D.png"),
                          QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionQ3D.setIcon(icon27)
         self.actionQ3D.setObjectName("actionQ3D")
+        
         self.actionBuildHistory = QtWidgets.QAction(MainWindow)
         icon28 = QtGui.QIcon()
         icon28.addPixmap(QtGui.QPixmap(":/build_history"), QtGui.QIcon.Normal,
                          QtGui.QIcon.Off)
         self.actionBuildHistory.setIcon(icon28)
         self.actionBuildHistory.setObjectName("actionBuildHistory")
+        
         self.actionDeveloperMode = QtWidgets.QAction(MainWindow)
         self.actionDeveloperMode.setCheckable(True)
         icon29 = QtGui.QIcon()
@@ -461,6 +469,14 @@ class Ui_MainWindow(object):
                          QtGui.QIcon.Normal, QtGui.QIcon.On)
         self.actionDeveloperMode.setIcon(icon29)
         self.actionDeveloperMode.setObjectName("actionDeveloperMode")
+
+        self.actionWebHelp = QtWidgets.QAction(MainWindow)
+        icon30 = QtGui.QIcon()
+        icon30.addPixmap(QtGui.QPixmap(":/browser"), QtGui.QIcon.Normal,
+                         QtGui.QIcon.Off)
+        self.actionWebHelp.setIcon(icon30)
+        self.actionWebHelp.setObjectName("actionWebHelp")
+
         self.menuDesign.addSeparator()
         self.menuDesign.addAction(self.actionLabelDesign)
         self.menuDesign.addAction(self.actionLoad)
@@ -505,6 +521,8 @@ class Ui_MainWindow(object):
         self.toolBarDesign.addAction(self.action_full_refresh)
         self.toolBarDesign.addAction(self.actionRebuild)
         self.toolBarDesign.addAction(self.actionBuildHistory)
+        self.toolBarDesign.addSeparator()
+        self.toolBarDesign.addAction(self.actionWebHelp)
         self.toolBarDesign.addSeparator()
         self.toolBarView.addAction(self.actionToggleDocks)
         self.toolBarView.addAction(self.actionScreenshot)
@@ -601,13 +619,16 @@ class Ui_MainWindow(object):
                                MainWindow.toggle_all_docks)
         QtCore.QObject.connect(self.actionBuildHistory,
                                QtCore.SIGNAL("triggered()"),
-                               MainWindow.create_build_log_window)
+                               MainWindow.create_build_log_window)        
         QtCore.QObject.connect(self.actionGDS, QtCore.SIGNAL("triggered()"),
                                MainWindow.show_renderer_gds)
         QtCore.QObject.connect(self.actionHFSS, QtCore.SIGNAL("triggered()"),
                                MainWindow.show_renderer_hfss)
         QtCore.QObject.connect(self.actionQ3D, QtCore.SIGNAL("triggered()"),
                                MainWindow.show_renderer_q3d)
+        QtCore.QObject.connect(self.actionWebHelp,
+                               QtCore.SIGNAL("triggered()"),
+                               MainWindow.open_web_help)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -1008,6 +1029,12 @@ class Ui_MainWindow(object):
                                              None, -1))
         self.actionDeveloperMode.setToolTip(
             QtWidgets.QApplication.translate("MainWindow", "clickme", None, -1))
+        self.actionWebHelp.setText(
+            QtWidgets.QApplication.translate("MainWindow", "Web Help",
+                                             None, -1))
+        self.actionWebHelp.setToolTip(
+            QtWidgets.QApplication.translate(
+                "MainWindow", "Get online web help!", None, -1))
 
 
 from .widgets.qlibrary_display.tree_view_qlibrary import TreeViewQLibrary
