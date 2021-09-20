@@ -157,14 +157,12 @@ class StarQubit(QComponent):
         circle = draw.Point(p.pos_x,\
             p.pos_y).buffer(p.radius,\
             resolution=int(p.resolution),
-            cap_style=getattr(CAP_STYLE, p.cap_style)
-        )
+            cap_style=getattr(CAP_STYLE, p.cap_style))
 
         circle_outer = draw.Point(p.pos_x, p.pos_y).buffer(
-            p.radius * ( 1 + (p.connector_length / p.radius)),
+            p.radius * (1 + (p.connector_length / p.radius)),
             resolution=int(p.resolution),
-            cap_style=getattr(CAP_STYLE, p.cap_style)
-        )
+            cap_style=getattr(CAP_STYLE, p.cap_style))
         coords1 = [((coord_x1 + p.pos_x),(coord_y1 + p.pos_y)),((coord_x2 + p.pos_x),\
         (coord_y1 + p.pos_y)),((coord_x3 + p.pos_x),(coord_y2 + p.pos_y)),\
         ((coord_x4 + p.pos_x),(coord_y2 + p.pos_y))]
@@ -195,12 +193,12 @@ class StarQubit(QComponent):
         trap_c = draw.rotate(trap_c, p.rotation3, origin=(p.pos_x, p.pos_y))
         rect1 = draw.rectangle(pocket_w1, pocket_h1)
         rect1 = draw.translate(rect1,
-                               xoff=p.pos_x + coord_b2*1.1,
+                               xoff=p.pos_x + coord_b2 * 1.1,
                                yoff=p.radius)
         rect1 = draw.rotate(rect1, p.rotation1, origin=(p.pos_x, p.pos_y))
         rect2 = draw.rectangle(pocket_w1, pocket_h1)
         rect2 = draw.translate(rect2,
-                               xoff=p.pos_x + coord_b1*1.1,
+                               xoff=p.pos_x + coord_b1 * 1.1,
                                yoff=p.radius)
         rect2 = draw.rotate(rect2, p.rotation1, origin=(p.pos_x, p.pos_y))
 
@@ -217,7 +215,7 @@ class StarQubit(QComponent):
         pocket5 = draw.rotate(pocket0, p.rotation5, origin=(p.pos_x, p.pos_y))
 
         #Connectors for the ground plane
-        pocket_z = draw.rectangle(pocket_w*1.4, pocket_h)
+        pocket_z = draw.rectangle(pocket_w * 1.4, pocket_h)
         pocket_z = draw.translate(pocket_z,
                                   xoff=p.pos_x,
                                   yoff=(coord_y2 + p.pos_y))
@@ -227,21 +225,22 @@ class StarQubit(QComponent):
         pocket_d = draw.rotate(pocket_z, p.rotation4, origin=(p.pos_x, p.pos_y))
         pocket_e = draw.rotate(pocket_z, p.rotation5, origin=(p.pos_x, p.pos_y))
         if (p.number_of_connectors) == 0:
-            circle_outer = draw.union(circle_outer,pocket_c)
+            circle_outer = draw.union(circle_outer, pocket_c)
         elif (p.number_of_connectors) == 1:
-            circle_outer = draw.union(circle_outer,pocket_a,pocket_c)
+            circle_outer = draw.union(circle_outer, pocket_a, pocket_c)
         elif (p.number_of_connectors) == 2:
-            circle_outer = draw.union(circle_outer,pocket_a,pocket_b,pocket_c)
+            circle_outer = draw.union(circle_outer, pocket_a, pocket_b, pocket_c)
         elif (p.number_of_connectors) == 3:
-            circle_outer = draw.union(circle_outer,pocket_a,pocket_b,pocket_c,pocket_d)
+            circle_outer = draw.union(circle_outer, pocket_a, pocket_b,
+            pocket_c, pocket_d)
         elif (p.number_of_connectors) == 4:
-            circle_outer = draw.union(circle_outer,pocket_a,pocket_b,pocket_c,
-            pocket_d,pocket_e)
+            circle_outer = draw.union(circle_outer, pocket_a, pocket_b,
+            pocket_c, pocket_d, pocket_e)
 
         #junction
         pocket6 = draw.LineString([[p.pos_x+coord_b1-(pocket_h1/2), p.pos_y],\
         [p.pos_x+coord_b2+(pocket_h1/2), p.pos_y]])
-        pocket6 = draw.translate(pocket6, yoff=(p.pos_y + 1.15*(p.radius)))
+        pocket6 = draw.translate(pocket6, yoff=(p.pos_y + 1.15 * (p.radius)))
         pocket6 = draw.rotate(pocket6, p.rotation1, origin=(p.pos_x, p.pos_y))
 
         # Define the final structure based on use input on how many connectors are needed
@@ -261,21 +260,21 @@ class StarQubit(QComponent):
         # Add connection to the junction
         total = draw.union(total1, rect1, rect2)
 
-        contact1 = draw.subtract(circle,trap_a)
-        contact1 = draw.union(contact1,pocket1)
-        contact2 = draw.subtract(circle,trap_b)
-        contact2 = draw.union(contact2,pocket2)
-        contact3 = draw.subtract(circle,trap_c)
-        contact3 = draw.union(contact3,pocket3)
-        contact4 = draw.subtract(circle,trap_d)
-        contact4 = draw.union(contact4,pocket4)
-        contact5 = draw.subtract(circle,trap_e)
-        contact5 = draw.union(contact5,pocket5)
+        contact1 = draw.subtract(circle, trap_a)
+        contact1 = draw.union(contact1, pocket1)
+        contact2 = draw.subtract(circle, trap_b)
+        contact2 = draw.union(contact2, pocket2)
+        contact3 = draw.subtract(circle, trap_c)
+        contact3 = draw.union(contact3, pocket3)
+        contact4 = draw.subtract(circle, trap_d)
+        contact4 = draw.union(contact4, pocket4)
+        contact5 = draw.subtract(circle, trap_e)
+        contact5 = draw.union(contact5, pocket5)
 
         #########################################################################################
         # Add geometry and Qpin connections
-        p_in = (p.pos_y,(p.pos_y + p.radius))
-        p_out = (p.pos_y,1.25*(p.pos_y + p.radius))
+        p_in = (p.pos_y, (p.pos_y + p.radius))
+        p_out = (p.pos_y, 1.25 * (p.pos_y + p.radius))
         pins = draw.LineString([p_in, p_out])
         pins1 = draw.rotate(pins, p.rotation1, origin=(p.pos_x, p.pos_y))
         pins2 = draw.rotate(pins, p.rotation2, origin=(p.pos_x, p.pos_y))
@@ -284,48 +283,48 @@ class StarQubit(QComponent):
         pins5 = draw.rotate(pins, p.rotation5, origin=(p.pos_x, p.pos_y))
 
         self.add_qgeometry('poly', {'circle1': total},
-                            subtract=p.subtract,
-                            helper=p.helper,
-                            layer=p.layer,
-                            chip=p.chip)
+                           subtract=p.subtract,
+                           helper=p.helper,
+                           layer=p.layer,
+                           chip=p.chip)
         if (p.number_of_connectors) == 0:
             self.add_qgeometry('poly', {'contact3': contact3},
-                                subtract=p.subtract,
-                                helper=p.helper,
-                                layer=p.layer,
-                                chip=p.chip)
+                               subtract=p.subtract,
+                               helper=p.helper,
+                               layer=p.layer,
+                               chip=p.chip)
             self.add_pin('pin3', pins3.coords, width=0.01, input_as_norm=True)
         elif (p.number_of_connectors) == 1:
             self.add_qgeometry('poly', {'contact1': contact1},
-                                subtract=p.subtract,
-                                helper=p.helper,
-                                layer=p.layer,
-                                chip=p.chip)
+                               subtract=p.subtract,
+                               helper=p.helper,
+                               layer=p.layer,
+                               chip=p.chip)
             self.add_qgeometry('poly', {'contact3': contact3},
-                                subtract=p.subtract,
-                                helper=p.helper,
-                                layer=p.layer,
-                                chip=p.chip)
+                               subtract=p.subtract,
+                               helper=p.helper,
+                               layer=p.layer,
+                               chip=p.chip)
             # Add pin connections
             self.add_pin('pin1', pins1.coords, width=0.01, input_as_norm=True)
 
             self.add_pin('pin3', pins3.coords, width=0.01, input_as_norm=True)
         elif (p.number_of_connectors) == 2:
             self.add_qgeometry('poly', {'contact1': contact1},
-                                subtract=p.subtract,
-                                helper=p.helper,
-                                layer=p.layer,
-                                chip=p.chip)
+                               subtract=p.subtract,
+                               helper=p.helper,
+                               layer=p.layer,
+                               chip=p.chip)
             self.add_qgeometry('poly', {'contact2': contact2},
-                                subtract=p.subtract,
-                                helper=p.helper,
-                                layer=p.layer,
-                                chip=p.chip)
+                               subtract=p.subtract,
+                               helper=p.helper,
+                               layer=p.layer,
+                               chip=p.chip)
             self.add_qgeometry('poly', {'contact3': contact3},
-                                subtract=p.subtract,
-                                helper=p.helper,
-                                layer=p.layer,
-                                chip=p.chip)
+                               subtract=p.subtract,
+                               helper=p.helper,
+                               layer=p.layer,
+                               chip=p.chip)
             # Add pin connections
             self.add_pin('pin1', pins1.coords, width=0.01, input_as_norm=True)
 
@@ -335,25 +334,25 @@ class StarQubit(QComponent):
             self.add_pin('pin3', pins3.coords, width=0.01, input_as_norm=True)
         elif (p.number_of_connectors) == 3:
             self.add_qgeometry('poly', {'contact1': contact1},
-                                subtract=p.subtract,
-                                helper=p.helper,
-                                layer=p.layer,
-                                chip=p.chip)
+                               subtract=p.subtract,
+                               helper=p.helper,
+                               layer=p.layer,
+                               chip=p.chip)
             self.add_qgeometry('poly', {'contact2': contact2},
-                                subtract=p.subtract,
-                                helper=p.helper,
-                                layer=p.layer,
-                                chip=p.chip)
+                               subtract=p.subtract,
+                               helper=p.helper,
+                               layer=p.layer,
+                               chip=p.chip)
             self.add_qgeometry('poly', {'contact3': contact3},
-                                subtract=p.subtract,
-                                helper=p.helper,
-                                layer=p.layer,
-                                chip=p.chip)
+                               subtract=p.subtract,
+                               helper=p.helper,
+                               layer=p.layer,
+                               chip=p.chip)
             self.add_qgeometry('poly', {'contact4': contact4},
-                                subtract=p.subtract,
-                                helper=p.helper,
-                                layer=p.layer,
-                                chip=p.chip)
+                               subtract=p.subtract,
+                               helper=p.helper,
+                               layer=p.layer,
+                               chip=p.chip)
             # Add pin connections
             self.add_pin('pin1', pins1.coords, width=0.01, input_as_norm=True)
             # Define second pin
@@ -364,30 +363,30 @@ class StarQubit(QComponent):
             self.add_pin('pin4', pins4.coords, width=0.01, input_as_norm=True)
         elif (p.number_of_connectors) == 4:
             self.add_qgeometry('poly', {'contact1': contact1},
-                                subtract=p.subtract,
-                                helper=p.helper,
-                                layer=p.layer,
-                                chip=p.chip)
+                               subtract=p.subtract,
+                               helper=p.helper,
+                               layer=p.layer,
+                               chip=p.chip)
             self.add_qgeometry('poly', {'contact2': contact2},
-                                subtract=p.subtract,
-                                helper=p.helper,
-                                layer=p.layer,
-                                chip=p.chip)
+                               subtract=p.subtract,
+                               helper=p.helper,
+                               layer=p.layer,
+                               chip=p.chip)
             self.add_qgeometry('poly', {'contact3': contact3},
-                                subtract=p.subtract,
-                                helper=p.helper,
-                                layer=p.layer,
-                                chip=p.chip)
+                               subtract=p.subtract,
+                               helper=p.helper,
+                               layer=p.layer,
+                               chip=p.chip)
             self.add_qgeometry('poly', {'contact4': contact4},
-                                subtract=p.subtract,
-                                helper=p.helper,
-                                layer=p.layer,
-                                chip=p.chip)
+                               subtract=p.subtract,
+                               helper=p.helper,
+                               layer=p.layer,
+                               chip=p.chip)
             self.add_qgeometry('poly', {'contact5': contact5},
-                                subtract=p.subtract,
-                                helper=p.helper,
-                                layer=p.layer,
-                                chip=p.chip)
+                               subtract=p.subtract,
+                               helper=p.helper,
+                               layer=p.layer,
+                               chip=p.chip)
             # Add pin connections
             self.add_pin('pin1', pins1.coords, width=0.01, input_as_norm=True)
 
