@@ -143,7 +143,7 @@ class StarQubit(QComponent):
         coord_c2 = -p.radius
         coord_c3 = p.radius
         coord_d1 = -(p.center_radius / 2 - p.gap_readout)
-        coord_d2 = p.center_radius  / 2 - p.gap_readout
+        coord_d2 = p.center_radius / 2 - p.gap_readout
         coord_d3 = p.center_radius
         coord_d4 = -p.center_radius
         coord_d5 = -p.radius
