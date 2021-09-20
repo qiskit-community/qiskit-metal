@@ -61,15 +61,11 @@ class StarQubit(QComponent):
                            rotation3='144.0',
                            rotation4='216.0',
                            rotation5='288.0',
-                           pos_x='0um',
-                           pos_y='0um',
                            number_of_connectors='4',
                            resolution='16',
                            cap_style='round',
                            subtract='False',
-                           helper='False',
-                           chip='main',
-                           layer='1')
+                           helper='False')
     """Default drawing options"""
 
     def make(self):
@@ -122,18 +118,20 @@ class StarQubit(QComponent):
         pocket_h1 = p.center_radius
 
         # create a circle
-        circle = draw.Point(p.pos_x,\
-            p.pos_y).buffer(p.radius,\
-            resolution=int(p.resolution),
-            cap_style=getattr(CAP_STYLE, p.cap_style))
+        circle = draw.Point(p.pos_x,
+                            p.pos_y).buffer(p.radius,
+                                            resolution=int(p.resolution),
+                                            cap_style=getattr(
+                                                CAP_STYLE, p.cap_style))
 
         circle_outer = draw.Point(p.pos_x, p.pos_y).buffer(
             p.radius * (1 + (p.connector_length / p.radius)),
             resolution=int(p.resolution),
             cap_style=getattr(CAP_STYLE, p.cap_style))
-        coords1 = [((coord_x1 + p.pos_x),(coord_y1 + p.pos_y)),((coord_x2 + p.pos_x),\
-        (coord_y1 + p.pos_y)),((coord_x3 + p.pos_x),(coord_y2 + p.pos_y)),\
-        ((coord_x4 + p.pos_x),(coord_y2 + p.pos_y))]
+        coords1 = [((coord_x1 + p.pos_x), (coord_y1 + p.pos_y)),
+                   ((coord_x2 + p.pos_x), (coord_y1 + p.pos_y)),
+                   ((coord_x3 + p.pos_x), (coord_y2 + p.pos_y)),
+                   ((coord_x4 + p.pos_x), (coord_y2 + p.pos_y))]
         trap_0 = draw.Polygon(coords1)
         trap_1 = draw.rotate(trap_0, p.rotation1, origin=(p.pos_x, p.pos_y))
         trap_2 = draw.rotate(trap_0, p.rotation2, origin=(p.pos_x, p.pos_y))
@@ -142,21 +140,29 @@ class StarQubit(QComponent):
         trap_5 = draw.rotate(trap_0, p.rotation5, origin=(p.pos_x, p.pos_y))
 
         # Define the connectors
-        coords_coupling_resonator = [((coord_b1 + p.pos_x),(coord_a1 + p.pos_y)),\
-        ((coord_b2 + p.pos_x),(coord_a1 + p.pos_y)),((coord_b3 + p.pos_x),(coord_a2 + p.pos_y)),\
-        ((coord_b6 + p.pos_x),(coord_a2 + p.pos_y)),((coord_b6 + p.pos_x),(coord_a3 + p.pos_y)),\
-        ((coord_b5 + p.pos_x),(coord_a3 + p.pos_y)),((coord_b5 + p.pos_x),(coord_a2 + p.pos_y)),\
-        ((coord_b4 + p.pos_x),(coord_a2 + p.pos_y))]
+        coords_coupling_resonator = [
+            ((coord_b1 + p.pos_x), (coord_a1 + p.pos_y)),
+            ((coord_b2 + p.pos_x), (coord_a1 + p.pos_y)),
+            ((coord_b3 + p.pos_x), (coord_a2 + p.pos_y)),
+            ((coord_b6 + p.pos_x), (coord_a2 + p.pos_y)),
+            ((coord_b6 + p.pos_x), (coord_a3 + p.pos_y)),
+            ((coord_b5 + p.pos_x), (coord_a3 + p.pos_y)),
+            ((coord_b5 + p.pos_x), (coord_a2 + p.pos_y)),
+            ((coord_b4 + p.pos_x), (coord_a2 + p.pos_y))
+        ]
         trap_z = draw.Polygon(coords_coupling_resonator)
         trap_a = draw.rotate(trap_z, p.rotation1, origin=(p.pos_x, p.pos_y))
         trap_b = draw.rotate(trap_z, p.rotation2, origin=(p.pos_x, p.pos_y))
         trap_d = draw.rotate(trap_z, p.rotation4, origin=(p.pos_x, p.pos_y))
         trap_e = draw.rotate(trap_z, p.rotation5, origin=(p.pos_x, p.pos_y))
-        coords_readout = [((coord_d1 + p.pos_x),(coord_c1 + p.pos_y)),((coord_d2 + p.pos_x),\
-        (coord_c1 + p.pos_y)),((coord_d3 + p.pos_x),(coord_c2 + p.pos_y)),((coord_d6 + p.pos_x),\
-        (coord_c2 + p.pos_y)),((coord_d6 + p.pos_x),(coord_c3 + p.pos_y)),((coord_d5 + p.pos_x),\
-        (coord_c3 + p.pos_y)),((coord_d5 + p.pos_x),(coord_c2 + p.pos_y)),((coord_d4 + p.pos_x),\
-        (coord_c2 + p.pos_y))]
+        coords_readout = [((coord_d1 + p.pos_x), (coord_c1 + p.pos_y)),
+                          ((coord_d2 + p.pos_x), (coord_c1 + p.pos_y)),
+                          ((coord_d3 + p.pos_x), (coord_c2 + p.pos_y)),
+                          ((coord_d6 + p.pos_x), (coord_c2 + p.pos_y)),
+                          ((coord_d6 + p.pos_x), (coord_c3 + p.pos_y)),
+                          ((coord_d5 + p.pos_x), (coord_c3 + p.pos_y)),
+                          ((coord_d5 + p.pos_x), (coord_c2 + p.pos_y)),
+                          ((coord_d4 + p.pos_x), (coord_c2 + p.pos_y))]
         trap_c = draw.Polygon(coords_readout)
         trap_c = draw.rotate(trap_c, p.rotation3, origin=(p.pos_x, p.pos_y))
         rect1 = draw.rectangle(pocket_w1, pocket_h1)
@@ -206,8 +212,9 @@ class StarQubit(QComponent):
                                       pocket_c, pocket_d, pocket_e)
 
         #junction
-        pocket6 = draw.LineString([[p.pos_x+coord_b1-(pocket_h1/2), p.pos_y],\
-        [p.pos_x+coord_b2+(pocket_h1/2), p.pos_y]])
+        pocket6 = draw.LineString(
+            [[p.pos_x + coord_b1 - (pocket_h1 / 2), p.pos_y],
+             [p.pos_x + coord_b2 + (pocket_h1 / 2), p.pos_y]])
         pocket6 = draw.translate(pocket6, yoff=(p.pos_y + 1.15 * (p.radius)))
         pocket6 = draw.rotate(pocket6, p.rotation1, origin=(p.pos_x, p.pos_y))
 
