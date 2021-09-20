@@ -139,11 +139,11 @@ class StarQubit(QComponent):
         coord_b4 = -(p.center_radius - (p.gap_couplers))
         coord_b5 = -p.radius
         coord_b6 = p.radius
-        coord_c1 = -(p.center_radius+p.gap_readout)
+        coord_c1 = -(p.center_radius + p.gap_readout)
         coord_c2 = -p.radius
         coord_c3 = p.radius
         coord_d1 = -(p.center_radius / 2 - p.gap_readout)
-        coord_d2 =  p.center_radius  /2- p.gap_readout
+        coord_d2 =  p.center_radius  / 2- p.gap_readout
         coord_d3 = p.center_radius
         coord_d4 = -p.center_radius
         coord_d5 = -p.radius
@@ -226,13 +226,14 @@ class StarQubit(QComponent):
         if (p.number_of_connectors) == 0:
             circle_outer = draw.union(circle_outer, pocket_c)
         elif (p.number_of_connectors) == 1:
-            circle_outer = draw.union(circle_outer, pocket_a, pocket_c)
-        elif (p.number_of_connectors) == 2:
-            circle_outer = draw.union(circle_outer, pocket_a, pocket_b, 
+            circle_outer = draw.union(circle_outer, pocket_a,
                                       pocket_c)
+        elif (p.number_of_connectors) == 2:
+            circle_outer = draw.union(circle_outer, pocket_a,
+                                      pocket_b, pocket_c)
         elif (p.number_of_connectors) == 3:
-            circle_outer = draw.union(circle_outer, pocket_a, pocket_b,
-                                      pocket_c, pocket_d)
+            circle_outer = draw.union(circle_outer, pocket_a,
+                                      pocket_b, pocket_c, pocket_d)
         elif (p.number_of_connectors) == 4:
             circle_outer = draw.union(circle_outer, pocket_a, pocket_b,
                                       pocket_c, pocket_d, pocket_e)
