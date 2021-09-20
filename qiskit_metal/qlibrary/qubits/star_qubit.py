@@ -19,33 +19,34 @@ from shapely.geometry import CAP_STYLE
 
 
 class StarQubit(QComponent):
-    """A single configurable circle.
+    """A single configurable circle with multiple pads.
 
-    Inherits QComponent class.
+    Inherits `BaseQubit` class.
+
+    Create a circular transmon qubit with up to 4 connectors and one readout.
+
+    .. image::
+        StarQubit.png
 
     Default Options:
-        * radius: '300um' # radius of the circle defining the star shape
-        * center_radius='100um', # Measure of how thick the central island is
-        * gap_couplers='25um', # Gap between the star and the coupling resonator
-        * gap_readout='10um', # Gap between the star and the readout resonator
-        * connector_length='75um', # Length of the rectangular part of the connector
-        * trap_offset='20um', #Offset between trpezoid coordinates for side wall angle
-        * junc_h = '30um', # junction height
-        * rotation1 = '0.0', # rotation for one of the coupling resonators '36.0', '0.0',
-        * rotation2 = '72.0', # rotation for the readout resonator '108.0','72.0',
-        * rotation3 = '144.0', # rotation for one of the coupling resonators '180.0','144.0',
-        * rotation4 = '216.0', # rotation for one of the coupling resonators'252.0','216.0',
-        * rotation5 = '288.0', # rotation for one of the coupling resonators '324.0','288.0',
-        * pos_x='0um',
-        * pos_y='0um',
-        * number_of_connectors='1', # Total number of coupling resonators
-        * resolution='16',
-        * cap_style='round',  # round, flat, square
-        * join_style = 'round', # round, mitre, bevel
-        * subtract='False',
-        * helper='False',
-        * chip='main',
-        * layer='1'
+        * radius: '300um' -- Radius of the circle defining the star shape
+        * center_radius: '100um' -- Measure of how thick the central island is
+        * gap_couplers: '25um' -- Gap between the star and the coupling resonator
+        * gap_readout: '10um' -- Gap between the star and the readout resonator
+        * connector_length: '75um' -- Length of the rectangular part of the connector
+        * trap_offset: '20um' -- Offset between trapezoid coordinates for side wall angle
+        * junc_h: '30um' -- Junction height
+        * rotation1: '0.0' -- Rotation for one of the coupling resonators '36.0', '0.0',
+        * rotation2: '72.0' -- Rotation for the readout resonator '108.0','72.0',
+        * rotation3: '144.0' -- Rotation for one of the coupling resonators '180.0','144.0',
+        * rotation4: '216.0' -- Rotation for one of the coupling resonators'252.0','216.0',
+        * rotation5: '288.0' -- Rotation for one of the coupling resonators '324.0','288.0',
+        * number_of_connectors: '4' -- Total number of coupling resonators
+        * resolution: '16'
+        * cap_style: 'round' -- round, flat, square
+        * join_style: 'round' -- round, mitre, bevel
+        * subtract: 'False'
+        * helper: 'False'
     """
 
     default_options = dict(radius='300um',
@@ -62,7 +63,7 @@ class StarQubit(QComponent):
                            rotation5='288.0',
                            pos_x='0um',
                            pos_y='0um',
-                           number_of_connectors='1',
+                           number_of_connectors='4',
                            resolution='16',
                            cap_style='round',
                            subtract='False',
@@ -72,64 +73,25 @@ class StarQubit(QComponent):
     """Default drawing options"""
 
     def make(self):
-        """The make function implements the logic that creates the geoemtry
+        """The make function implements the logic that creates the geometry
         (poly, path, etc.) from the qcomponent.options dictionary of
         parameters, and the adds them to the design, using
         qcomponent.add_qgeometry(...), adding in extra needed information, such
         as layer, subtract, etc.
-        * p = self.p  # p for parsed parameters. Access to the parsed options.
-
-        # Extracting coordinated from the user input values
-        * coord_y1 = -p.center_radius # y-coordinate of the trapezoid to subtract from circle
-        * coord_y2 = -p.radius # y-coordinate of the trapezoid to subtract from circle
-        * coord_x1 = -p.center_radius/2 # x-coordinate of the trapezoid to subtract from circle
-        * coord_x2 = p.center_radius/2 # x-coordinate of the trapezoid to subtract from circle
-        * coord_x3 = p.center_radius + p.trap_offset # x-coordinate of the
-        #trapezoid to subtract from circle
-        * coord_x4 = -(p.center_radius + p.trap_offset) # x-coordinate of
-        #the trapezoid to subtract from circle
-        * coord_a1 = -(p.center_radius+p.gap_couplers) # y-coordinate of the polygon
-        #defining the coupling resonator
-        * coord_a2 = -p.radius # y-coordinate of the polygon defining the coupling resonator
-        * coord_a3 = p.radius # y-coordinate of the polygon defining the coupling resonator
-        * coord_b1 = -(p.center_radius/4) # x-coordinate of the polygon defining the
-        #coupling resonator
-        * coord_b2 = (p.center_radius/4) # x-coordinate of the polygon defining the
-        #coupling resonator
-        * coord_b3 = (p.center_radius-(p.gap_couplers)) # x-coordinate of the polygon
-        #defining the coupling resonator
-        * coord_b4 = -(p.center_radius-(p.gap_couplers)) # x-coordinate of the polygon
-        #defining the coupling resonator
-        * coord_b5 = -p.radius # x-coordinate of the polygon defining the coupling resonator
-        * coord_b6 = p.radius # x-coordinate of the polygon defining the coupling resonator
-        * coord_c1 = -(p.center_radius+p.gap_readout) # y-coordinate of the polygon
-        #defining the readout resonator
-        * coord_c2 = -p.radius # y-coordinate of the polygon defining the readout resonator
-        * coord_c3 = p.radius # y-coordinate of the polygon defining the readout resonator
-        * coord_d1 = -(p.center_radius/2 - p.gap_readout) # x-coordinate of the polygon
-        #defining the readout resonator
-        * coord_d2 =  p.center_radius/2- p.gap_readout # x-coordinate of the polygon
-        #defining the readout resonator
-        * coord_d3 = p.center_radius # x-coordinate of the polygon defining the
-        #readout resonator
-        * coord_d4 = -p.center_radius # x-coordinate of the polygon defining the
-        #readout resonator
-        * coord_d5 = -p.radius # x-coordinate of the polygon defining the readout resonator
-        * coord_d6 = p.radius # x-coordinate of the polygon defining the readout resonator
-        * pocket_w= p.connector_length  # connector pocket width
-        * pocket_h=p.connector_length*2  # connector pocket height
-        * pocket_w1=p.gap_couplers  # Connector to the JJ
-        * pocket_h1=p.center_radius # Connector to the JJ
         """
         p = self.p
 
         # Extracting coordinated from the user input values
+
+        # Coordinates of the trapezoid to subtract from circle
         coord_y1 = -p.center_radius
         coord_y2 = -p.radius
         coord_x1 = -p.center_radius / 2
         coord_x2 = p.center_radius / 2
         coord_x3 = p.center_radius + p.trap_offset
         coord_x4 = -(p.center_radius + p.trap_offset)
+
+        # Coordinates of the polygon defining the coupling resonator (a=x, b=y)
         coord_a1 = -(p.center_radius + p.gap_couplers)
         coord_a2 = -p.radius
         coord_a3 = p.radius
@@ -139,6 +101,8 @@ class StarQubit(QComponent):
         coord_b4 = -(p.center_radius - (p.gap_couplers))
         coord_b5 = -p.radius
         coord_b6 = p.radius
+
+        # Coordinates of the polygon defining the readout resonator (c=x, d=y)
         coord_c1 = -(p.center_radius + p.gap_readout)
         coord_c2 = -p.radius
         coord_c3 = p.radius
@@ -148,8 +112,12 @@ class StarQubit(QComponent):
         coord_d4 = -p.center_radius
         coord_d5 = -p.radius
         coord_d6 = p.radius
+
+        # Connector pocket width/height
         pocket_w = p.connector_length
         pocket_h = p.connector_length * 2
+
+        # Connector to the JJ width/height
         pocket_w1 = p.gap_couplers
         pocket_h1 = p.center_radius
 
@@ -271,7 +239,7 @@ class StarQubit(QComponent):
         contact5 = draw.subtract(circle, trap_e)
         contact5 = draw.union(contact5, pocket5)
 
-        #########################################################################################
+        ##################################################################
         # Add geometry and Qpin connections
         p_in = (p.pos_y, (p.pos_y + p.radius))
         p_out = (p.pos_y, 1.25 * (p.pos_y + p.radius))
