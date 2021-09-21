@@ -117,6 +117,7 @@ Qubits
     TransmonPocketTeeth
     TunableCoupler01
     SQUID_LOOP
+    StarQubit
 
 
 Submodules
