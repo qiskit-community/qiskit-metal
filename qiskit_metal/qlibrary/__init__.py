@@ -173,5 +173,6 @@ if config.is_building_docs():
     from .qubits.transmon_pocket_6 import TransmonPocket6
     from .qubits.transmon_pocket_teeth import TransmonPocketTeeth
     from .qubits.SQUID_loop import SQUID_LOOP
+    from .qubits.star_qubit import StarQubit
 
     from .tlines import anchored_path
