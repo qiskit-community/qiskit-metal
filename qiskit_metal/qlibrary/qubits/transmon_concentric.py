@@ -33,8 +33,6 @@ class TransmonConcentric(BaseQubit):
         TransmonConcentric.png
 
     BaseQubit Default Options:
-        * pos_x: '0um'
-        * pos_y: '0um'
         * connection_pads: empty Dict -- the dictionary which contains all active
           connection lines for the qubit.
         * _default_connection_pads: empty Dict -- the default values for the
@@ -43,7 +41,6 @@ class TransmonConcentric(BaseQubit):
     Default Options:
         * width: '1000um' -- Width of transmon pocket
         * height: '1000um' -- Height of transmon pocket
-        * layer: '1'
         * rad_o: '170um' -- Outer radius
         * rad_i: '115um' -- Inner radius
         * gap: '35um' -- Radius of gap between two pads
@@ -58,18 +55,13 @@ class TransmonConcentric(BaseQubit):
           loop and edge of pocket
         * pocket_w: '1500um' -- Transmon pocket width
         * pocket_h: '1000um' -- Transmon pocket height
-        * position_x: '2.0mm' -- Translate component to be centered on this x-coordinate
-        * position_y: '2.0mm' -- Translate component to be centered on this y-coordinate
-        * rotation: '0.0' -- Degrees to rotate the component by
         * cpw_width: '10.0um' -- Width of the readout resonator and flux bias line
     """
 
     # default drawing options
     default_options = Dict(
-        chip="main",
         width='1000um',  # width of transmon pocket
         height='1000um',  # height of transmon pocket
-        layer='1',
         rad_o='170um',  # outer radius
         rad_i='115um',  # inner radius
         gap='35um',  # radius of gap between two pads
@@ -84,11 +76,6 @@ class TransmonConcentric(BaseQubit):
         '300um',  # run length of flux bias line between circular loop and edge of pocket
         pocket_w='1500um',  # transmon pocket width
         pocket_h='1000um',  # transmon pocket height
-        position_x=
-        '2.0mm',  # translate component to be centered on this x-coordinate
-        position_y=
-        '2.0mm',  # translate component to be centered on this y-coordinate
-        rotation='0.0',  # degrees to rotate the component by
         cpw_width='10.0um',  # width of the readout resonator and flux bias line
         inductor_width='5.0um'  # width of the Josephson Junctions
     )
@@ -140,20 +127,20 @@ class TransmonConcentric(BaseQubit):
 
         # Translate and rotate all shapes
         objects = [outer_pad, inner_pad, jj_t, jj_b, pocket, rr, fbl]
-        objects = draw.rotate(objects, p.rotation, origin=(0, 0))
-        objects = draw.translate(objects, xoff=p.position_x, yoff=p.position_y)
+        objects = draw.rotate(objects, p.orientation, origin=(0, 0))
+        objects = draw.translate(objects, xoff=p.pos_x, yoff=p.pos_y)
         [outer_pad, inner_pad, jj_t, jj_b, pocket, rr, fbl] = objects
 
         # define a function that both rotates and translates the qpin coordinates
         def qpin_rotate_translate(x):
             y = list(x)
             z = [0.0, 0.0]
-            z[0] = y[0] * cos(p.rotation * 3.14159 / 180) - y[1] * sin(
-                p.rotation * 3.14159 / 180)
-            z[1] = y[0] * sin(p.rotation * 3.14159 / 180) + y[1] * cos(
-                p.rotation * 3.14159 / 180)
-            z[0] = z[0] + p.position_x
-            z[1] = z[1] + p.position_y
+            z[0] = y[0] * cos(p.orientation * 3.14159 / 180) - y[1] * sin(
+                p.orientation * 3.14159 / 180)
+            z[1] = y[0] * sin(p.orientation * 3.14159 / 180) + y[1] * cos(
+                p.orientation * 3.14159 / 180)
+            z[0] = z[0] + p.pos_x
+            z[1] = z[1] + p.pos_y
             x = (z[0], z[1])
             return x
 

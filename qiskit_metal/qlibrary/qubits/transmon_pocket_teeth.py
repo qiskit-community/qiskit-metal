@@ -36,9 +36,6 @@ class TransmonPocketTeeth(BaseQubit):
         (e.g., '30um')
 
     Pocket:
-        * chip               - the chip
-        * pos_x / pos_y      - where the center of the pocket should be located on chip
-          (where the 'junction' is)
         * pad_gap            - the distance between the two charge islands, which is also the
           resulting 'length' of the pseudo junction
         * inductor_width     - width of the pseudo junction between the two charge islands
@@ -48,7 +45,6 @@ class TransmonPocketTeeth(BaseQubit):
         * pad_height         - the size (y-axis) of the charge island pads
         * pocket_width       - size of the pocket (cut out in ground) along x-axis
         * pocket_height      - size of the pocket (cut out in ground) along y-axis
-        * orientation        - degree of qubit rotation
         * coupled_pad_gap    - the distance between the two teeth shape
         * coupled_pad_width  - the width (x-axis) of the teeth shape on the island pads
         * coupled_pad_height - the size (y-axis) of the teeth shape on the island pads
@@ -101,24 +97,17 @@ class TransmonPocketTeeth(BaseQubit):
 
     # Default drawing options
     default_options = Dict(
-        chip='main',
-        pos_x='0um',
-        pos_y='0um',
         pad_gap='30um',
         inductor_width='20um',
         pad_width='400um',
         pad_height='90um',
         pocket_width='650um',
         pocket_height='650um',
-        coupled_pad_height=
-        '150um',  # coupled_pad belongs to the teeth part and both teeth will have the same height. Teeth are symetric. 
-        coupled_pad_width=
-        '20um',  # Again for the teeth, the part on the same pad will have the same width. 
+        # coupled_pad belongs to the teeth part. Teeth will have same height/width and are symmetric.
+        coupled_pad_height='150um',
+        coupled_pad_width='20um',
         coupled_pad_gap='50um',  # One can arrange the gap between the teeth.
-
-        # 90 has dipole aligned along the +X axis,
-        # while 0 has dipole aligned along the +Y axis
-        orientation='0',
+        # orientation = 90 has dipole aligned along the +X axis, while 0 aligns to the +Y axis
         _default_connection_pads=Dict(
             pad_gap='15um',
             pad_width='20um',

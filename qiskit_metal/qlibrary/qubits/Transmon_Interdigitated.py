@@ -37,9 +37,9 @@ class TransmonInterdigitated(QComponent):
         TransmonInterdigitated.png
 
     Default Options:
-        * pad_width: '1000um' -- width of the large rectanglular pads on either side
+        * pad_width: '1000um' -- width of the large rectangular pads on either side
           of the junction
-        * pad_height: '300um' -- height of the large rectanglular pads on either side
+        * pad_height: '300um' -- height of the large rectangular pads on either side
           of the junction
         * finger_width: '50um' -- width of the "finger" on either side of the junction
         * finger_height: '100um' -- height of the "finger" on the side of the junction
@@ -70,21 +70,13 @@ class TransmonInterdigitated(QComponent):
           top right coupling capacitor
         * cc_topright_width: '100um' -- the width of the top right coupling capacitor pad
         * cc_topright_height: '100um' -- the height of the top right coupling capacitor pad
-        * position_x: '0um' -- the x-coordinate defining the center of the transmon pocket
-          on the chip
-        * position_y: '0um' -- the y-coordinate defining the center of the transmon pocket
-          on the chip
-        * rotation: '0.0' -- the angle at which the entire structure is rotated
         * rotation_top_pad: '180' -- internal coordinate defining the angle of rotation
           between top and bottom pads
         * inductor_width: '20.0um' -- the width of the Josephson Junction
-        * layer: '1' -- all objects are drawn assuming they are part of the same layer on a
-          the chip
     """
 
     # Default drawing options
-    default_options = Dict(chip="main",
-                           pad_width='1000um',
+    default_options = Dict(pad_width='1000um',
                            pad_height='300um',
                            finger_width='50um',
                            finger_height='100um',
@@ -104,12 +96,8 @@ class TransmonInterdigitated(QComponent):
                            cc_topright_space='50um',
                            cc_topright_width='100um',
                            cc_topright_height='100um',
-                           position_x='0um',
-                           position_y='0um',
-                           rotation='0.0',
                            rotation_top_pad='180',
-                           inductor_width='20um',
-                           layer='1')
+                           inductor_width='20um')
     """Default drawing options"""
 
     # Name prefix of component, if user doesn't provide name
@@ -205,14 +193,14 @@ class TransmonInterdigitated(QComponent):
             -0.5 * p.pad_height - p.finger_height - 0.5 * p.finger_space)
 
         # now translate the final structure according to the user input
-        design = draw.rotate(design, p.rotation, origin=(0, 0))
-        design = draw.translate(design, p.position_x, p.position_y)
+        design = draw.rotate(design, p.orientation, origin=(0, 0))
+        design = draw.translate(design, p.pos_x, p.pos_y)
 
-        rect_jj = draw.rotate(rect_jj, p.rotation, origin=(0, 0))
-        rect_jj = draw.translate(rect_jj, p.position_x, p.position_y)
+        rect_jj = draw.rotate(rect_jj, p.orientation, origin=(0, 0))
+        rect_jj = draw.translate(rect_jj, p.pos_x, p.pos_y)
 
-        pocket = draw.rotate(pocket, p.rotation, origin=(0, 0))
-        pocket = draw.translate(pocket, p.position_x, p.position_y)
+        pocket = draw.rotate(pocket, p.orientation, origin=(0, 0))
+        pocket = draw.translate(pocket, p.pos_x, p.pos_y)
 
         geom = {'design': design}
         geom_pocket = {'pocket': pocket}
@@ -233,17 +221,17 @@ class TransmonInterdigitated(QComponent):
         # qpin coordinates
         def qpin_rotate_translate(x):
             """ This function rotates the coordinates of the three qpins
-            according to the user inputs for "position_x", "position_y"
-            and "rotation".
+            according to the user inputs for "pos_x", "pos_y"
+            and "orientation".
             """
             y = list(x)
             z = [0.0, 0.0]
-            z[0] = y[0] * cos(p.rotation * 3.14159 / 180) - y[1] * sin(
-                p.rotation * 3.14159 / 180)
-            z[1] = y[0] * sin(p.rotation * 3.14159 / 180) + y[1] * cos(
-                p.rotation * 3.14159 / 180)
-            z[0] = z[0] + p.position_x
-            z[1] = z[1] + p.position_y
+            z[0] = y[0] * cos(p.orientation * 3.14159 / 180) - y[1] * sin(
+                p.orientation * 3.14159 / 180)
+            z[1] = y[0] * sin(p.orientation * 3.14159 / 180) + y[1] * cos(
+                p.orientation * 3.14159 / 180)
+            z[0] = z[0] + p.pos_x
+            z[1] = z[1] + p.pos_y
             x = (z[0], z[1])
             return x
 

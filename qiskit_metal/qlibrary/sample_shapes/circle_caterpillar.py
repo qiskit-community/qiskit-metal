@@ -31,30 +31,22 @@ class CircleCaterpillar(QComponent):
         * segments: '5'
         * distance: '1.2'
         * radius: '300um'
-        * pos_x: '0um'
-        * pos_y: '0um'
         * resolution: '16'
         * cap_style: 'round' -- Valid options are 'round', 'flat', 'square'
         * subtract: 'False'
         * helper: 'False'
-        * chip: 'main'
-        * layer: '1'
     """
 
     default_options = dict(
         segments='5',
         distance='1.2',
         radius='300um',
-        pos_x='0um',
-        pos_y='0um',
         resolution='16',
         cap_style='round',  # round, flat, square
         # join_style = 'round', # round, mitre, bevel
         # General
         subtract='False',
-        helper='False',
-        chip='main',
-        layer='1')
+        helper='False')
     """Default drawing options"""
 
     TOOLTIP = """A single configurable circle"""
