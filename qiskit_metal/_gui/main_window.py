@@ -115,17 +115,6 @@ class QMainWindowExtension(QMainWindowExtensionBase):
 
     def delete_all_components(self):
         """Delete all components."""
-
-        # yesnoMsg = QMessageBox()
-        # yesnoMsg.setWindowTitle("Delete all components?");
-        # yesnoMsg.setText("Are you sure you want to clear all Metal components?");
-        # # yesnoMsg.setStyleSheet("QPushButton {font-size:16px;}")
-        # yesnoMsg.setStyleSheet("font-size:16px;")
-        # yesnoMsg.setStandardButtons(QMessageBox.Yes);
-        # yesnoMsg.addButton(QMessageBox.No);
-        # yesnoMsg.setDefaultButton(QMessageBox.No);
-        # ret = yesnoMsg.exec()
-
         ret = QMessageBox.question(
             self,
             'Delete all components?',

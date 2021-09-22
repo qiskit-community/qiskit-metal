@@ -415,10 +415,8 @@ class Ui_MainWindow(object):
         self.actionMetal_Window = QtWidgets.QAction(MainWindow)
         self.actionMetal_Window.setEnabled(False)
         self.actionMetal_Window.setObjectName("actionMetal_Window")
-
         self.actionViewDummyLabel = QtWidgets.QAction(MainWindow)
         self.actionViewDummyLabel.setObjectName("actionViewDummyLabel")
-
         self.actionVariables = QtWidgets.QAction(MainWindow)
         self.actionVariables.setCheckable(True)
         self.actionVariables.setChecked(False)
@@ -431,35 +429,30 @@ class Ui_MainWindow(object):
         self.actionToggleDocks = QtWidgets.QAction(MainWindow)
         self.actionToggleDocks.setIcon(icon6)
         self.actionToggleDocks.setObjectName("actionToggleDocks")
-
         self.actionGDS = QtWidgets.QAction(MainWindow)
         icon25 = QtGui.QIcon()
         icon25.addPixmap(QtGui.QPixmap(":/renderer/_imgs/renderers/GDS.png"),
                          QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionGDS.setIcon(icon25)
         self.actionGDS.setObjectName("actionGDS")
-
         self.actionHFSS = QtWidgets.QAction(MainWindow)
         icon26 = QtGui.QIcon()
         icon26.addPixmap(QtGui.QPixmap(":/renderer/_imgs/renderers/HFSS.png"),
                          QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionHFSS.setIcon(icon26)
         self.actionHFSS.setObjectName("actionHFSS")
-
         self.actionQ3D = QtWidgets.QAction(MainWindow)
         icon27 = QtGui.QIcon()
         icon27.addPixmap(QtGui.QPixmap(":/renderer/_imgs/renderers/Q3D.png"),
                          QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionQ3D.setIcon(icon27)
         self.actionQ3D.setObjectName("actionQ3D")
-
         self.actionBuildHistory = QtWidgets.QAction(MainWindow)
         icon28 = QtGui.QIcon()
         icon28.addPixmap(QtGui.QPixmap(":/build_history"), QtGui.QIcon.Normal,
                          QtGui.QIcon.Off)
         self.actionBuildHistory.setIcon(icon28)
         self.actionBuildHistory.setObjectName("actionBuildHistory")
-
         self.actionDeveloperMode = QtWidgets.QAction(MainWindow)
         self.actionDeveloperMode.setCheckable(True)
         icon29 = QtGui.QIcon()
@@ -469,7 +462,6 @@ class Ui_MainWindow(object):
                          QtGui.QIcon.Normal, QtGui.QIcon.On)
         self.actionDeveloperMode.setIcon(icon29)
         self.actionDeveloperMode.setObjectName("actionDeveloperMode")
-
         self.actionWebHelp = QtWidgets.QAction(MainWindow)
         icon30 = QtGui.QIcon()
         icon30.addPixmap(QtGui.QPixmap(":/browser"), QtGui.QIcon.Normal,
