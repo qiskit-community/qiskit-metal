@@ -47,10 +47,6 @@ class TunableCoupler01(BaseQubit):
         (e.g., '30um')
 
     BaseQubit Default Options:
-        * pos_x: '0um' -- Origin of the component (see above figure)
-        * pos_y: '0um' -- Origin of the component (see above figure)
-        * orientation: '0' -- Degree of component rotation
-        * layer: '1' -- layer info, gds and other applications
         * connection_pads: empty Dict -- Currently not used, connection count is static. (WIP)
         * _default_connection_pads: empty Dict -- The default values for the (if any) connection lines of the qubit.
 
@@ -73,11 +69,7 @@ class TunableCoupler01(BaseQubit):
         * _default_connection_pads: Currently empty
     """
 
-    default_options = Dict(pos_x='0um',
-                           pos_y='0um',
-                           orientation='0',
-                           layer='1',
-                           c_width='400um',
+    default_options = Dict(c_width='400um',
                            l_width='20um',
                            l_gap='10um',
                            a_height='60um',

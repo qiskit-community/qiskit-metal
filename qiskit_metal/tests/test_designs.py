@@ -400,7 +400,7 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
         self.assertEqual(q_1.options['pos_x'], q1_copy.options['pos_x'])
 
         q1_copy.options['pos_x'] = '1.0mm'
-        self.assertEqual(q_1.options['pos_x'], '0um')
+        self.assertEqual(q_1.options['pos_x'], '0.0um')
         self.assertEqual(q1_copy.options['pos_x'], '1.0mm')
 
     def test_design_copy_multiple_qcomponents(self):
