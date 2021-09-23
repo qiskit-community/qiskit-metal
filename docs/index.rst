@@ -38,6 +38,11 @@ Use the slack channel.  Join `qiskit slack <https://ibm.co/joinqiskitslack>`_ an
 then join the `#metal <https://qiskit.slack.com/archives/C01R8KP5WP7>`_ channel to communicate with the developers and other participants.  
 You may also use this channel to learn about upcoming weekly tutorials and to inquire about potential collaborations.
 
+
+.. rubric:: **Live tutorials and Q&A**:
+We host live tutorials and Q&A sessions, `sign up here <https://airtable.com/shrxQEgKqZCf319F3>`_ to receive an invite to the upcoming sessions.  
+For past sessions & videos, see `here <https://github.com/Qiskit/qiskit-metal/blob/main/README_Tutorials.md>`_.
+
 .. rubric:: **Qiskit Metal Vision**:
 
 Designing quantum devices is the bedrock of the quantum ecosystem, 
