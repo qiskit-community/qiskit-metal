@@ -214,7 +214,8 @@ class TransmonInterdigitated(QComponent):
         rect_jj = draw.translate(rect_jj, p.pos_x, p.pos_y)
         pocket = draw.rotate(pocket, p.orientation, origin=(0, 0))
         pocket = draw.translate(pocket, p.pos_x, p.pos_y)
-        
+
+        # add each shape separately
         geom1 = {'pad_bot': bottom}
         geom2 = {'pad_top': top}
         geom3 = {'readout': coupling_capacitor}
@@ -222,13 +223,14 @@ class TransmonInterdigitated(QComponent):
         geom5 = {'bus2': cc_topright}
         geom_pocket = {'pocket': pocket}
         geom_jj = {'design': rect_jj}
-        
+
+        # add to qgeometry 
         self.add_qgeometry('poly', geom1, layer=p.layer, subtract=False)
         self.add_qgeometry('poly', geom2, layer=p.layer, subtract=False)
         self.add_qgeometry('poly', geom3, layer=p.layer, subtract=False)
         self.add_qgeometry('poly', geom4, layer=p.layer, subtract=False)
         self.add_qgeometry('poly', geom5, layer=p.layer, subtract=False)
-        
+
         self.add_qgeometry('poly', geom_pocket, layer=p.layer, subtract=True)
         self.add_qgeometry('junction',
                            geom_jj,
