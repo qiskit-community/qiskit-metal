@@ -224,7 +224,7 @@ class TransmonInterdigitated(QComponent):
         geom_pocket = {'pocket': pocket}
         geom_jj = {'design': rect_jj}
 
-        # add to qgeometry 
+        # add to qgeometry
         self.add_qgeometry('poly', geom1, layer=p.layer, subtract=False)
         self.add_qgeometry('poly', geom2, layer=p.layer, subtract=False)
         self.add_qgeometry('poly', geom3, layer=p.layer, subtract=False)
