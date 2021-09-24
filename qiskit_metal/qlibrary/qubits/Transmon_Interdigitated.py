@@ -126,10 +126,9 @@ class TransmonInterdigitated(QComponent):
 
         # draw the first comb to the right of the lower finger as a rectangle
         comb1_lower = draw.rectangle(
-            p.comb_width,
-            (2 * p.finger_height),
+            p.comb_width,(2 * p.finger_height),
             (0.5 * p.finger_width + p.comb_space_hor + 0.5 * p.comb_width),
-            (p.pad_pos_y + 0.5 *p.pad_height + 1.0 *p.finger_height))
+            (p.pad_pos_y + 0.5 * p.pad_height + 1.0 * p.finger_height))
 
         # draw the second comb to the right of the lower finger by translating the first comb
         comb2_lower = draw.translate(comb1_lower,
@@ -142,7 +141,7 @@ class TransmonInterdigitated(QComponent):
             (2 * p.finger_height),
             (-0.5 * p.finger_width - 2.0 * p.comb_space_hor -
              1.5 * p.comb_width),
-            (p.pad_pos_y + 0.5 *p.pad_height + 1.0 * p.finger_height))
+            (p.pad_pos_y + 0.5 * p.pad_height + 1.0 * p.finger_height))
 
         # draw the second comb to the left of the lower finger
         comb4_lower = draw.translate(comb3_lower,
@@ -180,7 +179,7 @@ class TransmonInterdigitated(QComponent):
         # Let's move it to the center of the JJ.
         bottom = draw.translate(bottom,
                                 0.0,
-                                -0.5*p.pad_height - p.finger_height - 0.5*p.finger_space)
+                                -0.5 * p.pad_height - p.finger_height - 0.5 * p.finger_space)
         top = draw.translate(top,
                              0.0,
                              -0.5 * p.pad_height - p.finger_height - 0.5 * p.finger_space)
