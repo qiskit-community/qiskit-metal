@@ -15,9 +15,9 @@
 """
 
 from math import sin, cos
+import numpy as np
 from qiskit_metal import draw, Dict
 from qiskit_metal.qlibrary.core.base import QComponent
-import numpy as np
 
 #from ... import config
 #if not config.is_building_docs():
@@ -173,10 +173,6 @@ class TransmonInterdigitated(QComponent):
         top = draw.translate(bottom, 0.0, p.pad_height + p.finger_space)
         top = draw.rotate(top, p.rotation_top_pad)
 
-        # merge everything into a single design (except the JJ!)
-        design = draw.union(bottom, top, coupling_capacitor, cc_topleft,
-                            cc_topright)
-
         # draw the transmon pocket bounding box
         pocket = draw.rectangle(1.5 * p.pad_width, 5.0 * p.pad_height)
 
@@ -185,15 +181,15 @@ class TransmonInterdigitated(QComponent):
         bottom = draw.translate(bottom,
                                 0.0,
                                 -0.5*p.pad_height - p.finger_height - 0.5*p.finger_space)
-        top = draw.translate(top, 
+        top = draw.translate(top,
                              0.0,
                              -0.5 * p.pad_height - p.finger_height - 0.5 * p.finger_space)
         coupling_capacitor = draw.translate(coupling_capacitor,
                                             0.0,
                                             -0.5 * p.pad_height - p.finger_height
                                             - 0.5 * p.finger_space)
-        cc_topleft = draw.translate(cc_topleft, 
-                                    0.0, 
+        cc_topleft = draw.translate(cc_topleft,
+                                    0.0,
                                     -0.5 * p.pad_height - p.finger_height - 0.5 * p.finger_space)
         cc_topright = draw.translate(cc_topright,
                                      0.0,
@@ -206,31 +202,24 @@ class TransmonInterdigitated(QComponent):
         # now translate the final structure according to the user input
         bottom = draw.rotate(bottom, p.orientation, origin=(0, 0))
         bottom = draw.translate(bottom, p.pos_x, p.pos_y)
-        
         top = draw.rotate(top, p.orientation, origin=(0, 0))
         top = draw.translate(top, p.pos_x, p.pos_y)
-        
         coupling_capacitor = draw.rotate(coupling_capacitor, p.orientation, origin=(0, 0))
         coupling_capacitor = draw.translate(coupling_capacitor, p.pos_x, p.pos_y)
-        
         cc_topleft = draw.rotate(cc_topleft, p.orientation, origin=(0, 0))
         cc_topleft = draw.translate(cc_topleft, p.pos_x, p.pos_y)
-        
         cc_topright = draw.rotate(cc_topright, p.orientation, origin=(0, 0))
         cc_topright = draw.translate(cc_topright, p.pos_x, p.pos_y)
-
         rect_jj = draw.rotate(rect_jj, p.orientation, origin=(0, 0))
         rect_jj = draw.translate(rect_jj, p.pos_x, p.pos_y)
-
         pocket = draw.rotate(pocket, p.orientation, origin=(0, 0))
         pocket = draw.translate(pocket, p.pos_x, p.pos_y)
-
+        
         geom1 = {'pad_bot': bottom}
         geom2 = {'pad_top': top}
         geom3 = {'readout': coupling_capacitor}
         geom4 = {'bus1': cc_topleft}
         geom5 = {'bus2': cc_topright}
-
         geom_pocket = {'pocket': pocket}
         geom_jj = {'design': rect_jj}
         
