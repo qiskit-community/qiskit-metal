@@ -189,8 +189,7 @@ class TransmonInterdigitated(QComponent):
             cc_topleft, 0.0,
             -0.5 * p.pad_height - p.finger_height - 0.5 * p.finger_space)
         cc_topright = draw.translate(
-            cc_topright,
-            0.0,
+            cc_topright, 0.0,
             -0.5 * p.pad_height - p.finger_height - 0.5 * p.finger_space)
         rect_jj = draw.translate(
             rect_jj, 0.0,
