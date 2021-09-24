@@ -139,10 +139,9 @@ class TransmonInterdigitated(QComponent):
         # draw the first comb to the right of the lower finger as a rectangle
         comb1_lower = draw.rectangle(
             p.comb_width,
-            (2 * p.finger_height + p.finger_space - p.comb_space_vert),
+            (2 * p.finger_height),
             (0.5 * p.finger_width + p.comb_space_hor + 0.5 * p.comb_width),
-            (0.5 * p.pad_height + 0.5 *
-             (p.pad_pos_y + 0.5 * (p.pad_height) + 0.5 * (p.finger_height))))
+            (p.pad_pos_y + 0.5*p.pad_height + 1.0 *p.finger_height))
 
         # draw the second comb to the right of the lower finger by translating the first comb
         comb2_lower = draw.translate(comb1_lower,
@@ -152,17 +151,17 @@ class TransmonInterdigitated(QComponent):
         # draw the first comb to the left of the lower finger
         comb3_lower = draw.rectangle(
             p.comb_width,
-            (2 * p.finger_height + p.finger_space - p.comb_space_vert),
+            (2 * p.finger_height),
             (-0.5 * p.finger_width - 2.0 * p.comb_space_hor -
              1.5 * p.comb_width),
-            (0.5 * p.pad_height + 0.5 *
-             (p.pad_pos_y + 0.5 * (p.pad_height) + 0.5 * (p.finger_height))))
+            (p.pad_pos_y + 0.5 *p.pad_height + 1.0*p.finger_height))
 
         # draw the second comb to the left of the lower finger
         comb4_lower = draw.translate(comb3_lower,
                                      -2.0 * (p.comb_space_hor + p.comb_width),
                                      0.0)
-
+        
+        # draw the coupling capacitors (bus1, bus2, readout)
         coupling_capacitor = draw.rectangle(
             p.cc_width, p.cc_height, p.pad_pos_x,
             p.pad_pos_y - 0.5 * (p.pad_height) - p.cc_space - 0.5 * p.cc_height)
@@ -187,37 +186,74 @@ class TransmonInterdigitated(QComponent):
         top = draw.translate(bottom, 0.0, p.pad_height + p.finger_space)
         top = draw.rotate(top, p.rotation_top_pad)
 
-        # merge everything into a single design (except the JJ!)
-        design = draw.union(bottom, top, coupling_capacitor, cc_topleft,
-                            cc_topright)
-
         # draw the transmon pocket bounding box
         pocket = draw.rectangle(1.5 * p.pad_width, 5.0 * p.pad_height)
 
         # the origin is originally set to the middle of the lower pad.
         # Let's move it to the center of the JJ.
-        design = draw.translate(
-            design, 0.0,
-            -0.5 * p.pad_height - p.finger_height - 0.5 * p.finger_space)
-
+        bottom = draw.translate(bottom, 
+                                0.0,
+                                -0.5*p.pad_height - p.finger_height -
+                                0.5*p.finger_space)
+        top = draw.translate(top,
+                             0.0,
+                             -0.5*p.pad_height - p.finger_height -
+                             0.5*p.finger_space)
+        coupling_capacitor = draw.translate(coupling_capacitor,
+                                            0.0,
+                                            -0.5*p.pad_height - p.finger_height -
+                                            0.5*p.finger_space)
+        cc_topleft = draw.translate(cc_topleft,
+                                    0.0,
+                                    -0.5*p.pad_height - p.finger_height -
+                                    0.5*p.finger_space)
+        cc_topright = draw.translate(cc_topright,
+                                     0.0,
+                                     -0.5 * p.pad_height - p.finger_height -
+                                     0.5 * p.finger_space)
+        
         rect_jj = draw.translate(
             rect_jj, 0.0,
             -0.5 * p.pad_height - p.finger_height - 0.5 * p.finger_space)
 
         # now translate the final structure according to the user input
-        design = draw.rotate(design, p.rotation, origin=(0, 0))
-        design = draw.translate(design, p.position_x, p.position_y)
+        bottom = draw.rotate(bottom, p.rotation, origin=(0, 0))
+        bottom = draw.translate(bottom, p.position_x, p.position_y)
+        
+        top = draw.rotate(top, p.rotation, origin=(0, 0))
+        top = draw.translate(top, p.position_x, p.position_y)
+        
+        coupling_capacitor = draw.rotate(coupling_capacitor, p.rotation,
+                                         origin=(0, 0))
+        coupling_capacitor = draw.translate(coupling_capacitor, p.position_x,
+                                            p.position_y)
+        
+        cc_topleft = draw.rotate(cc_topleft, p.rotation, origin=(0, 0))
+        cc_topleft = draw.translate(cc_topleft, p.position_x, p.position_y)
+        
+        cc_topright = draw.rotate(cc_topright, p.rotation, origin=(0, 0))
+        cc_topright = draw.translate(cc_topright, p.position_x, p.position_y)
 
         rect_jj = draw.rotate(rect_jj, p.rotation, origin=(0, 0))
         rect_jj = draw.translate(rect_jj, p.position_x, p.position_y)
 
         pocket = draw.rotate(pocket, p.rotation, origin=(0, 0))
         pocket = draw.translate(pocket, p.position_x, p.position_y)
-
-        geom = {'design': design}
+        
+        geom1 = {'pad_bot': bottom}
+        geom2 = {'pad_top': top}
+        geom3 = {'readout': coupling_capacitor}
+        geom4 = {'bus1': cc_topleft}
+        geom5 = {'bus2': cc_topright}
+        
         geom_pocket = {'pocket': pocket}
         geom_jj = {'design': rect_jj}
-        self.add_qgeometry('poly', geom, layer=p.layer, subtract=False)
+        
+        self.add_qgeometry('poly', geom1, layer=p.layer, subtract=False)
+        self.add_qgeometry('poly', geom2, layer=p.layer, subtract=False)
+        self.add_qgeometry('poly', geom3, layer=p.layer, subtract=False)
+        self.add_qgeometry('poly', geom4, layer=p.layer, subtract=False)
+        self.add_qgeometry('poly', geom5, layer=p.layer, subtract=False)
         self.add_qgeometry('poly', geom_pocket, layer=p.layer, subtract=True)
         self.add_qgeometry('junction',
                            geom_jj,
@@ -258,7 +294,7 @@ class TransmonInterdigitated(QComponent):
         qp1a = qpin_rotate_translate(qp1a)
         qp1b = qpin_rotate_translate(qp1b)
 
-        self.add_pin('pin1',
+        self.add_pin('readout',
                      points=np.array([qp1a, qp1b]),
                      width=0.01,
                      input_as_norm=True)
@@ -278,7 +314,7 @@ class TransmonInterdigitated(QComponent):
         qp2a = qpin_rotate_translate(qp2a)
         qp2b = qpin_rotate_translate(qp2b)
 
-        self.add_pin('pin2',
+        self.add_pin('bus1',
                      points=np.array([qp2a, qp2b]),
                      width=0.01,
                      input_as_norm=True)
@@ -298,7 +334,7 @@ class TransmonInterdigitated(QComponent):
         qp3a = qpin_rotate_translate(qp3a)
         qp3b = qpin_rotate_translate(qp3b)
 
-        self.add_pin('pin3',
+        self.add_pin('bus2',
                      points=np.array([qp3a, qp3b]),
                      width=0.01,
                      input_as_norm=True)
