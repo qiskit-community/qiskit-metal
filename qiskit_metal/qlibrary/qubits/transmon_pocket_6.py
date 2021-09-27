@@ -44,13 +44,11 @@ class TransmonPocket6(BaseQubit):
         Create a standard pocket transmon qubit for a ground plane.
         Can have variable number of connection pads, up to 6.
 
-    Options:
+    Default Options:
         Convention: Values (unless noted) are strings with units included,
         (e.g., '30um')
 
     Pocket:
-        * pos_x / pos_y   - where the center of the pocket should be located on chip
-          (where the 'junction' is)
         * pad_gap         - the distance between the two charge islands, which is also the
           resulting 'length' of the pseudo junction
         * inductor_width  - width of the pseudo junction between the two charge islands
@@ -60,7 +58,6 @@ class TransmonPocket6(BaseQubit):
         * pad_height      - the size (y-axis) of the charge island pads
         * pocket_width    - size of the pocket (cut out in ground) along x-axis
         * pocket_height   - size of the pocket (cut out in ground) along y-axis
-        * orientation     - degree of qubit rotation
 
     Connector lines:
         * pad_gap        - space between the connector pad and the charge island it is
@@ -107,9 +104,6 @@ class TransmonPocket6(BaseQubit):
 
     # Default drawing options
     default_options = Dict(
-        chip='main',
-        pos_x='0um',
-        pos_y='0um',
         pad_gap='30um',
         inductor_width='20um',
         pad_width='455um',
@@ -118,7 +112,6 @@ class TransmonPocket6(BaseQubit):
         pocket_height='650um',
         # 90 has dipole aligned along the +X axis,
         # while 0 has dipole aligned along the +Y axis
-        orientation='0',
         _default_connection_pads=Dict(
             pad_gap='15um',
             pad_width='125um',

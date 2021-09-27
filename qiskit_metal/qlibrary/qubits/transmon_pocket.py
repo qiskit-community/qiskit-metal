@@ -72,21 +72,16 @@ class TransmonPocket(BaseQubit):
         TransmonPocket.png
 
     BaseQubit Default Options:
-        * pos_x: '0um'
-        * pos_y: '0um'
         * connection_pads: Empty Dict -- The dictionary which contains all active connection lines for the qubit.
         * _default_connection_pads: Empty Dict -- The default values for the (if any) connection lines of the qubit.
 
     Default Options:
-        * pos_x: '0um' -- Where the center of the pocket should be located on chip
-        * pos_y: '0um' -- Where the center of the pocket should be located on chip
         * pad_gap: '30um' -- The distance between the two charge islands, which is also the resulting 'length' of the pseudo junction
         * inductor_width: '20um' -- Width of the pseudo junction between the two charge islands (if in doubt, make the same as pad_gap). Really just for simulating in HFSS / other EM software
         * pad_width: '455um' -- The width (x-axis) of the charge island pads
         * pad_height: '90um' -- The size (y-axis) of the charge island pads
         * pocket_width: '650um' -- Size of the pocket (cut out in ground) along x-axis
         * pocket_height: '650um' -- Size of the pocket (cut out in ground) along y-axis
-        * orientation: '0' -- Degree of qubit rotation
         * _default_connection_pads: Dict
             * pad_gap: '15um' -- Space between the connector pad and the charge island it is nearest to
             * pad_width: '125um' -- Width (x-axis) of the connector pad
@@ -103,9 +98,6 @@ class TransmonPocket(BaseQubit):
     """
 
     default_options = Dict(
-        chip='main',
-        pos_x='0um',
-        pos_y='0um',
         pad_gap='30um',
         inductor_width='20um',
         pad_width='455um',
@@ -114,7 +106,6 @@ class TransmonPocket(BaseQubit):
         pocket_height='650um',
         # 90 has dipole aligned along the +X axis,
         # while 0 has dipole aligned along the +Y axis
-        orientation='0',
         _default_connection_pads=Dict(
             pad_gap='15um',
             pad_width='125um',
