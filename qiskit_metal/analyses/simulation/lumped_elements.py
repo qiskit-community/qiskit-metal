@@ -73,22 +73,32 @@ class LumpedElementsSim(QSimulation):
         # set design and renderer
         super().__init__(design, renderer_name)
 
-    def _analyze(self) -> str:
+    def _analyze(self):
         """Executes the analysis step of the Run. First it initializes the renderer setup
         to prepare for the capacitance calculation, then it executes it.
-        Finally it recovers the output of the analysis and stores it in self.capacitance_matrix.
+        Finally it calls _get_results_from_renderer to recovers the simulation output.
         """
         # pylint: disable=attribute-defined-outside-init
         self.sim_setup_name = self.renderer.initialize_cap_extract(**self.setup)
-
         self.renderer.analyze_setup(self.sim_setup_name)
+        self._get_results_from_renderer()
 
-        # extract main (latest) capacitance matrix
-        self.capacitance_matrix, self.units = self.renderer.get_capacitance_matrix(
-        )
-        # extract the capacitance matrices for all passes
-        self.capacitance_all_passes, _ = self.renderer.get_capacitance_all_passes(
-        )
+    def _get_results_from_renderer(self):
+        """Recovers the output of the analysis and stores it in self.capacitance_matrix
+        """
+        if self.renderer_initialized:
+            # pylint: disable=attribute-defined-outside-init
+            # extract main (latest) capacitance matrix
+            self.capacitance_matrix, self.units = self.renderer.get_capacitance_matrix(
+            )
+            # extract the capacitance matrices for all passes
+            self.capacitance_all_passes, _ = self.renderer.get_capacitance_all_passes(
+            )
+        else:
+            self.logger.error(
+                "Please initialize renderer before trying to load the simulation results."
+                " Consider using the method self.renderer._initiate_renderer()"
+                " if you did not already connect qiskit-metal to the renderer.")
 
     def run_sim(  # pylint: disable=arguments-differ
             self,

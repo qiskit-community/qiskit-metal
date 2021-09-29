@@ -90,7 +90,7 @@ class QSimulation(QAnalysis):
                 if not renderer_ref:
                     raise KeyError  #needed because this is a Dict, not a dict
                 if not (renderer_ref.path_name and renderer_ref.class_name):
-                    self.logger.warning(
+                    self.logger.error(
                         f'The renderer={renderer_name} is not properly configured in'
                         ' config.renderers_to_load. Please add the missing information'
                         ' (Tip: needs to have both a path_name and a class_name keys).'
