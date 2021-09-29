@@ -158,7 +158,7 @@ class QAnalysis(ABC):
             index_values = [1,0] # optional because we specified index_labels as column numbers.
             index_units = [None, None, None] # optional because the two indices have no units.
                                              # the third element can be added to specify the units
-                                             # of the database data haders. Defaults None.
+                                             # of the database data headers. Defaults None.
 
             # Here is a numpy example:
             name = "capacitance_matrix"
@@ -211,7 +211,7 @@ class QAnalysis(ABC):
                     self.logger.warning(
                         f'You provided data with one or more dimensions (shape = {np.shape(value)})'
                         ' However you did not provide one or more of the index information.'
-                        ' Data is being saved as-is but you will need to re-define it by running'
+                        ' Data has been saved as-is but you will need to re-define it by running'
                         ' this command again, with all the index inputs.'
                         ' For reference, here the index information you provided:'
                         f' index_names={index_names},\nindex_values={index_values},'
@@ -223,14 +223,44 @@ class QAnalysis(ABC):
                 self.logger.warning(
                     f'You provided data without specifying the index. Please provide both the'
                     f' following: index_names={index_names},\nindex_units={index_units}'
-                    ' (current values passed). Data is being saved as-is but will be'
+                    ' (current values passed). Data has been saved as-is but will be'
                     ' overwritten when you run again this method.')
-            elif len(index_values) is None:
+            elif index_values is None:
                 if any(not isinstance(elem, int) for elem in index_names):
                     self.logger.warning(
-                        'You need to provide index_values for any index_name that is not '
-                        ' represented as a column int number. Please correct and re-try.')
+                        'You need to provide index_values for any index_name that is not'
+                        ' represented as a column int number. Please correct and re-try.'
+                        ' Data has been saved as-is but will be'
+                        ' overwritten when you run again this method.')
             else:
+                if len(index_names) < len(index_values):
+                    if len(index_names) == 1 and not isinstance(index_values[0], (list, np.ndarray)):
+                        # there is only one index and the values are one list of elements, need nesting
+                        index_values = [index_values]
+                        new_data.index_values = index_values
+                    else:
+                        self.logger.warning(
+                            'you provided more index_values than index_names. The two inputs list should'
+                            ' have the same len or less values then names (when names refer to columns)'
+                            ' Something is amiss, please correct your inputs and re-try.'
+                            ' Data has been saved as-is but will be'
+                            ' overwritten when you run again this method.')
+                if len(index_names) > len(index_values):
+                    # we are counting on the index_names to be column numbers, thus let's count
+                    int_q = 0
+                    for elem in index_names:
+                        if isinstance(elem, int):
+                            int_q +=1
+                    if int_q + len(index_names) == len(index_values):
+                        pass # we are good
+                    else:
+                        self.logger.warning(
+                            'You need to provide index_values for any index_name that is not '
+                            ' represented as a column int number. Please correct and re-try.'
+                            ' Data has been saved as-is but will be'
+                            ' overwritten when you run again this method.')
+
+                value['CapX'].unique()
                 for elem in index_names:
                     if isinstance(elem, int):
                         if len(value.columns) <= elem:
