@@ -32,9 +32,7 @@ class BaseQubit(QComponent):
         * _default_connection_pads: empty Dict -- The default values for the (if any) connection lines of the qubit.
     """
 
-    default_options = Dict(pos_x='0um',
-                           pos_y='0um',
-                           connection_pads=Dict(),
+    default_options = Dict(connection_pads=Dict(),
                            _default_connection_pads=Dict())
     """Default options."""
 
