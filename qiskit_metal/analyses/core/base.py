@@ -14,6 +14,8 @@
 
 from abc import abstractmethod, ABC
 import inspect
+import numpy as np
+import pandas as pd
 from typing import Any, Union
 
 from copy import deepcopy
@@ -110,20 +112,143 @@ class QAnalysis(ABC):
         self._setup.run = None
         self._setup.run = Dict(kwargs)
 
-    def set_data(self, data_name: str, data: Any):
+    def set_data(self,
+                 name: str,
+                 value: Union[np.ndarray, pd.DataFrame, int, float],
+                 value_unit: str,
+                 index_names: list = None,
+                 index_values: list = None,
+                 index_units: list = None):
         """Stores data in a structure for later retrieval.
         Could be output, intermediate or even input data.
         Current implementation uses Dict()
 
         Args:
-            data_name (str): Label for the data. Used a storage key.
-            data (Any): Free format
+            name (str): Label for the data. Used a storage key.
+            value (np.ndarray, pd.DataFrame, int, float): data value(s) in one of these formats.
+            value_unit (str): units of the value(s).
+            index_names (list(int or str), optional): Use required only for dim(value)>1.
+                Can be a list of strings or numbers. Strings shall be one for each dimension
+                of the data. For example we would have 3 strings for a 3-dimensional numpy array.
+                If the index_labels strings are already contains in the data structure (example,
+                column names in pandas, or dtype labels in numpy), you can provide the number of
+                the column that contains the index. Defaults to None.
+            index_values (list(list(int or str)), optional): The actual index to associate with each
+                element. Defaults to None.
+            index_units (list(str), optional): If the index_values are numerical, they will need a
+                unit to be specified. While if the index_values are strings, specify `None`.
+                Defaults to None.
+
+        .. code-block:: python
+            # Always define units for all indexes. Here is a pandas example:
+            name = "capacitance_matrix"
+            values = pd.DataFrame()
+                pass  ports   bus1_pad	bus2_pad	ground_plane	readout_pad
+                1   bus1_pad	49.77794	-0.42560	-33.50861	-0.20494
+                1   bus2_pad	-0.42560	54.01885	-35.77522	-1.01319
+                1   ground_plane	-33.50861	-35.77522	237.69029	-36.55732
+                1   readout_pad	-0.20494	-1.01319	-36.55732	59.92347
+                2   bus1_pad	49.77794	-0.42560	-33.50861	-0.20494
+                2   bus2_pad	-0.42560	54.01885	-35.77522	-1.01319
+                2   ground_plane	-33.50861	-35.77522	237.69029	-36.55732
+                2   readout_pad	-0.20494	-1.01319	-36.55732	59.92347
+                .....
+            index_names = [1,0] # since we specify 2 indices, but there is >1 columns left in the
+                                 # dataframe, that will be assumed to be an additional dimension
+            index_values = [1,0] # optional because we specified index_labels as column numbers.
+            index_units = [None, None, None] # optional because the two indices have no units.
+                                             # the third element can be added to specify the units
+                                             # of the database data haders. Defaults None.
+
+            # Here is a numpy example:
+            name = "capacitance_matrix"
+            values = np.array()
+                [[[49.77794,  -0.42560,  -33.50861, -0.20494 ],
+                  [-0.42560,  54.01885,  -35.77522, -1.01319 ],
+                  [-33.50861, -35.77522, 237.69029, -36.55732],
+                  [-0.20494,  -1.01319,  -36.55732, 59.92347 ]],
+                 [[49.77794,  -0.42560,  -33.50861, -0.20494 ],
+                  [-0.42560,  54.01885,  -35.77522, -1.01319 ],
+                  [-33.50861, -35.77522, 237.69029, -36.55732],
+                  [-0.20494,  -1.01319,  -36.55732, 59.92347 ]],
+                .....]
+            index_names = [ports, ports, pass]
+            index_values = [[bus1_pad, bus2_pad, ground_plane, readout_pad_Q1],
+                            [bus1_pad, bus2_pad, ground_plane, readout_pad_Q1],
+                            [1,2,...]]
+            index_units = [None, None, None] # optional because the two indices have no units.
+
         """
-        if data_name not in self._supported_data_labels:
+        if name not in self._supported_data_labels:
             self.logger.warning(
-                'No %s in the list of supported variables. The variable will still be added. '
-                'However, make sure this was not a typo', {data_name})
-        self._variables[data_name] = data
+                'No %s in the list of supported variables. The variable will still be added and'
+                ' you can access it thorugh get_data(), but it will not be used in the algorithms.'
+                ' Please, make sure this was not a typo', {name})
+
+        # break-up and store the data in simple form. Different treatment for different sources.
+        new_data = Dict()
+        new_data.value = value
+        new_data.value_unit = value_unit
+        new_data.index_names = index_names
+        new_data.index_values = index_values
+        new_data.index_units = index_units
+
+        # TODO: will need to implement value_unit validation to be compatible with everything else.
+        if isinstance(value, np.ndarray):
+            # numpy array
+            if len(np.shape(value)) == len(value) == 1:
+                # single value - no need for index
+                if any(elem is not None for elem in [index_names, index_values, index_units]):
+                    self.logger.warning(
+                        'You provided index information for non indexable data.'
+                        ' Data is being saved as-is but you might want to revisit this.'
+                        ' For reference, here the index information you provided:'
+                        f' index_names={index_names},\nindex_values={index_values},'
+                        f'\nindex_units={index_units}.')
+            else:
+                # data has one or more dimensions - needs index
+                if any(elem is None for elem in [index_names, index_values, index_units]):
+                    self.logger.warning(
+                        f'You provided data with one or more dimensions (shape = {np.shape(value)})'
+                        ' However you did not provide one or more of the index information.'
+                        ' Data is being saved as-is but you will need to re-define it by running'
+                        ' this command again, with all the index inputs.'
+                        ' For reference, here the index information you provided:'
+                        f' index_names={index_names},\nindex_values={index_values},'
+                        f'\nindex_units={index_units}.')
+
+        elif isinstance(value, pd.DataFrame):
+            # pandas DataFrame
+            if any(elem is None for elem in [index_names, index_units]):
+                self.logger.warning(
+                    f'You provided data without specifying the index. Please provide both the'
+                    f' following: index_names={index_names},\nindex_units={index_units}'
+                    ' (current values passed). Data is being saved as-is but will be'
+                    ' overwritten when you run again this method.')
+            elif len(index_values) is None:
+                if any(not isinstance(elem, int) for elem in index_names):
+                    self.logger.warning(
+                        'You need to provide index_values for any index_name that is not '
+                        ' represented as a column int number. Please correct and re-try.')
+            else:
+                for elem in index_names:
+                    if isinstance(elem, int):
+                        if len(value.columns) <= elem:
+                            f'Index column is out of bound. You asked to use index column {index_names[0]}'
+                            f' However, there is only {value.columns} columns in the data.'
+                            ' Please correct your information and run again this method.')
+                if len(index_names) == 1 and not isinstance(index_names[0], int):
+                    self.logger.warning(
+                        f'Your inputs are inconsistent. Please make sure your index_names provided data without specifying the index. Please provide both the'
+                        f' following: index_names={index_names},\nindex_units={index_units}'
+                        ' (current values passed). Data is being saved as-is but will be'
+                        ' overwritten when you run again this method.')
+
+        else:
+            # numerical values or others
+            pass # we already save as-is
+
+        self._variables[name] = new_data
 
     def get_data(self, data_name: str = None):
         """Retrieves the analysis module data.
