@@ -23,10 +23,10 @@ from shapely.ops import cascaded_union
 
 from . import basic
 from . import utility
-from . import mpl
+#from . import mpl
 
 # Useful functions
 from .utility import get_poly_pts, Vector
 from .basic import rectangle, is_rectangle, flip_merge, rotate, translate, scale, buffer,\
     rotate_position, _iter_func_geom_, union, subtract
-from .mpl import render, figure_spawn
+#from .mpl import render, figure_spawn

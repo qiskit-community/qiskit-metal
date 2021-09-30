@@ -97,6 +97,7 @@ class Headings:
 
 
 # TODO: Move to module for GUI programming
+'''
 def get_screenshot(self: 'QMainWindow',
                    name='shot.png',
                    type_='png',
@@ -127,7 +128,7 @@ def get_screenshot(self: 'QMainWindow',
         _disp_ops = dict(width=500)
         _disp_ops.update(disp_ops or {})
         display(Image(filename=str(path), **_disp_ops))
-
+'''
 
 ##########################################################################
 # Shell print

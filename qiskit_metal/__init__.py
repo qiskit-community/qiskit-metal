@@ -45,6 +45,7 @@ if os.name == 'nt':
 ###########################################################################
 ### Basic Setups
 ## Setup Qt
+'''
 def __setup_Qt_backend():  # pylint: disable=invalid-name
     """Setup matplotlib to use Qt5's visualization.
 
@@ -112,7 +113,7 @@ def __setup_Qt_backend():  # pylint: disable=invalid-name
 
 __setup_Qt_backend()
 del __setup_Qt_backend
-
+'''
 ## Setup logging
 from . import config
 from .toolbox_python._logging import setup_logger
@@ -139,16 +140,16 @@ from . import designs
 from . import draw
 from . import renderers
 from . import qgeometries
-from . import analyses
+#from . import analyses
 from . import toolbox_python
 from . import toolbox_metal
 
 # Metal GUI
-from ._gui.main_window import MetalGUI
+#from ._gui.main_window import MetalGUI
 
 # Utility modules
 # For plotting in matplotlib;  May be superseded by a renderer?
-from .renderers.renderer_mpl import mpl_toolbox as plt
+#from .renderers.renderer_mpl import mpl_toolbox as plt
 
 # Utility functions
 from .toolbox_python.display import Headings
