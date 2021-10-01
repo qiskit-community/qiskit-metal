@@ -15,6 +15,22 @@
 """
 # pylint: disable=invalid-name
 
+# monkey patch to temporarily mock h5py dependency required by scqubits, which conflicts with
+# geopandas
+import sys
+
+
+# pylint: disable=wrong-import-position
+# pylint: disable=too-few-public-methods
+class DummyH5py:
+
+    @property
+    def Group(self):
+        pass
+
+
+sys.modules['h5py'] = DummyH5py
+
 from collections import defaultdict, namedtuple
 from typing import Any, List, Dict, Tuple, DefaultDict, Sequence, Mapping, Union
 import argparse
