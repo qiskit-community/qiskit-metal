@@ -142,7 +142,7 @@ class LOManalysis(QAnalysis):
 
         s = self.setup
 
-        if isinstance(self.sim, Dict):
+        if not isinstance(self.sim.capacitance_matrix, pd.DataFrame):
             if self.sim.capacitance_matrix == {}:
                 self.logger.warning(
                     'Please initialize the capacitance_matrix before executing this method.'
