@@ -19,3 +19,5 @@ dependencies:
   - scipy
   - shapely
   - jupyter
+  - pip:
+      - git+git://github.com/scqubits/scqubits.git@jk-explorer

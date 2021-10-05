@@ -1,0 +1,20 @@
+Setup3:AdaptivePass
+Problem Type:  C
+C Units:fF, G Units:mSie
+Reduce Matrix:  Original
+Frequency:  5GHz
+
+Capacitance Matrix
+	ground_main_plane	pad_bot_Q1	pad_top_Q1	coupling_pad_Q1	
+ground_main_plane	149.81125	-24.44695	-27.86884	-35.53504
+pad_bot_Q1	-24.44695	40.30968	-5.38103	-8.50537
+pad_top_Q1	-27.86884	-5.38103	36.66186	-1.23382
+coupling_pad_Q1	-35.53504	-8.50537	-1.23382	46.35800
+
+Conductance Matrix
+	ground_main_plane	pad_bot_Q1	pad_top_Q1	coupling_pad_Q1	
+ground_main_plane	 0.00000	 0.00000	 0.00000	 0.00000
+pad_bot_Q1	 0.00000	 0.00000	 0.00000	 0.00000
+pad_top_Q1	 0.00000	 0.00000	 0.00000	 0.00000
+coupling_pad_Q1	 0.00000	 0.00000	 0.00000	 0.00000
+
