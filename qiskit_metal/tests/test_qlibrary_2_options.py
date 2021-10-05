@@ -311,8 +311,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         star_qubit.py were not accidentally changed."""
         # Setup expected test results
         design = designs.DesignPlanar()
-        my_star_qubit = star_qubit.StarQubit(
-            design, 'my_name')
+        my_star_qubit = star_qubit.StarQubit(design, 'my_name')
         options = my_star_qubit.default_options
 
         self.assertEqual(len(options), 18)
