@@ -47,6 +47,7 @@ from qiskit_metal.qlibrary.tlines.mixed_path import RouteMixed
 from qiskit_metal.qlibrary.terminations.launchpad_wb import LaunchpadWirebond
 from qiskit_metal.qlibrary.terminations.launchpad_wb_coupled import LaunchpadWirebondCoupled
 from qiskit_metal.qlibrary.lumped.cap_3_interdigital import Cap3Interdigital
+from qiskit_metal.qlibrary.qubits.star_qubit import StarQubit
 from qiskit_metal.qlibrary.qubits.JJ_Dolan import jj_dolan
 from qiskit_metal.qlibrary.qubits.JJ_Manhattan import jj_manhattan
 from qiskit_metal.qlibrary.qubits.transmon_concentric import TransmonConcentric
@@ -663,6 +664,32 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         except Exception:
             self.fail(
                 "TransmonConcentric(design, \"my_name3\", options={}, make=False)"
+            )
+
+    def test_qlibrary_qubits_star_qubit(self):
+        """Test the instantiation of StarQubit."""
+        design = designs.DesignPlanar()
+        try:
+            StarQubit
+        except Exception:
+            self.fail("StarQubit failed")
+
+        try:
+            StarQubit(design, "my_name")
+        except Exception:
+            self.fail("StarQubit(design, \"my_name\") failed")
+
+        try:
+            StarQubit(design, "my_name2", options={})
+        except Exception:
+            self.fail(
+                "StarQubit(design, \"my_name2\", options={}) failed")
+
+        try:
+            StarQubit(design, "my_name3", options={}, make=False)
+        except Exception:
+            self.fail(
+                "StarQubit(design, \"my_name3\", options={}, make=False)"
             )
 
     def test_qlibrary_qubits_transmon_cross(self):
