@@ -40,6 +40,7 @@ from qiskit_metal import designs
 from qiskit_metal.qlibrary.terminations.launchpad_wb import LaunchpadWirebond
 from qiskit_metal.qlibrary.terminations.launchpad_wb_coupled import LaunchpadWirebondCoupled
 from qiskit_metal.qlibrary.lumped.cap_3_interdigital import Cap3Interdigital
+from qiskit_metal.qlibrary.qubits import star_qubit
 from qiskit_metal.qlibrary.qubits.JJ_Dolan import jj_dolan
 from qiskit_metal.qlibrary.qubits.JJ_Manhattan import jj_manhattan
 from qiskit_metal.qlibrary.qubits import transmon_concentric
@@ -304,6 +305,34 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['pocket_h'], '1000um')
         self.assertEqual(options['cpw_width'], '10.0um')
         self.assertEqual(options['inductor_width'], '5.0um')
+
+    def test_qlibrary_star_qubit_options(self):
+        """Test that default options of transmon_concentric in
+        star_qubit.py were not accidentally changed."""
+        # Setup expected test results
+        design = designs.DesignPlanar()
+        my_star_qubit = star_qubit.StarQubit(
+            design, 'my_name')
+        options = my_star_qubit.default_options
+
+        self.assertEqual(len(options), 18)
+        self.assertEqual(options['radius'], '300um')
+        self.assertEqual(options['center_radius'], '100um')
+        self.assertEqual(options['gap_couplers'], '25um')
+        self.assertEqual(options['gap_readout'], '10um')
+        self.assertEqual(options['connector_length'], '75um')
+        self.assertEqual(options['trap_offset'], '20um')
+        self.assertEqual(options['junc_h'], '30um')
+        self.assertEqual(options['cpw_width'], '0.01')
+        self.assertEqual(options['rotation1'], '0.0')
+        self.assertEqual(options['rotation2'], '72.0')
+        self.assertEqual(options['rotation3'], '144.0')
+        self.assertEqual(options['rotation4'], '216.0')
+        self.assertEqual(options['rotation5'], '288.0')
+        self.assertEqual(options['resolution'], '16')
+        self.assertEqual(options['cap_style'], 'round')
+        self.assertEqual(options['subtract'], 'False')
+        self.assertEqual(options['helper'], 'False')
 
     def test_qlibrary_transmon_cross_fl_options(self):
         """Test that default_options of transmon_cross_fl were not accidentally changed."""

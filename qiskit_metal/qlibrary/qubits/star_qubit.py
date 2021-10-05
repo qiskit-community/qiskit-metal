@@ -13,7 +13,7 @@
 # that they have been altered from the originals.
 """This is the StarQubit module."""
 
-from qiskit_metal import draw  # , QComponent
+from qiskit_metal import draw, Dict  # , QComponent
 from qiskit_metal.qlibrary.core import QComponent
 from shapely.geometry import CAP_STYLE
 
@@ -48,6 +48,10 @@ class StarQubit(QComponent):
         * subtract: 'False'
         * helper: 'False'
     """
+    component_metadata = Dict(short_name='Star',
+                              _qgeometry_table_poly='True',
+                              _qgeometry_table_junction='True')
+    """Component metadata"""
 
     default_options = dict(radius='300um',
                            center_radius='100um',
