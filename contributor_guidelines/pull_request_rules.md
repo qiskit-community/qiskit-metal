@@ -4,9 +4,19 @@
 
 You have worked hard and updated a component code or created your custom component (a class that directly or indirectly inherits the `QComponent` class and implements the `make()` method). Now you would like to showcase your work in Qiskit Metal, for everyone to see and use. So what do you need to do?
 
-The first step is to put your code in a github branch or fork, and then create a Pull Request, to propose the new code to be added to the main repository. But is your code all that is needed to properly showcase your work?
+The first step is to put your code in a github branch or fork, and then create a Pull Request, to propose the new code to be added to the main repository. But is your code complete? And is the code all you need to properly showcase your work?
 
-Documentation plays the most important part in your showcase, and unit-test plays the most important part in making sure your work is functional and nobody else can change your intended behavior. So let's add these two pieces:
+### Make sure the component code has the following:
+1. `default_options`. Defined with default strings, numerals and/or units
+    - The more configurable is your component, the better
+2. `component_metadata`.
+    - This is necessary for qiskit-metal to be aware about which type of shapes is your component creating by default
+3. doc_strings, for every method and for every class, including an explanation of all the default_options, and an image for the docs
+4. sample tutorial notebooks
+    - Even if you do not want this to appear in the official documentation, the tutorial notebook is still needed for people to be aware of the component existence and how to use it.
+5. Documentation and Unit-test (See below)
+
+Documentation plays the most important part in your showcase, and unit-test plays the most important part in making sure your work is functional and nobody else can change your intended behavior with subsequent commits. Here is what you need to do:
 
 ### Add the circuit example notebook to the QComponent documentation
 1. Create the notebook in the tutorials folder
