@@ -682,15 +682,12 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             StarQubit(design, "my_name2", options={})
         except Exception:
-            self.fail(
-                "StarQubit(design, \"my_name2\", options={}) failed")
+            self.fail("StarQubit(design, \"my_name2\", options={}) failed")
 
         try:
             StarQubit(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail(
-                "StarQubit(design, \"my_name3\", options={}, make=False)"
-            )
+            self.fail("StarQubit(design, \"my_name3\", options={}, make=False)")
 
     def test_qlibrary_qubits_transmon_cross(self):
         """Test the instantiation of TransmonCross."""
