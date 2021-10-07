@@ -423,7 +423,7 @@ def create_parameter_entry_window(gui: 'MetalGUI',
     param_window = ParameterEntryWindow(cur_class, gui.design, parent, gui)
 
     param_window.dock = dockify(param_window, "New " + cur_class.__name__, gui)
-    
+
     try:
         param_window.setup_pew()
     except Exception as e:
