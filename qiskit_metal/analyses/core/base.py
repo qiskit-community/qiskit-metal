@@ -189,10 +189,11 @@ class QAnalysis(ABC):
         new_data = Dict()
         new_data.value = value
         new_data.value_unit = value_unit
-        new_data.index_names = index_names
-        new_data.index_values = index_values
-        new_data.index_units = index_units
-
+        if isinstance(value, (list, np.ndarray, pd.DataFrame)):
+            new_data.index_names = index_names
+            new_data.index_values = index_values
+            new_data.index_units = index_units
+        
         # TODO: will need to implement value_unit validation to be compatible with everything else.
         if isinstance(value, np.ndarray):
             # numpy array
@@ -203,8 +204,8 @@ class QAnalysis(ABC):
                         'You provided index information for non indexable data.'
                         ' Data is being saved as-is but you might want to revisit this.'
                         ' For reference, here the index information you provided:'
-                        f' index_names={index_names},\nindex_values={index_values},'
-                        f'\nindex_units={index_units}.')
+                        f' index_names={index_names}, index_values={index_values},'
+                        f' index_units={index_units}.')
             else:
                 # data has one or more dimensions - needs index
                 if any(elem is None for elem in [index_names, index_values, index_units]):
@@ -214,15 +215,15 @@ class QAnalysis(ABC):
                         ' Data has been saved as-is but you will need to re-define it by running'
                         ' this command again, with all the index inputs.'
                         ' For reference, here the index information you provided:'
-                        f' index_names={index_names},\nindex_values={index_values},'
-                        f'\nindex_units={index_units}.')
+                        f' index_names={index_names}, index_values={index_values},'
+                        f' index_units={index_units}.')
 
         elif isinstance(value, pd.DataFrame):
             # pandas DataFrame
             if any(elem is None for elem in [index_names, index_units]):
                 self.logger.warning(
                     f'You provided data without specifying the index. Please provide both the'
-                    f' following: index_names={index_names},\nindex_units={index_units}'
+                    f' following: index_names={index_names}, index_units={index_units}'
                     ' (current values passed). Data has been saved as-is but will be'
                     ' overwritten when you run again this method.')
             elif index_values is None:
@@ -264,13 +265,14 @@ class QAnalysis(ABC):
                 for elem in index_names:
                     if isinstance(elem, int):
                         if len(value.columns) <= elem:
-                            f'Index column is out of bound. You asked to use index column {index_names[0]}'
-                            f' However, there is only {value.columns} columns in the data.'
-                            ' Please correct your information and run again this method.')
+                            self.logger.warning(
+                                f'Index column is out of bound. You asked to use index column {index_names[0]}'
+                                f' However, there is only {value.columns} columns in the data.'
+                                ' Please correct your information and run again this method.')
                 if len(index_names) == 1 and not isinstance(index_names[0], int):
                     self.logger.warning(
                         f'Your inputs are inconsistent. Please make sure your index_names provided data without specifying the index. Please provide both the'
-                        f' following: index_names={index_names},\nindex_units={index_units}'
+                        f' following: index_names={index_names}, index_units={index_units}'
                         ' (current values passed). Data is being saved as-is but will be'
                         ' overwritten when you run again this method.')
 
