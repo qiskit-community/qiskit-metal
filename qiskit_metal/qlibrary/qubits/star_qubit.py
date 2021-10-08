@@ -212,7 +212,7 @@ class StarQubit(QComponent):
         jjunction = draw.translate(jjunction, yoff=(1.15 * (p.radius)))
         jjunction = draw.rotate(jjunction, p.rotation_cpl1, origin=(0, 0))
 
-        # Define the final structure based 
+        # Define the final structure based
         if (p.number_of_connectors) == 0:
             traps = trap_3
         elif (p.number_of_connectors) == 1:
