@@ -208,12 +208,11 @@ class StarQubit(QComponent):
                                       pocket_c, pocket_d, pocket_e)
 
         #junction
-        jjunction = draw.LineString([[0, 0],
-                                     [0, coord_x2]])
+        jjunction = draw.LineString([[0, 0], [0, coord_x2]])
         jjunction = draw.translate(jjunction, yoff=(1.15 * (p.radius)))
         jjunction = draw.rotate(jjunction, p.rotation_cpl1, origin=(0, 0))
 
-        # Define the final structure based on use input on how many connectors are needed
+        # Define the final structure based 
         if (p.number_of_connectors) == 0:
             traps = trap_3
         elif (p.number_of_connectors) == 1:
