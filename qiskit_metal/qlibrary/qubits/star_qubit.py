@@ -59,7 +59,7 @@ class StarQubit(QComponent):
                            gap_readout='10um',
                            connector_length='75um',
                            trap_offset='20um',
-                           junc_h='30um',
+                           junc_h='100um',
                            cpw_width='0.01',
                            rotation_cpl1='0.0',
                            rotation_cpl2='72.0',
@@ -208,8 +208,8 @@ class StarQubit(QComponent):
                                       pocket_c, pocket_d, pocket_e)
 
         #junction
-        jjunction = draw.LineString([[coord_b1 - (pocket_h1 / 2), 0],
-                                     [coord_b2 + (pocket_h1 / 2), 0]])
+        jjunction = draw.LineString([[0, 0],
+                                     [0, coord_x2]])
         jjunction = draw.translate(jjunction, yoff=(1.15 * (p.radius)))
         jjunction = draw.rotate(jjunction, p.rotation_cpl1, origin=(0, 0))
 
