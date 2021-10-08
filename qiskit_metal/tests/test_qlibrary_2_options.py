@@ -321,7 +321,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['gap_readout'], '10um')
         self.assertEqual(options['connector_length'], '75um')
         self.assertEqual(options['trap_offset'], '20um')
-        self.assertEqual(options['junc_h'], '30um')
+        self.assertEqual(options['junc_h'], '100um')
         self.assertEqual(options['cpw_width'], '0.01')
         self.assertEqual(options['rotation_cpl1'], '0.0')
         self.assertEqual(options['rotation_cpl2'], '72.0')
