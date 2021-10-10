@@ -97,38 +97,40 @@ class Headings:
 
 
 # TODO: Move to module for GUI programming
-'''
-def get_screenshot(self: 'QMainWindow',
-                   name='shot.png',
-                   type_='png',
-                   do_display=True,
-                   disp_ops=None):
-    """Grad a screenshot of the main window, save to file, and then copy to
-    clipboard.
 
-    Args:
-        self (QMainWindow): Window to take the screenshot of.
-        name (str): File to save the screenshot to.  Defaults to 'shot.png'.
-        type (str): Type of file to save.  Defaults to 'png'.
-        do_display (bool): True to display the file.  Defaults to True.
-        disp_ops (dict): Disctionary of options.  Defaults to None.
-    """
-    from PySide2.QtWidgets import QApplication, QMainWindow
+# For executing well on cloud;
+import os
+if os.name != 'posix':
+    def get_screenshot(self: 'QMainWindow',
+                    name='shot.png',
+                    type_='png',
+                    do_display=True,
+                    disp_ops=None):
+        """Grad a screenshot of the main window, save to file, and then copy to
+        clipboard.
 
-    path = Path(name).resolve()
+        Args:
+            self (QMainWindow): Window to take the screenshot of.
+            name (str): File to save the screenshot to.  Defaults to 'shot.png'.
+            type (str): Type of file to save.  Defaults to 'png'.
+            do_display (bool): True to display the file.  Defaults to True.
+            disp_ops (dict): Disctionary of options.  Defaults to None.
+        """
+        from PySide2.QtWidgets import QApplication, QMainWindow
 
-    # just grab the main window
-    screenshot = self.grab()  # type: QtGui.QPixelMap
-    screenshot.save(str(path), type_)  # Save
+        path = Path(name).resolve()
 
-    QApplication.clipboard().setPixmap(screenshot)  # To clipboard
-    #print(f'Screenshot copied to clipboard and saved to:\n {path}')
+        # just grab the main window
+        screenshot = self.grab()  # type: QtGui.QPixelMap
+        screenshot.save(str(path), type_)  # Save
 
-    if do_display:
-        _disp_ops = dict(width=500)
-        _disp_ops.update(disp_ops or {})
-        display(Image(filename=str(path), **_disp_ops))
-'''
+        QApplication.clipboard().setPixmap(screenshot)  # To clipboard
+        #print(f'Screenshot copied to clipboard and saved to:\n {path}')
+
+        if do_display:
+            _disp_ops = dict(width=500)
+            _disp_ops.update(disp_ops or {})
+            display(Image(filename=str(path), **_disp_ops))
 
 ##########################################################################
 # Shell print
