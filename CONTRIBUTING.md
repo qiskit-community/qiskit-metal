@@ -197,3 +197,5 @@ make html
 
 You can also use this to update the doc tree.
 
+## Check-list for specific types of Pull Requests
+Please refer to [these instructions](https://github.com/Qiskit/qiskit-metal/blob/main/contributor_guidelines/pull_request_rules.md)
