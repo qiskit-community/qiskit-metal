@@ -649,6 +649,9 @@ class Subsystem:
     def quantumfy(self, quantum_builder) -> None:
         quantum_builder.make_quantum(self)
 
+    def map_to_custom_system(self, custom_mapper):
+        return custom_mapper(self)
+
 
 class _QuantumBuilderMeta(type):
 
@@ -969,6 +972,10 @@ class CompositeSystem:
 
         return self._cg
 
+    @property
+    def subsystems(self):
+        return self._subsystems
+
     def create_hilbertspace(self) -> scq.HilbertSpace:
         """ create the composite hilbertspace including all the subsystems. Interaction NOT included
 
@@ -1078,11 +1085,14 @@ class CompositeSystem:
 
     def hamiltonian_results(self,
                             hilbertspace: scq.HilbertSpace,
-                            evals_count=10,
+                            evals_count=None,
                             print_info=True):
         ham_res = {}
 
         names = self.names
+
+        if evals_count is None:
+            evals_count = hilbertspace.dimension
 
         evals, evecs = hilbertspace.eigensys(evals_count=evals_count)
         esys_array = np.empty(shape=(2,), dtype=object)
