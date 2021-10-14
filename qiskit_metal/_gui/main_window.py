@@ -205,7 +205,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
             r'Rebuilding all components in the model (and refreshing widgets)...'
         )
         self.gui.rebuild()
-        self.gui.ui.mainViewTab.doShow()
+        #self.gui.ui.mainViewTab.doShow()
 
     @slot_catch_error()
     def create_build_log_window(self, _=None):
@@ -582,9 +582,17 @@ class MetalGUI(QMainWindowBaseHandler):
 
     def _setup_library_widget(self):
         """
-        Sets up the GUI's QLibrary display
+        Sets up the GUI's QLibrary display in Model-View-Controler framework
 
+        For debug use:
+            view = gui.main_window.ui.dockLibrary_tree_view
+            model = gui.ui.dockLibrary.proxy_library_model
+            model0 = gui.ui.dockLibrary.library_model
         """
+        dock = self.ui.dockLibrary
+
+        # --------------------------------------------------
+        # Model
 
         # getting absolute path of Qlibrary folder
         init_qlibrary_abs_path = os.path.abspath(qlibrary.__file__)
@@ -593,33 +601,36 @@ class MetalGUI(QMainWindowBaseHandler):
         self.QLIBRARY_FOLDERNAME = qlibrary.__name__
 
         # create model for Qlibrary directory
-        self.ui.dockLibrary.library_model = QFileSystemLibraryModel()
+        dock.library_model = QFileSystemLibraryModel()
 
-        self.ui.dockLibrary.library_model.setRootPath(self.QLIBRARY_ROOT)
+        dock.library_model.setRootPath(self.QLIBRARY_ROOT)
 
         # QSortFilterProxyModel
         #QSortFilterProxyModel: sorting items, filtering out items, or both.  maps the original model indexes to new indexes, allows a given source model to be restructured as far as views are concerned without requiring any transformations on the underlying data, and without duplicating the data in memory.
-        self.ui.dockLibrary.proxy_library_model = LibraryFileProxyModel()
-        self.ui.dockLibrary.proxy_library_model.setSourceModel(
-            self.ui.dockLibrary.library_model)
+        dock.proxy_library_model = LibraryFileProxyModel()
+        dock.proxy_library_model.setSourceModel(dock.library_model)
 
-        self.ui.dockLibrary_tree_view.setModel(
-            self.ui.dockLibrary.proxy_library_model)
-        self.ui.dockLibrary_tree_view.setRootIndex(
-            self.ui.dockLibrary.proxy_library_model.mapFromSource(
-                self.ui.dockLibrary.library_model.index(
-                    self.ui.dockLibrary.library_model.rootPath())))
+        # --------------------------------------------------
+        # View
+        view = self.ui.dockLibrary_tree_view
 
-        self.ui.dockLibrary_tree_view.setItemDelegate(
-            LibraryDelegate(self.main_window))  # try empty one if no work
-        self.ui.dockLibrary_tree_view.itemDelegate().tool_tip_signal.connect(
-            self.ui.dockLibrary_tree_view.setToolTip)
+        view.setModel(dock.proxy_library_model)
+        view.setRootIndex(
+            dock.proxy_library_model.mapFromSource(
+                dock.library_model.index(dock.library_model.rootPath())))
 
-        self.ui.dockLibrary_tree_view.qlibrary_filepath_signal.connect(
+        # try empty one if no work
+        view.setItemDelegate(LibraryDelegate(self.main_window))
+        view.itemDelegate().tool_tip_signal.connect(view.setToolTip)
+
+        view.qlibrary_filepath_signal.connect(
             self._create_new_component_object_from_qlibrary)
 
-        self.ui.dockLibrary_tree_view.viewport().setAttribute(Qt.WA_Hover, True)
-        self.ui.dockLibrary_tree_view.viewport().setMouseTracking(True)
+        # https://stackoverflow.com/questions/16759088/what-is-the-viewport-of-a-tree-widget
+        view.viewport().setAttribute(Qt.WA_Hover, True)
+        view.viewport().setMouseTracking(True)
+        
+        view.resizeColumnToContents(0)
 
     ################################################
     # UI
