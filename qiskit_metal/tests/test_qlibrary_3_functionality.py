@@ -40,6 +40,7 @@ from qiskit_metal.qlibrary.tlines.framed_path import RouteFramed
 from qiskit_metal.qlibrary.tlines.meandered import RouteMeander
 from qiskit_metal.qlibrary.tlines import straight_path
 from qiskit_metal import designs
+from qiskit_metal.qlibrary.qubits import star_qubit
 from qiskit_metal.qlibrary.qubits.JJ_Dolan import jj_dolan
 from qiskit_metal.qlibrary.qubits.JJ_Manhattan import jj_manhattan
 from qiskit_metal.qlibrary.qubits import transmon_pocket_cl
@@ -316,6 +317,15 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         metadata = component.component_metadata
         self.assertEqual(len(metadata), 3)
         self.assertEqual(metadata['short_name'], 'Cross')
+        self.assertEqual(metadata['_qgeometry_table_poly'], 'True')
+        self.assertEqual(metadata['_qgeometry_table_junction'], 'True')
+
+    def test_qlibrary_star_qubit_component_metadata(self):
+        """Test component_metadata in qubits.transmon_cross.py."""
+        component = star_qubit.StarQubit
+        metadata = component.component_metadata
+        self.assertEqual(len(metadata), 3)
+        self.assertEqual(metadata['short_name'], 'Star')
         self.assertEqual(metadata['_qgeometry_table_poly'], 'True')
         self.assertEqual(metadata['_qgeometry_table_junction'], 'True')
 
