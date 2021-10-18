@@ -26,6 +26,7 @@ Join the [Qiskit](https://ibm.co/joinqiskitslack) `#metal` slack channel to requ
 | July 15 | Tutorial | <ul><li>[Energy Participation Ratio in Qiskit Metal](https://youtu.be/HJNKG5z6Jys)</li><li>[New Feature sneak peek - LOM analysis for composite systems](https://youtu.be/XpnTJSBjb8E)</li><li>[New Feature - Export design to script](https://youtu.be/JpoD3SjObHc)</li></ul> |
 | July 22 &rightarrow; Sept 16 | >Break< | No tutorials |
 | Sept 23 | Tutorial | Making a QComponent from scratch |
-| Oct 7 | Tutorial | New LOM Analysis Methodology |
-| Oct 21 | Tutorial | New QAnalysis/QRenderer structure and usage |
-| Nov 4 &rightarrow; ... | TBD | Topics to schedule:<ul><li>Analysis deep dives (as needed)</li><li>QRenderers: How to use, modify and add new renderers</li><li>...</li></ul> |
+| Oct 7 | Tutorial | New LOM Analysis Methodology - Part 1 |
+| Oct 21 | Tutorial | New LOM Analysis Methodology - Part 2 |
+| Nov 4 | Tutorial | New QAnalysis/QRenderer structure and usage |
+| Nov 18 &rightarrow; ... | TBD | Topics to schedule:<ul><li>Analysis deep dives (as needed)</li><li>QRenderers: How to use, modify and add new renderers</li><li>...</li></ul> |
