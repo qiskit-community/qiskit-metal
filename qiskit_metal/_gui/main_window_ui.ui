@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1300</width>
-    <height>848</height>
+    <width>1310</width>
+    <height>847</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -137,7 +137,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1300</width>
+     <width>1310</width>
      <height>24</height>
     </rect>
    </property>
@@ -296,6 +296,8 @@
    <addaction name="action_full_refresh"/>
    <addaction name="actionRebuild"/>
    <addaction name="actionBuildHistory"/>
+   <addaction name="separator"/>
+   <addaction name="actionWebHelp"/>
    <addaction name="separator"/>
   </widget>
   <widget class="QToolBar" name="toolBarView">
@@ -1235,6 +1237,18 @@
     <string>clickme</string>
    </property>
   </action>
+  <action name="actionWebHelp">
+   <property name="icon">
+    <iconset resource="main_window_rc.qrc">
+     <normaloff>:/browser</normaloff>:/browser</iconset>
+   </property>
+   <property name="text">
+    <string>Web Help</string>
+   </property>
+   <property name="toolTip">
+    <string>Open Web Help</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -1814,6 +1828,22 @@
     <hint type="destinationlabel">
      <x>649</x>
      <y>449</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionWebHelp</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>open_web_help()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>610</x>
+     <y>410</y>
     </hint>
    </hints>
   </connection>

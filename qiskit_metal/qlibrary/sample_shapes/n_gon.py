@@ -31,27 +31,14 @@ class NGon(QComponent):
 
         * n: '3' -- Number of sides of the polygon
         * radius: '30um' -- The radius of the circle given n=infinity
-        * pos_x: '0um' -- The x position of the ground termination.
-        * pos_y '0um' -- The y position of the ground termination.
-        * rotation: '0' -- The direction of the termination. 0 degrees is +x, following a
-          counter-clockwise rotation (eg. 90 is +y)
         * subtract: 'False'
         * helper: 'False'
-        * chip: 'main' -- The chip the pin should be on.
-        * layer: '1' -- Layer the pin is on. Does not have any practical impact to the short.
     """
 
-    default_options = Dict(
-        n='3',
-        radius='30um',
-        pos_x='0um',
-        pos_y='0um',
-        rotation='0',
-        subtract='False',
-        helper='False',
-        chip='main',
-        layer='1',
-    )
+    default_options = Dict(n='3',
+                           radius='30um',
+                           subtract='False',
+                           helper='False')
     """Default drawing options"""
 
     TOOLTIP = """A n-gon polygon"""
@@ -71,7 +58,7 @@ class NGon(QComponent):
         # Converts said list into a shapely polygon
         n_polygon = draw.Polygon(n_polygon)
 
-        n_polygon = draw.rotate(n_polygon, p.rotation, origin=(0, 0))
+        n_polygon = draw.rotate(n_polygon, p.orientation, origin=(0, 0))
         n_polygon = draw.translate(n_polygon, p.pos_x, p.pos_y)
 
         ##############################################

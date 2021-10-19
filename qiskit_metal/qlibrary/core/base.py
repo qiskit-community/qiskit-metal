@@ -32,6 +32,7 @@ from inspect import signature
 from qiskit_metal import draw
 from qiskit_metal import is_design, logger
 
+import qiskit_metal.qlibrary as qlibrary
 from qiskit_metal import config
 from qiskit_metal.draw import BaseGeometry
 from qiskit_metal.toolbox_python.attr_dict import Dict
@@ -72,6 +73,12 @@ class QComponent():
         * The class provides the interfaces for the component (creator user)
 
     Default Options:
+        * pos_x/_y: '0.0um' -- The x/y position of the center of the QComponent.
+        * orientation: '0.0' -- The primary direction in degrees of the QComponent.
+          Expressed counter-clockwise orientation.
+        * chip: 'main' -- Chip holding the QComponent.
+        * layer: '1' -- Manufacturing layer used for the QComponent.
+
         Nested default options can be overwritten with the update function.
         The following code demonstrates how the update works.
 
@@ -109,12 +116,11 @@ class QComponent():
     """
     # pylint: disable=too-many-instance-attributes
 
-    default_options = Dict(
-        # Note: If something is added here, _gather_all_children_options(cls) needs to be changed.
-        # Intended for future use, for components that do not normally take pins as inputs
-        # to be able to have an input pin and be moved/rotated based on said input.
-        # pin_inputs = Dict()
-    )
+    default_options = Dict(pos_x='0.0um',
+                           pos_y='0.0um',
+                           orientation='0.0',
+                           chip='main',
+                           layer='1')
     """Default drawing options"""
 
     component_metadata = Dict()
@@ -190,7 +196,7 @@ class QComponent():
 
         self._design = design  # reference to parent
         # pylint: disable=literal-comparison
-        if self._delete_evaluation(name) is 'NameInUse':
+        if self._delete_evaluation(name) == 'NameInUse':
             raise ValueError(
                 f"{name} already exists! Please choose a different name for your new QComponent"
             )
@@ -258,7 +264,7 @@ class QComponent():
     @classmethod
     def _gather_all_children_options(cls) -> dict:
         """From the QComponent core class, traverse the child classes to
-        gather the .default options for each child class.
+        gather the `default_options` for each child class.
 
         Collects the options starting with the basecomponent,
         and stepping through the children.
@@ -277,7 +283,7 @@ class QComponent():
         options_from_children = {}
         parents = inspect.getmro(cls)
 
-        # len-2: base.py is not expected to have default_options dict to add to design class.
+        # len-2: generic "object" does not have default_options.
         for child in parents[len(parents) - 2::-1]:
             # The template default options are in a class dict attribute `default_options`.
             if hasattr(child, 'default_options'):
@@ -285,6 +291,11 @@ class QComponent():
                     **options_from_children,
                     **child.default_options
                 }
+
+        if qlibrary.core.qroute.QRoute in parents:
+            options_from_children.pop("pos_x", None)
+            options_from_children.pop("pos_y", None)
+            options_from_children.pop("orientation", None)
 
         return options_from_children
 
@@ -462,7 +473,6 @@ class QComponent():
         if template_key not in design.template_options:
             cls._register_class_with_design(design, template_key,
                                             renderer_and_component_template)
-            # design, template_key, component_template)
 
         if template_key not in design.template_options:
             logger_ = logger_ or design.logger
@@ -523,7 +533,7 @@ class QComponent():
 
     def to_script(self,
                   thin: bool = False,
-                  is_part_of_chip: bool = False) -> (str, str):
+                  is_part_of_chip: bool = False) -> Tuple:
         """
 
         Args:

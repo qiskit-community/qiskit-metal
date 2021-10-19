@@ -63,7 +63,6 @@ class LaunchpadWirebond(QComponent):
         LaunchpadWirebond.png
 
     Default Options:
-        * layer: '1'
         * trace_width: 'cpw_width' -- Width of the transmission line attached to the launch pad
         * trace_gap: 'cpw_gap' -- Gap of the transmission line
         * lead_length: '25um' -- Length of the transmission line attached to the launch pad
@@ -71,24 +70,15 @@ class LaunchpadWirebond(QComponent):
         * pad_height: '80um' -- Height of the launch pad
         * pad_gap: '58um' -- Gap of the launch pad
         * taper_height: '122um' -- Height of the taper from the launch pad to the transmission line
-        * pos_x: '0um' -- Where the center of the pocket should be located on chip
-        * pos_y: '0um' -- Where the center of the pocket should be located on chip
-        * orientation: '0' -- 90 for 90 degree turn
     """
 
-    default_options = Dict(
-        layer='1',
-        trace_width='cpw_width',
-        trace_gap='cpw_gap',
-        lead_length='25um',
-        pad_width='80um',
-        pad_height='80um',
-        pad_gap='58um',
-        taper_height='122um',
-        pos_x='0um',
-        pos_y='0um',
-        orientation='0'  #90 for 90 degree turn
-    )
+    default_options = Dict(trace_width='cpw_width',
+                           trace_gap='cpw_gap',
+                           lead_length='25um',
+                           pad_width='80um',
+                           pad_height='80um',
+                           pad_gap='58um',
+                           taper_height='122um')
     """Default options"""
 
     TOOLTIP = """Launch pad to feed/read signals to/from the chip."""

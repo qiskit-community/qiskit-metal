@@ -694,7 +694,7 @@ class TreeModelParamEntry(QAbstractItemModel):
 
                     cop = self.get_path_of_expanded_items()
 
-                    self.reload()
+                    self.dataChanged.emit(index, index)
                     self.expand_items_in_paths(cop)
 
                     # update node
@@ -709,7 +709,7 @@ class TreeModelParamEntry(QAbstractItemModel):
 
                     cop = self.get_path_of_expanded_items()
 
-                    self.reload()
+                    self.dataChanged.emit(index, index)
                     self.expand_items_in_paths(cop)
                     return True
 
