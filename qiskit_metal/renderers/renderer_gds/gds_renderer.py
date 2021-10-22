@@ -36,6 +36,7 @@ from qiskit_metal.renderers.renderer_base import QRenderer
 from qiskit_metal.renderers.renderer_gds.make_cheese import Cheesing
 from qiskit_metal.toolbox_metal.parsing import is_true
 from qiskit_metal import draw
+import qiskit_metal.renderers.renderer_gds.fabricate
 
 from ... import Dict
 
@@ -147,6 +148,22 @@ class QGDSRenderer(QRenderer):
         # for that layer.  If user wants to export to a negative_mask for all
         # layers, every layer_number MUST be in list.
         negative_mask=Dict(main=[]),
+
+        # For the final fabrication layer, Show/Don't Show intermediate steps?
+        fabricate=Dict(
+            # If false, show the intermediate steps in the exported gds file.
+            # If true, show the geometries on either neg_datatype_fabricate or pos_datatype_fabricate.
+            fab='False',
+
+            #datatype should not be more than 255 based on limitations in GDSPY.
+
+            # For a layer which has a negative mask, and if fabricate option is 'True',
+            # denote the datatype to hold gds export for the layer.
+            neg_datatype_fabricate='200',
+
+            # For a layer which has a positive mask, and if fabricate option is 'True',
+            # denote the datatype to hold gds export for the layer.
+            pos_datatype_fabricate='200'),
 
         # corners: ('natural', 'miter', 'bevel', 'round', 'smooth',
         # 'circular bend', callable, list)
