@@ -25,13 +25,13 @@ from . import basic
 from . import utility
 
 # For executing well on cloud
-import os
-if os.name != 'posix':
+from qiskit_metal import is_cloud	
+if not is_cloud():
     from . import mpl
 
 # Useful functions
 from .utility import get_poly_pts, Vector
 from .basic import rectangle, is_rectangle, flip_merge, rotate, translate, scale, buffer,\
     rotate_position, _iter_func_geom_, union, subtract
-if os.name != 'posix':
+if not is_cloud():
     from .mpl import render, figure_spawn

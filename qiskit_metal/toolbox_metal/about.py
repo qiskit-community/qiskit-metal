@@ -49,8 +49,8 @@ def about():
         str: About message
     """
     import qiskit_metal
-    # For executing well on cloud;
-    if os.name != 'posix':
+    # For executing well on cloud
+    if not qiskit_metal.is_cloud():
         from PySide2.QtCore import __version__ as QT_VERSION_STR
         from PySide2 import __version__ as PYSIDE_VERSION_STR
 

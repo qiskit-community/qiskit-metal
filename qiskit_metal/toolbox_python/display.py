@@ -98,9 +98,9 @@ class Headings:
 
 # TODO: Move to module for GUI programming
 
-# For executing well on cloud;
-import os
-if os.name != 'posix':
+# For executing well on cloud
+from qiskit_metal import is_cloud	
+if not is_cloud():
     def get_screenshot(self: 'QMainWindow',
                     name='shot.png',
                     type_='png',

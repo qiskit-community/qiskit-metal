@@ -41,13 +41,17 @@ if os.name == 'nt':
              )
         raise
 
+def is_cloud():
+	# Check that the os is linux
+	if os.name == 'posix':
+		return True
+	return False
 
 ###########################################################################
 ### Basic Setups
 ## Setup Qt
 
-# Check that the os is not linux
-if os.name != 'posix':
+if not is_cloud():
 
     def __setup_Qt_backend():  # pylint: disable=invalid-name
         """Setup matplotlib to use Qt5's visualization.
@@ -145,18 +149,18 @@ from . import designs
 from . import draw
 from . import renderers
 from . import qgeometries
-if os.name != 'posix':
+if not is_cloud():
     from . import analyses
 from . import toolbox_python
 from . import toolbox_metal
 
 # Metal GUI
-if os.name != 'posix':
+if not is_cloud():
     from ._gui.main_window import MetalGUI
 
 # Utility modules
 # For plotting in matplotlib;  May be superseded by a renderer?
-if os.name != 'posix':
+if not is_cloud():
     from .renderers.renderer_mpl import mpl_toolbox as plt
 
 # Utility functions
