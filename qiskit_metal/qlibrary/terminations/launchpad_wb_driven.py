@@ -131,8 +131,10 @@ class LaunchpadWirebondDriven(QComponent):
         # These variables are used to graphically locate the pin locations
         main_pin_line = draw.LineString([(lead_length, trace_width_half),
                                          (lead_length, -trace_width_half)])
-        driven_pin_line = draw.LineString([(-(pad_height + taper_height + pad_gap), pad_width_half),
-										   (-(pad_height + taper_height + pad_gap), -pad_width_half)])
+        driven_pin_line = draw.LineString([
+            (-(pad_height + taper_height + pad_gap), pad_width_half),
+            (-(pad_height + taper_height + pad_gap), -pad_width_half)
+        ])
 
         # Create polygon object list
         polys1 = [main_pin_line, driven_pin_line, launch_pad, pocket]
