@@ -51,7 +51,9 @@ QWidget {
 }"""
 
 
-def doShowHighlighWidget(self: QDockWidget, timeout=1500, STYLE_HIGHLIGHT=STYLE_HIGHLIGHT):
+def doShowHighlighWidget(self: QDockWidget,
+                         timeout=1500,
+                         STYLE_HIGHLIGHT=STYLE_HIGHLIGHT):
     """Highlight temporarily, raise, show the widget.
     Force resets the style at the component to None after a period. 
     """

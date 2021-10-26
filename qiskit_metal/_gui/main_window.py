@@ -629,7 +629,7 @@ class MetalGUI(QMainWindowBaseHandler):
         # https://stackoverflow.com/questions/16759088/what-is-the-viewport-of-a-tree-widget
         view.viewport().setAttribute(Qt.WA_Hover, True)
         view.viewport().setMouseTracking(True)
-        
+
         view.resizeColumnToContents(0)
 
     ################################################
