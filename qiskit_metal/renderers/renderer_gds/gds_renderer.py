@@ -94,6 +94,10 @@ class QGDSRenderer(QRenderer):
         * path_filename: '../resources/Fake_Junctions.GDS'
         * junction_pad_overlap: '5um'
         * max_points: '199'
+        fabricate: Dict
+            * fab: 'False',
+            * neg_datatype_fabricate: '200',
+            * pos_datatype_fabricate: '200'
         * cheese: Dict
             * datatype: '100'
             * shape: '0'
@@ -1280,6 +1284,11 @@ class QGDSRenderer(QRenderer):
             self.parse_value(self.options.cheese.edge_nocheese))
         precision = float(self.parse_value(self.options.precision))
         is_neg_mask = self._is_negative_mask(chip_name, chip_layer)
+        fab = is_true(self.options.fabricate.fab)
+        fab_neg_datatype = int(
+            self.parse_value(self.options.fabricate.neg_datatype_fabricate))
+        fab_pos_datatype = int(
+            self.parse_value(self.options.fabricate.pos_datatype_fabricate))
 
         if cheese_shape == 0:
             cheese_x = float(self.parse_value(self.options.cheese.cheese_0_x))
@@ -1297,6 +1306,9 @@ class QGDSRenderer(QRenderer):
                                 is_neg_mask,
                                 cheese_sub_layer,
                                 nocheese_sub_layer,
+                                fab,
+                                fab_neg_datatype,
+                                fab_pos_datatype,
                                 self.logger,
                                 max_points,
                                 precision,
@@ -1321,6 +1333,9 @@ class QGDSRenderer(QRenderer):
                                 is_neg_mask,
                                 cheese_sub_layer,
                                 nocheese_sub_layer,
+                                fab,
+                                fab_neg_datatype,
+                                fab_pos_datatype,
                                 self.logger,
                                 max_points,
                                 precision,
@@ -1343,7 +1358,7 @@ class QGDSRenderer(QRenderer):
 
         If user selects to view the no-cheese, the method placed the
         cell with no-cheese at
-        f'NoCheese_{chip_name}_{chip_layer}_{sub_layer}'.  The sub_layer
+        f'TOP_{chip_name}_{chip_layer}_NoCheese_{sub_layer}'.  The sub_layer
         is data_type and denoted in the options.
         """
 
@@ -1353,6 +1368,8 @@ class QGDSRenderer(QRenderer):
             self.options.no_cheese.buffer))
         sub_layer = int(self.parse_value(self.options.no_cheese.datatype))
         lib = self.lib
+
+        fab = is_true(self.options.fabricate.fab)
 
         for chip_name in self.chip_info:
             layers_in_chip = self.design.qgeometry.get_all_unique_layers(
@@ -1382,8 +1399,10 @@ class QGDSRenderer(QRenderer):
                             self.chip_info[chip_name][chip_layer][
                                 'no_cheese_gds'] = all_nocheese_gds
 
-                            if self._check_no_cheese(chip_name,
-                                                     chip_layer) == 1:
+                            # If fabricate.fab is true, then
+                            # do not put nocheese in gds file.
+                            if self._check_no_cheese(
+                                    chip_name, chip_layer) == 1 and not fab:
                                 no_cheese_subtract_cell_name = (
                                     f'TOP_{chip_name}_{chip_layer}'
                                     f'_NoCheese_{sub_layer}')
