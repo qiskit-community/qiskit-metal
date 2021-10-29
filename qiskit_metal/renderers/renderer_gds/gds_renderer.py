@@ -1706,7 +1706,11 @@ class QGDSRenderer(QRenderer):
                 self.design.logger.warning(
                     'There is no table named diff_geometry to write.')
             else:
-                ground_cell.add(diff_geometry)
+                ground_chip_layer_name = f'ground_{chip_name}_{chip_layer}'
+                ground_chip_layer = lib.new_cell(ground_chip_layer_name)
+                #diff_geometry is a polygon set. So put into it's own cell.
+                ground_chip_layer.add(diff_geometry)
+                ground_cell.add(gdspy.CellReference(ground_chip_layer))
 
         self._handle_q_subtract_false(chip_name, chip_layer, ground_cell)
         QGDSRenderer._add_groundcell_to_chip_only_top(lib, chip_only_top,
