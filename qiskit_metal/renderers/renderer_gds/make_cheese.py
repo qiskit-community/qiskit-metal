@@ -312,6 +312,7 @@ class Cheesing():
                 #     single_datatype=self.fab_neg_datatype,
                 #     single_texttype="Flatten datatype 0 and Cheese_diff.")
 
+                #Need the diff cell for negative mask.
                 #self._remove_cheese_diff_cell()
         else:
             #positive mask for given chip and layer
@@ -320,7 +321,8 @@ class Cheesing():
                     diff_holes_cell)
                 self._both_pos_and_neg_mask_fab()
                 #  This is something special still to do.
-                #self._remove_cheese_diff_cell()
+                self._remove_cheese_diff_cell()
+                self._remove_ground_chip_layer()
             else:
                 self._subtract_from_ground_and_move_under_top_chip_layer(
                     diff_holes_cell)
@@ -337,25 +339,6 @@ class Cheesing():
         cheese_one_hole_cell_name = f'TOP_{self.chip_name}_{self.layer}_one_hole'
         if cheese_one_hole_cell_name in self.lib.cells:
             self.lib.remove(cheese_one_hole_cell_name)
-
-    # def _subtract_from_ground_and_separate_from_top_chip_layer(
-    #         self, diff_holes_cell: gdspy.library.Cell):
-    #     chip_only_top_name = f'TOP_{self.chip_name}'
-    #     chip_only_top_layer_name = f'TOP_{self.chip_name}_{self.layer}'
-
-    #     if chip_only_top_layer_name in self.lib.cells:
-    #         if diff_holes_cell.get_bounding_box() is not None:
-    #             self.lib.cells[chip_only_top_layer_name].add(
-    #                 gdspy.CellReference(diff_holes_cell))
-    #             ground_cheese_cell = self._subtract_holes_from_ground(
-    #                 diff_holes_cell)
-    #             if chip_only_top_name in self.lib.cells:
-    #                 chip_cell = self.lib.cells[chip_only_top_name]
-    #                 chip_cell.add(gdspy.CellReference(ground_cheese_cell))
-    #             #Move to under Top_main_layer (Top_chipname_#)
-    #             #self._move_to_under_top_chip_layer_name(ground_cheese_cell)
-    #         else:
-    #             self.lib.remove(diff_holes_cell)
 
     def _subtract_from_ground_and_move_under_top_chip_layer(
             self, diff_holes_cell: gdspy.library.Cell):
@@ -461,9 +444,9 @@ class Cheesing():
 
         # Still need to 'not' with Top_main_1 (ground)
         top_chip_layer_name = f'TOP_{self.chip_name}_{self.layer}'
+        ground_cell_name = f'ground_{self.chip_name}_{self.layer}'
         if top_chip_layer_name in self.lib.cells.keys():
-            ground_cell = self.lib.cells[top_chip_layer_name]
-
+            ground_cell = self.lib.cells[ground_cell_name]
             # Need to keep the depth at 0, otherwise all the
             # cell references (junctions) will be added for boolean.
             ground_cheese = gdspy.boolean(ground_cell.get_polygons(depth=0),
@@ -502,5 +485,13 @@ class Cheesing():
         """ For a lib, chip and layer, remove the Cheese_diff cell.
         """
         cell_name = f'TOP_{self.chip_name}_{self.layer}_Cheese_diff'
+        if cell_name in self.lib.cells:
+            self.lib.remove(cell_name)
+
+    def _remove_ground_chip_layer(self):
+        """[For a lib, chip and layer, remove the ground cell
+        which is created for positive mask.
+        """
+        cell_name = f'ground_{self.chip_name}_{self.layer}'
         if cell_name in self.lib.cells:
             self.lib.remove(cell_name)
