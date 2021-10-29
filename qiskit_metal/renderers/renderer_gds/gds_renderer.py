@@ -36,7 +36,6 @@ from qiskit_metal.renderers.renderer_base import QRenderer
 from qiskit_metal.renderers.renderer_gds.make_cheese import Cheesing
 from qiskit_metal.toolbox_metal.parsing import is_true
 from qiskit_metal import draw
-import qiskit_metal.renderers.renderer_gds.fabricate
 
 from ... import Dict
 
