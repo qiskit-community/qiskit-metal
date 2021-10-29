@@ -47,8 +47,8 @@ class Cheesing():
         datatype_cheese: int,
         datatype_keepout: int,
         fab: bool,
-        fab_neg_datatype: int,
-        fab_pos_datatype: int,
+        # fab_neg_datatype: int,
+        # fab_pos_datatype: int,
         logger: logging.Logger,
         max_points: int,
         precision: float,
@@ -91,8 +91,8 @@ class Cheesing():
                                 keepout of cheese.
             fab (bool):   To determine if the cells are meant for fabrication versus showing
                         iterative information used in a "developer" mode.
-            fab_neg_datatype (int): layer to put the cell after cheesing.
-            fab_pos_datatype (int): layer to put the cell after cheesing.
+            # fab_neg_datatype (int): layer to put the cell after cheesing.
+            # fab_pos_datatype (int): layer to put the cell after cheesing.
             max_points (int): Used in gdspy to identify max number of points
                                 for a Polygon.
             precision (float): Used in gdspy to identify precision.
@@ -131,8 +131,8 @@ class Cheesing():
         self.precision = precision
 
         self.fab = fab
-        self.fab_neg_datatype = fab_neg_datatype
-        self.fab_pos_datatype = fab_pos_datatype
+        # self.fab_neg_datatype = fab_neg_datatype
+        # self.fab_pos_datatype = fab_pos_datatype
 
         self.logger = logger
 
@@ -295,23 +295,41 @@ class Cheesing():
             gather_holes_cell)
         self.lib.remove(gather_holes_cell)
 
+        cell_name = f'TOP_{self.chip_name}_{self.layer}'
+        cell_layer = self.lib.cells[cell_name]
+
         if self.is_neg_mask:
             #negative mask for given chip and layer
             self._move_to_under_top_chip_layer_name(diff_holes_cell)
+            if self.fab:
+                self._both_pos_and_neg_mask_fab()
+
+                #????? Do we really want to flatten this?
+                # The junctions are going to the datatype=fab_neg_datatype.
+                # Also, flatten takes a long time.
+                # cell_layer.flatten(
+                #     single_layer=self.layer,
+                #     single_datatype=self.fab_neg_datatype,
+                #     single_texttype="Flatten datatype 0 and Cheese_diff.")
+
+                #self._remove_cheese_diff_cell()
         else:
             #positive mask for given chip and layer
-            self._subtract_from_ground_and_move_under_top_chip_layer(
-                diff_holes_cell)
-
             if self.fab:
-                diff_holes_cell_name = f'TOP_{self.chip_name}_{self.layer}_Cheese_diff'
-                if diff_holes_cell_name in self.lib.cells:
-                    self.lib.remove(diff_holes_cell_name)
+                self._subtract_from_ground_and_move_under_top_chip_layer(
+                    diff_holes_cell)
+                self._both_pos_and_neg_mask_fab()
+                #  This is something special still to do.
+                #self._remove_cheese_diff_cell()
+            else:
+                self._subtract_from_ground_and_move_under_top_chip_layer(
+                    diff_holes_cell)
 
-        # For both positive and negative mask need to have this cell removed when
-        # user has fabricate.fab=True.
-        if self.fab:
-            self._remove_cell_one_hole()
+    def _both_pos_and_neg_mask_fab(self):
+        """For both positive and negative mask need to have this cell removed when
+            user has fabricate.fab=True.
+        """
+        self._remove_cell_one_hole()
 
     def _remove_cell_one_hole(self):
         """Remove cell with just one hole.
@@ -319,6 +337,25 @@ class Cheesing():
         cheese_one_hole_cell_name = f'TOP_{self.chip_name}_{self.layer}_one_hole'
         if cheese_one_hole_cell_name in self.lib.cells:
             self.lib.remove(cheese_one_hole_cell_name)
+
+    # def _subtract_from_ground_and_separate_from_top_chip_layer(
+    #         self, diff_holes_cell: gdspy.library.Cell):
+    #     chip_only_top_name = f'TOP_{self.chip_name}'
+    #     chip_only_top_layer_name = f'TOP_{self.chip_name}_{self.layer}'
+
+    #     if chip_only_top_layer_name in self.lib.cells:
+    #         if diff_holes_cell.get_bounding_box() is not None:
+    #             self.lib.cells[chip_only_top_layer_name].add(
+    #                 gdspy.CellReference(diff_holes_cell))
+    #             ground_cheese_cell = self._subtract_holes_from_ground(
+    #                 diff_holes_cell)
+    #             if chip_only_top_name in self.lib.cells:
+    #                 chip_cell = self.lib.cells[chip_only_top_name]
+    #                 chip_cell.add(gdspy.CellReference(ground_cheese_cell))
+    #             #Move to under Top_main_layer (Top_chipname_#)
+    #             #self._move_to_under_top_chip_layer_name(ground_cheese_cell)
+    #         else:
+    #             self.lib.remove(diff_holes_cell)
 
     def _subtract_from_ground_and_move_under_top_chip_layer(
             self, diff_holes_cell: gdspy.library.Cell):
@@ -460,3 +497,10 @@ class Cheesing():
                     gdspy.CellReference(a_cell))
             else:
                 self.lib.remove(a_cell)
+
+    def _remove_cheese_diff_cell(self):
+        """ For a lib, chip and layer, remove the Cheese_diff cell.
+        """
+        cell_name = f'TOP_{self.chip_name}_{self.layer}_Cheese_diff'
+        if cell_name in self.lib.cells:
+            self.lib.remove(cell_name)
