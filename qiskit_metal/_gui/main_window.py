@@ -593,10 +593,12 @@ class MetalGUI(QMainWindowBaseHandler):
         # create model for Qlibrary directory
         self.ui.dockLibrary.library_model = QFileSystemLibraryModel()
 
+        self.ui.dockLibrary.library_model.path_imgs = self.path_imgs
+
         self.ui.dockLibrary.library_model.setRootPath(self.QLIBRARY_ROOT)
 
         # QSortFilterProxyModel
-        #QSortFilterProxyModel: sorting items, filtering out items, or both.  maps the original model indexes to new indexes, allows a given source model to be restructured as far as views are concerned without requiring any transformations on the underlying data, and without duplicating the data in memory.
+        # QSortFilterProxyModel: sorting items, filtering out items, or both.  maps the original model indexes to new indexes, allows a given source model to be restructured as far as views are concerned without requiring any transformations on the underlying data, and without duplicating the data in memory.
         self.ui.dockLibrary.proxy_library_model = LibraryFileProxyModel()
         self.ui.dockLibrary.proxy_library_model.setSourceModel(
             self.ui.dockLibrary.library_model)

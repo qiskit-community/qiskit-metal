@@ -73,7 +73,4 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
         if role == Qt.EditRole:
             return self.data(index, Qt.DisplayRole)
 
-        if role == Qt.SizeHintRole:
-            return QSize(10, 25)
-
         return super().data(index, role)
