@@ -47,8 +47,6 @@ class Cheesing():
         datatype_cheese: int,
         datatype_keepout: int,
         fab: bool,
-        # fab_neg_datatype: int,
-        # fab_pos_datatype: int,
         logger: logging.Logger,
         max_points: int,
         precision: float,
@@ -91,8 +89,6 @@ class Cheesing():
                                 keepout of cheese.
             fab (bool):   To determine if the cells are meant for fabrication versus showing
                         iterative information used in a "developer" mode.
-            # fab_neg_datatype (int): layer to put the cell after cheesing.
-            # fab_pos_datatype (int): layer to put the cell after cheesing.
             max_points (int): Used in gdspy to identify max number of points
                                 for a Polygon.
             precision (float): Used in gdspy to identify precision.
@@ -131,8 +127,6 @@ class Cheesing():
         self.precision = precision
 
         self.fab = fab
-        # self.fab_neg_datatype = fab_neg_datatype
-        # self.fab_pos_datatype = fab_pos_datatype
 
         self.logger = logger
 
@@ -304,14 +298,6 @@ class Cheesing():
             if self.fab:
                 self._both_pos_and_neg_mask_fab()
 
-                #????? Do we really want to flatten this?
-                # The junctions are going to the datatype=fab_neg_datatype.
-                # Also, flatten takes a long time.
-                # cell_layer.flatten(
-                #     single_layer=self.layer,
-                #     single_datatype=self.fab_neg_datatype,
-                #     single_texttype="Flatten datatype 0 and Cheese_diff.")
-
                 #Need the diff cell for negative mask.
                 #self._remove_cheese_diff_cell()
         else:
@@ -320,6 +306,7 @@ class Cheesing():
                 self._subtract_from_ground_and_move_under_top_chip_layer(
                     diff_holes_cell)
                 self._both_pos_and_neg_mask_fab()
+
                 #  This is something special still to do.
                 self._remove_cheese_diff_cell()
                 self._remove_ground_chip_layer()

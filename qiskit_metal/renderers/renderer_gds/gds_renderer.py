@@ -149,21 +149,9 @@ class QGDSRenderer(QRenderer):
         # layers, every layer_number MUST be in list.
         negative_mask=Dict(main=[]),
 
-        # # For the final fabrication layer, Show/Don't Show intermediate steps?
-        # fabricate=Dict(
-        #     # If false, show the intermediate steps in the exported gds file.
-        #     # If true, show the geometries on either neg_datatype_fabricate or pos_datatype_fabricate.
-        #     fab='False',
-
-        #     #datatype should not be more than 255 based on limitations in GDSPY.
-
-        #     # For a layer which has a negative mask, and if fabricate option is 'True',
-        #     # denote the datatype to hold gds export for the layer.
-        #     neg_datatype_fabricate='200',
-
-        #     # For a layer which has a positive mask, and if fabricate option is 'True',
-        #     # denote the datatype to hold gds export for the layer.
-        #     pos_datatype_fabricate='200'),
+        # For the gds file, Show/Don't Show intermediate steps?
+        # If false, show the intermediate steps in the exported gds file.
+        # If true, show the geometries on either neg_datatype_fabricate or pos_datatype_fabricate.
         fabricate='False',
 
         # corners: ('natural', 'miter', 'bevel', 'round', 'smooth',
@@ -1283,67 +1271,55 @@ class QGDSRenderer(QRenderer):
         is_neg_mask = self._is_negative_mask(chip_name, chip_layer)
         fab = is_true(self.options.fabricate)
 
-        # fab = is_true(self.options.fabricate.fab)
-        # fab_neg_datatype = int(
-        #     self.parse_value(self.options.fabricate.neg_datatype_fabricate))
-        # fab_pos_datatype = int(
-        #     self.parse_value(self.options.fabricate.pos_datatype_fabricate))
-
         if cheese_shape == 0:
             cheese_x = float(self.parse_value(self.options.cheese.cheese_0_x))
             cheese_y = float(self.parse_value(self.options.cheese.cheese_0_y))
-            a_cheese = Cheesing(
-                all_nocheese,
-                all_nocheese_gds,
-                self.lib,
-                minx,
-                miny,
-                maxx,
-                maxy,
-                chip_name,
-                edge_nocheese,
-                chip_layer,
-                is_neg_mask,
-                cheese_sub_layer,
-                nocheese_sub_layer,
-                fab,
-                # fab_neg_datatype,
-                # fab_pos_datatype,
-                self.logger,
-                max_points,
-                precision,
-                cheese_shape=cheese_shape,
-                shape_0_x=cheese_x,
-                shape_0_y=cheese_y,
-                delta_x=delta_x,
-                delta_y=delta_y)
+            a_cheese = Cheesing(all_nocheese,
+                                all_nocheese_gds,
+                                self.lib,
+                                minx,
+                                miny,
+                                maxx,
+                                maxy,
+                                chip_name,
+                                edge_nocheese,
+                                chip_layer,
+                                is_neg_mask,
+                                cheese_sub_layer,
+                                nocheese_sub_layer,
+                                fab,
+                                self.logger,
+                                max_points,
+                                precision,
+                                cheese_shape=cheese_shape,
+                                shape_0_x=cheese_x,
+                                shape_0_y=cheese_y,
+                                delta_x=delta_x,
+                                delta_y=delta_y)
         elif cheese_shape == 1:
             cheese_radius = float(
                 self.parse_value(self.options.cheese.cheese_1_radius))
-            a_cheese = Cheesing(
-                all_nocheese,
-                all_nocheese_gds,
-                self.lib,
-                minx,
-                miny,
-                maxx,
-                maxy,
-                chip_name,
-                edge_nocheese,
-                chip_layer,
-                is_neg_mask,
-                cheese_sub_layer,
-                nocheese_sub_layer,
-                fab,
-                # fab_neg_datatype,
-                # fab_pos_datatype,
-                self.logger,
-                max_points,
-                precision,
-                cheese_shape=cheese_shape,
-                shape_1_radius=cheese_radius,
-                delta_x=delta_x,
-                delta_y=delta_y)
+            a_cheese = Cheesing(all_nocheese,
+                                all_nocheese_gds,
+                                self.lib,
+                                minx,
+                                miny,
+                                maxx,
+                                maxy,
+                                chip_name,
+                                edge_nocheese,
+                                chip_layer,
+                                is_neg_mask,
+                                cheese_sub_layer,
+                                nocheese_sub_layer,
+                                fab,
+                                self.logger,
+                                max_points,
+                                precision,
+                                cheese_shape=cheese_shape,
+                                shape_1_radius=cheese_radius,
+                                delta_x=delta_x,
+                                delta_y=delta_y)
         else:
             self.logger.warning(
                 f'The cheese_shape={cheese_shape} is unknown in QGDSRenderer.')
