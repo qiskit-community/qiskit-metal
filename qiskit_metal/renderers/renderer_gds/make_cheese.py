@@ -396,9 +396,12 @@ class Cheesing():
 
         # Still need to 'not' with Top_main_1 (ground)
         top_chip_layer_name = f'TOP_{self.chip_name}_{self.layer}'
+        ground_cell_name = f'ground_{self.chip_name}_{self.layer}'
         if top_chip_layer_name in self.lib.cells.keys():
-            ground_cell = self.lib.cells[top_chip_layer_name]
-            ground_cheese = gdspy.boolean(ground_cell.get_polygons(),
+            ground_cell = self.lib.cells[ground_cell_name]
+            # Need to keep the depth at 0, otherwise all the
+            # cell references (junctions) will be added for boolean.
+            ground_cheese = gdspy.boolean(ground_cell.get_polygons(depth=0),
                                           diff_holes_cell.get_polygonsets(),
                                           'not',
                                           max_points=self.max_points,
