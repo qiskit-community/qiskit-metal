@@ -31,7 +31,7 @@ class PropValTable(QAbstractTableModel):
 
     __refreshtime = 500  # 0.5 second refresh time
 
-    def __init__(self, design=None, gui=None, view:'RightClickView'=None):
+    def __init__(self, design=None, gui=None, view: 'RightClickView' = None):
         """
         Args:
             design (QDesign): The QDesign.  Defaults to None.
