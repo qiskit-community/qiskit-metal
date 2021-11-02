@@ -93,7 +93,7 @@ class QGDSRenderer(QRenderer):
         * path_filename: '../resources/Fake_Junctions.GDS'
         * junction_pad_overlap: '5um'
         * max_points: '199'
-        fabricate: 'False',
+        * fabricate: 'False'
         * cheese: Dict
             * datatype: '100'
             * shape: '0'
