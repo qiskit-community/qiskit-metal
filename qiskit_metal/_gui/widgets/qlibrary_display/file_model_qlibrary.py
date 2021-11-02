@@ -27,7 +27,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
     File System Model for displaying QLibrary in MetalGUI
 
     """
-    path_imgs = None # type: Path
+    path_imgs = None  # type: Path
     FILENAME = 0
     CACHE = dict()
 
@@ -47,15 +47,17 @@ class QFileSystemLibraryModel(QFileSystemModel):
             if role == Qt.DecorationRole:
                 qfileinfo = self.fileInfo(index)
                 iconfile = qfileinfo.fileName().replace(".py", ".png")
-                pathFilename = self.path_imgs/"components"/iconfile
-                
+                pathFilename = self.path_imgs / "components" / iconfile
+
                 if pathFilename.is_file():
                     stringFilename = str(pathFilename)
                     # cache pixmaps as they are seen
                     if stringFilename in self.CACHE:
                         return self.CACHE[stringFilename]
                     else:
-                        pixmap = QPixmap(stringFilename).scaled(QSize(size, size), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+                        pixmap = QPixmap(stringFilename).scaled(
+                            QSize(size, size), Qt.KeepAspectRatio,
+                            Qt.SmoothTransformation)
                         self.CACHE[stringFilename] = pixmap
                         return pixmap
 
