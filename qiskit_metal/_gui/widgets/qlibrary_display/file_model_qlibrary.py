@@ -30,6 +30,18 @@ class QFileSystemLibraryModel(QFileSystemModel):
     path_imgs = None  # type: Path
     FILENAME = 0
     CACHE = dict()
+    defaultImage = "metal_logo.png"
+    defaultFilename = None
+    size = 64
+
+    def __init__(self, path_imgs):
+        super().__init__()
+        self.path_imgs = path_imgs
+        self.defaultFilename = str(path_imgs / self.defaultImage)
+        pixmap = QPixmap(self.defaultFilename).scaled(
+            QSize(self.size, self.size), Qt.KeepAspectRatio,
+            Qt.SmoothTransformation)
+        self.CACHE[self.defaultFilename] = pixmap
 
     def data(self,
              index: QModelIndex,
@@ -42,23 +54,33 @@ class QFileSystemLibraryModel(QFileSystemModel):
         Returns:
             Any (QVariant): Data stored under the given role for the item referred to by the index.
         """
-        size = 64
-        if not self.isDir(index):
-            if role == Qt.DecorationRole:
-                qfileinfo = self.fileInfo(index)
-                iconfile = qfileinfo.fileName().replace(".py", ".png")
-                pathFilename = self.path_imgs / "components" / iconfile
 
-                if pathFilename.is_file():
-                    stringFilename = str(pathFilename)
-                    # cache pixmaps as they are seen
-                    if stringFilename in self.CACHE:
-                        return self.CACHE[stringFilename]
+        # There are multiple columns so we don't want display an
+        # image in each one, (see filterAcceptsColumn)
+        if index.column() == 0:
+            if not self.isDir(index):
+                if role == Qt.DecorationRole:
+                    qfileinfo = self.fileInfo(index)
+                    iconfile = qfileinfo.fileName().replace(".py", ".png")
+                    pathFilename = self.path_imgs / "components" / iconfile
+
+                    if pathFilename.is_file():
+                        stringFilename = str(pathFilename)
+                        # cache pixmaps as they are seen
+                        if stringFilename in self.CACHE:
+                            return self.CACHE[stringFilename]
+                        else:
+                            pixmap = QPixmap(stringFilename).scaled(
+                                QSize(self.size, self.size), Qt.KeepAspectRatio,
+                                Qt.SmoothTransformation)
+                            self.CACHE[stringFilename] = pixmap
+                            return pixmap
                     else:
-                        pixmap = QPixmap(stringFilename).scaled(
-                            QSize(size, size), Qt.KeepAspectRatio,
-                            Qt.SmoothTransformation)
-                        self.CACHE[stringFilename] = pixmap
-                        return pixmap
+                        # display default image
+                        return self.CACHE[self.defaultFilename]                        
+            else:
+                if role == Qt.SizeHintRole:
+                    return QSize(10, 25)
+
 
         return super().data(index, role)

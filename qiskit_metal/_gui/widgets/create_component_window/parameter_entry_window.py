@@ -165,6 +165,13 @@ class ParameterEntryWindow(QMainWindow):
             raise Exception("No Component found.")
 
         filepath = self.qcomponent_file_path
+
+        imageStringPath = filepath.replace(".py", ".png")
+        imagefilename = os.path.basename(os.path.normpath(imageStringPath))
+        for i in range(3):
+            imageStringPath = os.path.dirname(imageStringPath)
+        imagepath = Path(imageStringPath) / "_gui" / "_imgs" / "components" / imagefilename
+
         doc_class = self.format_docstr(inspect.getdoc(component))
         doc_init = self.format_docstr(inspect.getdoc(component.__init__))
 
@@ -179,6 +186,10 @@ class ParameterEntryWindow(QMainWindow):
             </tbody>
         </table>
         '''
+
+        if imagepath.is_file():
+            text += f'''<img src="{str(imagepath)}"/>'''
+
         text += f'''
             <div class="h1">Class docstring:</div>
             {doc_class}

@@ -601,9 +601,8 @@ class MetalGUI(QMainWindowBaseHandler):
         self.QLIBRARY_FOLDERNAME = qlibrary.__name__
 
         # create model for Qlibrary directory
-        dock.library_model = QFileSystemLibraryModel()
+        dock.library_model = QFileSystemLibraryModel(self.path_imgs)
 
-        dock.library_model.path_imgs = self.path_imgs
         dock.library_model.setRootPath(self.QLIBRARY_ROOT)
 
         # QSortFilterProxyModel
