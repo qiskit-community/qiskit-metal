@@ -100,6 +100,10 @@ class TransmonPocket6(BaseQubit):
 
     .. image::
         TransmonPocket6.png
+
+    .. displayName::
+        Transmon Pocket 6
+
     """
 
     # Default drawing options

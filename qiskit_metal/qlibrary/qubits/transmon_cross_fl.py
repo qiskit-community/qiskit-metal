@@ -53,6 +53,10 @@ class TransmonCrossFL(TransmonCross):  # pylint: disable=invalid-name
 
     .. image::
         TransmonCrossFL.png
+
+    .. displayName::
+        Transmon Cross Flux Line
+
     """
 
     component_metadata = Dict(short_name='Q',

@@ -53,6 +53,9 @@ class Cap3Interdigital(QComponent):
     .. image::
         Cap3Interdigital.png
 
+    .. displayName::
+        Cap 3 Interdigital
+
     Default Options:
         * trace_width: '10um'
         * finger_length: '65um'

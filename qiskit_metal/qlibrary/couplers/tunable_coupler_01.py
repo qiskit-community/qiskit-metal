@@ -42,6 +42,9 @@ class TunableCoupler01(BaseQubit):
     .. image::
         TunableCoupler01.png
 
+    .. displayName::
+        Tunable Coupler 01
+
     Options:
         Convention: Values (unless noted) are strings with units included,
         (e.g., '30um')

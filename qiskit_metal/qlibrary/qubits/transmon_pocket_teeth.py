@@ -91,6 +91,10 @@ class TransmonPocketTeeth(BaseQubit):
 
     .. image::
         Transmon_Pocket_Teeth.png
+
+    .. displayName::
+        Transmon Pocket Teeth
+
     """
 
     #_img = 'transmon_pocket1.png'

@@ -28,6 +28,9 @@ class StarQubit(QComponent):
     .. image::
         StarQubit.png
 
+    .. displayName::
+        Star Qubit
+
     Default Options:
         * radius: '300um' -- Radius of the circle defining the star shape
         * center_radius: '100um' -- Measure of how thick the central island is

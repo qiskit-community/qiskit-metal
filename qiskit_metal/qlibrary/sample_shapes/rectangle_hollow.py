@@ -24,6 +24,9 @@ class RectangleHollow(QComponent):
     .. image::
         RectangleHollow.png
 
+    .. displayName::
+        Rectangle Hollow
+
     Default Options:
         * width: '500um'
         * height: '300um'

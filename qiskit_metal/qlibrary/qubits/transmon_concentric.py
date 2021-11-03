@@ -32,6 +32,9 @@ class TransmonConcentric(BaseQubit):
     .. image::
         TransmonConcentric.png
 
+    .. displayName::
+        Transmon Concentric
+
     BaseQubit Default Options:
         * connection_pads: empty Dict -- the dictionary which contains all active
           connection lines for the qubit.

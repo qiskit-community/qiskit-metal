@@ -27,6 +27,9 @@ class RouteMixed(RoutePathfinder, RouteMeander):
     connections between anchors. The comprehensive Routing class. Inherits
     `RoutePathfinder, RouteMeander` class, thus also QRoute and RouteAnchors.
 
+    .. displayName::
+        Route Mixed
+
     Default Options:
         * between_anchors: Empty OrderedDict -- Intermediate anchors only; doesn't include endpoints
 

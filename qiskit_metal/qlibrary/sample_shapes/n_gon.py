@@ -25,6 +25,9 @@ class NGon(QComponent):
     .. image::
         NGon.png
 
+    .. displayName::
+        N-Gon Polygon
+
     Default Options:
         Convention: Values (unless noted) are strings with units included,
         (e.g., '30um')

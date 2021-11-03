@@ -71,6 +71,9 @@ class TransmonPocket(BaseQubit):
     .. image::
         TransmonPocket.png
 
+    .. displayName::
+        Transmon Pocket
+
     BaseQubit Default Options:
         * connection_pads: Empty Dict -- The dictionary which contains all active connection lines for the qubit.
         * _default_connection_pads: Empty Dict -- The default values for the (if any) connection lines of the qubit.
