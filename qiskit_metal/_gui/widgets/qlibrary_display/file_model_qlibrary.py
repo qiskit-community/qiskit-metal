@@ -77,10 +77,9 @@ class QFileSystemLibraryModel(QFileSystemModel):
                             return pixmap
                     else:
                         # display default image
-                        return self.CACHE[self.defaultFilename]                        
+                        return self.CACHE[self.defaultFilename]
             else:
                 if role == Qt.SizeHintRole:
                     return QSize(10, 25)
-
 
         return super().data(index, role)
