@@ -152,6 +152,10 @@ class QGDSRenderer(QRenderer):
         # For the gds file, Show/Don't Show intermediate steps?
         # If false, show the intermediate steps in the exported gds file.
         # If true, show the geometries on either neg_datatype_fabricate or pos_datatype_fabricate.
+        #   Example:  # denotes the layer number
+        #           delete for negative mask: TOP_main_#_NoCheese_99, TOP_main_#_one_hole
+        #           delete for positive mask: TOP_main_#_NoCheese_99, TOP_main_#_one_hole,
+        #                                       ground_main_#
         fabricate='False',
 
         # corners: ('natural', 'miter', 'bevel', 'round', 'smooth',

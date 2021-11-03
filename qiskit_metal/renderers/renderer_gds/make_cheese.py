@@ -89,6 +89,12 @@ class Cheesing():
                                 keepout of cheese.
             fab (bool):   To determine if the cells are meant for fabrication versus showing
                         iterative information used in a "developer" mode.
+                        If false, show the intermediate steps in the exported gds file.
+                        If true, show the geometries on either neg_datatype_fabricate or pos_datatype_fabricate.
+                            Example:  # denotes the layer number
+                                    delete for negative mask- TOP_main_#_NoCheese_99, TOP_main_#_one_hole
+                                    delete for positive mask- TOP_main_#_NoCheese_99, TOP_main_#_one_hole,
+                                                            ground_main_#
             max_points (int): Used in gdspy to identify max number of points
                                 for a Polygon.
             precision (float): Used in gdspy to identify precision.
