@@ -16,12 +16,12 @@ File System Model for QLibrary Display
 """
 
 import os
-import re
 import typing
 from pathlib import Path
 from PySide2.QtCore import QModelIndex, QTimeZone, Qt, QSize
 from PySide2.QtGui import QIcon, QPixmap
 from PySide2.QtWidgets import QFileSystemModel
+from qiskit_metal._gui.utility.utils import findProperty
 
 
 class QFileSystemLibraryModel(QFileSystemModel):
@@ -62,36 +62,40 @@ class QFileSystemLibraryModel(QFileSystemModel):
         if index.column() == 0:
             if not self.isDir(index):
                 qfileinfo = self.fileInfo(index)
+                absoluteFilename = str(qfileinfo.absoluteFilePath())
                 if role == Qt.DecorationRole:
-                    iconfile = qfileinfo.fileName().replace(".py", ".png")
-                    pathFilename = self.path_imgs / "components" / iconfile
-
-                    if pathFilename.is_file():
-                        stringFilename = str(pathFilename)
-                        # imageCache pixmaps as they are seen
-                        if stringFilename in self.imageCache:
-                            return self.imageCache[stringFilename]
-                        else:
-                            pixmap = QPixmap(stringFilename).scaled(
-                                QSize(self.size, self.size), Qt.KeepAspectRatio,
-                                Qt.SmoothTransformation)
-                            self.imageCache[stringFilename] = pixmap
-                            return pixmap
-                    else:
-                        # display default image
-                        return self.imageCache[self.defaultFilename]
+                    matches = findProperty(absoluteFilename,
+                                           "\.\. image::[\r\n]+([^\r\n]+)")
+                    if matches is not None and len(matches) != 0:
+                        iconfile = matches[0].lstrip()
+                        pathFilename = self.path_imgs / "components" / iconfile
+                        if pathFilename.is_file():
+                            stringFilename = str(pathFilename)
+                            # imageCache pixmaps as they are seen
+                            if stringFilename in self.imageCache:
+                                return self.imageCache[stringFilename]
+                            else:
+                                pixmap = QPixmap(stringFilename).scaled(
+                                    QSize(self.size, self.size),
+                                    Qt.KeepAspectRatio, Qt.SmoothTransformation)
+                                self.imageCache[stringFilename] = pixmap
+                                return pixmap
+                    # display default image
+                    return self.imageCache[self.defaultFilename]
                 elif role == Qt.DisplayRole:
                     relativeFilename = qfileinfo.fileName()
-                    absoluteFilename = str(qfileinfo.absoluteFilePath())
                     if relativeFilename in self.nameCache:
                         return self.nameCache[relativeFilename]
                     else:
-                        readfile = open(absoluteFilename, 'r')
-                        filetext = readfile.read()
-                        readfile.close()
-                        matches = re.findall(
-                            "\.\. displayName::[\r\n]+([^\r\n]+)", filetext)
-                        if len(matches) != 0:
+                        # readfile = open(absoluteFilename, 'r')
+                        # filetext = readfile.read()
+                        # readfile.close()
+                        # matches = re.findall(
+                        #     "\.\. displayName::[\r\n]+([^\r\n]+)", filetext)
+                        matches = findProperty(
+                            absoluteFilename,
+                            "\.\. displayName::[\r\n]+([^\r\n]+)")
+                        if matches is not None and len(matches) != 0:
                             displayName = matches[0].lstrip()
                             self.nameCache[relativeFilename] = displayName
                             return displayName

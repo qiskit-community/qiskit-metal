@@ -69,7 +69,7 @@ class TransmonPocket(BaseQubit):
                                             +1
 
     .. image::
-        TransmonPocket.png
+        transmon_pocket.png
 
     .. displayName::
         Transmon Pocket

@@ -57,7 +57,7 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
 
 
     .. image::
-        TransmonPocketCL.png
+        transmon_pocket_cl.png
 
     .. displayName::
         Transmon Pocket Connector Lines

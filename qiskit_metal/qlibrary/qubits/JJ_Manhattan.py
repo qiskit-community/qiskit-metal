@@ -33,7 +33,7 @@ class jj_manhattan(QComponent):
     larger metallic pad region.
 
     .. image::
-        JJManhattan.png
+        JJ_Manhattan.png
 
     .. displayName::
         Josephson Junction Manhattan

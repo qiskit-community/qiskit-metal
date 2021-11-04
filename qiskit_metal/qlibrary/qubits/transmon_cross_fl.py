@@ -52,7 +52,7 @@ class TransmonCrossFL(TransmonCross):  # pylint: disable=invalid-name
         * t_gap -           dielectric gap of the flux line's transmission line
 
     .. image::
-        TransmonCrossFL.png
+        transmon_cross_fl.png
 
     .. displayName::
         Transmon Cross Flux Line
