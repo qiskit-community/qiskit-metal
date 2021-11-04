@@ -23,6 +23,7 @@ from PySide2.QtCore import QModelIndex, QTimeZone, Qt, QSize
 from PySide2.QtGui import QIcon, QPixmap
 from PySide2.QtWidgets import QFileSystemModel
 
+
 class QFileSystemLibraryModel(QFileSystemModel):
     """
     File System Model for displaying QLibrary in MetalGUI
@@ -88,7 +89,8 @@ class QFileSystemLibraryModel(QFileSystemModel):
                         readfile = open(absoluteFilename, 'r')
                         filetext = readfile.read()
                         readfile.close()
-                        matches = re.findall("\.\. displayName::[\r\n]+([^\r\n]+)", filetext)
+                        matches = re.findall(
+                            "\.\. displayName::[\r\n]+([^\r\n]+)", filetext)
                         if len(matches) != 0:
                             displayName = matches[0].lstrip()
                             self.nameCache[relativeFilename] = displayName
