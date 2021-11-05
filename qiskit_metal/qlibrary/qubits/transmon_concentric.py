@@ -32,7 +32,7 @@ class TransmonConcentric(BaseQubit):
     .. image::
         transmon_concentric.png
 
-    .. displayName::
+    .. meta::
         Transmon Concentric
 
     BaseQubit Default Options:

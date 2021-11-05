@@ -27,7 +27,7 @@ class CircleRaster(QComponent):
     .. image::
         CircleRaster.png
 
-    .. displayName::
+    .. meta::
         Circle Raster
 
     Default Options:

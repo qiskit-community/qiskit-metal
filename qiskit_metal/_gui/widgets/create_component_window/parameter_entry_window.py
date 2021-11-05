@@ -166,12 +166,10 @@ class ParameterEntryWindow(QMainWindow):
 
         filepath = self.qcomponent_file_path
 
-        imageStringPath = filepath.replace(".py", ".png")
-        imagefilename = os.path.basename(os.path.normpath(imageStringPath))
-        for i in range(3):
-            imageStringPath = os.path.dirname(imageStringPath)
+        imagefilename = Path(filepath.replace(".py", ".png")).name
         imagepath = Path(
-            imageStringPath) / "_gui" / "_imgs" / "components" / imagefilename
+            filepath
+        ).parent.parent.parent / "_gui" / "_imgs" / "components" / imagefilename
 
         doc_class = self.format_docstr(inspect.getdoc(component))
         doc_init = self.format_docstr(inspect.getdoc(component.__init__))

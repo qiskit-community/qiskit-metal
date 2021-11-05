@@ -23,7 +23,7 @@ class ShortToGround(QComponent):
 
     Inherits `QComponent` class.
 
-    .. displayName::
+    .. meta::
         Short to Ground
 
     Default Options:

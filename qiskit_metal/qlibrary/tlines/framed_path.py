@@ -26,7 +26,7 @@ class RouteFramed(QRoute):
 
     This class extends the `QComponent` class.
 
-    .. displayName::
+    .. meta::
         Routed Frame
 
     Assumptions:

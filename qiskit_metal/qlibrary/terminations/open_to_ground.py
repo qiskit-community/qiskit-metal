@@ -24,7 +24,7 @@ class OpenToGround(QComponent):
     .. image::
         OpenToGround.png
 
-    .. displayName::
+    .. meta::
         Open to Ground
 
     Default Options:

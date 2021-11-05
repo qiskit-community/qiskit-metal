@@ -41,7 +41,7 @@ class LineTee(QComponent):
     .. image::
         LineTee.png
 
-    .. displayName::
+    .. meta::
         Line Tee
 
     Options:

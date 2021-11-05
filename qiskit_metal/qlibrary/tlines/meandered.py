@@ -30,7 +30,7 @@ class RouteMeander(QRoute):
 
     Inherits `QRoute` class
 
-    .. displayName::
+    .. meta::
         Route Meander
 
     QRoute Default Options:

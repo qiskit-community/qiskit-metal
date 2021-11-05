@@ -71,7 +71,7 @@ class TransmonPocket(BaseQubit):
     .. image::
         transmon_pocket.png
 
-    .. displayName::
+    .. meta::
         Transmon Pocket
 
     BaseQubit Default Options:

@@ -28,7 +28,7 @@ class StarQubit(QComponent):
     .. image::
         star_qubit.png
 
-    .. displayName::
+    .. meta::
         Star Qubit
 
     Default Options:

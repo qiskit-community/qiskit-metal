@@ -101,7 +101,7 @@ class TransmonPocket6(BaseQubit):
     .. image::
         transmon_pocket_6.png
 
-    .. displayName::
+    .. meta::
         Transmon Pocket 6
 
     """

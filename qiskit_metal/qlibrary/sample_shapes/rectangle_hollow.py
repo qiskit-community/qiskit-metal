@@ -24,7 +24,7 @@ class RectangleHollow(QComponent):
     .. image::
         RectangleHollow.png
 
-    .. displayName::
+    .. meta::
         Rectangle Hollow
 
     Default Options:

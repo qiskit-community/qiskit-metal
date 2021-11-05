@@ -39,7 +39,7 @@ class CoupledLineTee(QComponent):
     .. image::
         CoupledLineTee.png
 
-    .. displayName::
+    .. meta::
         Coupled Line Tee
 
     Default Options:

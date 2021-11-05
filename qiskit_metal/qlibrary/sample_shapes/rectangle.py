@@ -27,7 +27,7 @@ class Rectangle(QComponent):
     .. image::
         Rectangle.png
 
-    .. displayName::
+    .. meta::
         Rectangle
 
     Default Options:

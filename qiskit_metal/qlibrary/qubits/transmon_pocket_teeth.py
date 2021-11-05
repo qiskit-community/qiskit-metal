@@ -92,7 +92,7 @@ class TransmonPocketTeeth(BaseQubit):
     .. image::
         transmon_pocket_teeth.png
 
-    .. displayName::
+    .. meta::
         Transmon Pocket Teeth
 
     """

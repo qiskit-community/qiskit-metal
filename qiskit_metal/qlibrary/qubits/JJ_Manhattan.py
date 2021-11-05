@@ -35,7 +35,7 @@ class jj_manhattan(QComponent):
     .. image::
         JJ_Manhattan.png
 
-    .. displayName::
+    .. meta::
         Josephson Junction Manhattan
 
     Default Options:

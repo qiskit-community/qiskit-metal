@@ -25,7 +25,7 @@ class MyQComponent(QComponent):
     This class is a template
 	Use this class as a blueprint to put together for your components - have fun
     
-    .. displayName::
+    .. meta::
         My QComponent
 
     """

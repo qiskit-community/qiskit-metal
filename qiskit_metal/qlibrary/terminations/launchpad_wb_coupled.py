@@ -30,7 +30,7 @@ class LaunchpadWirebondCoupled(QComponent):
 
     Inherits 'QComponent' class.
 
-    .. displayName::
+    .. meta::
         Launchpad Wirebond Coupled
 
     Creates a 50 ohm launch pad with a ground pocket cutout.

@@ -59,7 +59,7 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
     .. image::
         transmon_pocket_cl.png
 
-    .. displayName::
+    .. meta::
         Transmon Pocket Connector Lines
 
     BaseQubit Default Options:

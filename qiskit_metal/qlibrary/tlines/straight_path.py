@@ -20,7 +20,7 @@ class RouteStraight(QRoute):
     """
     Draw a straight Route connecting two pins.
     
-    .. displayName::
+    .. meta::
         Route Straight
     """
 

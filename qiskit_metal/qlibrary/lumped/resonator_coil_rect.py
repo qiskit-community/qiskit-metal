@@ -40,7 +40,7 @@ class ResonatorCoilRect(QComponent):
     .. image::
         ResonatorCoilRect.png
 
-    .. displayName::
+    .. meta::
         Resonator Coil Rectangle
 
     Default Options:

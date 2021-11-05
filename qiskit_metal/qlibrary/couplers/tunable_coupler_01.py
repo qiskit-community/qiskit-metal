@@ -42,7 +42,7 @@ class TunableCoupler01(BaseQubit):
     .. image::
         TunableCoupler01.png
 
-    .. displayName::
+    .. meta::
         Tunable Coupler 01
 
     Options:

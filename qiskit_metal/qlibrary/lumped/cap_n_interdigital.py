@@ -48,7 +48,7 @@ class CapNInterdigital(QComponent):
     .. image::
         CapNInterdigital.png
     
-    .. displayName::
+    .. meta::
         Cap N Interdigital
     
     Options:

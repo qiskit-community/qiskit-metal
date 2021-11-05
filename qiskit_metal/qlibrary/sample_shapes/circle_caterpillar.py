@@ -27,7 +27,7 @@ class CircleCaterpillar(QComponent):
     .. image::
         CircleCaterpillar.png
 
-    .. displayName::
+    .. meta::
         Circle Caterpillar
 
     Default Options:

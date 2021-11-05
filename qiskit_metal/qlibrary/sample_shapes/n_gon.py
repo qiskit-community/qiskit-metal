@@ -25,7 +25,7 @@ class NGon(QComponent):
     .. image::
         NGon.png
 
-    .. displayName::
+    .. meta::
         N-Gon Polygon
 
     Default Options:

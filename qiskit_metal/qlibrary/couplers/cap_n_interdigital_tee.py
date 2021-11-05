@@ -44,7 +44,7 @@ class CapNInterdigitalTee(QComponent):
     .. image::
         CapNInterdigitalTee.png
 
-    .. displayName::
+    .. meta::
         Cap N Interdigital Tee
 
     Options:

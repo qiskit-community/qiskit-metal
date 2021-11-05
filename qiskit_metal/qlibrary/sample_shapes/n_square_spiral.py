@@ -37,7 +37,7 @@ class NSquareSpiral(QComponent):
     .. image::
         NSquareSpiral.png
 
-    .. displayName::
+    .. meta::
         N Square Spiral
 
     Default Options:

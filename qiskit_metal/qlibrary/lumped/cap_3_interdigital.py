@@ -53,7 +53,7 @@ class Cap3Interdigital(QComponent):
     .. image::
         Cap3Interdigital.png
 
-    .. displayName::
+    .. meta::
         Cap 3 Interdigital
 
     Default Options:

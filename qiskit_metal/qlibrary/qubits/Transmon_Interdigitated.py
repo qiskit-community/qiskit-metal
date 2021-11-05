@@ -36,7 +36,7 @@ class TransmonInterdigitated(QComponent):
     .. image::
         Transmon_Interdigitated.png
 
-    .. displayName::
+    .. meta::
         Transmon Interdigitated
 
     Default Options:

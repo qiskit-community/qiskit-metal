@@ -37,7 +37,7 @@ class jj_dolan(QComponent):
     .. image::
         JJ_Dolan.png
 
-    .. displayName::
+    .. meta::
         Josephson Junction Dolan
 
     Default Options:

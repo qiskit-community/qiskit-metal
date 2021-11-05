@@ -47,7 +47,7 @@ class SQUID_LOOP(QComponent):
     .. image::
         SQUID_LOOP.png
 
-    .. displayName::
+    .. meta::
         Squid Loop
 
     Default Options:
