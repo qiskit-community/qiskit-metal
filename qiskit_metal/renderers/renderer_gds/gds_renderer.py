@@ -2001,7 +2001,12 @@ class QGDSRenderer(QRenderer):
         hold_name = chip_only_top_layer.name
         lib.remove(hold_name)
         lib.rename_cell(diff_pad_cell_layer, hold_name)
-        chip_only_top.add(gdspy.CellReference(diff_pad_cell_layer))
+
+        #Add to hierarchy only if cell is not empty.
+        if diff_pad_cell_layer.get_bounding_box() is not None:
+            chip_only_top.add(gdspy.CellReference(diff_pad_cell_layer))
+        else:
+            lib.remove(diff_pad_cell_layer)
         # remove the sub libs before removing hold_all_pads_cells
         for _, value in enumerate(hold_all_pads_cell.references):
             lib.remove(value.ref_cell.name)
