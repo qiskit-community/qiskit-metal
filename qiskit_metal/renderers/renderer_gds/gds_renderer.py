@@ -2087,8 +2087,12 @@ class QGDSRenderer(QRenderer):
             temp_cell.add(pad_right)
 
         # "temp_cell" is kept in the lib.
-        chip_only_top_layer.add(
-            gdspy.CellReference(temp_cell, origin=center, rotation=rotation))
+        if temp_cell.get_bounding_box() is not None:
+            chip_only_top_layer.add(
+                gdspy.CellReference(temp_cell, origin=center,
+                                    rotation=rotation))
+        else:
+            lib.remove(temp_cell)
 
     def export_to_gds(self,
                       file_name: str,
