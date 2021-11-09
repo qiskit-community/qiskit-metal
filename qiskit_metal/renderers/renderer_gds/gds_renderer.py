@@ -93,6 +93,7 @@ class QGDSRenderer(QRenderer):
         * path_filename: '../resources/Fake_Junctions.GDS'
         * junction_pad_overlap: '5um'
         * max_points: '199'
+        * fabricate: 'False'
         * cheese: Dict
             * datatype: '100'
             * shape: '0'
@@ -147,6 +148,15 @@ class QGDSRenderer(QRenderer):
         # for that layer.  If user wants to export to a negative_mask for all
         # layers, every layer_number MUST be in list.
         negative_mask=Dict(main=[]),
+
+        # For the gds file, Show/Don't Show intermediate steps?
+        # If false, show the intermediate steps in the exported gds file.
+        # If true, show the geometries on either neg_datatype_fabricate or pos_datatype_fabricate.
+        #   Example:  # denotes the layer number
+        #           delete for negative mask: TOP_main_#_NoCheese_99, TOP_main_#_one_hole
+        #           delete for positive mask: TOP_main_#_NoCheese_99, TOP_main_#_one_hole,
+        #                                       ground_main_#
+        fabricate='False',
 
         # corners: ('natural', 'miter', 'bevel', 'round', 'smooth',
         # 'circular bend', callable, list)
@@ -1263,6 +1273,7 @@ class QGDSRenderer(QRenderer):
             self.parse_value(self.options.cheese.edge_nocheese))
         precision = float(self.parse_value(self.options.precision))
         is_neg_mask = self._is_negative_mask(chip_name, chip_layer)
+        fab = is_true(self.options.fabricate)
 
         if cheese_shape == 0:
             cheese_x = float(self.parse_value(self.options.cheese.cheese_0_x))
@@ -1280,6 +1291,7 @@ class QGDSRenderer(QRenderer):
                                 is_neg_mask,
                                 cheese_sub_layer,
                                 nocheese_sub_layer,
+                                fab,
                                 self.logger,
                                 max_points,
                                 precision,
@@ -1304,6 +1316,7 @@ class QGDSRenderer(QRenderer):
                                 is_neg_mask,
                                 cheese_sub_layer,
                                 nocheese_sub_layer,
+                                fab,
                                 self.logger,
                                 max_points,
                                 precision,
@@ -1326,7 +1339,7 @@ class QGDSRenderer(QRenderer):
 
         If user selects to view the no-cheese, the method placed the
         cell with no-cheese at
-        f'NoCheese_{chip_name}_{chip_layer}_{sub_layer}'.  The sub_layer
+        f'TOP_{chip_name}_{chip_layer}_NoCheese_{sub_layer}'.  The sub_layer
         is data_type and denoted in the options.
         """
 
@@ -1336,6 +1349,8 @@ class QGDSRenderer(QRenderer):
             self.options.no_cheese.buffer))
         sub_layer = int(self.parse_value(self.options.no_cheese.datatype))
         lib = self.lib
+
+        fab = is_true(self.options.fabricate)
 
         for chip_name in self.chip_info:
             layers_in_chip = self.design.qgeometry.get_all_unique_layers(
@@ -1365,8 +1380,10 @@ class QGDSRenderer(QRenderer):
                             self.chip_info[chip_name][chip_layer][
                                 'no_cheese_gds'] = all_nocheese_gds
 
-                            if self._check_no_cheese(chip_name,
-                                                     chip_layer) == 1:
+                            # If fabricate.fab is true, then
+                            # do not put nocheese in gds file.
+                            if self._check_no_cheese(
+                                    chip_name, chip_layer) == 1 and not fab:
                                 no_cheese_subtract_cell_name = (
                                     f'TOP_{chip_name}_{chip_layer}'
                                     f'_NoCheese_{sub_layer}')
@@ -1668,7 +1685,11 @@ class QGDSRenderer(QRenderer):
                 self.design.logger.warning(
                     'There is no table named diff_geometry to write.')
             else:
-                ground_cell.add(diff_geometry)
+                ground_chip_layer_name = f'ground_{chip_name}_{chip_layer}'
+                ground_chip_layer = lib.new_cell(ground_chip_layer_name)
+                #diff_geometry is a polygon set. So put into it's own cell.
+                ground_chip_layer.add(diff_geometry)
+                ground_cell.add(gdspy.CellReference(ground_chip_layer))
 
         self._handle_q_subtract_false(chip_name, chip_layer, ground_cell)
         QGDSRenderer._add_groundcell_to_chip_only_top(lib, chip_only_top,
@@ -1980,7 +2001,12 @@ class QGDSRenderer(QRenderer):
         hold_name = chip_only_top_layer.name
         lib.remove(hold_name)
         lib.rename_cell(diff_pad_cell_layer, hold_name)
-        chip_only_top.add(gdspy.CellReference(diff_pad_cell_layer))
+
+        #Add to hierarchy only if cell is not empty.
+        if diff_pad_cell_layer.get_bounding_box() is not None:
+            chip_only_top.add(gdspy.CellReference(diff_pad_cell_layer))
+        else:
+            lib.remove(diff_pad_cell_layer)
         # remove the sub libs before removing hold_all_pads_cells
         for _, value in enumerate(hold_all_pads_cell.references):
             lib.remove(value.ref_cell.name)
@@ -2061,8 +2087,12 @@ class QGDSRenderer(QRenderer):
             temp_cell.add(pad_right)
 
         # "temp_cell" is kept in the lib.
-        chip_only_top_layer.add(
-            gdspy.CellReference(temp_cell, origin=center, rotation=rotation))
+        if temp_cell.get_bounding_box() is not None:
+            chip_only_top_layer.add(
+                gdspy.CellReference(temp_cell, origin=center,
+                                    rotation=rotation))
+        else:
+            lib.remove(temp_cell)
 
     def export_to_gds(self,
                       file_name: str,
