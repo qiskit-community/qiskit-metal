@@ -12,6 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
+from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
 from ..core import QAnalysis
 from ..simulation import EigenmodeSim
 

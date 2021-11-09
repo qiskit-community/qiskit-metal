@@ -15,6 +15,8 @@
 from typing import Union, Tuple
 import pandas as pd
 
+from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
+
 from ... import Dict
 from ..core import QSimulation
 
