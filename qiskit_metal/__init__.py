@@ -140,7 +140,7 @@ from .toolbox_metal.parsing import is_true
 # from . import qlibrary
 # from . import designs
 # from . import draw
-from . import renderers
+# from . import renderers
 # from . import qgeometries
 from . import analyses
 from . import toolbox_python
@@ -151,13 +151,13 @@ from . import toolbox_metal
 
 # Utility modules
 # For plotting in matplotlib;  May be superseded by a renderer?
-from .renderers.renderer_mpl import mpl_toolbox as plt
+# from .renderers.renderer_mpl import mpl_toolbox as plt
 
 # Utility functions
 # from .toolbox_python.display import Headings
 
 # Import default renderers
-from .renderers import setup_renderers
+# from .renderers import setup_renderers
 
 # Common-use
 # from .qlibrary import QComponent
