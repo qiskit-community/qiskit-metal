@@ -19,7 +19,6 @@ import matplotlib.pyplot as plt
 from pyEPR.reports import (plot_convergence_f_vspass, plot_convergence_max_df,
                            plot_convergence_maxdf_vs_sol,
                            plot_convergence_solved_elem)
-from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
 
 from ... import Dict
 from ..core import QSimulation
