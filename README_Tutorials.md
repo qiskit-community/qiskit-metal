@@ -28,6 +28,6 @@ Join the [Qiskit](https://ibm.co/joinqiskitslack) `#metal` slack channel to requ
 | Sept 23 | Tutorial | [Making a QComponent from scratch](https://youtu.be/5iEOJDMWXDE) |
 | Oct 7 | Tutorial | [New LOM Analysis Methodology - Part 1](https://youtu.be/S8Wx2Lo2CxQ) |
 | Oct 21 | Tutorial | [New LOM Analysis Methodology - Part 2](https://youtu.be/b2azGJ-RCjk) |
-| Nov 4 | Tutorial | New LOM Analysis Methodology - Part 3 |
+| Nov 4 | Tutorial | [New LOM Analysis Methodology - Part 3](https://youtu.be/kWFYYUa0V3k) |
 | Nov 18 | Forum | Q&A - The Qiskit Metal team will take any question |
 | Dec 2 &rightarrow; ... | TBD | Topics to schedule:<ul><li>Analysis deep dives (as needed)</li><li>QRenderers: How to use, modify and add new renderers</li><li>New QAnalysis/QRenderer structure and usage</li><li>...</li></ul> |
