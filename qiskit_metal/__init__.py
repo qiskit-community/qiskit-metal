@@ -141,7 +141,7 @@ from .toolbox_metal.parsing import is_true
 # from . import designs
 # from . import draw
 from . import renderers
-from . import qgeometries
+# from . import qgeometries
 from . import analyses
 from . import toolbox_python
 from . import toolbox_metal
