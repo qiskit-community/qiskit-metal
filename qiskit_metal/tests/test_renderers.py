@@ -228,7 +228,7 @@ class TestRenderers(unittest.TestCase):
         renderer = QGDSRenderer(design)
         options = renderer.default_options
 
-        self.assertEqual(len(options), 16)
+        self.assertEqual(len(options), 17)
         self.assertEqual(options['short_segments_to_not_fillet'], 'True')
         self.assertEqual(options['check_short_segments_by_scaling_fillet'],
                          '2.0')
@@ -245,6 +245,8 @@ class TestRenderers(unittest.TestCase):
         self.assertEqual(options['max_points'], '199')
         self.assertEqual(options['bounding_box_scale_x'], '1.2')
         self.assertEqual(options['bounding_box_scale_y'], '1.2')
+
+        self.assertEqual(options['fabricate'], 'False')
 
         self.assertEqual(len(options['cheese']), 9)
         self.assertEqual(len(options['no_cheese']), 5)
