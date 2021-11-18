@@ -1,3 +1,20 @@
+# -*- coding: utf-8 -*-
+
+# This code is part of Qiskit.
+#
+# (C) Copyright IBM 2017, 2021.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+"""
+This file contains functions related to extracting and manipualting Hamiltonians
+and their energy levels.
+"""
 from typing import Dict as Dict_
 from typing import List
 
@@ -7,9 +24,18 @@ from qutip import Qobj
 
 
 def basis_state_on(mode_size: List[int], excitations: Dict_[int, int]):
-    ''' excitations = {mode number: # of photons}
-        give me the value excitations[i] or 0 if index i not in excitations;
-        i.e., by default ground state.
+    ''' Construct a qutip Qobj. Taken from pyEPR
+    https://github.com/zlatko-minev/pyEPR/blob/master/pyEPR/calcs/back_box_numeric.py
+
+    Args:
+        mode_size (list): list of integers specifying number of fock states
+                           for each mode, respectively
+        excitations (dict): {mode index: # of photons}
+            give the value excitations[i] or 0 if index i not in excitations;
+            i.e., by default ground state.
+
+    Returns:
+        qutip Qobj: qutip tensor product representing the state
     '''
     return qutip.tensor(*[
         qutip.basis(mode_size[i], excitations.get(i, 0))
@@ -17,7 +43,30 @@ def basis_state_on(mode_size: List[int], excitations: Dict_[int, int]):
     ])
 
 
-def extract_energies(esys_array, mode_size, zero_evals=True, chi_prime=False):
+def extract_energies(esys_array: np.ndarray,
+                     mode_size: List[int],
+                     zero_evals: bool = True,
+                     chi_prime: bool = False):
+    """
+    Returns the frequencies, anharmonicities, and dispersive shifts of the modes.
+
+    Args:
+        esys_array (np.ndarray): numpy array of shape (2, ). It's an array of objects.
+            The first element of the array is an array of eigenvalues of the diagonalized
+            hamiltonian. The second element of the array is an QutipEigenStates object,
+            which is a list of the corresponding eigenstates of the diagonalized hamiltonian
+        mode_size (List[int]): list of integers specifying number of fock states
+            for each mode, respectively
+        zero_evals (bool, optional): If true, the "ground state" eigenvalue is substracted
+            all eigenvalues. Defaults to True.
+        chi_prime (bool, optional): Defaults to False.
+
+    Returns:
+        np.ndarray, np.ndarray: a tuple of arrays. The first array is the frequencies of
+            the modes. The second array is a matrix where the diagonal entries are the
+            anharmonicities of the modes and the off-diagonal entries are the dispersive
+            shifts, i.e., the chi's between the modes
+    """
 
     print("Processing eigensystem...", end='')
     evals, evecs = esys_array

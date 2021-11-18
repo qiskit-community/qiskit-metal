@@ -59,7 +59,7 @@ class IncorrectQtException(Exception):
     """
 
     def __init__(self, message: str) -> None:
-        prefix = "You should be using be PySide2. \n"
+        prefix = "You should be using PySide2. \n"
         super().__init__(prefix + message)
 
 

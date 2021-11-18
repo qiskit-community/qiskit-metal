@@ -318,7 +318,14 @@ def _maybe_remove_grd_node_then_cache(f):
 
 class CircuitGraph:
     """
-    class representing the lumped circuit
+    class implementing the lumped model circuit analysis.
+    Notations closely follow that of https://arxiv.org/pdf/2103.10344.pdf
+
+    User shouldn't have to instanciate this class themself as it is
+    created automatically by the CompositeSystem class
+
+    The object corresponds to the entire composite system, incorporating inputs
+    of all the cells provided
     """
 
     units = {'capacitance': 'fF', 'inductance': 'nH'}
@@ -332,6 +339,35 @@ class CircuitGraph:
                  junctions: Mapping[Tuple[str, str], str],
                  cj_dicts: List[Dict[Tuple, float]] = None,
                  nodes_force_keep: Sequence = None):
+        """Initialize the class with parameters specifying the circuit
+
+        Args:
+            nodes (Sequence): a list of the nodes
+            grd_node (str): name of the ground node
+            cmats (List[pd.DataFrame]): list of Maxwell capacitance matrices in pandas
+                dataframes, one for each cell provided
+            ind_lists (List[Dict[Tuple, float]]): list of dicts where each dict specifies
+                the inductances in each cell. For the dict, the keys are tuples of specifying
+                the two nodes between which the inductors lie.
+                For example, [{('n1', 'n2'): 10}, {('n5', 'n7'): 13}] specifies that there
+                is an inductor of 10 nH between node 'n1' and 'n2' for one cell and an
+                inductor of 13 nH between node 'n5' and 'n7' for another cell
+            junctions (Mapping[Tuple[str, str], str]): dict mapping original circuit
+                nodes to custom-named junction nodes. This is the parameter informing
+                the LOM analysis between which nodes the Josephson junctions are located.
+                For example, {('n1', 'n2'): 'j1'} specifies that there is a junction
+                between nodes 'n1' and 'n2' and named as 'j1'
+            cj_dicts (List[Dict[Tuple, float]], optional): if provided, specifies
+                the junction capacitances in each cell. Structure is the same as ind_lists.
+                For the dict, the keys are tuples of specifying the two nodes between which
+                the junctions lie. For example, [{('n1', 'n2'): 2}, None] specifies that there
+                is an junction capacitance of 2 fF between node 'n1' and 'n2' for the first
+                provided cell and None for the second provided cell. Defaults to None.
+            nodes_force_keep (Sequence, optional): a list of nodes that will not be eliminated
+                during L and C matrices reduction. Use this parameter to specify non-dynamic
+                nodes (nodes that are connected capacitors only or inductors only) that should
+                be preserved. If not specified (i.e., None), all non-dynamic nodes are eliminated
+        """
 
         self.nodes = list(nodes)
         self.idx = pd.Index(self.nodes)
@@ -622,6 +658,24 @@ class Subsystem:
                  sys_type: str,
                  nodes: List[str],
                  q_opts: dict = None):
+        """Initialize the Subsystem object
+
+        Args:
+            name (str): name of the subsystem
+            sys_type (str): type of the subsystem. Type can be one of the types implemented
+                by one of the concrete QuantumBuilders (call QuantumSystemRegistry.registry()
+                to see all the choices), which can also be custom-made by user
+            nodes (List[str]): list of nodes the subsystem corresponds to. For example, for
+                a transmon subsystem, this would just be a list of a single node which is the
+                user-defined junction node in the Cell object
+            q_opts (dict, optional): options relevant to the type of quantum subsystem. The
+                Subsystem object builds the quantum subsystem using quantumfy() which calls
+                make_quantum() of the corresponding QuantumBuilder. q_opts provides
+                parameters needed by make_quantum(). In the case of qubit subsystems, make_quantum()
+                takes advantage of the scQbuits package (https://scqubits.readthedocs.io).
+                Consequently, the default options correspond to the default options of the qubit
+                classes in scQubits. Defaults to None.
+        """
         self.name = name
         self.sys_type = sys_type
         self.nodes = nodes
@@ -714,6 +768,23 @@ def set_builder_options(func):
 
 
 class TransmonBuilder(QuantumBuilder):
+    """
+    Concrete builder class for a type of quantum subsystem
+    Each subsystem of a composite system calls make_quantum() method of this class
+    to map LOM analysis results, the reduced L and C matrix elements to hamiltonian
+    parameters, such as Ej, Ec and etc
+
+    To create your own custom quantum builder, follow the patterns of the existing
+    ones, such this one, or the other ones implemented in this library
+
+        system_type (str): name of the quantum subsystem
+        default_opts (dict): default options relevant to the type of quantum
+            subsystem. Provide any default values for the paremeters that
+            make_quantum() needs. In the case of qubit subsystems, make_quantum()
+            takes advantage of the scQbuits package (https://scqubits.readthedocs.io).
+            Consequently, the default options correspond to the default options of
+            the qubit classes in scQubits
+    """
 
     system_type = 'TRANSMON'
     default_opts = {'ng': 0.001, 'ncut': 22, 'truncated_dim': 10}
@@ -748,6 +819,23 @@ class TransmonBuilder(QuantumBuilder):
 
 
 class FluxoniumBuilder(QuantumBuilder):
+    """
+    Concrete builder class for a type of quantum subsystem
+    Each subsystem of a composite system calls make_quantum() method of this class
+    to map LOM analysis results, the reduced L and C matrix elements to hamiltonian
+    parameters, such as Ej, Ec and etc
+
+    To create your own custom quantum builder, follow the patterns of the existing
+    ones, such this one, or the other ones implemented in this library
+
+        system_type (str): name of the quantum subsystem
+        default_opts (dict): default options relevant to the type of quantum
+            subsystem. Provide any default values for the paremeters that
+            make_quantum() needs. In the case of qubit subsystems, make_quantum()
+            takes advantage of the scQbuits package (https://scqubits.readthedocs.io).
+            Consequently, the default options correspond to the default options of
+            the qubit classes in scQubits
+    """
 
     system_type = 'FLUXONIUM'
     default_opts = {'cutoff': 110, 'truncated_dim': 10}
@@ -783,6 +871,23 @@ class FluxoniumBuilder(QuantumBuilder):
 
 
 class TLResonatorBuilder(QuantumBuilder):
+    """
+    Concrete builder class for a type of quantum subsystem
+    Each subsystem of a composite system calls make_quantum() method of this class
+    to map LOM analysis results, the reduced L and C matrix elements to hamiltonian
+    parameters, such as Ej, Ec and etc
+
+    To create your own custom quantum builder, follow the patterns of the existing
+    ones, such this one, or the other ones implemented in this library
+
+        system_type (str): name of the quantum subsystem
+        default_opts (dict): default options relevant to the type of quantum
+            subsystem. Provide any default values for the paremeters that
+            make_quantum() needs. In the case of qubit subsystems, make_quantum()
+            takes advantage of the scQbuits package (https://scqubits.readthedocs.io).
+            Consequently, the default options correspond to the default options of
+            the qubit classes in scQubits
+    """
 
     system_type = 'TL_RESONATOR'
     default_opts = {
@@ -837,6 +942,23 @@ class TLResonatorBuilder(QuantumBuilder):
 
 
 class LumpedResonatorBuilder(QuantumBuilder):
+    """
+    Concrete builder class for a type of quantum subsystem
+    Each subsystem of a composite system calls make_quantum() method of this class
+    to map LOM analysis results, the reduced L and C matrix elements to hamiltonian
+    parameters, such as Ej, Ec and etc
+
+    To create your own custom quantum builder, follow the patterns of the existing
+    ones, such this one, or the other ones implemented in this library
+
+        system_type (str): name of the quantum subsystem
+        default_opts (dict): default options relevant to the type of quantum
+            subsystem. Provide any default values for the paremeters that
+            make_quantum() needs. In the case of qubit subsystems, make_quantum()
+            takes advantage of the scQbuits package (https://scqubits.readthedocs.io).
+            Consequently, the default options correspond to the default options of
+            the qubit classes in scQubits
+    """
 
     system_type = 'LUMPED_RESONATOR'
     default_opts = {'truncated_dim': 3}
@@ -881,12 +1003,39 @@ class LumpedResonatorBuilder(QuantumBuilder):
 
 
 class Cell:
-    """A physical subdivision of the device, a sub-network of capaciators, inductoros and other
-    linear or non-linear circuit elements, whose values can be independently simulated/defined with
-    respect to other cells.
+    """A physical subdivision of the device (i.e., the composite system), a sub-graph
+    of capaciators, inductoros and other linear or non-linear circuit elements. The
+    cell can be independently simulated to extract its electromagnetic parameters, which
+    the the user provides as inputs to this object
     """
 
     def __init__(self, options: Dict):
+        """Initialize the cell object
+
+        Args:
+            options (Dict): options can contain the following keys
+                node_rename (dict): a dict mapping from original node names to
+                    new node names, {old_name: new_name}
+                cap_mat (pd.DataFrame): Maxwell capacitance of the cell in
+                    pandas dataframe
+                ind_dict (dict): the keys are tuples of specifying the two nodes
+                    between which the inductors lie. For example,
+                    {('n1', 'n2'): 10} specifies that there is an inductor of 10
+                    nH between node 'n1' and 'n2' for one cell and an inductor of
+                    13 nH between node 'n5' and 'n7' for another cell
+                jj_dict (dict): dict mapping original circuit nodes to custom-named
+                    junction nodes. This is the parameter informing the LOM analysis between
+                    which nodes the Josephson junctions are located. For example,
+                    {('n1', 'n2'): 'j1'} specifies that there is a junction between
+                    nodes 'n1' and 'n2' and named as 'j1' cf_dict (dict):
+                cj_dict (dict): if provided, specifies the junction capacitances in each
+                    cell. Structure is the same as ind_dict. For the dict, the keys are
+                    tuples of specifying the two nodes between which the junctions lie.
+                    For example, {('n1', 'n2'): 2} specifies that there is an
+                    junction capacitance of 2 fF between node 'n1' and 'n2' for the first
+                    provided cell and None for the second provided cell.
+
+        """
         self._node_rename = options.get('node_rename', {})
         self.cap_mat = _rename_nodes_in_df(self._node_rename,
                                            options['cap_mat'])
@@ -919,6 +1068,18 @@ class CompositeSystem:
                  cells: List[Cell],
                  grd_node: str,
                  nodes_force_keep: Sequence = None):
+        """Initialize the CompositeSystem object
+
+        Args:
+            subsystems (List[Subsystem]): list of Subsystem objects
+            cells (List[Cell]): list of Cell objects
+            grd_node (str): name of the ground node
+            nodes_force_keep (Sequence, optional): a list of nodes that will not be eliminated
+                during L and C matrices reduction. Use this parameter to specify non-dynamic
+                nodes (nodes that are connected capacitors only or inductors only) that should
+                be preserved. If not specified (i.e., None), all non-dynamic nodes are eliminated
+
+        """
         self._subsystems = subsystems
         self.num_subsystems = len(subsystems)
         self.names = [sub.name for sub in self._subsystems]
@@ -972,9 +1133,6 @@ class CompositeSystem:
     def create_hilbertspace(self) -> scq.HilbertSpace:
         """ create the composite hilbertspace including all the subsystems. Interaction NOT included
 
-        Raises:
-            NotImplementedError: [description]
-
         Returns:
             scq.HilbertSpace: [description]
         """
@@ -1024,12 +1182,14 @@ class CompositeSystem:
             raise NotImplementedError
 
     def add_interaction(self,
-                        gs: Any = None,
+                        gs: np.ndarray = None,
                         gscale: float = 1.) -> scq.HilbertSpace:
         """ add interaction terms to the composite hilbertspace
 
         Args:
-            gs (Any, optional): [description]. Defaults to None.
+            gs (np.ndarray): coupling strength matrix. If not provided,
+                it will be calculated by compute_gs()
+            gscale (float): coupling strength scale
 
         Returns:
             scq.HilbertSpace: [description]
