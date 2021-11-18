@@ -13,56 +13,70 @@ Near-term development roadmap:
 
    We need input from you on what to prioritize and how to best shape so that Metal is useful to the wide community and hopefuly makes life easier for you too.
    Let us know through github issues, slack channel messages, or by telling us in one of the tutorials. 
+   
 
 
 In the near future we aim to (see near-term roadmap image):
+**Legend:**
+   ✓ Completed
+   ✰ Desired
+   ✰✰✰ Highly desired 
 
-* Add more quantum components
+* **More quantum components**
    * ✓ Tunable couplers (community-driven)
    * ✓ Flux & control lines & terminations 
    * ✓ Routing manual-driven at 45 degrees, etc. 
    * ✓ Wirbonds in rendering
-   * Cross-overs
+   * ✓ Star qubit
+   * ✓ Fluxonium (community-driven)
    * Add JJ layout component
-      * Dolan single JJ 
-      * SQUID 
+      * ✓ Dolan single JJ 
+      * ✓ SQUID 
       * Array 
-   * Fluxonium (community-driven)
+   * ✰✰ Cross-overs 
    * Novel qubits (community-driven) 
    * . . .
-* Add & encahnce quantizaiton analysis & ease of use
+   
+* **Add & encahnce quantizaiton analysis & ease of use**
+   * ✓ New lumped analysis code
+      * More general couplers
+      * ✰✰✰ WebApp
    * Sweeping parameters, optimetrics 
       * ✓ for lumped analysis
       * ✓ for EPR analysis 
       * for Z, S, Y analysis 
-   * Impedence quantization
+   * ✰✰ Impedence quantization
       * Add fitting of Z curves & extraction of ZPF
+   * ✰✰✰ pyEPR General potential - e.g. fluxonium
    * Improve ease of use & integration of pyEPR analysis 
       * and dissipative EPR analysis 
-   * Updated lumped analysis code to more general circuits and couplers
    * Better analysis interfaces and abstractions 
    * . . .
-* Code & ease of use 
+   
+* **Hamiltonian analysis**
+   * ✓ Pulse & gate analysis & time dynamics simulations 101
+      * Advanced 
+   * ✓ Integration with quantum analysis packages: qiskit pulse, qutip (interested in listing your package here? Let us know :) ) 101
+   * ✓ Integration with scQubits 101
+  
+* **Code & ease of use**
    * Refactor and improve abstractions, interfaces, and data handling
       * Improved modularity of analysis 
-      * 
    * Develop ease of use and one-click solutions
    * More features in the GUI
       * ✓ Create components from the GUI library  
-      * Create 
-      * GUI to script 
+      * ✓ Visual library with images
+      * ✓ GUI to script 
       * Including customization of coloring layers, plotting options, more interactive component editing
-* Features you request! So, let us know in the Slack channel :)
+   * WebApp
+
+* **Features you request!** 
+   So, let us know in the Slack channel :)
 
 
-Longer term:
-
-* Hamiltonian analysis 
-   * Pulse & gate analysis & time dynamics simulations 
-   * Integration with quantum analysis packages: qiskit pulse, qutip (interested in listing your package here? Let us know :) )
-   * Integration with scQubits 
-* Import from GDS
-* Features you request! So, let us know in the Slack channel :)
+* **Longer term:**
+   * Import from GDS ✰
+   * Features you request! So, let us know in the Slack channel :)
 
 
 *********************
