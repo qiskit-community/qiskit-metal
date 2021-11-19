@@ -30,6 +30,9 @@ class LaunchpadWirebond(QComponent):
 
     Inherits 'QComponent' class.
 
+    .. image::
+        LaunchpadWirebond.png
+
     .. meta::
         Launchpad Wirebond
 
