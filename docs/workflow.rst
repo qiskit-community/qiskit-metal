@@ -71,12 +71,12 @@ In the near future we aim to (see near-term roadmap image):
    * WebApp
 
 * **Features you request!** 
-   So, let us know in the Slack channel :)
+   So, let us know in the Slack channel (#metal):)
 
 
 * **Longer term:**
    * Import from GDS ✰
-   * Features you request! So, let us know in the Slack channel :)
+   * Features you request! So, let us know in the Slack channel (#metal) :)
 
 
 *********************
