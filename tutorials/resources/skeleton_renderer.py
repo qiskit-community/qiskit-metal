@@ -122,8 +122,8 @@ class QSkeletonRenderer(QRenderer):
         return True
 
     def render_design(self):
-        """Export the design to GDS."""
-        self.export_to_gds(file_name=self.design.name, highlight_qcomponents=[])
+        """Export the design to Skeleton."""
+        self.export_to_skeleton(file_name=self.design.name, highlight_qcomponents=[])
         pass
     
     def _can_write_to_path(self, file: str) -> int:
