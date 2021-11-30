@@ -632,6 +632,11 @@ class MetalGUI(QMainWindowBaseHandler):
 
         view.resizeColumnToContents(0)
 
+        libraryRootPath = Path(dock.library_model.rootPath()) / "qubits"
+        stringLibraryRootPath = str(libraryRootPath)
+        view.expand(dock.proxy_library_model.mapFromSource(
+            dock.library_model.index(stringLibraryRootPath)))
+
     ################################################
     # UI
     def toggle_docks(self, do_hide: bool = None):
