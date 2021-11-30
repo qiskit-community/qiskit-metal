@@ -110,6 +110,22 @@ class QSkeletonRenderer(QRenderer):
         self.chip_info = dict()
 
     # For a skeleton_renderer user, this is kept to examplify self.logger.warning.
+    
+    def _initiate_renderer(self):
+        """Not used by the gds renderer at this time. only returns True.
+        """
+        return True
+
+    def _close_renderer(self):
+        """Not used by the gds renderer at this time. only returns True.
+        """
+        return True
+
+    def render_design(self):
+        """Export the design to GDS."""
+        self.export_to_gds(file_name=self.design.name, highlight_qcomponents=[])
+        pass
+    
     def _can_write_to_path(self, file: str) -> int:
         """Check if can write file.
 
