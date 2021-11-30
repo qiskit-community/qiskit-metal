@@ -634,8 +634,9 @@ class MetalGUI(QMainWindowBaseHandler):
 
         libraryRootPath = Path(dock.library_model.rootPath()) / "qubits"
         stringLibraryRootPath = str(libraryRootPath)
-        view.expand(dock.proxy_library_model.mapFromSource(
-            dock.library_model.index(stringLibraryRootPath)))
+        view.expand(
+            dock.proxy_library_model.mapFromSource(
+                dock.library_model.index(stringLibraryRootPath)))
 
     ################################################
     # UI
