@@ -114,12 +114,12 @@ class QSkeletonRenderer(QRenderer):
     # For a skeleton_renderer user, this is kept to exemplify self.logger.warning.
 
     def _initiate_renderer(self):
-        """Not used by the gds renderer at this time. only returns True.
+        """Not used by the skeleton renderer at this time. only returns True.
         """
         return True
 
     def _close_renderer(self):
-        """Not used by the gds renderer at this time. only returns True.
+        """Not used by the skeleton renderer at this time. only returns True.
         """
         return True
 
