@@ -76,8 +76,9 @@ def extract_energies(esys_array: np.ndarray,
         evals -= evals[0]  # zero out
 
     # if use_1st_order:
-    # TOOD: Copy from pyEPR
     def closest_state_to(s: Qobj):
+        # find the eigenvector among evecs that is closest
+        # to s (largest inner product)
 
         def distance(s2: Qobj):
             return (s.dag() * s2[1]).norm()
