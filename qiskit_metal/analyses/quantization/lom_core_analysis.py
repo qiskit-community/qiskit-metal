@@ -47,6 +47,7 @@ from pyEPR.calcs.constants import e_el as ele, hbar
 from qiskit_metal.toolbox_python.utility_functions import get_all_args
 from qiskit_metal.analyses.em.cpw_calculations import guided_wavelength
 from qiskit_metal.analyses.hamiltonian.states_energies import extract_energies
+from .constants import (MHzRad, GHzRad, NANO, FEMTO, ONE_OVER_FEMTO)
 
 from qiskit_metal import logger
 
@@ -60,14 +61,6 @@ Operator = namedtuple('Operator', ['op', 'add_hc'])
 class CouplingType:
     CAPACITIVE = 'CAPACITIVE'
     INDUCTIVE = 'INDUCTIVE'
-
-
-MHzRad = 2 * np.pi * 1e6
-GHzRad = 2 * np.pi * 1e9
-
-NANO = 1e-9
-FEMTO = 1e-15
-ONE_OVER_FEMTO = 1e15
 
 
 def analyze_loaded_tl(fr, CL, vp, Z0, shorted=False):
