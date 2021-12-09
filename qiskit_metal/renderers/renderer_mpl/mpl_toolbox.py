@@ -402,34 +402,10 @@ def _axis_set_watermark_img(ax: plt.Axes, file: str, size: float = 0.25):
 def clear_axis(ax: plt.Axes):
     """Clear all plotted objects on an axis including lines, patches, tests, tables,
     artists, images, mouseovers, child axes, legends, collections, and containers.
-    See: https://github.com/matplotlib/matplotlib/blob/master/lib/matplotlib/axes/_base.py#L1040
+    See: https://matplotlib.org/devdocs/api/_as_gen/matplotlib.axes.Axes.clear.html
 
     Args:
         ax (plt.Axes): MPL axis to clear
     """
-    # ax.clear()
+    ax.clear()
     # pylint: disable=protected-access
-    ax.lines = []
-    ax.patches = []
-    ax.texts = []
-    ax.tables = []
-    ax.artists = []
-    ax.images = []
-    ax._mouseover_set = _OrderedSet()
-    ax.child_axes = []
-    ax._current_image = None  # strictly for pyplot via _sci, _gci
-    ax.legend_ = None
-    ax.collections = []  # collection.Collection instances
-    ax.containers = []
-
-    # reset the bounds for autoscale
-    ax.ignore_existing_data_limits = True
-    # Alternatives that fail:
-    # ax.relim()
-    #           At present, Collection instances are not supported.
-    #           However, this is how descartes plots!
-    # ax.dataLim.set_points(np.array([[-1, -1], [1, 1]]))
-
-    # for axis in [ax.xaxis, ax.yaxis]:
-    #    # Clear the callback registry for this axis, or it may "leak"
-    #    pass #self.callbacks = cbook.CallbackRegistry()
