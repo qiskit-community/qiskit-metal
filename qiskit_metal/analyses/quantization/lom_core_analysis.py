@@ -265,6 +265,8 @@ class LabeledNdarray(np.ndarray):
         return obj
 
     def to_dataframe(self):
+        """ output to pandas dataframe
+        """
         if len(self.shape) == 1 or self.shape[0] != self.shape[1]:
             raise ValueError(
                 'Only square matrices are labeled and can be exported to dataframe.'
