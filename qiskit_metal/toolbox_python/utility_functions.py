@@ -571,7 +571,15 @@ def check_all_required_args_provided(func: Callable,
     return missing_args
 
 
-def get_all_args(func: Callable):
+def get_all_args(func: Callable) -> List:
+    """get all the parameters of a function
+
+    Args:
+        func (Callable): function from which to get parameters
+
+    Returns:
+        List: list of parameters of the function
+    """
     args = []
     for param in inspect.signature(func).parameters.values():
         if param.name == 'self':
