@@ -330,7 +330,7 @@ def fit_transmission(freq,
         ax[2].set_xlabel("Re(S21)")
         ax[2].set_ylabel("Im(S21)")
         ax[2].set_box_aspect(1.)
-        fig.set_dpi(100)
+        fig.set_dpi(200)
         fig.tight_layout()
         #plt.savefig('test.png')
         #print('plotted')
@@ -348,7 +348,7 @@ def fit_transmission(freq,
         ([amplitude_complex], lorentz_fit_result[2:-1], [delay]))
 
     if full_output:
-        return fit_values, plots, lorentz_fit_cov, lorentz_fit_result
+        return fit_values, plots, lorentz_fit_result, lorentz_fit_cov
     else:
         return dict(amplitude_complex=amplitude_complex,
                     Qr=Qr,
