@@ -108,7 +108,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         cross_gap = p.cross_gap
 
         # Creates the cross and the etch equivalent.
-        cross_line = draw.shapely.ops.cascaded_union([
+        cross_line = draw.shapely.ops.unary_union([
             draw.LineString([(0, cross_length), (0, -cross_length)]),
             draw.LineString([(cross_length, 0), (-cross_length, 0)])
         ])
@@ -174,7 +174,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
                                      t_claw_height / 2 - c_w)
             claw_base = claw_base.difference(claw_subtract)
 
-            connector_arm = draw.shapely.ops.cascaded_union(
+            connector_arm = draw.shapely.ops.unary_union(
                 [claw_base, claw_cpw])
             connector_etcher = draw.buffer(connector_arm, c_g)
         else:

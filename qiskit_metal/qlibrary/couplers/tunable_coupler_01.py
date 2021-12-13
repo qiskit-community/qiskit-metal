@@ -112,8 +112,8 @@ class TunableCoupler01(BaseQubit):
                                          -((x_spot) * 1 / 5 - p.l_width / 2),
                                          p.a_height)
 
-        left_side = draw.shapely.ops.cascaded_union([btm, arm1, arm2, arm3])
-        cap_island = draw.shapely.ops.cascaded_union([
+        left_side = draw.shapely.ops.unary_union([btm, arm1, arm2, arm3])
+        cap_island = draw.shapely.ops.unary_union([
             left_side,
             draw.shapely.affinity.scale(left_side,
                                         xfact=-1,
@@ -154,7 +154,7 @@ class TunableCoupler01(BaseQubit):
             cpl_y - p.cp_arm_length,
             cpl_x + 1 / 5 * x_spot + p.cp_arm_width / 2, cpl_y)
 
-        con_body = draw.shapely.ops.cascaded_union(
+        con_body = draw.shapely.ops.unary_union(
             [con_pad, con_arm_l, con_arm_r])
 
         con_sub = con_body.buffer(p.cp_gap, cap_style=3, join_style=2)
