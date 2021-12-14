@@ -1,0 +1,22 @@
+Setup:LastAdaptive
+Problem Type:  C
+C Units:fF, G Units:mSie
+Reduce Matrix:  Original
+Frequency:  5GHz
+
+Capacitance Matrix
+	coupler_connector_pad_Q2	ground_main_plane	pad_bot_Q2	pad_top_Q2	readout_connector_pad_Q2	
+coupler_connector_pad_Q2	64.51526	-38.62522	-2.18260	-22.93340	-0.21522
+ground_main_plane	-38.62522	267.39714	-49.28298	-49.29706	-38.67319
+pad_bot_Q2	-2.18260	-49.28298	121.37641	-45.23961	-23.06437
+pad_top_Q2	-22.93340	-49.29706	-45.23961	121.23898	-2.17691
+readout_connector_pad_Q2	-0.21522	-38.67319	-23.06437	-2.17691	64.70083
+
+Conductance Matrix
+	coupler_connector_pad_Q2	ground_main_plane	pad_bot_Q2	pad_top_Q2	readout_connector_pad_Q2	
+coupler_connector_pad_Q2	 0.00000	 0.00000	 0.00000	 0.00000	 0.00000
+ground_main_plane	 0.00000	 0.00000	 0.00000	 0.00000	 0.00000
+pad_bot_Q2	 0.00000	 0.00000	 0.00000	 0.00000	 0.00000
+pad_top_Q2	 0.00000	 0.00000	 0.00000	 0.00000	 0.00000
+readout_connector_pad_Q2	 0.00000	 0.00000	 0.00000	 0.00000	 0.00000
+
