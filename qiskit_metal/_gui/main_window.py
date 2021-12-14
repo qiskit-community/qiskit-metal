@@ -601,7 +601,7 @@ class MetalGUI(QMainWindowBaseHandler):
         self.QLIBRARY_FOLDERNAME = qlibrary.__name__
 
         # create model for Qlibrary directory
-        dock.library_model = QFileSystemLibraryModel()
+        dock.library_model = QFileSystemLibraryModel(self.path_imgs)
 
         dock.library_model.setRootPath(self.QLIBRARY_ROOT)
 
@@ -631,6 +631,12 @@ class MetalGUI(QMainWindowBaseHandler):
         view.viewport().setMouseTracking(True)
 
         view.resizeColumnToContents(0)
+
+        libraryRootPath = Path(dock.library_model.rootPath()) / "qubits"
+        stringLibraryRootPath = str(libraryRootPath)
+        view.expand(
+            dock.proxy_library_model.mapFromSource(
+                dock.library_model.index(stringLibraryRootPath)))
 
     ################################################
     # UI

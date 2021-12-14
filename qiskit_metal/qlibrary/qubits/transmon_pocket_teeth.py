@@ -90,7 +90,11 @@ class TransmonPocketTeeth(BaseQubit):
                                             +1
 
     .. image::
-        Transmon_Pocket_Teeth.png
+        transmon_pocket_teeth.png
+
+    .. meta::
+        Transmon Pocket Teeth
+
     """
 
     #_img = 'transmon_pocket1.png'

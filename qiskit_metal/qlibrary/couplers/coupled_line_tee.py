@@ -39,6 +39,9 @@ class CoupledLineTee(QComponent):
     .. image::
         CoupledLineTee.png
 
+    .. meta::
+        Coupled Line Tee
+
     Default Options:
         * prime_width: '10um' -- The width of the trace of the two pin CPW transmission line
         * prime_gap: '6um' -- The dielectric gap of the two pin CPW transmission line
