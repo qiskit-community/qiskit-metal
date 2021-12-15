@@ -30,6 +30,9 @@ class RoutePathfinder(RouteAnchors):
     2. Checks if connect_simple is valid each time we pop from the heap. If so, use it, otherwise proceed with A*.
     3. Tweaks connect_simple to account for end anchor direction in determining which CPW (elbow or S-segment) to use.
 
+    .. meta::
+        Route Pathfinder
+
     RouteAnchors Default Options:
         * anchors: OrderedDict -- Intermediate anchors only; doesn't include endpoints
         * advanced: Dict

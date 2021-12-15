@@ -365,6 +365,36 @@ porting.
 
 
 
+Custom Names and Images for QComponents
+====================
+
+When adding new qcomponents, new images for these components go
+in the following directory::
+
+    qiskit-metal/qiskit_metal/_gui/_imgs/components
+
+In the qcomponent file itself, the following attribute somewhere in
+the comments will tell the application which image corresponds to
+this file::
+
+    .. image::
+        myqcomponent.png
+
+The meta attribute can used to add a custom display name to the file::
+
+    .. meta::
+        MyQComponent
+
+If you had a file with the previous two attributes, the user is telling
+the qiskit metal application that the image for the qcomponent is named
+``myqcomponent.png`` and is located in::
+
+   qiskit-metal/qiskit_metal/_gui/_imgs/components/myqcomponent.png
+
+and that they want the display name of this file to be ``MyQComponent``.
+
+
+
 *****************************
 Contributing to Documentation
 *****************************
