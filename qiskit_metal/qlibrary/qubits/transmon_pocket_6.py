@@ -99,7 +99,11 @@ class TransmonPocket6(BaseQubit):
                                             +1
 
     .. image::
-        TransmonPocket6.png
+        transmon_pocket_6.png
+
+    .. meta::
+        Transmon Pocket 6
+
     """
 
     # Default drawing options

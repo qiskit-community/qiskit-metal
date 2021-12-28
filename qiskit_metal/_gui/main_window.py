@@ -601,7 +601,7 @@ class MetalGUI(QMainWindowBaseHandler):
         self.QLIBRARY_FOLDERNAME = qlibrary.__name__
 
         # create model for Qlibrary directory
-        dock.library_model = QFileSystemLibraryModel()
+        dock.library_model = QFileSystemLibraryModel(self.path_imgs)
 
         dock.library_model.setRootPath(self.QLIBRARY_ROOT)
 
@@ -629,8 +629,14 @@ class MetalGUI(QMainWindowBaseHandler):
         # https://stackoverflow.com/questions/16759088/what-is-the-viewport-of-a-tree-widget
         view.viewport().setAttribute(Qt.WA_Hover, True)
         view.viewport().setMouseTracking(True)
-        
+
         view.resizeColumnToContents(0)
+
+        libraryRootPath = Path(dock.library_model.rootPath()) / "qubits"
+        stringLibraryRootPath = str(libraryRootPath)
+        view.expand(
+            dock.proxy_library_model.mapFromSource(
+                dock.library_model.index(stringLibraryRootPath)))
 
     ################################################
     # UI

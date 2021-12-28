@@ -69,7 +69,10 @@ class TransmonPocket(BaseQubit):
                                             +1
 
     .. image::
-        TransmonPocket.png
+        transmon_pocket.png
+
+    .. meta::
+        Transmon Pocket
 
     BaseQubit Default Options:
         * connection_pads: Empty Dict -- The dictionary which contains all active connection lines for the qubit.

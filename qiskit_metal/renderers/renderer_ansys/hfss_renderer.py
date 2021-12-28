@@ -940,7 +940,11 @@ class QHFSSRenderer(QAnsysRenderer):
         if Pparams is not None:
             fig, axs = plt.subplots(1, 2, figsize=(10, 6))
             Pparams.apply(lambda x: 20 * np.log10(np.abs(x))).plot(ax=axs[0])
+            axs[0].set_xlabel('Frequency (GHz)')
+            axs[0].set_ylabel('Amplitude (dB)')
             Pparams.apply(lambda x: np.angle(x)).plot(ax=axs[1])
+            axs[1].set_xlabel('Frequency (GHz)')
+            axs[1].set_ylabel('Phase (rad.)')
             for ax in axs:
                 ax.autoscale()
         return Pparams, fig

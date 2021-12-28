@@ -57,7 +57,10 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
 
 
     .. image::
-        TransmonPocketCL.png
+        transmon_pocket_cl.png
+
+    .. meta::
+        Transmon Pocket Connector Lines
 
     BaseQubit Default Options:
         * connection_pads: empty Dict -- The dictionary which contains all active connection lines for the qubit.

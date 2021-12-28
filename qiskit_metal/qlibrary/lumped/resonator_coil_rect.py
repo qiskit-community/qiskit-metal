@@ -40,6 +40,9 @@ class ResonatorCoilRect(QComponent):
     .. image::
         ResonatorCoilRect.png
 
+    .. meta::
+        Resonator Coil Rectangle
+
     Default Options:
         Convention: Values (unless noted) are strings with units included,
         (e.g., '30um')

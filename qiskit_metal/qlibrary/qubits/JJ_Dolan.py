@@ -35,7 +35,10 @@ class jj_dolan(QComponent):
     which overlaps part of one of the rectangular fingers.
 
     .. image::
-        JJDolan.png
+        JJ_Dolan.png
+
+    .. meta::
+        Josephson Junction Dolan
 
     Default Options:
         * JJ_pad_lower_width: '25um' -- width of lower JJ metal region
