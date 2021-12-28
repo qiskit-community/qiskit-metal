@@ -1425,6 +1425,12 @@ class QAnsysRenderer(QRendererAnalysis):
             box_plus_buffer (bool, optional): Whether or not to use a box plus buffer. Defaults to True.
         """
         chip_list = self.get_chip_names()
+        # added this quick hack for the case of flipchip device.
+        # current self.get_chip_names only renders chips whose components are to be rendered.
+        # so if you happen to only draw a qubit only, then the other chip (C_chip) does not get rendered because get_chip_names only returns Q_chip
+        # I hope this gets a prettier fix in the future
+        if self.design._metadata.design_name == 'FlipChip_Device':
+            chip_list = self.design.chips.keys()
         self.cw_x, self.cw_y = Dict(), Dict()
         self.cc_x, self.cc_y = Dict(), Dict()
 
