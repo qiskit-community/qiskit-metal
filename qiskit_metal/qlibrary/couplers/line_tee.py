@@ -41,17 +41,15 @@ class LineTee(QComponent):
     .. image::
         LineTee.png
 
+    .. meta::
+        Line Tee
+
     Options:
         * prime_width: '10um' -- The width of the trace of the two pin CPW transmission line
         * prime_gap: '6um' -- The dielectric gap of the two pin CPW transmission line
         * second_width: '10um' -- The width of the trace of the one pin CPW transmission line
         * second_gap: '6um' -- The dielectric gap of the one pin CPW transmission line (also for the capacitor)
         * t_length: '50um' -- The length for the t branches
-        * pos_x/_y: '0um' -- The x/y position of the center of the primary transmission line.
-        * orientation: '0' -- The direction of the primary transmission line. 0 degrees is +x, following a
-          counter-clockwise rotation (eg. 90 is +y)
-        * chip: 'main' -- The chip the pin should be on.
-        * layer: '1' -- Layer the pin is on. Does not have any practical impact to the short.
     """
     component_metadata = Dict(short_name='cpw', _qgeometry_table_path='True')
     """Component metadata"""
@@ -62,12 +60,7 @@ class LineTee(QComponent):
                            prime_gap='6um',
                            second_width='10um',
                            second_gap='6um',
-                           t_length='50um',
-                           pos_x='0um',
-                           pos_y='0um',
-                           orientation='0',
-                           chip='main',
-                           layer='1')
+                           t_length='50um')
     """Default connector options"""
 
     TOOLTIP = """Generates a three pin (+) structure comprised of a primary two pin CPW

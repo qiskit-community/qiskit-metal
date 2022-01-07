@@ -47,7 +47,10 @@ class CapNInterdigital(QComponent):
 
     .. image::
         CapNInterdigital.png
-
+    
+    .. meta::
+        Cap N Interdigital
+    
     Options:
         * north_width: '10um' -- The width of the 'north' portion of the CPW transmission line
         * north_gap: '6um' -- The dielectric gap of the 'north' portion of the CPW transmission line
@@ -60,11 +63,6 @@ class CapNInterdigital(QComponent):
         * finger_length: '20um' -- The depth of the finger islands of the capacitor
         * finger_count: '5' -- Number of fingers in the capacitor
         * cap_distance: '50um' -- Distance of the north point of the capacitor from the north pin
-        * pos_x/_y: '0um' -- The x/y position of the north pin
-        * rotation: '0' -- The direction of the transmission line. 0 degrees is -y, following a
-          counter-clockwise rotation (eg. 90 is +x)
-        * chip: 'main' -- The chip the capacitor should be on.
-        * layer: '1' -- Layer the capacitor is on.
     """
     component_metadata = Dict(short_name='cpw',
                               _qgeometry_table_poly='True',
@@ -82,12 +80,7 @@ class CapNInterdigital(QComponent):
                            cap_gap_ground='6um',
                            finger_length='20um',
                            finger_count='5',
-                           cap_distance='50um',
-                           pos_x='0um',
-                           pos_y='0um',
-                           orientation='0',
-                           chip='main',
-                           layer='1')
+                           cap_distance='50um')
     """Default connector options"""
 
     TOOLTIP = """Generates a two pin (+) structure

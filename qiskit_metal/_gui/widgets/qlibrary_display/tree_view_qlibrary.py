@@ -38,7 +38,8 @@ class TreeViewQLibrary(QTreeView):
             parent (QtWidgets.QWidget): parent widget
         """
         QTreeView.__init__(self, parent)
-        self.tool_tip_str = "Library of QComponents"
+        self.tool_tip_str = "Library of QComponents.\nClick one to create it."
+        self.expanded.connect(self.onExpanded)
 
     def setModel(self, model: QtCore.QAbstractItemModel):
         """Overriding setModel to ensure only correct QAbstractItemModel subclass is used
@@ -97,3 +98,11 @@ class TreeViewQLibrary(QTreeView):
             super().setToolTip(self.tool_tip_str)
         else:
             super().setToolTip(qcomp_tooltip)
+
+    def onExpanded(self, index: QModelIndex):
+        """Ensure that when we expand the first column names fit in
+
+        Args:
+            index (QModelIndex): [description]
+        """
+        self.resizeColumnToContents(0)

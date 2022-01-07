@@ -37,6 +37,9 @@ class NSquareSpiral(QComponent):
     .. image::
         NSquareSpiral.png
 
+    .. meta::
+        N Square Spiral
+
     Default Options:
         Convention: Values (unless noted) are strings with units included,
         (e.g., '30um')
@@ -45,27 +48,16 @@ class NSquareSpiral(QComponent):
         * width: '1um' -- the width of the line of the spiral
         * radius: '40um' -- The 'radius' of the inner portion of the spiral
         * gap: '4um' -- The distance between each layer of the spiral
-        * pos_x: '0um' -- The x position of the ground termination.
-        * pos_y: '0um' -- The y position of the ground termination.
-        * rotation: '0' -- The direction of the termination. 0 degrees is +x, following a
-          counter-clockwise rotation (eg. 90 is +y)
         * subtract: 'False'
         * helper: 'False'
-        * chip: 'main' -- The chip the pin should be on.
-        * layer: '1' -- Layer the pin is on. Does not have any practical impact to the short.
     """
 
     default_options = Dict(n='3',
                            width='1um',
                            radius='40um',
                            gap='4um',
-                           pos_x='0um',
-                           pos_y='0um',
-                           rotation='0',
                            subtract='False',
-                           helper='False',
-                           chip='main',
-                           layer='1')
+                           helper='False')
     """Default drawing options"""
 
     TOOLTIP = """An n count square spiral"""
@@ -93,7 +85,7 @@ class NSquareSpiral(QComponent):
         spiral_list.append((-point_value, -point_value))
         spiral_list = draw.LineString(spiral_list)
 
-        spiral_list = draw.rotate(spiral_list, p.rotation, origin=(0, 0))
+        spiral_list = draw.rotate(spiral_list, p.orientation, origin=(0, 0))
         spiral_list = draw.translate(spiral_list, p.pos_x, p.pos_y)
 
         ##############################################

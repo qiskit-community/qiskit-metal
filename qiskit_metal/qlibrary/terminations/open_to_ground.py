@@ -24,31 +24,21 @@ class OpenToGround(QComponent):
     .. image::
         OpenToGround.png
 
+    .. meta::
+        Open to Ground
+
     Default Options:
         * width: '10um' -- The width of the 'cpw' terminating to ground (this is merely
           for the purpose of generating a value to pass to the pin)
         * gap: '6um' -- The gap of the 'cpw'
         * termination_gap: '6um' -- The length of dielectric from the end of the cpw center trace to the ground.
-        * pos_x: '0um' -- The x position of the ground termination.
-        * pos_y: '0um' -- The y position of the ground termination.
-        * rotation: '0' -- The direction of the termination. 0 degrees is +x, following a
-          counter-clockwise rotation (eg. 90 is +y)
-        * chip: 'main' -- The chip the pin should be on.
-        * layer: '1' -- Layer the pin is on. Does not have any practical impact to the short.
 
     Values (unless noted) are strings with units included, (e.g., '30um')
     """
     component_metadata = Dict(short_name='term', _qgeometry_table_poly='True')
     """Component metadata"""
 
-    default_options = Dict(width='10um',
-                           gap='6um',
-                           termination_gap='6um',
-                           pos_x='0um',
-                           pos_y='0um',
-                           orientation='0',
-                           chip='main',
-                           layer='1')
+    default_options = Dict(width='10um', gap='6um', termination_gap='6um')
     """Default connector options"""
 
     TOOLTIP = """A basic open to ground termination. """

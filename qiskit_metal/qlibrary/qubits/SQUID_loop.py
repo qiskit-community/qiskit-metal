@@ -40,20 +40,23 @@ class SQUID_LOOP(QComponent):
     junctions (JJs) located on opposite sides of a rectangular loop.
     The design consists of eight separate rectangles: plate1, 
     segment a (and segment a lower), segment b (and segment b lower),
-    segment c, segment d and plate 2. The two JJs are locatd between
+    segment c, segment d and plate 2. The two JJs are located between
     segments and a and b (and also between segments a lower and b
     lower.) 
     
     .. image::
         SQUID_LOOP.png
 
+    .. meta::
+        Squid Loop
+
     Default Options:
         * plate1_width: '5.5um' -- width of plate1 (left)  
         * plate1_height: '40um' -- height of plate1 (left)
-        * plate1_x_pos: '0' -- origin of the plate1 (left)
-        * plate1_y_pos: '0' -- origin of the plate1 (left) 
+        * plate1_pos_x: '0' -- origin of the plate1 (left)
+        * plate1_pos_y: '0' -- origin of the plate1 (left) 
         * squid_gap: '10um' -- space between 'seg a' and 'seg a lower'
-        * segment_a_length: '10um' -- lenght of seg a
+        * segment_a_length: '10um' -- length of seg a
         * segment_a_width: '1um' -- width of seg a 
         * JJ_gap: '0.5um' -- space between seg a and seg b
         * segment_b_length: '5um' -- length of seg b
@@ -63,16 +66,12 @@ class SQUID_LOOP(QComponent):
         * segment_d_width: '2um' -- width of seg d 
         * plate2_width: '6um' -- width of plate 2 (right)
         * plate2_height: '30um' -- height of plate 2 (right)
-        * rotation: '0.0' -- rotation angle in degrees
-        * x_pos: '0.0' -- final x-coordinate of plate 1 center
-        * y_pos: '0.0' -- final y-coordinate of plate 1 center
-        * layer: '1' -- layer 1 in design hierarchy
     """
     # Default drawing options
     default_options = Dict(plate1_width='5.5um',
                            plate1_height='40um',
-                           plate1_x_pos='0',
-                           plate1_y_pos='0',
+                           plate1_pos_x='0',
+                           plate1_pos_y='0',
                            squid_gap='10um',
                            segment_a_length='10um',
                            segment_a_width='1um',
@@ -83,11 +82,7 @@ class SQUID_LOOP(QComponent):
                            segment_d_length='10um',
                            segment_d_width='2um',
                            plate2_width='6um',
-                           plate2_height='30um',
-                           rotation='0.0',
-                           x_pos='0.0',
-                           y_pos='0.0',
-                           layer='1')
+                           plate2_height='30um')
     """Default drawing options"""
 
     # Name prefix of component, if user doesn't provide name
@@ -100,8 +95,8 @@ class SQUID_LOOP(QComponent):
         p = self.parse_options()  # Parse the string options into numbers
 
         # draw the lower pad as a rectangle
-        plate1 = draw.rectangle(p.plate1_width, p.plate1_height, p.plate1_x_pos,
-                                p.plate1_y_pos)
+        plate1 = draw.rectangle(p.plate1_width, p.plate1_height, p.plate1_pos_x,
+                                p.plate1_pos_y)
 
         segment_a = draw.rectangle(p.segment_a_length, p.segment_a_width,
                                    0.5 * (p.plate1_width + p.segment_a_length),
@@ -122,25 +117,25 @@ class SQUID_LOOP(QComponent):
             p.segment_c_width,
             p.squid_gap + p.segment_a_width + p.segment_b_width,
             0.5 * (p.plate1_width + p.segment_c_width) + p.segment_a_length +
-            p.segment_b_length + p.JJ_gap, p.plate1_y_pos)
+            p.segment_b_length + p.JJ_gap, p.plate1_pos_y)
 
         segment_d = draw.rectangle(
             p.segment_d_length, p.segment_d_width,
             0.5 * (p.plate1_width + p.segment_d_length) + p.segment_a_length +
-            p.segment_b_length + p.JJ_gap + p.segment_c_width, p.plate1_y_pos)
+            p.segment_b_length + p.JJ_gap + p.segment_c_width, p.plate1_pos_y)
 
         plate2 = draw.rectangle(
             p.plate2_width, p.plate2_height, 0.5 *
             (p.plate1_width + p.plate2_width) + p.segment_a_length + p.JJ_gap +
             p.segment_b_length + p.segment_c_width + p.segment_d_length,
-            p.plate1_y_pos)
+            p.plate1_pos_y)
 
         design1 = draw.union(plate1, segment_a, segment_a_lower, segment_b,
                              segment_b_lower, segment_c, segment_d, plate2)
 
         # now translate and rotate the final structure
-        design1 = draw.rotate(design1, p.rotation, origin=(0, 0))
-        design1 = draw.translate(design1, p.x_pos, p.y_pos)
+        design1 = draw.rotate(design1, p.orientation, origin=(0, 0))
+        design1 = draw.translate(design1, p.pos_x, p.pos_y)
 
         geom = {'design': design1}
         self.add_qgeometry('poly', geom, layer=p.layer, subtract=False)

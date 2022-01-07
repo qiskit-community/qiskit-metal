@@ -30,6 +30,9 @@ def intersecting(a: np.array, b: np.array, c: np.array, d: np.array) -> bool:
     """Returns whether segment ab intersects or overlaps with segment cd, where
     a, b, c, and d are all coordinates.
 
+    .. meta::
+        Anchored Path
+
     Args:
         a (np.array): Coordinate
         b (np.array): Coordinate
@@ -112,8 +115,6 @@ class RouteAnchors(QRoute):
             * start_jogged_extension: '' -- Lead-in, jogged extension of lead-in. Described as list of tuples
             * end_jogged_extension: '' -- Lead-out, jogged extension of lead-out. Described as list of tuples
         * total_length: '7mm'
-        * chip: 'main' -- Which chip is this component attached to.  Defaults to 'main'.
-        * layer: '1' -- Which layer this component should be rendered on.  Defaults to '1'.
         * trace_width: 'cpw_width' -- Defines the width of the line.  Defaults to 'cpw_width'.
 
     Default Options:

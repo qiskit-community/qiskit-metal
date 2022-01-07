@@ -81,6 +81,7 @@ Terminations
 
     LaunchpadWirebond
     LaunchpadWirebondCoupled
+	LaunchpadWirebondDriven
     OpenToGround
     ShortToGround
 
@@ -117,6 +118,7 @@ Qubits
     TransmonPocketTeeth
     TunableCoupler01
     SQUID_LOOP
+    StarQubit
 
 
 Submodules
@@ -153,6 +155,7 @@ if config.is_building_docs():
     from .lumped.resonator_coil_rect import ResonatorCoilRect
     from .terminations.launchpad_wb import LaunchpadWirebond
     from .terminations.launchpad_wb_coupled import LaunchpadWirebondCoupled
+    from .terminations.launchpad_wb_driven import LaunchpadWirebondDriven
     from .terminations.open_to_ground import OpenToGround
     from .terminations.short_to_ground import ShortToGround
     from .tlines.straight_path import RouteStraight
@@ -172,5 +175,6 @@ if config.is_building_docs():
     from .qubits.transmon_pocket_6 import TransmonPocket6
     from .qubits.transmon_pocket_teeth import TransmonPocketTeeth
     from .qubits.SQUID_loop import SQUID_LOOP
+    from .qubits.star_qubit import StarQubit
 
     from .tlines import anchored_path

@@ -24,16 +24,15 @@ class MyQComponent(QComponent):
     """
     This class is a template
 	Use this class as a blueprint to put together for your components - have fun
+    
+    .. meta::
+        My QComponent
+
     """
 
     # Edit these to define your own template options for creation
     # Default drawing options
-    default_options = Dict(width='500um',
-                           height='300um',
-                           pos_x='0um',
-                           pos_y='0um',
-                           rotation='0',
-                           layer='1')
+    default_options = Dict(width='500um', height='300um')
     """Default drawing options"""
 
     # Name prefix of component, if user doesn't provide name
@@ -49,6 +48,6 @@ class MyQComponent(QComponent):
         # Create some raw geometry
         # Use autocompletion for the `draw.` module (use tab key)
         rect = draw.rectangle(p.width, p.height, p.pos_x, p.pos_y)
-        rect = draw.rotate(rect, p.rotation)
+        rect = draw.rotate(rect, p.orientation)
         geom = {'my_polygon': rect}
         self.add_qgeometry('poly', geom, layer=p.layer, subtract=False)

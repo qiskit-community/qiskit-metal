@@ -33,7 +33,10 @@ class jj_manhattan(QComponent):
     larger metallic pad region.
 
     .. image::
-        JJManhattan.png
+        JJ_Manhattan.png
+
+    .. meta::
+        Josephson Junction Manhattan
 
     Default Options:
         * JJ_pad_lower_width: '4um' -- width of lower JJ metal region
@@ -43,8 +46,6 @@ class jj_manhattan(QComponent):
         * finger_lower_width: '1um' -- the width of the overlapping rectangular finger(s)
         * finger_lower_height: '20um' -- the length of the overlapping rectangular finger(s)
         * extension: '1um' -- the length of the fingers extending beyond the cross-point
-        * x_pos: '0um' -- the x-coordinate of the lower left point  of the final design
-        * y_pos: '0um' -- the y-coordinate of the lower left point of the final design
     """
     # Default drawing options
     default_options = Dict(JJ_pad_lower_width='25um',
@@ -53,10 +54,7 @@ class jj_manhattan(QComponent):
                            JJ_pad_lower_pos_y='0',
                            finger_lower_width='1um',
                            finger_lower_height='20um',
-                           extension='1um',
-                           x_pos='0um',
-                           y_pos='0um',
-                           layer='1')
+                           extension='1um')
     """Default drawing options"""
 
     # Name prefix of component, if user doesn't provide name
@@ -102,8 +100,8 @@ class jj_manhattan(QComponent):
                                       0.5 * p.JJ_pad_lower_height)
 
         # now translate so that the design is centered on the
-        # user-defined coordinates (x_pos, y_pos)
-        final_design = draw.translate(final_design, p.x_pos, p.y_pos)
+        # user-defined coordinates (pos_x, pos_y)
+        final_design = draw.translate(final_design, p.pos_x, p.pos_y)
 
         geom = {'design': final_design}
         self.add_qgeometry('poly', geom, layer=p.layer, subtract=False)

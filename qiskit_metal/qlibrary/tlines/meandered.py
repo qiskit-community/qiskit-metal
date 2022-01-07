@@ -30,6 +30,9 @@ class RouteMeander(QRoute):
 
     Inherits `QRoute` class
 
+    .. meta::
+        Route Meander
+
     QRoute Default Options:
         * pin_inputs: Dict
             * start_pin: Dict -- Component and pin string pair. Define which pin to start from
@@ -45,8 +48,6 @@ class RouteMeander(QRoute):
             * start_jogged_extension: '' -- Lead-in, jogged extension of lead-in. Described as list of tuples
             * end_jogged_extension: '' -- Lead-out, jogged extension of lead-out. Described as list of tuples
         * total_length: '7mm'
-        * chip: 'main' -- Which chip is this component attached to.  Defaults to 'main'.
-        * layer: '1' -- Which layer this component should be rendered on.  Defaults to '1'.
         * trace_width: 'cpw_width' -- Defines the width of the line.  Defaults to 'cpw_width'.
 
     Default Options:

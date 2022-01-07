@@ -35,7 +35,10 @@ class jj_dolan(QComponent):
     which overlaps part of one of the rectangular fingers.
 
     .. image::
-        JJDolan.png
+        JJ_Dolan.png
+
+    .. meta::
+        Josephson Junction Dolan
 
     Default Options:
         * JJ_pad_lower_width: '25um' -- width of lower JJ metal region
@@ -48,8 +51,6 @@ class jj_dolan(QComponent):
         * offset: '2um' -- the separation between finger and the 2nd metal level
         * second_metal_length: '5um' -- the length of the 2nd metal level
         * second_metal_width: '1um' -- the width of the 2nd metal level
-        * x_pos: '0um' -- the final x-coord of the lower left corner of final design
-        * y_pos: '0um' -- the final y-coord of the lower left corner of final design
     """
     # Default drawing options
     default_options = Dict(JJ_pad_lower_width='25um',
@@ -61,10 +62,7 @@ class jj_dolan(QComponent):
                            extension='1um',
                            offset='2um',
                            second_metal_length='5um',
-                           second_metal_width='1um',
-                           x_pos='0um',
-                           y_pos='0um',
-                           layer='1')
+                           second_metal_width='1um')
     """Default drawing options"""
 
     # Name prefix of component, if user doesn't provide name
@@ -121,9 +119,9 @@ class jj_dolan(QComponent):
                                       0.5 * p.JJ_pad_lower_height)
 
         # now translate so that the bottom left corner is at the
-        # user-defined coordinates (x_pos, y_pos)
-        final_design = draw.translate(final_design, p.x_pos, p.y_pos)
-        second_metal = draw.translate(second_metal, p.x_pos, p.y_pos)
+        # user-defined coordinates (pos_x, pos_y)
+        final_design = draw.translate(final_design, p.pos_x, p.pos_y)
+        second_metal = draw.translate(second_metal, p.pos_x, p.pos_y)
 
         geom1 = {'design': final_design}
         self.add_qgeometry('poly', geom1, layer=p.layer, subtract=False)

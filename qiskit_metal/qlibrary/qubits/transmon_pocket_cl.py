@@ -57,37 +57,22 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
 
 
     .. image::
-        TransmonPocketCL.png
+        transmon_pocket_cl.png
 
-
-    Charge Line:
-        * make_CL (bool): If a chargeline should be included.
-        * cl_gap (string): The cpw dielectric gap of the charge line.
-        * cl_width (string): The cpw width of the charge line.
-        * cl_length (string):  The length of the charge line 'arm' coupling the the qubit pocket.
-          Measured from the base of the 90 degree bend.
-        * cl_ground_gap (string):  How much ground is present between the charge line and the
-          qubit pocket.
-        * cl_pocket_edge (string): What side of the pocket the charge line is.
-          -180 to +180 from the 'west edge', will round to the nearest 90.
-        * cl_off_center (string):  Distance from the center axis the qubit pocket is referenced to
+    .. meta::
+        Transmon Pocket Connector Lines
 
     BaseQubit Default Options:
-        * pos_x: '0um'
-        * pos_y: '0um'
         * connection_pads: empty Dict -- The dictionary which contains all active connection lines for the qubit.
         * _default_connection_pads: empty Dict -- The default values for the (if any) connection lines of the qubit.
 
     TransmonPocket Default Options:
-        * pos_x: '0um' -- Where the center of the pocket should be located on chip
-        * pos_y: '0um' -- Where the center of the pocket should be located on chip
         * pad_gap: '30um' -- The distance between the two charge islands, which is also the resulting 'length' of the pseudo junction
         * inductor_width: '20um' -- Width of the pseudo junction between the two charge islands (if in doubt, make the same as pad_gap). Really just for simulating in HFSS / other EM software
         * pad_width: '455um' -- The width (x-axis) of the charge island pads
         * pad_height: '90um' -- The size (y-axis) of the charge island pads
         * pocket_width: '650um' -- Size of the pocket (cut out in ground) along x-axis
         * pocket_height: '650um' -- Size of the pocket (cut out in ground) along y-axis
-        * orientation: '0' -- Degree of qubit rotation
         * _default_connection_pads: Dict
             * pad_gap: '15um' -- Space between the connector pad and the charge island it is nearest to
             * pad_width: '125um' -- Width (x-axis) of the connector pad
@@ -96,20 +81,23 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
             * pad_cpw_extent: '25um' -- Shift the connector pad cpw line by this much away from qubit
             * cpw_width: 'cpw_width' -- Center trace width of the CPW line
             * cpw_gap: 'cpw_gap' -- Dielectric gap width of the CPW line
-            * cpw_extend: '100um' -- Depth the connector line extense into ground (past the pocket edge)
+            * cpw_extend: '100um' -- Depth the connector line extends into ground (past the pocket edge)
             * pocket_extent: '5um' -- How deep into the pocket should we penetrate with the cpw connector (into the fround plane)
             * pocket_rise: '65um' -- How far up or downrelative to the center of the transmon should we elevate the cpw connection point on the ground plane
             * loc_W: '+1' -- Width location  only +-1
             * loc_H: '+1' -- Height location only +-1
 
     Default Options:
-        * make_CL: True
+        * make_CL: True -- If a charge line should be included.
         * cl_gap: '6um' -- The cpw dielectric gap of the charge line
         * cl_width: '10um' -- The cpw trace width of the charge line
-        * cl_length: '20um'
-        * cl_ground_gap: '6um' -- How much ground between the charge line and the qubit pocket
-        * cl_pocket_edge: '0'
-        * cl_off_center: '50um' -- Distance from the center axis the qubit pocket is built on
+        * cl_length: '20um' --  The length of the charge line 'arm' coupling the the qubit pocket.
+          Measured from the base of the 90 degree bend.
+        * cl_ground_gap: '6um' -- How much ground is present between the charge line and the
+          qubit pocket.
+        * cl_pocket_edge: '0' -- What side of the pocket the charge line is.
+          -180 to +180 from the 'west edge', will round to the nearest 90.
+        * cl_off_center: '50um' -- Distance from the center axis the qubit pocket is referenced to
     """
     component_metadata = Dict(short_name='Q', _qgeometry_table_poly='True')
     """Component metadata"""

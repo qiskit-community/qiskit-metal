@@ -23,27 +23,19 @@ class ShortToGround(QComponent):
 
     Inherits `QComponent` class.
 
+    .. meta::
+        Short to Ground
+
     Default Options:
         * width: '10um' -- The width of the 'cpw' terminating to ground (this is merely for the purpose of
           generating a value to pass to the pin)
-        * pos_x: '0um' -- The x position of the ground termination.
-        * pos_y: '0um' -- The y position of the ground termination.
-        * rotation: '0' -- The direction of the termination. 0 degrees is +x, following a
-          counter-clockwise rotation (eg. 90 is +y)
-        * chip: 'main' -- The chip the pin should be on.
-        * layer: '1' -- Layer the pin is on. Does not have any practical impact to the short.
 
     Values (unless noted) are strings with units included, (e.g., '30um')
     """
     component_metadata = Dict(short_name='term')
     """Component metadata"""
 
-    default_options = Dict(width='10um',
-                           pos_x='0um',
-                           pos_y='0um',
-                           orientation='0',
-                           chip='main',
-                           layer='1')
+    default_options = Dict(width='10um')
     """Default connector options"""
 
     TOOLTIP = """A basic short to ground termination"""

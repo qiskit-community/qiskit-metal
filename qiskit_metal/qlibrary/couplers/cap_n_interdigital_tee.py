@@ -44,6 +44,9 @@ class CapNInterdigitalTee(QComponent):
     .. image::
         CapNInterdigitalTee.png
 
+    .. meta::
+        Cap N Interdigital Tee
+
     Options:
         * prime_width: '10um' -- The width of the trace of the two pin CPW transmission line
         * prime_gap: '6um' -- The dielectric gap of the two pin CPW transmission line
@@ -54,11 +57,6 @@ class CapNInterdigitalTee(QComponent):
         * finger_length: '20um' -- The depth of the charge islands of the capacitor
         * finger_count: '5' -- Number of fingers in the capacitor
         * cap_distance: '50um' -- Distance of capacitor from center transmission line
-        * pos_x/_y: '0um' -- The x/y position of the center of the primary transmission line.
-        * rotation: '0' -- The direction of the primary transmission line. 0 degrees is +x, following a
-          counter-clockwise rotation (eg. 90 is +y)
-        * chip: 'main' -- The chip the capacitor should be on.
-        * layer: '1' -- Layer the capacitor is on.
     """
     component_metadata = Dict(short_name='cpw',
                               _qgeometry_table_poly='True',
@@ -75,12 +73,7 @@ class CapNInterdigitalTee(QComponent):
                            cap_width='10um',
                            finger_length='20um',
                            finger_count='5',
-                           cap_distance='50um',
-                           pos_x='0um',
-                           pos_y='0um',
-                           orientation='0',
-                           chip='main',
-                           layer='1')
+                           cap_distance='50um')
     """Default connector options"""
 
     TOOLTIP = """Generates a three pin (+) structure comprised of a primary two pin CPW

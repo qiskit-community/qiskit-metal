@@ -27,6 +27,9 @@ class RouteMixed(RoutePathfinder, RouteMeander):
     connections between anchors. The comprehensive Routing class. Inherits
     `RoutePathfinder, RouteMeander` class, thus also QRoute and RouteAnchors.
 
+    .. meta::
+        Route Mixed
+
     Default Options:
         * between_anchors: Empty OrderedDict -- Intermediate anchors only; doesn't include endpoints
 
@@ -45,8 +48,6 @@ class RouteMixed(RoutePathfinder, RouteMeander):
             * end_jogged_extension: '' -- Lead-out, jogged extension of lead-out. Described as list of tuples
         * fillet: '0'
         * total_length: '7mm'
-        * chip: 'main' -- Which chip is this component attached to
-        * layer: '1' -- Which layer this component should be rendered on
         * trace_width: 'cpw_width' -- Defines the width of the line
 
     RouteAnchors Default Options:

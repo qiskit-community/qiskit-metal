@@ -29,8 +29,6 @@ class Cap3Interdigital(QComponent):
         * pocket_buffer_width_y - sets size of pocket in +-y direction, added to cap size
           this also determines the lead in line lengths
           pocket is a negative shape that is cut out of the ground plane
-        * pos_x / pos_y   - where the center of the pocket should be located on chip
-        * orientation     - degree of qubit rotation
 
     Pins:
         There are two pins on the capacitor at either end
@@ -55,27 +53,22 @@ class Cap3Interdigital(QComponent):
     .. image::
         Cap3Interdigital.png
 
+    .. meta::
+        Cap 3 Interdigital
+
     Default Options:
-        * layer: '1'
         * trace_width: '10um'
         * finger_length: '65um'
         * pocket_buffer_width_x: '10um'
         * pocket_buffer_width_y: '30um'
-        * pos_x: '100um'
-        * pos_y: '100um'
-        * orientation: '0'
     """
 
     #  Define structure functions
 
-    default_options = Dict(layer='1',
-                           trace_width='10um',
+    default_options = Dict(trace_width='10um',
                            finger_length='65um',
                            pocket_buffer_width_x='10um',
-                           pocket_buffer_width_y='30um',
-                           pos_x='100um',
-                           pos_y='100um',
-                           orientation='0')
+                           pocket_buffer_width_y='30um')
     """Default drawing options"""
 
     TOOLTIP = """Create a three finger planar capacitor with a ground pocket cuttout."""
@@ -139,7 +132,7 @@ class Cap3Interdigital(QComponent):
         ]
 
         # Rotates and translates all the objects as requested. Uses package functions
-        # in 'draw_utility' for easyrotation/translation
+        # in 'draw_utility' for easy rotation/translation
         polys1 = draw.rotate(polys1, p.orientation, origin=(0, 0))
         polys1 = draw.translate(polys1, xoff=p.pos_x, yoff=p.pos_y)
         [

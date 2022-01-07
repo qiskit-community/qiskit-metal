@@ -30,7 +30,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
     makes up the connector. Note, DC SQUID currently represented by single
     inductance sheet
 
-    Add connectors to it using the `connection_pads` dictonary. See BaseQubit for more
+    Add connectors to it using the `connection_pads` dictionary. See BaseQubit for more
     information.
 
     Sketch:
@@ -46,21 +46,19 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
 
 
     .. image::
-        TransmonCross.png
+        transmon_cross.png
+
+    .. meta::
+        Transmon Cross
 
     BaseQubit Default Options:
-        * pos_x: '0um' -- Where the center of the Crossmon should be located on chip
-        * pos_y: '0um' -- Where the center of the Crossmon should be located on chip
         * connection_pads: Empty Dict -- The dictionary which contains all active connection lines for the qubit.
         * _default_connection_pads: empty Dict -- The default values for the (if any) connection lines of the qubit.
 
     Default Options:
-        * pos_x: '0um' -- Where the center of the Crossmon should be located on chip
-        * pos_y: '0um' -- Where the center of the Crossmon should be located on chip
         * cross_width: '20um' -- Width of the CPW center trace making up the Crossmon
         * cross_length: '200um' -- Length of one Crossmon arm (from center)
         * cross_gap: '20um' -- Width of the CPW gap making up the Crossmon
-        * orientation: '0' -- How to orient the qubit and connectors in the end (where the +X vector should point, '+X', '-X','+Y','-Y')
         * _default_connection_pads: Dict
             * connector_type: '0' -- 0 = Claw type, 1 = gap type
             * claw_length: '30um' -- Length of the claw 'arms', measured from the connector center trace
@@ -71,13 +69,9 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
     """
 
     default_options = Dict(
-        pos_x='0um',
-        pos_y='0um',
         cross_width='20um',
         cross_length='200um',
         cross_gap='20um',
-        orientation='0',
-        layer='1',
         _default_connection_pads=Dict(
             connector_type='0',  # 0 = Claw type, 1 = gap type
             claw_length='30um',

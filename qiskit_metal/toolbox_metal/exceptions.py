@@ -16,6 +16,8 @@
 # pylint: disable=unused-import
 """Custom Exceptions."""
 
+from sys import prefix
+
 
 class QiskitMetalExceptions(Exception):
     """Custom Exception super-class. Every Exception raised by qiskit-metal
@@ -33,14 +35,7 @@ class QiskitMetalExceptions(Exception):
 
 class QLibraryGUIException(QiskitMetalExceptions):
     """Custom Exception for the QLibrary GUI feature
-
-    Args:
-        message (str): String describing the error raised
     """
-
-    # pylint: disable=super-init-not-called
-    def __init__(self, message: str) -> None:
-        super().__init__(message)
 
 
 class QiskitMetalDesignError(QiskitMetalExceptions):
@@ -64,5 +59,10 @@ class IncorrectQtException(Exception):
     """
 
     def __init__(self, message: str) -> None:
-        prefix = "You should be using be PySide2. \n"
+        prefix = "You should be using PySide2. \n"
         super().__init__(prefix + message)
+
+
+class InputError(QiskitMetalExceptions):
+    """Custom exception to indicate input errors
+    """

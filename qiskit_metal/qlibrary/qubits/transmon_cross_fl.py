@@ -41,18 +41,22 @@ class TransmonCrossFL(TransmonCross):  # pylint: disable=invalid-name
         Flux line is added by default to the 'south' arm where the DC SQUID is located,
         default is a symmetric T style
 
-        Options:
+        Default Options:
         Convention: Values (unless noted) are strings with units included, (e.g., '30um')
 
         * make_fl -         (Boolean) If True, adds a flux line
         * t_top -           length of the flux line for mutual inductance to the SQUID
-        * t_inductive_gap - amount of metalization between the flux line and SQUID
+        * t_inductive_gap - amount of metallization between the flux line and SQUID
         * t_offset -        degree by which the tail of the T is offset from the center
         * t_width -         width of the flux line's transmission line center trace
         * t_gap -           dielectric gap of the flux line's transmission line
 
     .. image::
-        TransmonCrossFL.png
+        transmon_cross_fl.png
+
+    .. meta::
+        Transmon Cross Flux Line
+
     """
 
     component_metadata = Dict(short_name='Q',
