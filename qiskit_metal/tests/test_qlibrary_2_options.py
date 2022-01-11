@@ -688,8 +688,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         launch_v1 = LaunchpadWirebond(design, 'my_name')
         options = launch_v1.default_options
 
-        self.assertEqual(len(options), 11)
-        self.assertEqual(options['layer'], '1')
+        self.assertEqual(len(options), 7)
         self.assertEqual(options['trace_width'], 'cpw_width')
         self.assertEqual(options['trace_gap'], 'cpw_gap')
         self.assertEqual(options['lead_length'], '25um')
@@ -697,9 +696,6 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options['pad_height'], '80um')
         self.assertEqual(options['pad_gap'], '58um')
         self.assertEqual(options['taper_height'], '122um')
-        self.assertEqual(options['pos_x'], '0um')
-        self.assertEqual(options['pos_y'], '0um')
-        self.assertEqual(options['orientation'], '0')
 
     def test_qlibrary_launch_v2_options(self):
         """Test that default options of LaunchpadWirebondCoupled in
