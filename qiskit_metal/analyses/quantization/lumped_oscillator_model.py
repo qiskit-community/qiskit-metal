@@ -26,7 +26,7 @@ if not config.is_building_docs():
     from .lumped_capacitive import extract_transmon_coupled_Noscillator
 
 
-# TODO:  eliminate every reference to "renderer" in this file
+# TODO: eliminate every reference to "renderer" in this file
 class LOManalysis(QAnalysis):
     """Performs Lumped Oscillator Model analysis on a simulated or user-provided capacitance matrix.
 
