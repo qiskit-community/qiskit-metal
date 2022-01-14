@@ -23,7 +23,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from cycler import cycler
-from descartes import PolygonPatch
+from .patch import PolygonPatch
 from IPython.display import display
 from matplotlib.axes import Axes
 from matplotlib.backends.backend_qt5agg import \

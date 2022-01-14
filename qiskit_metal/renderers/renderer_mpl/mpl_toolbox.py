@@ -27,6 +27,7 @@ from shapely.geometry import LinearRing, Polygon  # Point, LineString,
 from ... import Dict
 from ...draw import BaseGeometry
 from .mpl_interaction import figure_pz
+from .patch import PolygonPatch
 
 __all__ = [
     '_render_poly_zkm', 'render_poly', 'render', 'style_axis_simple',
@@ -102,7 +103,7 @@ def render_poly(poly: shapely.geometry.Polygon, ax: plt.Axes, kw=None):
     # TODO: maybe if done in batch we can speed this up?
     kw = kw or {}
     return ax.add_patch(
-        descartes.PolygonPatch(poly, **{
+        PolygonPatch(poly, **{
             **style_config.poly,
             **kw
         }))
