@@ -9,7 +9,8 @@ dependencies:
   - geopandas
   - ipython
   - matplotlib
-  - numpy
+  #Due to issue with qutip, limit the version of numpy. Wait for pull request to merge. https://github.com/qutip/qutip/pull/1752
+  - numpy<1.22
   - pandas
   - pint
   - pyepr-quantum>=0.8.4.6
