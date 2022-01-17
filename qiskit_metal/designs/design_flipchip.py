@@ -103,7 +103,6 @@ class DesignFlipChip(QDesign):
 
     def get_x_y_for_chip(self, chip_name: str) -> Tuple[tuple, int]:
         """
-        TODO Modify this for FLIPCHIP
         If the chip_name is in self.chips, along with entry for size
         information then return a tuple=(minx, miny, maxx, maxy). Used for
         subtraction while exporting design.

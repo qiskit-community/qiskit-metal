@@ -2,15 +2,34 @@ import numpy as np
 import sys
 
 from qiskit_metal import draw, Dict
-from qiskit_metal.qlibrary.core import BaseQubit
+from qiskit_metal.qlibrary.core import QComponent
 
-class ReadoutRes_fc(BaseQubit):
+class ReadoutRes_fc(QComponent):
     '''
     The base ReadoutRes_fc class
 
-    Inherits BaseQubit class
+    Inherits the QComponent class
 
     Readout resonator for the flipchip dev. Written for the flipchip tutorial.
+
+    The device consists of the following shapes combined together:
+        - a circle centered at ('pos_x', 'pos_y') with a radius of 'readout_radius', followed by
+        - a straight line (length= 'readout_l1') at a 45 degree angle, followed by
+        - a 45 degree arc, followed by
+        - a vertical line (length = 'readout_l2'), followed by
+        - a 90 degree arc, followed by
+        - a horizontal line (length = 'readout_l3'), followed by
+        - a 180 degree arc, followed by
+        - a horizontal line (length = 'readout_l4'), followed by
+        - 5 meandering horizontal lines (length = 'readout_l5') separated 180 degree arcs.
+
+    The arc has a bend radius of 'readout_cpw_turnradius' measured from the center of the cpw to the center of rotation.
+    The lines and arcs will form a cpw with a signal linewidth of 'readout_cpw_width', and signal-to-ground separation of 'readout_cpw_gap'.
+
+    One of the ways to adjust this design to your needs:
+    - change the coupling to the qubit by varying the 'readout_radius',
+    - couple the resonator to the feedthrough transmission line via the horizontal section with this length 'readout_l3',
+    - adjust the frequency of the resonator by varying 'readout_l5'.
 
     '''
 
@@ -154,7 +173,7 @@ class ReadoutRes_fc(BaseQubit):
         # generate QGeometry
         self.add_qgeometry('poly', dict(ro=ro), chip=chip, layer=p.layer)
         self.add_qgeometry('poly', dict(ro_etch=ro_etch), chip=chip, layer=p.layer_subtract, subtract=p.subtract)
-        
+
         # generate pins
         self.add_pin('readout', port_line.coords, width=w, gap=g, chip=chip)
         return
