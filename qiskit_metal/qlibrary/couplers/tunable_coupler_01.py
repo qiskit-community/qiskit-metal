@@ -199,7 +199,7 @@ class TunableCoupler01(BaseQubit):
 
         #Add pin
         self.add_pin('Control',
-                     points=np.array(con_pin),
+                     points=np.array(con_pin.coords),
                      width=p.l_width,
                      input_as_norm=True)
         self.add_pin('Flux',
