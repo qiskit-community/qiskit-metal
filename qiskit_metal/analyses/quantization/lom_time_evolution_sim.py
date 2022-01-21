@@ -1,8 +1,14 @@
 import sequencing as seq
 import numpy as np
+import scqubits as scq
+from typing import List
+
+from qiskit_metal.analyses.quantization.lom_core_analysis import CompositeSystem
 
 
 class LOMtoSeqMapper:
+    """Mapping LOM subsystem to appropriate Sequencing mode
+    """
 
     @staticmethod
     def mapper(metal_system):
@@ -14,11 +20,26 @@ class LOMtoSeqMapper:
             return seq.Cavity
 
 
-def lom_composite_sys_to_seq_sys(lom_composite,
-                                 hilbertspace,
-                                 levels=None,
-                                 system_name='system'):
-    ## FIXME: params for setting detuning and levels
+def lom_composite_sys_to_seq_sys(lom_composite: CompositeSystem,
+                                 hilbertspace: scq.HilbertSpace,
+                                 levels: List[int] = None,
+                                 system_name='system') -> seq.System:
+    ## TODO: params for setting detuning and levels
+    """Convert LOM composite system to Sequencing system. A 'subsystem' in
+    LOM composite system corresponds to a 'mode' in Sequencing system
+
+    Args:
+        lom_composite (CompositeSystem): Metal LOM composite system
+        hilbertspace (scq.HilbertSpace): The hilbertspace of the passed LOM composite system
+        levels (List[int], optional): Number of energy levels to keep for each mode in
+            Sequencing system. If None, use the LOM subsystems' respective dimensions.
+            Defaults to None.
+        system_name (str, optional): [description]. Defaults to 'system'.
+
+    Returns:
+        seq.System: the converted Sequencing system
+    """
+
     modes = []
 
     if levels is None:

@@ -30,6 +30,9 @@ class RouteMeander(QRoute):
 
     Inherits `QRoute` class
 
+    .. meta::
+        Route Meander
+
     QRoute Default Options:
         * pin_inputs: Dict
             * start_pin: Dict -- Component and pin string pair. Define which pin to start from

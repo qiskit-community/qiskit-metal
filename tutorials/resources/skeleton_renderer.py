@@ -58,7 +58,9 @@ class QSkeletonRenderer(QRenderer):
     #: Type: Dict[str, str]
     default_options = Dict(
         # An option unique to QSkeletonRenderer.
-        number_of_bones='206',)
+        number_of_bones='206',
+        # Default file name for geometry table names.
+        file_geometry_tables='./simple_output_default_name.txt')
     """Default options"""
 
     name = 'skeleton'
@@ -109,7 +111,24 @@ class QSkeletonRenderer(QRenderer):
         # Updated each time write_qgeometry_table_names_to_file() is called.
         self.chip_info = dict()
 
-    # For a skeleton_renderer user, this is kept to examplify self.logger.warning.
+    # For a skeleton_renderer user, this is kept to exemplify self.logger.warning.
+
+    def _initiate_renderer(self):
+        """Not used by the skeleton renderer at this time. only returns True.
+        """
+        return True
+
+    def _close_renderer(self):
+        """Not used by the skeleton renderer at this time. only returns True.
+        """
+        return True
+
+    def render_design(self):
+        """Export the design to Skeleton."""
+        self.write_qgeometry_table_names_to_file(
+            file_name=self.options.file_geometry_tables,
+            highlight_qcomponents=[])
+
     def _can_write_to_path(self, file: str) -> int:
         """Check if can write file.
 

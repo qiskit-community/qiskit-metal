@@ -18,31 +18,38 @@ import logging
 import os
 import webbrowser
 from pathlib import Path
-from typing import List, TYPE_CHECKING
+from typing import TYPE_CHECKING, List
 
-from PySide2.QtCore import QTimer, Qt
+from PySide2.QtCore import Qt, QTimer
 from PySide2.QtGui import QIcon, QPixmap
-from PySide2.QtWidgets import QDialog, QDockWidget, QFileDialog, QLabel, QMainWindow, QMessageBox, QVBoxLayout
+from PySide2.QtWidgets import (QAction, QDialog, QDockWidget, QFileDialog,
+                               QLabel, QMainWindow, QMessageBox, QVBoxLayout)
+from qiskit_metal._gui.widgets.qlibrary_display.delegate_qlibrary import \
+    LibraryDelegate
+from qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary import \
+    QFileSystemLibraryModel
+from qiskit_metal._gui.widgets.qlibrary_display.proxy_model_qlibrary import \
+    LibraryFileProxyModel
 
-from qiskit_metal._gui.widgets.qlibrary_display.delegate_qlibrary import LibraryDelegate
-from qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary import QFileSystemLibraryModel
-from qiskit_metal._gui.widgets.qlibrary_display.proxy_model_qlibrary import LibraryFileProxyModel
+from .. import config, qlibrary
+from ..designs.design_base import QDesign
 from .elements_window import ElementsWindow
-from .main_window_base import QMainWindowBaseHandler, QMainWindowExtensionBase, kick_start_qApp
+from .main_window_base import (QMainWindowBaseHandler, QMainWindowExtensionBase,
+                               kick_start_qApp)
 from .main_window_ui import Ui_MainWindow
 from .renderer_gds_gui import RendererGDSWidget
 from .renderer_hfss_gui import RendererHFSSWidget
 from .renderer_q3d_gui import RendererQ3DWidget
 from .utility._handle_qt_messages import slot_catch_error
+from .utility._toolbox_qt import doShowHighlighWidget
 from .widgets.all_components.table_model_all_components import \
     QTableModel_AllComponents
-from .widgets.build_history.build_history_scroll_area import BuildHistoryScrollArea
+from .widgets.build_history.build_history_scroll_area import \
+    BuildHistoryScrollArea
 from .widgets.create_component_window import parameter_entry_window as pew
 from .widgets.edit_component.component_widget import ComponentWidget
 from .widgets.plot_widget.plot_window import QMainWindowPlot
 from .widgets.variable_table import PropertyTableWidget
-from .. import config, qlibrary
-from ..designs.design_base import QDesign
 
 if not config.is_building_docs():
     pass
@@ -187,16 +194,18 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     def full_refresh(self, _=None):
         """Handles click on Refresh."""
         self.logger.info(
-            f'Force refresh of all widgets (does not rebuild components)...')
+            r'Force refresh of all widgets (does not rebuild components)...')
         self.gui.refresh()
+        self.gui.ui.mainViewTab.doShow()
 
     @slot_catch_error()
     def rebuild(self, _=None):
         """Handles click on Rebuild."""
         self.logger.info(
-            f'Rebuilding all components in the model (and refreshing widgets)...'
+            r'Rebuilding all components in the model (and refreshing widgets)...'
         )
         self.gui.rebuild()
+        #self.gui.ui.mainViewTab.doShow()
 
     @slot_catch_error()
     def create_build_log_window(self, _=None):
@@ -446,49 +455,38 @@ class MetalGUI(QMainWindowBaseHandler):
             self.component_window.setCurrentIndex(0)
 
     def _add_additional_qactions_tool_bar_view(self):
-        """Add QActions to toolBarView that cannot be added via QDesign"""
+        """Programatically add the side toolbar buttons for showing/hiding the main docks
+        such as create coomponent, edit one, log dock, etc."""
+        toolbar = self.ui.toolBarView
+        toolbarInsertBefore = self.ui.actionToggleDocks  # insert before this action
 
-        # Library
-        self.dock_library_qaction = self.ui.dockLibrary.toggleViewAction()
-        library_icon = QIcon()
-        library_icon.addPixmap(QPixmap(":/component"), QIcon.Normal, QIcon.Off)
-        self.dock_library_qaction.setIcon(library_icon)
-        self.ui.toolBarView.insertAction(self.ui.actionToggleDocks,
-                                         self.dock_library_qaction)
+        DOCKS = [(self.ui.dockLibrary, r":/design"),
+                 (self.ui.dockDesign, r":/component"), (None, '-----'),
+                 (self.ui.dockVariables, r":/variables"),
+                 (self.ui.dockConnectors, r":/connectors"),
+                 (self.ui.dockLog, r":/log"), (None, '-----')]
 
-        # Design
-        self.dock_design_qaction = self.ui.dockDesign.toggleViewAction()
-        design_icon = QIcon()
-        design_icon.addPixmap(QPixmap(":/design"), QIcon.Normal, QIcon.Off)
-        self.dock_design_qaction.setIcon(design_icon)
-        self.ui.toolBarView.insertAction(self.ui.actionToggleDocks,
-                                         self.dock_design_qaction)
+        for row in DOCKS:
+            dock = row[0]
+            iconName = row[1]
+            if iconName == '-----':
+                toolbar.insertSeparator(toolbarInsertBefore)
+                continue
 
-        # Variables
-        self.dock_variables_qaction = self.ui.dockVariables.toggleViewAction()
-        variables_icon = QIcon()
-        variables_icon.addPixmap(QPixmap(":/variables"), QIcon.Normal,
-                                 QIcon.Off)
-        self.dock_variables_qaction.setIcon(variables_icon)
-        self.ui.toolBarView.insertAction(self.ui.actionToggleDocks,
-                                         self.dock_variables_qaction)
+            # Icons
+            icon = QIcon()
+            icon.addPixmap(QPixmap(iconName), QIcon.Normal, QIcon.Off)
 
-        # Connectors
-        self.dock_connectors_qaction = self.ui.dockConnectors.toggleViewAction()
-        connectors_icon = QIcon()
-        connectors_icon.addPixmap(QPixmap(":/connectors"), QIcon.Normal,
-                                  QIcon.Off)
-        self.dock_connectors_qaction.setIcon(connectors_icon)
-        self.ui.toolBarView.insertAction(self.ui.actionToggleDocks,
-                                         self.dock_connectors_qaction)
+            # Function call & monkey patch class instance
+            dock.doShow = doShowHighlighWidget.__get__(dock, type(dock))  # pylint: disable=assignment-from-no-return
 
-        # Log
-        self.dock_log_qaction = self.ui.dockLog.toggleViewAction()
-        log_icon = QIcon()
-        log_icon.addPixmap(QPixmap(":/log"), QIcon.Normal, QIcon.Off)
-        self.dock_log_qaction.setIcon(log_icon)
-        self.ui.toolBarView.insertAction(self.ui.actionToggleDocks,
-                                         self.dock_log_qaction)
+            # QT Action with trigger, embed in toolbar
+            action = QAction('', dock, triggered=dock.doShow)
+            action.setIcon(icon)
+            dock.actionShow = action  # save action
+
+            # insert action in toolbar
+            toolbar.insertAction(toolbarInsertBefore, action)
 
     def _set_element_tab(self, yesno: bool):
         """Set the elements tabl to Elements or View.
@@ -522,6 +520,10 @@ class MetalGUI(QMainWindowBaseHandler):
 
         # Add to the tabbed main view
         self.ui.mainViewTab.layout().addWidget(self.plot_win)
+
+        # add highlight function
+        obj = self.ui.mainViewTab
+        obj.doShow = doShowHighlighWidget.__get__(obj, type(obj))  # pylint: disable=assignment-from-no-return
 
         # Move the dock
         self._move_dock_to_new_parent(self.ui.dockLog, self.plot_win)
@@ -580,9 +582,17 @@ class MetalGUI(QMainWindowBaseHandler):
 
     def _setup_library_widget(self):
         """
-        Sets up the GUI's QLibrary display
+        Sets up the GUI's QLibrary display in Model-View-Controler framework
 
+        For debug use:
+            view = gui.main_window.ui.dockLibrary_tree_view
+            model = gui.ui.dockLibrary.proxy_library_model
+            model0 = gui.ui.dockLibrary.library_model
         """
+        dock = self.ui.dockLibrary
+
+        # --------------------------------------------------
+        # Model
 
         # getting absolute path of Qlibrary folder
         init_qlibrary_abs_path = os.path.abspath(qlibrary.__file__)
@@ -591,33 +601,42 @@ class MetalGUI(QMainWindowBaseHandler):
         self.QLIBRARY_FOLDERNAME = qlibrary.__name__
 
         # create model for Qlibrary directory
-        self.ui.dockLibrary.library_model = QFileSystemLibraryModel()
+        dock.library_model = QFileSystemLibraryModel(self.path_imgs)
 
-        self.ui.dockLibrary.library_model.setRootPath(self.QLIBRARY_ROOT)
+        dock.library_model.setRootPath(self.QLIBRARY_ROOT)
 
         # QSortFilterProxyModel
         #QSortFilterProxyModel: sorting items, filtering out items, or both.  maps the original model indexes to new indexes, allows a given source model to be restructured as far as views are concerned without requiring any transformations on the underlying data, and without duplicating the data in memory.
-        self.ui.dockLibrary.proxy_library_model = LibraryFileProxyModel()
-        self.ui.dockLibrary.proxy_library_model.setSourceModel(
-            self.ui.dockLibrary.library_model)
+        dock.proxy_library_model = LibraryFileProxyModel()
+        dock.proxy_library_model.setSourceModel(dock.library_model)
 
-        self.ui.dockLibrary_tree_view.setModel(
-            self.ui.dockLibrary.proxy_library_model)
-        self.ui.dockLibrary_tree_view.setRootIndex(
-            self.ui.dockLibrary.proxy_library_model.mapFromSource(
-                self.ui.dockLibrary.library_model.index(
-                    self.ui.dockLibrary.library_model.rootPath())))
+        # --------------------------------------------------
+        # View
+        view = self.ui.dockLibrary_tree_view
 
-        self.ui.dockLibrary_tree_view.setItemDelegate(
-            LibraryDelegate(self.main_window))  # try empty one if no work
-        self.ui.dockLibrary_tree_view.itemDelegate().tool_tip_signal.connect(
-            self.ui.dockLibrary_tree_view.setToolTip)
+        view.setModel(dock.proxy_library_model)
+        view.setRootIndex(
+            dock.proxy_library_model.mapFromSource(
+                dock.library_model.index(dock.library_model.rootPath())))
 
-        self.ui.dockLibrary_tree_view.qlibrary_filepath_signal.connect(
+        # try empty one if no work
+        view.setItemDelegate(LibraryDelegate(self.main_window))
+        view.itemDelegate().tool_tip_signal.connect(view.setToolTip)
+
+        view.qlibrary_filepath_signal.connect(
             self._create_new_component_object_from_qlibrary)
 
-        self.ui.dockLibrary_tree_view.viewport().setAttribute(Qt.WA_Hover, True)
-        self.ui.dockLibrary_tree_view.viewport().setMouseTracking(True)
+        # https://stackoverflow.com/questions/16759088/what-is-the-viewport-of-a-tree-widget
+        view.viewport().setAttribute(Qt.WA_Hover, True)
+        view.viewport().setMouseTracking(True)
+
+        view.resizeColumnToContents(0)
+
+        libraryRootPath = Path(dock.library_model.rootPath()) / "qubits"
+        stringLibraryRootPath = str(libraryRootPath)
+        view.expand(
+            dock.proxy_library_model.mapFromSource(
+                dock.library_model.index(stringLibraryRootPath)))
 
     ################################################
     # UI

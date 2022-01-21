@@ -47,6 +47,7 @@ from pyEPR.calcs.constants import e_el as ele, hbar
 from qiskit_metal.toolbox_python.utility_functions import get_all_args
 from qiskit_metal.analyses.em.cpw_calculations import guided_wavelength
 from qiskit_metal.analyses.hamiltonian.states_energies import extract_energies
+from .constants import (MHzRad, GHzRad, NANO, FEMTO, ONE_OVER_FEMTO)
 
 from qiskit_metal import logger
 
@@ -60,14 +61,6 @@ Operator = namedtuple('Operator', ['op', 'add_hc'])
 class CouplingType:
     CAPACITIVE = 'CAPACITIVE'
     INDUCTIVE = 'INDUCTIVE'
-
-
-MHzRad = 2 * np.pi * 1e6
-GHzRad = 2 * np.pi * 1e9
-
-NANO = 1e-9
-FEMTO = 1e-15
-ONE_OVER_FEMTO = 1e15
 
 
 def analyze_loaded_tl(fr, CL, vp, Z0, shorted=False):
@@ -207,6 +200,7 @@ def _transform_to_junction_flux_basis(orig_nodes,
                                       junctions: Mapping[Tuple[str, str], str],
                                       choose_least_num_neg: bool = True):
     """
+    For example:
     junctions = {('n1', 'n2'):'j1', ('n3', 'n4'):'j2'}
     junction flux is defined such that Phi_{j1} = Phi_{1} - Phi_{2}, for {'j1': ('n1', 'n2')}, where we refer to n1 as
     the "positive" node and n2 as the "negative" node
@@ -220,7 +214,7 @@ def _transform_to_junction_flux_basis(orig_nodes,
 
     j_list = list(junctions.keys())
 
-    # each junction flux can potentially replace one of two orignal nodes in the new flux basis.
+    # each junction flux can potentially replace one of two original nodes in the new flux basis.
     # for N junctions, an array of N nodes can represent such mapping where the ith node in the array
     # is the original node that is replaced by the ith junction; And an array of these arrays can
     # represent all possible mappings
@@ -256,7 +250,7 @@ class LabeledNdarray(np.ndarray):
     The constructor only accepts a square matrix. Sliced LabeledNdarray will still be
     a LabeledNdarray but the labels are not preserved: if the resulting matrix is still
     a square matrix, the labels will just be [0, 1, ...<array_row_number>-1]; and if the
-    the resulting marix is not a square matrix, there will be no labels.
+    the resulting matrix is not a square matrix, there will be no labels.
 
     """
 
@@ -271,6 +265,8 @@ class LabeledNdarray(np.ndarray):
         return obj
 
     def to_dataframe(self):
+        """ output to pandas dataframe
+        """
         if len(self.shape) == 1 or self.shape[0] != self.shape[1]:
             raise ValueError(
                 'Only square matrices are labeled and can be exported to dataframe.'
@@ -301,6 +297,10 @@ class LabeledNdarray(np.ndarray):
 
 
 def _maybe_remove_grd_node_then_cache(f):
+    """function decorator that takes the matrix output
+    of a function, i.e., f(), removes the ground node from
+    the matrix and caches the result
+    """
 
     def wrapper(self):
         _attr = f'_{f.__name__}'
@@ -318,7 +318,14 @@ def _maybe_remove_grd_node_then_cache(f):
 
 class CircuitGraph:
     """
-    class representing the lumped circuit
+    class implementing the lumped model circuit analysis.
+    Notations closely follow that of https://arxiv.org/pdf/2103.10344.pdf
+
+    User shouldn't have to instantiate this class themself as it is
+    created automatically by the CompositeSystem class
+
+    The object corresponds to the entire composite system, incorporating inputs
+    of all the cells provided
     """
 
     units = {'capacitance': 'fF', 'inductance': 'nH'}
@@ -332,6 +339,35 @@ class CircuitGraph:
                  junctions: Mapping[Tuple[str, str], str],
                  cj_dicts: List[Dict[Tuple, float]] = None,
                  nodes_force_keep: Sequence = None):
+        """Initialize the class with parameters specifying the circuit
+
+        Args:
+            nodes (Sequence): a list of the nodes
+            grd_node (str): name of the ground node
+            cmats (List[pd.DataFrame]): list of Maxwell capacitance matrices in pandas
+                dataframes, one for each cell provided
+            ind_lists (List[Dict[Tuple, float]]): list of dicts where each dict specifies
+                the inductances in each cell. For the dict, the keys are tuples of specifying
+                the two nodes between which the inductors lie.
+                For example, [{('n1', 'n2'): 10}, {('n5', 'n7'): 13}] specifies that there
+                is an inductor of 10 nH between node 'n1' and 'n2' for one cell and an
+                inductor of 13 nH between node 'n5' and 'n7' for another cell
+            junctions (Mapping[Tuple[str, str], str]): dict mapping original circuit
+                nodes to custom-named junction nodes. This is the parameter informing
+                the LOM analysis between which nodes the Josephson junctions are located.
+                For example, {('n1', 'n2'): 'j1'} specifies that there is a junction
+                between nodes 'n1' and 'n2' and named as 'j1'
+            cj_dicts (List[Dict[Tuple, float]], optional): if provided, specifies
+                the junction capacitances in each cell. Structure is the same as ind_lists.
+                For the dict, the keys are tuples of specifying the two nodes between which
+                the junctions lie. For example, [{('n1', 'n2'): 2}, None] specifies that there
+                is an junction capacitance of 2 fF between node 'n1' and 'n2' for the first
+                provided cell and None for the second provided cell. Defaults to None.
+            nodes_force_keep (Sequence, optional): a list of nodes that will not be eliminated
+                during L and C matrices reduction. Use this parameter to specify non-dynamic
+                nodes (nodes that are connected capacitors only or inductors only) that should
+                be preserved. If not specified (i.e., None), all non-dynamic nodes are eliminated
+        """
 
         self.nodes = list(nodes)
         self.idx = pd.Index(self.nodes)
@@ -381,6 +417,9 @@ class CircuitGraph:
         return str_out
 
     def _adj_list_to_mat(self, adj_list):
+        """ convert adjacency list representation of capacitance graph to
+        a matrix representation
+        """
         idx = self.idx
         dim = len(idx)
         mat = np.zeros((dim, dim))
@@ -394,6 +433,8 @@ class CircuitGraph:
         return mat
 
     def _inductance_list_to_Linv_mat(self, ind_dict):
+        """ convert inductance list to inductance inverse matrix
+        """
         idx = self.idx
         dim = len(idx)
         mat = np.zeros((dim, dim))
@@ -411,6 +452,10 @@ class CircuitGraph:
     @property
     @_maybe_remove_grd_node_then_cache
     def C_n(self):
+        """
+        https://arxiv.org/pdf/2103.10344.pdf
+        equation (5)
+        """
         dim = len(self.idx)
         C_n = np.zeros((dim, dim))
         for c_g in self._c_graphs:
@@ -420,6 +465,10 @@ class CircuitGraph:
     @property
     @_maybe_remove_grd_node_then_cache
     def L_n_inv(self):
+        """
+        https://arxiv.org/pdf/2103.10344.pdf
+        equation (5)
+        """
         dim = len(self.idx)
         L_n_inv = np.zeros((dim, dim))
         for l_dict in self._ind_lists:
@@ -429,6 +478,14 @@ class CircuitGraph:
     @property
     @_maybe_remove_grd_node_then_cache
     def S_n(self):
+        """ Linear transformation from original node basis to
+        node-junction basis where all non-linear dipole fluxes are
+        explicitly in the basis. The flux of the j-th dipole
+        $\Phi_{j} = \Phi_{n2} - \Phi_{n1}$, where $\Phi_{n2}$ and
+        $\Phi_{n1}$ are the node-to-datum fluxes of its two nodes
+        .
+        $\Phi = S_{n}^{-1}\Phi_n$
+        """
         t = _transform_to_junction_flux_basis(self.nodes,
                                               self._junctions,
                                               choose_least_num_neg=True)
@@ -439,16 +496,23 @@ class CircuitGraph:
 
     @property
     def C(self):
+        """Transformed capacitance matrix of the composite system
+        """
         return LabeledNdarray(
             self.S_n.T.dot(self.C_n).dot(self.S_n), self.node_jj_basis)
 
     @property
     def L_inv(self):
+        """Transformed inductance inverse matrix of the composite system
+        """
         return LabeledNdarray(
             self.S_n.T.dot(self.L_n_inv).dot(self.S_n), self.node_jj_basis)
 
     @property
     def orig_node_basis(self):
+        """ Original node basis consisting of node-to-datum fluxes,
+        excluding the ground node
+        """
         _orig_basis = self.nodes
         if self.ignore_grd_node:
             _orig_basis = [
@@ -458,6 +522,14 @@ class CircuitGraph:
 
     @property
     def node_jj_basis(self):
+        """ Node-junction basis which is linear transformation
+        from original node basis to where all non-linear dipole fluxes are
+        explicitly in the basis. The flux of the j-th dipole
+        $\Phi_{j} = \Phi_{n2} - \Phi_{n1}$, where $\Phi_{n2}$ and
+        $\Phi_{n1}$ are the node-to-datum fluxes of its two nodes
+        .
+        $\Phi = S_{n}^{-1}\Phi_n$
+        """
         if self._node_jj_basis is None:
             _ = self.S_n
         _node_jj_basis = self._node_jj_basis
@@ -469,6 +541,12 @@ class CircuitGraph:
 
     @property
     def S_remove(self):
+        """ Eliminate coupler constraints due to the singularity of
+        the inverse inductance matrix. Here we eliminate fluxes
+        in the kernel space of the transformed inverse inductance
+        matrix. These are nodes that are only touched by capacitors and are
+        considered non-dynamic nodes.
+        """
         nodes_force_keep = self.nodes_force_keep if self.nodes_force_keep else []
         force_keep_idx = pd.Index(
             self.node_jj_basis).get_indexer(nodes_force_keep)
@@ -489,7 +567,7 @@ class CircuitGraph:
             if np.count_nonzero(v) != 1:
                 raise ValueError(
                     f'Nullspace column vector {v} has more than one non-zero element. \
-                                 Only indivudal nodes in the current flux [see self.node_jj_basis] basis can be removed'
+                                 Only individual nodes in the current flux [see self.node_jj_basis] basis can be removed'
                 )
 
             # if the node to be removed is in the list of nodes that are forced to be kept, don't remove
@@ -501,6 +579,8 @@ class CircuitGraph:
 
     @property
     def S_keep(self):
+        """ Complement of S_remove
+        """
         # FIXME: currently assuming that S_keep can be solely constructed from
         # S_remove (which itself is constructed from the identity matrix) and the identity matrix
         S_remove = self.S_remove
@@ -622,6 +702,24 @@ class Subsystem:
                  sys_type: str,
                  nodes: List[str],
                  q_opts: dict = None):
+        """Initialize the Subsystem object
+
+        Args:
+            name (str): name of the subsystem
+            sys_type (str): type of the subsystem. Type can be one of the types implemented
+                by one of the concrete QuantumBuilders (call QuantumSystemRegistry.registry()
+                to see all the choices), which can also be custom-made by user
+            nodes (List[str]): list of nodes the subsystem corresponds to. For example, for
+                a transmon subsystem, this would just be a list of a single node which is the
+                user-defined junction node in the Cell object
+            q_opts (dict, optional): options relevant to the type of quantum subsystem. The
+                Subsystem object builds the quantum subsystem using quantumfy() which calls
+                make_quantum() of the corresponding QuantumBuilder. q_opts provides
+                parameters needed by make_quantum(). In the case of qubit subsystems, make_quantum()
+                takes advantage of the scQbuits package (https://scqubits.readthedocs.io).
+                Consequently, the default options correspond to the default options of the qubit
+                classes in scQubits. Defaults to None.
+        """
         self.name = name
         self.sys_type = sys_type
         self.nodes = nodes
@@ -632,14 +730,20 @@ class Subsystem:
 
     @property
     def h_params(self):
+        """ Hamiltonian parameters of the subsystem
+        """
         if self._h_params == {}:
             raise ValueError(
-                f'Subsystem {self.name}\'s Hamiltonian parameters have not been calcuated.'
+                f'Subsystem {self.name}\'s Hamiltonian parameters have not been calculated.'
             )
         return self._h_params
 
     @property
     def quantum_system(self):
+        """ The quantum subsystem that the subsystem corresponds to. It
+        is built by calling an associated builder passed in quantumfy()
+        using the Visitor pattern
+        """
         if self._quantum_system is None:
             raise ValueError(
                 f'Subsystem {self.name}\'s quantum system has not been created.'
@@ -647,6 +751,9 @@ class Subsystem:
         return self._quantum_system
 
     def quantumfy(self, quantum_builder) -> None:
+        """ Building the corresponding quantum system with an
+        associated builder
+        """
         quantum_builder.make_quantum(self)
 
     def map_to_custom_system(self, custom_mapper):
@@ -717,6 +824,23 @@ def set_builder_options(func):
 
 
 class TransmonBuilder(QuantumBuilder):
+    """
+    Concrete builder class for a type of quantum subsystem
+    Each subsystem of a composite system calls make_quantum() method of this class
+    to map LOM analysis results, the reduced L and C matrix elements to hamiltonian
+    parameters, such as Ej, Ec and etc
+
+    To create your own custom quantum builder, follow the patterns of the existing
+    ones, such this one, or the other ones implemented in this library
+
+        system_type (str): name of the quantum subsystem
+        default_opts (dict): default options relevant to the type of quantum
+            subsystem. Provide any default values for the paremeters that
+            make_quantum() needs. In the case of qubit subsystems, make_quantum()
+            takes advantage of the scQbuits package (https://scqubits.readthedocs.io).
+            Consequently, the default options correspond to the default options of
+            the qubit classes in scQubits
+    """
 
     system_type = 'TRANSMON'
     default_opts = {'ng': 0.001, 'ncut': 22, 'truncated_dim': 10}
@@ -725,6 +849,10 @@ class TransmonBuilder(QuantumBuilder):
     # pylint: disable=no-member
     @set_builder_options
     def make_quantum(self, subsystem: Subsystem):
+        """ concrete building function for the builder to build the quantum
+        system based on default options and input options set for the
+        Subsystem object
+        """
         cg = self.cg
         l_inv_k = cg.L_inv_k
         c_inv_k = cg.C_inv_k
@@ -751,6 +879,23 @@ class TransmonBuilder(QuantumBuilder):
 
 
 class FluxoniumBuilder(QuantumBuilder):
+    """
+    Concrete builder class for a type of quantum subsystem
+    Each subsystem of a composite system calls make_quantum() method of this class
+    to map LOM analysis results, the reduced L and C matrix elements to hamiltonian
+    parameters, such as Ej, Ec and etc
+
+    To create your own custom quantum builder, follow the patterns of the existing
+    ones, such this one, or the other ones implemented in this library
+
+        system_type (str): name of the quantum subsystem
+        default_opts (dict): default options relevant to the type of quantum
+            subsystem. Provide any default values for the paremeters that
+            make_quantum() needs. In the case of qubit subsystems, make_quantum()
+            takes advantage of the scQbuits package (https://scqubits.readthedocs.io).
+            Consequently, the default options correspond to the default options of
+            the qubit classes in scQubits
+    """
 
     system_type = 'FLUXONIUM'
     default_opts = {'cutoff': 110, 'truncated_dim': 10}
@@ -759,6 +904,10 @@ class FluxoniumBuilder(QuantumBuilder):
     # pylint: disable=no-member
     @set_builder_options
     def make_quantum(self, subsystem: Subsystem):
+        """ concrete building function for the builder to build the quantum
+        system based on default options and input options set for the
+        Subsystem object
+        """
         cg = self.cg
         c_inv_k = cg.C_inv_k
 
@@ -786,6 +935,23 @@ class FluxoniumBuilder(QuantumBuilder):
 
 
 class TLResonatorBuilder(QuantumBuilder):
+    """
+    Concrete builder class for a type of quantum subsystem
+    Each subsystem of a composite system calls make_quantum() method of this class
+    to map LOM analysis results, the reduced L and C matrix elements to hamiltonian
+    parameters, such as Ej, Ec and etc
+
+    To create your own custom quantum builder, follow the patterns of the existing
+    ones, such this one, or the other ones implemented in this library
+
+        system_type (str): name of the quantum subsystem
+        default_opts (dict): default options relevant to the type of quantum
+            subsystem. Provide any default values for the paremeters that
+            make_quantum() needs. In the case of qubit subsystems, make_quantum()
+            takes advantage of the scQbuits package (https://scqubits.readthedocs.io).
+            Consequently, the default options correspond to the default options of
+            the qubit classes in scQubits
+    """
 
     system_type = 'TL_RESONATOR'
     default_opts = {
@@ -804,6 +970,10 @@ class TLResonatorBuilder(QuantumBuilder):
     # pylint: disable=no-member
     @set_builder_options
     def make_quantum(self, subsystem: Subsystem):
+        """ concrete building function for the builder to build the quantum
+        system based on default options and input options set for the
+        Subsystem object
+        """
         cg = self.cg
         c_inv_k = cg.C_inv_k
 
@@ -840,6 +1010,23 @@ class TLResonatorBuilder(QuantumBuilder):
 
 
 class LumpedResonatorBuilder(QuantumBuilder):
+    """
+    Concrete builder class for a type of quantum subsystem
+    Each subsystem of a composite system calls make_quantum() method of this class
+    to map LOM analysis results, the reduced L and C matrix elements to hamiltonian
+    parameters, such as Ej, Ec and etc
+
+    To create your own custom quantum builder, follow the patterns of the existing
+    ones, such this one, or the other ones implemented in this library
+
+        system_type (str): name of the quantum subsystem
+        default_opts (dict): default options relevant to the type of quantum
+            subsystem. Provide any default values for the paremeters that
+            make_quantum() needs. In the case of qubit subsystems, make_quantum()
+            takes advantage of the scQbuits package (https://scqubits.readthedocs.io).
+            Consequently, the default options correspond to the default options of
+            the qubit classes in scQubits
+    """
 
     system_type = 'LUMPED_RESONATOR'
     default_opts = {'truncated_dim': 3}
@@ -848,6 +1035,10 @@ class LumpedResonatorBuilder(QuantumBuilder):
     # pylint: disable=no-member
     @set_builder_options
     def make_quantum(self, subsystem: Subsystem):
+        """ concrete building function for the builder to build the quantum
+        system based on default options and input options set for the
+        Subsystem object
+        """
         cg = self.cg
         l_inv_k = cg.L_inv_k
         c_inv_k = cg.C_inv_k
@@ -884,12 +1075,39 @@ class LumpedResonatorBuilder(QuantumBuilder):
 
 
 class Cell:
-    """A physical subdivision of the device, a sub-network of capaciators, inductoros and other
-    linear or non-linear circuit elements, whose values can be independently simulated/defined with
-    respect to other cells.
+    """A physical subdivision of the device (i.e., the composite system), a sub-graph
+    of capaciators, inductoros and other linear or non-linear circuit elements. The
+    cell can be independently simulated to extract its electromagnetic parameters, which
+    the the user provides as inputs to this object
     """
 
     def __init__(self, options: Dict):
+        """Initialize the cell object
+
+        Args:
+            options (Dict): options can contain the following keys
+                node_rename (dict): a dict mapping from original node names to
+                    new node names, {old_name: new_name}
+                cap_mat (pd.DataFrame): Maxwell capacitance of the cell in
+                    pandas dataframe
+                ind_dict (dict): the keys are tuples of specifying the two nodes
+                    between which the inductors lie. For example,
+                    {('n1', 'n2'): 10} specifies that there is an inductor of 10
+                    nH between node 'n1' and 'n2' for one cell and an inductor of
+                    13 nH between node 'n5' and 'n7' for another cell
+                jj_dict (dict): dict mapping original circuit nodes to custom-named
+                    junction nodes. This is the parameter informing the LOM analysis between
+                    which nodes the Josephson junctions are located. For example,
+                    {('n1', 'n2'): 'j1'} specifies that there is a junction between
+                    nodes 'n1' and 'n2' and named as 'j1' cf_dict (dict):
+                cj_dict (dict): if provided, specifies the junction capacitances in each
+                    cell. Structure is the same as ind_dict. For the dict, the keys are
+                    tuples of specifying the two nodes between which the junctions lie.
+                    For example, {('n1', 'n2'): 2} specifies that there is an
+                    junction capacitance of 2 fF between node 'n1' and 'n2' for the first
+                    provided cell and None for the second provided cell.
+
+        """
         self._node_rename = options.get('node_rename', {})
         self.cap_mat = _rename_nodes_in_df(self._node_rename,
                                            options['cap_mat'])
@@ -922,6 +1140,18 @@ class CompositeSystem:
                  cells: List[Cell],
                  grd_node: str,
                  nodes_force_keep: Sequence = None):
+        """Initialize the CompositeSystem object
+
+        Args:
+            subsystems (List[Subsystem]): list of Subsystem objects
+            cells (List[Cell]): list of Cell objects
+            grd_node (str): name of the ground node
+            nodes_force_keep (Sequence, optional): a list of nodes that will not be eliminated
+                during L and C matrices reduction. Use this parameter to specify non-dynamic
+                nodes (nodes that are connected capacitors only or inductors only) that should
+                be preserved. If not specified (i.e., None), all non-dynamic nodes are eliminated
+
+        """
         self._subsystems = subsystems
         self.num_subsystems = len(subsystems)
         self.names = [sub.name for sub in self._subsystems]
@@ -958,7 +1188,7 @@ class CompositeSystem:
         """create a CircuitGraph object with circuit parameters of the composite system
 
         Returns:
-            CircuitGraph: [description]
+            CircuitGraph: CircuitGraph object for LOM analysis
         """
         if self._cg is None:
             nodes = self._nodes
@@ -977,13 +1207,12 @@ class CompositeSystem:
         return self._subsystems
 
     def create_hilbertspace(self) -> scq.HilbertSpace:
-        """ create the composite hilbertspace including all the subsystems. Interaction NOT included
-
-        Raises:
-            NotImplementedError: [description]
+        """ create the composite hilbertspace including all the subsystems. Interaction
+            NOT included
 
         Returns:
-            scq.HilbertSpace: [description]
+            scq.HilbertSpace: Hilbertspace object for the Hamiltonian
+                of the composite system without interations added
         """
         cg = self.circuitGraph()
 
@@ -1031,15 +1260,18 @@ class CompositeSystem:
             raise NotImplementedError
 
     def add_interaction(self,
-                        gs: Any = None,
+                        gs: np.ndarray = None,
                         gscale: float = 1.) -> scq.HilbertSpace:
         """ add interaction terms to the composite hilbertspace
 
         Args:
-            gs (Any, optional): [description]. Defaults to None.
+            gs (np.ndarray): coupling strength matrix. If not provided,
+                it will be calculated by compute_gs()
+            gscale (float): coupling strength scale
 
         Returns:
-            scq.HilbertSpace: [description]
+            scq.HilbertSpace: Hilbertspace object for the Hamiltonian
+                of the composite system with interations added
         """
         cg = self.circuitGraph()
         h = self.create_hilbertspace()
@@ -1086,7 +1318,19 @@ class CompositeSystem:
     def hamiltonian_results(self,
                             hilbertspace: scq.HilbertSpace,
                             evals_count=None,
-                            print_info=True):
+                            print_info=True) -> pd.DataFrame:
+        """Print and return results
+
+        Args:
+            hilbertspace (scq.HilbertSpace): Hilbertspace object for the Hamiltonian
+                of the composite system
+            evals_count (int, optional): Number of eigenenergy levels to keep
+                after diagonalizing the Hamiltonian. Defaults to 10.
+            print_info (bool, optional): If true, print results as well. Defaults to True.
+
+        Returns:
+            pd.DataFrame: dataframe containing the results
+        """
         ham_res = {}
 
         names = self.names

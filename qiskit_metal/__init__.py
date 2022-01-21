@@ -52,6 +52,9 @@ def __setup_Qt_backend():  # pylint: disable=invalid-name
     to prevent Qt windows from hanging.
     """
     # pylint: disable=import-outside-toplevel
+
+    # When in vscode and in debug-mode, may want to comment
+    # next line out, "os.environ["QT_API"] = "pyside2""
     os.environ["QT_API"] = "pyside2"
 
     from PySide2 import QtCore  #, QtWidgets

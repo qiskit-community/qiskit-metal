@@ -37,7 +37,7 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
         # finds all files that
         # (Aren't hidden (begin w/ .), don't begin with __init__, don't begin with _template, etc. AND end in .py)  OR (don't begin with __pycache__ and don't have a '.' in the name   # pylint: disable=line-too-long
         # (QComponent files) OR (Directories)
-        self.accepted_files__regex = r"(^((?!\.))(?!__init__)(?!_template)(?!__pycache__).*\.py)|(?!__pycache__)(?!base)(^([^.]+)$)"  # pylint: disable=line-too-long
+        self.accepted_files__regex = r"(^((?!\.))(?!base)(?!__init__)(?!_template)(?!_parsed)(?!__pycache__).*\.py)|(?!__pycache__)(^([^.]+)$)"  # pylint: disable=line-too-long
         self.setFilterRegExp(self.accepted_files__regex)
 
     def filterAcceptsColumn(
@@ -72,8 +72,5 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
         # allow editable
         if role == Qt.EditRole:
             return self.data(index, Qt.DisplayRole)
-
-        if role == Qt.SizeHintRole:
-            return QSize(10, 25)
 
         return super().data(index, role)

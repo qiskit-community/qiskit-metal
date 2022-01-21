@@ -751,7 +751,7 @@ QToolBar QToolButton {
 }
 
 QToolBar QToolButton:hover {
-  border: 1px solid #148CD2;
+  border: 1px solid #e74d10;
   background-color: qlineargradient(x1: 0.0, y1: 0.0, x2: 1.0, y2: 1.0, stop: 0.0 rgba(34, 48, 63, 100%), stop: 0.4 rgba(34, 48, 63, 100%), stop: 1.0 rgba(129, 37, 52, 100%));
 }
 

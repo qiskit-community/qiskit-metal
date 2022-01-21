@@ -81,6 +81,7 @@ Terminations
 
     LaunchpadWirebond
     LaunchpadWirebondCoupled
+	LaunchpadWirebondDriven
     OpenToGround
     ShortToGround
 
@@ -154,6 +155,7 @@ if config.is_building_docs():
     from .lumped.resonator_coil_rect import ResonatorCoilRect
     from .terminations.launchpad_wb import LaunchpadWirebond
     from .terminations.launchpad_wb_coupled import LaunchpadWirebondCoupled
+    from .terminations.launchpad_wb_driven import LaunchpadWirebondDriven
     from .terminations.open_to_ground import OpenToGround
     from .terminations.short_to_ground import ShortToGround
     from .tlines.straight_path import RouteStraight
