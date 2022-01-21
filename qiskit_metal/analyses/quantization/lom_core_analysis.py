@@ -32,7 +32,7 @@ class DummyH5py:
 sys.modules['h5py'] = DummyH5py
 
 from collections import defaultdict, namedtuple
-from typing import Any, List, Dict, Tuple, DefaultDict, Sequence, Mapping, Union
+from typing import Any, List, Dict, Tuple, DefaultDict, Sequence, Mapping, Union, Callable
 import argparse
 
 import numpy as np
@@ -755,9 +755,6 @@ class Subsystem:
         associated builder
         """
         quantum_builder.make_quantum(self)
-
-    def map_to_custom_system(self, custom_mapper):
-        return custom_mapper(self)
 
 
 class _QuantumBuilderMeta(type):

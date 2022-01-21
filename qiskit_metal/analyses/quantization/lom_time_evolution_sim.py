@@ -50,7 +50,7 @@ def lom_composite_sys_to_seq_sys(lom_composite: CompositeSystem,
     chi_mat = h_results['chi_in_MHz']
     chi_mat_ghz = chi_mat * 1e-3
     for ii, sub1 in enumerate(lom_composite.subsystems):
-        seq_cls = sub1.map_to_custom_system(LOMtoSeqMapper.mapper)
+        seq_cls = LOMtoSeqMapper.mapper(sub1)
         sub_name = sub1.name
         self_kerr = chi_mat_ghz[ii, ii]
         mode = seq_cls(sub_name, levels=levels[ii], kerr=self_kerr)
