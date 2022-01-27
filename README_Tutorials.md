@@ -31,7 +31,7 @@ Join the [Qiskit](https://ibm.co/joinqiskitslack) `#metal` slack channel to requ
 | Nov 4 | Tutorial | [New LOM Analysis Methodology - Part 3](https://youtu.be/kWFYYUa0V3k) |
 | Nov 18 | Forum | Q&A - The Qiskit Metal team will take any question |
 | Jan 13, 2022 | Forum | Q&A - The Qiskit Metal team will take any question |
-| Jan 27, 2022 | TBD |
+| Jan 27, 2022 | Forum | Helping users generate a custom component.
 | Feb 10, 2022 | TBD |
 | Feb 24, 2022 | TBD |
 | Mar 10, 2022 | TBD |
