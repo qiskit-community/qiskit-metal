@@ -482,7 +482,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         _options = _transmon_cross.default_options
 
         # Test all elements of the result data against expected data
-        self.assertEqual(len(_options), 4)
+        self.assertEqual(len(_options), 5)
         self.assertEqual(_options['cross_width'], '20um')
         self.assertEqual(_options['cross_length'], '200um')
         self.assertEqual(_options['cross_gap'], '20um')
