@@ -12,7 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# Contributers: Figen YILMAZ, Li-Chieh Hsiao, Dr Christian K Andersen
+# Contributors: Figen YILMAZ, Li-Chieh Hsiao, Christian Kraglund Andersen
 """Transmon Pocket Teeth.
 """
 
@@ -72,9 +72,9 @@ class TransmonPocketTeeth(BaseQubit):
         Below is a sketch of the qubit
         ::
 
-                 -1             0
+                 +1              0             +1
                 _________________________________
-            -1  |                |               |          Y
+            -1  |                |               |  +1      Y
                 |           | | |_| | |          |          ^
                 |        ___| |_____| |____      |          |
                 |       /     island       \     |          |----->  X
@@ -86,8 +86,9 @@ class TransmonPocketTeeth(BaseQubit):
                 |       \__________________/     |
                 |                                |
                 |                                |
-                |________________________________|   +1
-                                            +1
+            -1  |________________________________|   +1
+                 
+                 -1                            -1
 
     .. image::
         transmon_pocket_teeth.png
