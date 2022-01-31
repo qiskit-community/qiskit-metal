@@ -196,10 +196,10 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         options = my_open_to_ground.default_options
 
         # Test all elements of the results data against expected ata
-        self.assertEqual(len(options), 3)
-        self.assertEqual(options['width'], '10um')
-        self.assertEqual(options['gap'], '6um')
-        self.assertEqual(options['termination_gap'], '6um')
+        self.assertEqual(len(options), 8)
+        self.assertEqual(options['width'], 'cpw_width')
+        self.assertEqual(options['gap'], 'cpw_gap')
+        self.assertEqual(options['termination_gap'], 'cpw_gap')
 
     def test_qlibrary_short_to_ground_options(self):
         """Test that default options of ShortToGround in short_to_ground.py
