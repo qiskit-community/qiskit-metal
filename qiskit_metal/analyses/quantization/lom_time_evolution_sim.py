@@ -3,21 +3,8 @@ import numpy as np
 import scqubits as scq
 from typing import List
 
-from qiskit_metal.analyses.quantization.lom_core_analysis import CompositeSystem
-
-
-class LOMtoSeqMapper:
-    """Mapping LOM subsystem to appropriate Sequencing mode
-    """
-
-    @staticmethod
-    def mapper(metal_system):
-        if metal_system.sys_type == 'TRANSMON':
-            return seq.Transmon
-        elif metal_system.sys_type in ['FLUXONIUM']:
-            return seq.Qubit
-        elif metal_system.sys_type in ['TL_RESONATOR', 'LUMPED_RESONATOR']:
-            return seq.Cavity
+from qiskit_metal.analyses.quantization.lom_core_analysis import CompositeSystem, Subsystem
+from qiskit_metal.analyses.quantization.lom_extensions import LOM_SUBSYSTEM_TO_SEQ_MODE, to_external_system
 
 
 def lom_composite_sys_to_seq_sys(lom_composite: CompositeSystem,
@@ -50,7 +37,7 @@ def lom_composite_sys_to_seq_sys(lom_composite: CompositeSystem,
     chi_mat = h_results['chi_in_MHz']
     chi_mat_ghz = chi_mat * 1e-3
     for ii, sub1 in enumerate(lom_composite.subsystems):
-        seq_cls = LOMtoSeqMapper.mapper(sub1)
+        seq_cls = to_external_system(sub1, LOM_SUBSYSTEM_TO_SEQ_MODE)
         sub_name = sub1.name
         self_kerr = chi_mat_ghz[ii, ii]
         mode = seq_cls(sub_name, levels=levels[ii], kerr=self_kerr)
