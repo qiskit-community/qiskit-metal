@@ -29,12 +29,6 @@ class OpenToGround(QComponent):
           for the purpose of generating a value to pass to the pin)
         * gap: 'cpw_gap' -- The gap of the 'cpw'
         * termination_gap: 'cpw_gap' -- The length of dielectric from the end of the cpw center trace to the ground.
-        * pos_x: '0um' -- The x position of the ground termination.
-        * pos_y: '0um' -- The y position of the ground termination.
-        * rotation: '0' -- The direction of the termination. 0 degrees is +x, following a
-          counter-clockwise rotation (eg. 90 is +y)
-        * chip: 'main' -- The chip the pin should be on.
-        * layer: '1' -- Layer the pin is on. Does not have any practical impact to the short.
 
     Values (unless noted) are strings with units included, (e.g., '30um')
     """
