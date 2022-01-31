@@ -12,6 +12,8 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
+# modified by Chalmers/SK/20210621
+
 from collections import defaultdict
 from pathlib import Path
 from typing import Union, Tuple
@@ -368,7 +370,7 @@ class QHFSSRenderer(QAnsysRenderer):
         # Draw rectangle for inductor.
         self.logger.debug(f'Drawing a rectangle: {inductor_name}')
         poly_ansys = self.modeler.draw_rect_corner([xmin, ymin, z], xmax - xmin,
-                                                   ymax - ymin, z,
+                                                   ymax - ymin, 0,
                                                    **ansys_options)
         poly_ansys.make_rlc_boundary(axis,
                                      l=qgeom['hfss_inductance'],
