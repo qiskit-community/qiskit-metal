@@ -525,7 +525,17 @@ class QGeometryTables(object):
         df = df.assign(**options)
 
         # Set new table. Unfortunately, this creates a new instance. Can just direct append
-        self.tables[kind] = table.append(df, sort=False, ignore_index=True)
+
+        #This line creates many warnings and requests usage of concat instead.
+        # self.tables[kind] = table.append(df, sort=False, ignore_index=True)
+
+        self.tables[kind] = pd.concat([table, df],
+                                      axis=0,
+                                      join='outer',
+                                      ignore_index=True,
+                                      sort=False,
+                                      verify_integrity=False,
+                                      copy=False)
         # concat([table,df], axis=0, join='outer', ignore_index=True,sort=False,
         #          verify_integrity=False, copy=False)
 
