@@ -18,6 +18,6 @@ dependencies:
   - pyside2
   - qutip
   - scipy
-  - shapely
+  - shapely<=1.7 # To temporarily reduce the warnings.
   - jupyter
   - scqubits
