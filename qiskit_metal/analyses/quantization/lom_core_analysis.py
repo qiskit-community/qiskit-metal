@@ -1160,7 +1160,8 @@ class CompositeSystem:
         self._jj = {k: j for c in self._cells for k, j in c.jj_dict.items()}
         _jj_to_node_map = dict(zip(self._jj.values(), self._jj.keys()))
 
-        _cell_nodes = np.unique([n for c in self._cells for n in c.nodes]).tolist()
+        _cell_nodes = np.unique([n for c in self._cells for n in c.nodes
+                                ]).tolist()
         _sys_nodes = []
         for sub in self._subsystems:
             for n in sub.nodes:
