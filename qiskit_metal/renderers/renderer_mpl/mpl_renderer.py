@@ -325,8 +325,6 @@ class QMplRenderer():
         Returns:
             Polygon of the new filleted path.
         """
-        if row["fillet"] == 0:  # zero radius, no need to fillet
-            return row["geometry"]
         path = row["geometry"].coords
         if len(path) <= 2:  # only start and end points, no need to fillet
             return row["geometry"]
@@ -459,10 +457,12 @@ class QMplRenderer():
         # convert to polys - handle non zero width
         table1 = table[~mask]
 
-        # if any are fillet, alter the path separately
-        table1.loc[table1.fillet.notnull(),
-                   'geometry'] = table1[table1.fillet.notnull()].apply(
-                       self.fillet_path, axis=1)
+        mask2 = (table1.fillet == 0)
+
+        table2 = table1[~mask2]
+
+        for index,row in table2.iterrows():
+            table2.loc[index,'geometry'] = self.fillet_path(row)            
 
         if len(table1) > 0:
             table1.geometry = table1[['geometry', 'width']].apply(lambda x: x[
