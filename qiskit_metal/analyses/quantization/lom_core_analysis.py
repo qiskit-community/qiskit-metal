@@ -32,7 +32,7 @@ class DummyH5py:
 sys.modules['h5py'] = DummyH5py
 
 from collections import defaultdict, namedtuple
-from typing import Any, List, Dict, Tuple, DefaultDict, Sequence, Mapping, Union
+from typing import Any, List, Dict, Tuple, DefaultDict, Sequence, Mapping, Union, Callable
 import argparse
 
 import numpy as np
@@ -1160,7 +1160,8 @@ class CompositeSystem:
         self._jj = {k: j for c in self._cells for k, j in c.jj_dict.items()}
         _jj_to_node_map = dict(zip(self._jj.values(), self._jj.keys()))
 
-        _cell_nodes = np.unique([c.nodes for c in self._cells]).tolist()
+        _cell_nodes = np.unique([n for c in self._cells for n in c.nodes
+                                ]).tolist()
         _sys_nodes = []
         for sub in self._subsystems:
             for n in sub.nodes:
@@ -1198,6 +1199,10 @@ class CompositeSystem:
                                     cj_dicts, self.nodes_force_keep)
 
         return self._cg
+
+    @property
+    def subsystems(self):
+        return self._subsystems
 
     def create_hilbertspace(self) -> scq.HilbertSpace:
         """ create the composite hilbertspace including all the subsystems. Interaction
@@ -1310,7 +1315,7 @@ class CompositeSystem:
 
     def hamiltonian_results(self,
                             hilbertspace: scq.HilbertSpace,
-                            evals_count=10,
+                            evals_count=None,
                             print_info=True) -> pd.DataFrame:
         """Print and return results
 
@@ -1327,6 +1332,9 @@ class CompositeSystem:
         ham_res = {}
 
         names = self.names
+
+        if evals_count is None:
+            evals_count = hilbertspace.dimension
 
         evals, evecs = hilbertspace.eigensys(evals_count=evals_count)
         esys_array = np.empty(shape=(2,), dtype=object)

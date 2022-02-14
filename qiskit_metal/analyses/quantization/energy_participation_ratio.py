@@ -171,7 +171,11 @@ class EPRanalysis(QAnalysis):
         if not no_junctions:
             self.run_analysis()
             self.spectrum_analysis(self.setup.cos_trunc, self.setup.fock_trunc)
-            self.report_hamiltonian(self.setup.sweep_variable)
+            try:
+                self.report_hamiltonian(self.setup.sweep_variable)
+            except AttributeError:
+                self.logger.error(
+                    "Please install a more recent version of pyEPR (>=0.8.5.3)")
 
     # TODO: all the epr methods should not use the renderer. Now they are forced to because of the
     #  pyEPR dependency from pinfo. pinfo however is Ansys specific and cannot be generalized as-is
