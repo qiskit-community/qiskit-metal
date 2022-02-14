@@ -635,7 +635,7 @@ gui = MetalGUI(design)
         str_failed = ""
         if len(failed) > 0:
             str_failed += """
-                       
+
             # WARNING"""
         for k in failed:
             str_failed += f"""
@@ -670,7 +670,7 @@ gui = MetalGUI(design)
         body = f"""
 {str_failed}
 {strname} = {obj_name}(
-design, 
+design,
 name='{strname}'{other_args}
 )
 {str_meta_d}
@@ -1073,8 +1073,8 @@ name='{strname}'{other_args}
             geometry: dict,
             subtract: bool = False,
             helper: bool = False,
-            layer: Union[int, str] = 1,  # chip will be here
-            chip: str = 'main',
+            layer: Union[int, str] = None,  # chip will be here
+            chip: str = None,
             **kwargs):
         r"""Add QGeometry.
 
@@ -1101,6 +1101,11 @@ name='{strname}'{other_args}
         """
         # assert (subtract and helper) == False, "The object can't be a subtracted helper. Please"\
         #    " choose it to either be a helper or a a subtracted layer, but not both. Thank you."
+
+        if layer is None:
+            layer = self.options.layer
+        if chip is None:
+            chip = self.options.chip
 
         if kind in self.qgeometry_table_usage.keys():
             self.qgeometry_table_usage[kind] = True
