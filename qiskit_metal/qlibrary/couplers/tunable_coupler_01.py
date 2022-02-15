@@ -154,8 +154,7 @@ class TunableCoupler01(BaseQubit):
             cpl_y - p.cp_arm_length,
             cpl_x + 1 / 5 * x_spot + p.cp_arm_width / 2, cpl_y)
 
-        con_body = draw.shapely.ops.unary_union(
-            [con_pad, con_arm_l, con_arm_r])
+        con_body = draw.shapely.ops.unary_union([con_pad, con_arm_l, con_arm_r])
 
         con_sub = con_body.buffer(p.cp_gap, cap_style=3, join_style=2)
 

@@ -174,8 +174,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
                                      t_claw_height / 2 - c_w)
             claw_base = claw_base.difference(claw_subtract)
 
-            connector_arm = draw.shapely.ops.unary_union(
-                [claw_base, claw_cpw])
+            connector_arm = draw.shapely.ops.unary_union([claw_base, claw_cpw])
             connector_etcher = draw.buffer(connector_arm, c_g)
         else:
             connector_arm = claw_cpw

@@ -102,11 +102,7 @@ def render_poly(poly: shapely.geometry.Polygon, ax: plt.Axes, kw=None):
     """
     # TODO: maybe if done in batch we can speed this up?
     kw = kw or {}
-    return ax.add_patch(
-        PolygonPatch(poly, **{
-            **style_config.poly,
-            **kw
-        }))
+    return ax.add_patch(PolygonPatch(poly, **{**style_config.poly, **kw}))
 
 
 def render(
