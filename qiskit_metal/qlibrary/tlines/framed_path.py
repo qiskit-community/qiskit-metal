@@ -26,6 +26,9 @@ class RouteFramed(QRoute):
 
     This class extends the `QComponent` class.
 
+    .. meta::
+        Routed Frame
+
     Assumptions:
         1. Components are situated along xy axes in 2 dimensions. No rotation is allowed (yet). Their bounding boxes may
            not overlap, though they may be situated at arbitrary x and y provided these conditions are met.

@@ -132,7 +132,6 @@ class QNet():
         entry2 = [net_id, comp2_id, pin2_name]
         temp_df = pd.DataFrame([entry1, entry2], columns=self.column_names)
 
-        #self._net_info = self._net_info.append(temp_df, ignore_index=True)
         self._net_info = pd.concat([self._net_info, temp_df],
                                    axis=0,
                                    join='outer',

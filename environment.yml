@@ -12,10 +12,11 @@ dependencies:
   - numpy
   - pandas
   - pint
-  - pyepr-quantum>=0.8.4.6
+  - pyepr-quantum>=0.8.5.3
   - pygments
   - pyside2
   - qutip
   - scipy
   - shapely
   - jupyter
+  - scqubits
