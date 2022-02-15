@@ -145,8 +145,10 @@ class QMainWindowExtension(QMainWindowExtensionBase):
 
         # save python script to file path
         pyscript = self.design.to_python_script()
-        with open(filename, 'w') as f:
-            f.write(pyscript)
+        #check whether filename is empty or not. Save file only when filename is non-empty.
+        if len(filename):
+            with open(filename, 'w') as f:
+                f.write(pyscript)
 
     @slot_catch_error()
     def save_design(self, _=None):
@@ -168,18 +170,20 @@ class QMainWindowExtension(QMainWindowExtensionBase):
                 self.design.save_path = filename
             # save python script to file path
             pyscript = self.design.to_python_script()
-            with open(filename, 'w') as f:
-                f.write(pyscript)
+            #check whether filename is empty or not. Save file only when filename is non-empty.
+            if len(filename):
+                with open(filename, 'w') as f:
+                    f.write(pyscript)
 
-            #make it clear it's saving
-            saving_dialog = QDialog(self)
-            saving_dialog.setWindowModality(Qt.NonModal)
-            v = QVBoxLayout()
-            saving_dialog.setLayout(v)
-            v.addWidget(QLabel("Saving..."))
-            saving_dialog.open()
-            saving_dialog.show()
-            QTimer.singleShot(200, saving_dialog.close)
+                #make it clear it's saving
+                saving_dialog = QDialog(self)
+                saving_dialog.setWindowModality(Qt.NonModal)
+                v = QVBoxLayout()
+                saving_dialog.setLayout(v)
+                v.addWidget(QLabel("Saving..."))
+                saving_dialog.open()
+                saving_dialog.show()
+                QTimer.singleShot(200, saving_dialog.close)
         else:
             self.logger.info('No design present.')
             QMessageBox.warning(self, 'Warning', 'No design present! Can'
@@ -601,7 +605,7 @@ class MetalGUI(QMainWindowBaseHandler):
         self.QLIBRARY_FOLDERNAME = qlibrary.__name__
 
         # create model for Qlibrary directory
-        dock.library_model = QFileSystemLibraryModel()
+        dock.library_model = QFileSystemLibraryModel(self.path_imgs)
 
         dock.library_model.setRootPath(self.QLIBRARY_ROOT)
 
@@ -631,6 +635,12 @@ class MetalGUI(QMainWindowBaseHandler):
         view.viewport().setMouseTracking(True)
 
         view.resizeColumnToContents(0)
+
+        libraryRootPath = Path(dock.library_model.rootPath()) / "qubits"
+        stringLibraryRootPath = str(libraryRootPath)
+        view.expand(
+            dock.proxy_library_model.mapFromSource(
+                dock.library_model.index(stringLibraryRootPath)))
 
     ################################################
     # UI

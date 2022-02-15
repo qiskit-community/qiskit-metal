@@ -33,7 +33,10 @@ class jj_manhattan(QComponent):
     larger metallic pad region.
 
     .. image::
-        JJManhattan.png
+        JJ_Manhattan.png
+
+    .. meta::
+        Josephson Junction Manhattan
 
     Default Options:
         * JJ_pad_lower_width: '4um' -- width of lower JJ metal region

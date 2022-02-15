@@ -30,6 +30,9 @@ def intersecting(a: np.array, b: np.array, c: np.array, d: np.array) -> bool:
     """Returns whether segment ab intersects or overlaps with segment cd, where
     a, b, c, and d are all coordinates.
 
+    .. meta::
+        Anchored Path
+
     Args:
         a (np.array): Coordinate
         b (np.array): Coordinate

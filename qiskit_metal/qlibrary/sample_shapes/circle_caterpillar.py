@@ -27,6 +27,9 @@ class CircleCaterpillar(QComponent):
     .. image::
         CircleCaterpillar.png
 
+    .. meta::
+        Circle Caterpillar
+
     Default Options:
         * segments: '5'
         * distance: '1.2'

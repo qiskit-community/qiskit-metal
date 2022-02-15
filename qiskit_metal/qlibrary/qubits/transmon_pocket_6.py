@@ -81,9 +81,9 @@ class TransmonPocket6(BaseQubit):
         Below is a sketch of the qubit
         ::
 
-                 -1             0
+                 +1              0             +1
                 _________________________________
-            -1  |______ ____    _|_    __________|          Y
+            -1  |______ ____    _|_    __________|  +1      Y
                 |      |____|  |___|   |____|    |          ^
                 |        __________________      |          |
                 |       |     island       |     |          |----->  X
@@ -95,11 +95,16 @@ class TransmonPocket6(BaseQubit):
                 |       |__________________|     |
                 |        ______                  |
                 |_______|______|                 |
-                |________________________________|   +1
-                                            +1
+            -1  |________________________________|   +1
+                 
+                 -1                            -1
 
     .. image::
-        TransmonPocket6.png
+        transmon_pocket_6.png
+
+    .. meta::
+        Transmon Pocket 6
+
     """
 
     # Default drawing options

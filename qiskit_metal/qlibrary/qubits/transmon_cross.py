@@ -46,7 +46,10 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
 
 
     .. image::
-        TransmonCross.png
+        transmon_cross.png
+
+    .. meta::
+        Transmon Cross
 
     BaseQubit Default Options:
         * connection_pads: Empty Dict -- The dictionary which contains all active connection lines for the qubit.
@@ -69,6 +72,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         cross_width='20um',
         cross_length='200um',
         cross_gap='20um',
+        chip='main',
         _default_connection_pads=Dict(
             connector_type='0',  # 0 = Claw type, 1 = gap type
             claw_length='30um',
@@ -107,6 +111,9 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         cross_length = p.cross_length
         cross_gap = p.cross_gap
 
+        # access to chip name
+        chip = p.chip
+
         # Creates the cross and the etch equivalent.
         cross_line = draw.shapely.ops.unary_union([
             draw.LineString([(0, cross_length), (0, -cross_length)]),
@@ -130,9 +137,15 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         [cross, cross_etch, rect_jj] = polys
 
         # generate qgeometry
-        self.add_qgeometry('poly', dict(cross=cross))
-        self.add_qgeometry('poly', dict(cross_etch=cross_etch), subtract=True)
-        self.add_qgeometry('junction', dict(rect_jj=rect_jj), width=cross_width)
+        self.add_qgeometry('poly', dict(cross=cross), chip=chip)
+        self.add_qgeometry('poly',
+                           dict(cross_etch=cross_etch),
+                           subtract=True,
+                           chip=chip)
+        self.add_qgeometry('junction',
+                           dict(rect_jj=rect_jj),
+                           width=cross_width,
+                           chip=chip)
 
 
 ############################CONNECTORS##################################################################################################
@@ -154,6 +167,9 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         cross_width = p.cross_width
         cross_length = p.cross_length
         cross_gap = p.cross_gap
+
+        # access to chip name
+        chip = p.chip
 
         pc = self.p.connection_pads[name]  # parser on connector options
         c_g = pc.claw_gap
@@ -202,9 +218,11 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         [connector_arm, connector_etcher, port_line] = polys
 
         # Generates qgeometry for the connector pads
-        self.add_qgeometry('poly', {f'{name}_connector_arm': connector_arm})
+        self.add_qgeometry('poly', {f'{name}_connector_arm': connector_arm},
+                           chip=chip)
         self.add_qgeometry('poly',
                            {f'{name}_connector_etcher': connector_etcher},
-                           subtract=True)
+                           subtract=True,
+                           chip=chip)
 
         self.add_pin(name, port_line.coords, c_w)
