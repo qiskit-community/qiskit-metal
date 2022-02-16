@@ -43,7 +43,8 @@ from numpy import asarray, concatenate, ones
 
 
 class Polygon(object):
-    # Adapt Shapely or GeoJSON/geo_interface polygons to a common interface
+    """Adapt Shapely or GeoJSON/geo_interface polygons to a common interface"""
+
     def __init__(self, context):
         if hasattr(context, 'interiors'):
             self.context = context
@@ -68,9 +69,16 @@ class Polygon(object):
         return value
 
 
-def PolygonPath(polygon):
+def PolygonPath(polygon: Polygon):
     """Constructs a compound matplotlib path from a Shapely or GeoJSON-like
-    geometric object"""
+    geometric object
+
+    Args:
+        polygon (Polygon): polygon
+
+    Returns:
+        Path: compound matplotlib path
+    """
     this = Polygon(polygon)
     assert this.geom_type == 'Polygon'
 
@@ -89,7 +97,7 @@ def PolygonPath(polygon):
     return Path(vertices, codes)
 
 
-def PolygonPatch(polygon, **kwargs):
+def PolygonPatch(polygon: Polygon, **kwargs):
     """Constructs a matplotlib patch from a geometric object
     
     The `polygon` may be a Shapely or GeoJSON-like object with or without holes.
@@ -99,5 +107,8 @@ def PolygonPatch(polygon, **kwargs):
       >>> b = Point(0, 0).buffer(1.0)
       >>> patch = PolygonPatch(b, fc='blue', ec='blue', alpha=0.5)
       >>> axis.add_patch(patch)
+
+    Returns:
+        PathPatch: matplotlib patch
     """
     return PathPatch(PolygonPath(polygon), **kwargs)
