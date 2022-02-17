@@ -15,6 +15,7 @@
 DISCLAIMER: This is a fun little Easter egg to portray the design capabilities of Metal! :D"""
 
 from math import sin, cos, acos, asin, radians, degrees
+from copy import deepcopy
 from shapely.geometry import CAP_STYLE
 from qiskit_metal import draw, Dict
 from qiskit_metal.qlibrary.core import BaseQubit
@@ -78,17 +79,29 @@ class QiskitLogoQubit(BaseQubit):
 
     def _set_options_connection_pads(self):
         """Applies the default options."""
-        super()._set_options_connection_pads()
+        assert '_default_connection_pads' in self.design.template_options[
+            self.class_name], f"""When
+        you define your custom qubit class please add a _default_connection_pads
+        dictionary name as default_options['_default_connection_pads']. This should specify the default
+        creation options for the connection. """
 
-        # TODO: Think of some better way to this
+        del self.options._default_connection_pads
+
+        # This might induce potential bugs, think of something better
         for name in self.options.connection_pads:
-            if self.options.connection_pads[name].pad_type == "ellipse":
-                pw = self.options.connection_pads[name].pad_width[:-2]
-                pd = self.options.connection_pads[name].pad_depth[:-2]
-                if int(pw) < 100:
-                    self.options.connection_pads[name].pad_width = "100um"
-                if int(pd) > 30:
-                    self.options.connection_pads[name].pad_depth = "15um"
+            conn_pad_options = self.options.connection_pads[name]
+
+            self.options.connection_pads[name] = deepcopy(
+                self.design.template_options[self.class_name]['_default_connection_pads'])
+
+            # Set the default values for pad_type="ellipse" different
+            # form the pad_type="trapezoid"
+            if "pad_type" in conn_pad_options.keys() and conn_pad_options["pad_type"] == "ellipse":
+                self.options.connection_pads[name].pad_width = "100um"
+                self.options.connection_pads[name].pad_depth = "15um"
+
+            self.options.connection_pads[name].update(conn_pad_options)
+
 
     def make(self):
         """The make function implements the logic that creates the geometry
