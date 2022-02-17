@@ -2035,7 +2035,7 @@ class QGDSRenderer(QRenderer):
             row, a_cell_bounding_box)
 
         # String for JJ combined with pad Right and pad Left
-        jj_pad_r_l_name = f'{row.gds_cell_name}_QComponent_is_{row.component}_Name_is_{row.name}'
+        jj_pad_r_l_name = f'{row.gds_cell_name}_QComponent_is_{row.component}_Name_is_{row.name}_name_is_{row.name}'
         temp_cell = lib.new_cell(jj_pad_r_l_name, overwrite_duplicate=True)
 
         if pad_left is not None:
@@ -2068,7 +2068,7 @@ class QGDSRenderer(QRenderer):
             row, a_cell_bounding_box)
 
         # String for JJ combined with pad Right and pad Left
-        jj_pad_r_l_name = f'pads_{row.gds_cell_name}_QComponent_is_{row.component}'
+        jj_pad_r_l_name = f'pads_{row.gds_cell_name}_QComponent_is_{row.component}_name_is_{row.name}'
         temp_cell = lib.new_cell(jj_pad_r_l_name, overwrite_duplicate=True)
         chip_only_top_layer.add(
             gdspy.CellReference(a_cell, origin=center, rotation=rotation))
