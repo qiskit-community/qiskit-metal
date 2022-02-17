@@ -11,7 +11,8 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""This is the QiskitLogoQubit module."""
+"""This is the QiskitLogoQubit module.
+DISCLAIMER: This is a fun little Easter egg to portray the design capabilities of Metal! :D"""
 
 from math import sin, cos, acos, asin, radians, degrees
 from shapely.geometry import CAP_STYLE
