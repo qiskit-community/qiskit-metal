@@ -108,6 +108,10 @@ def PolygonPatch(polygon: Polygon, **kwargs):
       >>> patch = PolygonPatch(b, fc='blue', ec='blue', alpha=0.5)
       >>> axis.add_patch(patch)
 
+    Args:
+        polygon (Polygon): polygon
+        kwargs (dict): dictionary
+
     Returns:
         PathPatch: matplotlib patch
     """
