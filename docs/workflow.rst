@@ -26,7 +26,7 @@ In the near future we aim to (see near-term roadmap image):
    * ✓ Tunable couplers (community-driven)
    * ✓ Flux & control lines & terminations 
    * ✓ Routing manual-driven at 45 degrees, etc. 
-   * ✓ Wirbonds in rendering
+   * ✓ Wirebonds in rendering
    * ✓ Star qubit
    * ✓ Fluxonium (community-driven)
    * Add JJ layout component
@@ -37,7 +37,7 @@ In the near future we aim to (see near-term roadmap image):
    * Novel qubits (community-driven) 
    * . . .
    
-* **Add & encahnce quantizaiton analysis & ease of use**
+* **Add & enhance quantization analysis & ease of use**
    * ✓ New lumped analysis code
       * More general couplers
       * ✰✰✰ WebApp
@@ -45,7 +45,7 @@ In the near future we aim to (see near-term roadmap image):
       * ✓ for lumped analysis
       * ✓ for EPR analysis 
       * for Z, S, Y analysis 
-   * ✰✰ Impedence quantization
+   * ✰✰ Impedance quantization
       * Add fitting of Z curves & extraction of ZPF
    * ✰✰✰ pyEPR General potential - e.g. fluxonium
    * Improve ease of use & integration of pyEPR analysis 
@@ -108,7 +108,7 @@ Metal is automating and streamlining this process.
 
 On the surface, designing a quantum chip should be a lot like designing any other integrated circuit. But a typical integrated circuit goes through a design flow process that’s had decades worth of tuning. As chips have scaled up in transistor count in step with Moore’s law, design tools have matured in kind, becoming automated. Today, a sequence of programs allow chip designers to think in a modular way about integrated circuits with billions of transistors, in a process that rather seamlessly creates and tests designs, then moves them to the fabrication stage.
 Quantum computers are not like today’s computer microprocessors, though. Quantum bits are much larger than transistors, and require more complex superconducting circuitry. Computer-aided electronic design automation software covers only some parts of this intricate fabrication process, and using these software packages to design a quantum computer comes with a high barrier to entry.
-In terms of a high-level description, we aim to perform the following tight feedback loop of desing.
+In terms of a high-level description, we aim to perform the following tight feedback loop of design.
 (read the full `Medium blog <https://medium.com/qiskit/what-if-we-had-a-computer-aided-design-program-for-quantum-computers-4cb88bd1ddea>`_)
 
 .. image:: images/qm-dev-dsgn.png
@@ -207,11 +207,11 @@ References:
 |
 
 -------------------------------------------------------
-Impedence: impedence-based black-box quantization (BBQ)
+Impedance: impedance-based black-box quantization (BBQ)
 -------------------------------------------------------
 
 "A semiclassical method for determining the effective low-energy quantum Hamiltonian of weakly anharmonic superconducting circuits
-ontaining mesoscopic Josephson junctions coupled to electromagnetic environments made of an arbitrary combination of distributed and lumped elements.
+containing mesoscopic Josephson junctions coupled to electromagnetic environments made of an arbitrary combination of distributed and lumped elements.
 A convenient basis, capturing the multimode physics, is given by the quantized eigenmodes of the linearized circuit and is fully determined 
 by a classical linear response function."
 Nigg *et al.* (2012).
