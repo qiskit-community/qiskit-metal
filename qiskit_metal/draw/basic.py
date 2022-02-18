@@ -226,6 +226,10 @@ def _iter_func_geom_(func, objs, *args, overwrite=False, **kwargs):
                                              overwrite=overwrite,
                                              **kwargs)
             return objs
+        # Under Shapely 1.8, MultiPolygon objects need to be
+        # referenced with the .geoms property. This function
+        # did inadvertently take MultiPolygon objects so
+        # another case was added to handle this.
         elif isinstance(objs, MultiPolygon):
             return type(objs)([
                 _iter_func_geom_(func,
