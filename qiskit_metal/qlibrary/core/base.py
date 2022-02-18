@@ -830,7 +830,7 @@ name='{strname}'{other_args}
             points: np.ndarray,
             width: float,
             input_as_norm: bool = False,
-            chip: str = 'main',
+            chip: str = None,
             gap: float = None):  # gap defaults to 0.6 * width
         """Adds a pin from two points which are normal/tangent to the intended
         plane of the pin. The normal should 'point' in the direction of
@@ -894,6 +894,8 @@ name='{strname}'{other_args}
 
         if gap is None:
             gap = width * 0.6
+        if chip is None:
+            chip = self.options.chip
 
         rounding_val = self.design.template_options['PRECISION']
         points = np.around(
