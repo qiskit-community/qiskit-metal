@@ -19,7 +19,7 @@ import shapely.wkt as wkt
 from shapely.geometry.base import BaseGeometry
 from shapely.geometry import Point, LineString, Polygon
 from shapely.geometry import box, shape
-from shapely.ops import cascaded_union
+from shapely.ops import unary_union
 
 from . import basic
 from . import utility

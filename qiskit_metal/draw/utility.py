@@ -174,18 +174,11 @@ def round_coordinate_sequence(geom_ref, precision):
     Returns:
         shapely.geometry : A shapely geometry with rounded coordinates
     """
-    if isinstance(geom_ref, shapely.geometry.linestring.LineString):
-        temp_line = np.around(geom_ref.coords[:], precision).tolist()
-        geom_ref.coords = temp_line.copy()
-    else:
-        temp_ext = np.around(geom_ref.exterior.coords[:], precision).tolist()
-        geom_ref.exterior.coords = temp_ext.copy()
-        for x in range(0, len(geom_ref.interiors)):
-            temp_int = np.around(geom_ref.interiors[x].coords[:],
-                                 precision).tolist()
-            geom_ref.interiors[x].coords = temp_int.copy()
 
-    return geom_ref
+    new_geom_ref = shapely.wkt.loads(
+        shapely.wkt.dumps(geom_ref, rounding_precision=precision))
+
+    return new_geom_ref
 
 
 #########################################################################
