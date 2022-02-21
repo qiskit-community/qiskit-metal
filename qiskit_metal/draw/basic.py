@@ -29,6 +29,7 @@ import shapely
 import shapely.affinity
 import shapely.wkt
 from shapely.geometry import CAP_STYLE, JOIN_STYLE, Point, Polygon
+from shapely.geometry.multipolygon import MultiPolygon
 
 from .. import config, logger
 from .. import is_component
@@ -225,6 +226,18 @@ def _iter_func_geom_(func, objs, *args, overwrite=False, **kwargs):
                                              overwrite=overwrite,
                                              **kwargs)
             return objs
+        # Under Shapely 1.8, MultiPolygon objects need to be
+        # referenced with the .geoms property. This function
+        # did inadvertently take MultiPolygon objects so
+        # another case was added to handle this.
+        elif isinstance(objs, MultiPolygon):
+            return type(objs)([
+                _iter_func_geom_(func,
+                                 val,
+                                 *args,
+                                 overwrite=overwrite,
+                                 **kwargs) for val in objs.geoms
+            ])
         else:
             return type(objs)([
                 _iter_func_geom_(func,
