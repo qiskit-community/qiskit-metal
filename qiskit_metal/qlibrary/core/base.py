@@ -830,7 +830,7 @@ name='{strname}'{other_args}
             points: np.ndarray,
             width: float,
             input_as_norm: bool = False,
-            chip: str = 'main',
+            chip: str = None,
             gap: float = None):  # gap defaults to 0.6 * width
         """Adds a pin from two points which are normal/tangent to the intended
         plane of the pin. The normal should 'point' in the direction of
@@ -844,7 +844,8 @@ name='{strname}'{other_args}
             * input_as_norm (bool): Indicates if the points are tangent or normal to the pin plane.
               Defaults to False.. Make True for normal.
             * parent (Union[int,]): The id of the parent component.
-            * chip (str): the name of the chip the pin is located on.  Defaults to 'main'.
+            * chip (str): the name of the chip the pin is located on. Defaults to None, which is 
+            converted to self.options.chip.
             * gap (float): the dielectric gap of the pin for the purpose of representing as a port
               for simulations.  Defaults to None which is converted to 0.6 * width.
 
@@ -894,6 +895,8 @@ name='{strname}'{other_args}
 
         if gap is None:
             gap = width * 0.6
+        if chip is None:
+            chip = self.options.chip
 
         rounding_val = self.design.template_options['PRECISION']
         points = np.around(
@@ -1091,8 +1094,9 @@ name='{strname}'{other_args}
             helper (bool): Is this a helper object. If true, subtract must be false
                            Defaults to False.
             layer (int, str): The layer to which the set of QGeometry will belong
-                              Defaults to 1.
-            chip (str): Chip name.  Defaults to 'main'.
+                              Defaults to None, which is converted to self.options.chip.
+            chip (str): Chip name. Defaults to None, which is converted to 
+            self.options.chip.
             kwargs (dict): Parameters dictionary
 
         Assumptions:
