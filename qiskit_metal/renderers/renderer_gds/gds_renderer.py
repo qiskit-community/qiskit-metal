@@ -2169,7 +2169,7 @@ class QGDSRenderer(QRenderer):
         precision = self.parse_value(self.options.precision)
         max_points = int(self.parse_value(self.options.max_points))
 
-        all_polys = list(multi_poly)
+        all_polys = list(multi_poly.geoms)
         all_gds = list()
         for poly in all_polys:
             exterior_poly = gdspy.Polygon(

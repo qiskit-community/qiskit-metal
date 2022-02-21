@@ -21,7 +21,7 @@ from qiskit_metal.qlibrary.core import QRoute, QRoutePoint
 from qiskit_metal.toolbox_metal import math_and_overrides as mao
 from qiskit_metal.toolbox_metal.exceptions import QiskitMetalDesignError
 from collections.abc import Mapping
-from shapely.ops import cascaded_union
+from shapely.ops import unary_union
 from shapely.geometry import CAP_STYLE
 import geopandas as gpd
 
@@ -136,7 +136,7 @@ class RouteAnchors(QRoute):
 
     TOOLTIP = """Creates and connects a series of anchors through which the Route passes."""
 
-    from shapely.ops import cascaded_union
+    from shapely.ops import unary_union
     from matplotlib import pyplot as plt
     import geopandas as gpd
 
@@ -161,7 +161,7 @@ class RouteAnchors(QRoute):
                 row['width'] / 2, cap_style=CAP_STYLE.flat))
         # merge all the polygons
         polygons = self.design.components[component_name].qgeometry_list('poly')
-        boundary = gpd.GeoSeries(cascaded_union(polygons + paths_converted))
+        boundary = gpd.GeoSeries(unary_union(polygons + paths_converted))
         boundary_coords = list(boundary.geometry.exterior[0].coords)
         if any(
                 intersecting(segment[0], segment[1], boundary_coords[i],
