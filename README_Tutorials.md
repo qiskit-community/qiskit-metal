@@ -32,8 +32,8 @@ Join the [Qiskit](https://ibm.co/joinqiskitslack) `#metal` slack channel to requ
 | Nov 18 | Forum | Q&A - The Qiskit Metal team will take any question |
 | Jan 13, 2022 | Forum | Q&A - The Qiskit Metal team will take any question |
 | Jan 27, 2022 | Forum | Helping users generate a custom component.
-| Feb 10, 2022 | Tutorial | <ul><li>[GUI icons] </li><li>[Jaynes Cummings model] </li><li>[template_options, options, default_options]
-| Feb 24, 2022 | Tutorial | <ul><li>[Will NOT be recorded.  Flip chip by guest speaker.]
+| Feb 10, 2022 | Tutorial | <ul><li>[GUI icons](https://youtu.be/aE2Dsc67S8w)</li><li>[Jaynes Cummings model](https://youtu.be/dtwL_K-TJtY)</li><li>[template_options, options, default_options](https://youtu.be/qKLyEyW7cbQ)|
+| Feb 24, 2022 | Tutorial | <ul><li>[Will NOT be recorded.  Flip chip by guest speaker.]|
 | Mar 10, 2022 | TBD |
 | Mar 24, 2022 | TBD |
 | 2022 &rightarrow; ... | TBD | Topics to potentially schedule:<ul><li>Analysis deep dives (as needed)</li><li>What happens frequently when analyzing a chip.</li><li>Metal use cases: Common problems with pins, ports, fillet matches meander distance</li><li>GDS fabrication option, use cases</li><li>QRenderers: How to use, modify and add new renderers</li><li>New QAnalysis/QRenderer structure and usage</li><li>...</li></ul> |
