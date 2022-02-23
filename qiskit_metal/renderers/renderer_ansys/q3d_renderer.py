@@ -123,13 +123,12 @@ class QQ3DRenderer(QAnsysRenderer):
             self.logger.warning(
                 'Unable to proceed with rendering. Please check selection.')
             return
-        
+
         self.chip_subtract_dict = defaultdict(set)
         self.assign_perfE = []
         self.assign_mesh = []
 
         chip_list = self.get_chip_names()
-        
 
         self.render_tables(skip_junction=True)
         self.add_endcaps(open_pins)
