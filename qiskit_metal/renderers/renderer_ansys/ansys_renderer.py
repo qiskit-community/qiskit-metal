@@ -1377,8 +1377,8 @@ class QAnsysRenderer(QRendererAnalysis):
         self.logger.warning(
             "This component currently lacks a chip designation. Please add chip='main' to the component's default_options dictionary, restart the kernel, and try again."
         )
-    
-    def chip_not_in_design_error(self, missing_chip:str):
+
+    def chip_not_in_design_error(self, missing_chip: str):
         """
         Warning message that appears when the Ansys renderer fails to locate a component's chip designation in DesignPlanar (or any child of QDesign).
         Provides instructions for a temporary workaround until the layer stack is finalized.
