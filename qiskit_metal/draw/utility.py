@@ -350,7 +350,8 @@ def to_vec3D(list_of_2d_pts: List[Tuple], z=0) -> np.ndarray:
     """
     add_me = [z]
 
-    vec3d = np.array([list(a_2d_pt) + add_me for a_2d_pt in list_of_2d_pts], dtype="object")
+    vec3d = np.array([list(a_2d_pt) + add_me for a_2d_pt in list_of_2d_pts],
+                     dtype="object")
     return vec3d
 
 
