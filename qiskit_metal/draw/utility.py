@@ -349,7 +349,10 @@ def to_vec3D(list_of_2d_pts: List[Tuple], z=0) -> np.ndarray:
         np.ndarray: vec3d of points
     """
     add_me = [z]
-    return np.array([list(a_2d_pt) + add_me for a_2d_pt in list_of_2d_pts])
+
+    vec3d = np.array([list(a_2d_pt) + add_me for a_2d_pt in list_of_2d_pts],
+                     dtype="object")
+    return vec3d
 
 
 Vec2D = Union[list, np.ndarray]
