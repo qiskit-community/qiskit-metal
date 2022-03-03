@@ -127,7 +127,7 @@ class LumpedElementsSim(QSimulation):
         """
         # save input variables to run(). This line must be the first in the method
         if components is not None:
-            argm = locals()
+            argm = dict(locals())
             del argm['self']
             self.save_run_args(**argm)
         # wipe data from the previous run (if any)
