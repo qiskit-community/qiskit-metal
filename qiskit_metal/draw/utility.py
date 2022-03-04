@@ -49,7 +49,7 @@ def get_poly_pts(poly: Polygon):
         poly (shapely.Polygon): Shapely polygin
 
     Returns:
-        np.array: Sequence of coorindates.
+        np.array: Sequence of coordinates.
     """
     return np.array(poly.exterior.coords)[:-1]
 
@@ -65,7 +65,7 @@ def get_all_geoms(obj, func=lambda x: x, root_name='components'):
         root_name (str): Name to prepend in the flattening. Defaults to 'components'.
 
     Returns:
-        dict: Dictonary of geometries
+        dict: Dictionary of geometries
     """
 
     # Prelim
@@ -100,7 +100,7 @@ name if not (root_name == '') else name
                     sub_obj.components, root_name=new_name(name))
             elif isinstance(sub_obj, dict):
                 # if name.startswith('components'): # old school to remove eventually TODO
-                #    RES[name] = func(obj) # allow transofmraiton of components
+                #    RES[name] = func(obj) # allow transformaiton of components
                 # else:
                 RES[name] = get_all_geoms(sub_obj, root_name=new_name(name))
             elif isinstance(sub_obj, BaseGeometry):
@@ -144,12 +144,12 @@ def flatten_all_filter(components: dict, filter_obj=None):
 
 
 def get_all_component_bounds(components: dict, filter_obj=Polygon):
-    """Pass in a dict of components to calcualte the total bounding box.
+    """Pass in a dict of components to calculate the total bounding box.
 
     Args:
         components (dict): Dictionary of components
         filter_obj (Polygon): Only use instances of this object to
-                              calcualte the bounds
+                              calculate the bounds
 
     Returns:
         tuple: (x_min, y_min, x_max, y_max)
@@ -170,7 +170,7 @@ def round_coordinate_sequence(geom_ref, precision):
 
     Args:
         geometry (shapely.geometry) : A shapely geometry, should not be a MultiPoly
-        precison (int) : The decimal precision to round to (eg. 3 -> 0.001)
+        precision (int) : The decimal precision to round to (eg. 3 -> 0.001)
     Returns:
         shapely.geometry : A shapely geometry with rounded coordinates
     """
@@ -207,7 +207,7 @@ def array_chop(vec, zero=0, rtol=0, machine_tol=100):
         machine_tol (double): Machine tolerance.  Defaults to 100.
 
     Returns:
-        array: Chopped arary
+        array: Chopped array
     """
     vec = np.array(vec)
     mask = np.isclose(vec,
@@ -219,7 +219,7 @@ def array_chop(vec, zero=0, rtol=0, machine_tol=100):
 
 
 def remove_colinear_pts(points):
-    """Remove colinear points and identical consequtive points.
+    """Remove colinear points and identical consecqutive points.
 
     Args:
         points (array): Array of points
@@ -237,7 +237,7 @@ def remove_colinear_pts(points):
             remove_idx += [i - 1]
     points = np.delete(points, remove_idx, axis=0)
 
-    # remove  consequtive duplicates
+    # remove  consecutive duplicates
     remove_idx = []
     for i in range(1, len(points)):
         if norm(points[i] - points[i - 1]) == 0:
@@ -349,7 +349,10 @@ def to_vec3D(list_of_2d_pts: List[Tuple], z=0) -> np.ndarray:
         np.ndarray: vec3d of points
     """
     add_me = [z]
-    return np.array([list(a_2d_pt) + add_me for a_2d_pt in list_of_2d_pts])
+
+    vec3d = np.array([list(a_2d_pt) + add_me for a_2d_pt in list_of_2d_pts],
+                     dtype="object")
+    return vec3d
 
 
 Vec2D = Union[list, np.ndarray]
@@ -504,7 +507,7 @@ class Vector:
         return norm(vec)
 
     def are_same(v1: Vec2D, v2: Vec2D, tol: int = 100) -> bool:
-        """Check if two vectors are within an infentesmimal distance set by
+        """Check if two vectors are within an infinitesimal distance set by
         `tol` and machine epsilon.
 
         Args:
@@ -554,7 +557,7 @@ class Vector:
 
     @staticmethod
     def two_points_described(points2D: List[Vec2D]) -> Tuple[np.ndarray]:
-        """Get the distance, units and tagents.
+        """Get the distance, units and tangents.
 
         Args:
             points (np.array or list): 2D list of points

@@ -461,8 +461,8 @@ class QMplRenderer():
 
         table2 = table1[~mask2]
 
-        for index, row in table2.iterrows():
-            table2.loc[index, 'geometry'] = self.fillet_path(row)
+        for index, row in table2[table2.fillet.notnull()].iterrows():
+            table1.loc[index, 'geometry'] = self.fillet_path(row)
 
         if len(table1) > 0:
             table1.geometry = table1[['geometry', 'width']].apply(lambda x: x[
