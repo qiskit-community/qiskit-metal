@@ -60,7 +60,8 @@ jobs:
         uses: wearerequired/lint-action@v1
         with:
           black: true
-          flake8: true
+          auto_fix: true
+          # flake8: true
       # - name: Install Deps
       #   run: python -m pip install -U tox
       # - name: Run lint
