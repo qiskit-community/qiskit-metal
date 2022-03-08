@@ -34,7 +34,7 @@ def is_design(obj):
     if isinstance(obj, Dict):
         return False
 
-    return hasattr(obj, '__i_am_design__')
+    return hasattr(obj, "__i_am_design__")
 
 
 def is_component(obj):
@@ -52,4 +52,4 @@ def is_component(obj):
     if isinstance(obj, Dict):
         return False
 
-    return hasattr(obj, '__i_am_component__')
+    return hasattr(obj, "__i_am_component__")

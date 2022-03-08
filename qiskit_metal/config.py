@@ -23,48 +23,56 @@ from .toolbox_python.attr_dict import Dict
 from ._defaults import DefaultMetalOptions, DefaultOptionsRenderer
 
 renderers_to_load = Dict(
-    hfss=Dict(path_name='qiskit_metal.renderers.renderer_ansys.hfss_renderer',
-              class_name='QHFSSRenderer'),
-    q3d=Dict(path_name='qiskit_metal.renderers.renderer_ansys.q3d_renderer',
-             class_name='QQ3DRenderer'),
-    gds=Dict(path_name='qiskit_metal.renderers.renderer_gds.gds_renderer',
-             class_name='QGDSRenderer'),
+    hfss=Dict(
+        path_name="qiskit_metal.renderers.renderer_ansys.hfss_renderer",
+        class_name="QHFSSRenderer",
+    ),
+    q3d=Dict(
+        path_name="qiskit_metal.renderers.renderer_ansys.q3d_renderer",
+        class_name="QQ3DRenderer",
+    ),
+    gds=Dict(
+        path_name="qiskit_metal.renderers.renderer_gds.gds_renderer",
+        class_name="QGDSRenderer",
+    ),
 )
 """
 Define the renderes to load. Just provide the module names here.
 """
 
 GUI_CONFIG = Dict(
-    load_metal_modules=Dict(Qubits='qiskit_metal.qlibrary.qubits',
-                            TLines='qiskit_metal.qlibrary.tlines',
-                            Terminations='qiskit_metal.qlibrary.terminations'),
-    exclude_metal_classes=['Metal_Qubit'],
+    load_metal_modules=Dict(
+        Qubits="qiskit_metal.qlibrary.qubits",
+        TLines="qiskit_metal.qlibrary.tlines",
+        Terminations="qiskit_metal.qlibrary.terminations",
+    ),
+    exclude_metal_classes=["Metal_Qubit"],
     tips=[
-        'Right clicking the tree elements allows you to do neat things.',
-        'You can show all connector names on the plot by clicking the connector '
-        'icon in the plot toolbar.',
-        'The gui and the Python code work synchronously. If you modify something '
-        'in the gui, it will be reflected in your Python interpreter and vice versa. '
-        'Note that the gui does not automatically refresh on all events if you update '
-        'variables from the Python interpreter.',
-        'Changed some object parameters? Click the <b>Remake</b> button in the main '
-        'toolbar to recreate the polygons.',
+        "Right clicking the tree elements allows you to do neat things.",
+        "You can show all connector names on the plot by clicking the connector "
+        "icon in the plot toolbar.",
+        "The gui and the Python code work synchronously. If you modify something "
+        "in the gui, it will be reflected in your Python interpreter and vice versa. "
+        "Note that the gui does not automatically refresh on all events if you update "
+        "variables from the Python interpreter.",
+        "Changed some object parameters? Click the <b>Remake</b> button in the main "
+        "toolbar to recreate the polygons.",
         """<b>Log widget:</b> Right click the logger window to be able to change the log level and
         the loggers that are shown / hidden.""",
         """<b>All component widget:</b> Double click a component to zoom into it!""",
     ],
     logger=Dict(
-        style=
-        ".DEBUG {color: green;}\n.WARNING,.ERROR,.CRITICAL {color: red;}\n.'\
+        style=".DEBUG {color: green;}\n.WARNING,.ERROR,.CRITICAL {color: red;}\n.'\
                 'ERROR,.CRITICAL {font-weight: bold;}\n",
         num_lines=500,
-        level='DEBUG',
+        level="DEBUG",
         stream_to_std=False,  # stream to jupyter notebook
     ),
     main_window=Dict(
-        title='Qiskit Metal — The Quantum Builder',
+        title="Qiskit Metal — The Quantum Builder",
         auto_size=False,  # Autosize on creation of window
-    ))
+    ),
+)
 """
 GUI_CONFIG
 
@@ -99,8 +107,10 @@ Logger settings
 Main window defaults
 """
 
-log = Dict(format='%(asctime)s %(levelname)s [%(funcName)s]: %(message)s',
-           datefmt='%I:%M%p %Ss')
+log = Dict(
+    format="%(asctime)s %(levelname)s [%(funcName)s]: %(message)s",
+    datefmt="%I:%M%p %Ss",
+)
 """
 A dictionary containing the log format for standard text and date/time
 """
@@ -127,6 +137,7 @@ def is_building_docs():
         bool: True if .buildingdocs exists
     """
     from pathlib import Path  # pylint: disable=import-outside-toplevel
+
     build_docs_file = Path(__file__).parent.parent / "docs" / ".buildingdocs"
     return Path.exists(build_docs_file)
 

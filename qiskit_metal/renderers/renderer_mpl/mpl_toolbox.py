@@ -30,9 +30,15 @@ from .mpl_interaction import figure_pz
 from .patch import PolygonPatch
 
 __all__ = [
-    '_render_poly_zkm', 'render_poly', 'render', 'style_axis_simple',
-    'get_prop_cycle', 'style_axis_standard', 'figure_spawn',
-    '_axis_set_watermark_img', 'clear_axis'
+    "_render_poly_zkm",
+    "render_poly",
+    "render",
+    "style_axis_simple",
+    "get_prop_cycle",
+    "style_axis_standard",
+    "figure_spawn",
+    "_axis_set_watermark_img",
+    "clear_axis",
 ]
 
 ##########################################################################################
@@ -40,9 +46,9 @@ __all__ = [
 
 # Todo Move - default config
 style_config = Dict(
-    poly=dict(lw=1, ec='k', alpha=0.5)  # fc='#6699cc',
+    poly=dict(lw=1, ec="k", alpha=0.5)  # fc='#6699cc',
     # Dict(
-    #exterior = dict(lw=1, edgecolors='k', alpha=0.5),
+    # exterior = dict(lw=1, edgecolors='k', alpha=0.5),
     # interior = dict(facecolors='w', lw=1, edgecolors='grey'))
 )
 """Style configuration"""
@@ -73,12 +79,10 @@ def _render_poly_zkm(poly: Polygon, ax, kw=None, kw_hole=None):
         mpl_poly = mpl.patches.Polygon(coords)
         color = ax._get_lines.get_next_color()
         ax.add_collection(
-            mpl.collections.PatchCollection([mpl_poly], **{
-                **{
-                    'facecolor': color
-                },
-                **kw
-            }))
+            mpl.collections.PatchCollection(
+                [mpl_poly], **{**{"facecolor": color}, **kw}
+            )
+        )
 
         # Interior (i.e., holes)
         polys = []
@@ -112,7 +116,8 @@ def render(
     # plot_format=True,
     labels=None,
     __depth=-1,  # how many sublists in we are
-    _iteration=0):  # how many components we have plotted
+    _iteration=0,
+):  # how many components we have plotted
     """Main plotting function. Plots onto an axis.
 
     Args:
@@ -130,12 +135,12 @@ def render(
     # but this needs the .draw functions to be updated
 
     __depth = __depth + 1
-    #print(__depth, _iteration, components, '\n')
+    # print(__depth, _iteration, components, '\n')
 
     kw = kw or {}
     ax = ax or plt.gca()
 
-    if labels is 'auto':
+    if labels is "auto":
         labels = list(map(str, range(len(components))))
 
     if not labels is None:
@@ -144,12 +149,14 @@ def render(
     # Handle itterables
     if isinstance(components, dict):
         for _, objs in components.items():
-            _iteration = render(objs,
-                                ax=ax,
-                                kw=kw,
-                                labels=labels,
-                                __depth=__depth,
-                                _iteration=_iteration)
+            _iteration = render(
+                objs,
+                ax=ax,
+                kw=kw,
+                labels=labels,
+                __depth=__depth,
+                _iteration=_iteration,
+            )
             # plot_format=plot_format, , **kwargs)
         # if plot_format and (__depth == 0):
         #    style_axis_simple(ax, labels=labels)
@@ -157,12 +164,14 @@ def render(
 
     if isinstance(components, list):
         for objs in components:
-            _iteration = render(objs,
-                                ax=ax,
-                                kw=kw,
-                                labels=labels,
-                                __depth=__depth,
-                                _iteration=_iteration)
+            _iteration = render(
+                objs,
+                ax=ax,
+                kw=kw,
+                labels=labels,
+                __depth=__depth,
+                _iteration=_iteration,
+            )
             # plot_format=plot_format,, **kwargs)
         # if plot_format and (__depth == 0):
         #    style_axis_simple(ax, labels=labels)
@@ -174,19 +183,18 @@ def render(
     # We have now a single object to draw
     obj = components
 
-    if isinstance(obj,
-                  (shapely.geometry.MultiPolygon, shapely.geometry.Polygon)):
+    if isinstance(obj, (shapely.geometry.MultiPolygon, shapely.geometry.Polygon)):
         render_poly(obj, ax=ax, kw=kw)  # , **kwargs)
 
     else:
         if isinstance(obj, shapely.geometry.MultiPoint):
-            kw = {**dict(marker='o'), **kw}
+            kw = {**dict(marker="o"), **kw}
             coords = list(map(lambda x: list(x.coords)[0], list(obj)))
         else:
             coords = obj.coords
 
         if isinstance(obj, shapely.geometry.Point):
-            kw = {**dict(marker='o'), **kw}
+            kw = {**dict(marker="o"), **kw}
 
         ax.plot(*zip(*list(coords)), **kw)
 
@@ -239,15 +247,15 @@ def style_axis_simple(ax, labels=None):
 
     # If 'box', change the physical dimensions of the Axes.
     # If 'datalim', change the x or y data limits.
-    ax.set_adjustable('datalim')
+    ax.set_adjustable("datalim")
     ax.set_aspect(1)
     # ax.autoscale() # for gui
 
     # Labels
     if not labels is None:
         font_p = mpl.font_manager.FontProperties()
-        font_p.set_size('small')
-        ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), prop=font_p)
+        font_p.set_size("small")
+        ax.legend(loc="center left", bbox_to_anchor=(1, 0.5), prop=font_p)
 
 
 rcParams = plt.matplotlib.rcParams
@@ -255,10 +263,10 @@ rcParams = plt.matplotlib.rcParams
 
 def get_prop_cycle():
     """Get the prop cycle."""
-    prop_cycler = rcParams['axes.prop_cycle']
-    if prop_cycler is None and 'axes.color_cycle' in rcParams:
-        clist = rcParams['axes.color_cycle']
-        prop_cycler = cycler('color', clist)
+    prop_cycler = rcParams["axes.prop_cycle"]
+    if prop_cycler is None and "axes.color_cycle" in rcParams:
+        clist = rcParams["axes.color_cycle"]
+        prop_cycler = cycler("color", clist)
     return prop_cycler
 
 
@@ -272,18 +280,18 @@ def style_axis_standard(ax):
     Args:
         ax (plt.Axes): Matplotlib axis to render to.  Defaults to None.
     """
-    #fig = ax.figure
+    # fig = ax.figure
 
     # Core lines
-    kw = dict(c='k', lw=1, zorder=-1, alpha=0.5)
+    kw = dict(c="k", lw=1, zorder=-1, alpha=0.5)
     ax.axhline(0, **kw)
     ax.axvline(0, **kw)
 
     # Grid
     kw = dict(
-        color='#CCCCCC',
-        #zorder = -100,
-        #alpha = 0.8,
+        color="#CCCCCC",
+        # zorder = -100,
+        # alpha = 0.8,
         # fillstyle='left'
         # markevery=(1,1),
         # sketch_params=1
@@ -293,13 +301,13 @@ def style_axis_standard(ax):
         ax.xaxis.set_major_locator(loc)
         ax.yaxis.set_major_locator(loc)
 
-    ax.grid(which='major', linestyle='--', **kw)
-    ax.grid(which='minor', linestyle=':', **kw)
+    ax.grid(which="major", linestyle="--", **kw)
+    ax.grid(which="minor", linestyle=":", **kw)
     ax.set_axisbelow(True)
 
     # Reset color cycle
     # ax.set_prop_cycle(None)
-    ax.set_prop_cycle(color=['#91aecf', '#a3bbd6', '#6e94be', '#a3bbd6'])
+    ax.set_prop_cycle(color=["#91aecf", "#a3bbd6", "#6e94be", "#a3bbd6"])
 
     # fig.canvas.draw()
     # fig.canvas.flush_events()
@@ -332,16 +340,16 @@ def figure_spawn(fig_kw=None):
     # ax_draw.set_title('Layout')
     # If 'box', change the physical dimensions of the Axes. If 'datalim',
     # change the x or y data limits.
-    ax_draw.set_adjustable('datalim')
+    ax_draw.set_adjustable("datalim")
     ax_draw.set_aspect(1)
 
-    ax_draw.set_xlabel('X position (mm)')
-    ax_draw.set_ylabel('Y position (mm)')
+    ax_draw.set_xlabel("X position (mm)")
+    ax_draw.set_ylabel("Y position (mm)")
 
     # pylint: disable=import-outside-toplevel
     def clear_me():
         plt.sca(ax_draw)
-        #from pyEPR.toolbox_plotting import plt_cla
+        # from pyEPR.toolbox_plotting import plt_cla
         # plt_cla(ax_draw)
 
     ax_draw.clear_me = clear_me
@@ -349,6 +357,7 @@ def figure_spawn(fig_kw=None):
     def restyle(display=True):
         style_axis_standard(ax_draw)
         from IPython.display import display
+
         display(fig_draw)
 
     ax_draw.restyle_me = restyle
@@ -386,11 +395,8 @@ def _axis_set_watermark_img(ax: plt.Axes, file: str, size: float = 0.25):
     # ALternative: fig.figimage
     # scale image: yscale = float(img.shape[1])/img.shape[0]
     # extent: (left, right, bottom, top)
-    kw = dict(interpolation='gaussian', alpha=0.05, resample=True, zorder=-200)
-    ax.imshow(img,
-              extent=(1 - size * b, 1, 1 - size, 1),
-              transform=ax.transAxes,
-              **kw)
+    kw = dict(interpolation="gaussian", alpha=0.05, resample=True, zorder=-200)
+    ax.imshow(img, extent=(1 - size * b, 1, 1 - size, 1), transform=ax.transAxes, **kw)
 
 
 #######################################################################

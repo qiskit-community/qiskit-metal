@@ -45,8 +45,13 @@ class QRoutePoint:
         self.direction = direction
 
     def __str__(self):
-        return "position: " + str(self.position) + " : direction:" + str(
-            self.direction) + "."
+        return (
+            "position: "
+            + str(self.position)
+            + " : direction:"
+            + str(self.direction)
+            + "."
+        )
 
 
 class QRoute(QComponent):
@@ -90,7 +95,7 @@ class QRoute(QComponent):
             jogs[3] = ["L", '500um']
             jogs[4] = ["R", '200um']
             jogs_other = ....
-            
+
             options = {'lead': {
                 'start_straight': '0.3mm',
                 'end_straight': '0.3mm',
@@ -109,35 +114,40 @@ class QRoute(QComponent):
         >> "L", "L90", "R-90", 90, "90", "A,90", "left", "left90", "right-90"
     """
 
-    component_metadata = Dict(short_name='route', _qgeometry_table_path='True')
+    component_metadata = Dict(short_name="route", _qgeometry_table_path="True")
     """Component metadata"""
 
     default_options = Dict(
         pin_inputs=Dict(
             start_pin=Dict(  # QRoute also supports single pin routes
-                component='',  # Name of component to start from, which has a pin
-                pin=''),  # Name of pin used for pin_start
+                component="", pin=""  # Name of component to start from, which has a pin
+            ),  # Name of pin used for pin_start
             end_pin=Dict(
-                component='',  # Name of component to end on, which has a pin
-                pin='')  # Name of pin used for pin_end
+                component="", pin=""  # Name of component to end on, which has a pin
+            ),  # Name of pin used for pin_end
         ),
-        fillet='0',
-        lead=Dict(start_straight='0mm',
-                  end_straight='0mm',
-                  start_jogged_extension='',
-                  end_jogged_extension=''),
-        total_length='7mm',
-        trace_width='cpw_width')
+        fillet="0",
+        lead=Dict(
+            start_straight="0mm",
+            end_straight="0mm",
+            start_jogged_extension="",
+            end_jogged_extension="",
+        ),
+        total_length="7mm",
+        trace_width="cpw_width",
+    )
     """Default options"""
 
     TOOLTIP = """QRoute"""
 
-    def __init__(self,
-                 design,
-                 name: str = None,
-                 options: Dict = None,
-                 type: str = "CPW",
-                 **kwargs):
+    def __init__(
+        self,
+        design,
+        name: str = None,
+        options: Dict = None,
+        type: str = "CPW",
+        **kwargs,
+    ):
         """Initializes all Routes.
 
         Calls the QComponent __init__() to create a new Metal component.
@@ -195,7 +205,7 @@ class QRoute(QComponent):
             None
         elif self.type == "CPW":
             # add the variable to define the space between the route and the ground plane
-            cpw_options = Dict(trace_gap='cpw_gap')
+            cpw_options = Dict(trace_gap="cpw_gap")
             if options:
                 if "trace_gap" not in options:
                     # user did not pass the trace_gap, so add it
@@ -204,8 +214,11 @@ class QRoute(QComponent):
                 # user did not pass custom options, so create it to add trace_gap
                 options["options"] = cpw_options
         else:
-            raise Exception("Unsupported Route type: " + self.type +
-                            " The only supported types are CPW and route")
+            raise Exception(
+                "Unsupported Route type: "
+                + self.type
+                + " The only supported types are CPW and route"
+            )
 
         return options
 
@@ -241,9 +254,12 @@ class QRoute(QComponent):
             options_pin = self.options.pin_inputs.end_pin
             lead = self.tail
         else:
-            raise Exception("Pin name \"" + name +
-                            "\" is not supported for this CPW." +
-                            " The only supported pins are: start, end.")
+            raise Exception(
+                'Pin name "'
+                + name
+                + '" is not supported for this CPW.'
+                + " The only supported pins are: start, end."
+            )
 
         # grab the reference component pin
         reference_pin = self._get_connected_pin(options_pin)
@@ -251,8 +267,11 @@ class QRoute(QComponent):
         # create the cpw pin and document the connections to the reference_pin in the netlist
         self.add_pin(name, reference_pin.points[::-1], self.p.trace_width)
         self.design.connect_pins(
-            self.design.components[options_pin.component].id, options_pin.pin,
-            self.id, name)
+            self.design.components[options_pin.component].id,
+            options_pin.pin,
+            self.id,
+            name,
+        )
 
         # anchor the correct lead to the pin and return its position and direction
         return lead.seed_from_pin(reference_pin)
@@ -281,9 +300,12 @@ class QRoute(QComponent):
             lead = self.tail
             jogged_lead = self.p.lead.end_jogged_extension
         else:
-            raise Exception("Pin name \"" + name +
-                            "\" is not supported for this CPW." +
-                            " The only supported pins are: start, end.")
+            raise Exception(
+                'Pin name "'
+                + name
+                + '" is not supported for this CPW.'
+                + " The only supported pins are: start, end."
+            )
 
         # then change the lead by adding a point in the same direction of the seed pin
         # minimum lead, to be able to jog correctly
@@ -319,16 +341,19 @@ class QRoute(QComponent):
             options_lead = p.lead.end_jogged_extension
             lead = self.tail
         else:
-            raise Exception("Pin name \"" + name +
-                            "\" is not supported for this CPW." +
-                            " The only supported pins are: start, end.")
+            raise Exception(
+                'Pin name "'
+                + name
+                + '" is not supported for this CPW.'
+                + " The only supported pins are: start, end."
+            )
 
         # then change the lead by adding points
         for turn, length in options_lead.values():
             if isinstance(turn, (float, int)):
                 # turn is a number indicating the angle
                 lead.go_angle(length, turn)
-            elif re.search(r'^[-+]?(\d+\.\d+|\d+)$', turn):
+            elif re.search(r"^[-+]?(\d+\.\d+|\d+)$", turn):
                 # turn is a string of a number indicating the angle
                 lead.go_angle(length, float(turn))
             elif turn in ("left", "L"):
@@ -340,27 +365,28 @@ class QRoute(QComponent):
             elif turn in ("straight", "D", "S"):
                 # implicit 0 degrees movement
                 lead.go_straight(length)
-            elif re.search(r'^(left|L)[-+]?(\d+\.\d+|\d+)$', turn):
+            elif re.search(r"^(left|L)[-+]?(\d+\.\d+|\d+)$", turn):
                 # left turn by the specified int/float degrees. can be signed
-                angle = re.sub(r'^(left|L)', "", turn)
+                angle = re.sub(r"^(left|L)", "", turn)
                 lead.go_angle(length, float(angle))
-            elif re.search(r'^(right|R)[-+]?(\d+\.\d+|\d+)$', turn):
+            elif re.search(r"^(right|R)[-+]?(\d+\.\d+|\d+)$", turn):
                 # right turn by the specified int/float degrees. can be signed
-                angle = re.sub(r'^(right|R)', "", turn)
+                angle = re.sub(r"^(right|R)", "", turn)
                 lead.go_angle(length, -1 * float(angle))
-            elif ('A' or 'angle') in turn:
+            elif ("A" or "angle") in turn:
                 # turn by the specified int/float degrees. Positive numbers turn left.
-                turn, angle = turn.split(',')
+                turn, angle = turn.split(",")
                 lead.go_angle(length, float(angle))
             else:
                 raise Exception(
                     f"\nThe input string {turn} is not supported. Please specify the jog turn "
-                    "using one of the supported formats:\n\"L\", \"L#\", \"R\", \"R#\", #, "
-                    "\"#\", \"A,#\", \"left\", \"left#\", \"right\", \"right#\""
+                    'using one of the supported formats:\n"L", "L#", "R", "R#", #, '
+                    '"#", "A,#", "left", "left#", "right", "right#"'
                     "\nwhere # is any signed or unsigned integer or floating point value.\n"
                     "For example the following will all lead to the same turn:\n"
-                    "\"L\", \"L90\", \"R-90\", 90, "
-                    "\"90\", \"A,90\", \"left\", \"left90\", \"right-90\"")
+                    '"L", "L90", "R-90", 90, '
+                    '"90", "A,90", "left", "left90", "right-90"'
+                )
 
         # return the last QRoutePoint of the lead
         return lead.get_tip()
@@ -376,8 +402,7 @@ class QRoute(QComponent):
         if len(arr) == 1:
             pt = arr[0]
         elif len(arr) > 1:
-            if not isinstance(arr, np.ndarray) and len(arr) == 2 and len(
-                    arr[0]) == 1:
+            if not isinstance(arr, np.ndarray) and len(arr) == 2 and len(arr[0]) == 1:
                 # array 2,1
                 pt = arr
             else:
@@ -404,17 +429,16 @@ class QRoute(QComponent):
             return self.head.get_tip()
         tip_pt = tip_pt_minus_1 = None
         if isinstance(self.intermediate_pts, list) or isinstance(
-                self.intermediate_pts, np.ndarray):
-            tip_pt, tip_pt_minus_1 = self._get_lead2pts_array(
-                self.intermediate_pts)
+            self.intermediate_pts, np.ndarray
+        ):
+            tip_pt, tip_pt_minus_1 = self._get_lead2pts_array(self.intermediate_pts)
         elif isinstance(self.intermediate_pts, Mapping):
             # then it is either a dict or a OrderedDict
             # this method relies on the keys to be numerical integer. Will use the last points
             # assumes that the "value" associated with each key is some "not empty" list/array
             sorted_keys = sorted(self.intermediate_pts.keys(), reverse=True)
             for key in sorted_keys:
-                pt0, pt_minus1 = self._get_lead2pts_array(
-                    self.intermediate_pts[key])
+                pt0, pt_minus1 = self._get_lead2pts_array(self.intermediate_pts[key])
                 if pt0 is None:
                     continue
                 if tip_pt_minus_1 is None:
@@ -423,8 +447,10 @@ class QRoute(QComponent):
                     tip_pt, tip_pt_minus_1 = tip_pt_minus_1, tip_pt
                     tip_pt_minus_1 = pt_minus1
         else:
-            print("unsupported type for self.intermediate_pts",
-                  type(self.intermediate_pts))
+            print(
+                "unsupported type for self.intermediate_pts",
+                type(self.intermediate_pts),
+            )
             return
         if tip_pt is None:
             # no point in the intermediate array
@@ -447,7 +473,7 @@ class QRoute(QComponent):
         if len(inarray) <= 1:
             return
         else:
-            outarray = list()  #outarray = np.empty(shape=[0, 2])
+            outarray = list()  # outarray = np.empty(shape=[0, 2])
             pts = [None, None, inarray[0]]
             for idxnext in range(1, len(inarray)):
                 pts = pts[1:] + [inarray[idxnext]]
@@ -483,8 +509,7 @@ class QRoute(QComponent):
         if self.intermediate_pts is None:
             beginning = self.head.pts
         else:
-            beginning = np.concatenate([self.head.pts, self.intermediate_pts],
-                                       axis=0)
+            beginning = np.concatenate([self.head.pts, self.intermediate_pts], axis=0)
 
         # cover case where there is no tail defined (floating end)
         if self.tail is None:
@@ -496,10 +521,9 @@ class QRoute(QComponent):
 
         return polished
 
-    def get_unit_vectors(self,
-                         start: QRoutePoint,
-                         end: QRoutePoint,
-                         snap: bool = False) -> Tuple:
+    def get_unit_vectors(
+        self, start: QRoutePoint, end: QRoutePoint, snap: bool = False
+    ) -> Tuple:
         """Return the unit and target vector in which the CPW should process as
         its coordinate sys.
 
@@ -532,7 +556,8 @@ class QRoute(QComponent):
 
         # get the length without the corner rounding radius adjustment
         length_estimate = sum(
-            norm(points[i + 1] - points[i]) for i in range(len(points) - 1))
+            norm(points[i + 1] - points[i]) for i in range(len(points) - 1)
+        )
         # compensate for corner rounding
         length_estimate -= self.length_excess_corner_rounding(points)
 
@@ -555,8 +580,7 @@ class QRoute(QComponent):
         # the start and and point are the pins, so no corner rounding
         return (len(points) - 2) * length_excess
 
-    def assign_direction_to_anchor(self, ref_pt: QRoutePoint,
-                                   anchor_pt: QRoutePoint):
+    def assign_direction_to_anchor(self, ref_pt: QRoutePoint, anchor_pt: QRoutePoint):
         """Method to assign a direction to a point. Currently assigned as the
         max(x,y projection) of the direct path between the reference point and
         the anchor. Method directly modifies the anchor_pt.direction, thus
@@ -595,23 +619,27 @@ class QRoute(QComponent):
 
         # compute actual final length
         p = self.p
-        self.options._actual_length = str(
-            line.length - self.length_excess_corner_rounding(line.coords)
-        ) + ' ' + self.design.get_units()
+        self.options._actual_length = (
+            str(line.length - self.length_excess_corner_rounding(line.coords))
+            + " "
+            + self.design.get_units()
+        )
 
         # expand the routing track to form the substrate core of the cpw
-        self.add_qgeometry('path', {'trace': line},
-                           width=p.trace_width,
-                           fillet=p.fillet,
-                           layer=p.layer)
+        self.add_qgeometry(
+            "path", {"trace": line}, width=p.trace_width, fillet=p.fillet, layer=p.layer
+        )
         if self.type == "CPW":
             # expand the routing track to form the two gaps in the substrate
             # final gap will be form by this minus the trace above
-            self.add_qgeometry('path', {'cut': line},
-                               width=p.trace_width + 2 * p.trace_gap,
-                               fillet=p.fillet,
-                               layer=p.layer,
-                               subtract=True)
+            self.add_qgeometry(
+                "path",
+                {"cut": line},
+                width=p.trace_width + 2 * p.trace_gap,
+                fillet=p.fillet,
+                layer=p.layer,
+                subtract=True,
+            )
 
 
 class QRouteLead:
@@ -648,8 +676,8 @@ class QRouteLead:
             QRoutePoint: Last point (for now the single point) in the QRouteLead
             The values are numpy arrays with two float points each.
         """
-        position = pin['middle']
-        direction = pin['normal']
+        position = pin["middle"]
+        direction = pin["normal"]
 
         self.direction = direction
         self.pts = np.array([position])
@@ -662,8 +690,7 @@ class QRouteLead:
         Args:
             length (float) : How much to move by
         """
-        self.pts = np.append(self.pts, [self.pts[-1] + self.direction * length],
-                             axis=0)
+        self.pts = np.append(self.pts, [self.pts[-1] + self.direction * length], axis=0)
 
     def go_left(self, length: float):
         """Straight line 90deg counter-clock-wise direction w.r.t. lead tip
@@ -673,8 +700,7 @@ class QRouteLead:
             length (float): How much to move by
         """
         self.direction = draw.Vector.rotate(self.direction, np.pi / 2)
-        self.pts = np.append(self.pts, [self.pts[-1] + self.direction * length],
-                             axis=0)
+        self.pts = np.append(self.pts, [self.pts[-1] + self.direction * length], axis=0)
 
     def go_right(self, length: float):
         """Straight line 90deg clock-wise direction w.r.t. lead tip direction.
@@ -683,8 +709,7 @@ class QRouteLead:
             length (float): How much to move by
         """
         self.direction = draw.Vector.rotate(self.direction, -1 * np.pi / 2)
-        self.pts = np.append(self.pts, [self.pts[-1] + self.direction * length],
-                             axis=0)
+        self.pts = np.append(self.pts, [self.pts[-1] + self.direction * length], axis=0)
 
     def go_right45(self, length: float):
         """Straight line at 45 angle clockwise w.r.t lead tip direction.
@@ -693,8 +718,7 @@ class QRouteLead:
             length(float): How much to move by
         """
         self.direction = draw.Vector.rotate(self.direction, -1 * np.pi / 4)
-        self.pts = np.append(self.pts, [self.pts[-1] + self.direction * length],
-                             axis=0)
+        self.pts = np.append(self.pts, [self.pts[-1] + self.direction * length], axis=0)
 
     def go_left45(self, length: float):
         """Straight line at 45 angle counter-clockwise w.r.t lead tip direction.
@@ -703,19 +727,17 @@ class QRouteLead:
             length(float): How much to move by
         """
         self.direction = draw.Vector.rotate(self.direction, np.pi / 4)
-        self.pts = np.append(self.pts, [self.pts[-1] + self.direction * length],
-                             axis=0)
+        self.pts = np.append(self.pts, [self.pts[-1] + self.direction * length], axis=0)
 
     def go_angle(self, length: float, angle: float):
-        """ Straight line at any angle w.r.t lead tip direction.
+        """Straight line at any angle w.r.t lead tip direction.
 
         Args:
             length(float): How much to move by
             angle(float): rotation angle w.r.t lead tip direction
         """
         self.direction = draw.Vector.rotate(self.direction, np.pi / 180 * angle)
-        self.pts = np.append(self.pts, [self.pts[-1] + self.direction * length],
-                             axis=0)
+        self.pts = np.append(self.pts, [self.pts[-1] + self.direction * length], axis=0)
 
     @property
     def length(self):
@@ -725,8 +747,8 @@ class QRouteLead:
             length (float): Full point_array length
         """
         return sum(
-            norm(self.pts[i + 1] - self.pts[i])
-            for i in range(len(self.pts) - 1))
+            norm(self.pts[i + 1] - self.pts[i]) for i in range(len(self.pts) - 1)
+        )
 
     def get_tip(self) -> QRoutePoint:
         """Access the last element in the QRouteLead.

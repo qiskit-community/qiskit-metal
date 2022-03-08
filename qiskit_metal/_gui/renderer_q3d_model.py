@@ -32,7 +32,7 @@ class RendererQ3D_Model(QTreeModel_Base):
         QTreeModel_Base (QAbstractItemModel): Base class for nested dicts
     """
 
-    def __init__(self, parent: QWidget, gui: 'MetalGUI', view: QTreeView):
+    def __init__(self, parent: QWidget, gui: "MetalGUI", view: QTreeView):
         """Editable table with drop-down rows for Q3D renderer options.
         Organized as a tree model where child nodes are more specific
         properties of a given parent node.
@@ -42,10 +42,7 @@ class RendererQ3D_Model(QTreeModel_Base):
             gui (MetalGUI): The main user interface
             view (QTreeView): View corresponding to a tree structure
         """
-        super().__init__(parent=parent,
-                         gui=gui,
-                         view=view,
-                         child='Q3D renderer')
+        super().__init__(parent=parent, gui=gui, view=view, child="Q3D renderer")
 
     @property
     def data_dict(self) -> dict:

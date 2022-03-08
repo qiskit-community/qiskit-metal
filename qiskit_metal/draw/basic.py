@@ -38,8 +38,17 @@ from . import BaseGeometry
 from .utility import get_poly_pts
 
 __all__ = [
-    'rectangle', 'is_rectangle', 'flip_merge', 'rotate', 'rotate_position',
-    '_iter_func_geom_', 'translate', 'scale', 'buffer', 'union', 'subtract'
+    "rectangle",
+    "is_rectangle",
+    "flip_merge",
+    "rotate",
+    "rotate_position",
+    "_iter_func_geom_",
+    "translate",
+    "scale",
+    "buffer",
+    "union",
+    "subtract",
 ]
 
 
@@ -66,9 +75,9 @@ def rectangle(w: float, h: float, xoff: float = 0, yoff: float = 0):
     if xoff is 0 and yoff is 0:
         return Polygon(shapely.wkt.loads(pad))  # My Polygon class
     else:
-        return shapely.affinity.translate(Polygon(shapely.wkt.loads(pad)),
-                                          xoff=xoff,
-                                          yoff=yoff)
+        return shapely.affinity.translate(
+            Polygon(shapely.wkt.loads(pad)), xoff=xoff, yoff=yoff
+        )
 
 
 def is_rectangle(obj):
@@ -93,7 +102,7 @@ def is_rectangle(obj):
         def is_orthogonal(i):
             v1 = p[(i + 1) % 4] - p[(i + 0) % 4]
             v2 = p[(i + 2) % 4] - p[(i + 1) % 4]
-            return abs(np.dot(v1, v2)) < 1E-16
+            return abs(np.dot(v1, v2)) < 1e-16
 
         # CHeck if all vectors are consequtivly orthogonal
         return all(map(is_orthogonal, range(4)))
@@ -101,8 +110,7 @@ def is_rectangle(obj):
         return False
 
 
-def subtract(poly_main: shapely.geometry.Polygon,
-             poly_tool: shapely.geometry.Polygon):
+def subtract(poly_main: shapely.geometry.Polygon, poly_tool: shapely.geometry.Polygon):
     """Geometry subtract tool poly from main poly.
 
     Args:
@@ -142,10 +150,7 @@ def union(*polys):
 # Shapely affine transorms
 
 
-def flip_merge(line: shapely.geometry.LineString,
-               xfact=-1,
-               yfact=+1,
-               origin=(0, 0)):
+def flip_merge(line: shapely.geometry.LineString, xfact=-1, yfact=+1, origin=(0, 0)):
     """Mirror type of drawing command on LineString.
 
     Calls shapely.affinity.scale(geom, xfact=xfact, yfact=yfact, zfact=1.0, origin=origin).
@@ -165,10 +170,7 @@ def flip_merge(line: shapely.geometry.LineString,
         list: The coorindates that can be used to construct a polygon, by flipping a linestring
         over an axis and mirroring it.
     """
-    line_flip = shapely.affinity.scale(line,
-                                       xfact=xfact,
-                                       yfact=yfact,
-                                       origin=origin)
+    line_flip = shapely.affinity.scale(line, xfact=xfact, yfact=yfact, origin=origin)
     coords = list(line.coords) + list(reversed(line_flip.coords))
     return coords
 
@@ -202,59 +204,53 @@ def _iter_func_geom_(func, objs, *args, overwrite=False, **kwargs):
     if isinstance(objs, Mapping):  # dict, Dict
         if overwrite:
             for key, val in objs.items():
-                objs[key] = _iter_func_geom_(func,
-                                             val,
-                                             *args,
-                                             overwrite=overwrite,
-                                             **kwargs)
+                objs[key] = _iter_func_geom_(
+                    func, val, *args, overwrite=overwrite, **kwargs
+                )
             return objs
         else:
-            return type(objs)([(key,
-                                _iter_func_geom_(func,
-                                                 val,
-                                                 *args,
-                                                 overwrite=overwrite,
-                                                 **kwargs))
-                               for key, val in objs.items()])
+            return type(objs)(
+                [
+                    (
+                        key,
+                        _iter_func_geom_(
+                            func, val, *args, overwrite=overwrite, **kwargs
+                        ),
+                    )
+                    for key, val in objs.items()
+                ]
+            )
 
     elif isinstance(objs, Iterable):  # list, tuple
         if overwrite:
             for key, val in enumerate(objs):
-                objs[key] = _iter_func_geom_(func,
-                                             val,
-                                             *args,
-                                             overwrite=overwrite,
-                                             **kwargs)
+                objs[key] = _iter_func_geom_(
+                    func, val, *args, overwrite=overwrite, **kwargs
+                )
             return objs
         # Under Shapely 1.8, MultiPolygon objects need to be
         # referenced with the .geoms property. This function
         # did inadvertently take MultiPolygon objects so
         # another case was added to handle this.
         elif isinstance(objs, MultiPolygon):
-            return type(objs)([
-                _iter_func_geom_(func,
-                                 val,
-                                 *args,
-                                 overwrite=overwrite,
-                                 **kwargs) for val in objs.geoms
-            ])
+            return type(objs)(
+                [
+                    _iter_func_geom_(func, val, *args, overwrite=overwrite, **kwargs)
+                    for val in objs.geoms
+                ]
+            )
         else:
-            return type(objs)([
-                _iter_func_geom_(func,
-                                 val,
-                                 *args,
-                                 overwrite=overwrite,
-                                 **kwargs) for val in objs
-            ])
+            return type(objs)(
+                [
+                    _iter_func_geom_(func, val, *args, overwrite=overwrite, **kwargs)
+                    for val in objs
+                ]
+            )
 
     elif is_component(objs):
         # apply on geom of component's qgeometry; return component
         # below: returns a dict with the shifted components, we will not use this
-        _iter_func_geom_(func,
-                         objs.qgeometry,
-                         *args,
-                         overwrite=overwrite,
-                         **kwargs)
+        _iter_func_geom_(func, objs.qgeometry, *args, overwrite=overwrite, **kwargs)
         return objs
 
     # elif is_element(objs): #will need updating to new table format
@@ -266,15 +262,11 @@ def _iter_func_geom_(func, objs, *args, overwrite=False, **kwargs):
         return func(objs, *args, **kwargs)
 
     else:
-        logger.error(f'Unkown elemnet! ERROR on: {objs}')
+        logger.error(f"Unkown elemnet! ERROR on: {objs}")
         return objs
 
 
-def rotate(qgeometry,
-           angle,
-           origin='center',
-           use_radians=False,
-           overwrite=False):
+def rotate(qgeometry, angle, origin="center", use_radians=False, overwrite=False):
     r"""
     The angle of rotation can be specified in either degrees (default) or
     radians by setting ``use_radians=True``. Positive angles are
@@ -310,16 +302,18 @@ def rotate(qgeometry,
         xoff = x0 - x0 * cos(r) + y0 * sin(r)
         yoff = y0 - x0 * sin(r) - y0 * cos(r)
     """
-    return _iter_func_geom_(shapely.affinity.rotate,
-                            qgeometry,
-                            angle,
-                            origin=origin,
-                            use_radians=use_radians,
-                            overwrite=overwrite)
+    return _iter_func_geom_(
+        shapely.affinity.rotate,
+        qgeometry,
+        angle,
+        origin=origin,
+        use_radians=use_radians,
+        overwrite=overwrite,
+    )
 
 
 def translate(qgeometry, xoff=0.0, yoff=0.0, zoff=0.0, overwrite=False):
-    r'''Shifts the geometry by the given offset.
+    r"""Shifts the geometry by the given offset.
     Args:
         qgeometry (Dict, List, Tuple or BaseGeometry): Set of objects.
         xoff (double): x-direction offset.  Defaults to 0.0.
@@ -337,22 +331,19 @@ def translate(qgeometry, xoff=0.0, yoff=0.0, zoff=0.0, overwrite=False):
         | 0  1  0 yoff |
         | 0  0  1 zoff |
         \ 0  0  0   1  /
-    '''
-    return _iter_func_geom_(shapely.affinity.translate,
-                            qgeometry,
-                            xoff=xoff,
-                            yoff=yoff,
-                            zoff=zoff,
-                            overwrite=overwrite)
+    """
+    return _iter_func_geom_(
+        shapely.affinity.translate,
+        qgeometry,
+        xoff=xoff,
+        yoff=yoff,
+        zoff=zoff,
+        overwrite=overwrite,
+    )
 
 
-def scale(qgeometry,
-          xfact=1.0,
-          yfact=1.0,
-          zfact=1.0,
-          origin='center',
-          overwrite=False):
-    r'''
+def scale(qgeometry, xfact=1.0, yfact=1.0, zfact=1.0, origin="center", overwrite=False):
+    r"""
     Operatos on a list or Dict of components.
 
     Args:
@@ -386,21 +377,21 @@ def scale(qgeometry,
         xoff = x0 - x0 * xfact
         yoff = y0 - y0 * yfact
         zoff = z0 - z0 * zfact
-    '''
-    return _iter_func_geom_(shapely.affinity.scale,
-                            qgeometry,
-                            xfact=xfact,
-                            yfact=yfact,
-                            zfact=zfact,
-                            origin=origin,
-                            overwrite=overwrite)
+    """
+    return _iter_func_geom_(
+        shapely.affinity.scale,
+        qgeometry,
+        xfact=xfact,
+        yfact=yfact,
+        zfact=zfact,
+        origin=origin,
+        overwrite=overwrite,
+    )
 
 
-def rotate_position(qgeometry,
-                    angle: float,
-                    pos: list,
-                    pos_rot=(0, 0),
-                    overwrite=False):
+def rotate_position(
+    qgeometry, angle: float, pos: list, pos_rot=(0, 0), overwrite=False
+):
     """Orient and then place position. Just a shortcut function.
 
     Args:
@@ -415,22 +406,21 @@ def rotate_position(qgeometry,
 
     def rotate_position_shapely(sobj):
         pos1 = list(shapely.affinity.rotate(Point(pos), angle).coords)[0]
-        sobj = shapely.affinity.rotate(sobj, angle,
-                                       pos_rot)  # rotate about pos_rot
+        sobj = shapely.affinity.rotate(sobj, angle, pos_rot)  # rotate about pos_rot
         return shapely.affinity.translate(sobj, *pos1)  # move to position
 
-    return _iter_func_geom_(rotate_position_shapely,
-                            qgeometry,
-                            overwrite=overwrite)
+    return _iter_func_geom_(rotate_position_shapely, qgeometry, overwrite=overwrite)
 
 
-def buffer(qgeometry,
-           distance: float,
-           resolution=None,
-           cap_style=CAP_STYLE.flat,
-           join_style=JOIN_STYLE.mitre,
-           mitre_limit=None,
-           overwrite=False):
+def buffer(
+    qgeometry,
+    distance: float,
+    resolution=None,
+    cap_style=CAP_STYLE.flat,
+    join_style=JOIN_STYLE.mitre,
+    mitre_limit=None,
+    overwrite=False,
+):
     """Flat buffer of all components in the dictionary.
 
     Default stlye:
@@ -488,11 +478,13 @@ def buffer(qgeometry,
     def buffer_me(obj, *args, **kwargs):
         return obj.buffer(*args, **kwargs)
 
-    return _iter_func_geom_(buffer_me,
-                            qgeometry,
-                            distance,
-                            resolution=resolution,
-                            cap_style=cap_style,
-                            join_style=join_style,
-                            mitre_limit=mitre_limit,
-                            overwrite=overwrite)
+    return _iter_func_geom_(
+        buffer_me,
+        qgeometry,
+        distance,
+        resolution=resolution,
+        cap_style=cap_style,
+        join_style=join_style,
+        mitre_limit=mitre_limit,
+        overwrite=overwrite,
+    )

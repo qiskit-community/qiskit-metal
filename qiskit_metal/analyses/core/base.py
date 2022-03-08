@@ -47,11 +47,9 @@ class QAnalysis(ABC):
     """Default data labels."""
 
     def __init__(self, *args, **kwargs):
-        """Creates a new Analysis object with a setup derived from the default_setup Dict.
-        """
+        """Creates a new Analysis object with a setup derived from the default_setup Dict."""
         super().__init__(*args, **kwargs)
-        self._setup, self._supported_data_labels = self._gather_from_all_children(
-        )
+        self._setup, self._supported_data_labels = self._gather_from_all_children()
 
         # first self.clear_data()
         self._variables = Dict()
@@ -60,8 +58,7 @@ class QAnalysis(ABC):
         self._sweeper = None
 
     def _initialize_sweep(self):
-        """Create a new instance of Sweeper
-        """
+        """Create a new instance of Sweeper"""
         self._sweeper = Sweeper(self)
 
     @property
@@ -121,8 +118,10 @@ class QAnalysis(ABC):
         """
         if data_name not in self._supported_data_labels:
             self.logger.warning(
-                'No %s in the list of supported variables. The variable will still be added. '
-                'However, make sure this was not a typo', {data_name})
+                "No %s in the list of supported variables. The variable will still be added. "
+                "However, make sure this was not a typo",
+                {data_name},
+            )
         self._variables[data_name] = data
 
     def get_data(self, data_name: str = None):
@@ -176,10 +175,11 @@ class QAnalysis(ABC):
                         del self._variables[name]
 
     def print_run_args(self):
-        """Prints the args and kwargs that were used in the last run() of this Analysis instance.
-        """
-        print("This analysis object run with the following kwargs:\n"
-              f"{self._setup.run}\n")
+        """Prints the args and kwargs that were used in the last run() of this Analysis instance."""
+        print(
+            "This analysis object run with the following kwargs:\n"
+            f"{self._setup.run}\n"
+        )
 
     @property
     def setup(self):
@@ -227,11 +227,10 @@ class QAnalysis(ABC):
                     unsupported_keys.append(k)
             if unsupported_keys:
                 print(
-                    f'the parameters {unsupported_keys} are unsupported, so they have been ignored'
+                    f"the parameters {unsupported_keys} are unsupported, so they have been ignored"
                 )
         else:
-            print(
-                f'the section {section} does not exist in this analysis setup')
+            print(f"the section {section} does not exist in this analysis setup")
 
     @classmethod
     def _gather_from_all_children(cls):
@@ -248,12 +247,12 @@ class QAnalysis(ABC):
         parents = inspect.getmro(cls)
 
         # len-2: base.py is not expected to have default_setup and data_labels.
-        for child in parents[len(parents) - 2::-1]:
+        for child in parents[len(parents) - 2 :: -1]:
             # The template default options are in the attribute `default_setup`.
-            if hasattr(child, 'default_setup'):
+            if hasattr(child, "default_setup"):
                 setup_from_children.update(deepcopy(child.default_setup))
             # The data_labels are in the attribute `data_labels`.
-            if hasattr(child, 'data_labels'):
+            if hasattr(child, "data_labels"):
                 labels_from_children.update(child.data_labels)
 
         return setup_from_children, labels_from_children

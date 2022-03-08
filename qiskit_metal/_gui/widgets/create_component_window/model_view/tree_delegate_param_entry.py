@@ -18,7 +18,9 @@ Delegate for Param Entry Window's MVD
 from PySide2.QtCore import QAbstractItemModel, QModelIndex, Qt
 from PySide2.QtWidgets import QItemDelegate, QStyleOptionViewItem, QWidget
 
-from qiskit_metal._gui.widgets.create_component_window.model_view.tree_model_param_entry import TreeModelParamEntry  # pylint: disable=line-too-long
+from qiskit_metal._gui.widgets.create_component_window.model_view.tree_model_param_entry import (
+    TreeModelParamEntry,
+)  # pylint: disable=line-too-long
 
 
 class ParamDelegate(QItemDelegate):
@@ -27,8 +29,9 @@ class ParamDelegate(QItemDelegate):
     (such as QComboBoxes) for the Parameter Entry Window
     """
 
-    def createEditor(self, parent: QWidget, option: QStyleOptionViewItem,
-                     index: QModelIndex) -> QWidget:
+    def createEditor(
+        self, parent: QWidget, option: QStyleOptionViewItem, index: QModelIndex
+    ) -> QWidget:
         """
         Overriding inherited createdEditor class.
         Note that the index contains information about the model being used.
@@ -44,7 +47,7 @@ class ParamDelegate(QItemDelegate):
         """
         if index.column() == TreeModelParamEntry.TYPE:
             node = index.model().nodeFromIndex(index)
-            combo = node.get_type_combobox(parent)  #dicts vs values
+            combo = node.get_type_combobox(parent)  # dicts vs values
             return combo
 
         return QItemDelegate.createEditor(self, parent, option, index)
@@ -63,8 +66,9 @@ class ParamDelegate(QItemDelegate):
         else:
             QItemDelegate.setEditorData(self, editor, index)
 
-    def setModelData(self, editor: QWidget, model: QAbstractItemModel,
-                     index: QModelIndex):
+    def setModelData(
+        self, editor: QWidget, model: QAbstractItemModel, index: QModelIndex
+    ):
         """
         Overriding inherited setModelData class
         Args:

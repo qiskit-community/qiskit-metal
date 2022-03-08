@@ -35,9 +35,12 @@ from qiskit_metal.renderers.renderer_base import QRenderer
 from qiskit_metal.toolbox_metal.parsing import is_true
 
 from qiskit_metal import config
+
 if not config.is_building_docs():
     from qiskit_metal.toolbox_python.utility_functions import can_write_to_path
-    from qiskit_metal.toolbox_python.utility_functions import get_range_of_vertex_to_not_fillet
+    from qiskit_metal.toolbox_python.utility_functions import (
+        get_range_of_vertex_to_not_fillet,
+    )
 
 if TYPE_CHECKING:
     # For linting typechecking, import modules that can't be loaded here under normal conditions.
@@ -58,12 +61,13 @@ class QSkeletonRenderer(QRenderer):
     #: Type: Dict[str, str]
     default_options = Dict(
         # An option unique to QSkeletonRenderer.
-        number_of_bones='206',
+        number_of_bones="206",
         # Default file name for geometry table names.
-        file_geometry_tables='./simple_output_default_name.txt')
+        file_geometry_tables="./simple_output_default_name.txt",
+    )
     """Default options"""
 
-    name = 'skeleton'
+    name = "skeleton"
     """Name used in Metal code to refer to this QRenderer."""
 
     # When additional columns are added to QGeometry, this is the example to populate it.
@@ -85,14 +89,17 @@ class QSkeletonRenderer(QRenderer):
         # Example of adding a column named "skeleton_a_column_name"
         # with default values of "a_default_value" to the junction table.
         # Note: QSkeletonRenderer.name is prefixed to "a_column_name" when the table is appended by QComponents.
-        junction=dict(a_column_name='a_default_value'))
+        junction=dict(a_column_name="a_default_value")
+    )
     """element extensions dictionary   element_extensions = dict() from base class"""
 
-    def __init__(self,
-                 design: 'QDesign',
-                 initiate=True,
-                 render_template: Dict = None,
-                 render_options: Dict = None):
+    def __init__(
+        self,
+        design: "QDesign",
+        initiate=True,
+        render_template: Dict = None,
+        render_options: Dict = None,
+    ):
         """Create a QRenderer for GDS interface: export and import.
 
         Args:
@@ -102,10 +109,12 @@ class QSkeletonRenderer(QRenderer):
             render_options (Dict, optional):  Used to overide all options. Defaults to None.
         """
 
-        super().__init__(design=design,
-                         initiate=initiate,
-                         render_template=render_template,
-                         render_options=render_options)
+        super().__init__(
+            design=design,
+            initiate=initiate,
+            render_template=render_template,
+            render_options=render_options,
+        )
         QSkeletonRenderer.load()
 
         # Updated each time write_qgeometry_table_names_to_file() is called.
@@ -114,20 +123,18 @@ class QSkeletonRenderer(QRenderer):
     # For a skeleton_renderer user, this is kept to exemplify self.logger.warning.
 
     def _initiate_renderer(self):
-        """Not used by the skeleton renderer at this time. only returns True.
-        """
+        """Not used by the skeleton renderer at this time. only returns True."""
         return True
 
     def _close_renderer(self):
-        """Not used by the skeleton renderer at this time. only returns True.
-        """
+        """Not used by the skeleton renderer at this time. only returns True."""
         return True
 
     def render_design(self):
         """Export the design to Skeleton."""
         self.write_qgeometry_table_names_to_file(
-            file_name=self.options.file_geometry_tables,
-            highlight_qcomponents=[])
+            file_name=self.options.file_geometry_tables, highlight_qcomponents=[]
+        )
 
     def _can_write_to_path(self, file: str) -> int:
         """Check if can write file.
@@ -142,13 +149,14 @@ class QSkeletonRenderer(QRenderer):
         if status:
             return 1
 
-        self.logger.warning(f'Not able to write to directory.'
-                            f'File:"{file}" not written.'
-                            f' Checked directory:"{directory_name}".')
+        self.logger.warning(
+            f"Not able to write to directory."
+            f'File:"{file}" not written.'
+            f' Checked directory:"{directory_name}".'
+        )
         return 0
 
-    def check_qcomps(self,
-                     highlight_qcomponents: list = []) -> Tuple[list, int]:
+    def check_qcomps(self, highlight_qcomponents: list = []) -> Tuple[list, int]:
         """Confirm the list doesn't have names of componentes repeated. Comfirm
         that the name of component exists in QDesign.
 
@@ -168,8 +176,9 @@ class QSkeletonRenderer(QRenderer):
         for qcomp in unique_qcomponents:
             if qcomp not in self.design.name_to_id:
                 self.logger.warning(
-                    f'The component={qcomp} in highlight_qcomponents not'
-                    ' in QDesign. The GDS data not generated.')
+                    f"The component={qcomp} in highlight_qcomponents not"
+                    " in QDesign. The GDS data not generated."
+                )
                 return unique_qcomponents, 1
 
         # For Subtraction bounding box.
@@ -182,9 +191,9 @@ class QSkeletonRenderer(QRenderer):
 
         return unique_qcomponents, 0
 
-    def get_qgeometry_tables_for_skeleton(self,
-                                          highlight_qcomponents: list = []
-                                         ) -> Tuple[int, list]:
+    def get_qgeometry_tables_for_skeleton(
+        self, highlight_qcomponents: list = []
+    ) -> Tuple[int, list]:
         """Using self.design, this method does the following:
 
         1. Gather the QGeometries to be used to write to file.
@@ -208,19 +217,19 @@ class QSkeletonRenderer(QRenderer):
         for chip_name in self.chip_info:
             for table_name in self.design.qgeometry.get_element_types():
                 # Get table for chip and table_name, and reduce to keep just the list of unique_qcomponents.
-                table = self.get_table(table_name, unique_qcomponents,
-                                       chip_name)
+                table = self.get_table(table_name, unique_qcomponents, chip_name)
 
                 # A place where a logic can happen, for each table, within a chip.
 
                 # Demo for skeleton QRenderer.
                 if len(table) != 0:
-                    table_names_for_highlight.append(table_name + '\n')
+                    table_names_for_highlight.append(table_name + "\n")
 
         return 0, table_names_for_highlight
 
-    def get_table(self, table_name: str, unique_qcomponents: list,
-                  chip_name: str) -> geopandas.GeoDataFrame:
+    def get_table(
+        self, table_name: str, unique_qcomponents: list, chip_name: str
+    ) -> geopandas.GeoDataFrame:
         """If unique_qcomponents list is empty, get table using table_name from
         QGeometry tables for all elements with table_name.  Otherwise, return a
         table with fewer elements, for just the qcomponents within the
@@ -246,16 +255,15 @@ class QSkeletonRenderer(QRenderer):
             ]
 
             # Remove QComponents which are not requested.
-            table = table[table['component'].isin(highlight_id)]
+            table = table[table["component"].isin(highlight_id)]
 
-        table = table[table['chip'] == chip_name]
+        table = table[table["chip"] == chip_name]
 
         return table
 
-    def write_qgeometry_table_names_to_file(self,
-                                            file_name: str,
-                                            highlight_qcomponents: list = []
-                                           ) -> int:
+    def write_qgeometry_table_names_to_file(
+        self, file_name: str, highlight_qcomponents: list = []
+    ) -> int:
         """Obtain the names of the QGeometry Pandas tables and write them to a
         file. The names will be for qcomponents that were selected or all of
         the qcomponents within the qdesign.
@@ -279,15 +287,16 @@ class QSkeletonRenderer(QRenderer):
         self.chip_info.update(self.get_chip_names())
 
         status, table_names_used = self.get_qgeometry_tables_for_skeleton(
-            highlight_qcomponents)
+            highlight_qcomponents
+        )
 
         # The method parse_value, returns a float.
         total_bones = str(int(self.parse_value(self.options.number_of_bones)))
 
-        total_bones_text = 'Number of bones:  ' + total_bones + '\n'
+        total_bones_text = "Number of bones:  " + total_bones + "\n"
 
-        if (status == 0):
-            skeleton_out = open(file_name, 'w')
+        if status == 0:
+            skeleton_out = open(file_name, "w")
             skeleton_out.writelines(total_bones_text)
             skeleton_out.writelines(table_names_used)
             skeleton_out.close()
@@ -307,7 +316,7 @@ class QSkeletonRenderer(QRenderer):
         chip_names = Dict()
         for table_name in self.design.qgeometry.get_element_types():
             table = self.design.qgeometry.tables[table_name]
-            names = table['chip'].unique().tolist()
+            names = table["chip"].unique().tolist()
             chip_names += names
         unique_list = list(set(chip_names))
 

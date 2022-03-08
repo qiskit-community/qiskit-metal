@@ -23,14 +23,21 @@ import PySide2
 from PySide2 import QtCore, QtGui, QtWidgets
 from PySide2.QtCore import QAbstractTableModel, QModelIndex, Qt
 from PySide2.QtGui import QFont, QColor
-from PySide2.QtWidgets import (QAbstractItemView, QApplication, QFileDialog,
-                               QLabel, QMainWindow, QMessageBox, QTabWidget)
+from PySide2.QtWidgets import (
+    QAbstractItemView,
+    QApplication,
+    QFileDialog,
+    QLabel,
+    QMainWindow,
+    QMessageBox,
+    QTabWidget,
+)
 
 from .... import logger
 from ...component_widget_ui import Ui_ComponentWidget
 from .tree_model_options import QTreeModel_Options
 
-__all__ = ['create_QTextDocument', 'format_docstr']
+__all__ = ["create_QTextDocument", "format_docstr"]
 
 if TYPE_CHECKING:
     from ...main_window import MetalGUI, QMainWindowExtension
@@ -43,8 +50,7 @@ try:  # For source doc
     from pygments.formatters import HtmlFormatter
     from pygments.lexers import get_lexer_by_name
 except ImportError as e:
-    logger.error(
-        f'Error: Could not load python package \'pygments\'; Error: {e}')
+    logger.error(f"Error: Could not load python package 'pygments'; Error: {e}")
     highlight = None
     HtmlFormatter = None
     get_lexer_by_name = None
@@ -104,7 +110,7 @@ def format_docstr(doc: Union[str, None]) -> str:
     """
 
     if doc is None:
-        return ''
+        return ""
     doc = doc.strip()
     text = f"""
 <pre style="background-color: #EBECE4;">
@@ -157,7 +163,7 @@ class ComponentWidget(QTabWidget):
         gui.component_window
     """
 
-    def __init__(self, gui: 'MetalGUI', parent: QtWidgets.QWidget):
+    def __init__(self, gui: "MetalGUI", parent: QtWidgets.QWidget):
         """
         Args:
             gui: (MetalGUI): The GUI
@@ -182,12 +188,13 @@ class ComponentWidget(QTabWidget):
         self.model = QTreeModel_Options(self, gui, self.ui.treeView)
         self.ui.treeView.setModel(self.model)
         self.ui.treeView.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
-        self.ui.treeView.setHorizontalScrollMode(
-            QAbstractItemView.ScrollPerPixel)
+        self.ui.treeView.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
 
-        self.ui.textSource.setStyleSheet("""
+        self.ui.textSource.setStyleSheet(
+            """
             color: #000000;
-            """)
+            """
+        )
         self.src_doc = create_QTextDocument(self.ui.textSource)
         self._html_css_lex = None  # type: pygments.formatters.html.HtmlFormatter
         self.src_widgets = []  # type: List[QtWidgets.QWidget]
@@ -202,7 +209,7 @@ class ComponentWidget(QTabWidget):
         return self.gui.design
 
     @property
-    def component(self) -> 'QComponent':
+    def component(self) -> "QComponent":
         """Use the interface to components dict to return a QComponent.
 
         Returns:
@@ -273,7 +280,7 @@ class ComponentWidget(QTabWidget):
         doc_init = format_docstr(inspect.getdoc(component.__init__))
 
         text = "<body>"
-        text += f'''
+        text += f"""
         <div class="h1">Summary:</div>
         <table class="table ComponentHeader">
             <tbody>
@@ -283,7 +290,7 @@ class ComponentWidget(QTabWidget):
                 <tr> <th>Path </th> <td style="text-color=#BBBBBB;"> {filepath}</td></tr>
             </tbody>
         </table>
-        '''
+        """
 
         # get image
         # if image_path:
@@ -291,12 +298,12 @@ class ComponentWidget(QTabWidget):
         #     <img class="ComponentImage" src="{image_path}"></img>
         #     '''
 
-        text += f'''
+        text += f"""
             <div class="h1">Class docstring:</div>
             {doc_class}
             <div class="h1">Init docstring:</div>
             {doc_init}
-        '''
+        """
         text += "</body>"
 
         self.ui.textHelp.setHtml(text)
@@ -322,8 +329,8 @@ class ComponentWidget(QTabWidget):
 
         if not (highlight is None):
             lexer = get_lexer_by_name("python", stripall=True)
-            formatter = HtmlFormatter(linenos='inline')
-            self._html_css_lex = formatter.get_style_defs('.highlight')
+            formatter = HtmlFormatter(linenos="inline")
+            self._html_css_lex = formatter.get_style_defs(".highlight")
 
             document.setDefaultStyleSheet(self._html_css_lex)
             text_html = highlight(text, lexer, formatter)
@@ -332,18 +339,20 @@ class ComponentWidget(QTabWidget):
             # Grab the highlight colour from pygment's HTML and use it as
             # the background colour for the textSource widget
             # Also set the text colour to black
-            wiget_background_html = '.highlight { background: '
-            newstr = self._html_css_lex[self._html_css_lex.
-                                        index(wiget_background_html) +
-                                        len(wiget_background_html):]
-            bg_color_1 = newstr[:newstr.find(';')]
-            bg_color_2 = newstr[:newstr.find('}')]
-            bg_color = bg_color_2 if len(bg_color_2) < len(
-                bg_color_1) else bg_color_1
-            self.ui.textSource.setStyleSheet(f"""
+            wiget_background_html = ".highlight { background: "
+            newstr = self._html_css_lex[
+                self._html_css_lex.index(wiget_background_html)
+                + len(wiget_background_html) :
+            ]
+            bg_color_1 = newstr[: newstr.find(";")]
+            bg_color_2 = newstr[: newstr.find("}")]
+            bg_color = bg_color_2 if len(bg_color_2) < len(bg_color_1) else bg_color_1
+            self.ui.textSource.setStyleSheet(
+                f"""
             background-color: {bg_color}; 
             color: #000000;
-            """)
+            """
+            )
 
         else:
             document.setPlainText(text)

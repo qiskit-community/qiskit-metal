@@ -17,7 +17,12 @@ from typing import TYPE_CHECKING
 from PySide2.QtCore import QModelIndex, Qt
 from PySide2.QtGui import QFont
 from PySide2.QtWidgets import QTreeView, QWidget
-from ..bases.dict_tree_base import LeafNode, BranchNode, QTreeModel_Base, parse_param_from_str
+from ..bases.dict_tree_base import (
+    LeafNode,
+    BranchNode,
+    QTreeModel_Base,
+    parse_param_from_str,
+)
 
 if TYPE_CHECKING:
     from ...main_window import MetalGUI
@@ -32,7 +37,7 @@ class QTreeModel_Options(QTreeModel_Base):
         QTreeModel_Base (QAbstractItemModel): Base class for nested dicts
     """
 
-    def __init__(self, parent: QWidget, gui: 'MetalGUI', view: QTreeView):
+    def __init__(self, parent: QWidget, gui: "MetalGUI", view: QTreeView):
         """Editable table with drop-down rows for component options. Organized
         as a tree model where child nodes are more specific properties of a
         given parent node.
@@ -42,9 +47,8 @@ class QTreeModel_Options(QTreeModel_Base):
             gui (MetalGUI): The main user interface
             view (QTreeView): View corresponding to a tree structure
         """
-        super().__init__(parent=parent, gui=gui, view=view, child='component')
-        self.headers = ['Name', 'Value',
-                        'Parsed value']  # 3 columns instead of 2
+        super().__init__(parent=parent, gui=gui, view=view, child="component")
+        self.headers = ["Name", "Value", "Parsed value"]  # 3 columns instead of 2
 
     @property
     def data_dict(self) -> dict:
@@ -118,7 +122,7 @@ class QTreeModel_Options(QTreeModel_Base):
                     # Handle a branch (which is a nested subdictionary, which can be expanded)
                     if index.column() == 0:
                         return node.name
-                    return ''
+                    return ""
                 # We have a leaf
                 elif index.column() == 0:
                     return str(node.label)  # key

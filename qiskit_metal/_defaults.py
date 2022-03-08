@@ -32,21 +32,18 @@ class DefaultMetalOptions(Dict):
     """
 
     default_generic = Dict(
-        units='mm',  # Units in which all dimensions are converted as floats
-        chip=
-        'main',  # Default chip used through codebase, when one is not specified
-
+        units="mm",  # Units in which all dimensions are converted as floats
+        chip="main",  # Default chip used through codebase, when one is not specified
         # Default options for QDesign variables
-        qdesign=Dict(variables=Dict(cpw_width='10 um', cpw_gap='6 um')),
-
+        qdesign=Dict(variables=Dict(cpw_width="10 um", cpw_gap="6 um")),
         # Used for numpy.round()
         PRECISION=9,
-
         # Geometric
         geometry=Dict(
             buffer_resolution=16,  # for shapely buffer
             buffer_mitre_limit=5.0,
-        ))
+        ),
+    )
     """
     Define the default generic properties
     """
@@ -71,7 +68,7 @@ class DefaultMetalOptions(Dict):
 
 
 # Can't really use this until default_draw_substrate.color_plane is resolved.
-class DefaultOptionsRenderer():  # pylint: disable=too-few-public-methods
+class DefaultOptionsRenderer:  # pylint: disable=too-few-public-methods
     """`DefaultOptionsRenderer` is the class that encapsulate generic data used
     throughout qiskit metal classes for renderers.
 
@@ -84,33 +81,37 @@ class DefaultOptionsRenderer():  # pylint: disable=too-few-public-methods
 
     # These are potential dicts that could be used for renderers.
     default_bounding_box = Dict(
-        draw_bounding_box=[[0, 0], [0, 0], ['0.890mm', '0.900mm']])
+        draw_bounding_box=[[0, 0], [0, 0], ["0.890mm", "0.900mm"]]
+    )
     """
     Define the default bounding box.
     """
 
     default_draw_substrate = Dict(
         draw_substrate={
-            'pos_xy': "['0um', '0um']",
-            'size': "['8.5mm', '6.5mm', '-0.750mm']",
-            'elevation': 0,
-            'ground_plane': 'ground_plane',
-            'substrate': 'substrate',
-            'material': 'silicon',
+            "pos_xy": "['0um', '0um']",
+            "size": "['8.5mm', '6.5mm', '-0.750mm']",
+            "elevation": 0,
+            "ground_plane": "ground_plane",
+            "substrate": "substrate",
+            "material": "silicon",
             # 'color_plane': DEFAULT.colors.ground_main,      #this needs to change
-            'transparency_plane': 0,
-            'transparency_substrate': 0,
-            'wireframe_substrate': False
-        })
+            "transparency_plane": 0,
+            "transparency_substrate": 0,
+            "wireframe_substrate": False,
+        }
+    )
     """
     Define the default draw substrate
     """
 
-    def __init__(self,
-                 draw_substrate: Dict = default_draw_substrate,
-                 bounding_box: Dict = default_bounding_box):
+    def __init__(
+        self,
+        draw_substrate: Dict = default_draw_substrate,
+        bounding_box: Dict = default_bounding_box,
+    ):
         """The constructor for the `DefaultOptionsRenderer` class."""
-        #self.logger = logger
+        # self.logger = logger
 
         # Do Not edit the class variable
         self.draw_substrate = deepcopy(draw_substrate)
@@ -122,9 +123,7 @@ class DefaultOptionsRenderer():  # pylint: disable=too-few-public-methods
         self.default_options.update(self.bounding_box)
 
     # customize the key/value pairs
-    def update_default_options(self,
-                               cust_key: str = None,
-                               cust_value: Dict = None):
+    def update_default_options(self, cust_key: str = None, cust_value: Dict = None):
         """Allow instance of class to update the default_options.
 
         Args:
@@ -134,6 +133,7 @@ class DefaultOptionsRenderer():  # pylint: disable=too-few-public-methods
         Returns:
             The return value. True for success, False otherwise.
         """
-        assert (cust_key is not None
-               ), f'ERROR: Need a key, update_default_options has {cust_key}'
+        assert (
+            cust_key is not None
+        ), f"ERROR: Need a key, update_default_options has {cust_key}"
         self.default_options[cust_key] = cust_value

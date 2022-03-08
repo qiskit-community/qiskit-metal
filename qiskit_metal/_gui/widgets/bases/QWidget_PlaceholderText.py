@@ -17,8 +17,16 @@ from typing import TYPE_CHECKING
 from PySide2 import QtCore, QtWidgets
 from PySide2.QtCore import QModelIndex, Qt
 from PySide2.QtGui import QContextMenuEvent
-from PySide2.QtWidgets import (QInputDialog, QLineEdit, QMenu, QMessageBox,
-                               QTableView, QLabel, QVBoxLayout, QWidget)
+from PySide2.QtWidgets import (
+    QInputDialog,
+    QLineEdit,
+    QMenu,
+    QMessageBox,
+    QTableView,
+    QLabel,
+    QVBoxLayout,
+    QWidget,
+)
 
 
 class QWidget_PlaceholderText(QWidget):
@@ -26,6 +34,7 @@ class QWidget_PlaceholderText(QWidget):
 
     This class extends the `QWidget` class.
     """
+
     __placeholder_text = "The table is empty."
 
     def __init__(self, placeholder_text: str = None):
@@ -33,7 +42,9 @@ class QWidget_PlaceholderText(QWidget):
         Args:
             placeholder_text (str): Placeholder text..  Defaults to None.
         """
-        self._placeholder_text = placeholder_text if placeholder_text else self.__placeholder_text
+        self._placeholder_text = (
+            placeholder_text if placeholder_text else self.__placeholder_text
+        )
 
         self._placeholder_label = QLabel(self._placeholder_text, self)
         self.setup_placeholder_label()
@@ -71,7 +82,7 @@ class QWidget_PlaceholderText(QWidget):
         # color PlaceholderText
         palette = self.palette()
         # This enum value has been introduced in Qt 5.12
-        if hasattr(palette, 'PlaceholderText'):
+        if hasattr(palette, "PlaceholderText"):
             placeholder_color = palette.PlaceholderText
         else:
             placeholder_color = palette.WindowText

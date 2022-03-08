@@ -90,7 +90,7 @@ from PySide2.QtWidgets import QAction, QLabel
 
 from ... import Dict
 
-__all__ = ['figure_pz', 'MplInteraction', 'PanAndZoom']
+__all__ = ["figure_pz", "MplInteraction", "PanAndZoom"]
 
 
 class MplInteraction(object):
@@ -181,7 +181,7 @@ class ZoomOnWheel(MplInteraction):
             scale_factor (float): The scale factor to apply on wheel event.
         """
         super(ZoomOnWheel, self).__init__(figure)
-        self._add_connection('scroll_event', self._on_mouse_wheel)
+        self._add_connection("scroll_event", self._on_mouse_wheel)
 
         self.scale_factor = scale_factor
 
@@ -204,29 +204,27 @@ class ZoomOnWheel(MplInteraction):
         else:
             min_, max_ = end, begin
 
-        if scale == 'linear':
+        if scale == "linear":
             old_min, old_max = min_, max_
-        elif scale == 'log':
-            old_min = numpy.log10(min_ if min_ > 0. else numpy.nextafter(0, 1))
-            center = numpy.log10(
-                center if center > 0. else numpy.nextafter(0, 1))
-            old_max = numpy.log10(max_) if max_ > 0. else 0.
+        elif scale == "log":
+            old_min = numpy.log10(min_ if min_ > 0.0 else numpy.nextafter(0, 1))
+            center = numpy.log10(center if center > 0.0 else numpy.nextafter(0, 1))
+            old_max = numpy.log10(max_) if max_ > 0.0 else 0.0
         else:
-            logging.warning('Zoom on wheel not implemented for scale "%s"' %
-                            scale)
+            logging.warning('Zoom on wheel not implemented for scale "%s"' % scale)
             return begin, end
 
         offset = (center - old_min) / (old_max - old_min)
         range_ = (old_max - old_min) / scale_factor
         new_min = center - offset * range_
-        new_max = center + (1. - offset) * range_
+        new_max = center + (1.0 - offset) * range_
 
-        if scale == 'log':
+        if scale == "log":
             try:
-                new_min, new_max = 10.**float(new_min), 10.**float(new_max)
+                new_min, new_max = 10.0 ** float(new_min), 10.0 ** float(new_max)
             except OverflowError:  # Limit case
                 new_min, new_max = min_, max_
-            if new_min <= 0. or new_max <= 0.:  # Limit case
+            if new_min <= 0.0 or new_max <= 0.0:  # Limit case
                 new_min, new_max = min_, max_
 
         if begin < end:
@@ -239,7 +237,7 @@ class ZoomOnWheel(MplInteraction):
         if event.step > 0:
             scale_factor = self.scale_factor
         else:
-            scale_factor = 1. / self.scale_factor
+            scale_factor = 1.0 / self.scale_factor
 
         # Go through all axes to enable zoom for multiple axes subplots
         x_axes, y_axes = self._axes_to_update(event)
@@ -249,14 +247,16 @@ class ZoomOnWheel(MplInteraction):
             xdata, ydata = transform.transform_point((event.x, event.y))
 
             xlim = ax.get_xlim()
-            xlim = self._zoom_range(xlim[0], xlim[1], xdata, scale_factor,
-                                    ax.get_xscale())
+            xlim = self._zoom_range(
+                xlim[0], xlim[1], xdata, scale_factor, ax.get_xscale()
+            )
             ax.set_xlim(xlim)
 
         for ax in y_axes:
             ylim = ax.get_ylim()
-            ylim = self._zoom_range(ylim[0], ylim[1], ydata, scale_factor,
-                                    ax.get_yscale())
+            ylim = self._zoom_range(
+                ylim[0], ylim[1], ydata, scale_factor, ax.get_yscale()
+            )
             ax.set_ylim(ylim)
 
         if x_axes or y_axes:
@@ -278,15 +278,19 @@ class PanAndZoom(ZoomOnWheel):
             scale_factor (float): The scale factor to apply on wheel event.
         """
         super(PanAndZoom, self).__init__(figure, scale_factor)
-        self._add_connection('button_press_event', self._on_mouse_press)
-        self._add_connection('button_release_event', self._on_mouse_release)
-        self._add_connection('motion_notify_event', self._on_mouse_motion)
+        self._add_connection("button_press_event", self._on_mouse_press)
+        self._add_connection("button_release_event", self._on_mouse_release)
+        self._add_connection("motion_notify_event", self._on_mouse_motion)
 
         self._pressed_button = None  # To store active button
         self._axes = None  # To store x and y axes concerned by interaction
         self._event = None  # To store reference event during interaction
 
-        self.options = Dict(dict(report_point_position=True,))
+        self.options = Dict(
+            dict(
+                report_point_position=True,
+            )
+        )
         self.logger = None
         self._statusbar_label = None
 
@@ -309,12 +313,13 @@ class PanAndZoom(ZoomOnWheel):
         try:  # Get tool image path
             from pathlib import Path
             from ... import _gui
-            imgs_path = Path(_gui.__file__).parent / '_imgs'
+
+            imgs_path = Path(_gui.__file__).parent / "_imgs"
             if imgs_path.is_dir() == False:
-                print(f'Bad File path for images! {imgs_path}')
+                print(f"Bad File path for images! {imgs_path}")
                 imgs_path = None
         except Exception as e:
-            print('ERROR: ', e)
+            print("ERROR: ", e)
             imgs_path = None
         self.imgs_path = imgs_path
 
@@ -328,15 +333,16 @@ class PanAndZoom(ZoomOnWheel):
 
         class ToolPointPosition(ToolToggleBase):
             """Tools."""
-            default_keymap = 'Ctrl+p'
-            description = 'Click to get point coordinate printed'
+
+            default_keymap = "Ctrl+p"
+            description = "Click to get point coordinate printed"
             default_toggled = False
             image = None  # str(imgs_path)
 
             def __init__(self, *args, parent=None, **kwargs):
                 super().__init__(*args, **kwargs)
                 if parent is None:
-                    raise ('Pass a parent')
+                    raise ("Pass a parent")
                 self.parent = parent
 
             def enable(self, *args):
@@ -359,29 +365,31 @@ class PanAndZoom(ZoomOnWheel):
 
         self.tm = tm
         # Tool: Print point location
-        ToolPointPosition.image = str(imgs_path / 'click.png')
+        ToolPointPosition.image = str(imgs_path / "click.png")
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             tm.add_tool("Point_position", ToolPointPosition, parent=self)
-        fig.canvas.manager.toolbar.add_tool(tm.get_tool("Point_position"),
-                                            "toolgroup")
+        fig.canvas.manager.toolbar.add_tool(tm.get_tool("Point_position"), "toolgroup")
 
         # Tool: Copy to Clipboard
         from matplotlib.backend_tools import ToolCopyToClipboard
-        ToolCopyToClipboard.image = str(imgs_path / 'copy.png')
+
+        ToolCopyToClipboard.image = str(imgs_path / "copy.png")
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             # OVvrwties Ctrl+C and issues warning
             tm.add_tool("Copy_to_clipboard", ToolCopyToClipboard)
-        fig.canvas.manager.toolbar.add_tool(tm.get_tool("Copy_to_clipboard"),
-                                            "toolgroup")
+        fig.canvas.manager.toolbar.add_tool(
+            tm.get_tool("Copy_to_clipboard"), "toolgroup"
+        )
 
         if 1:  # add QT Pieces
             toolbar.action_ascale = QAction(
-                QIcon(str(imgs_path / 'auto_zoom.png')), 'Auto scale', toolbar)
-            toolbar.action_ascale.setShortcut('A')
+                QIcon(str(imgs_path / "auto_zoom.png")), "Auto scale", toolbar
+            )
+            toolbar.action_ascale.setShortcut("A")
             toolbar.action_ascale.setShortcutContext(Qt.WindowShortcut)
-            toolbar.action_ascale.setStatusTip('Autoscale')
+            toolbar.action_ascale.setStatusTip("Autoscale")
             toolbar.action_ascale.triggered.connect(self.auto_scale)
             toolbar.addAction(toolbar.action_ascale)
 
@@ -389,10 +397,10 @@ class PanAndZoom(ZoomOnWheel):
         figManager = fig.canvas.manager  # plt.get_current_fig_manager()
         status_bar = figManager.window.statusBar()
         self._status_label_2 = QLabel(status_bar)
-        self._status_label_2.setText('')
+        self._status_label_2.setText("")
         status_bar.addWidget(self._status_label_2)
-        #from matplotlib.backends.backend_qt5 import StatusbarQt
-        #st = StatusbarQt(figManager.window, figManager.toolmanager)
+        # from matplotlib.backends.backend_qt5 import StatusbarQt
+        # st = StatusbarQt(figManager.window, figManager.toolmanager)
         # figManager.statusbar.set_message('')
 
     def auto_scale(self):
@@ -404,7 +412,7 @@ class PanAndZoom(ZoomOnWheel):
 
     def _style_figure(self):
         """Style figure."""
-        #self.figure.dpi = 150
+        # self.figure.dpi = 150
         pass
 
     @staticmethod
@@ -435,16 +443,15 @@ class PanAndZoom(ZoomOnWheel):
         data = pixel_to_data.transform_point((event.x, event.y))
         last_data = pixel_to_data.transform_point((last_event.x, last_event.y))
 
-        if scale == 'linear':
+        if scale == "linear":
             delta = data[axis_id] - last_data[axis_id]
             new_lim = lim[0] - delta, lim[1] - delta
-        elif scale == 'log':
+        elif scale == "log":
             try:
-                delta = math.log10(data[axis_id]) - \
-                    math.log10(last_data[axis_id])
+                delta = math.log10(data[axis_id]) - math.log10(last_data[axis_id])
                 new_lim = [
-                    pow(10., (math.log10(lim[0]) - delta)),
-                    pow(10., (math.log10(lim[1]) - delta))
+                    pow(10.0, (math.log10(lim[0]) - delta)),
+                    pow(10.0, (math.log10(lim[1]) - delta)),
                 ]
             except (ValueError, OverflowError):
                 new_lim = lim  # Keep previous limits
@@ -459,13 +466,13 @@ class PanAndZoom(ZoomOnWheel):
         Args:
             event (event): The event
         """
-        if event.name == 'button_press_event':  # begin pan
+        if event.name == "button_press_event":  # begin pan
             self._event = event
 
-        elif event.name == 'button_release_event':  # end pan
+        elif event.name == "button_release_event":  # end pan
             self._event = None
 
-        elif event.name == 'motion_notify_event':  # pan
+        elif event.name == "motion_notify_event":  # pan
             if self._event is None:
                 return
 
@@ -490,24 +497,25 @@ class PanAndZoom(ZoomOnWheel):
         Args:
             event (event): The event
         """
-        if event.name == 'button_press_event':  # begin drag
+        if event.name == "button_press_event":  # begin drag
             self._event = event
             # pylint: disable=attribute-defined-outside-init
-            self._patch = _plt.Rectangle(xy=(event.xdata, event.ydata),
-                                         width=0,
-                                         height=0,
-                                         fill=False,
-                                         linewidth=1.,
-                                         linestyle='solid',
-                                         color='black')
+            self._patch = _plt.Rectangle(
+                xy=(event.xdata, event.ydata),
+                width=0,
+                height=0,
+                fill=False,
+                linewidth=1.0,
+                linestyle="solid",
+                color="black",
+            )
             self._event.inaxes.add_patch(self._patch)
 
-        elif event.name == 'button_release_event':  # end drag
+        elif event.name == "button_release_event":  # end drag
             self._patch.remove()
             del self._patch
 
-            if (abs(event.x - self._event.x) < 3 or
-                    abs(event.y - self._event.y) < 3):
+            if abs(event.x - self._event.x) < 3 or abs(event.y - self._event.y) < 3:
                 return  # No zoom when points are too close
 
             x_axes, y_axes = self._axes
@@ -515,8 +523,7 @@ class PanAndZoom(ZoomOnWheel):
             for ax in x_axes:
                 pixel_to_data = ax.transData.inverted()
                 begin_pt = pixel_to_data.transform_point((event.x, event.y))
-                end_pt = pixel_to_data.transform_point(
-                    (self._event.x, self._event.y))
+                end_pt = pixel_to_data.transform_point((self._event.x, self._event.y))
 
                 min_ = min(begin_pt[0], end_pt[0])
                 max_ = max(begin_pt[0], end_pt[0])
@@ -528,8 +535,7 @@ class PanAndZoom(ZoomOnWheel):
             for ax in y_axes:
                 pixel_to_data = ax.transData.inverted()
                 begin_pt = pixel_to_data.transform_point((event.x, event.y))
-                end_pt = pixel_to_data.transform_point(
-                    (self._event.x, self._event.y))
+                end_pt = pixel_to_data.transform_point((self._event.x, self._event.y))
 
                 min_ = min(begin_pt[1], end_pt[1])
                 max_ = max(begin_pt[1], end_pt[1])
@@ -540,7 +546,7 @@ class PanAndZoom(ZoomOnWheel):
 
             self._event = None
 
-        elif event.name == 'motion_notify_event':  # drag
+        elif event.name == "motion_notify_event":  # drag
             if self._event is None:
                 return
 
@@ -570,7 +576,9 @@ class PanAndZoom(ZoomOnWheel):
                 if self._pressed_button == 1:  # pan
                     self._pan(event)
 
-                    if self.options.report_point_position:  # check if we want to report point
+                    if (
+                        self.options.report_point_position
+                    ):  # check if we want to report point
                         self._report_point_position(event)
 
                 elif self._pressed_button == 3:  # zoom area
@@ -608,14 +616,14 @@ class PanAndZoom(ZoomOnWheel):
         """
         ix, iy = event.xdata, event.ydata
 
-        if hasattr(self, '_ix_iy_old'):
+        if hasattr(self, "_ix_iy_old"):
             ix_old, iy_old = self._ix_iy_old
         else:
             ix_old, iy_old = (ix, iy)
 
         self._ix_iy_old = ix, iy
 
-        _text = f'(x,y) = ({ix:.4f}, {iy:.4f})  Δ last point ({ix-ix_old:.4f}, {iy-iy_old:.4f})'
+        _text = f"(x,y) = ({ix:.4f}, {iy:.4f})  Δ last point ({ix-ix_old:.4f}, {iy-iy_old:.4f})"
         if self.logger:
             self.logger.info(_text)
         if self._statusbar_label:
@@ -625,7 +633,7 @@ class PanAndZoom(ZoomOnWheel):
 
 def figure_pz(*args, **kwargs):
     """matplotlib.pyplot.figure with pan and zoom interaction."""
-    #import warnings
+    # import warnings
     # warnings.filterwarnings(action='ignore')
 
     with warnings.catch_warnings():

@@ -23,16 +23,25 @@ import sys
 # pylint: disable=wrong-import-position
 # pylint: disable=too-few-public-methods
 class DummyH5py:
-
     @property
     def Group(self):
         pass
 
 
-sys.modules['h5py'] = DummyH5py
+sys.modules["h5py"] = DummyH5py
 
 from collections import defaultdict, namedtuple
-from typing import Any, List, Dict, Tuple, DefaultDict, Sequence, Mapping, Union, Callable
+from typing import (
+    Any,
+    List,
+    Dict,
+    Tuple,
+    DefaultDict,
+    Sequence,
+    Mapping,
+    Union,
+    Callable,
+)
 import argparse
 
 import numpy as np
@@ -47,24 +56,24 @@ from pyEPR.calcs.constants import e_el as ele, hbar
 from qiskit_metal.toolbox_python.utility_functions import get_all_args
 from qiskit_metal.analyses.em.cpw_calculations import guided_wavelength
 from qiskit_metal.analyses.hamiltonian.states_energies import extract_energies
-from .constants import (MHzRad, GHzRad, NANO, FEMTO, ONE_OVER_FEMTO)
+from .constants import MHzRad, GHzRad, NANO, FEMTO, ONE_OVER_FEMTO
 
 from qiskit_metal import logger
 
 BasisTransform = namedtuple(
-    'BasisTransform',
-    ['orig_node_basis', 'node_jj_basis', 'num_negative_nodes'])
+    "BasisTransform", ["orig_node_basis", "node_jj_basis", "num_negative_nodes"]
+)
 
-Operator = namedtuple('Operator', ['op', 'add_hc'])
+Operator = namedtuple("Operator", ["op", "add_hc"])
 
 
 class CouplingType:
-    CAPACITIVE = 'CAPACITIVE'
-    INDUCTIVE = 'INDUCTIVE'
+    CAPACITIVE = "CAPACITIVE"
+    INDUCTIVE = "INDUCTIVE"
 
 
 def analyze_loaded_tl(fr, CL, vp, Z0, shorted=False):
-    """ Calculate charge operator zero point fluctuation, Q_zpf at the point of the loading
+    """Calculate charge operator zero point fluctuation, Q_zpf at the point of the loading
     capacitor.
     https://arxiv.org/pdf/2103.10344.pdf
     equation 20
@@ -88,24 +97,23 @@ def analyze_loaded_tl(fr, CL, vp, Z0, shorted=False):
     phi = np.arctan(wr / wL)
     k = wr / vp
     utl = lambda z: np.cos(k * z + phi)
-    utl2 = lambda z: utl(z)**2
+    utl2 = lambda z: utl(z) ** 2
     b = int(shorted)  # 1 for short on RHS
     m = 1  # mode number
 
     root_eq = lambda L: wr * L / vp + phi - m * np.pi - b * np.pi / 2  # = 0
-    sol = optimize.root(root_eq, [0.007], jac=False,
-                        method='hybr')  # in meters SI
+    sol = optimize.root(root_eq, [0.007], jac=False, method="hybr")  # in meters SI
     Ltl = sol.x[0]
 
-    E_cap = 0.5 * CL * utl(0)**2 + 0.5 * c * integrate.quad(utl2, 0, Ltl)[0]
-    pCL = 0.5 * CL * utl(0)**2 / E_cap
+    E_cap = 0.5 * CL * utl(0) ** 2 + 0.5 * c * integrate.quad(utl2, 0, Ltl)[0]
+    pCL = 0.5 * CL * utl(0) ** 2 / E_cap
     Q_zpf = np.sqrt(hbar * wr / 2 * pCL * CL)
 
     # using the uncertainty relationship that Q_zpf * Phi_zpf = hbar / 2
     Phi_zpf = 0.5 * hbar / Q_zpf
 
     if 0:  # analytic
-        innerprod = CL / c * utl(0)**2 + integrate.quad(utl2, 0, Ltl)[0]
+        innerprod = CL / c * utl(0) ** 2 + integrate.quad(utl2, 0, Ltl)[0]
         Am = np.sqrt(Ltl / innerprod)
         utl = lambda z: Am * np.cos(k * z + phi)
         eta = Ltl
@@ -173,9 +181,9 @@ def _remove_row_col_at_idx(mat, idx):
     return mat_
 
 
-def _extract_matrix_from_transform(transform: BasisTransform,
-                                   junctions: Mapping[Tuple[str, str], str],
-                                   index: pd.Index) -> np.ndarray:
+def _extract_matrix_from_transform(
+    transform: BasisTransform, junctions: Mapping[Tuple[str, str], str], index: pd.Index
+) -> np.ndarray:
     """
     calculate the S_n^{-1} matrix that corresponds to a given transform
     https://arxiv.org/pdf/2103.10344.pdf
@@ -185,7 +193,8 @@ def _extract_matrix_from_transform(transform: BasisTransform,
     dim = len(transform.orig_node_basis)
     m = np.zeros((dim, dim))
     for ii, (n_old, n_new) in enumerate(
-            zip(transform.orig_node_basis, transform.node_jj_basis)):
+        zip(transform.orig_node_basis, transform.node_jj_basis)
+    ):
         if n_old == n_new:
             m[ii, ii] = 1
         else:
@@ -196,9 +205,11 @@ def _extract_matrix_from_transform(transform: BasisTransform,
     return m
 
 
-def _transform_to_junction_flux_basis(orig_nodes,
-                                      junctions: Mapping[Tuple[str, str], str],
-                                      choose_least_num_neg: bool = True):
+def _transform_to_junction_flux_basis(
+    orig_nodes,
+    junctions: Mapping[Tuple[str, str], str],
+    choose_least_num_neg: bool = True,
+):
     """
     For example:
     junctions = {('n1', 'n2'):'j1', ('n3', 'n4'):'j2'}
@@ -234,8 +245,7 @@ def _transform_to_junction_flux_basis(orig_nodes,
                 if junctions[_map[n]][1] == n:  # "negative" node
                     num_negative_nodes += 1
 
-        _transforms.append(
-            BasisTransform(orig_nodes, new_basis, num_negative_nodes))
+        _transforms.append(BasisTransform(orig_nodes, new_basis, num_negative_nodes))
 
     if choose_least_num_neg:
         _transforms.sort(key=lambda t: t.num_negative_nodes)
@@ -257,19 +267,19 @@ class LabeledNdarray(np.ndarray):
     def __new__(cls, input_array: np.ndarray, labels=None):
         if input_array.shape[0] != input_array.shape[1]:
             raise ValueError(
-                'LabeledNdarray constructor only supports square matrices.')
+                "LabeledNdarray constructor only supports square matrices."
+            )
         obj = np.asarray(input_array).view(cls)
-        obj.labels = labels if labels is not None else [
-            str(x) for x in range(obj.shape[0])
-        ]
+        obj.labels = (
+            labels if labels is not None else [str(x) for x in range(obj.shape[0])]
+        )
         return obj
 
     def to_dataframe(self):
-        """ output to pandas dataframe
-        """
+        """output to pandas dataframe"""
         if len(self.shape) == 1 or self.shape[0] != self.shape[1]:
             raise ValueError(
-                'Only square matrices are labeled and can be exported to dataframe.'
+                "Only square matrices are labeled and can be exported to dataframe."
             )
         return _make_cmat_df(self, self.labels)
 
@@ -279,21 +289,20 @@ class LabeledNdarray(np.ndarray):
         if self.shape != obj.shape:
             self.labels = [str(x) for x in range(self.shape[0])]
         else:
-            self.labels = getattr(obj, 'labels',
-                                  [str(x) for x in range(self.shape[0])])
+            self.labels = getattr(obj, "labels", [str(x) for x in range(self.shape[0])])
 
     def __repr__(self):
         if len(self.shape) == 1 or self.shape[0] != self.shape[1]:
-            return f'{self.view(np.ndarray)}'
-        return f'{_make_cmat_df(self, self.labels)}'
+            return f"{self.view(np.ndarray)}"
+        return f"{_make_cmat_df(self, self.labels)}"
 
     def __str__(self):
         if len(self.shape) == 1 or self.shape[0] != self.shape[1]:
-            return f'{self.view(np.ndarray)}'
-        return f'{_make_cmat_df(self, self.labels)}'
+            return f"{self.view(np.ndarray)}"
+        return f"{_make_cmat_df(self, self.labels)}"
 
 
-#----------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------
 
 
 def _maybe_remove_grd_node_then_cache(f):
@@ -303,7 +312,7 @@ def _maybe_remove_grd_node_then_cache(f):
     """
 
     def wrapper(self):
-        _attr = f'_{f.__name__}'
+        _attr = f"_{f.__name__}"
         if getattr(self, _attr) is None:
             m = f(self)
             if self.ignore_grd_node:
@@ -328,17 +337,19 @@ class CircuitGraph:
     of all the cells provided
     """
 
-    units = {'capacitance': 'fF', 'inductance': 'nH'}
+    units = {"capacitance": "fF", "inductance": "nH"}
     _IGNORE_GRD_NODE = True
 
-    def __init__(self,
-                 nodes: Sequence,
-                 grd_node: str,
-                 cmats: List[pd.DataFrame],
-                 ind_lists: List[Dict[Tuple, float]],
-                 junctions: Mapping[Tuple[str, str], str],
-                 cj_dicts: List[Dict[Tuple, float]] = None,
-                 nodes_force_keep: Sequence = None):
+    def __init__(
+        self,
+        nodes: Sequence,
+        grd_node: str,
+        cmats: List[pd.DataFrame],
+        ind_lists: List[Dict[Tuple, float]],
+        junctions: Mapping[Tuple[str, str], str],
+        cj_dicts: List[Dict[Tuple, float]] = None,
+        nodes_force_keep: Sequence = None,
+    ):
         """Initialize the class with parameters specifying the circuit
 
         Args:
@@ -392,32 +403,32 @@ class CircuitGraph:
         self._node_jj_basis = None
 
     def __str__(self):
-        str_out = 'node_jj_basis:\n'
-        str_out += '-------------\n'
-        str_out += '\n'
-        str_out += f'{self.node_jj_basis}\n'
-        str_out += '\n'
-        str_out += 'nodes_keep:\n'
-        str_out += '-------------\n'
-        str_out += '\n'
-        str_out += f'{self.get_nodes_keep()}\n'
-        str_out += '\n'
-        str_out += '\n'
-        str_out += 'L_inv_k (reduced inverse inductance matrix):\n'
-        str_out += '-------------\n'
-        str_out += '\n'
-        str_out += f'{self.L_inv_k}\n'
-        str_out += '\n'
-        str_out += 'C_k (reduced capacitance matrix):\n'
-        str_out += '-------------\n'
-        str_out += '\n'
-        str_out += f'{self.C_k}\n'
-        str_out += '\n'
+        str_out = "node_jj_basis:\n"
+        str_out += "-------------\n"
+        str_out += "\n"
+        str_out += f"{self.node_jj_basis}\n"
+        str_out += "\n"
+        str_out += "nodes_keep:\n"
+        str_out += "-------------\n"
+        str_out += "\n"
+        str_out += f"{self.get_nodes_keep()}\n"
+        str_out += "\n"
+        str_out += "\n"
+        str_out += "L_inv_k (reduced inverse inductance matrix):\n"
+        str_out += "-------------\n"
+        str_out += "\n"
+        str_out += f"{self.L_inv_k}\n"
+        str_out += "\n"
+        str_out += "C_k (reduced capacitance matrix):\n"
+        str_out += "-------------\n"
+        str_out += "\n"
+        str_out += f"{self.C_k}\n"
+        str_out += "\n"
 
         return str_out
 
     def _adj_list_to_mat(self, adj_list):
-        """ convert adjacency list representation of capacitance graph to
+        """convert adjacency list representation of capacitance graph to
         a matrix representation
         """
         idx = self.idx
@@ -433,15 +444,14 @@ class CircuitGraph:
         return mat
 
     def _inductance_list_to_Linv_mat(self, ind_dict):
-        """ convert inductance list to inductance inverse matrix
-        """
+        """convert inductance list to inductance inverse matrix"""
         idx = self.idx
         dim = len(idx)
         mat = np.zeros((dim, dim))
         for (n1, n2), l in ind_dict.items():
             if n1 == n2:
                 raise ValueError(
-                    'inductance needs to be specified between two different nodes'
+                    "inductance needs to be specified between two different nodes"
                 )
             idx1, idx2 = idx.get_indexer([n1, n2])
             mat[idx1, idx2] = mat[idx2, idx1] = -1 / l
@@ -478,7 +488,7 @@ class CircuitGraph:
     @property
     @_maybe_remove_grd_node_then_cache
     def S_n(self):
-        """ Linear transformation from original node basis to
+        """Linear transformation from original node basis to
         node-junction basis where all non-linear dipole fluxes are
         explicitly in the basis. The flux of the j-th dipole
         $\Phi_{j} = \Phi_{n2} - \Phi_{n1}$, where $\Phi_{n2}$ and
@@ -486,9 +496,9 @@ class CircuitGraph:
         .
         $\Phi = S_{n}^{-1}\Phi_n$
         """
-        t = _transform_to_junction_flux_basis(self.nodes,
-                                              self._junctions,
-                                              choose_least_num_neg=True)
+        t = _transform_to_junction_flux_basis(
+            self.nodes, self._junctions, choose_least_num_neg=True
+        )
         S_n_inv = _extract_matrix_from_transform(t, self._junctions, self.idx)
         S_n = np.linalg.inv(S_n_inv)
         self._node_jj_basis = t.node_jj_basis
@@ -496,33 +506,31 @@ class CircuitGraph:
 
     @property
     def C(self):
-        """Transformed capacitance matrix of the composite system
-        """
+        """Transformed capacitance matrix of the composite system"""
         return LabeledNdarray(
-            self.S_n.T.dot(self.C_n).dot(self.S_n), self.node_jj_basis)
+            self.S_n.T.dot(self.C_n).dot(self.S_n), self.node_jj_basis
+        )
 
     @property
     def L_inv(self):
-        """Transformed inductance inverse matrix of the composite system
-        """
+        """Transformed inductance inverse matrix of the composite system"""
         return LabeledNdarray(
-            self.S_n.T.dot(self.L_n_inv).dot(self.S_n), self.node_jj_basis)
+            self.S_n.T.dot(self.L_n_inv).dot(self.S_n), self.node_jj_basis
+        )
 
     @property
     def orig_node_basis(self):
-        """ Original node basis consisting of node-to-datum fluxes,
+        """Original node basis consisting of node-to-datum fluxes,
         excluding the ground node
         """
         _orig_basis = self.nodes
         if self.ignore_grd_node:
-            _orig_basis = [
-                _node for _node in _orig_basis if _node != self._grd_node
-            ]
+            _orig_basis = [_node for _node in _orig_basis if _node != self._grd_node]
         return _orig_basis
 
     @property
     def node_jj_basis(self):
-        """ Node-junction basis which is linear transformation
+        """Node-junction basis which is linear transformation
         from original node basis to where all non-linear dipole fluxes are
         explicitly in the basis. The flux of the j-th dipole
         $\Phi_{j} = \Phi_{n2} - \Phi_{n1}$, where $\Phi_{n2}$ and
@@ -541,21 +549,19 @@ class CircuitGraph:
 
     @property
     def S_remove(self):
-        """ Eliminate coupler constraints due to the singularity of
+        """Eliminate coupler constraints due to the singularity of
         the inverse inductance matrix. Here we eliminate fluxes
         in the kernel space of the transformed inverse inductance
         matrix. These are nodes that are only touched by capacitors and are
         considered non-dynamic nodes.
         """
         nodes_force_keep = self.nodes_force_keep if self.nodes_force_keep else []
-        force_keep_idx = pd.Index(
-            self.node_jj_basis).get_indexer(nodes_force_keep)
+        force_keep_idx = pd.Index(self.node_jj_basis).get_indexer(nodes_force_keep)
         if np.where(force_keep_idx < 0)[0].size:
-            bad_nodes = list(
-                np.array(nodes_force_keep)[np.where(force_keep_idx < 0)])
-            bad_nodes_str = ', '.join(bad_nodes)
+            bad_nodes = list(np.array(nodes_force_keep)[np.where(force_keep_idx < 0)])
+            bad_nodes_str = ", ".join(bad_nodes)
             raise ValueError(
-                f'nodes {bad_nodes_str} in input node_force_keep are not in the flux basis [self.node_jj_basis].'
+                f"nodes {bad_nodes_str} in input node_force_keep are not in the flux basis [self.node_jj_basis]."
             )
 
         L_inv = self.L_inv
@@ -566,8 +572,8 @@ class CircuitGraph:
             v = np.array(v).astype(np.float64)
             if np.count_nonzero(v) != 1:
                 raise ValueError(
-                    f'Nullspace column vector {v} has more than one non-zero element. \
-                                 Only individual nodes in the current flux [see self.node_jj_basis] basis can be removed'
+                    f"Nullspace column vector {v} has more than one non-zero element. \
+                                 Only individual nodes in the current flux [see self.node_jj_basis] basis can be removed"
                 )
 
             # if the node to be removed is in the list of nodes that are forced to be kept, don't remove
@@ -579,8 +585,7 @@ class CircuitGraph:
 
     @property
     def S_keep(self):
-        """ Complement of S_remove
-        """
+        """Complement of S_remove"""
         # FIXME: currently assuming that S_keep can be solely constructed from
         # S_remove (which itself is constructed from the identity matrix) and the identity matrix
         S_remove = self.S_remove
@@ -597,9 +602,7 @@ class CircuitGraph:
     def get_nodes_remove(self):
         s_remove = self.S_remove
         dim = s_remove.shape[0]
-        remove_idx = s_remove.T.dot(np.arange(dim)[:,
-                                                   np.newaxis])[:,
-                                                                0].astype(int)
+        remove_idx = s_remove.T.dot(np.arange(dim)[:, np.newaxis])[:, 0].astype(int)
         return np.array(self.node_jj_basis)[remove_idx].tolist()
 
     @property
@@ -610,8 +613,7 @@ class CircuitGraph:
         """
         s_keep = self.S_keep
         l_inv = self.L_inv
-        return LabeledNdarray(
-            s_keep.T.dot(l_inv).dot(s_keep), self.get_nodes_keep())
+        return LabeledNdarray(s_keep.T.dot(l_inv).dot(s_keep), self.get_nodes_keep())
 
     @property
     def C_k(self):
@@ -622,36 +624,32 @@ class CircuitGraph:
         s_k = self.S_keep
         s_r = self.S_remove
         c = self.C
-        _inner = c.dot(s_r).dot(np.linalg.inv(s_r.T.dot(c.dot(s_r)))).dot(
-            s_r.T.dot(c))
-        return LabeledNdarray(
-            s_k.T.dot(c - _inner).dot(s_k), self.get_nodes_keep())
+        _inner = c.dot(s_r).dot(np.linalg.inv(s_r.T.dot(c.dot(s_r)))).dot(s_r.T.dot(c))
+        return LabeledNdarray(s_k.T.dot(c - _inner).dot(s_k), self.get_nodes_keep())
 
     @property
     def C_inv_k(self):
         c_k = self.C_k
         if np.linalg.matrix_rank(c_k) < c_k.shape[0]:
-            raise ValueError('C_k is rank deficient hence can\'t be inverted')
+            raise ValueError("C_k is rank deficient hence can't be inverted")
         return LabeledNdarray(np.linalg.inv(self.C_k), self.get_nodes_keep())
 
 
-#----------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------
 
 
 def _rename_nodes_in_df(node_rename: Dict, df: pd.DataFrame) -> pd.DataFrame:
     orig_nodes = df.columns.values.tolist()
-    new_nodes = [
-        n if n not in node_rename else node_rename[n] for n in orig_nodes
-    ]
+    new_nodes = [n if n not in node_rename else node_rename[n] for n in orig_nodes]
     return _make_cmat_df(df.values, new_nodes)
 
 
-def _rename_nodes_in_dict(node_rename: Dict, dict_input: Dict[Tuple[str],
-                                                              Any]) -> Dict:
+def _rename_nodes_in_dict(node_rename: Dict, dict_input: Dict[Tuple[str], Any]) -> Dict:
     renamed = {}
     for nodes, val in dict_input.items():
         _renamed_key = tuple(
-            [n if n not in node_rename else node_rename[n] for n in nodes])
+            [n if n not in node_rename else node_rename[n] for n in nodes]
+        )
         renamed[_renamed_key] = val
     return renamed
 
@@ -666,10 +664,10 @@ def _find_subsystem_mat_index(cg: CircuitGraph, subsystem, single_node=True):
     subsystem_idx = node_idx[node_idx >= 0]
     if subsystem_idx.size != 1 and single_node:
         raise ValueError(
-            f'One and ONLY one node in the reduced node-junction basis should map to the {subsystem.sys_type} subsystem.'
+            f"One and ONLY one node in the reduced node-junction basis should map to the {subsystem.sys_type} subsystem."
         )
     elif subsystem_idx.size == 0:
-        raise ValueError('Subsystem not found in the circuit\'s nodes.')
+        raise ValueError("Subsystem not found in the circuit's nodes.")
     return subsystem_idx
 
 
@@ -697,11 +695,7 @@ class Subsystem:
     frequencies if entered in q_opts need to be in GHz
     """
 
-    def __init__(self,
-                 name: str,
-                 sys_type: str,
-                 nodes: List[str],
-                 q_opts: dict = None):
+    def __init__(self, name: str, sys_type: str, nodes: List[str], q_opts: dict = None):
         """Initialize the Subsystem object
 
         Args:
@@ -730,57 +724,55 @@ class Subsystem:
 
     @property
     def h_params(self):
-        """ Hamiltonian parameters of the subsystem
-        """
+        """Hamiltonian parameters of the subsystem"""
         if self._h_params == {}:
             raise ValueError(
-                f'Subsystem {self.name}\'s Hamiltonian parameters have not been calculated.'
+                f"Subsystem {self.name}'s Hamiltonian parameters have not been calculated."
             )
         return self._h_params
 
     @property
     def quantum_system(self):
-        """ The quantum subsystem that the subsystem corresponds to. It
+        """The quantum subsystem that the subsystem corresponds to. It
         is built by calling an associated builder passed in quantumfy()
         using the Visitor pattern
         """
         if self._quantum_system is None:
             raise ValueError(
-                f'Subsystem {self.name}\'s quantum system has not been created.'
+                f"Subsystem {self.name}'s quantum system has not been created."
             )
         return self._quantum_system
 
     def quantumfy(self, quantum_builder) -> None:
-        """ Building the corresponding quantum system with an
+        """Building the corresponding quantum system with an
         associated builder
         """
         quantum_builder.make_quantum(self)
 
 
 class _QuantumBuilderMeta(type):
-
     def __init__(cls, name, bases, attrs):
         # register the class in the QuantumSystemType registry
         # if it is not the base class, i.e. excluding QuantumBuilder
         if bases:
-            sys_type = getattr(cls, 'system_type', None)
+            sys_type = getattr(cls, "system_type", None)
             if sys_type is None:
                 raise AttributeError(
                     'You need to define a type string for your QuantumBuilder class by assigning a "system_type" class attribute.'
-                    +
-                    ' For example, the "system_type" for the TransmonBuilder is "TRANSMON", FluxoniumBuilder "FLUXONIUM".'
+                    + ' For example, the "system_type" for the TransmonBuilder is "TRANSMON", FluxoniumBuilder "FLUXONIUM".'
                 )
             QuantumSystemRegistry.add_to_registry(sys_type, cls)
 
             logger.info(
-                '%s with system_type %s registered to QuantumSystemRegistry',
-                cls.__name__, sys_type)
+                "%s with system_type %s registered to QuantumSystemRegistry",
+                cls.__name__,
+                sys_type,
+            )
 
         super().__init__(name, bases, attrs)
 
 
 class QuantumBuilder(metaclass=_QuantumBuilderMeta):
-
     def __init__(self, cg: CircuitGraph):
         self.cg = cg
         self.nodes_keep = self.cg.get_nodes_keep()
@@ -791,7 +783,6 @@ class QuantumBuilder(metaclass=_QuantumBuilderMeta):
 
 
 class QuantumBuilderOptions(argparse.Namespace):
-
     def set_from_input(self, input_opts: Dict):
         if input_opts is not None and len(input_opts):
             for k, v in input_opts.items():
@@ -809,12 +800,11 @@ class QuantumBuilderOptions(argparse.Namespace):
 
 
 def set_builder_options(func):
-
     def wrapper(self, subsystem):
-        dflt_opts = getattr(self, 'default_opts', {})
+        dflt_opts = getattr(self, "default_opts", {})
         build_options = QuantumBuilderOptions(**dflt_opts)
         build_options.set_from_input(subsystem.q_opts)
-        setattr(self, 'builder_options', build_options)
+        setattr(self, "builder_options", build_options)
         func(self, subsystem)
 
     return wrapper
@@ -839,14 +829,14 @@ class TransmonBuilder(QuantumBuilder):
             the qubit classes in scQubits
     """
 
-    system_type = 'TRANSMON'
-    default_opts = {'ng': 0.001, 'ncut': 22, 'truncated_dim': 10}
+    system_type = "TRANSMON"
+    default_opts = {"ng": 0.001, "ncut": 22, "truncated_dim": 10}
 
     # pylint: disable=protected-access
     # pylint: disable=no-member
     @set_builder_options
     def make_quantum(self, subsystem: Subsystem):
-        """ concrete building function for the builder to build the quantum
+        """concrete building function for the builder to build the quantum
         system based on default options and input options set for the
         Subsystem object
         """
@@ -854,11 +844,9 @@ class TransmonBuilder(QuantumBuilder):
         l_inv_k = cg.L_inv_k
         c_inv_k = cg.C_inv_k
 
-        subsystem_idx = _find_subsystem_mat_index(cg,
-                                                  subsystem,
-                                                  single_node=True)
+        subsystem_idx = _find_subsystem_mat_index(cg, subsystem, single_node=True)
         ss_idx = subsystem_idx[0]
-        subsystem.system_params['subsystem_idx'] = ss_idx
+        subsystem.system_params["subsystem_idx"] = ss_idx
 
         # EJ and EC are in MHz
         EJ = Convert.Ej_from_Lj(1 / l_inv_k[ss_idx, ss_idx])
@@ -871,8 +859,9 @@ class TransmonBuilder(QuantumBuilder):
 
         subsystem._quantum_system = transmon
         subsystem._h_params = dict(EJ=EJ, EC=EC, Q_zpf=Q_zpf)
-        subsystem._h_params['default_charge_op'] = Operator(
-            transmon.n_operator(), False)
+        subsystem._h_params["default_charge_op"] = Operator(
+            transmon.n_operator(), False
+        )
 
 
 class FluxoniumBuilder(QuantumBuilder):
@@ -894,25 +883,23 @@ class FluxoniumBuilder(QuantumBuilder):
             the qubit classes in scQubits
     """
 
-    system_type = 'FLUXONIUM'
-    default_opts = {'cutoff': 110, 'truncated_dim': 10}
+    system_type = "FLUXONIUM"
+    default_opts = {"cutoff": 110, "truncated_dim": 10}
 
     # pylint: disable=protected-access
     # pylint: disable=no-member
     @set_builder_options
     def make_quantum(self, subsystem: Subsystem):
-        """ concrete building function for the builder to build the quantum
+        """concrete building function for the builder to build the quantum
         system based on default options and input options set for the
         Subsystem object
         """
         cg = self.cg
         c_inv_k = cg.C_inv_k
 
-        subsystem_idx = _find_subsystem_mat_index(cg,
-                                                  subsystem,
-                                                  single_node=True)
+        subsystem_idx = _find_subsystem_mat_index(cg, subsystem, single_node=True)
         ss_idx = subsystem_idx[0]
-        subsystem.system_params['subsystem_idx'] = ss_idx
+        subsystem.system_params["subsystem_idx"] = ss_idx
 
         # EJ and EC are in MHz
         EC = Convert.Ec_from_Cs(1 / c_inv_k[ss_idx, ss_idx])
@@ -922,13 +909,16 @@ class FluxoniumBuilder(QuantumBuilder):
         fluxonium = scq.Fluxonium(**builder_options.view_as(scq.Fluxonium))
 
         subsystem._quantum_system = fluxonium
-        subsystem._h_params = dict(EJ=builder_options.EJ,
-                                   EC=builder_options.EC,
-                                   EL=builder_options.EL,
-                                   flux=builder_options.flux,
-                                   Q_zpf=Q_zpf)
-        subsystem._h_params['default_charge_op'] = Operator(
-            fluxonium.n_operator(), False)
+        subsystem._h_params = dict(
+            EJ=builder_options.EJ,
+            EC=builder_options.EC,
+            EL=builder_options.EL,
+            flux=builder_options.flux,
+            Q_zpf=Q_zpf,
+        )
+        subsystem._h_params["default_charge_op"] = Operator(
+            fluxonium.n_operator(), False
+        )
 
 
 class TLResonatorBuilder(QuantumBuilder):
@@ -950,35 +940,33 @@ class TLResonatorBuilder(QuantumBuilder):
             the qubit classes in scQubits
     """
 
-    system_type = 'TL_RESONATOR'
+    system_type = "TL_RESONATOR"
     default_opts = {
-        'Z0': 50,
-        'vp': 'use_design',  # phase velocity
-        'design': {
-            'line_width': 10 * 1e-6,
-            'line_gap': 6 * 1e-6,
-            'substrate_thickness': 750 * 1e-6,
-            'film_thickness': 200 * 1e-9
+        "Z0": 50,
+        "vp": "use_design",  # phase velocity
+        "design": {
+            "line_width": 10 * 1e-6,
+            "line_gap": 6 * 1e-6,
+            "substrate_thickness": 750 * 1e-6,
+            "film_thickness": 200 * 1e-9,
         },
-        'truncated_dim': 3
+        "truncated_dim": 3,
     }
 
     # pylint: disable=protected-access
     # pylint: disable=no-member
     @set_builder_options
     def make_quantum(self, subsystem: Subsystem):
-        """ concrete building function for the builder to build the quantum
+        """concrete building function for the builder to build the quantum
         system based on default options and input options set for the
         Subsystem object
         """
         cg = self.cg
         c_inv_k = cg.C_inv_k
 
-        subsystem_idx = _find_subsystem_mat_index(cg,
-                                                  subsystem,
-                                                  single_node=True)
+        subsystem_idx = _find_subsystem_mat_index(cg, subsystem, single_node=True)
         ss_idx = subsystem_idx[0]
-        subsystem.system_params['subsystem_idx'] = ss_idx
+        subsystem.system_params["subsystem_idx"] = ss_idx
         CL = 1 / c_inv_k[ss_idx, ss_idx]
 
         builder_options = self.builder_options
@@ -988,9 +976,8 @@ class TLResonatorBuilder(QuantumBuilder):
         f_res *= 1000
         builder_options.E_osc = f_res
 
-        if builder_options.vp == 'use_design':
-            lambdaG, _, _ = guided_wavelength(f_res * 10**6,
-                                              **builder_options.design)
+        if builder_options.vp == "use_design":
+            lambdaG, _, _ = guided_wavelength(f_res * 10**6, **builder_options.design)
             vp = f_res * MHzRad * lambdaG / (2 * np.pi)
         else:
             vp = float(builder_options.vp)
@@ -998,12 +985,17 @@ class TLResonatorBuilder(QuantumBuilder):
         resonator = scq.Oscillator(**builder_options.view_as(scq.Oscillator))
         subsystem._quantum_system = resonator
 
-        Q_zpf, _, _, _, = analyze_loaded_tl(f_res, CL, vp, Z0)
-        subsystem._h_params['Q_zpf'] = Q_zpf
-        subsystem._h_params['default_charge_op'] = Operator(
-            1j *
-            (resonator.creation_operator() - resonator.annihilation_operator()),
-            False)
+        (
+            Q_zpf,
+            _,
+            _,
+            _,
+        ) = analyze_loaded_tl(f_res, CL, vp, Z0)
+        subsystem._h_params["Q_zpf"] = Q_zpf
+        subsystem._h_params["default_charge_op"] = Operator(
+            1j * (resonator.creation_operator() - resonator.annihilation_operator()),
+            False,
+        )
 
 
 class LumpedResonatorBuilder(QuantumBuilder):
@@ -1025,14 +1017,14 @@ class LumpedResonatorBuilder(QuantumBuilder):
             the qubit classes in scQubits
     """
 
-    system_type = 'LUMPED_RESONATOR'
-    default_opts = {'truncated_dim': 3}
+    system_type = "LUMPED_RESONATOR"
+    default_opts = {"truncated_dim": 3}
 
     # pylint: disable=protected-access
     # pylint: disable=no-member
     @set_builder_options
     def make_quantum(self, subsystem: Subsystem):
-        """ concrete building function for the builder to build the quantum
+        """concrete building function for the builder to build the quantum
         system based on default options and input options set for the
         Subsystem object
         """
@@ -1040,11 +1032,9 @@ class LumpedResonatorBuilder(QuantumBuilder):
         l_inv_k = cg.L_inv_k
         c_inv_k = cg.C_inv_k
 
-        subsystem_idx = _find_subsystem_mat_index(cg,
-                                                  subsystem,
-                                                  single_node=True)
+        subsystem_idx = _find_subsystem_mat_index(cg, subsystem, single_node=True)
         ss_idx = subsystem_idx[0]
-        subsystem.system_params['subsystem_idx'] = ss_idx
+        subsystem.system_params["subsystem_idx"] = ss_idx
 
         builder_options = self.builder_options
 
@@ -1064,11 +1054,11 @@ class LumpedResonatorBuilder(QuantumBuilder):
         resonator = scq.Oscillator(**builder_options.view_as(scq.Oscillator))
         subsystem._quantum_system = resonator
 
-        subsystem._h_params['Q_zpf'] = Q_zpf
-        subsystem._h_params['default_charge_op'] = Operator(
-            1j *
-            (resonator.creation_operator() - resonator.annihilation_operator()),
-            False)
+        subsystem._h_params["Q_zpf"] = Q_zpf
+        subsystem._h_params["default_charge_op"] = Operator(
+            1j * (resonator.creation_operator() - resonator.annihilation_operator()),
+            False,
+        )
 
 
 class Cell:
@@ -1105,38 +1095,37 @@ class Cell:
                     provided cell and None for the second provided cell.
 
         """
-        self._node_rename = options.get('node_rename', {})
-        self.cap_mat = _rename_nodes_in_df(self._node_rename,
-                                           options['cap_mat'])
+        self._node_rename = options.get("node_rename", {})
+        self.cap_mat = _rename_nodes_in_df(self._node_rename, options["cap_mat"])
         self.ind_dict = None
         self.jj_dict = None
         self.cj_dict = None
 
-        if 'ind_dict' in options:
-            self.ind_dict = _rename_nodes_in_dict(self._node_rename,
-                                                  options['ind_dict'])
-        if 'ind_mat' in options:
+        if "ind_dict" in options:
+            self.ind_dict = _rename_nodes_in_dict(
+                self._node_rename, options["ind_dict"]
+            )
+        if "ind_mat" in options:
             raise NotImplementedError
-        if 'jj_dict' in options:
-            self.jj_dict = _rename_nodes_in_dict(self._node_rename,
-                                                 options['jj_dict'])
+        if "jj_dict" in options:
+            self.jj_dict = _rename_nodes_in_dict(self._node_rename, options["jj_dict"])
 
-        if 'cj_dict' in options:
-            self.cj_dict = _rename_nodes_in_dict(self._node_rename,
-                                                 options['cj_dict'])
+        if "cj_dict" in options:
+            self.cj_dict = _rename_nodes_in_dict(self._node_rename, options["cj_dict"])
 
         self.nodes = self.cap_mat.columns.values.tolist()
 
 
 class CompositeSystem:
-    """Class representing the composite system which may consist of multiple subsystems and cells
-    """
+    """Class representing the composite system which may consist of multiple subsystems and cells"""
 
-    def __init__(self,
-                 subsystems: List[Subsystem],
-                 cells: List[Cell],
-                 grd_node: str,
-                 nodes_force_keep: Sequence = None):
+    def __init__(
+        self,
+        subsystems: List[Subsystem],
+        cells: List[Cell],
+        grd_node: str,
+        nodes_force_keep: Sequence = None,
+    ):
         """Initialize the CompositeSystem object
 
         Args:
@@ -1160,8 +1149,7 @@ class CompositeSystem:
         self._jj = {k: j for c in self._cells for k, j in c.jj_dict.items()}
         _jj_to_node_map = dict(zip(self._jj.values(), self._jj.keys()))
 
-        _cell_nodes = np.unique([n for c in self._cells for n in c.nodes
-                                ]).tolist()
+        _cell_nodes = np.unique([n for c in self._cells for n in c.nodes]).tolist()
         _sys_nodes = []
         for sub in self._subsystems:
             for n in sub.nodes:
@@ -1170,7 +1158,7 @@ class CompositeSystem:
                 else:
                     _sys_nodes.extend(list(_jj_to_node_map[n]))
         if len(set(_sys_nodes)) != len(_sys_nodes):
-            raise ValueError('Subsystems should not have overlapping nodes.')
+            raise ValueError("Subsystems should not have overlapping nodes.")
         _non_sys_nodes = [n for n in _cell_nodes if n not in _sys_nodes]
         self._nodes = _sys_nodes + _non_sys_nodes
 
@@ -1195,8 +1183,9 @@ class CompositeSystem:
             cj_dicts = self._cj_dicts
             l_list = self._l_list
             jjs = self._jj
-            self._cg = CircuitGraph(nodes, grd_node, c_list, l_list, jjs,
-                                    cj_dicts, self.nodes_force_keep)
+            self._cg = CircuitGraph(
+                nodes, grd_node, c_list, l_list, jjs, cj_dicts, self.nodes_force_keep
+            )
 
         return self._cg
 
@@ -1205,7 +1194,7 @@ class CompositeSystem:
         return self._subsystems
 
     def create_hilbertspace(self) -> scq.HilbertSpace:
-        """ create the composite hilbertspace including all the subsystems. Interaction
+        """create the composite hilbertspace including all the subsystems. Interaction
             NOT included
 
         Returns:
@@ -1240,27 +1229,28 @@ class CompositeSystem:
             g = np.zeros_like(c_inv_k)
             for ii in range(self.num_subsystems):
                 sub1 = self._subsystems[ii]
-                idx1 = sub1.system_params['subsystem_idx']
+                idx1 = sub1.system_params["subsystem_idx"]
                 for jj in range(ii + 1, self.num_subsystems):
                     sub2 = self._subsystems[jj]
-                    idx2 = sub2.system_params['subsystem_idx']
+                    idx2 = sub2.system_params["subsystem_idx"]
                     c_i = c_inv_k[idx1, idx2]
                     if c_i == 0:
                         continue
-                    Q_zpf_1 = sub1.h_params['Q_zpf']
-                    Q_zpf_2 = sub2.h_params['Q_zpf']
-                    g[idx1, idx2] = c_i * Q_zpf_1 * Q_zpf_2 * \
-                                    ONE_OVER_FEMTO / hbar / MHzRad
+                    Q_zpf_1 = sub1.h_params["Q_zpf"]
+                    Q_zpf_2 = sub2.h_params["Q_zpf"]
+                    g[idx1, idx2] = (
+                        c_i * Q_zpf_1 * Q_zpf_2 * ONE_OVER_FEMTO / hbar / MHzRad
+                    )
                     g[idx2, idx1] = g[idx1, idx2]
 
             return LabeledNdarray(g, self.names)
         else:
             raise NotImplementedError
 
-    def add_interaction(self,
-                        gs: np.ndarray = None,
-                        gscale: float = 1.) -> scq.HilbertSpace:
-        """ add interaction terms to the composite hilbertspace
+    def add_interaction(
+        self, gs: np.ndarray = None, gscale: float = 1.0
+    ) -> scq.HilbertSpace:
+        """add interaction terms to the composite hilbertspace
 
         Args:
             gs (np.ndarray): coupling strength matrix. If not provided,
@@ -1284,15 +1274,15 @@ class CompositeSystem:
 
         if c_inv_k.shape != gs.shape:
             raise ValueError(
-                'The dimension of g matrix doesn\'t match that of the reduced capacitance matrix.'
+                "The dimension of g matrix doesn't match that of the reduced capacitance matrix."
             )
 
         for ii in range(self.num_subsystems):
             sub1 = self._subsystems[ii]
-            idx1 = sub1.system_params['subsystem_idx']
+            idx1 = sub1.system_params["subsystem_idx"]
             for jj in range(ii + 1, self.num_subsystems):
                 sub2 = self._subsystems[jj]
-                idx2 = sub2.system_params['subsystem_idx']
+                idx2 = sub2.system_params["subsystem_idx"]
                 g = gs[idx1, idx2]
                 if g == 0:
                     continue
@@ -1301,22 +1291,23 @@ class CompositeSystem:
 
                 if l_inv_k[idx1, idx2] != 0:
                     raise NotImplementedError(
-                        'Interaction term for inductive coupling not yet implemented.'
+                        "Interaction term for inductive coupling not yet implemented."
                     )
                 if c_inv_k[idx1, idx2] != 0:
-                    q1_op, add_hc1 = sub1.h_params['default_charge_op']
-                    q2_op, add_hc2 = sub2.h_params['default_charge_op']
+                    q1_op, add_hc1 = sub1.h_params["default_charge_op"]
+                    q2_op, add_hc2 = sub2.h_params["default_charge_op"]
 
-                    h.add_interaction(g=g * gscale,
-                                      op1=(q1_op, q1),
-                                      op2=(q2_op, q2),
-                                      add_hc=add_hc1 or add_hc2)
+                    h.add_interaction(
+                        g=g * gscale,
+                        op1=(q1_op, q1),
+                        op2=(q2_op, q2),
+                        add_hc=add_hc1 or add_hc2,
+                    )
         return h
 
-    def hamiltonian_results(self,
-                            hilbertspace: scq.HilbertSpace,
-                            evals_count=None,
-                            print_info=True) -> pd.DataFrame:
+    def hamiltonian_results(
+        self, hilbertspace: scq.HilbertSpace, evals_count=None, print_info=True
+    ) -> pd.DataFrame:
         """Print and return results
 
         Args:
@@ -1342,18 +1333,19 @@ class CompositeSystem:
         esys_array[1] = evecs
 
         f01s, chi_mat = extract_energies(
-            esys_array, mode_size=hilbertspace.hamiltonian().dims[0])
+            esys_array, mode_size=hilbertspace.hamiltonian().dims[0]
+        )
         f01s = f01s / 1000
-        ham_res['fQ_in_Ghz'] = dict(zip(names, f01s))
-        ham_res['chi_in_MHz'] = LabeledNdarray(chi_mat, names)
+        ham_res["fQ_in_Ghz"] = dict(zip(names, f01s))
+        ham_res["chi_in_MHz"] = LabeledNdarray(chi_mat, names)
 
         if print_info:
-            print('')
-            print('system frequencies in GHz:')
-            print('--------------------------')
-            print(ham_res['fQ_in_Ghz'])
+            print("")
+            print("system frequencies in GHz:")
+            print("--------------------------")
+            print(ham_res["fQ_in_Ghz"])
             print()
-            print('Chi matrices in MHz')
-            print('--------------------------')
-            print(ham_res['chi_in_MHz'])
+            print("Chi matrices in MHz")
+            print("--------------------------")
+            print(ham_res["chi_in_MHz"])
         return ham_res

@@ -12,9 +12,9 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-#pylint: disable-msg=unnecessary-pass
-#pylint: disable-msg=protected-access
-#pylint: disable-msg=broad-except
+# pylint: disable-msg=unnecessary-pass
+# pylint: disable-msg=protected-access
+# pylint: disable-msg=broad-except
 """Qiskit Metal unit tests analyses functionality."""
 
 import unittest
@@ -40,7 +40,7 @@ class TestToolboxPython(unittest.TestCase):
     def test_instantiate_log_store(self):
         """Test instantiation of LogStore class."""
         try:
-            LogStore('my title', 100)
+            LogStore("my title", 100)
         except Exception:
             self.fail("LogStore failed")
 
@@ -74,7 +74,7 @@ class TestToolboxPython(unittest.TestCase):
 
     def test_display_format_dict_ala_z(self):
         """Test functionality of format_dict_ala_z in display.py."""
-        my_dict = {'first': 1}
+        my_dict = {"first": 1}
         expected = "  'first'             : 1,                            "
         actual = display.format_dict_ala_z(my_dict)
 
@@ -87,38 +87,24 @@ class TestToolboxPython(unittest.TestCase):
     def test_utility_dict_start_with(self):
         """Test dict_start_with in utility_functions.py."""
         my_dict = {
-            'first': 1,
-            'second': 2,
-            'third': {
-                'third-one': '3-1',
-                'third-two': {
-                    'third-two-only': 'uh'
-                }
-            },
-            'fourth': 4
+            "first": 1,
+            "second": 2,
+            "third": {"third-one": "3-1", "third-two": {"third-two-only": "uh"}},
+            "fourth": 4,
         }
 
-        expected = [[{
-            'third-one': '3-1',
-            'third-two': {
-                'third-two-only': 'uh'
-            }
-        }], {
-            'third': {
-                'third-one': '3-1',
-                'third-two': {
-                    'third-two-only': 'uh'
-                }
-            }
-        }, [], {}]
+        expected = [
+            [{"third-one": "3-1", "third-two": {"third-two-only": "uh"}}],
+            {"third": {"third-one": "3-1", "third-two": {"third-two-only": "uh"}}},
+            [],
+            {},
+        ]
 
         actual = []
-        actual.append(utility_functions.dict_start_with(my_dict, 'third'))
-        actual.append(
-            utility_functions.dict_start_with(my_dict, 'third', as_=dict))
-        actual.append(utility_functions.dict_start_with(my_dict, 'nope'))
-        actual.append(
-            utility_functions.dict_start_with(my_dict, 'nope', as_=dict))
+        actual.append(utility_functions.dict_start_with(my_dict, "third"))
+        actual.append(utility_functions.dict_start_with(my_dict, "third", as_=dict))
+        actual.append(utility_functions.dict_start_with(my_dict, "nope"))
+        actual.append(utility_functions.dict_start_with(my_dict, "nope", as_=dict))
 
         for i in range(4):
             self.assertEqual(actual[i], expected[i])
@@ -129,46 +115,57 @@ class TestToolboxPython(unittest.TestCase):
 
         df = utility_functions.data_frame_empty_typed(base)
 
-        self.assertEqual(df.dtypes['col1'], bool)
-        self.assertEqual(df.dtypes['col2'], object)
+        self.assertEqual(df.dtypes["col1"], bool)
+        self.assertEqual(df.dtypes["col2"], object)
 
     def test_utility_copy_update(self):
         """Test functionality of copy_update in utility_functions.py."""
-        self.assertEqual(utility_functions.copy_update({'a': 1}, {}), {'a': 1})
-        self.assertEqual(utility_functions.copy_update({'a': 1}, {'b': 2}), {
-            'a': 1,
-            'b': 2
-        })
-        self.assertEqual(utility_functions.copy_update({'a': 1}, {'a': 2}),
-                         {'a': 2})
+        self.assertEqual(utility_functions.copy_update({"a": 1}, {}), {"a": 1})
+        self.assertEqual(
+            utility_functions.copy_update({"a": 1}, {"b": 2}), {"a": 1, "b": 2}
+        )
+        self.assertEqual(utility_functions.copy_update({"a": 1}, {"a": 2}), {"a": 2})
 
     def test_utility_bad_fillet_idxs(self):
         """Test functionality of bad_fillet_idxs in utility_functions.py."""
-        results = utility_functions.bad_fillet_idxs([(1.0, 1.0), (1.5, 1.5),
-                                                     (1.51, 1.5), (2.0, 2.0)],
-                                                    0.1)
+        results = utility_functions.bad_fillet_idxs(
+            [(1.0, 1.0), (1.5, 1.5), (1.51, 1.5), (2.0, 2.0)], 0.1
+        )
         self.assertEqual(results, [1, 2])
 
     def test_utility_clean_name(self):
         """Test clean_name in utility_function.py."""
         self.assertEqual(
-            utility_functions.clean_name('32v2 g #Gmw845h$W b53wi '),
-            '_32v2_g__Gmw845h_W_b53wi_')
-        self.assertEqual(utility_functions.clean_name('halestorm rulz!'),
-                         'halestorm_rulz_')
+            utility_functions.clean_name("32v2 g #Gmw845h$W b53wi "),
+            "_32v2_g__Gmw845h_W_b53wi_",
+        )
+        self.assertEqual(
+            utility_functions.clean_name("halestorm rulz!"), "halestorm_rulz_"
+        )
 
     def test_utility_toggle_numbers(self):
         """Test functionality of toggle_numbers in utility_functions.py."""
-        self.assertEqual(utility_functions.toggle_numbers([3, 5, 9, 1], 14),
-                         [0, 1, 2, 4, 6, 7, 8, 11, 12, 13])
+        self.assertEqual(
+            utility_functions.toggle_numbers([3, 5, 9, 1], 14),
+            [0, 1, 2, 4, 6, 7, 8, 11, 12, 13],
+        )
 
     def test_utility_get_range_of_vertex_to_not_fillet(self):
         """Test functionality of get_range_of_vertex_to_not_fillet in
         utility_functions.py."""
-        my_list = [(1, 1), (1, 2), (1, 2), (2, 2), (5, 5), (3, 2), (11, 11),
-                   (11, 11), (11, 21), (12, 21)]
-        result = utility_functions.get_range_of_vertex_to_not_fillet(
-            my_list, 0.25)
+        my_list = [
+            (1, 1),
+            (1, 2),
+            (1, 2),
+            (2, 2),
+            (5, 5),
+            (3, 2),
+            (11, 11),
+            (11, 11),
+            (11, 21),
+            (12, 21),
+        ]
+        result = utility_functions.get_range_of_vertex_to_not_fillet(my_list, 0.25)
         self.assertEqual(result, [(0, 2), (6, 7)])
 
     def test_utility_compress_vertex_list(self):
@@ -176,9 +173,8 @@ class TestToolboxPython(unittest.TestCase):
         utility_functions.py."""
         my_list = [1, 2, 5, 2, 6, 7, 10, 4, 7, 1]
         expected = [(1, 1), (1, 2), (2, 2), (4, 7), (7, 7), (10, 10)]
-        self.assertEqual(utility_functions.compress_vertex_list(my_list),
-                         expected)
+        self.assertEqual(utility_functions.compress_vertex_list(my_list), expected)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main(verbosity=2)

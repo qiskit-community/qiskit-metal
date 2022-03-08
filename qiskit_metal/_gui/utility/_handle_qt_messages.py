@@ -25,7 +25,7 @@ from PySide2.QtCore import Slot
 
 from ... import logger
 
-__all__ = ['slot_catch_error', 'do_debug']
+__all__ = ["slot_catch_error", "do_debug"]
 
 #######################################################################################
 # Core handler
@@ -52,31 +52,32 @@ def _qt_message_handler(mode, context, message):
         message (str): the message
     """
 
-    if message.startswith(
-            'QSocketNotifier: Multiple socket notifiers for same socket'):
+    if message.startswith("QSocketNotifier: Multiple socket notifiers for same socket"):
         pass  # Caused by running %gui qt multiple times
     else:
         if mode == QtCore.QtInfoMsg:
-            mode = 'INFO'
+            mode = "INFO"
         elif mode == QtCore.QtWarningMsg:
-            mode = 'WARNING'
+            mode = "WARNING"
         elif mode == QtCore.QtCriticalMsg:
-            mode = 'CRITICAL'
+            mode = "CRITICAL"
         elif mode == QtCore.QtFatalMsg:
-            mode = 'FATAL'
+            mode = "FATAL"
         else:
-            mode = 'DEBUG'
+            mode = "DEBUG"
         logger.log(
-            getattr(logging, 'CRITICAL'), 'line: %d, func: %s(), file: %s' %
-            (context.line, context.function, context.file) + '  %s: %s\n' %
-            (mode, message))
+            getattr(logging, "CRITICAL"),
+            "line: %d, func: %s(), file: %s"
+            % (context.line, context.function, context.file)
+            + "  %s: %s\n" % (mode, message),
+        )
 
 
 #######################################################################################
 # Auxilary handlers - mostly for debug purposes
 
 
-def do_debug(msg, name='info'):
+def do_debug(msg, name="info"):
     """Utility function used to print debug statements from PySide2 Socket
     calls A bit of a cludge.
 
@@ -91,13 +92,12 @@ def do_debug(msg, name='info'):
         for i in range(1, 20):
             try:
                 stack = inspect.stack()[i]
-                callers += [f'{stack.function}[{stack.lineno}]']
+                callers += [f"{stack.function}[{stack.lineno}]"]
             except Exception as e:  # pylint: disable=broad-except
-                print("Exception during do_debug exception handling: " +
-                      e.__repr__())
+                print("Exception during do_debug exception handling: " + e.__repr__())
         callers = reversed(callers)
-        callers = '\n'.join(callers)
-        msg = callers + "\n" + str(msg) + '\n'
+        callers = "\n".join(callers)
+        msg = callers + "\n" + str(msg) + "\n"
 
     getattr(logger, name)(msg)
 
@@ -121,7 +121,6 @@ def slot_catch_error(*args, catch=Exception, on_exception_emit=None):
 
     @Slot(*args)
     def slot_decorator(func):
-
         @wraps(func)
         def wrapper(*args, **kwargs):  # pylint: disable=unused-argument
 
@@ -131,13 +130,14 @@ def slot_catch_error(*args, catch=Exception, on_exception_emit=None):
             except catch as e:  # pylint: disable=invalid-name,broad-except
 
                 message = traceback.format_exc()
-                message += '\n\nERROR in call by Metal GUI (see traceback above)\n'\
-                    + f"\n{' module   :':12s} {wrapper.__module__}" \
-                    + f"\n{' function :':12s} {wrapper.__qualname__}" \
-                    + f"\n{' err msg  :':12s} {e.__repr__()}"\
-                    + f"\n{' args; kws:':12s} {args}; {kwargs}" \
-
-                do_debug(message, name='error')
+                message += (
+                    "\n\nERROR in call by Metal GUI (see traceback above)\n"
+                    + f"\n{' module   :':12s} {wrapper.__module__}"
+                    + f"\n{' function :':12s} {wrapper.__qualname__}"
+                    + f"\n{' err msg  :':12s} {e.__repr__()}"
+                    + f"\n{' args; kws:':12s} {args}; {kwargs}"
+                )
+                do_debug(message, name="error")
 
                 if on_exception_emit is not None:
                     # args[0] is instance of bound signal

@@ -18,8 +18,8 @@ import fnmatch
 import sys
 import subprocess
 
-if __name__ == '__main__':
-    LIST_OF_FILES = os.listdir('.')
+if __name__ == "__main__":
+    LIST_OF_FILES = os.listdir(".")
     PATTERN = "test*.py"
     print("====> Running the entire test suite now...")
     ERRORS_EXIST = 0
@@ -27,7 +27,7 @@ if __name__ == '__main__':
         if fnmatch.fnmatch(entry, PATTERN):
             if entry != sys.argv[0]:
                 print("Running ", entry, " tests...")
-                cmd = 'python ' + entry
+                cmd = "python " + entry
                 ERROR_BACK = subprocess.call(cmd, shell=True)
                 if ERROR_BACK != 3221225477:  # access violation
                     ERRORS_EXIST += ERROR_BACK

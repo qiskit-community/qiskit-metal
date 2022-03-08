@@ -31,7 +31,7 @@ class PropValTable(QAbstractTableModel):
 
     __refreshtime = 500  # 0.5 second refresh time
 
-    def __init__(self, design=None, gui=None, view: 'RightClickView' = None):
+    def __init__(self, design=None, gui=None, view: "RightClickView" = None):
         """
         Args:
             design (QDesign): The QDesign.  Defaults to None.
@@ -128,8 +128,8 @@ class PropValTable(QAbstractTableModel):
                 return str(self._data[list(self._data.keys())[row]])
             elif column == 2:
                 return str(
-                    self.design.parse_value(self._data[list(
-                        self._data.keys())[row]]))
+                    self.design.parse_value(self._data[list(self._data.keys())[row]])
+                )
 
         # double clicking
         elif role == Qt.EditRole:
@@ -140,10 +140,9 @@ class PropValTable(QAbstractTableModel):
             font.setBold(True)
             return font
 
-    def setData(self,
-                index: QModelIndex,
-                value: str,
-                role: Qt.ItemDataRole = Qt.EditRole) -> bool:
+    def setData(
+        self, index: QModelIndex, value: str, role: Qt.ItemDataRole = Qt.EditRole
+    ) -> bool:
         """Modify either key or value (Property or Value) of dictionary
         depending on what the user selected manually on the table.
 
@@ -175,10 +174,12 @@ class PropValTable(QAbstractTableModel):
 
         return False
 
-    def headerData(self,
-                   section: int,
-                   orientation: Qt.Orientation,
-                   role: Qt.ItemDataRole = Qt.DisplayRole) -> str:
+    def headerData(
+        self,
+        section: int,
+        orientation: Qt.Orientation,
+        role: Qt.ItemDataRole = Qt.DisplayRole,
+    ) -> str:
         """Get the headers to be displayed.
 
         Args:
@@ -192,15 +193,15 @@ class PropValTable(QAbstractTableModel):
         if role == Qt.DisplayRole:
             if orientation == Qt.Horizontal:
                 if section == 0:
-                    return 'Variable name'
+                    return "Variable name"
                 elif section == 1:
-                    return 'Value'
+                    return "Value"
                 else:
                     units = config.DefaultMetalOptions.default_generic.units
                     if self.design:
-                        if hasattr(self.design, '_template_options'):
+                        if hasattr(self.design, "_template_options"):
                             units = self.design.template_options.units
-                    return f'Parsed value (in {units})'
+                    return f"Parsed value (in {units})"
             return str(section + 1)
 
     def removeRows(self, row: int, count: int = 1, parent=QModelIndex()):

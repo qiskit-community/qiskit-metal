@@ -32,11 +32,21 @@ if TYPE_CHECKING:
     from qiskit_metal import logger
 
 __all__ = [
-    'copy_update', 'dict_start_with', 'data_frame_empty_typed', 'clean_name',
-    'enable_warning_traceback', 'get_traceback', 'print_traceback_easy',
-    'log_error_easy', 'monkey_patch', 'can_write_to_path',
-    'can_write_to_path_with_warning', 'toggle_numbers', 'bad_fillet_idxs',
-    'compress_vertex_list', 'get_range_of_vertex_to_not_fillet'
+    "copy_update",
+    "dict_start_with",
+    "data_frame_empty_typed",
+    "clean_name",
+    "enable_warning_traceback",
+    "get_traceback",
+    "print_traceback_easy",
+    "log_error_easy",
+    "monkey_patch",
+    "can_write_to_path",
+    "can_write_to_path_with_warning",
+    "toggle_numbers",
+    "bad_fillet_idxs",
+    "compress_vertex_list",
+    "get_range_of_vertex_to_not_fillet",
 ]
 
 ####################################################################################
@@ -153,7 +163,7 @@ def clean_name(text: str):
 
     See https://stackoverflow.com/questions/3303312/how-do-i-convert-a-string-to-a-valid-variable-name-in-python
     """
-    return re.sub('\W|^(?=\d)', '_', text)
+    return re.sub("\W|^(?=\d)", "_", text)
 
 
 ####################################################################################
@@ -198,14 +208,11 @@ def print_traceback_easy(start=26):
                      In general set to zero.
     """
     print(f"\n")
-    print('\n'.join(map(repr, traceback.extract_stack()[start:])))
-    print('\n')
+    print("\n".join(map(repr, traceback.extract_stack()[start:])))
+    print("\n")
 
 
-def log_error_easy(logger: logging.Logger,
-                   pre_text='',
-                   post_text='',
-                   do_print=False):
+def log_error_easy(logger: logging.Logger, pre_text="", post_text="", do_print=False):
     """Print log message.
 
     Args:
@@ -240,7 +247,7 @@ def log_error_easy(logger: logging.Logger,
     """
     exc_type, exc_value, exc_tb = sys.exc_info()
     error = traceback.format_exception(exc_type, exc_value, exc_tb)
-    text = f'{pre_text}\n\n' + '\n'.join(error) + f'\n{post_text}'
+    text = f"{pre_text}\n\n" + "\n".join(error) + f"\n{post_text}"
 
     logger.error(text)
     if do_print:
@@ -351,10 +358,9 @@ def toggle_numbers(numbers: list, totlength: int) -> list:
     return complement
 
 
-def bad_fillet_idxs(coords: list,
-                    fradius: float,
-                    precision: int = 9,
-                    isclosed: bool = False) -> list:
+def bad_fillet_idxs(
+    coords: list, fradius: float, precision: int = 9, isclosed: bool = False
+) -> list:
     """
     Get list of vertex indices in a linestring (isclosed = False) or polygon (isclosed = True) that cannot be filleted based on
     proximity to neighbors. By default, this list excludes the first and last vertices if the shape is a linestring.
@@ -372,37 +378,51 @@ def bad_fillet_idxs(coords: list,
     get_dist = Vector.get_distance
     if isclosed:
         return [
-            i for i in range(length)
-            if min(get_dist(coords[i - 1], coords[i], precision),
-                   get_dist(coords[i], coords[(i + 1) %
-                                              length], precision)) < 2 * fradius
+            i
+            for i in range(length)
+            if min(
+                get_dist(coords[i - 1], coords[i], precision),
+                get_dist(coords[i], coords[(i + 1) % length], precision),
+            )
+            < 2 * fradius
         ]
     if length < 3:
         return []
     if length == 3:
-        return [] if min(get_dist(coords[0], coords[1], precision),
-                         get_dist(coords[1], coords[2],
-                                  precision)) >= fradius else [1]
-    if (get_dist(coords[0], coords[1], precision) < fradius) or (get_dist(
-            coords[1], coords[2], precision) < 2 * fradius):
+        return (
+            []
+            if min(
+                get_dist(coords[0], coords[1], precision),
+                get_dist(coords[1], coords[2], precision),
+            )
+            >= fradius
+            else [1]
+        )
+    if (get_dist(coords[0], coords[1], precision) < fradius) or (
+        get_dist(coords[1], coords[2], precision) < 2 * fradius
+    ):
         badlist = [1]
     else:
         badlist = []
     for i in range(2, length - 2):
-        if min(get_dist(coords[i - 1], coords[i], precision),
-               get_dist(coords[i], coords[i + 1], precision)) < 2 * fradius:
+        if (
+            min(
+                get_dist(coords[i - 1], coords[i], precision),
+                get_dist(coords[i], coords[i + 1], precision),
+            )
+            < 2 * fradius
+        ):
             badlist.append(i)
-    if (get_dist(coords[length - 3], coords[length - 2], precision) <
-            2 * fradius) or (get_dist(coords[length - 2], coords[length - 1],
-                                      precision) < fradius):
+    if (get_dist(coords[length - 3], coords[length - 2], precision) < 2 * fradius) or (
+        get_dist(coords[length - 2], coords[length - 1], precision) < fradius
+    ):
         badlist.append(length - 2)
     return badlist
 
 
-def get_range_of_vertex_to_not_fillet(coords: list,
-                                      fradius: float,
-                                      precision: int = 9,
-                                      add_endpoints: bool = True) -> list:
+def get_range_of_vertex_to_not_fillet(
+    coords: list, fradius: float, precision: int = 9, add_endpoints: bool = True
+) -> list:
     """Provide a list of tuples for a list of integers that correspond to
     coords. Each tuple corresponds to a range of indexes within coords.  A
     range denotes vertexes that are too short to be fillet'd.
@@ -513,9 +533,11 @@ def can_write_to_path_with_warning(file: str) -> int:
     if os.access(directory_name, os.W_OK):
         return 1
     else:
-        a_logger.warning(f'Not able to write to directory.'
-                         f'File:"{file}" not written.'
-                         f' Checked directory:"{directory_name}".')
+        a_logger.warning(
+            f"Not able to write to directory."
+            f'File:"{file}" not written.'
+            f' Checked directory:"{directory_name}".'
+        )
         return 0
 
 
@@ -542,9 +564,9 @@ def can_write_to_path(file: str) -> Tuple[int, str]:
 # function signature
 
 
-def check_all_required_args_provided(func: Callable,
-                                     args: Dict,
-                                     raise_exception: bool = True) -> List:
+def check_all_required_args_provided(
+    func: Callable, args: Dict, raise_exception: bool = True
+) -> List:
     """Check all required arguments of func are provided by args
 
     Args:
@@ -559,15 +581,14 @@ def check_all_required_args_provided(func: Callable,
     provided_args = list(args.keys())
     missing_args = []
     for param in inspect.signature(func).parameters.values():
-        if param.name in provided_args or param.name == 'self':
+        if param.name in provided_args or param.name == "self":
             continue
         if param.default is inspect._empty and param.name not in provided_args:
             missing_args.append(param.name)
 
     if missing_args and raise_exception:
-        out = ', '.join(missing_args)
-        raise InputError(
-            f'Missing values for arguments {out} for {func.__qualname__}')
+        out = ", ".join(missing_args)
+        raise InputError(f"Missing values for arguments {out} for {func.__qualname__}")
     return missing_args
 
 
@@ -582,7 +603,7 @@ def get_all_args(func: Callable) -> List:
     """
     args = []
     for param in inspect.signature(func).parameters.values():
-        if param.name == 'self':
+        if param.name == "self":
             continue
         args.append(param.name)
     return args

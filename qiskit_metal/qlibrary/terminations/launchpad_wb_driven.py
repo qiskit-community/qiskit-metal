@@ -76,13 +76,15 @@ class LaunchpadWirebondDriven(QComponent):
         * taper_height: '122um' -- Height of the taper from the launch pad to the transmission line
     """
 
-    default_options = Dict(trace_width='cpw_width',
-                           trace_gap='cpw_gap',
-                           lead_length='25um',
-                           pad_width='80um',
-                           pad_height='80um',
-                           pad_gap='58um',
-                           taper_height='122um')
+    default_options = Dict(
+        trace_width="cpw_width",
+        trace_gap="cpw_gap",
+        lead_length="25um",
+        pad_width="80um",
+        pad_height="80um",
+        pad_gap="58um",
+        taper_height="122um",
+    )
     """Default options"""
 
     TOOLTIP = """Launch pad to feed/read signals to/from the chip."""
@@ -97,8 +99,8 @@ class LaunchpadWirebondDriven(QComponent):
         pad_height = p.pad_height
         pad_gap = p.pad_gap
         trace_width = p.trace_width
-        trace_width_half = trace_width / 2.
-        pad_width_half = pad_width / 2.
+        trace_width_half = trace_width / 2.0
+        pad_width_half = pad_width / 2.0
         lead_length = p.lead_length
         taper_height = p.taper_height
         trace_gap = p.trace_gap
@@ -108,36 +110,46 @@ class LaunchpadWirebondDriven(QComponent):
 
         # Geometry of main launch structure
         # The shape is a polygon and we prepare this point as orientation is 0 degree
-        launch_pad = draw.Polygon([
-            (0, trace_width_half), (-taper_height, pad_width_half),
-            (-(pad_height + taper_height), pad_width_half),
-            (-(pad_height + taper_height), -pad_width_half),
-            (-taper_height, -pad_width_half), (0, -trace_width_half),
-            (lead_length, -trace_width_half), (lead_length, trace_width_half),
-            (0, trace_width_half)
-        ])
+        launch_pad = draw.Polygon(
+            [
+                (0, trace_width_half),
+                (-taper_height, pad_width_half),
+                (-(pad_height + taper_height), pad_width_half),
+                (-(pad_height + taper_height), -pad_width_half),
+                (-taper_height, -pad_width_half),
+                (0, -trace_width_half),
+                (lead_length, -trace_width_half),
+                (lead_length, trace_width_half),
+                (0, trace_width_half),
+            ]
+        )
 
         # Geometry pocket (gap)
         # Same way applied for pocket
-        pocket = draw.Polygon([(0, trace_width_half + trace_gap),
-                               (-taper_height, pad_width_half + pad_gap),
-                               (-(pad_height + taper_height + pad_gap),
-                                pad_width_half + pad_gap),
-                               (-(pad_height + taper_height + pad_gap),
-                                -(pad_width_half + pad_gap)),
-                               (-taper_height, -(pad_width_half + pad_gap)),
-                               (0, -(trace_width_half + trace_gap)),
-                               (lead_length, -(trace_width_half + trace_gap)),
-                               (lead_length, trace_width_half + trace_gap),
-                               (0, trace_width_half + trace_gap)])
+        pocket = draw.Polygon(
+            [
+                (0, trace_width_half + trace_gap),
+                (-taper_height, pad_width_half + pad_gap),
+                (-(pad_height + taper_height + pad_gap), pad_width_half + pad_gap),
+                (-(pad_height + taper_height + pad_gap), -(pad_width_half + pad_gap)),
+                (-taper_height, -(pad_width_half + pad_gap)),
+                (0, -(trace_width_half + trace_gap)),
+                (lead_length, -(trace_width_half + trace_gap)),
+                (lead_length, trace_width_half + trace_gap),
+                (0, trace_width_half + trace_gap),
+            ]
+        )
 
         # These variables are used to graphically locate the pin locations
-        main_pin_line = draw.LineString([(lead_length, trace_width_half),
-                                         (lead_length, -trace_width_half)])
-        driven_pin_line = draw.LineString([
-            (-(pad_height + taper_height + pad_gap), pad_width_half),
-            (-(pad_height + taper_height + pad_gap), -pad_width_half)
-        ])
+        main_pin_line = draw.LineString(
+            [(lead_length, trace_width_half), (lead_length, -trace_width_half)]
+        )
+        driven_pin_line = draw.LineString(
+            [
+                (-(pad_height + taper_height + pad_gap), pad_width_half),
+                (-(pad_height + taper_height + pad_gap), -pad_width_half),
+            ]
+        )
 
         # Create polygon object list
         polys1 = [main_pin_line, driven_pin_line, launch_pad, pocket]
@@ -149,14 +161,11 @@ class LaunchpadWirebondDriven(QComponent):
         [main_pin_line, driven_pin_line, launch_pad, pocket] = polys1
 
         # Adds the object to the qgeometry table
-        self.add_qgeometry('poly', dict(launch_pad=launch_pad), layer=p.layer)
+        self.add_qgeometry("poly", dict(launch_pad=launch_pad), layer=p.layer)
 
         # Subtracts out ground plane on the layer its on
-        self.add_qgeometry('poly',
-                           dict(pocket=pocket),
-                           subtract=True,
-                           layer=p.layer)
+        self.add_qgeometry("poly", dict(pocket=pocket), subtract=True, layer=p.layer)
 
         # Generates the pins
-        self.add_pin('tie', main_pin_line.coords, trace_width)
-        self.add_pin('in', driven_pin_line.coords, pad_width, gap=pad_gap)
+        self.add_pin("tie", main_pin_line.coords, trace_width)
+        self.add_pin("in", driven_pin_line.coords, pad_width, gap=pad_gap)

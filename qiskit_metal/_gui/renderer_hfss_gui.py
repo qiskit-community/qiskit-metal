@@ -12,7 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from PySide2.QtWidgets import (QAbstractItemView, QMainWindow, QMessageBox)
+from PySide2.QtWidgets import QAbstractItemView, QMainWindow, QMessageBox
 
 from .list_model_base import DynamicList
 from .renderer_hfss_model import RendererHFSS_Model
@@ -23,7 +23,7 @@ from .endcap_hfss_gui import EndcapHFSSWidget
 class RendererHFSSWidget(QMainWindow):
     """Contains methods associated with Ansys HFSS Renderer button."""
 
-    def __init__(self, parent: 'QMainWindow', gui: 'MetalGUI'):
+    def __init__(self, parent: "QMainWindow", gui: "MetalGUI"):
         """Get access to design, which has the components. Then set up the
         model and view.
 
@@ -48,10 +48,9 @@ class RendererHFSSWidget(QMainWindow):
         self.tree_model = RendererHFSS_Model(self, gui, self.ui.treeView)
         self.ui.treeView.setModel(self.tree_model)
         self.ui.treeView.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
-        self.ui.treeView.setHorizontalScrollMode(
-            QAbstractItemView.ScrollPerPixel)
+        self.ui.treeView.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
 
-    def set_design(self, new_design: 'QDesign'):
+    def set_design(self, new_design: "QDesign"):
         """Swaps out reference to design, which changes the reference to the
         dictionary.
 
@@ -90,13 +89,13 @@ class RendererHFSSWidget(QMainWindow):
         select which unconnected pins are to be open."""
         components_to_render = self.get_checked()
         if components_to_render:
-            txt = self.ui.solnComboBox.currentText(
+            txt = (
+                self.ui.solnComboBox.currentText()
             )  # solution type - eigenmode or driven modal
-            self.endcap_hfss_window = EndcapHFSSWidget(self, self._gui,
-                                                       components_to_render,
-                                                       txt)
+            self.endcap_hfss_window = EndcapHFSSWidget(
+                self, self._gui, components_to_render, txt
+            )
             self.endcap_hfss_window.show()
             self.close()
         else:
-            QMessageBox.warning(self, "Error",
-                                "Please select at least one component.")
+            QMessageBox.warning(self, "Error", "Please select at least one component.")

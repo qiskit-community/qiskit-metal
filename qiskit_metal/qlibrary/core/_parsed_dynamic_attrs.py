@@ -15,7 +15,8 @@
 import pprint
 from typing import List
 from typing import TYPE_CHECKING
-#from ...toolbox_python.utility_functions import log_error_easy
+
+# from ...toolbox_python.utility_functions import log_error_easy
 if TYPE_CHECKING:
     from .base import QComponent
 
@@ -23,25 +24,25 @@ if TYPE_CHECKING:
 def is_ipython_magic(check_attribute: str) -> bool:
     """Ignore the following checks by jupyter."""
     return check_attribute in {
-        '_ipython_canary_method_should_not_exist_',
-        '_ipython_display_',
-        '_repr_mimebundle_',
-        '_repr_html_',
-        '_repr_markdown_',
-        '_repr_svg_',
-        '_repr_png_',
-        '_repr_pdf_',
-        '_repr_jpeg_',
-        '_repr_latex_',
-        '_repr_json_',
-        '_repr_javascript_',
-        '_rapped',
-        '__wrapped__',
-        '__call__',
+        "_ipython_canary_method_should_not_exist_",
+        "_ipython_display_",
+        "_repr_mimebundle_",
+        "_repr_html_",
+        "_repr_markdown_",
+        "_repr_svg_",
+        "_repr_png_",
+        "_repr_pdf_",
+        "_repr_jpeg_",
+        "_repr_latex_",
+        "_repr_json_",
+        "_repr_javascript_",
+        "_rapped",
+        "__wrapped__",
+        "__call__",
     }
 
 
-class ParsedDynamicAttributes_Component():
+class ParsedDynamicAttributes_Component:
     """Provides a parsing view of the component options.
 
     When accessed, returns parse versions of the user options.
@@ -55,6 +56,7 @@ class ParsedDynamicAttributes_Component():
 
         >> `float(1e7)`
     """
+
     """
     Special method names:
         See Python Data Module for Objects:
@@ -69,13 +71,13 @@ class ParsedDynamicAttributes_Component():
         __delattr__:        Called when an attribute deletion is attempted.
     """
 
-    def __init__(self, component: 'QComponent', key_list: List[str] = None):
+    def __init__(self, component: "QComponent", key_list: List[str] = None):
         """
         Args:
             component (QComponent): Component to get options from.
             key_list (List[str]): List of keys.  Defaults to None.
         """
-        #print(f'*** Created with {key_list}')
+        # print(f'*** Created with {key_list}')
         # These names must have __xx__ or else they will go to getattr instead of getattribute
 
         self.__component__ = component
@@ -99,8 +101,7 @@ class ParsedDynamicAttributes_Component():
         return len(self.__getdict__())
 
     def __getdict__(self) -> dict:
-        return get_nested_dict_item(self.__component__.options,
-                                    self.__keylist__)
+        return get_nested_dict_item(self.__component__.options, self.__keylist__)
 
     def __iter__(self):
         return self.__getdict__().__iter__()
@@ -127,7 +128,7 @@ class ParsedDynamicAttributes_Component():
         # if name.startswith('_repr') or name.startswith('_ipython'):
         #    return
 
-        #print(f'__getattr__ NAME = {name};  dict=',self.__getdict__())
+        # print(f'__getattr__ NAME = {name};  dict=',self.__getdict__())
 
         return self.__getitem__(name)
 
@@ -151,9 +152,10 @@ class ParsedDynamicAttributes_Component():
                 xx = self.__keylist__
                 xx = ".".join(xx) + "." + str(name) if len(xx) > 0 else name
                 self.__component__.logger.error(
-                    '\nWarning: User tried to access a variable in the parse options'
-                    f' that is not there!\n Component name = `{self.__component__.name}`\n'
-                    f' Option name    = `{xx}`')
+                    "\nWarning: User tried to access a variable in the parse options"
+                    f" that is not there!\n Component name = `{self.__component__.name}`\n"
+                    f" Option name    = `{xx}`"
+                )
                 return None
             else:
                 # IPython checking methods
@@ -162,11 +164,12 @@ class ParsedDynamicAttributes_Component():
 
         else:
             val = dic.get(name)
-            #print(f'val = {val}')
+            # print(f'val = {val}')
             if isinstance(val, dict):
-                #print(f'  -> Going to create a new {self.__keylist__ + [name]}')
+                # print(f'  -> Going to create a new {self.__keylist__ + [name]}')
                 return ParsedDynamicAttributes_Component(
-                    self.__component__, key_list=self.__keylist__ + [name])
+                    self.__component__, key_list=self.__keylist__ + [name]
+                )
             else:
                 return self.__parse__(val)
 
@@ -188,8 +191,8 @@ class ParsedDynamicAttributes_Component():
 
         Just return the whole parse dictionary.
         """
-        b = '\033[95m\033[1m'
-        e = '\033[0m'
+        b = "\033[95m\033[1m"
+        e = "\033[0m"
 
         c = self.__component__
         parsed = c.parse_value(c.options)

@@ -15,7 +15,8 @@
 
 from qiskit_metal import draw, Dict  # , QComponent
 from qiskit_metal.qlibrary.core import QComponent
-#from qiskit_metal import is_true
+
+# from qiskit_metal import is_true
 from shapely.geometry import CAP_STYLE, JOIN_STYLE
 
 
@@ -39,13 +40,14 @@ class CircleRaster(QComponent):
     """
 
     default_options = dict(
-        radius='300um',
-        resolution='16',
-        cap_style='round',  # round, flat, square
+        radius="300um",
+        resolution="16",
+        cap_style="round",  # round, flat, square
         # join_style = 'round', # round, mitre, bevel
         # General
-        subtract='False',
-        helper='False')
+        subtract="False",
+        helper="False",
+    )
     """Default drawing options"""
 
     TOOLTIP = """A single configurable circle"""
@@ -63,12 +65,15 @@ class CircleRaster(QComponent):
             p.radius,
             resolution=int(p.resolution),
             cap_style=getattr(CAP_STYLE, p.cap_style),
-            #join_style = getattr(JOIN_STYLE, p.join_style)
+            # join_style = getattr(JOIN_STYLE, p.join_style)
         )
 
         # add qgeometry
-        self.add_qgeometry('poly', {'circle': circle},
-                           subtract=p.subtract,
-                           helper=p.helper,
-                           layer=p.layer,
-                           chip=p.chip)
+        self.add_qgeometry(
+            "poly",
+            {"circle": circle},
+            subtract=p.subtract,
+            helper=p.helper,
+            layer=p.layer,
+            chip=p.chip,
+        )

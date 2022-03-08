@@ -66,7 +66,7 @@ class TransmonPocket(BaseQubit):
                 |        ______                  |
                 |_______|______|                 |
             -1  |________________________________|   +1
-                 
+
                  -1                            -1
 
     .. image::
@@ -102,35 +102,38 @@ class TransmonPocket(BaseQubit):
     """
 
     default_options = Dict(
-        pad_gap='30um',
-        inductor_width='20um',
-        pad_width='455um',
-        pad_height='90um',
-        pocket_width='650um',
-        pocket_height='650um',
+        pad_gap="30um",
+        inductor_width="20um",
+        pad_width="455um",
+        pad_height="90um",
+        pocket_width="650um",
+        pocket_height="650um",
         # 90 has dipole aligned along the +X axis,
         # while 0 has dipole aligned along the +Y axis
         _default_connection_pads=Dict(
-            pad_gap='15um',
-            pad_width='125um',
-            pad_height='30um',
-            pad_cpw_shift='5um',
-            pad_cpw_extent='25um',
-            cpw_width='cpw_width',
-            cpw_gap='cpw_gap',
+            pad_gap="15um",
+            pad_width="125um",
+            pad_height="30um",
+            pad_cpw_shift="5um",
+            pad_cpw_extent="25um",
+            cpw_width="cpw_width",
+            cpw_gap="cpw_gap",
             # : cpw_extend: how far into the ground to extend the CPW line from the coupling pads
-            cpw_extend='100um',
-            pocket_extent='5um',
-            pocket_rise='65um',
-            loc_W='+1',  # width location  only +-1
-            loc_H='+1',  # height location only +-1
-        ))
+            cpw_extend="100um",
+            pocket_extent="5um",
+            pocket_rise="65um",
+            loc_W="+1",  # width location  only +-1
+            loc_H="+1",  # height location only +-1
+        ),
+    )
     """Default drawing options"""
 
-    component_metadata = Dict(short_name='Pocket',
-                              _qgeometry_table_path='True',
-                              _qgeometry_table_poly='True',
-                              _qgeometry_table_junction='True')
+    component_metadata = Dict(
+        short_name="Pocket",
+        _qgeometry_table_path="True",
+        _qgeometry_table_poly="True",
+        _qgeometry_table_junction="True",
+    )
     """Component metadata"""
 
     TOOLTIP = """The base `TransmonPocket` class."""
@@ -163,8 +166,8 @@ class TransmonPocket(BaseQubit):
 
         # make the pads as rectangles (shapely polygons)
         pad = draw.rectangle(pad_width, pad_height)
-        pad_top = draw.translate(pad, 0, +(pad_height + pad_gap) / 2.)
-        pad_bot = draw.translate(pad, 0, -(pad_height + pad_gap) / 2.)
+        pad_top = draw.translate(pad, 0, +(pad_height + pad_gap) / 2.0)
+        pad_bot = draw.translate(pad, 0, -(pad_height + pad_gap) / 2.0)
 
         rect_jj = draw.LineString([(0, -pad_gap / 2), (0, +pad_gap / 2)])
         # the draw.rectangle representing the josephson junction
@@ -182,19 +185,13 @@ class TransmonPocket(BaseQubit):
         [rect_jj, pad_top, pad_bot, rect_pk] = polys
 
         # Use the geometry to create Metal qgeometry
-        self.add_qgeometry('poly',
-                           dict(pad_top=pad_top, pad_bot=pad_bot),
-                           chip=chip)
-        self.add_qgeometry('poly',
-                           dict(rect_pk=rect_pk),
-                           subtract=True,
-                           chip=chip)
+        self.add_qgeometry("poly", dict(pad_top=pad_top, pad_bot=pad_bot), chip=chip)
+        self.add_qgeometry("poly", dict(rect_pk=rect_pk), subtract=True, chip=chip)
         # self.add_qgeometry('poly', dict(
         #     rect_jj=rect_jj), helper=True)
-        self.add_qgeometry('junction',
-                           dict(rect_jj=rect_jj),
-                           width=p.inductor_width,
-                           chip=chip)
+        self.add_qgeometry(
+            "junction", dict(rect_jj=rect_jj), width=p.inductor_width, chip=chip
+        )
 
     def make_connection_pads(self):
         """Makes standard transmon in a pocket."""
@@ -226,52 +223,56 @@ class TransmonPocket(BaseQubit):
 
         # Define the geometry
         # Connector pad
-        connector_pad = draw.rectangle(pad_width, pad_height, -pad_width / 2,
-                                       pad_height / 2)
+        connector_pad = draw.rectangle(
+            pad_width, pad_height, -pad_width / 2, pad_height / 2
+        )
         # Connector CPW wire
-        connector_wire_path = draw.wkt.loads(f"""LINESTRING (\
+        connector_wire_path = draw.wkt.loads(
+            f"""LINESTRING (\
             0 {pad_cpw_shift+cpw_width/2}, \
             {pc.pad_cpw_extent}                           {pad_cpw_shift+cpw_width/2}, \
             {(p.pocket_width-p.pad_width)/2-pocket_extent} {pad_cpw_shift+cpw_width/2+pocket_rise}, \
             {(p.pocket_width-p.pad_width)/2+cpw_extend}    {pad_cpw_shift+cpw_width/2+pocket_rise}\
-                                        )""")
+                                        )"""
+        )
         # for connector cludge
-        connector_wire_CON = draw.buffer(connector_wire_path, cpw_width /
-                                         2.)  # helper for the moment
+        connector_wire_CON = draw.buffer(
+            connector_wire_path, cpw_width / 2.0
+        )  # helper for the moment
 
         # Position the connector, rot and tranlate
         loc_W, loc_H = float(pc.loc_W), float(pc.loc_H)
-        if float(loc_W) not in [-1., +1.] or float(loc_H) not in [-1., +1.]:
+        if float(loc_W) not in [-1.0, +1.0] or float(loc_H) not in [-1.0, +1.0]:
             self.logger.info(
-                'Warning: Did you mean to define a transmon wubit with loc_W and'
-                ' loc_H that are not +1 or -1?? Are you sure you want to do this?'
+                "Warning: Did you mean to define a transmon wubit with loc_W and"
+                " loc_H that are not +1 or -1?? Are you sure you want to do this?"
             )
         objects = [connector_pad, connector_wire_path, connector_wire_CON]
         objects = draw.scale(objects, loc_W, loc_H, origin=(0, 0))
         objects = draw.translate(
             objects,
-            loc_W * (p.pad_width) / 2.,
-            loc_H * (p.pad_height + p.pad_gap / 2 + pc.pad_gap))
-        objects = draw.rotate_position(objects, p.orientation,
-                                       [p.pos_x, p.pos_y])
+            loc_W * (p.pad_width) / 2.0,
+            loc_H * (p.pad_height + p.pad_gap / 2 + pc.pad_gap),
+        )
+        objects = draw.rotate_position(objects, p.orientation, [p.pos_x, p.pos_y])
         [connector_pad, connector_wire_path, connector_wire_CON] = objects
 
-        self.add_qgeometry('poly', {f'{name}_connector_pad': connector_pad},
-                           chip=chip)
-        self.add_qgeometry('path', {f'{name}_wire': connector_wire_path},
-                           width=cpw_width,
-                           chip=chip)
-        self.add_qgeometry('path', {f'{name}_wire_sub': connector_wire_path},
-                           width=cpw_width + 2 * pc.cpw_gap,
-                           subtract=True,
-                           chip=chip)
+        self.add_qgeometry("poly", {f"{name}_connector_pad": connector_pad}, chip=chip)
+        self.add_qgeometry(
+            "path", {f"{name}_wire": connector_wire_path}, width=cpw_width, chip=chip
+        )
+        self.add_qgeometry(
+            "path",
+            {f"{name}_wire_sub": connector_wire_path},
+            width=cpw_width + 2 * pc.cpw_gap,
+            subtract=True,
+            chip=chip,
+        )
 
         ############################################################
 
         # add pins
         points = np.array(connector_wire_path.coords)
-        self.add_pin(name,
-                     points=points[-2:],
-                     width=cpw_width,
-                     input_as_norm=True,
-                     chip=chip)
+        self.add_pin(
+            name, points=points[-2:], width=cpw_width, input_as_norm=True, chip=chip
+        )

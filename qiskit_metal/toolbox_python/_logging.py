@@ -19,18 +19,20 @@ Mostly internal.
 import logging, collections
 from typing import List
 
-__all__ = ['setup_logger', 'LogStore']
+__all__ = ["setup_logger", "LogStore"]
 
 
-def setup_logger(logger_name,
-                 log_format,
-                 log_datefmt,
-                 level_stream=logging.INFO,
-                 level_base=logging.DEBUG,
-                 force_set=False,
-                 capture_warnings=None,
-                 propagate=False,
-                 create_stream=True) -> logging.Logger:
+def setup_logger(
+    logger_name,
+    log_format,
+    log_datefmt,
+    level_stream=logging.INFO,
+    level_base=logging.DEBUG,
+    force_set=False,
+    capture_warnings=None,
+    propagate=False,
+    create_stream=True,
+) -> logging.Logger:
     """Setup the logger to work with jupyter and command line.
 
     `level_stream` and `level_base`:
@@ -110,12 +112,14 @@ class LogStore(collections.deque):
     of logs for the Build History display.
     """
 
-    def __init__(self,
-                 title: str,
-                 log_limit: int,
-                 _previous_builds: List[str] = [],
-                 *args,
-                 **kwargs):
+    def __init__(
+        self,
+        title: str,
+        log_limit: int,
+        _previous_builds: List[str] = [],
+        *args,
+        **kwargs
+    ):
         super().__init__(maxlen=log_limit, *args, **kwargs)
         self._title = title
         for i in _previous_builds:
@@ -123,7 +127,7 @@ class LogStore(collections.deque):
         self._next_available_index = 0
 
     def data(self):
-        #returns COPY of data
+        # returns COPY of data
         return list(self)
 
     def add(self, log: str):
@@ -135,7 +139,7 @@ class LogStore(collections.deque):
     def add_error(self, log: str):
         self.appendleft(
             "ERROR " + log
-        )  #used to differentiate error strings from success strings where logs are displayed
+        )  # used to differentiate error strings from success strings where logs are displayed
 
     @property
     def title(self):

@@ -22,7 +22,7 @@ from qiskit_metal.qlibrary.core.base import QComponent
 class jj_manhattan(QComponent):
     """
     The base "JJ_Manhattan" inherits the "QComponent" class.
-    
+
     NOTE TO USER: Please be aware that when designing with this
     qcomponent, one must take care in accounting for the junction
     qgeometry when exporting to to GDS and/or to a simulator. This
@@ -47,18 +47,21 @@ class jj_manhattan(QComponent):
         * finger_lower_height: '20um' -- the length of the overlapping rectangular finger(s)
         * extension: '1um' -- the length of the fingers extending beyond the cross-point
     """
+
     # Default drawing options
-    default_options = Dict(JJ_pad_lower_width='25um',
-                           JJ_pad_lower_height='10um',
-                           JJ_pad_lower_pos_x='0',
-                           JJ_pad_lower_pos_y='0',
-                           finger_lower_width='1um',
-                           finger_lower_height='20um',
-                           extension='1um')
+    default_options = Dict(
+        JJ_pad_lower_width="25um",
+        JJ_pad_lower_height="10um",
+        JJ_pad_lower_pos_x="0",
+        JJ_pad_lower_pos_y="0",
+        finger_lower_width="1um",
+        finger_lower_height="20um",
+        extension="1um",
+    )
     """Default drawing options"""
 
     # Name prefix of component, if user doesn't provide name
-    component_metadata = Dict(short_name='component')
+    component_metadata = Dict(short_name="component")
     """Component metadata"""
 
     def make(self):
@@ -67,14 +70,19 @@ class jj_manhattan(QComponent):
         p = self.parse_options()  # Parse the string options into numbers
 
         # draw the lower pad as a rectangle
-        JJ_pad_lower = draw.rectangle(p.JJ_pad_lower_width,
-                                      p.JJ_pad_lower_height,
-                                      p.JJ_pad_lower_pos_x,
-                                      p.JJ_pad_lower_pos_y)
+        JJ_pad_lower = draw.rectangle(
+            p.JJ_pad_lower_width,
+            p.JJ_pad_lower_height,
+            p.JJ_pad_lower_pos_x,
+            p.JJ_pad_lower_pos_y,
+        )
 
         finger_lower = draw.rectangle(
-            p.finger_lower_width, p.finger_lower_height, p.JJ_pad_lower_pos_x,
-            0.5 * (p.JJ_pad_lower_height + p.finger_lower_height))
+            p.finger_lower_width,
+            p.finger_lower_height,
+            p.JJ_pad_lower_pos_x,
+            0.5 * (p.JJ_pad_lower_height + p.finger_lower_height),
+        )
 
         # fudge factor to merge the two options
         finger_lower = draw.translate(finger_lower, 0.0, -0.0001)
@@ -87,21 +95,26 @@ class jj_manhattan(QComponent):
 
         # translate the second pad/finger to achieve the desired extension
         design2 = draw.translate(
-            design2, 0.5 * (p.JJ_pad_lower_height + p.finger_lower_height) -
-            0.5 * p.finger_lower_width - p.extension,
-            0.5 * (p.JJ_pad_lower_height + p.finger_lower_height) -
-            0.5 * p.finger_lower_width - p.extension)
+            design2,
+            0.5 * (p.JJ_pad_lower_height + p.finger_lower_height)
+            - 0.5 * p.finger_lower_width
+            - p.extension,
+            0.5 * (p.JJ_pad_lower_height + p.finger_lower_height)
+            - 0.5 * p.finger_lower_width
+            - p.extension,
+        )
 
         final_design = draw.union(design, design2)
 
         # translate the final design so that the bottom left
         # corner of the lower pad is at the origin
-        final_design = draw.translate(final_design, 0.5 * p.JJ_pad_lower_width,
-                                      0.5 * p.JJ_pad_lower_height)
+        final_design = draw.translate(
+            final_design, 0.5 * p.JJ_pad_lower_width, 0.5 * p.JJ_pad_lower_height
+        )
 
         # now translate so that the design is centered on the
         # user-defined coordinates (pos_x, pos_y)
         final_design = draw.translate(final_design, p.pos_x, p.pos_y)
 
-        geom = {'design': final_design}
-        self.add_qgeometry('poly', geom, layer=p.layer, subtract=False)
+        geom = {"design": final_design}
+        self.add_qgeometry("poly", geom, layer=p.layer, subtract=False)

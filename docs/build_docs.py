@@ -29,27 +29,22 @@ try:
     import nbsphinx
 except ImportError:
     cmd1 = "conda install -y -c conda-forge sphinx numpydoc sphinx-automodapi jupyter_sphinx nbsphinx"
-    print(
-        f'\n*** Installing pre-requisite packages to build the docs***\n$ {cmd1}'
-    )
+    print(f"\n*** Installing pre-requisite packages to build the docs***\n$ {cmd1}")
     scmd = shlex.split(cmd1)
 
     try:
         result = subprocess.run(scmd, stdout=subprocess.PIPE, check=False)
     except FileNotFoundError:
         # some windows systems appear to require this switch
-        result = subprocess.run(scmd,
-                                stdout=subprocess.PIPE,
-                                check=False,
-                                shell=True)
+        result = subprocess.run(scmd, stdout=subprocess.PIPE, check=False, shell=True)
     stderr = result.stderr
     stdout = result.stdout
     returncode = result.returncode
-    print(f'\n****Exited with {returncode}')
+    print(f"\n****Exited with {returncode}")
     if stdout:
-        print(f'****stdout****\n{stdout.decode()}')
+        print(f"****stdout****\n{stdout.decode()}")
     if stderr:
-        print(f'****stderr****\n{stderr.decode()}')
+        print(f"****stderr****\n{stderr.decode()}")
     print("Conda pre-requisite installation Complete!")
 
 try:
@@ -57,26 +52,21 @@ try:
     import jupyter_nbgallery
 except ImportError:
     cmd2 = "python -m pip install qiskit-sphinx-theme jupyter_nbgallery"
-    print(
-        f'\n*** Installing pre-requisite packages to build the docs***\n$ {cmd2}'
-    )
+    print(f"\n*** Installing pre-requisite packages to build the docs***\n$ {cmd2}")
     scmd = shlex.split(cmd2)
     try:
         result = subprocess.run(scmd, stdout=subprocess.PIPE, check=False)
     except FileNotFoundError:
         # some windows systems appear to require this switch
-        result = subprocess.run(scmd,
-                                stdout=subprocess.PIPE,
-                                check=False,
-                                shell=True)
+        result = subprocess.run(scmd, stdout=subprocess.PIPE, check=False, shell=True)
     stderr = result.stderr
     stdout = result.stdout
     returncode = result.returncode
-    print(f'\n****Exited with {returncode}')
+    print(f"\n****Exited with {returncode}")
     if stdout:
-        print(f'****stdout****\n{stdout.decode()}')
+        print(f"****stdout****\n{stdout.decode()}")
     if stderr:
-        print(f'****stderr****\n{stderr.decode()}')
+        print(f"****stderr****\n{stderr.decode()}")
     print("Pip pre-requisite installation Complete!")
 
 # then build the docs
@@ -84,9 +74,9 @@ pwd = os.getcwd()
 import qiskit_metal
 from pathlib import Path
 
-path = Path(qiskit_metal.__file__).parent.parent / 'docs'
+path = Path(qiskit_metal.__file__).parent.parent / "docs"
 os.chdir(path)
-print(f'\n*** Running the build***\n$ make html')
+print(f"\n*** Running the build***\n$ make html")
 
 from sys import platform
 
@@ -97,16 +87,16 @@ try:
         stderr = result.stderr
         stdout = result.stdout
         returncode = result.returncode
-        print(f'\n****Exited with {returncode}')
+        print(f"\n****Exited with {returncode}")
         if stdout:
-            print(f'****stdout****\n{stdout.decode()}')
+            print(f"****stdout****\n{stdout.decode()}")
         if stderr:
-            print(f'****stderr****\n{stderr.decode()}')
+            print(f"****stderr****\n{stderr.decode()}")
     else:
         os.system("make html")
 except KeyboardInterrupt:
     print("\nTerminating... please wait")
-    os.remove('.buildingdocs')
+    os.remove(".buildingdocs")
     exit(1)
 
 os.chdir(pwd)
@@ -115,8 +105,8 @@ os.chdir(pwd)
 print("Copying locally to build directory\n")
 import shutil
 
-original = Path(pwd, 'docs', '_build')
-destination = Path(pwd, 'docs', 'build')
+original = Path(pwd, "docs", "_build")
+destination = Path(pwd, "docs", "build")
 if os.path.exists(destination):
     shutil.rmtree(destination)
 shutil.copytree(original, destination)

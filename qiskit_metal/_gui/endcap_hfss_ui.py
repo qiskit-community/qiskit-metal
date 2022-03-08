@@ -12,7 +12,6 @@ from PySide2 import QtCore, QtGui, QtWidgets
 
 
 class Ui_mainWindow(object):
-
     def setupUi(self, mainWindow):
         mainWindow.setObjectName("mainWindow")
         mainWindow.resize(400, 530)
@@ -33,7 +32,8 @@ class Ui_mainWindow(object):
         self.tableWidget = QtWidgets.QTableWidget(self.centralwidget)
         self.tableWidget.setGeometry(QtCore.QRect(10, 30, 381, 421))
         self.tableWidget.setSizeAdjustPolicy(
-            QtWidgets.QAbstractScrollArea.AdjustIgnored)
+            QtWidgets.QAbstractScrollArea.AdjustIgnored
+        )
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(0)
         self.tableWidget.setRowCount(0)
@@ -47,17 +47,20 @@ class Ui_mainWindow(object):
         mainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(mainWindow)
-        QtCore.QObject.connect(self.renderButton, QtCore.SIGNAL("clicked()"),
-                               mainWindow.render_everything)
+        QtCore.QObject.connect(
+            self.renderButton, QtCore.SIGNAL("clicked()"), mainWindow.render_everything
+        )
         QtCore.QMetaObject.connectSlotsByName(mainWindow)
 
     def retranslateUi(self, mainWindow):
         mainWindow.setWindowTitle(
-            QtWidgets.QApplication.translate("mainWindow", "HFSS Endcaps", None,
-                                             -1))
+            QtWidgets.QApplication.translate("mainWindow", "HFSS Endcaps", None, -1)
+        )
         self.label.setText(
             QtWidgets.QApplication.translate(
-                "mainWindow", "Select endcap type for unconnected pins:", None,
-                -1))
+                "mainWindow", "Select endcap type for unconnected pins:", None, -1
+            )
+        )
         self.renderButton.setText(
-            QtWidgets.QApplication.translate("mainWindow", "Render", None, -1))
+            QtWidgets.QApplication.translate("mainWindow", "Render", None, -1)
+        )

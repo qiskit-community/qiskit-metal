@@ -23,7 +23,9 @@ from PySide2.QtCore import QAbstractItemModel, QAbstractProxyModel, QModelIndex,
 from PySide2.QtGui import QPainter
 from PySide2.QtWidgets import QItemDelegate, QStyle, QStyleOptionViewItem, QWidget
 
-from qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary import QFileSystemLibraryModel
+from qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary import (
+    QFileSystemLibraryModel,
+)
 from qiskit_metal.toolbox_metal.exceptions import QLibraryGUIException
 
 
@@ -47,7 +49,9 @@ class LibraryDelegate(QItemDelegate):
         #  the source model for that Proxy Model(s) should be a QFileSystemLibraryModel
         self.source_model_type = QFileSystemLibraryModel
 
-    def get_source_model(self, model: QAbstractItemModel, source_type: type):  # pylint: disable=R0201, no-self-use
+    def get_source_model(
+        self, model: QAbstractItemModel, source_type: type
+    ):  # pylint: disable=R0201, no-self-use
         """
         The Delegate may belong to a view using a ProxyModel. However,
         the source model for that Proxy Model(s) should be a QFileSystemLibraryModel
@@ -74,10 +78,12 @@ class LibraryDelegate(QItemDelegate):
                     f"\n{source_type}"
                     f"\n First non-proxy model type found is"
                     f"\n{type(model)} for"
-                    f"\n{model}")
+                    f"\n{model}"
+                )
 
-    def paint(self, painter: QPainter, option: QStyleOptionViewItem,
-              index: QModelIndex):
+    def paint(
+        self, painter: QPainter, option: QStyleOptionViewItem, index: QModelIndex
+    ):
         """
         Paints the Metal GUI QLibrary.
         If hovering over a file with a tooltip, emits the tooltip signal
@@ -104,9 +110,10 @@ class LibraryDelegate(QItemDelegate):
         Emits:
            tool_tip_signal(str): The TOOLTIP for the QComponent of the index
         """
-        if option.state & QStyle.State_MouseOver:  # if option.state  == QStyle.State_MouseOver: Qt.WA_Hover
-            source_model = self.get_source_model(index.model(),
-                                                 self.source_model_type)
+        if (
+            option.state & QStyle.State_MouseOver
+        ):  # if option.state  == QStyle.State_MouseOver: Qt.WA_Hover
+            source_model = self.get_source_model(index.model(), self.source_model_type)
 
             model = index.model()
             full_path = source_model.filePath(model.mapToSource(index))
@@ -132,18 +139,18 @@ class LibraryDelegate(QItemDelegate):
         https://stackoverflow.com/questions/452969/does-python-have-an-equivalent-to-java-class-forname
 
         """
-        qis_abs_path = abs_file_path[abs_file_path.
-                                     index(__name__.split('.')[0]):]
+        qis_abs_path = abs_file_path[abs_file_path.index(__name__.split(".")[0]) :]
 
         # Windows users' qis_abs_path may use os.sep or '/' due to PySide's
         # handling of file names
-        qis_mod_path = qis_abs_path.replace(os.sep, '.')[:-len('.py')]
+        qis_mod_path = qis_abs_path.replace(os.sep, ".")[: -len(".py")]
         qis_mod_path = qis_mod_path.replace(
-            "/", '.')  # users cannot use '/' in filename
+            "/", "."
+        )  # users cannot use '/' in filename
 
         mymodule = importlib.import_module(qis_mod_path)
         members = inspect.getmembers(mymodule, inspect.isclass)
-        class_owner = qis_mod_path.split('.')[-1]
+        class_owner = qis_mod_path.split(".")[-1]
         for memtup in members:
             if len(memtup) > 1:
                 if str(memtup[1].__module__).endswith(class_owner):

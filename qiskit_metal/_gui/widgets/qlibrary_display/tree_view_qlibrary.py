@@ -19,7 +19,9 @@ from PySide2 import QtCore, QtGui, QtWidgets
 from PySide2.QtCore import QModelIndex, Signal
 from PySide2.QtWidgets import QTreeView, QWidget
 
-from qiskit_metal._gui.widgets.qlibrary_display.proxy_model_qlibrary import LibraryFileProxyModel
+from qiskit_metal._gui.widgets.qlibrary_display.proxy_model_qlibrary import (
+    LibraryFileProxyModel,
+)
 from qiskit_metal.toolbox_metal.exceptions import QLibraryGUIException
 
 
@@ -80,8 +82,7 @@ class TreeViewQLibrary(QTreeView):
 
         if index.column() == source_model.FILENAME:
             if not source_model.isDir(model.mapToSource(index)):
-                qis_abs_path = full_path[full_path.
-                                         index(__name__.split('.')[0]):]
+                qis_abs_path = full_path[full_path.index(__name__.split(".")[0]) :]
                 self.qlibrary_filepath_signal.emit(qis_abs_path)
 
         return super().mousePressEvent(event)

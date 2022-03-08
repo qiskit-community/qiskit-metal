@@ -63,24 +63,22 @@ class TransmonConcentric(BaseQubit):
 
     # default drawing options
     default_options = Dict(
-        width='1000um',  # width of transmon pocket
-        height='1000um',  # height of transmon pocket
-        rad_o='170um',  # outer radius
-        rad_i='115um',  # inner radius
-        gap='35um',  # radius of gap between two pads
-        jj_w='10um',  # Josephson Junction width
-        res_s='100um',  # space between top electrode and readout resonator
-        res_ext=
-        '100um',  # extension of readout resonator in x-direction beyond midpoint of transmon
-        fbl_rad='100um',  # radius of the flux bias line loop
-        fbl_sp='100um',  # spacing between metal pad and flux bias loop
-        fbl_gap='80um',  # space between parallel lines of the flux bias loop
-        fbl_ext=
-        '300um',  # run length of flux bias line between circular loop and edge of pocket
-        pocket_w='1500um',  # transmon pocket width
-        pocket_h='1000um',  # transmon pocket height
-        cpw_width='10.0um',  # width of the readout resonator and flux bias line
-        inductor_width='5.0um'  # width of the Josephson Junctions
+        width="1000um",  # width of transmon pocket
+        height="1000um",  # height of transmon pocket
+        rad_o="170um",  # outer radius
+        rad_i="115um",  # inner radius
+        gap="35um",  # radius of gap between two pads
+        jj_w="10um",  # Josephson Junction width
+        res_s="100um",  # space between top electrode and readout resonator
+        res_ext="100um",  # extension of readout resonator in x-direction beyond midpoint of transmon
+        fbl_rad="100um",  # radius of the flux bias line loop
+        fbl_sp="100um",  # spacing between metal pad and flux bias loop
+        fbl_gap="80um",  # space between parallel lines of the flux bias loop
+        fbl_ext="300um",  # run length of flux bias line between circular loop and edge of pocket
+        pocket_w="1500um",  # transmon pocket width
+        pocket_h="1000um",  # transmon pocket height
+        cpw_width="10.0um",  # width of the readout resonator and flux bias line
+        inductor_width="5.0um",  # width of the Josephson Junctions
     )
     """Default drawing options"""
 
@@ -96,21 +94,23 @@ class TransmonConcentric(BaseQubit):
         space = draw.Point(0, 0).buffer((p.gap + p.rad_i))
         outer_pad = draw.subtract(outer_pad, space)
         inner_pad = draw.Point(0, 0).buffer(p.rad_i)
-        #gap = draw.subtract(space, inner_pad)
-        #pads = draw.union(outer_pad, inner_pad)
+        # gap = draw.subtract(space, inner_pad)
+        # pads = draw.union(outer_pad, inner_pad)
 
         # draw the top Josephson Junction
         jj_t = draw.LineString([(0.0, p.rad_i), (0.0, p.rad_i + p.gap)])
 
         # draw the bottom Josephson Junction
-        jj_b = draw.LineString([(0.0, -1.0 * p.rad_i),
-                                (0.0, -1.0 * p.rad_i - 1.0 * p.gap)])
+        jj_b = draw.LineString(
+            [(0.0, -1.0 * p.rad_i), (0.0, -1.0 * p.rad_i - 1.0 * p.gap)]
+        )
 
         # draw the readout resonator
-        qp1a = (-0.5 * p.pocket_w, p.rad_o + p.res_s
-               )  # the first (x,y) coordinate is qpin #1
-        qp1b = (p.res_ext, p.rad_o + p.res_s
-               )  # the second (x,y) coordinate is qpin #1
+        qp1a = (
+            -0.5 * p.pocket_w,
+            p.rad_o + p.res_s,
+        )  # the first (x,y) coordinate is qpin #1
+        qp1b = (p.res_ext, p.rad_o + p.res_s)  # the second (x,y) coordinate is qpin #1
         rr = draw.LineString([qp1a, qp1b])
 
         # draw the flux bias line
@@ -139,9 +139,11 @@ class TransmonConcentric(BaseQubit):
             y = list(x)
             z = [0.0, 0.0]
             z[0] = y[0] * cos(p.orientation * 3.14159 / 180) - y[1] * sin(
-                p.orientation * 3.14159 / 180)
+                p.orientation * 3.14159 / 180
+            )
             z[1] = y[0] * sin(p.orientation * 3.14159 / 180) + y[1] * cos(
-                p.orientation * 3.14159 / 180)
+                p.orientation * 3.14159 / 180
+            )
             z[0] = z[0] + p.pos_x
             z[1] = z[1] + p.pos_y
             x = (z[0], z[1])
@@ -158,50 +160,31 @@ class TransmonConcentric(BaseQubit):
         ##############################################################
 
         # Use the geometry to create Metal QGeometry
-        geom_rr = {'path1': rr}
-        geom_fbl = {'path2': fbl}
-        geom_outer = {'poly1': outer_pad}
-        geom_inner = {'poly2': inner_pad}
-        geom_jjt = {'poly4': jj_t}
-        geom_jjb = {'poly5': jj_b}
-        geom_pocket = {'poly6': pocket}
+        geom_rr = {"path1": rr}
+        geom_fbl = {"path2": fbl}
+        geom_outer = {"poly1": outer_pad}
+        geom_inner = {"poly2": inner_pad}
+        geom_jjt = {"poly4": jj_t}
+        geom_jjb = {"poly5": jj_b}
+        geom_pocket = {"poly6": pocket}
 
-        self.add_qgeometry('path',
-                           geom_rr,
-                           layer=1,
-                           subtract=False,
-                           width=p.cpw_width)
-        self.add_qgeometry('path',
-                           geom_fbl,
-                           layer=1,
-                           subtract=False,
-                           width=p.cpw_width)
-        self.add_qgeometry('poly', geom_outer, layer=1, subtract=False)
-        self.add_qgeometry('poly', geom_inner, layer=1, subtract=False)
-        self.add_qgeometry('junction',
-                           geom_jjt,
-                           layer=1,
-                           subtract=False,
-                           width=p.inductor_width)
-        self.add_qgeometry('junction',
-                           geom_jjb,
-                           layer=1,
-                           subtract=False,
-                           width=p.inductor_width)
-        self.add_qgeometry('poly', geom_pocket, layer=1, subtract=True)
+        self.add_qgeometry("path", geom_rr, layer=1, subtract=False, width=p.cpw_width)
+        self.add_qgeometry("path", geom_fbl, layer=1, subtract=False, width=p.cpw_width)
+        self.add_qgeometry("poly", geom_outer, layer=1, subtract=False)
+        self.add_qgeometry("poly", geom_inner, layer=1, subtract=False)
+        self.add_qgeometry(
+            "junction", geom_jjt, layer=1, subtract=False, width=p.inductor_width
+        )
+        self.add_qgeometry(
+            "junction", geom_jjb, layer=1, subtract=False, width=p.inductor_width
+        )
+        self.add_qgeometry("poly", geom_pocket, layer=1, subtract=True)
 
         ###########################################################################
 
         # Add Qpin connections
-        self.add_pin('pin1',
-                     points=np.array([qp1b, qp1a]),
-                     width=0.01,
-                     input_as_norm=True)
-        self.add_pin('pin2',
-                     points=np.array([b, a]),
-                     width=0.01,
-                     input_as_norm=True)
-        self.add_pin('pin3',
-                     points=np.array([h, i]),
-                     width=0.01,
-                     input_as_norm=True)
+        self.add_pin(
+            "pin1", points=np.array([qp1b, qp1a]), width=0.01, input_as_norm=True
+        )
+        self.add_pin("pin2", points=np.array([b, a]), width=0.01, input_as_norm=True)
+        self.add_pin("pin3", points=np.array([h, i]), width=0.01, input_as_norm=True)

@@ -29,6 +29,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
     File System Model for displaying QLibrary in MetalGUI
 
     """
+
     path_imgs = None  # type: Path
     FILENAME = 0
     imageCache = dict()
@@ -41,13 +42,11 @@ class QFileSystemLibraryModel(QFileSystemModel):
         self.path_imgs = path_imgs
         self.defaultFilename = str(path_imgs / "metal_logo.png")
         pixmap = QPixmap(self.defaultFilename).scaled(
-            QSize(self.size, self.size), Qt.KeepAspectRatio,
-            Qt.SmoothTransformation)
+            QSize(self.size, self.size), Qt.KeepAspectRatio, Qt.SmoothTransformation
+        )
         self.imageCache[self.defaultFilename] = pixmap
 
-    def data(self,
-             index: QModelIndex,
-             role: int = Qt.DisplayRole) -> typing.Any:
+    def data(self, index: QModelIndex, role: int = Qt.DisplayRole) -> typing.Any:
         """
         Sets standard size hint for indexes and allows
         Args:
@@ -64,8 +63,9 @@ class QFileSystemLibraryModel(QFileSystemModel):
                 qfileinfo = self.fileInfo(index)
                 absoluteFilename = str(qfileinfo.absoluteFilePath())
                 if role == Qt.DecorationRole:
-                    matches = findProperty(absoluteFilename,
-                                           "\.\. image::[\r\n]+([^\r\n]+)")
+                    matches = findProperty(
+                        absoluteFilename, "\.\. image::[\r\n]+([^\r\n]+)"
+                    )
                     if matches is not None and len(matches) != 0:
                         iconfile = matches[0].lstrip()
                         pathFilename = self.path_imgs / "components" / iconfile
@@ -77,7 +77,9 @@ class QFileSystemLibraryModel(QFileSystemModel):
                             else:
                                 pixmap = QPixmap(stringFilename).scaled(
                                     QSize(self.size, self.size),
-                                    Qt.KeepAspectRatio, Qt.SmoothTransformation)
+                                    Qt.KeepAspectRatio,
+                                    Qt.SmoothTransformation,
+                                )
                                 self.imageCache[stringFilename] = pixmap
                                 return pixmap
                     # display default image
@@ -87,8 +89,9 @@ class QFileSystemLibraryModel(QFileSystemModel):
                     if relativeFilename in self.nameCache:
                         return self.nameCache[relativeFilename]
                     else:
-                        matches = findProperty(absoluteFilename,
-                                               "\.\. meta::[\r\n]+([^\r\n]+)")
+                        matches = findProperty(
+                            absoluteFilename, "\.\. meta::[\r\n]+([^\r\n]+)"
+                        )
                         if matches is not None and len(matches) != 0:
                             displayName = matches[0].lstrip()
                             self.nameCache[relativeFilename] = displayName

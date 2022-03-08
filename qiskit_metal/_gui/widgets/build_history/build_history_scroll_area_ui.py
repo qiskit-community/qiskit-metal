@@ -12,7 +12,6 @@ from PySide2 import QtCore, QtGui, QtWidgets
 
 
 class Ui_BuildHistory(object):
-
     def setupUi(self, BuildHistory):
         BuildHistory.setObjectName("BuildHistory")
         BuildHistory.resize(1536, 865)
@@ -22,7 +21,8 @@ class Ui_BuildHistory(object):
         self.display.setObjectName("display")
         self.build_display_vertical_layout = QtWidgets.QVBoxLayout(self.display)
         self.build_display_vertical_layout.setObjectName(
-            "build_display_vertical_layout")
+            "build_display_vertical_layout"
+        )
         BuildHistory.setWidget(self.display)
 
         self.retranslateUi(BuildHistory)
@@ -33,4 +33,7 @@ class Ui_BuildHistory(object):
             QtWidgets.QApplication.translate(
                 "BuildHistory",
                 "Build History (click Build History button again to refresh)",
-                None, -1))
+                None,
+                -1,
+            )
+        )

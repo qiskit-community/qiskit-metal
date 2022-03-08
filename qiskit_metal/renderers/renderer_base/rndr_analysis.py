@@ -18,23 +18,20 @@ from abc import abstractmethod, ABC
 
 from ...designs import QDesign, is_design
 
-__all__ = ['QRendererAnalysis']
+__all__ = ["QRendererAnalysis"]
 
 
 class QRendererAnalysis(QRenderer):
-    """Abstract base class for all Renderers intended for Analysis.
-    """
+    """Abstract base class for all Renderers intended for Analysis."""
 
-    def __init__(self, design: 'QDesign', initiate=False, options: Dict = None):
+    def __init__(self, design: "QDesign", initiate=False, options: Dict = None):
         """
         Args:
             design (QDesign): The design.
             initiate (bool): True to initiate the renderer (Default: False).
             settings (Dict, optional): Used to override default settings. Defaults to None.
         """
-        super().__init__(design=design,
-                         initiate=initiate,
-                         render_options=options)
+        super().__init__(design=design, initiate=initiate, render_options=options)
 
     @abstractmethod
     def initialized(self):
@@ -130,7 +127,7 @@ class QRendererAnalysis(QRenderer):
             show (bool, optional): Whether or not to display the screenshot.  Defaults to True.
 
         Returns:
-            pathlib.WindowsPath: path to png formatted screenshot. 
+            pathlib.WindowsPath: path to png formatted screenshot.
         """
         pass
 

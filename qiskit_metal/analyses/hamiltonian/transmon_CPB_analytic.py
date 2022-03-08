@@ -48,10 +48,10 @@ class Hcpb_analytic:
         self.evals = None
         self.evecs = None
         # Generate the diagonal and offdiagonal components of the Hamiltonian
-        #self._gen_operators()
+        # self._gen_operators()
         # compute the eigenvectors and eigenvalues of the CPB
         # all properties can be derived from these
-        #self._calc_H()
+        # self._calc_H()
 
     def evalue_k(self, k: int):
         """
@@ -66,9 +66,13 @@ class Hcpb_analytic:
         if self._ng == 0:
             index = k + 1.0 - ((k + 1.0) % 2.0)
         else:
-            index = k + 1.0 - ((k + 1.0) % 2.0) + 2.0 * self._ng * (
-                (-1.0)**(k - 0.5 * (np.sign(self._ng) - 1.0)))
+            index = (
+                k
+                + 1.0
+                - ((k + 1.0) % 2.0)
+                + 2.0 * self._ng * ((-1.0) ** (k - 0.5 * (np.sign(self._ng) - 1.0)))
+            )
 
         self.evals = self._Ec * mathieu_a(index, -0.5 * self._Ej / self._Ec)
-        #return self.evals[k]
+        # return self.evals[k]
         return self.evals

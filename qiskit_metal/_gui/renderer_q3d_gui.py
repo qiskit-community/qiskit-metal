@@ -12,7 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from PySide2.QtWidgets import (QAbstractItemView, QMainWindow, QMessageBox)
+from PySide2.QtWidgets import QAbstractItemView, QMainWindow, QMessageBox
 
 from .list_model_base import DynamicList
 from .renderer_q3d_model import RendererQ3D_Model
@@ -23,7 +23,7 @@ from .endcap_q3d_gui import EndcapQ3DWidget
 class RendererQ3DWidget(QMainWindow):
     """Contains methods associated with Ansys Q3D Renderer button."""
 
-    def __init__(self, parent: 'QMainWindow', gui: 'MetalGUI'):
+    def __init__(self, parent: "QMainWindow", gui: "MetalGUI"):
         """Get access to design, which has the components. Then set up the
         model and view.
 
@@ -48,10 +48,9 @@ class RendererQ3DWidget(QMainWindow):
         self.tree_model = RendererQ3D_Model(self, gui, self.ui.treeView)
         self.ui.treeView.setModel(self.tree_model)
         self.ui.treeView.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
-        self.ui.treeView.setHorizontalScrollMode(
-            QAbstractItemView.ScrollPerPixel)
+        self.ui.treeView.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
 
-    def set_design(self, new_design: 'QDesign'):
+    def set_design(self, new_design: "QDesign"):
         """Swaps out reference to design, which changes the reference to the
         dictionary.
 
@@ -90,10 +89,10 @@ class RendererQ3DWidget(QMainWindow):
         select which unconnected pins are to be open."""
         components_to_render = self.get_checked()
         if components_to_render:
-            self.endcap_q3d_window = EndcapQ3DWidget(self, self._gui,
-                                                     components_to_render)
+            self.endcap_q3d_window = EndcapQ3DWidget(
+                self, self._gui, components_to_render
+            )
             self.endcap_q3d_window.show()
             self.close()
         else:
-            QMessageBox.warning(self, "Error",
-                                "Please select at least one component.")
+            QMessageBox.warning(self, "Error", "Please select at least one component.")

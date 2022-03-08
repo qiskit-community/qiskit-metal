@@ -15,21 +15,23 @@
 # pylint: disable=wrong-import-order
 # pylint: disable=wrong-import-position
 """Qiskit Metal"""
-__version__ = '0.0.4'
+__version__ = "0.0.4"
 __license__ = "Apache 2.0"
-__copyright__ = 'Copyright IBM 2019-2020'
-__author__ = 'Zlatko Minev, Thomas McConkey, and them IBM Quantum Team'
+__copyright__ = "Copyright IBM 2019-2020"
+__author__ = "Zlatko Minev, Thomas McConkey, and them IBM Quantum Team"
 __status__ = "Development"
 
 ###########################################################################
 ### Windows OS catch for library geopandas not installed with setup.py
 
 import os
-if os.name == 'nt':
+
+if os.name == "nt":
     try:
         import geopandas
     except ImportError:
-        print(" \
+        print(
+            " \
             QISKIT METAL INFORMATION: >>>>>>>>>> One last installation step. <<<<<<<<<<<\n \
             >>>>>> Packages fiona and gdal have a known install issue on Windows. <<<<<<\n \
             >>>>>>>>>> geopandas depends on fiona, and fiona depends on gdal. <<<<<<<<<<\n \
@@ -38,7 +40,7 @@ if os.name == 'nt':
             >>>>>>>> Before you can use Qiskit Metal, please install geopandas. <<<<<<<<\n \
             >>>> For more information, you can follow the instructions on this FAQ <<<<<\n \
             >>>>>>>>>>>>> https://qiskit.org/documentation/metal/faq.html <<<<<<<<<<<<<<\n"
-             )
+        )
         raise
 
 
@@ -57,7 +59,7 @@ def __setup_Qt_backend():  # pylint: disable=invalid-name
     # next line out, "os.environ["QT_API"] = "pyside2""
     os.environ["QT_API"] = "pyside2"
 
-    from PySide2 import QtCore  #, QtWidgets
+    from PySide2 import QtCore  # , QtWidgets
     from PySide2.QtCore import Qt
 
     def set_attribute(name: str, value=True):
@@ -87,29 +89,31 @@ def __setup_Qt_backend():  # pylint: disable=invalid-name
             # QCoreApplication.setAttribute(QtCore.Qt.AA_UseOpenGLES)
             # QCoreApplication.setAttribute(QtCore.Qt.AA_ShareOpenGLContexts)
             # QCoreApplication.setAttribute(QtCore.Qt.AA_DisableShaderDiskCache)
-            set_attribute('AA_ShareOpenGLContexts')
+            set_attribute("AA_ShareOpenGLContexts")
 
             # Enables high-DPI scaling in Qt on supported platforms (see also High DPI Displays).
             # Supported platforms are X11, Windows and Android.
             # Enabling makes Qt scale the main (device independent) coordinate
             # system according to display scale factors provided by the
             # operating system.
-            set_attribute('AA_EnableHighDpiScaling')
+            set_attribute("AA_EnableHighDpiScaling")
 
             # Make QIcon::pixmap() generate high-dpi pixmaps that can be larger than
             #  the requested size.
-            set_attribute('AA_UseHighDpiPixmaps')
+            set_attribute("AA_UseHighDpiPixmaps")
 
             # Other options of interest:
             # AA_DontUseNativeMenuBar
             # AA_MacDontSwapCtrlAndMeta
 
-    if not os.getenv('QISKIT_METAL_HEADLESS', None):
+    if not os.getenv("QISKIT_METAL_HEADLESS", None):
         # pylint: disable=import-outside-toplevel
         import matplotlib as mpl
+
         mpl.use("Qt5Agg")
         # pylint: disable=redefined-outer-name
         import matplotlib.pyplot as plt
+
         plt.ion()  # interactive
 
 
@@ -120,10 +124,9 @@ del __setup_Qt_backend
 from . import config
 from .toolbox_python._logging import setup_logger
 
-logger = setup_logger('metal',
-                      config.log.format,
-                      config.log.datefmt,
-                      capture_warnings=True)  # type: logging.Logger
+logger = setup_logger(
+    "metal", config.log.format, config.log.datefmt, capture_warnings=True
+)  # type: logging.Logger
 del setup_logger
 
 ###########################################################################

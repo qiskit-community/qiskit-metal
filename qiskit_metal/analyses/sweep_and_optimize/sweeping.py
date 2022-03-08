@@ -17,16 +17,17 @@ from typing import Tuple, Union
 import pandas as pd
 
 from qiskit_metal import Dict
+
 # pylint: disable=unused-import
 # QHFSSRenderer used to describe types in arguments.
 from qiskit_metal.renderers.renderer_ansys.hfss_renderer import QHFSSRenderer
 
 
-class Sweeping():
+class Sweeping:
     """The methods allow users to sweep a variable in a components's options.
     Need access to renderers which are registered in QDesign."""
 
-    def __init__(self, design: 'QDesign'):
+    def __init__(self, design: "QDesign"):
         """Give QDesign to this class so Sweeping can access the registered
         QRenderers.
 
@@ -50,9 +51,10 @@ class Sweeping():
         value = a_dict[search]
         return value
 
-    def error_check_sweep_input(self, qcomp_name: str, option_name: str,
-                                option_sweep: list) -> Tuple[list, Dict, int]:
-        """ Implement error checking of data for sweeping.
+    def error_check_sweep_input(
+        self, qcomp_name: str, option_name: str, option_sweep: list
+    ) -> Tuple[list, Dict, int]:
+        """Implement error checking of data for sweeping.
 
         Args:
             qcomp_name (str): Component that contains the option to be swept.
@@ -78,7 +80,7 @@ class Sweeping():
             return option_path, a_value, 4
 
         if option_name:
-            option_path = option_name.split('.')
+            option_path = option_name.split(".")
         else:
             return option_path, a_value, 2
 
@@ -143,7 +145,7 @@ class Sweeping():
 
         for key, value in setup_args.items():
             if key == "name":
-                continue  #For this method, "Sweep_dm_setup" used.
+                continue  # For this method, "Sweep_dm_setup" used.
             if key == "freq_ghz":
                 if isinstance(value, float) or value is None:
                     continue
@@ -154,36 +156,37 @@ class Sweeping():
                     continue
                 self.warning_for_setup(setup_args, key, "float")
                 return 1
-            if key == 'max_passes':
+            if key == "max_passes":
                 if isinstance(value, int) or value is None:
                     continue
                 self.warning_for_setup(setup_args, key, "int")
                 return 1
-            if key == 'min_passes':
+            if key == "min_passes":
                 if isinstance(value, int) or value is None:
                     continue
                 self.warning_for_setup(setup_args, key, "int")
                 return 1
-            if key == 'min_converged':
+            if key == "min_converged":
                 if isinstance(value, int) or value is None:
                     continue
                 self.warning_for_setup(setup_args, key, "int")
                 return 1
-            if key == 'basis_order':
+            if key == "basis_order":
                 if isinstance(value, int) or value is None:
                     continue
                 self.warning_for_setup(setup_args, key, "int")
                 return 1
-            if key == 'pct_refinement':
+            if key == "pct_refinement":
                 if isinstance(value, int) or value is None:
                     continue
                 self.warning_for_setup(setup_args, key, "int")
                 return 1
 
             self.design.logger.warning(
-                f'The key={key} is not expected.  Do you have a typo?  '
-                f'The setup was not added to design. '
-                f'Sweep will not be implemented.')
+                f"The key={key} is not expected.  Do you have a typo?  "
+                f"The setup was not added to design. "
+                f"Sweep will not be implemented."
+            )
             return 2
 
         a_hfss.new_ansys_setup(**setup_args)
@@ -237,7 +240,7 @@ class Sweeping():
 
         for key, value in setup_args.items():
             if key == "name":
-                continue  #For this method, "Sweep_em_setup" used.
+                continue  # For this method, "Sweep_em_setup" used.
             if key == "min_freq_ghz":
                 if isinstance(value, int) or value is None:
                     continue
@@ -253,36 +256,37 @@ class Sweeping():
                     continue
                 self.warning_for_setup(setup_args, key, "float")
                 return 1
-            if key == 'max_passes':
+            if key == "max_passes":
                 if isinstance(value, int) or value is None:
                     continue
                 self.warning_for_setup(setup_args, key, "int")
                 return 1
-            if key == 'min_passes':
+            if key == "min_passes":
                 if isinstance(value, int) or value is None:
                     continue
                 self.warning_for_setup(setup_args, key, "int")
                 return 1
-            if key == 'min_converged':
+            if key == "min_converged":
                 if isinstance(value, int) or value is None:
                     continue
                 self.warning_for_setup(setup_args, key, "int")
                 return 1
-            if key == 'basis_order':
+            if key == "basis_order":
                 if isinstance(value, int) or value is None:
                     continue
                 self.warning_for_setup(setup_args, key, "int")
                 return 1
-            if key == 'pct_refinement':
+            if key == "pct_refinement":
                 if isinstance(value, int) or value is None:
                     continue
                 self.warning_for_setup(setup_args, key, "int")
                 return 1
 
             self.design.logger.warning(
-                f'The key={key} is not expected.  Do you have a typo?  '
-                f'The setup was not added to design. '
-                f'Sweep will not be implemented.')
+                f"The key={key} is not expected.  Do you have a typo?  "
+                f"The setup was not added to design. "
+                f"Sweep will not be implemented."
+            )
             return 2
 
         a_hfss.new_ansys_setup(**setup_args)
@@ -299,9 +303,10 @@ class Sweeping():
             data_type (str): The data type the argument should be.
         """
         self.design.logger.warning(
-            f'The value for {key} should be a {data_type}. '
-            f'The present value is {setup_args[key]}.  '
-            f'Sweep will not be implemented.')
+            f"The value for {key} should be a {data_type}. "
+            f"The present value is {setup_args[key]}.  "
+            f"Sweep will not be implemented."
+        )
 
     def prep_q3d_setup(self, setup_args: Dict) -> int:
         """User can pass arguments for method q3d setup.  If not passed,
@@ -360,64 +365,66 @@ class Sweeping():
 
         for key, value in setup_args.items():
             if key == "name":
-                continue  #For this method, "Sweep_q3d_setup" used.
+                continue  # For this method, "Sweep_q3d_setup" used.
             if key == "freq_ghz":
                 if isinstance(value, float) or value is None:
                     continue
                 self.warning_for_setup(setup_args, key, "float")
                 return 1
-            if key == 'max_passes':
+            if key == "max_passes":
                 if isinstance(value, int) or value is None:
                     continue
                 self.warning_for_setup(setup_args, key, "int")
                 return 1
-            if key == 'min_passes':
+            if key == "min_passes":
                 if isinstance(value, int) or value is None:
                     continue
                 self.warning_for_setup(setup_args, key, "int")
                 return 1
-            if key == 'percent_error':
+            if key == "percent_error":
                 if isinstance(value, float) or value is None:
                     continue
                 self.warning_for_setup(setup_args, key, "float")
                 return 1
-            if key == 'save_fields':
+            if key == "save_fields":
                 if isinstance(value, bool) or value is None:
                     continue
                 self.warning_for_setup(setup_args, key, "bool")
                 return 1
-            if key == 'enabled':
+            if key == "enabled":
                 if isinstance(value, bool) or value is None:
                     continue
                 self.warning_for_setup(setup_args, key, "bool")
                 return 1
-            if key == 'min_converged_passes':
+            if key == "min_converged_passes":
                 if isinstance(value, int) or value is None:
                     continue
                 self.warning_for_setup(setup_args, key, "int")
                 return 1
-            if key == 'percent_refinement':
+            if key == "percent_refinement":
                 if isinstance(value, int) or value is None:
                     continue
                 self.warning_for_setup(setup_args, key, "int")
                 return 1
-            if key == 'auto_increase_solution_order':
+            if key == "auto_increase_solution_order":
                 if isinstance(value, bool) or value is None:
                     continue
                 self.warning_for_setup(setup_args, key, "bool")
                 return 1
-            if key == 'solution_order':
-                if (isinstance(value, str) and
-                        value in ["High", "Normal", "Higher", "Highest"
-                                 ]) or value is None:
+            if key == "solution_order":
+                if (
+                    isinstance(value, str)
+                    and value in ["High", "Normal", "Higher", "Highest"]
+                ) or value is None:
                     continue
                 self.design.logger.warning(
-                    f'The value for solution_order should be a str '
+                    f"The value for solution_order should be a str "
                     f'in ["High", "Normal", "Higher", "Highest"]. '
-                    f'The present value is {value}.  '
-                    f'Sweep will not be implemented.')
+                    f"The present value is {value}.  "
+                    f"Sweep will not be implemented."
+                )
                 return 1
-            if key == 'solver_type':
+            if key == "solver_type":
                 if isinstance(value, str) or value is None:
                     continue
 
@@ -425,9 +432,10 @@ class Sweeping():
                 return 1
 
             self.design.logger.warning(
-                f'The key={key} is not expected.  Do you have a typo?  '
-                f'The setup was not added to design. '
-                f'Sweep will not be implemented.')
+                f"The key={key} is not expected.  Do you have a typo?  "
+                f"The setup was not added to design. "
+                f"Sweep will not be implemented."
+            )
             return 2
 
         a_q3d.new_ansys_setup(**setup_args)
@@ -435,17 +443,18 @@ class Sweeping():
         return 0
 
     def sweep_one_option_get_eigenmode_solution_data(
-            self,
-            qcomp_name: str,
-            option_name: str,
-            option_sweep: list,
-            qcomp_render: list,
-            endcaps_render: list,
-            ignored_jjs_render: list,
-            box_plus_buffer_render: bool = True,
-            setup_args: Dict = None,
-            leave_last_design: bool = True,
-            design_name: str = "Sweep_Eigenmode") -> Tuple[Dict, int]:
+        self,
+        qcomp_name: str,
+        option_name: str,
+        option_sweep: list,
+        qcomp_render: list,
+        endcaps_render: list,
+        ignored_jjs_render: list,
+        box_plus_buffer_render: bool = True,
+        setup_args: Dict = None,
+        leave_last_design: bool = True,
+        design_name: str = "Sweep_Eigenmode",
+    ) -> Tuple[Dict, int]:
         """
         Ansys must be open with inserted project. A design, "HFSS Design"
         with eigenmode solution-type will be inserted by this method.
@@ -499,23 +508,27 @@ class Sweeping():
         # pylint: disable=too-many-locals
         # pylint: disable=too-many-arguments
 
-        #Dict of all swept information.
+        # Dict of all swept information.
         all_sweep = Dict()
-        option_path, a_value, check_result, = self.error_check_sweep_input(
-            qcomp_name, option_name, option_sweep)
+        (
+            option_path,
+            a_value,
+            check_result,
+        ) = self.error_check_sweep_input(qcomp_name, option_name, option_sweep)
         if check_result != 0:
             return all_sweep, check_result
 
         a_hfss = self.design.renderers.hfss
         # Assume Ansys is open, with a project open.
         a_hfss.connect_ansys()
-        a_hfss.activate_ansys_design(design_name, 'eigenmode')
+        a_hfss.activate_ansys_design(design_name, "eigenmode")
 
         a_hfss.clean_active_design()
 
         if self.prep_eigenmode_setup(setup_args) != 0:
             self.design.logger.warning(
-                'The setup was not implemented, look at warning messages.')
+                "The setup was not implemented, look at warning messages."
+            )
             return all_sweep, 8
 
         len_sweep = len(option_sweep) - 1
@@ -524,45 +537,48 @@ class Sweeping():
             if option_path[-1] in a_value.keys():
                 a_value[option_path[-1]] = item
             else:
-                self.design.logger.warning(
-                    f'Key="{option_path[-1]}" is not in dict.')
+                self.design.logger.warning(f'Key="{option_path[-1]}" is not in dict.')
                 return all_sweep, 5
 
             self.design.rebuild()
 
-            a_hfss.render_design(selection=qcomp_render,
-                                 open_pins=endcaps_render,
-                                 ignored_jjs=ignored_jjs_render,
-                                 box_plus_buffer=box_plus_buffer_render
-                                )  #Render the items chosen
+            a_hfss.render_design(
+                selection=qcomp_render,
+                open_pins=endcaps_render,
+                ignored_jjs=ignored_jjs_render,
+                box_plus_buffer=box_plus_buffer_render,
+            )  # Render the items chosen
 
             a_hfss.analyze_setup(
-                a_hfss.pinfo.setup.name)  #Analyze said solution setup.
+                a_hfss.pinfo.setup.name
+            )  # Analyze said solution setup.
             setup = a_hfss.pinfo.setup
-            #solution_name = setup.solution_name
+            # solution_name = setup.solution_name
             all_solutions = setup.get_solutions()
-            #setup_names = all_solutions.list_variations()
+            # setup_names = all_solutions.list_variations()
             freqs, kappa_over_2pis = all_solutions.eigenmodes()
             df_t, df_f, _, convergence = self.hfss_em_get_convergence(a_hfss)
 
             if not convergence:
                 self.design.logger.warning(
-                    f'Heads-Up: {option_name}={item} Failed to converge.  ')
+                    f"Heads-Up: {option_name}={item} Failed to converge.  "
+                )
 
             sweep_values = Dict()
 
-            sweep_values['convergence'] = convergence
-            sweep_values['option_name'] = option_path[-1]
-            sweep_values['frequency'] = freqs
-            sweep_values['kappa_over_2pis'] = kappa_over_2pis
-            sweep_values['quality_factor'] = self.get_quality_factor(
-                freqs, kappa_over_2pis)
+            sweep_values["convergence"] = convergence
+            sweep_values["option_name"] = option_path[-1]
+            sweep_values["frequency"] = freqs
+            sweep_values["kappa_over_2pis"] = kappa_over_2pis
+            sweep_values["quality_factor"] = self.get_quality_factor(
+                freqs, kappa_over_2pis
+            )
 
-            sweep_values['convergence_eig_f'] = df_f
-            sweep_values['convergence_t'] = df_t
+            sweep_values["convergence_eig_f"] = df_f
+            sweep_values["convergence_t"] = df_t
             all_sweep[item] = sweep_values
 
-            #Decide if need to clean the design.
+            # Decide if need to clean the design.
             obj_names = a_hfss.pinfo.get_all_object_names()
             if obj_names:
                 if index == len_sweep and not leave_last_design:
@@ -574,9 +590,7 @@ class Sweeping():
         return all_sweep, 0
 
     def hfss_em_get_convergence(
-        self,
-        a_hfss: 'QHFSSRenderer',
-        variation: str = None
+        self, a_hfss: "QHFSSRenderer", variation: str = None
     ) -> Tuple[pd.core.frame.DataFrame, pd.core.frame.DataFrame, str, bool]:
         """Use QHFSSRenderer to get convergence data from Ansys for eigenmode.
 
@@ -593,15 +607,13 @@ class Sweeping():
             3rd list: Text from GUI of solution data.
             4th bool: If data converged.
         """
-        convergence_t, convergence_f, gui_text = a_hfss.get_convergences(
-            variation)
+        convergence_t, convergence_f, gui_text = a_hfss.get_convergences(variation)
 
         text_list, convergence = self.parse_text_from_hfss_convergence(gui_text)
 
         return convergence_t, convergence_f, text_list, convergence
 
-    def parse_text_from_hfss_convergence(self,
-                                         gui_text: str) -> Tuple[list, bool]:
+    def parse_text_from_hfss_convergence(self, gui_text: str) -> Tuple[list, bool]:
         """Parse the text obtained from hfss after analysis.
 
         Args:
@@ -615,25 +627,23 @@ class Sweeping():
         text_list = gui_text.splitlines()
 
         # Find convergence information in text.
-        convergence_bool = [
-            string for string in text_list if 'Converged' in string
-        ]
+        convergence_bool = [string for string in text_list if "Converged" in string]
         if len(convergence_bool) == 1:
-            if 'Yes' in convergence_bool[0]:
+            if "Yes" in convergence_bool[0]:
                 convergence = True
             else:
                 convergence = False
         else:
             convergence = False
             self.design.logger.warning(
-                'Either could not find Converged information or too many '
-                'entries in text. Force convergence to be False.')
+                "Either could not find Converged information or too many "
+                "entries in text. Force convergence to be False."
+            )
         return text_list, convergence
 
     def hfss_dm_get_convergence(
-            self,
-            a_hfss: 'QHFSSRenderer',
-            variation: str = None) -> Tuple[pd.core.frame.DataFrame, str, bool]:
+        self, a_hfss: "QHFSSRenderer", variation: str = None
+    ) -> Tuple[pd.core.frame.DataFrame, str, bool]:
         """Use QHFSSRenderer to get convergence data from Ansys for drivenmodal.
 
         Args:
@@ -654,15 +664,16 @@ class Sweeping():
         return convergence_t, text_list, convergence
 
     def sweep_one_option_get_drivenmodal_solution_data(
-            self,
-            qcomp_name: str,
-            option_name: str,
-            option_sweep: list,
-            dm_render_args: Dict,
-            dm_add_sweep_args: Dict,
-            setup_args: Dict = None,
-            leave_last_design: bool = True,
-            design_name: str = "Sweep_DrivenModal") -> Tuple[Dict, int]:
+        self,
+        qcomp_name: str,
+        option_name: str,
+        option_sweep: list,
+        dm_render_args: Dict,
+        dm_add_sweep_args: Dict,
+        setup_args: Dict = None,
+        leave_last_design: bool = True,
+        design_name: str = "Sweep_DrivenModal",
+    ) -> Tuple[Dict, int]:
         """
         Ansys must be open with inserted project. A design, "HFSS Design"
         with Driven Modal solution-type will be inserted by this method.
@@ -752,23 +763,27 @@ class Sweeping():
         # pylint: disable=too-many-locals
         # pylint: disable=too-many-arguments
 
-        #Dict of all swept information.
+        # Dict of all swept information.
         all_sweep = Dict()
-        option_path, a_value, check_result, = self.error_check_sweep_input(
-            qcomp_name, option_name, option_sweep)
+        (
+            option_path,
+            a_value,
+            check_result,
+        ) = self.error_check_sweep_input(qcomp_name, option_name, option_sweep)
         if check_result != 0:
             return all_sweep, check_result
 
         a_hfss = self.design.renderers.hfss
         # Assume Ansys is open, with a project open.
         a_hfss.connect_ansys()
-        a_hfss.activate_ansys_design(design_name, 'drivenmodal')
+        a_hfss.activate_ansys_design(design_name, "drivenmodal")
 
         a_hfss.clean_active_design()
 
         if self.prep_drivenmodal_setup(setup_args) != 0:
             self.design.logger.warning(
-                'The setup was not implemented, look at warning messages.')
+                "The setup was not implemented, look at warning messages."
+            )
             return all_sweep, 8
 
         if self.error_check_render_design_args(dm_render_args) != 0:
@@ -780,30 +795,38 @@ class Sweeping():
             if option_path[-1] in a_value.keys():
                 a_value[option_path[-1]] = item
             else:
-                self.design.logger.warning(
-                    f'Key="{option_path[-1]}" is not in dict.')
+                self.design.logger.warning(f'Key="{option_path[-1]}" is not in dict.')
                 return all_sweep, 5
 
             self.design.rebuild()
 
-            a_hfss.render_design(selection=dm_render_args.selection,
-                                 open_pins=dm_render_args.open_pins,
-                                 port_list=dm_render_args.port_list,
-                                 jj_to_port=dm_render_args.jj_to_port,
-                                 ignored_jjs=dm_render_args.ignored_jjs,
-                                 box_plus_buffer=dm_render_args.box_plus_buffer)
+            a_hfss.render_design(
+                selection=dm_render_args.selection,
+                open_pins=dm_render_args.open_pins,
+                port_list=dm_render_args.port_list,
+                jj_to_port=dm_render_args.jj_to_port,
+                ignored_jjs=dm_render_args.ignored_jjs,
+                box_plus_buffer=dm_render_args.box_plus_buffer,
+            )
 
-            #To insert a "frequency sweep" within setup,
+            # To insert a "frequency sweep" within setup,
             # the pin/ports have to be rendered.
-            self.error_check_and_insert_sweep(a_hfss, setup_args.name,
-                                              dm_add_sweep_args)
+            self.error_check_and_insert_sweep(
+                a_hfss, setup_args.name, dm_add_sweep_args
+            )
 
             matrix_size = self.get_size_of_matrix(dm_render_args)
 
-            self.populate_dm_all_sweep(all_sweep, a_hfss, dm_add_sweep_args,
-                                       setup_args, matrix_size, item,
-                                       option_name)
-            #Decide if need to clean the design.
+            self.populate_dm_all_sweep(
+                all_sweep,
+                a_hfss,
+                dm_add_sweep_args,
+                setup_args,
+                matrix_size,
+                item,
+                option_name,
+            )
+            # Decide if need to clean the design.
             obj_names = a_hfss.pinfo.get_all_object_names()
             if obj_names:
                 if index == len_sweep and not leave_last_design:
@@ -814,9 +837,16 @@ class Sweeping():
         a_hfss.disconnect_ansys()
         return all_sweep, 0
 
-    def populate_dm_all_sweep(self, all_sweep: Dict, a_hfss: 'QHFSSRenderer',
-                              dm_add_sweep_args: Dict, setup_args: Dict,
-                              matrix_size: int, item: str, option_name: str):
+    def populate_dm_all_sweep(
+        self,
+        all_sweep: Dict,
+        a_hfss: "QHFSSRenderer",
+        dm_add_sweep_args: Dict,
+        setup_args: Dict,
+        matrix_size: int,
+        item: str,
+        option_name: str,
+    ):
         """The Dict all_sweep holds three matrices for each iteration of a
         option in Metal.
 
@@ -832,23 +862,23 @@ class Sweeping():
         """
         sweep_values = Dict()
         if matrix_size == 0:
-            sweep_values['s_matrix'] = None
-            sweep_values['y_matrix'] = None
-            sweep_values['z_matrix'] = None
+            sweep_values["s_matrix"] = None
+            sweep_values["y_matrix"] = None
+            sweep_values["z_matrix"] = None
         else:
             a_hfss.analyze_sweep(dm_add_sweep_args.name, setup_args.name)
             # pylint: disable=invalid-name
-            s_Pparms, y_Pparams, z_Pparams = a_hfss.get_all_Pparms_matrices(
-                matrix_size)
+            s_Pparms, y_Pparams, z_Pparams = a_hfss.get_all_Pparms_matrices(matrix_size)
 
             convergence_t, dummy_text_list, convergence = self.hfss_dm_get_convergence(
-                a_hfss, variation=None)
-            sweep_values['option_name'] = option_name
-            sweep_values['convergence'] = convergence
-            sweep_values['s_matrix'] = s_Pparms
-            sweep_values['y_matrix'] = y_Pparams
-            sweep_values['z_matrix'] = z_Pparams
-            sweep_values['convergence_t'] = convergence_t
+                a_hfss, variation=None
+            )
+            sweep_values["option_name"] = option_name
+            sweep_values["convergence"] = convergence
+            sweep_values["s_matrix"] = s_Pparms
+            sweep_values["y_matrix"] = y_Pparams
+            sweep_values["z_matrix"] = z_Pparams
+            sweep_values["convergence_t"] = convergence_t
         all_sweep[item] = sweep_values
 
     @classmethod
@@ -886,11 +916,12 @@ class Sweeping():
         return matrix_size
 
     def error_check_and_insert_sweep(
-            self,
-            a_hfss: 'QHFSSRenderer',
-            setup_name: str,
-            dm_add_sweep_args: Dict,
-            dm_sweep_name: str = 'Sweep_options__dm_sweep'):
+        self,
+        a_hfss: "QHFSSRenderer",
+        setup_name: str,
+        dm_add_sweep_args: Dict,
+        dm_sweep_name: str = "Sweep_options__dm_sweep",
+    ):
         """To insert an Ansys sweep to the named setup.  The Dict
         dm_add_sweep_args comes from user. They are arguments to pass to
         add sweep to Ansys.  If there are unexpected arguments, they will
@@ -907,27 +938,35 @@ class Sweeping():
             dm_sweep_name (str, optional): Name of inserted Ansys sweep.
                                     qDefaults to 'Sweep_options__dm_sweep'.
         """
-        if 'name' not in dm_add_sweep_args.keys():
-            dm_add_sweep_args['name'] = dm_sweep_name
+        if "name" not in dm_add_sweep_args.keys():
+            dm_add_sweep_args["name"] = dm_sweep_name
 
         allowed_keys = {
-            'start_ghz', 'stop_ghz', 'count', 'step_ghz', 'name', 'type',
-            'save_fields'
+            "start_ghz",
+            "stop_ghz",
+            "count",
+            "step_ghz",
+            "name",
+            "type",
+            "save_fields",
         }
         unexpected_keys = set(dm_add_sweep_args.keys()) - allowed_keys
 
         if unexpected_keys:
-            #[dm_add_sweep_args.pop(key) for key in unexpected_keys]
+            # [dm_add_sweep_args.pop(key) for key in unexpected_keys]
             self.design.logger.warning(
-                f'Removed keys: {unexpected_keys} from '
-                'dm_add_sweep_args Dict before using it. ')
+                f"Removed keys: {unexpected_keys} from "
+                "dm_add_sweep_args Dict before using it. "
+            )
 
         # pylint: disable=protected-access
         all_sweep_names = a_hfss.pinfo.setup._setup_module.GetSweeps(setup_name)
         if dm_add_sweep_args.name not in all_sweep_names:
             a_hfss.add_sweep(setup_name=setup_name, **dm_add_sweep_args)
 
-    def error_check_render_design_args(self, dm_render_args: Dict) -> int:  # pylint: disable=too-many-return-statements
+    def error_check_render_design_args(
+        self, dm_render_args: Dict
+    ) -> int:  # pylint: disable=too-many-return-statements
         """To render to Ansys, we need every argument in render_design.
         This method confirms all arguments are present.
 
@@ -942,42 +981,47 @@ class Sweeping():
         """
         all_keys = dm_render_args.keys()
 
-        if 'selection' not in all_keys:
+        if "selection" not in all_keys:
             self.design.logger.warning(
-                'The key selection is missing in Dict dm_render_args. '
-                'Method render_design() NOT implemented.')
+                "The key selection is missing in Dict dm_render_args. "
+                "Method render_design() NOT implemented."
+            )
             return 1
-        if 'open_pins' not in all_keys:
+        if "open_pins" not in all_keys:
             self.design.logger.warning(
-                'The key open_pins is missing in Dict dm_render_args. '
-                'Method render_design() NOT implemented.')
+                "The key open_pins is missing in Dict dm_render_args. "
+                "Method render_design() NOT implemented."
+            )
             return 1
-        if 'port_list' not in all_keys:
+        if "port_list" not in all_keys:
             self.design.logger.warning(
-                'The key port_list is missing in Dict dm_render_args. '
-                'Method render_design() NOT implemented.')
+                "The key port_list is missing in Dict dm_render_args. "
+                "Method render_design() NOT implemented."
+            )
             return 1
-        if 'jj_to_port' not in all_keys:
+        if "jj_to_port" not in all_keys:
             self.design.logger.warning(
-                'The key jj_to_port is missing in Dict dm_render_args. '
-                'Method render_design() NOT implemented.')
+                "The key jj_to_port is missing in Dict dm_render_args. "
+                "Method render_design() NOT implemented."
+            )
             return 1
-        if 'ignored_jjs' not in all_keys:
+        if "ignored_jjs" not in all_keys:
             self.design.logger.warning(
-                'The key ignored_jjs is missing in Dict dm_render_args. '
-                'Method render_design() NOT implemented.')
+                "The key ignored_jjs is missing in Dict dm_render_args. "
+                "Method render_design() NOT implemented."
+            )
             return 1
-        if 'box_plus_buffer' not in all_keys:
+        if "box_plus_buffer" not in all_keys:
             self.design.logger.warning(
-                'The key box_plus_buffer is missing in Dict dm_render_args. '
-                'Method render_design() NOT implemented.')
+                "The key box_plus_buffer is missing in Dict dm_render_args. "
+                "Method render_design() NOT implemented."
+            )
             return 1
         return 0
 
     def get_quality_factor(
-            self,
-            freqs: Union[list, None] = None,
-            kappa_over_2pis: Union[list, None] = None) -> Union[list, None]:
+        self, freqs: Union[list, None] = None, kappa_over_2pis: Union[list, None] = None
+    ) -> Union[list, None]:
         """Calculate Quality Factor = freqs/kappa_over_2pis.  Before division,
         some error checking.
 
@@ -1004,20 +1048,22 @@ class Sweeping():
             return quality_factor
 
         self.design.logger.warning(
-            'The Quality factor not calculated since size of freqs'
-            ' and kappa_over_2pis are not identical')
+            "The Quality factor not calculated since size of freqs"
+            " and kappa_over_2pis are not identical"
+        )
         return quality_factor
 
     def sweep_one_option_get_capacitance_matrix(
-            self,
-            qcomp_name: str,
-            option_name: str,
-            option_sweep: list,
-            qcomp_render: list,
-            endcaps_render: list,
-            setup_args: Dict = None,
-            leave_last_design: bool = True,
-            design_name: str = "Sweep_Capacitance") -> Tuple[Dict, int]:
+        self,
+        qcomp_name: str,
+        option_name: str,
+        option_sweep: list,
+        qcomp_render: list,
+        endcaps_render: list,
+        setup_args: Dict = None,
+        leave_last_design: bool = True,
+        design_name: str = "Sweep_Capacitance",
+    ) -> Tuple[Dict, int]:
         """Ansys must be open with an inserted project.  A design,
         "Q3D Extractor Design", will be inserted by this method.
 
@@ -1056,24 +1102,26 @@ class Sweeping():
         # pylint: disable=too-many-arguments
         # pylint: disable=too-many-locals
 
-        #Dict of all swept information.
+        # Dict of all swept information.
         all_sweep = Dict()
         option_path, a_value, check_result = self.error_check_sweep_input(
-            qcomp_name, option_name, option_sweep)
+            qcomp_name, option_name, option_sweep
+        )
         if check_result != 0:
             return all_sweep, check_result
 
         a_q3d = self.design.renderers.q3d
         # Assume Ansys is open, with a project open.
         a_q3d.connect_ansys()
-        a_q3d.activate_ansys_design(design_name, 'capacitive')
+        a_q3d.activate_ansys_design(design_name, "capacitive")
 
         a_q3d.clean_active_design()
 
         # Add a solution setup.
         if self.prep_q3d_setup(setup_args) != 0:
-            self.design.logger.warning('The setup was not implemented, '
-                                       'please look at warning messages.')
+            self.design.logger.warning(
+                "The setup was not implemented, " "please look at warning messages."
+            )
             return all_sweep, 8
 
         len_sweep = len(option_sweep) - 1
@@ -1083,19 +1131,18 @@ class Sweeping():
             if option_path[-1] in a_value.keys():
                 a_value[option_path[-1]] = item
             else:
-                self.design.logger.warning(
-                    f'Key="{option_path[-1]}" is not in dict.')
+                self.design.logger.warning(f'Key="{option_path[-1]}" is not in dict.')
                 return all_sweep, 5
 
             self.design.rebuild()
 
             a_q3d.render_design(
-                selection=qcomp_render,
-                open_pins=endcaps_render)  #Render the items chosen
+                selection=qcomp_render, open_pins=endcaps_render
+            )  # Render the items chosen
 
             self.populate_q3d_all_sweep(all_sweep, a_q3d, item, option_name)
 
-            #Decide if need to clean the design.
+            # Decide if need to clean the design.
             obj_names = a_q3d.pinfo.get_all_object_names()
             if obj_names:
                 if index == len_sweep and not leave_last_design:
@@ -1106,8 +1153,9 @@ class Sweeping():
         a_q3d.disconnect_ansys()
         return all_sweep, 0
 
-    def populate_q3d_all_sweep(self, all_sweep: Dict, a_q3d: 'QQ3DRenderer',
-                               item: str, option_name: str):
+    def populate_q3d_all_sweep(
+        self, all_sweep: Dict, a_q3d: "QQ3DRenderer", item: str, option_name: str
+    ):
         """Analyze the setup, get convergence and capacitance information,
         populate all_sweep for each item which corresponds to option_name.
 
@@ -1120,34 +1168,35 @@ class Sweeping():
             option_name (str): The option of QComponent that we want to sweep.
         """
 
-        #Analyze said solution setup.
+        # Analyze said solution setup.
         a_q3d.analyze_setup(a_q3d.pinfo.setup.name)
 
         # If 'LastAdaptive' is used, then the pass_number won't affect anything.
         # If 'AdaptivePass' is used, then the pass_number is used.
         convergence_df, convergence_txt = a_q3d.pinfo.setup.get_convergence()
         target, current, pass_min = self._parse_text_from_q3d_convergence(
-            convergence_txt)
-        is_converged = self._test_if_q3d_analysis_converged(
-            target, current, pass_min)
-        cap_matrix = a_q3d.get_capacitance_matrix(variation='',
-                                                  solution_kind='LastAdaptive',
-                                                  pass_number=1)
+            convergence_txt
+        )
+        is_converged = self._test_if_q3d_analysis_converged(target, current, pass_min)
+        cap_matrix = a_q3d.get_capacitance_matrix(
+            variation="", solution_kind="LastAdaptive", pass_number=1
+        )
 
         sweep_values = Dict()
-        sweep_values['option_name'] = option_name
-        #sweep_values['option_name'] = option_path[-1]
-        sweep_values['convergence_target'] = target
-        sweep_values['convergence_current'] = current
-        sweep_values['min_number_passes'] = pass_min
-        sweep_values['is_convergence'] = is_converged
-        sweep_values['capacitance'] = cap_matrix
-        sweep_values['convergence_data'] = convergence_df
+        sweep_values["option_name"] = option_name
+        # sweep_values['option_name'] = option_path[-1]
+        sweep_values["convergence_target"] = target
+        sweep_values["convergence_current"] = current
+        sweep_values["min_number_passes"] = pass_min
+        sweep_values["is_convergence"] = is_converged
+        sweep_values["capacitance"] = cap_matrix
+        sweep_values["convergence_data"] = convergence_df
         all_sweep[item] = sweep_values
 
     @classmethod
-    def _test_if_q3d_analysis_converged(cls, target: float, current: float,
-                                        passes_min: int) -> Union[bool, None]:
+    def _test_if_q3d_analysis_converged(
+        cls, target: float, current: float, passes_min: int
+    ) -> Union[bool, None]:
         """Use solution-data from Ansys-Q3d to determine if converged.
 
         Args:
@@ -1172,8 +1221,8 @@ class Sweeping():
         return is_converged
 
     def _parse_text_from_q3d_convergence(
-            self,
-            gui_text: str) -> Tuple[Union[None, float], Union[None, float]]:
+        self, gui_text: str
+    ) -> Tuple[Union[None, float], Union[None, float]]:
         """Parse gui_text using a priori known formatting. Ansys-Q3D
         solution-data provides gui_text.
 
@@ -1188,13 +1237,13 @@ class Sweeping():
         text_list = gui_text.splitlines()
 
         # Find Target information in text.
-        target_all = [string for string in text_list if 'Target' in string]
+        target_all = [string for string in text_list if "Target" in string]
 
         # Find Current information in text.
-        current_all = [string for string in text_list if 'Current' in string]
+        current_all = [string for string in text_list if "Current" in string]
 
         # Find Minimum number of passes from solution-data.
-        min_passes_all = [string for string in text_list if 'Minimum' in string]
+        min_passes_all = [string for string in text_list if "Minimum" in string]
 
         target = self._extract_target_delta(target_all)
         current = self._extract_current_delta(current_all)
@@ -1217,18 +1266,20 @@ class Sweeping():
         min_num_of_passes = None
         if len(min_passes_all) == 1:
             if min_passes_all[0]:
-                _, _, min_passes_str = min_passes_all[0].partition(':')
+                _, _, min_passes_str = min_passes_all[0].partition(":")
                 try:
                     min_num_of_passes = int(min_passes_str)
                 except ValueError:
                     self.design.logger.warning(
-                        f'Target={min_passes_str} in GUI is not an int.'
-                        'Force Minimum Number Of Passes to be None.')
+                        f"Target={min_passes_str} in GUI is not an int."
+                        "Force Minimum Number Of Passes to be None."
+                    )
         else:
             self.design.logger.warning(
-                'Either could not find Minimum Number of Passes '
-                'information or too many entries in text. '
-                'Force Minimum Number of Passes to be None.')
+                "Either could not find Minimum Number of Passes "
+                "information or too many entries in text. "
+                "Force Minimum Number of Passes to be None."
+            )
         return min_num_of_passes
 
     def _extract_target_delta(self, target_all: list) -> Union[None, float]:
@@ -1245,17 +1296,19 @@ class Sweeping():
         target = None
         if len(target_all) == 1:
             if target_all[0]:
-                _, _, target_str = target_all[0].partition(':')
+                _, _, target_str = target_all[0].partition(":")
                 try:
                     target = float(target_str)
                 except ValueError:
                     self.design.logger.warning(
-                        f'Target={target_str} in GUI is not a float.'
-                        'Force Target Delta to be None.')
+                        f"Target={target_str} in GUI is not a float."
+                        "Force Target Delta to be None."
+                    )
         else:
             self.design.logger.warning(
-                'Either could not find Target Delta information or too many '
-                'entries in text. Force Target Delta to be None.')
+                "Either could not find Target Delta information or too many "
+                "entries in text. Force Target Delta to be None."
+            )
         return target
 
     def _extract_current_delta(self, current_all: list) -> Union[None, float]:
@@ -1272,17 +1325,19 @@ class Sweeping():
         current = None
         if len(current_all) == 1:
             if current_all[0]:
-                _, _, current_str = current_all[0].partition(':')
+                _, _, current_str = current_all[0].partition(":")
                 try:
                     current = float(current_str)
                 except ValueError:
                     self.design.logger.warning(
-                        f'Target={current_str} in GUI is not a float.'
-                        'Force Current Delta to be None.')
+                        f"Target={current_str} in GUI is not a float."
+                        "Force Current Delta to be None."
+                    )
         else:
             self.design.logger.warning(
-                'Either could not find Current Delta information or too many '
-                'entries in text. Force Current Delta to be None.')
+                "Either could not find Current Delta information or too many "
+                "entries in text. Force Current Delta to be None."
+            )
         return current
 
 

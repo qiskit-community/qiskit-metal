@@ -16,6 +16,7 @@ from qiskit_metal import draw, Dict
 from qiskit_metal.qlibrary.core import QComponent
 
 from ... import config
+
 if not config.is_building_docs():
     from qiskit_metal import is_true
 
@@ -23,8 +24,8 @@ if not config.is_building_docs():
 class MyQComponent(QComponent):
     """
     This class is a template
-	Use this class as a blueprint to put together for your components - have fun
-    
+        Use this class as a blueprint to put together for your components - have fun
+
     .. meta::
         My QComponent
 
@@ -32,11 +33,11 @@ class MyQComponent(QComponent):
 
     # Edit these to define your own template options for creation
     # Default drawing options
-    default_options = Dict(width='500um', height='300um')
+    default_options = Dict(width="500um", height="300um")
     """Default drawing options"""
 
     # Name prefix of component, if user doesn't provide name
-    component_metadata = Dict(short_name='component')
+    component_metadata = Dict(short_name="component")
     """Component metadata"""
 
     def make(self):
@@ -49,5 +50,5 @@ class MyQComponent(QComponent):
         # Use autocompletion for the `draw.` module (use tab key)
         rect = draw.rectangle(p.width, p.height, p.pos_x, p.pos_y)
         rect = draw.rotate(rect, p.orientation)
-        geom = {'my_polygon': rect}
-        self.add_qgeometry('poly', geom, layer=p.layer, subtract=False)
+        geom = {"my_polygon": rect}
+        self.add_qgeometry("poly", geom, layer=p.layer, subtract=False)

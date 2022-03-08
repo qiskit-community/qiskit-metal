@@ -38,12 +38,14 @@ class TreeViewParamEntry(QTreeView):
 
     def style_me(self):
         """Set style"""
-        self.setStyleSheet("""
+        self.setStyleSheet(
+            """
 QTreeView::branch {  border-image: url(none.png); }
-        """)
+        """
+        )
 
     def mousePressEvent(self, event: QtGui.QMouseEvent):
-        """ Overrides inherited mousePressEvent to allow user to clear any selections
+        """Overrides inherited mousePressEvent to allow user to clear any selections
         by clicking off the displayed tree. Then calls the inherited mousePressEvent"""
         myindex = self.indexAt(event.pos())
         if myindex.row() == -1:

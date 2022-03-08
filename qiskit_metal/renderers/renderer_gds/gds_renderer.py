@@ -17,13 +17,16 @@
 from copy import deepcopy
 from operator import itemgetter
 from typing import TYPE_CHECKING
-#from typing import Dict as Dict_
+
+# from typing import Dict as Dict_
 from typing import Tuple, Union
-#from typing import List, Any, Iterable
+
+# from typing import List, Any, Iterable
 import math
 import os
 from shapely.geometry import LineString
-#from pandas.api.types import is_numeric_dtype
+
+# from pandas.api.types import is_numeric_dtype
 
 import gdspy
 import geopandas
@@ -40,9 +43,12 @@ from qiskit_metal import draw
 from ... import Dict
 
 from .. import config
+
 if not config.is_building_docs():
     from qiskit_metal.toolbox_python.utility_functions import can_write_to_path
-    from qiskit_metal.toolbox_python.utility_functions import get_range_of_vertex_to_not_fillet
+    from qiskit_metal.toolbox_python.utility_functions import (
+        get_range_of_vertex_to_not_fillet,
+    )
 
 if TYPE_CHECKING:
     # For linting typechecking, import modules that can't be loaded here under normal conditions.
@@ -118,29 +124,25 @@ class QGDSRenderer(QRenderer):
     # render_options.
     # Type: Dict[str, str]
     default_options = Dict(
-
         # Before converting LINESTRING to FlexPath for GDS, check for fillet
         # errors for LINESTRINGS in QGeometry in QGeometry due to short
         # segments.  If true, break up the LINESTRING so any segment which is
         # shorter than the scaled-fillet by "fillet_scale_factor" will be
         # separated so the short segment will not be fillet'ed.
-        short_segments_to_not_fillet='True',
-        check_short_segments_by_scaling_fillet='2.0',
-
+        short_segments_to_not_fillet="True",
+        check_short_segments_by_scaling_fillet="2.0",
         # DO NOT MODIFY `gds_unit`. Gets overwritten by ``set_units``.
         # gdspy unit is 1 meter.  gds_units appear to ONLY be used during
         # write_gds().  Note that gds_unit will be overwritten from the design
         # units, during init().
         # WARNING: this cannot be changed since it is only used during the
         # init once.
-        gds_unit='1',  # 1m
-
+        gds_unit="1",  # 1m
         # Implement creating a ground plane which is scaled from largest
         # bounding box, then QGeometry which is marked as subtract will be
         # removed from ground_plane.  Then the balance of QGeometry will be
         # placed placed in same layer as ground_plane.
-        ground_plane='True',
-
+        ground_plane="True",
         # By default, export_to_gds() will create a positive_mask for every
         # chip and layer.  Within the Dict, there needs to be an entry for each
         # chip.  Each chip has a list of layers that should export as a
@@ -148,7 +150,6 @@ class QGDSRenderer(QRenderer):
         # for that layer.  If user wants to export to a negative_mask for all
         # layers, every layer_number MUST be in list.
         negative_mask=Dict(main=[]),
-
         # For the gds file, Show/Don't Show intermediate steps?
         # If false, show the intermediate steps in the exported gds file.
         # If true, show the geometries on either neg_datatype_fabricate or pos_datatype_fabricate.
@@ -156,8 +157,7 @@ class QGDSRenderer(QRenderer):
         #           delete for negative mask: TOP_main_#_NoCheese_99, TOP_main_#_one_hole
         #           delete for positive mask: TOP_main_#_NoCheese_99, TOP_main_#_one_hole,
         #                                       ground_main_#
-        fabricate='False',
-
+        fabricate="False",
         # corners: ('natural', 'miter', 'bevel', 'round', 'smooth',
         # 'circular bend', callable, list)
         # Type of joins. A callable must receive 6 arguments
@@ -165,8 +165,7 @@ class QGDSRenderer(QRenderer):
         # the center and width of the path)
         # and return a list of vertices that make the join.
         # A list can be used to define the join for each parallel path.
-        corners='circular bend',
-
+        corners="circular bend",
         # tolerance > precision
         # Precision used for gds lib, boolean operations and FlexPath should
         # likely be kept the same.  They can be different, but increases odds
@@ -177,31 +176,26 @@ class QGDSRenderer(QRenderer):
         # to pop up if set precision too fine,
         # but 1nm seems to be the finest precision we use anyhow.
         # FOR NOW SPECIFY IN METERS.
-        tolerance='0.00001',  # 10.0 um
-
+        tolerance="0.00001",  # 10.0 um
         # With input from fab people, any of the weird artifacts
         # (like unwanted gaps) that are less than 1nm in size can be ignored.
         # They don't even show up in the fabricated masks.
         # So, the precision of e-9 (so 1 nm) should be good as a default.
         # FOR NOW SPECIFY IN METERS.
-        precision='0.000000001',  # 1.0 nm
-
+        precision="0.000000001",  # 1.0 nm
         # Since Qiskit Metal GUI, does not require a width for LineString, GDS,
         # will provide a default value.
-        width_LineString='10um',
-
+        width_LineString="10um",
         # The file is expected to be in GDS format.  The cell will be placed
         # into gds Metal output without being edited. The name of the cell can
         # be placed as options for a component, i.e. placing within a qubit.
         # During export, the cell will NOT be edited, just imported.
-        path_filename='../resources/Fake_Junctions.GDS',
-
+        path_filename="../resources/Fake_Junctions.GDS",
         # For junction table, when cell from default_options.path_filename does
         # not fit into linestring, QGDSRender will create two pads and add to
         # junction to fill the location of lineString.  The junction_pad_overlap
         # is from the junction cell to the newly created pads.
-        junction_pad_overlap='5um',
-
+        junction_pad_overlap="5um",
         # Vertex limit for FlexPath
         # max_points (integer) – If the number of points in the polygonal path
         # boundary is greater than max_points, it will be fractured in smaller
@@ -210,62 +204,53 @@ class QGDSRenderer(QRenderer):
         # max value of vertices for a poly/path was 199 (fabrication equipment
         # restrictions).  The hard max limit that a GDSII file can
         # handle is 8191.
-        max_points='199',
-
+        max_points="199",
         # Cheesing is denoted by each chip and layer.
         cheese=Dict(
-            #Cheesing is NOT completed
-            datatype='100',
-
+            # Cheesing is NOT completed
+            datatype="100",
             # Expect to mostly cheese a square, but allow for expansion.
             # 0 is rectangle, 1 is circle
-            shape='0',
+            shape="0",
             # rectangle
-            cheese_0_x='25um',
-            cheese_0_y='25um',
+            cheese_0_x="25um",
+            cheese_0_y="25um",
             # circle
-            cheese_1_radius='100um',
-
+            cheese_1_radius="100um",
             # Identify which layers to view in gds output file, for each chip
             view_in_file=Dict(main={1: True}),
-
             # delta spacing between holes
-            delta_x='100um',
-            delta_y='100um',
-
+            delta_x="100um",
+            delta_y="100um",
             # Keep a buffer around the perimeter of chip, that will
             # not need cheesing.
-            edge_nocheese='200um'),
-
+            edge_nocheese="200um",
+        ),
         # Think of this as a keep-out region for cheesing.
         no_cheese=Dict(
             # For every layer, if there is a ground plane, do cheesing and
             # place the output on the datatype number (sub-layer number)
-            datatype='99',
-            buffer='25um',
-
-            #The styles of caps are specified by integer values:
+            datatype="99",
+            buffer="25um",
+            # The styles of caps are specified by integer values:
             # 1 (round), 2 (flat), 3 (square).
-            cap_style='2',
-
+            cap_style="2",
             # The styles of joins between offset segments are specified by
             # integer values:
             # 1 (round), 2 (mitre), and 3 (bevel).
-            join_style='2',
-
+            join_style="2",
             # Identify which layers to view in gds output file, for each chip
             view_in_file=Dict(main={1: True}),
         ),
-
         # (float): Scale box of components to render.
         # Should be greater than 1.0.  For benefit of the GUI, keep this the
         # last entry in the dict.  GUI shows a note regarding bound_box.
-        bounding_box_scale_x='1.2',
-        bounding_box_scale_y='1.2',
+        bounding_box_scale_x="1.2",
+        bounding_box_scale_y="1.2",
     )
     """Default options"""
 
-    name = 'gds'
+    name = "gds"
     """Name"""
 
     # When additional columns are added to QGeometry,
@@ -288,14 +273,17 @@ class QGDSRenderer(QRenderer):
 
     element_table_data = dict(
         # Cell_name must exist in gds file with: path_filename
-        junction=dict(cell_name='my_other_junction'))
+        junction=dict(cell_name="my_other_junction")
+    )
     """Element table data"""
 
-    def __init__(self,
-                 design: 'QDesign',
-                 initiate=True,
-                 render_template: Dict = None,
-                 render_options: Dict = None):
+    def __init__(
+        self,
+        design: "QDesign",
+        initiate=True,
+        render_template: Dict = None,
+        render_options: Dict = None,
+    ):
         """Create a QRenderer for GDS interface: export and import.
 
         Args:
@@ -309,10 +297,12 @@ class QGDSRenderer(QRenderer):
                                             Defaults to None.
         """
 
-        super().__init__(design=design,
-                         initiate=initiate,
-                         render_template=render_template,
-                         render_options=render_options)
+        super().__init__(
+            design=design,
+            initiate=initiate,
+            render_template=render_template,
+            render_options=render_options,
+        )
 
         self.lib = None  # type: gdspy.GdsLibrary
         self.new_gds_library()
@@ -328,13 +318,11 @@ class QGDSRenderer(QRenderer):
         QGDSRenderer.load()
 
     def _initiate_renderer(self):
-        """Not used by the gds renderer at this time. only returns True.
-        """
+        """Not used by the gds renderer at this time. only returns True."""
         return True
 
     def _close_renderer(self):
-        """Not used by the gds renderer at this time. only returns True.
-        """
+        """Not used by the gds renderer at this time. only returns True."""
         return True
 
     def render_design(self):
@@ -345,28 +333,30 @@ class QGDSRenderer(QRenderer):
     def _check_bounding_box_scale(self):
         """Some error checking for bounding_box_scale_x and
         bounding_box_scale_y numbers."""
-        bounding_box_scale_x = self.parse_value(
-            self.options.bounding_box_scale_x)
-        bounding_box_scale_y = self.parse_value(
-            self.options.bounding_box_scale_y)
+        bounding_box_scale_x = self.parse_value(self.options.bounding_box_scale_x)
+        bounding_box_scale_y = self.parse_value(self.options.bounding_box_scale_y)
 
         if bounding_box_scale_x < 1:
             self.options[
-                'bounding_box_scale_x'] = QGDSRenderer.default_options.bounding_box_scale_x
+                "bounding_box_scale_x"
+            ] = QGDSRenderer.default_options.bounding_box_scale_x
             self.logger.warning(
-                'Expected float and number greater than or equal to'
-                ' 1.0 for bounding_box_scale_x. User'
-                f'provided bounding_box_scale_x = {bounding_box_scale_x}'
-                ', using default_options.bounding_box_scale_x.')
+                "Expected float and number greater than or equal to"
+                " 1.0 for bounding_box_scale_x. User"
+                f"provided bounding_box_scale_x = {bounding_box_scale_x}"
+                ", using default_options.bounding_box_scale_x."
+            )
 
         if bounding_box_scale_y < 1:
             self.options[
-                'bounding_box_scale_y'] = QGDSRenderer.default_options.bounding_box_scale_y
+                "bounding_box_scale_y"
+            ] = QGDSRenderer.default_options.bounding_box_scale_y
             self.logger.warning(
-                'Expected float and number greater than or equal to 1.0 for '
-                'bounding_box_scale_y.  User provided '
-                f'bounding_box_scale_y = {bounding_box_scale_y}, '
-                'using default_options.bounding_box_scale_y.')
+                "Expected float and number greater than or equal to 1.0 for "
+                "bounding_box_scale_y.  User provided "
+                f"bounding_box_scale_y = {bounding_box_scale_y}, "
+                "using default_options.bounding_box_scale_y."
+            )
 
     @staticmethod
     def _clear_library():
@@ -386,9 +376,11 @@ class QGDSRenderer(QRenderer):
         if status:
             return 1
 
-        self.logger.warning('Not able to write to directory.'
-                            f'File:"{file}" not written.'
-                            f' Checked directory:"{directory_name}".')
+        self.logger.warning(
+            "Not able to write to directory."
+            f'File:"{file}" not written.'
+            f' Checked directory:"{directory_name}".'
+        )
         return 0
 
     def _update_units(self):
@@ -396,10 +388,11 @@ class QGDSRenderer(QRenderer):
 
         Warning: DOES NOT CHANGE THE CURRENT LIB
         """
-        self.options['gds_unit'] = 1.0 / self.design.parse_value('1 meter')
+        self.options["gds_unit"] = 1.0 / self.design.parse_value("1 meter")
 
-    def _separate_subtract_shapes(self, chip_name: str, table_name: str,
-                                  table: geopandas.GeoSeries) -> None:
+    def _separate_subtract_shapes(
+        self, chip_name: str, table_name: str, table: geopandas.GeoSeries
+    ) -> None:
         """For each chip and table, separate them by subtract being either True
         or False. Names of chip and table should be same as the QGeometry
         tables.
@@ -410,17 +403,15 @@ class QGDSRenderer(QRenderer):
             table (geopandas.GeoSeries): Table with similar qgeometries.
         """
         # pylint: disable=singleton-comparison
-        subtract_true = table[table['subtract'] == True]
+        subtract_true = table[table["subtract"] == True]
 
-        subtract_false = table[table['subtract'] == False]
+        subtract_false = table[table["subtract"] == False]
 
-        setattr(self, f'{chip_name}_{table_name}_subtract_true', subtract_true)
-        setattr(self, f'{chip_name}_{table_name}_subtract_false',
-                subtract_false)
+        setattr(self, f"{chip_name}_{table_name}_subtract_true", subtract_true)
+        setattr(self, f"{chip_name}_{table_name}_subtract_false", subtract_false)
 
     @staticmethod
-    def _get_bounds(
-            gs_table: geopandas.GeoSeries) -> Tuple[float, float, float, float]:
+    def _get_bounds(gs_table: geopandas.GeoSeries) -> Tuple[float, float, float, float]:
         """Get the bounds for all of the elements in gs_table.
 
         Args:
@@ -455,15 +446,18 @@ class QGDSRenderer(QRenderer):
         if len(all_bounds) == 0:
             return (0.0, 0.0, 0.0, 0.0)
 
-        inclusive_tuple = (min(all_bounds, key=itemgetter(0))[0],
-                           min(all_bounds, key=itemgetter(1))[1],
-                           max(all_bounds, key=itemgetter(2))[2],
-                           max(all_bounds, key=itemgetter(3))[3])
+        inclusive_tuple = (
+            min(all_bounds, key=itemgetter(0))[0],
+            min(all_bounds, key=itemgetter(1))[1],
+            max(all_bounds, key=itemgetter(2))[2],
+            max(all_bounds, key=itemgetter(3))[3],
+        )
         return inclusive_tuple
 
     @staticmethod
-    def _midpoint_xy(x_1: float, y_1: float, x_2: float,
-                     y_2: float) -> Tuple[float, float]:
+    def _midpoint_xy(
+        x_1: float, y_1: float, x_2: float, y_2: float
+    ) -> Tuple[float, float]:
         """Calculate the center of a line segment with endpoints (x1,y1) and
         (x2,y2).
 
@@ -483,8 +477,9 @@ class QGDSRenderer(QRenderer):
 
         return midx, midy
 
-    def _scale_max_bounds(self, chip_name: str,
-                          all_bounds: list) -> Tuple[tuple, tuple]:
+    def _scale_max_bounds(
+        self, chip_name: str, all_bounds: list
+    ) -> Tuple[tuple, tuple]:
         """Given the list of tuples to represent all of the bounds for path,
         poly, etc. This will return the scaled using self.bounding_box_scale_x
         and self.bounding_box_scale_y, and the max bounds of the tuples
@@ -511,25 +506,28 @@ class QGDSRenderer(QRenderer):
         center_x = (minx + maxx) / 2
         center_y = (miny + maxy) / 2
 
-        scaled_width = (maxx - minx) * \
-            self.parse_value(self.options.bounding_box_scale_x)
-        scaled_height = (maxy - miny) * \
-            self.parse_value(self.options.bounding_box_scale_y)
+        scaled_width = (maxx - minx) * self.parse_value(
+            self.options.bounding_box_scale_x
+        )
+        scaled_height = (maxy - miny) * self.parse_value(
+            self.options.bounding_box_scale_y
+        )
 
         # Scaled inclusive bounding box by self.options.bounding_box_scale_x
         #  and self.options.bounding_box_scale_y.
-        scaled_box = (center_x - (.5 * scaled_width),
-                      center_y - (.5 * scaled_height),
-                      center_x + (.5 * scaled_width),
-                      center_y + (.5 * scaled_height))
+        scaled_box = (
+            center_x - (0.5 * scaled_width),
+            center_y - (0.5 * scaled_height),
+            center_x + (0.5 * scaled_width),
+            center_y + (0.5 * scaled_height),
+        )
 
-        self.dict_bounds[chip_name]['scaled_box'] = scaled_box
-        self.dict_bounds[chip_name]['inclusive_box'] = (minx, miny, maxx, maxy)
+        self.dict_bounds[chip_name]["scaled_box"] = scaled_box
+        self.dict_bounds[chip_name]["inclusive_box"] = (minx, miny, maxx, maxy)
 
         return scaled_box, (minx, miny, maxx, maxy)
 
-    def _check_qcomps(self,
-                      highlight_qcomponents: list = None) -> Tuple[list, int]:
+    def _check_qcomps(self, highlight_qcomponents: list = None) -> Tuple[list, int]:
         """Confirm the list doesn't have names of components repeated. Comfirm
         that the name of component exists in QDesign.
 
@@ -555,8 +553,9 @@ class QGDSRenderer(QRenderer):
         for qcomp in unique_qcomponents:
             if qcomp not in self.design.name_to_id:
                 self.logger.warning(
-                    f'The component={qcomp} in highlight_qcomponents not'
-                    ' in QDesign. The GDS data not generated.')
+                    f"The component={qcomp} in highlight_qcomponents not"
+                    " in QDesign. The GDS data not generated."
+                )
                 return unique_qcomponents, 1
 
         # For Subtraction bounding box.
@@ -572,8 +571,7 @@ class QGDSRenderer(QRenderer):
 
         return unique_qcomponents, 0
 
-    def _create_qgeometry_for_gds(self,
-                                  highlight_qcomponents: list = None) -> int:
+    def _create_qgeometry_for_gds(self, highlight_qcomponents: list = None) -> int:
         """Using self.design, this method does the following:
 
         1. Gather the QGeometries to be used to write to file.
@@ -611,12 +609,12 @@ class QGDSRenderer(QRenderer):
             # put the QGeometry into GDS format.
             # There can be more than one chip in QGeometry.
             # They all export to one gds file.
-            self.chip_info[chip_name]['all_subtract'] = []
-            self.chip_info[chip_name]['all_no_subtract'] = []
+            self.chip_info[chip_name]["all_subtract"] = []
+            self.chip_info[chip_name]["all_no_subtract"] = []
 
             self.dict_bounds[chip_name] = Dict()
-            self.dict_bounds[chip_name]['gather'] = []
-            self.dict_bounds[chip_name]['for_subtract'] = tuple()
+            self.dict_bounds[chip_name]["gather"] = []
+            self.dict_bounds[chip_name]["for_subtract"] = tuple()
             all_table_subtracts = []
             all_table_no_subtracts = []
 
@@ -624,44 +622,51 @@ class QGDSRenderer(QRenderer):
 
                 # Get table for chip and table_name, and reduce
                 # to keep just the list of unique_qcomponents.
-                table = self._get_table(table_name, unique_qcomponents,
-                                        chip_name)
+                table = self._get_table(table_name, unique_qcomponents, chip_name)
 
-                if table_name == 'junction':
-                    self.chip_info[chip_name]['junction'] = deepcopy(table)
+                if table_name == "junction":
+                    self.chip_info[chip_name]["junction"] = deepcopy(table)
                 else:
                     # For every chip, and layer, separate the "subtract"
                     # and "no_subtract" elements and gather bounds.
                     # dict_bounds[chip_name] = list_bounds
                     self._gather_subtract_elements_and_bounds(
-                        chip_name, table_name, table, all_table_subtracts,
-                        all_table_no_subtracts)
+                        chip_name,
+                        table_name,
+                        table,
+                        all_table_subtracts,
+                        all_table_no_subtracts,
+                    )
 
             # If list of QComponents provided, use the
             # bounding_box_scale(x and y), otherwise use self._chips.
             scaled_max_bound, max_bound = self._scale_max_bounds(
-                chip_name, self.dict_bounds[chip_name]['gather'])
+                chip_name, self.dict_bounds[chip_name]["gather"]
+            )
             if highlight_qcomponents:
-                self.dict_bounds[chip_name]['for_subtract'] = scaled_max_bound
+                self.dict_bounds[chip_name]["for_subtract"] = scaled_max_bound
             else:
                 chip_box, status = self.design.get_x_y_for_chip(chip_name)
                 if status == 0:
-                    self.dict_bounds[chip_name]['for_subtract'] = chip_box
+                    self.dict_bounds[chip_name]["for_subtract"] = chip_box
                 else:
-                    self.dict_bounds[chip_name]['for_subtract'] = max_bound
+                    self.dict_bounds[chip_name]["for_subtract"] = max_bound
                     self.logger.warning(
-                        f'design.get_x_y_for_chip() did NOT return a good '
-                        f'code for chip={chip_name},for ground subtraction-box'
-                        f' using the size calculated from QGeometry, '
-                        f'({max_bound}) will be used. ')
+                        f"design.get_x_y_for_chip() did NOT return a good "
+                        f"code for chip={chip_name},for ground subtraction-box"
+                        f" using the size calculated from QGeometry, "
+                        f"({max_bound}) will be used. "
+                    )
             if is_true(self.options.ground_plane):
-                self._handle_ground_plane(chip_name, all_table_subtracts,
-                                          all_table_no_subtracts)
+                self._handle_ground_plane(
+                    chip_name, all_table_subtracts, all_table_no_subtracts
+                )
 
         return 0
 
-    def _handle_ground_plane(self, chip_name: str, all_table_subtracts: list,
-                             all_table_no_subtracts: list):
+    def _handle_ground_plane(
+        self, chip_name: str, all_table_subtracts: list, all_table_no_subtracts: list
+    ):
         """Place all the subtract geometries for one chip into
         self.chip_info[chip_name]['all_subtract_true'].
 
@@ -681,8 +686,7 @@ class QGDSRenderer(QRenderer):
             all_table_no_subtracts (list): Add to self.chip_info by layer number.
         """
 
-        fix_short_segments = self.parse_value(
-            self.options.short_segments_to_not_fillet)
+        fix_short_segments = self.parse_value(self.options.short_segments_to_not_fillet)
         all_layers = self.design.qgeometry.get_all_unique_layers(chip_name)
 
         for chip_layer in all_layers:
@@ -692,43 +696,49 @@ class QGDSRenderer(QRenderer):
             copy_no_subtract = deepcopy(all_table_no_subtracts)
 
             for item in copy_subtract:
-                item.drop(item.index[item['layer'] != chip_layer], inplace=True)
+                item.drop(item.index[item["layer"] != chip_layer], inplace=True)
 
             for item_no in copy_no_subtract:
-                item_no.drop(item_no.index[item_no['layer'] != chip_layer],
-                             inplace=True)
+                item_no.drop(
+                    item_no.index[item_no["layer"] != chip_layer], inplace=True
+                )
 
             self.chip_info[chip_name][chip_layer][
-                'all_subtract_true'] = geopandas.GeoDataFrame(
-                    pd.concat(copy_subtract, ignore_index=False))
+                "all_subtract_true"
+            ] = geopandas.GeoDataFrame(pd.concat(copy_subtract, ignore_index=False))
 
             self.chip_info[chip_name][chip_layer][
-                'all_subtract_false'] = geopandas.GeoDataFrame(
-                    pd.concat(copy_no_subtract, ignore_index=False))
+                "all_subtract_false"
+            ] = geopandas.GeoDataFrame(pd.concat(copy_no_subtract, ignore_index=False))
 
-            self.chip_info[chip_name][chip_layer][
-                'all_subtract_true'].reset_index(inplace=True)
-            self.chip_info[chip_name][chip_layer][
-                'all_subtract_false'].reset_index(inplace=True)
+            self.chip_info[chip_name][chip_layer]["all_subtract_true"].reset_index(
+                inplace=True
+            )
+            self.chip_info[chip_name][chip_layer]["all_subtract_false"].reset_index(
+                inplace=True
+            )
 
             if is_true(fix_short_segments):
-                self._fix_short_segments_within_table(chip_name, chip_layer,
-                                                      'all_subtract_true')
-                self._fix_short_segments_within_table(chip_name, chip_layer,
-                                                      'all_subtract_false')
+                self._fix_short_segments_within_table(
+                    chip_name, chip_layer, "all_subtract_true"
+                )
+                self._fix_short_segments_within_table(
+                    chip_name, chip_layer, "all_subtract_false"
+                )
 
-            self.chip_info[chip_name][chip_layer][
-                'q_subtract_true'] = self.chip_info[chip_name][chip_layer][
-                    'all_subtract_true'].apply(self._qgeometry_to_gds, axis=1)
+            self.chip_info[chip_name][chip_layer]["q_subtract_true"] = self.chip_info[
+                chip_name
+            ][chip_layer]["all_subtract_true"].apply(self._qgeometry_to_gds, axis=1)
 
-            self.chip_info[chip_name][chip_layer][
-                'q_subtract_false'] = self.chip_info[chip_name][chip_layer][
-                    'all_subtract_false'].apply(self._qgeometry_to_gds, axis=1)
+            self.chip_info[chip_name][chip_layer]["q_subtract_false"] = self.chip_info[
+                chip_name
+            ][chip_layer]["all_subtract_false"].apply(self._qgeometry_to_gds, axis=1)
 
     # Handling Fillet issues.
 
-    def _fix_short_segments_within_table(self, chip_name: str, chip_layer: int,
-                                         all_sub_true_or_false: str):
+    def _fix_short_segments_within_table(
+        self, chip_name: str, chip_layer: int, all_sub_true_or_false: str
+    ):
         """Update self.chip_info geopandas.GeoDataFrame.
 
         Will iterate through the rows to examine the LineString.
@@ -743,9 +753,8 @@ class QGDSRenderer(QRenderer):
                                 'all_subtract_true' or 'all_subtract_false'.
         """
         # pylint: disable=too-many-locals
-        data_frame = self.chip_info[chip_name][chip_layer][
-            all_sub_true_or_false]
-        df_fillet = data_frame[-data_frame['fillet'].isnull()]
+        data_frame = self.chip_info[chip_name][chip_layer][all_sub_true_or_false]
+        df_fillet = data_frame[-data_frame["fillet"].isnull()]
 
         if not df_fillet.empty:
             # Don't edit the table when iterating through the rows.
@@ -755,13 +764,13 @@ class QGDSRenderer(QRenderer):
                 # print(
                 #     f'With parse_value: {self.parse_value(row.fillet)}, '
                 #     f'row.fillet: {row.fillet}')
-                status, all_shapelys = self._check_length(
-                    row.geometry, row.fillet)
+                status, all_shapelys = self._check_length(row.geometry, row.fillet)
                 if status > 0:
                     edit_index[index] = all_shapelys
 
-            df_copy = self.chip_info[chip_name][chip_layer][
-                all_sub_true_or_false].copy(deep=True)
+            df_copy = self.chip_info[chip_name][chip_layer][all_sub_true_or_false].copy(
+                deep=True
+            )
             for del_key, the_shapes in edit_index.items():
                 # copy row "index" into a new data-frame "status" times.
                 # Then replace the LONG shapely with all_shapelys.
@@ -770,17 +779,19 @@ class QGDSRenderer(QRenderer):
                 df_copy = df_copy.drop(index=del_key)
 
                 for dummy_new_row, short_shape in the_shapes.items():
-                    orig_row['geometry'] = short_shape['line']
-                    orig_row['fillet'] = short_shape['fillet']
+                    orig_row["geometry"] = short_shape["line"]
+                    orig_row["fillet"] = short_shape["fillet"]
                     # Keep ignore_index=False, otherwise,
                     # the other del_key will not be found.
                     df_copy = df_copy.append(orig_row, ignore_index=False)
 
-            self.chip_info[chip_name][chip_layer][
-                all_sub_true_or_false] = df_copy.copy(deep=True)
+            self.chip_info[chip_name][chip_layer][all_sub_true_or_false] = df_copy.copy(
+                deep=True
+            )
 
-    def _check_length(self, a_shapely: shapely.geometry.LineString,
-                      a_fillet: float) -> Tuple[int, Dict]:
+    def _check_length(
+        self, a_shapely: shapely.geometry.LineString, a_fillet: float
+    ) -> Tuple[int, Dict]:
         """Determine if a_shapely has short segments based on scaled fillet
         value.
 
@@ -826,16 +837,15 @@ class QGDSRenderer(QRenderer):
 
         all_idx_bad_fillet = dict()
 
-        self._identify_vertex_not_to_fillet(coords, a_fillet,
-                                            all_idx_bad_fillet)
+        self._identify_vertex_not_to_fillet(coords, a_fillet, all_idx_bad_fillet)
 
         shorter_lines = dict()
 
-        idx_bad_fillet = sorted(all_idx_bad_fillet['reduced_idx'])
+        idx_bad_fillet = sorted(all_idx_bad_fillet["reduced_idx"])
         status = len(idx_bad_fillet)
 
         if status:
-            midpoints = all_idx_bad_fillet['midpoints']
+            midpoints = all_idx_bad_fillet["midpoints"]
             no_fillet_vertices = list()
             fillet_vertices = list()
 
@@ -847,34 +857,36 @@ class QGDSRenderer(QRenderer):
                     if stop == len_coords - 1:
                         # Every vertex should not be fillet'd
                         no_fillet_vertices = coords[start:len_coords]
-                        shorter_lines[stop] = dict({
-                            'line': LineString(no_fillet_vertices),
-                            'fillet': float('NaN')
-                        })
+                        shorter_lines[stop] = dict(
+                            {
+                                "line": LineString(no_fillet_vertices),
+                                "fillet": float("NaN"),
+                            }
+                        )
                     else:
-                        no_fillet_vertices = coords[start:stop + 1]
+                        no_fillet_vertices = coords[start : stop + 1]
                         no_fillet_vertices.append(midpoints[stop])
-                        shorter_lines[stop] = dict({
-                            'line': LineString(no_fillet_vertices),
-                            'fillet': float('NaN')
-                        })
+                        shorter_lines[stop] = dict(
+                            {
+                                "line": LineString(no_fillet_vertices),
+                                "fillet": float("NaN"),
+                            }
+                        )
                 elif idx == status - 1 and stop == len_coords - 1:
                     # The last segment
-                    no_fillet_vertices = coords[start:stop + 1]
+                    no_fillet_vertices = coords[start : stop + 1]
                     no_fillet_vertices.insert(0, midpoints[start - 1])
-                    shorter_lines[stop] = dict({
-                        'line': LineString(no_fillet_vertices),
-                        'fillet': float('NaN')
-                    })
+                    shorter_lines[stop] = dict(
+                        {"line": LineString(no_fillet_vertices), "fillet": float("NaN")}
+                    )
                 else:
                     # Segment in between first and last segment.
-                    no_fillet_vertices = coords[start:stop + 1]
+                    no_fillet_vertices = coords[start : stop + 1]
                     no_fillet_vertices.insert(0, midpoints[start - 1])
                     no_fillet_vertices.append(midpoints[stop])
-                    shorter_lines[stop] = dict({
-                        'line': LineString(no_fillet_vertices),
-                        'fillet': float('NaN')
-                    })
+                    shorter_lines[stop] = dict(
+                        {"line": LineString(no_fillet_vertices), "fillet": float("NaN")}
+                    )
             # Gather the fillet segments.
             at_vertex = 0
             for idx, (start, stop) in enumerate(idx_bad_fillet):
@@ -884,69 +896,63 @@ class QGDSRenderer(QRenderer):
                 if idx == 0 and start == 1:
                     init_tuple = coords[0]
                     fillet_vertices = [init_tuple, midpoints[start - 1]]
-                    shorter_lines[start] = dict({
-                        'line': LineString(fillet_vertices),
-                        'fillet': a_fillet
-                    })
+                    shorter_lines[start] = dict(
+                        {"line": LineString(fillet_vertices), "fillet": a_fillet}
+                    )
                 if idx == 0 and start > 1:
                     fillet_vertices = coords[0:start]
                     fillet_vertices.append(midpoints[start - 1])
-                    shorter_lines[start] = dict({
-                        'line': LineString(fillet_vertices),
-                        'fillet': a_fillet
-                    })
+                    shorter_lines[start] = dict(
+                        {"line": LineString(fillet_vertices), "fillet": a_fillet}
+                    )
                     if idx == status - 1 and stop != len_coords - 1:
                         # Extra segment after the last no-fillet.
                         fillet_vertices.clear()
-                        fillet_vertices = coords[stop + 1:len_coords]
+                        fillet_vertices = coords[stop + 1 : len_coords]
                         fillet_vertices.insert(0, midpoints[stop])
-                        shorter_lines[len_coords] = dict({
-                            'line': LineString(fillet_vertices),
-                            'fillet': a_fillet
-                        })
+                        shorter_lines[len_coords] = dict(
+                            {"line": LineString(fillet_vertices), "fillet": a_fillet}
+                        )
                 elif idx == status - 1 and start == 0 and stop != len_coords - 1:
                     # At last tuple, and and start at first index,
                     # and the stop is not last index of coords.
-                    fillet_vertices = coords[stop + 1:len_coords]
+                    fillet_vertices = coords[stop + 1 : len_coords]
                     fillet_vertices.insert(0, midpoints[stop])
-                    shorter_lines[start] = dict({
-                        'line': LineString(fillet_vertices),
-                        'fillet': a_fillet
-                    })
+                    shorter_lines[start] = dict(
+                        {"line": LineString(fillet_vertices), "fillet": a_fillet}
+                    )
                 elif idx == status - 1 and stop != len_coords - 1:
                     # At last tuple, and the stop is not last index of coords.
-                    fillet_vertices = coords[at_vertex + 1:start]
+                    fillet_vertices = coords[at_vertex + 1 : start]
                     fillet_vertices.insert(0, midpoints[at_vertex])
                     fillet_vertices.append(midpoints[start - 1])
-                    shorter_lines[start] = dict({
-                        'line': LineString(fillet_vertices),
-                        'fillet': a_fillet
-                    })
+                    shorter_lines[start] = dict(
+                        {"line": LineString(fillet_vertices), "fillet": a_fillet}
+                    )
                     # Extra segment after the last no-fillet.
                     fillet_vertices.clear()
-                    fillet_vertices = coords[stop + 1:len_coords]
+                    fillet_vertices = coords[stop + 1 : len_coords]
                     fillet_vertices.insert(0, midpoints[stop])
-                    shorter_lines[len_coords] = dict({
-                        'line': LineString(fillet_vertices),
-                        'fillet': a_fillet
-                    })
+                    shorter_lines[len_coords] = dict(
+                        {"line": LineString(fillet_vertices), "fillet": a_fillet}
+                    )
                 else:
                     if (start - at_vertex) > 1:
-                        fillet_vertices = coords[at_vertex + 1:start]
+                        fillet_vertices = coords[at_vertex + 1 : start]
                         fillet_vertices.insert(0, midpoints[at_vertex])
                         fillet_vertices.append(midpoints[start - 1])
-                        shorter_lines[start] = dict({
-                            'line': LineString(fillet_vertices),
-                            'fillet': a_fillet
-                        })
+                        shorter_lines[start] = dict(
+                            {"line": LineString(fillet_vertices), "fillet": a_fillet}
+                        )
                 at_vertex = stop  # Need to update for every loop.
         else:
             # No short segments.
             shorter_lines[len_coords - 1] = a_shapely
         return status, shorter_lines
 
-    def _identify_vertex_not_to_fillet(self, coords: list, a_fillet: float,
-                                       all_idx_bad_fillet: dict):
+    def _identify_vertex_not_to_fillet(
+        self, coords: list, a_fillet: float, all_idx_bad_fillet: dict
+    ):
         """Use coords to denote segments that are too short.  In particular,
         when fillet'd, they will cause the appearance of incorrect fillet when
         graphed.
@@ -980,25 +986,30 @@ class QGDSRenderer(QRenderer):
 
         qdesign_precision = self.design.template_options.PRECISION
 
-        all_idx_bad_fillet['reduced_idx'] = get_range_of_vertex_to_not_fillet(
-            coords, a_fillet, qdesign_precision, add_endpoints=True)
+        all_idx_bad_fillet["reduced_idx"] = get_range_of_vertex_to_not_fillet(
+            coords, a_fillet, qdesign_precision, add_endpoints=True
+        )
 
         midpoints = list()
         midpoints = [
-            QGDSRenderer._midpoint_xy(coords[idx - 1][0], coords[idx - 1][1],
-                                      vertex2[0], vertex2[1])
+            QGDSRenderer._midpoint_xy(
+                coords[idx - 1][0], coords[idx - 1][1], vertex2[0], vertex2[1]
+            )
             for idx, vertex2 in enumerate(coords)
             if idx > 0
         ]
-        all_idx_bad_fillet['midpoints'] = midpoints
+        all_idx_bad_fillet["midpoints"] = midpoints
 
     # Move data around to be useful for GDS
 
-    def _gather_subtract_elements_and_bounds(self, chip_name: str,
-                                             table_name: str,
-                                             table: geopandas.GeoDataFrame,
-                                             all_subtracts: list,
-                                             all_no_subtracts: list):
+    def _gather_subtract_elements_and_bounds(
+        self,
+        chip_name: str,
+        table_name: str,
+        table: geopandas.GeoDataFrame,
+        all_subtracts: list,
+        all_no_subtracts: list,
+    ):
         """For every chip, and layer, separate the "subtract" and "no_subtract"
         elements and gather bounds for all the elements in qgeometries. Use
         format: f'{chip_name}_{table_name}s'.
@@ -1018,26 +1029,29 @@ class QGDSRenderer(QRenderer):
         bounds = tuple(self._get_bounds(table))
 
         # Add the bounds of each table to list.
-        self.dict_bounds[chip_name]['gather'].append(bounds)
+        self.dict_bounds[chip_name]["gather"].append(bounds)
 
         if is_true(self.options.ground_plane):
             self._separate_subtract_shapes(chip_name, table_name, table)
 
             all_subtracts.append(
-                getattr(self, f'{chip_name}_{table_name}_subtract_true'))
+                getattr(self, f"{chip_name}_{table_name}_subtract_true")
+            )
             all_no_subtracts.append(
-                getattr(self, f'{chip_name}_{table_name}_subtract_false'))
+                getattr(self, f"{chip_name}_{table_name}_subtract_false")
+            )
 
         # Done because ground plane option may be false.
         # This is not used anywhere currently.
         # Keep this depreciated code.
         # polys use gdspy.Polygon;    paths use gdspy.LineString
 
-        #q_geometries = table.apply(self._qgeometry_to_gds, axis=1)
-        #setattr(self, f'{chip_name}_{table_name}s', q_geometries)
+        # q_geometries = table.apply(self._qgeometry_to_gds, axis=1)
+        # setattr(self, f'{chip_name}_{table_name}s', q_geometries)
 
-    def _get_table(self, table_name: str, unique_qcomponents: list,
-                   chip_name: str) -> geopandas.GeoDataFrame:
+    def _get_table(
+        self, table_name: str, unique_qcomponents: list, chip_name: str
+    ) -> geopandas.GeoDataFrame:
         """If unique_qcomponents list is empty, get table using table_name from
         QGeometry tables for all elements with table_name.  Otherwise, return a
         table with fewer elements, for just the qcomponents within the
@@ -1065,9 +1079,9 @@ class QGDSRenderer(QRenderer):
             ]
 
             # Remove QComponents which are not requested.
-            table = table[table['component'].isin(highlight_id)]
+            table = table[table["component"].isin(highlight_id)]
 
-        table = table[table['chip'] == chip_name]
+        table = table[table["chip"] == chip_name]
 
         return table
 
@@ -1089,7 +1103,8 @@ class QGDSRenderer(QRenderer):
         # Create a new GDS library file. It can contains multiple cells.
         self.lib = gdspy.GdsLibrary(
             unit=float(self.parse_value(self.options.gds_unit)),
-            precision=float(self.parse_value(self.options.precision)))
+            precision=float(self.parse_value(self.options.precision)),
+        )
 
         return self.lib
 
@@ -1185,8 +1200,10 @@ class QGDSRenderer(QRenderer):
         cheese_code = self._check_cheese(chip, layer)
 
         if no_cheese_code == 0 or cheese_code == 0:
-            self.logger.warning('Not able to get no_cheese_view_in_file or '
-                                'cheese_view_in_file from self.options.')
+            self.logger.warning(
+                "Not able to get no_cheese_view_in_file or "
+                "cheese_view_in_file from self.options."
+            )
             code = 0
             return code
         if no_cheese_code == 1 and cheese_code == 1:
@@ -1204,14 +1221,15 @@ class QGDSRenderer(QRenderer):
         if no_cheese_code == 3 or cheese_code == 3:
             code = 5
             self.logger.warning(
-                f'Chip={chip} is not either in no_cheese_view_in_file '
-                f'or cheese_view_in_file from self.options.')
+                f"Chip={chip} is not either in no_cheese_view_in_file "
+                f"or cheese_view_in_file from self.options."
+            )
             return code
         if no_cheese_code == 4 or cheese_code == 4:
             code = 6
             self.logger.warning(
-                f'layer={layer} is not in chip={chip} either in '
-                f'no_cheese_view_in_file or cheese_view_in_file from self.options.'
+                f"layer={layer} is not in chip={chip} either in "
+                f"no_cheese_view_in_file or cheese_view_in_file from self.options."
             )
             return code
 
@@ -1223,12 +1241,10 @@ class QGDSRenderer(QRenderer):
 
         # lib = self.lib
         cheese_sub_layer = int(self.parse_value(self.options.cheese.datatype))
-        nocheese_sub_layer = int(
-            self.parse_value(self.options.no_cheese.datatype))
+        nocheese_sub_layer = int(self.parse_value(self.options.no_cheese.datatype))
 
         for chip_name in self.chip_info:
-            layers_in_chip = self.design.qgeometry.get_all_unique_layers(
-                chip_name)
+            layers_in_chip = self.design.qgeometry.get_all_unique_layers(chip_name)
 
             for chip_layer in layers_in_chip:
                 code = self._check_cheese(chip_name, chip_layer)
@@ -1237,14 +1253,28 @@ class QGDSRenderer(QRenderer):
                     if status == 0:
                         minx, miny, maxx, maxy = chip_box
 
-                        self._cheese_based_on_shape(minx, miny, maxx, maxy,
-                                                    chip_name, chip_layer,
-                                                    cheese_sub_layer,
-                                                    nocheese_sub_layer)
+                        self._cheese_based_on_shape(
+                            minx,
+                            miny,
+                            maxx,
+                            maxy,
+                            chip_name,
+                            chip_layer,
+                            cheese_sub_layer,
+                            nocheese_sub_layer,
+                        )
 
-    def _cheese_based_on_shape(self, minx: float, miny: float, maxx: float,
-                               maxy: float, chip_name: str, chip_layer: int,
-                               cheese_sub_layer: int, nocheese_sub_layer: int):
+    def _cheese_based_on_shape(
+        self,
+        minx: float,
+        miny: float,
+        maxx: float,
+        maxy: float,
+        chip_name: str,
+        chip_layer: int,
+        cheese_sub_layer: int,
+        nocheese_sub_layer: int,
+    ):
         """Instantiate class to do cheesing.
 
         Args:
@@ -1264,13 +1294,11 @@ class QGDSRenderer(QRenderer):
 
         max_points = int(self.parse_value(self.options.max_points))
         cheese_shape = int(self.parse_value(self.options.cheese.shape))
-        all_nocheese = self.chip_info[chip_name][chip_layer]['no_cheese']
-        all_nocheese_gds = self.chip_info[chip_name][chip_layer][
-            'no_cheese_gds']
+        all_nocheese = self.chip_info[chip_name][chip_layer]["no_cheese"]
+        all_nocheese_gds = self.chip_info[chip_name][chip_layer]["no_cheese_gds"]
         delta_x = float(self.parse_value(self.options.cheese.delta_x))
         delta_y = float(self.parse_value(self.options.cheese.delta_y))
-        edge_nocheese = float(
-            self.parse_value(self.options.cheese.edge_nocheese))
+        edge_nocheese = float(self.parse_value(self.options.cheese.edge_nocheese))
         precision = float(self.parse_value(self.options.precision))
         is_neg_mask = self._is_negative_mask(chip_name, chip_layer)
         fab = is_true(self.options.fabricate)
@@ -1278,55 +1306,59 @@ class QGDSRenderer(QRenderer):
         if cheese_shape == 0:
             cheese_x = float(self.parse_value(self.options.cheese.cheese_0_x))
             cheese_y = float(self.parse_value(self.options.cheese.cheese_0_y))
-            a_cheese = Cheesing(all_nocheese,
-                                all_nocheese_gds,
-                                self.lib,
-                                minx,
-                                miny,
-                                maxx,
-                                maxy,
-                                chip_name,
-                                edge_nocheese,
-                                chip_layer,
-                                is_neg_mask,
-                                cheese_sub_layer,
-                                nocheese_sub_layer,
-                                fab,
-                                self.logger,
-                                max_points,
-                                precision,
-                                cheese_shape=cheese_shape,
-                                shape_0_x=cheese_x,
-                                shape_0_y=cheese_y,
-                                delta_x=delta_x,
-                                delta_y=delta_y)
+            a_cheese = Cheesing(
+                all_nocheese,
+                all_nocheese_gds,
+                self.lib,
+                minx,
+                miny,
+                maxx,
+                maxy,
+                chip_name,
+                edge_nocheese,
+                chip_layer,
+                is_neg_mask,
+                cheese_sub_layer,
+                nocheese_sub_layer,
+                fab,
+                self.logger,
+                max_points,
+                precision,
+                cheese_shape=cheese_shape,
+                shape_0_x=cheese_x,
+                shape_0_y=cheese_y,
+                delta_x=delta_x,
+                delta_y=delta_y,
+            )
         elif cheese_shape == 1:
-            cheese_radius = float(
-                self.parse_value(self.options.cheese.cheese_1_radius))
-            a_cheese = Cheesing(all_nocheese,
-                                all_nocheese_gds,
-                                self.lib,
-                                minx,
-                                miny,
-                                maxx,
-                                maxy,
-                                chip_name,
-                                edge_nocheese,
-                                chip_layer,
-                                is_neg_mask,
-                                cheese_sub_layer,
-                                nocheese_sub_layer,
-                                fab,
-                                self.logger,
-                                max_points,
-                                precision,
-                                cheese_shape=cheese_shape,
-                                shape_1_radius=cheese_radius,
-                                delta_x=delta_x,
-                                delta_y=delta_y)
+            cheese_radius = float(self.parse_value(self.options.cheese.cheese_1_radius))
+            a_cheese = Cheesing(
+                all_nocheese,
+                all_nocheese_gds,
+                self.lib,
+                minx,
+                miny,
+                maxx,
+                maxy,
+                chip_name,
+                edge_nocheese,
+                chip_layer,
+                is_neg_mask,
+                cheese_sub_layer,
+                nocheese_sub_layer,
+                fab,
+                self.logger,
+                max_points,
+                precision,
+                cheese_shape=cheese_shape,
+                shape_1_radius=cheese_radius,
+                delta_x=delta_x,
+                delta_y=delta_y,
+            )
         else:
             self.logger.warning(
-                f'The cheese_shape={cheese_shape} is unknown in QGDSRenderer.')
+                f"The cheese_shape={cheese_shape} is unknown in QGDSRenderer."
+            )
             a_cheese = None
 
         if a_cheese is not None:
@@ -1345,67 +1377,77 @@ class QGDSRenderer(QRenderer):
 
         # pylint: disable=too-many-nested-blocks
 
-        no_cheese_buffer = float(self.parse_value(
-            self.options.no_cheese.buffer))
+        no_cheese_buffer = float(self.parse_value(self.options.no_cheese.buffer))
         sub_layer = int(self.parse_value(self.options.no_cheese.datatype))
         lib = self.lib
 
         fab = is_true(self.options.fabricate)
 
         for chip_name in self.chip_info:
-            layers_in_chip = self.design.qgeometry.get_all_unique_layers(
-                chip_name)
+            layers_in_chip = self.design.qgeometry.get_all_unique_layers(chip_name)
 
             for chip_layer in layers_in_chip:
                 code = self._check_either_cheese(chip_name, chip_layer)
 
                 if code in (1, 2, 3):
-                    if len(self.chip_info[chip_name][chip_layer]
-                           ['all_subtract_true']) != 0:
+                    if (
+                        len(self.chip_info[chip_name][chip_layer]["all_subtract_true"])
+                        != 0
+                    ):
 
                         sub_df = self.chip_info[chip_name][chip_layer][
-                            'all_subtract_true']
+                            "all_subtract_true"
+                        ]
                         no_cheese_multipolygon = self._cheese_buffer_maker(
-                            sub_df, chip_name, no_cheese_buffer)
+                            sub_df, chip_name, no_cheese_buffer
+                        )
 
                         if no_cheese_multipolygon is not None:
                             self.chip_info[chip_name][chip_layer][
-                                'no_cheese'] = no_cheese_multipolygon
+                                "no_cheese"
+                            ] = no_cheese_multipolygon
                             sub_layer = int(
-                                self.parse_value(
-                                    self.options.no_cheese.datatype))
+                                self.parse_value(self.options.no_cheese.datatype)
+                            )
                             all_nocheese_gds = self._multipolygon_to_gds(
-                                no_cheese_multipolygon, chip_layer, sub_layer,
-                                no_cheese_buffer)
+                                no_cheese_multipolygon,
+                                chip_layer,
+                                sub_layer,
+                                no_cheese_buffer,
+                            )
                             self.chip_info[chip_name][chip_layer][
-                                'no_cheese_gds'] = all_nocheese_gds
+                                "no_cheese_gds"
+                            ] = all_nocheese_gds
 
                             # If fabricate.fab is true, then
                             # do not put nocheese in gds file.
-                            if self._check_no_cheese(
-                                    chip_name, chip_layer) == 1 and not fab:
+                            if (
+                                self._check_no_cheese(chip_name, chip_layer) == 1
+                                and not fab
+                            ):
                                 no_cheese_subtract_cell_name = (
-                                    f'TOP_{chip_name}_{chip_layer}'
-                                    f'_NoCheese_{sub_layer}')
+                                    f"TOP_{chip_name}_{chip_layer}"
+                                    f"_NoCheese_{sub_layer}"
+                                )
                                 no_cheese_cell = lib.new_cell(
                                     no_cheese_subtract_cell_name,
-                                    overwrite_duplicate=True)
+                                    overwrite_duplicate=True,
+                                )
 
                                 no_cheese_cell.add(all_nocheese_gds)
 
                                 # Keep the cell out to layer, it becomes part of ground.
-                                chip_only_top_name = f'TOP_{chip_name}'
+                                chip_only_top_name = f"TOP_{chip_name}"
 
-                                if no_cheese_cell.get_bounding_box(
-                                ) is not None:
+                                if no_cheese_cell.get_bounding_box() is not None:
                                     lib.cells[chip_only_top_name].add(
-                                        gdspy.CellReference(no_cheese_cell))
+                                        gdspy.CellReference(no_cheese_cell)
+                                    )
                                 else:
                                     lib.remove(no_cheese_cell)
 
     def _cheese_buffer_maker(
-        self, sub_df: geopandas.GeoDataFrame, chip_name: str,
-        no_cheese_buffer: float
+        self, sub_df: geopandas.GeoDataFrame, chip_name: str, no_cheese_buffer: float
     ) -> Union[None, shapely.geometry.multipolygon.MultiPolygon]:
         """For each layer in each chip, and if it has a ground plane
         (subtract==True), determine the no-cheese buffer and return a shapely
@@ -1428,30 +1470,35 @@ class QGDSRenderer(QRenderer):
         style_cap = int(self.parse_value(self.options.no_cheese.cap_style))
         style_join = int(self.parse_value(self.options.no_cheese.join_style))
 
-        poly_sub_df = sub_df[sub_df.geometry.apply(
-            lambda x: isinstance(x, shapely.geometry.polygon.Polygon))]
-        poly_sub_geo = poly_sub_df['geometry'].tolist()
+        poly_sub_df = sub_df[
+            sub_df.geometry.apply(
+                lambda x: isinstance(x, shapely.geometry.polygon.Polygon)
+            )
+        ]
+        poly_sub_geo = poly_sub_df["geometry"].tolist()
 
-        path_sub_df = sub_df[sub_df.geometry.apply(
-            lambda x: isinstance(x, shapely.geometry.linestring.LineString))]
-        path_sub_geo = path_sub_df['geometry'].tolist()
-        path_sub_width = path_sub_df['width'].tolist()
-        #for n in range(len(path_sub_geo)):
+        path_sub_df = sub_df[
+            sub_df.geometry.apply(
+                lambda x: isinstance(x, shapely.geometry.linestring.LineString)
+            )
+        ]
+        path_sub_geo = path_sub_df["geometry"].tolist()
+        path_sub_width = path_sub_df["width"].tolist()
+        # for n in range(len(path_sub_geo)):
         for index, _ in enumerate(path_sub_geo):
             path_sub_geo[index] = path_sub_geo[index].buffer(
-                path_sub_width[index] / 2,
-                cap_style=style_cap,
-                join_style=style_join)
+                path_sub_width[index] / 2, cap_style=style_cap, join_style=style_join
+            )
 
         #  Need to add buffer_size, cap style, and join style to default options
         combo_list = path_sub_geo + poly_sub_geo
         combo_shapely = draw.union(combo_list)
 
         if not combo_shapely.is_empty:
-            #Can return either Multipolygon or just one polygon.
-            combo_shapely = combo_shapely.buffer(no_cheese_buffer,
-                                                 cap_style=style_cap,
-                                                 join_style=style_join)
+            # Can return either Multipolygon or just one polygon.
+            combo_shapely = combo_shapely.buffer(
+                no_cheese_buffer, cap_style=style_cap, join_style=style_join
+            )
             if isinstance(combo_shapely, shapely.geometry.polygon.Polygon):
                 combo_shapely = shapely.geometry.MultiPolygon([combo_shapely])
 
@@ -1460,17 +1507,16 @@ class QGDSRenderer(QRenderer):
             if status == 0:
                 minx, miny, maxx, maxy = chip_box
                 c_minx, c_miny, c_maxx, c_maxy = combo_shapely.bounds
-                if (c_minx < minx or c_miny < miny or c_maxx > maxx or
-                        c_maxy > maxy):
+                if c_minx < minx or c_miny < miny or c_maxx > maxx or c_maxy > maxy:
                     self.logger.warning(
-                        f'The bounding box for no-cheese is outside of chip size.\n'
-                        f'Bounding box for chip is {chip_box}.\n'
-                        f'Bounding box with no_cheese buffer is {combo_shapely.bounds}.'
+                        f"The bounding box for no-cheese is outside of chip size.\n"
+                        f"Bounding box for chip is {chip_box}.\n"
+                        f"Bounding box with no_cheese buffer is {combo_shapely.bounds}."
                     )
             else:
                 self.logger.warning(
-                    f'design.get_x_y_for_chip() did NOT return a good code for chip={chip_name},'
-                    f'for _cheese_buffer_maker.  The chip boundary will not be tested.'
+                    f"design.get_x_y_for_chip() did NOT return a good code for chip={chip_name},"
+                    f"for _cheese_buffer_maker.  The chip boundary will not be tested."
                 )
 
             # The type of combo_shapely will be
@@ -1490,9 +1536,8 @@ class QGDSRenderer(QRenderer):
         """
         layers_in_chip = self.design.qgeometry.get_all_unique_layers(chip_name)
 
-        minx, miny, maxx, maxy = self.dict_bounds[chip_name]['for_subtract']
-        rectangle_points = [(minx, miny), (maxx, miny), (maxx, maxy),
-                            (minx, maxy)]
+        minx, miny, maxx, maxy = self.dict_bounds[chip_name]["for_subtract"]
+        rectangle_points = [(minx, miny), (maxx, miny), (maxx, maxy), (minx, maxy)]
 
         return layers_in_chip, rectangle_points
 
@@ -1516,27 +1561,32 @@ class QGDSRenderer(QRenderer):
         lib = self.new_gds_library()
 
         if is_true(self.options.ground_plane):
-            all_chips_top_name = 'TOP'
-            all_chips_top = lib.new_cell(all_chips_top_name,
-                                         overwrite_duplicate=True)
+            all_chips_top_name = "TOP"
+            all_chips_top = lib.new_cell(all_chips_top_name, overwrite_duplicate=True)
             for chip_name in self.chip_info:
-                chip_only_top_name = f'TOP_{chip_name}'
-                chip_only_top = lib.new_cell(chip_only_top_name,
-                                             overwrite_duplicate=True)
+                chip_only_top_name = f"TOP_{chip_name}"
+                chip_only_top = lib.new_cell(
+                    chip_only_top_name, overwrite_duplicate=True
+                )
 
-                layers_in_chip, rectangle_points = self._get_rectangle_points(
-                    chip_name)
+                layers_in_chip, rectangle_points = self._get_rectangle_points(chip_name)
 
                 for chip_layer in layers_in_chip:
-                    self._handle_photo_resist(lib, chip_only_top, chip_name,
-                                              chip_layer, rectangle_points,
-                                              precision, max_points)
+                    self._handle_photo_resist(
+                        lib,
+                        chip_only_top,
+                        chip_name,
+                        chip_layer,
+                        rectangle_points,
+                        precision,
+                        max_points,
+                    )
 
                 # If junction table, import the cell and cell to chip_only_top
-                if 'junction' in self.chip_info[chip_name]:
-                    self._import_junctions_to_one_cell(chip_name, lib,
-                                                       chip_only_top,
-                                                       layers_in_chip)
+                if "junction" in self.chip_info[chip_name]:
+                    self._import_junctions_to_one_cell(
+                        chip_name, lib, chip_only_top, layers_in_chip
+                    )
 
                 # put all chips into TOP
                 if chip_only_top.get_bounding_box() is not None:
@@ -1544,10 +1594,16 @@ class QGDSRenderer(QRenderer):
                 else:
                     lib.remove(chip_only_top)
 
-    def _handle_photo_resist(self, lib: gdspy.GdsLibrary,
-                             chip_only_top: gdspy.library.Cell, chip_name: str,
-                             chip_layer: int, rectangle_points: list,
-                             precision: float, max_points: int):
+    def _handle_photo_resist(
+        self,
+        lib: gdspy.GdsLibrary,
+        chip_only_top: gdspy.library.Cell,
+        chip_name: str,
+        chip_layer: int,
+        rectangle_points: list,
+        precision: float,
+        max_points: int,
+    ):
         """Handle the positive vs negative mask.
 
         Args:
@@ -1561,18 +1617,33 @@ class QGDSRenderer(QRenderer):
             max_points (int): Used for gdspy. GDSpy uses 199 as the default.
         """
 
-        self.chip_info[chip_name]['subtract_poly'] = gdspy.Polygon(
-            rectangle_points, chip_layer)
+        self.chip_info[chip_name]["subtract_poly"] = gdspy.Polygon(
+            rectangle_points, chip_layer
+        )
 
-        ground_cell_name = f'TOP_{chip_name}_{chip_layer}'
+        ground_cell_name = f"TOP_{chip_name}_{chip_layer}"
         ground_cell = lib.new_cell(ground_cell_name, overwrite_duplicate=True)
 
         if self._is_negative_mask(chip_name, chip_layer):
-            self._negative_mask(lib, chip_only_top, ground_cell, chip_name,
-                                chip_layer, precision, max_points)
+            self._negative_mask(
+                lib,
+                chip_only_top,
+                ground_cell,
+                chip_name,
+                chip_layer,
+                precision,
+                max_points,
+            )
         else:
-            self._positive_mask(lib, chip_only_top, ground_cell, chip_name,
-                                chip_layer, precision, max_points)
+            self._positive_mask(
+                lib,
+                chip_only_top,
+                ground_cell,
+                chip_name,
+                chip_layer,
+                precision,
+                max_points,
+            )
 
     def _is_negative_mask(self, chip: str, layer: int) -> bool:
         """Check options to see if negative mask is requested for the
@@ -1592,10 +1663,16 @@ class QGDSRenderer(QRenderer):
 
         return False
 
-    def _negative_mask(self, lib: gdspy.GdsLibrary,
-                       chip_only_top: gdspy.library.Cell,
-                       ground_cell: gdspy.library.Cell, chip_name: str,
-                       chip_layer: int, precision: float, max_points: int):
+    def _negative_mask(
+        self,
+        lib: gdspy.GdsLibrary,
+        chip_only_top: gdspy.library.Cell,
+        ground_cell: gdspy.library.Cell,
+        chip_name: str,
+        chip_layer: int,
+        precision: float,
+        max_points: int,
+    ):
         """Apply logic for negative_mask.
 
         Args:
@@ -1607,46 +1684,58 @@ class QGDSRenderer(QRenderer):
             precision (float): Used for gdspy.
             max_points (int): Used for gdspy. GDSpy uses 199 as the default.
         """
-        if len(self.chip_info[chip_name][chip_layer]['q_subtract_true']) != 0:
+        if len(self.chip_info[chip_name][chip_layer]["q_subtract_true"]) != 0:
 
             # When subtract==True for chip and layer.
-            subtract_true_cell_name = f'SUBTRACT_true_{chip_name}_{chip_layer}'
-            subtract_true_cell = lib.new_cell(subtract_true_cell_name,
-                                              overwrite_duplicate=True)
+            subtract_true_cell_name = f"SUBTRACT_true_{chip_name}_{chip_layer}"
+            subtract_true_cell = lib.new_cell(
+                subtract_true_cell_name, overwrite_duplicate=True
+            )
             subtract_true_cell.add(
-                self.chip_info[chip_name][chip_layer]['q_subtract_true'])
+                self.chip_info[chip_name][chip_layer]["q_subtract_true"]
+            )
 
-            #When subtract==False for chip and layer.
-            subtract_false_cell_name = f'SUBTRACT_false_{chip_name}_{chip_layer}'
-            subtract_false_cell = lib.new_cell(subtract_false_cell_name,
-                                               overwrite_duplicate=True)
+            # When subtract==False for chip and layer.
+            subtract_false_cell_name = f"SUBTRACT_false_{chip_name}_{chip_layer}"
+            subtract_false_cell = lib.new_cell(
+                subtract_false_cell_name, overwrite_duplicate=True
+            )
             subtract_false_cell.add(
-                self.chip_info[chip_name][chip_layer]['q_subtract_false'])
+                self.chip_info[chip_name][chip_layer]["q_subtract_false"]
+            )
 
             # Difference for True-False.
-            diff_geometry = gdspy.boolean(subtract_true_cell.get_polygons(),
-                                          subtract_false_cell.get_polygons(),
-                                          'not',
-                                          max_points=max_points,
-                                          precision=precision,
-                                          layer=chip_layer)
+            diff_geometry = gdspy.boolean(
+                subtract_true_cell.get_polygons(),
+                subtract_false_cell.get_polygons(),
+                "not",
+                max_points=max_points,
+                precision=precision,
+                layer=chip_layer,
+            )
 
             lib.remove(subtract_true_cell)
             lib.remove(subtract_false_cell)
 
             if diff_geometry is None:
                 self.design.logger.warning(
-                    'There is no table named diff_geometry to write.')
+                    "There is no table named diff_geometry to write."
+                )
             else:
                 ground_cell.add(diff_geometry)
 
-        QGDSRenderer._add_groundcell_to_chip_only_top(lib, chip_only_top,
-                                                      ground_cell)
+        QGDSRenderer._add_groundcell_to_chip_only_top(lib, chip_only_top, ground_cell)
 
-    def _positive_mask(self, lib: gdspy.GdsLibrary,
-                       chip_only_top: gdspy.library.Cell,
-                       ground_cell: gdspy.library.Cell, chip_name: str,
-                       chip_layer: int, precision: float, max_points: int):
+    def _positive_mask(
+        self,
+        lib: gdspy.GdsLibrary,
+        chip_only_top: gdspy.library.Cell,
+        ground_cell: gdspy.library.Cell,
+        chip_name: str,
+        chip_layer: int,
+        precision: float,
+        max_points: int,
+    ):
         """Apply logic for positive mask.
 
         Args:
@@ -1658,12 +1747,10 @@ class QGDSRenderer(QRenderer):
             precision (float): Used for gdspy.
             max_points (int): Used for gdspy. GDSpy uses 199 as the default.
         """
-        if len(self.chip_info[chip_name][chip_layer]['q_subtract_true']) != 0:
-            subtract_cell_name = f'SUBTRACT_{chip_name}_{chip_layer}'
-            subtract_cell = lib.new_cell(subtract_cell_name,
-                                         overwrite_duplicate=True)
-            subtract_cell.add(
-                self.chip_info[chip_name][chip_layer]['q_subtract_true'])
+        if len(self.chip_info[chip_name][chip_layer]["q_subtract_true"]) != 0:
+            subtract_cell_name = f"SUBTRACT_{chip_name}_{chip_layer}"
+            subtract_cell = lib.new_cell(subtract_cell_name, overwrite_duplicate=True)
+            subtract_cell.add(self.chip_info[chip_name][chip_layer]["q_subtract_true"])
 
             # gdspy.boolean() is not documented clearly.  If there are multiple
             # elements to subtract (both poly & path), the way I could
@@ -1672,31 +1759,33 @@ class QGDSRenderer(QRenderer):
             # all elements within the cell to poly. After the boolean(),
             # I deleted the cell from lib. The memory is freed up then.
             diff_geometry = gdspy.boolean(
-                self.chip_info[chip_name]['subtract_poly'],
+                self.chip_info[chip_name]["subtract_poly"],
                 subtract_cell.get_polygons(),
-                'not',
+                "not",
                 max_points=max_points,
                 precision=precision,
-                layer=chip_layer)
+                layer=chip_layer,
+            )
 
             lib.remove(subtract_cell)
 
             if diff_geometry is None:
                 self.design.logger.warning(
-                    'There is no table named diff_geometry to write.')
+                    "There is no table named diff_geometry to write."
+                )
             else:
-                ground_chip_layer_name = f'ground_{chip_name}_{chip_layer}'
+                ground_chip_layer_name = f"ground_{chip_name}_{chip_layer}"
                 ground_chip_layer = lib.new_cell(ground_chip_layer_name)
-                #diff_geometry is a polygon set. So put into it's own cell.
+                # diff_geometry is a polygon set. So put into it's own cell.
                 ground_chip_layer.add(diff_geometry)
                 ground_cell.add(gdspy.CellReference(ground_chip_layer))
 
         self._handle_q_subtract_false(chip_name, chip_layer, ground_cell)
-        QGDSRenderer._add_groundcell_to_chip_only_top(lib, chip_only_top,
-                                                      ground_cell)
+        QGDSRenderer._add_groundcell_to_chip_only_top(lib, chip_only_top, ground_cell)
 
-    def _handle_q_subtract_false(self, chip_name: str, chip_layer: int,
-                                 ground_cell: gdspy.library.Cell):
+    def _handle_q_subtract_false(
+        self, chip_name: str, chip_layer: int, ground_cell: gdspy.library.Cell
+    ):
         """For each layer, add the subtract=false components to ground.
 
         Args:
@@ -1705,20 +1794,25 @@ class QGDSRenderer(QRenderer):
             ground_cell (gdspy.library.Cell): The cell in lib to add to.
                                             Cell created for each layer.
         """
-        if self.chip_info[chip_name][chip_layer]['q_subtract_false'] is None:
-            self.logger.warning(f'There is no table named '
-                                f'self.chip_info[{chip_name}][q_subtract_false]'
-                                f' to write.')
+        if self.chip_info[chip_name][chip_layer]["q_subtract_false"] is None:
+            self.logger.warning(
+                f"There is no table named "
+                f"self.chip_info[{chip_name}][q_subtract_false]"
+                f" to write."
+            )
         else:
-            if len(self.chip_info[chip_name][chip_layer]
-                   ['q_subtract_false']) != 0:
+            if len(self.chip_info[chip_name][chip_layer]["q_subtract_false"]) != 0:
                 ground_cell.add(
-                    self.chip_info[chip_name][chip_layer]['q_subtract_false'])
+                    self.chip_info[chip_name][chip_layer]["q_subtract_false"]
+                )
 
     @classmethod
-    def _add_groundcell_to_chip_only_top(cls, lib: gdspy.GdsLibrary,
-                                         chip_only_top: gdspy.library.Cell,
-                                         ground_cell: gdspy.library.Cell):
+    def _add_groundcell_to_chip_only_top(
+        cls,
+        lib: gdspy.GdsLibrary,
+        chip_only_top: gdspy.library.Cell,
+        ground_cell: gdspy.library.Cell,
+    ):
         """Add the ground cell to the top of cell for chip.
 
         Args:
@@ -1736,7 +1830,8 @@ class QGDSRenderer(QRenderer):
             lib.remove(ground_cell)
 
     def _get_linestring_characteristics(
-            self, row: 'pandas.Pandas') -> Tuple[Tuple, float, float]:
+        self, row: "pandas.Pandas"
+    ) -> Tuple[Tuple, float, float]:
         """Given a row in the Junction table, give the characteristics of
         LineString in row.geometry.
 
@@ -1761,13 +1856,14 @@ class QGDSRenderer(QRenderer):
         rotation = math.degrees(math.atan2((maxy - miny), (maxx - minx)))
         magnitude = np.round(
             distance.euclidean(row.geometry.coords[0], row.geometry.coords[1]),
-            for_rounding)
+            for_rounding,
+        )
 
         return center, rotation, magnitude
 
     def _give_rotation_center_twopads(
-            self, row: 'pandas.Pandas',
-            a_cell_bounding_box: 'numpy.ndarray') -> Tuple:
+        self, row: "pandas.Pandas", a_cell_bounding_box: "numpy.ndarray"
+    ) -> Tuple:
         """Calculate the angle for rotation, center of LineString in
         row.geometry, and if needed create two pads to connect the junction to
         qubit.
@@ -1792,7 +1888,8 @@ class QGDSRenderer(QRenderer):
         """
         # pylint: disable=too-many-locals
         junction_pad_overlap = float(
-            self.parse_value(self.options.junction_pad_overlap))
+            self.parse_value(self.options.junction_pad_overlap)
+        )
 
         pad_height = row.width
         center, rotation, magnitude = self._get_linestring_characteristics(row)
@@ -1803,7 +1900,7 @@ class QGDSRenderer(QRenderer):
         jj_x_width = abs(jj_maxx - jj_minx)
         jj_y_height = abs(jj_maxy - jj_miny)
 
-        #jj_center_x = (jj_x_width / 2) + jj_minx
+        # jj_center_x = (jj_x_width / 2) + jj_minx
         jj_center_y = (jj_y_height / 2) + jj_miny
 
         pad_height = row.width
@@ -1812,8 +1909,8 @@ class QGDSRenderer(QRenderer):
             # pylint: disable=protected-access
             text_id = self.design._components[row.component]._name
             self.logger.warning(
-                f'In junction table, component={text_id} with name={row.name} '
-                f'has width={pad_height} smaller than cell dimension={jj_y_height}.'
+                f"In junction table, component={text_id} with name={row.name} "
+                f"has width={pad_height} smaller than cell dimension={jj_y_height}."
             )
 
         if jj_x_width < magnitude:
@@ -1823,22 +1920,27 @@ class QGDSRenderer(QRenderer):
                 (jj_minx - pad_x_size_minus_overlap, pad_miny),
                 (jj_minx + junction_pad_overlap, pad_miny + pad_height),
                 layer=int(row.layer),
-                datatype=10)
+                datatype=10,
+            )
 
             pad_right = gdspy.Rectangle(
                 (jj_maxx - junction_pad_overlap, pad_miny),
                 (jj_maxx + pad_x_size_minus_overlap, pad_miny + pad_height),
                 layer=int(row.layer),
-                datatype=10)
+                datatype=10,
+            )
 
         return rotation, center, pad_left, pad_right
 
+    ############
 
-############
-
-    def _import_junctions_to_one_cell(self, chip_name: str, lib: gdspy.library,
-                                      chip_only_top: gdspy.library.Cell,
-                                      layers_in_chip: list):
+    def _import_junctions_to_one_cell(
+        self,
+        chip_name: str,
+        lib: gdspy.library,
+        chip_only_top: gdspy.library.Cell,
+        layers_in_chip: list,
+    ):
         """Given lib, import the gds file from default options.  Based on the
         cell name in QGeometry table, import the cell from the gds file and
         place it in hierarchy of chip_only_top. In addition, the linestring
@@ -1860,71 +1962,84 @@ class QGDSRenderer(QRenderer):
         # pylint: disable=too-many-nested-blocks
 
         # Make sure the file exists, before trying to read it.
-        dummy_status, directory_name = can_write_to_path(
-            self.options.path_filename)
-        layers_in_junction_table = set(
-            self.chip_info[chip_name]['junction']['layer'])
+        dummy_status, directory_name = can_write_to_path(self.options.path_filename)
+        layers_in_junction_table = set(self.chip_info[chip_name]["junction"]["layer"])
 
         if os.path.isfile(self.options.path_filename):
-            lib.read_gds(self.options.path_filename, units='convert')
+            lib.read_gds(self.options.path_filename, units="convert")
             for iter_layer in layers_in_chip:
                 if self._is_negative_mask(chip_name, iter_layer):
                     # Want to export negative mask
                     # Gather the pads into hold_all_pads_cell for same layer.
                     if iter_layer in layers_in_junction_table:
-                        chip_only_top_layer_name = f'TOP_{chip_name}_{iter_layer}'
+                        chip_only_top_layer_name = f"TOP_{chip_name}_{iter_layer}"
                         if chip_only_top_layer_name in lib.cells.keys():
-                            chip_only_top_layer = lib.cells[
-                                chip_only_top_layer_name]
-                            hold_all_pads_name = f'r_l_hold_all_pads_{iter_layer}'
+                            chip_only_top_layer = lib.cells[chip_only_top_layer_name]
+                            hold_all_pads_name = f"r_l_hold_all_pads_{iter_layer}"
                             hold_all_pads_cell = lib.new_cell(
-                                hold_all_pads_name, overwrite_duplicate=True)
+                                hold_all_pads_name, overwrite_duplicate=True
+                            )
                             chip_only_top_layer.add(
-                                gdspy.CellReference(hold_all_pads_cell))
+                                gdspy.CellReference(hold_all_pads_cell)
+                            )
 
                             # Put all junctions into one cell for same layer.
-                            hold_all_jj_cell_name = f'all_jj_imported_{iter_layer}'
+                            hold_all_jj_cell_name = f"all_jj_imported_{iter_layer}"
                             hold_all_jj_cell = lib.new_cell(
-                                hold_all_jj_cell_name, overwrite_duplicate=True)
+                                hold_all_jj_cell_name, overwrite_duplicate=True
+                            )
 
                             self._add_negative_extention_to_jj(
-                                chip_name, iter_layer, lib, chip_only_top,
-                                chip_only_top_layer, hold_all_pads_cell,
-                                hold_all_jj_cell)
+                                chip_name,
+                                iter_layer,
+                                lib,
+                                chip_only_top,
+                                chip_only_top_layer,
+                                hold_all_pads_cell,
+                                hold_all_jj_cell,
+                            )
                 else:
                     # By default, make a positive mask.
-                    for row in self.chip_info[chip_name]['junction'].itertuples(
-                    ):
+                    for row in self.chip_info[chip_name]["junction"].itertuples():
                         chip_layer = int(row.layer)
-                        ground_cell_name = f'TOP_{chip_name}_{chip_layer}'
+                        ground_cell_name = f"TOP_{chip_name}_{chip_layer}"
 
-                        if ground_cell_name in lib.cells.keys(
-                        ) and chip_layer == iter_layer:
+                        if (
+                            ground_cell_name in lib.cells.keys()
+                            and chip_layer == iter_layer
+                        ):
                             chip_layer_cell = lib.cells[ground_cell_name]
 
                             if row.gds_cell_name in lib.cells.keys():
                                 # When positive mask, just add the pads to chip_only_top
                                 self._add_positive_extention_to_jj(
-                                    lib, row, chip_layer_cell)
+                                    lib, row, chip_layer_cell
+                                )
                             else:
                                 self.logger.warning(
                                     f'From the "junction" table, the cell named'
                                     f' "{row.gds_cell_name}"",  is not in '
-                                    f'file: {self.options.path_filename}.'
-                                    f' The cell was not used.')
+                                    f"file: {self.options.path_filename}."
+                                    f" The cell was not used."
+                                )
 
         else:
             self.logger.warning(
                 f'Not able to find file:"{self.options.path_filename}".  '
-                f'Not used to replace junction.'
-                f' Checked directory:"{directory_name}".')
+                f"Not used to replace junction."
+                f' Checked directory:"{directory_name}".'
+            )
 
-    def _add_negative_extention_to_jj(self, chip_name: str, jj_layer: int,
-                                      lib: gdspy.library,
-                                      chip_only_top: gdspy.library.Cell,
-                                      chip_only_top_layer: gdspy.library.Cell,
-                                      hold_all_pads_cell: gdspy.library.Cell,
-                                      hold_all_jj_cell: gdspy.library.Cell):
+    def _add_negative_extention_to_jj(
+        self,
+        chip_name: str,
+        jj_layer: int,
+        lib: gdspy.library,
+        chip_only_top: gdspy.library.Cell,
+        chip_only_top_layer: gdspy.library.Cell,
+        hold_all_pads_cell: gdspy.library.Cell,
+        hold_all_jj_cell: gdspy.library.Cell,
+    ):
         """Manipulate existing geometries for the layer that the junctions need
          to be added.  Since boolean subtaction is computationally intensive,
          the method will gather the pads for a layer, and do the boolean just
@@ -1942,27 +2057,25 @@ class QGDSRenderer(QRenderer):
             hold_all_jj_cell (gdspy.library.Cell): Collect all the jj's with movement.
         """
 
-        boolean_by_layer = self.chip_info[chip_name]['junction'][
-            'layer'] == jj_layer
-        for row in self.chip_info[chip_name]['junction'][
-                boolean_by_layer].itertuples():
+        boolean_by_layer = self.chip_info[chip_name]["junction"]["layer"] == jj_layer
+        for row in self.chip_info[chip_name]["junction"][boolean_by_layer].itertuples():
 
             if row.gds_cell_name in lib.cells.keys():
                 # For negative mask, collect the pads to subtract per layer,
                 # and subtract from chip_only_top_layer
-                self._gather_negative_extention_for_jj(lib, row,
-                                                       hold_all_pads_cell,
-                                                       hold_all_jj_cell)
+                self._gather_negative_extention_for_jj(
+                    lib, row, hold_all_pads_cell, hold_all_jj_cell
+                )
             else:
                 self.logger.warning(
                     f'From the "junction" table, the cell named'
                     f' "{row.gds_cell_name}",  is not in file: '
-                    f'{self.options.path_filename}. The cell was not used.')
+                    f"{self.options.path_filename}. The cell was not used."
+                )
 
-        diff_r_l_pads_name = f'r_l_pads_diff_{jj_layer}'
-        diff_pad_cell_layer = lib.new_cell(diff_r_l_pads_name,
-                                           overwrite_duplicate=True)
-        #chip_only_top_layer.add(gdspy.CellReference(diff_pad_cell_layer))
+        diff_r_l_pads_name = f"r_l_pads_diff_{jj_layer}"
+        diff_pad_cell_layer = lib.new_cell(diff_r_l_pads_name, overwrite_duplicate=True)
+        # chip_only_top_layer.add(gdspy.CellReference(diff_pad_cell_layer))
         chip_only_top.add(gdspy.CellReference(diff_pad_cell_layer))
 
         precision = self.parse_value(self.options.precision)
@@ -1971,21 +2084,34 @@ class QGDSRenderer(QRenderer):
         # Make sure  the pads to hold_all_pads_cell is not empty
 
         if chip_only_top_layer.get_bounding_box() is not None:
-            jj_minus_pads = gdspy.boolean(chip_only_top_layer.get_polygons(),
-                                          hold_all_pads_cell.get_polygons(),
-                                          'not',
-                                          max_points=max_points,
-                                          precision=precision)
+            jj_minus_pads = gdspy.boolean(
+                chip_only_top_layer.get_polygons(),
+                hold_all_pads_cell.get_polygons(),
+                "not",
+                max_points=max_points,
+                precision=precision,
+            )
             diff_pad_cell_layer.add(jj_minus_pads)
         if hold_all_jj_cell.get_bounding_box() is not None:
             diff_pad_cell_layer.add(gdspy.CellReference(hold_all_jj_cell))
 
-        self._clean_hierarchy(lib, chip_only_top, chip_only_top_layer,
-                              diff_pad_cell_layer, hold_all_pads_cell)
+        self._clean_hierarchy(
+            lib,
+            chip_only_top,
+            chip_only_top_layer,
+            diff_pad_cell_layer,
+            hold_all_pads_cell,
+        )
 
     @classmethod
-    def _clean_hierarchy(cls, lib, chip_only_top, chip_only_top_layer,
-                         diff_pad_cell_layer, hold_all_pads_cell):
+    def _clean_hierarchy(
+        cls,
+        lib,
+        chip_only_top,
+        chip_only_top_layer,
+        diff_pad_cell_layer,
+        hold_all_pads_cell,
+    ):
         """Delete cell that doesn't have pad nor jjs.  Then use same
         name for correct cell.  Also, get rid of cell that had the pads
         since subtraction happened and we don't need it any more.
@@ -2002,7 +2128,7 @@ class QGDSRenderer(QRenderer):
         lib.remove(hold_name)
         lib.rename_cell(diff_pad_cell_layer, hold_name)
 
-        #Add to hierarchy only if cell is not empty.
+        # Add to hierarchy only if cell is not empty.
         if diff_pad_cell_layer.get_bounding_box() is not None:
             chip_only_top.add(gdspy.CellReference(diff_pad_cell_layer))
         else:
@@ -2013,9 +2139,12 @@ class QGDSRenderer(QRenderer):
         lib.remove(hold_all_pads_cell)
 
     def _gather_negative_extention_for_jj(
-            self, lib: gdspy.library, row: 'pandas.core.frame.Pandas',
-            hold_all_pads_cell: gdspy.library.Cell,
-            hold_all_jj_cell: gdspy.library.Cell):
+        self,
+        lib: gdspy.library,
+        row: "pandas.core.frame.Pandas",
+        hold_all_pads_cell: gdspy.library.Cell,
+        hold_all_jj_cell: gdspy.library.Cell,
+    ):
         """Gather the pads and jjs and put them in seprate cells.  The
         the pads can be boolean'd 'not' just once. After boolean for pads, then
         the jjs will be added to result.  The boolean is very
@@ -2032,10 +2161,11 @@ class QGDSRenderer(QRenderer):
         a_cell_bounding_box = a_cell.get_bounding_box()
 
         rotation, center, pad_left, pad_right = self._give_rotation_center_twopads(
-            row, a_cell_bounding_box)
+            row, a_cell_bounding_box
+        )
 
         # String for JJ combined with pad Right and pad Left
-        jj_pad_r_l_name = f'{row.gds_cell_name}_QComponent_is_{row.component}_Name_is_{row.name}_name_is_{row.name}'
+        jj_pad_r_l_name = f"{row.gds_cell_name}_QComponent_is_{row.component}_Name_is_{row.name}_name_is_{row.name}"
         temp_cell = lib.new_cell(jj_pad_r_l_name, overwrite_duplicate=True)
 
         if pad_left is not None:
@@ -2044,13 +2174,18 @@ class QGDSRenderer(QRenderer):
             temp_cell.add(pad_right)
 
         hold_all_jj_cell.add(
-            gdspy.CellReference(a_cell, origin=center, rotation=rotation))
+            gdspy.CellReference(a_cell, origin=center, rotation=rotation)
+        )
         hold_all_pads_cell.add(
-            gdspy.CellReference(temp_cell, origin=center, rotation=rotation))
+            gdspy.CellReference(temp_cell, origin=center, rotation=rotation)
+        )
 
-    def _add_positive_extention_to_jj(self, lib: gdspy.library,
-                                      row: 'pandas.core.frame.Pandas',
-                                      chip_only_top_layer: gdspy.library.Cell):
+    def _add_positive_extention_to_jj(
+        self,
+        lib: gdspy.library,
+        row: "pandas.core.frame.Pandas",
+        chip_only_top_layer: gdspy.library.Cell,
+    ):
         """Get the extention pads, then add or subtract to extracted cell based on
         positive or negative mask.
 
@@ -2065,13 +2200,17 @@ class QGDSRenderer(QRenderer):
         a_cell_bounding_box = a_cell.get_bounding_box()
 
         rotation, center, pad_left, pad_right = self._give_rotation_center_twopads(
-            row, a_cell_bounding_box)
+            row, a_cell_bounding_box
+        )
 
         # String for JJ combined with pad Right and pad Left
-        jj_pad_r_l_name = f'pads_{row.gds_cell_name}_QComponent_is_{row.component}_name_is_{row.name}'
+        jj_pad_r_l_name = (
+            f"pads_{row.gds_cell_name}_QComponent_is_{row.component}_name_is_{row.name}"
+        )
         temp_cell = lib.new_cell(jj_pad_r_l_name, overwrite_duplicate=True)
         chip_only_top_layer.add(
-            gdspy.CellReference(a_cell, origin=center, rotation=rotation))
+            gdspy.CellReference(a_cell, origin=center, rotation=rotation)
+        )
 
         if pad_left is not None:
             # chip_only_top_layer.add(
@@ -2089,14 +2228,12 @@ class QGDSRenderer(QRenderer):
         # "temp_cell" is kept in the lib.
         if temp_cell.get_bounding_box() is not None:
             chip_only_top_layer.add(
-                gdspy.CellReference(temp_cell, origin=center,
-                                    rotation=rotation))
+                gdspy.CellReference(temp_cell, origin=center, rotation=rotation)
+            )
         else:
             lib.remove(temp_cell)
 
-    def export_to_gds(self,
-                      file_name: str,
-                      highlight_qcomponents: list = None) -> int:
+    def export_to_gds(self, file_name: str, highlight_qcomponents: list = None) -> int:
         """Use the design which was used to initialize this class. The
         QGeometry element types of both "path" and "poly", will be used, to
         convert QGeometry to GDS formatted file.
@@ -2148,8 +2285,12 @@ class QGDSRenderer(QRenderer):
         return 0
 
     def _multipolygon_to_gds(
-            self, multi_poly: shapely.geometry.multipolygon.MultiPolygon,
-            layer: int, data_type: int, no_cheese_buffer: float) -> list:
+        self,
+        multi_poly: shapely.geometry.multipolygon.MultiPolygon,
+        layer: int,
+        data_type: int,
+        no_cheese_buffer: float,
+    ) -> list:
         """Convert a shapely MultiPolygon to corresponding gdspy.
 
         Args:
@@ -2183,16 +2324,18 @@ class QGDSRenderer(QRenderer):
                 for hole in poly.interiors:
                     interior_coords = list(hole.coords)
                     all_interiors.append(interior_coords)
-                a_poly_set = gdspy.PolygonSet(all_interiors,
-                                              layer=layer,
-                                              datatype=data_type)
-                a_poly = gdspy.boolean(exterior_poly,
-                                       a_poly_set,
-                                       'not',
-                                       max_points=max_points,
-                                       layer=layer,
-                                       datatype=data_type,
-                                       precision=precision)
+                a_poly_set = gdspy.PolygonSet(
+                    all_interiors, layer=layer, datatype=data_type
+                )
+                a_poly = gdspy.boolean(
+                    exterior_poly,
+                    a_poly_set,
+                    "not",
+                    max_points=max_points,
+                    layer=layer,
+                    datatype=data_type,
+                    precision=precision,
+                )
                 # Poly facturing leading to a funny shape. Leave this out of gds output for now.
                 # a_poly.fillet(no_cheese_buffer,
                 #               points_per_2pi=128,
@@ -2210,7 +2353,7 @@ class QGDSRenderer(QRenderer):
 
     def _qgeometry_to_gds(
         self, qgeometry_element: pd.Series
-    ) -> Union['gdspy.polygon', 'gdspy.FlexPath', None]:
+    ) -> Union["gdspy.polygon", "gdspy.FlexPath", None]:
         """Convert the design.qgeometry table to format used by GDS renderer.
         Convert the class to a series of GDSII elements.
 
@@ -2260,58 +2403,66 @@ class QGDSRenderer(QRenderer):
                 for hole in geom.interiors:
                     interior_coords = list(hole.coords)
                     all_interiors.append(interior_coords)
-                a_poly_set = gdspy.PolygonSet(all_interiors,
-                                              layer=qgeometry_element.layer,
-                                              datatype=10)
+                a_poly_set = gdspy.PolygonSet(
+                    all_interiors, layer=qgeometry_element.layer, datatype=10
+                )
                 # Since there is max_points in boolean, don't need to do this twice.
                 # a_poly_set = a_poly_set.fracture(max_points=max_points)
                 # exterior_poly = exterior_poly.fracture(max_points=max_points)
-                a_poly = gdspy.boolean(exterior_poly,
-                                       a_poly_set,
-                                       'not',
-                                       max_points=max_points,
-                                       precision=precision,
-                                       layer=qgeometry_element.layer,
-                                       datatype=10)
+                a_poly = gdspy.boolean(
+                    exterior_poly,
+                    a_poly_set,
+                    "not",
+                    max_points=max_points,
+                    precision=precision,
+                    layer=qgeometry_element.layer,
+                    datatype=10,
+                )
                 return a_poly
 
-            exterior_poly = exterior_poly.fracture(max_points=max_points,
-                                                   precision=precision)
+            exterior_poly = exterior_poly.fracture(
+                max_points=max_points, precision=precision
+            )
             return exterior_poly
         if isinstance(geom, shapely.geometry.LineString):
-            #class gdspy.FlexPath(points, width, offset=0, corners='natural',
-            #ends='flush', bend_radius=None, tolerance=0.01, precision=0.001,
-            #max_points=199, gdsii_path=False, width_transform=True, layer=0,
-            #datatype=0)
+            # class gdspy.FlexPath(points, width, offset=0, corners='natural',
+            # ends='flush', bend_radius=None, tolerance=0.01, precision=0.001,
+            # max_points=199, gdsii_path=False, width_transform=True, layer=0,
+            # datatype=0)
 
-            #Only fillet, if number is greater than zero.
+            # Only fillet, if number is greater than zero.
 
             use_width = self.parse_value(self.options.width_LineString)
 
             if math.isnan(qgeometry_element.width):
                 qcomponent_id = self.parse_value(qgeometry_element.component)
-                name = self.parse_value(qgeometry_element['name'])
+                name = self.parse_value(qgeometry_element["name"])
                 layer_num = self.parse_value(qgeometry_element.layer)
                 width = self.parse_value(qgeometry_element.width)
                 self.logger.warning(
-                    f'Since width:{width} for a Path is not a number, '
-                    f'it will be exported using width_LineString:'
-                    f' {use_width}.  The component_id is:{qcomponent_id},'
-                    f' name is:{name}, layer is: {layer_num}')
+                    f"Since width:{width} for a Path is not a number, "
+                    f"it will be exported using width_LineString:"
+                    f" {use_width}.  The component_id is:{qcomponent_id},"
+                    f" name is:{name}, layer is: {layer_num}"
+                )
             else:
                 use_width = qgeometry_element.width
 
-            if 'fillet' in qgeometry_element:
+            if "fillet" in qgeometry_element:
 
-                if (math.isnan(qgeometry_element.fillet) or
-                        qgeometry_element.fillet <= 0 or
-                        qgeometry_element.fillet < qgeometry_element.width):
+                if (
+                    math.isnan(qgeometry_element.fillet)
+                    or qgeometry_element.fillet <= 0
+                    or qgeometry_element.fillet < qgeometry_element.width
+                ):
 
-                    to_return = gdspy.FlexPath(list(geom.coords),
-                                               use_width,
-                                               layer=qgeometry_element.layer,
-                                               max_points=max_points,
-                                               datatype=11)
+                    to_return = gdspy.FlexPath(
+                        list(geom.coords),
+                        use_width,
+                        layer=qgeometry_element.layer,
+                        max_points=max_points,
+                        datatype=11,
+                    )
                 else:
                     to_return = gdspy.FlexPath(
                         list(geom.coords),
@@ -2322,21 +2473,25 @@ class QGDSRenderer(QRenderer):
                         corners=corners,
                         bend_radius=qgeometry_element.fillet,
                         tolerance=tolerance,
-                        precision=precision)
+                        precision=precision,
+                    )
                 return to_return
 
             # Could be junction table with a linestring.
             # Look for gds_path_filename in column.
-            self.logger.warning(f'Linestring did not have fillet in column. '
-                                f'The qgeometry_element was not drawn.\n'
-                                f'The qgeometry_element within table is:\n'
-                                f'{qgeometry_element}')
+            self.logger.warning(
+                f"Linestring did not have fillet in column. "
+                f"The qgeometry_element was not drawn.\n"
+                f"The qgeometry_element within table is:\n"
+                f"{qgeometry_element}"
+            )
             return None  # Need explicitly to avoid lint warnings.
 
         self.logger.warning(
-            f'Unexpected shapely object geometry.'
-            f'The variable qgeometry_element is {type(geom)}, '
-            f'method can currently handle Polygon and FlexPath.')
+            f"Unexpected shapely object geometry."
+            f"The variable qgeometry_element is {type(geom)}, "
+            f"method can currently handle Polygon and FlexPath."
+        )
         return None
 
     def _get_chip_names(self) -> Dict:
@@ -2352,7 +2507,7 @@ class QGDSRenderer(QRenderer):
         chip_names = Dict()
         for table_name in self.design.qgeometry.get_element_types():
             table = self.design.qgeometry.tables[table_name]
-            names = table['chip'].unique().tolist()
+            names = table["chip"].unique().tolist()
             chip_names += names
         unique_list = list(set(chip_names))
 

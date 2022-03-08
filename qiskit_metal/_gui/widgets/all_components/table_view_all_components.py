@@ -18,9 +18,16 @@ from typing import List
 from PySide2 import QtCore, QtWidgets
 from PySide2.QtCore import QModelIndex, Qt, QTimer
 from PySide2.QtGui import QContextMenuEvent
-from PySide2.QtWidgets import (QInputDialog, QLabel, QLineEdit, QMenu,
-                               QMessageBox, QTableView, QVBoxLayout,
-                               QAbstractItemView)
+from PySide2.QtWidgets import (
+    QInputDialog,
+    QLabel,
+    QLineEdit,
+    QMenu,
+    QMessageBox,
+    QTableView,
+    QVBoxLayout,
+    QAbstractItemView,
+)
 
 from ...utility._handle_qt_messages import slot_catch_error
 from ..bases.QWidget_PlaceholderText import QWidget_PlaceholderText
@@ -49,8 +56,8 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         """
         QTableView.__init__(self, parent)
         QWidget_PlaceholderText.__init__(
-            self,
-            "No QComponents to show.\n\nCreate components from the QLibrary.")
+            self, "No QComponents to show.\n\nCreate components from the QLibrary."
+        )
         self.clicked.connect(self.viewClicked)
         self.doubleClicked.connect(self.doDoubleClicked)
 
@@ -83,7 +90,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         return self.model().logger
 
     @property
-    def gui(self) -> 'MetalGUI':
+    def gui(self) -> "MetalGUI":
         """Returns the GUI."""
         return self.model().gui
 
@@ -124,7 +131,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         """
         # get the selected row and column
         row = self.rowAt(event.pos().y())
-        #col = self.columnAt(event.pos().x())
+        # col = self.columnAt(event.pos().x())
 
         model = self.model()
         index = model.index(row, 0)  # get the name
@@ -142,8 +149,11 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
 
         if row > -1:
             ret = QMessageBox.question(
-                self, '', f"Are you sure you want to delete component {name}",
-                QMessageBox.Yes | QMessageBox.No)
+                self,
+                "",
+                f"Are you sure you want to delete component {name}",
+                QMessageBox.Yes | QMessageBox.No,
+            )
             if ret == QMessageBox.Yes:
                 self._do_delete(name)
 
@@ -153,7 +163,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         Args:
             name (str): Name of the component to delete
         """
-        self.logger.info(f'Deleting {name}')
+        self.logger.info(f"Deleting {name}")
         self.design.delete_component(name)
         # replot
         self.gui.plot_win.replot()
@@ -177,12 +187,15 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
 
         """
         if row > -1:
-            text, okPressed = QInputDialog.getText(self,
-                                                   f"Rename component {name}",
-                                                   f"Rename {name} to:",
-                                                   QLineEdit.Normal, "")
-            if okPressed and text != '':
-                self.logger.info(f'Renaming {name} to {text}')
+            text, okPressed = QInputDialog.getText(
+                self,
+                f"Rename component {name}",
+                f"Rename {name} to:",
+                QLineEdit.Normal,
+                "",
+            )
+            if okPressed and text != "":
+                self.logger.info(f"Renaming {name} to {text}")
                 comp_id = self.design.components[name].id
                 self.design.rename_component(comp_id, text)
 
@@ -201,7 +214,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         # get the component name
         # model = clickedIndex.model()  # type: QTableModel_AllComponents
         name = index.sibling(index.row(), 0).data()
-        self.logger.debug(f'Selected component {name}')
+        self.logger.debug(f"Selected component {name}")
 
         gui = self.gui
         gui.edit_component(name)
@@ -251,7 +264,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         rows = set([idx.row() for idx in self.selectedIndexes()])
         selected_names = self.rows_to_names(rows)
 
-        self.logger.debug(f'Highlighting {selected_names}')
+        self.logger.debug(f"Highlighting {selected_names}")
         self.gui.highlight_components(selected_names)
 
     def delete_selected_rows(self, *args):
@@ -278,9 +291,11 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         for name in name_set:
             if name is not None:
                 ret = QMessageBox.question(
-                    self, '',
+                    self,
+                    "",
                     f"Are you sure you want to delete component {name}",
-                    QMessageBox.Yes | QMessageBox.No)
+                    QMessageBox.Yes | QMessageBox.No,
+                )
                 if ret == QMessageBox.Yes:
                     self._do_delete(name)
 

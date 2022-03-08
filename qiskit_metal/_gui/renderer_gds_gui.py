@@ -12,8 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from PySide2.QtWidgets import (QAbstractItemView, QFileDialog, QMainWindow,
-                               QMessageBox)
+from PySide2.QtWidgets import QAbstractItemView, QFileDialog, QMainWindow, QMessageBox
 
 from .list_model_base import DynamicList
 from .renderer_gds_model import RendererGDS_Model
@@ -23,7 +22,7 @@ from .renderer_gds_ui import Ui_MainWindow
 class RendererGDSWidget(QMainWindow):
     """Contains methods associated with GDS Renderer button."""
 
-    def __init__(self, parent: 'QMainWindow', gui: 'MetalGUI'):
+    def __init__(self, parent: "QMainWindow", gui: "MetalGUI"):
         """Get access to design, which has the components. Then set up the
         model and view.
 
@@ -48,10 +47,9 @@ class RendererGDSWidget(QMainWindow):
         self.tree_model = RendererGDS_Model(self, gui, self.ui.treeView)
         self.ui.treeView.setModel(self.tree_model)
         self.ui.treeView.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
-        self.ui.treeView.setHorizontalScrollMode(
-            QAbstractItemView.ScrollPerPixel)
+        self.ui.treeView.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
 
-    def set_design(self, new_design: 'QDesign'):
+    def set_design(self, new_design: "QDesign"):
         """Swaps out reference to design, which changes the reference to the
         dictionary.
 
@@ -89,9 +87,10 @@ class RendererGDSWidget(QMainWindow):
         """Browses available folders in system."""
         destination_folder = QFileDialog.getSaveFileName(
             None,
-            'Select a new location to export to',
-            'my_qdesign.gds',
-            selectedFilter='*.gds')[0]
+            "Select a new location to export to",
+            "my_qdesign.gds",
+            selectedFilter="*.gds",
+        )[0]
         self.ui.lineEdit.setText(destination_folder)
 
     def export_file(self):
@@ -108,11 +107,13 @@ class RendererGDSWidget(QMainWindow):
             if len(components_to_export) == len(self.design.components):
                 a_gds.export_to_gds(filename)
             else:
-                a_gds.export_to_gds(filename,
-                                    highlight_qcomponents=components_to_export)
+                a_gds.export_to_gds(
+                    filename, highlight_qcomponents=components_to_export
+                )
             self.close()
         else:
             QMessageBox.warning(
-                self, "Error",
-                "Please enter a valid file name and \n select at least one component."
+                self,
+                "Error",
+                "Please enter a valid file name and \n select at least one component.",
             )

@@ -22,10 +22,16 @@ toolbars available.
 from typing import TYPE_CHECKING
 
 from PySide2 import QtWidgets
-from PySide2.QtWidgets import (QApplication, QFileDialog, QLabel, QMainWindow,
-                               QMessageBox)
+from PySide2.QtWidgets import (
+    QApplication,
+    QFileDialog,
+    QLabel,
+    QMainWindow,
+    QMessageBox,
+)
 
 from ... import config
+
 if not config.is_building_docs():
     # Only import PlotCanvas if the docs are NOT being built
     from ....renderers.renderer_mpl.mpl_canvas import PlotCanvas
@@ -51,7 +57,7 @@ class QMainWindowPlot(QMainWindow):
         canvas: The core plot object. Can be mpl or any other renderer.
     """
 
-    def __init__(self, gui: 'MetalGUI', parent_window: 'QMainWindowExtension'):
+    def __init__(self, gui: "MetalGUI", parent_window: "QMainWindowExtension"):
         """
         Args:
             gui (MetalGUI): The GUI
@@ -73,10 +79,9 @@ class QMainWindowPlot(QMainWindow):
 
         # Add MPL plot widget to window
         # Core object -- the center of this entire widget
-        self.canvas = PlotCanvas(self.design,
-                                 self,
-                                 logger=self.logger,
-                                 statusbar_label=self.statusbar_label)
+        self.canvas = PlotCanvas(
+            self.design, self, logger=self.logger, statusbar_label=self.statusbar_label
+        )
 
         self.ui.centralwidget.layout().addWidget(self.canvas)
 
@@ -106,7 +111,9 @@ class QMainWindowPlot(QMainWindow):
     def pan(self):
         """Displays a message about how to pan."""
         QMessageBox.about(
-            self, "Pan", """Navigation help:
+            self,
+            "Pan",
+            """Navigation help:
 
 Pan:
 (click and drag)
@@ -115,14 +122,18 @@ Click and drag the plot screen.
 Zoom:
 (scroll, or right click and drag)
 Either use the mouse middle wheel to zoom in and out by scrolling,
-or use the right click and drag to select a region.""")
+or use the right click and drag to select a region.""",
+        )
 
     def zoom(self):
         """Displays a message about how to zoom."""
         QMessageBox.about(
-            self, "Zoom", "Either use the mouse middle wheel"
+            self,
+            "Zoom",
+            "Either use the mouse middle wheel"
             " to zoom in and out by scrolling, or use the right click and"
-            " drag to select a region.")
+            " drag to select a region.",
+        )
 
     def set_position_track(self, yesno: bool):
         """Set the position tracker.
@@ -131,8 +142,9 @@ or use the right click and drag to select a region.""")
             yesno (bool): Whether or not to display instructions
         """
         if yesno:
-            self.logger.info("Click a point in the plot window to see"
-                             " its coordinate.")
+            self.logger.info(
+                "Click a point in the plot window to see" " its coordinate."
+            )
         self.canvas.panzoom.options.report_point_position = yesno
 
     def set_show_pins(self, yesno: bool):

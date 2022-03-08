@@ -34,8 +34,7 @@ class QiskitMetalExceptions(Exception):
 
 
 class QLibraryGUIException(QiskitMetalExceptions):
-    """Custom Exception for the QLibrary GUI feature
-    """
+    """Custom Exception for the QLibrary GUI feature"""
 
 
 class QiskitMetalDesignError(QiskitMetalExceptions):
@@ -64,5 +63,4 @@ class IncorrectQtException(Exception):
 
 
 class InputError(QiskitMetalExceptions):
-    """Custom exception to indicate input errors
-    """
+    """Custom exception to indicate input errors"""

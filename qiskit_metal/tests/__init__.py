@@ -17,6 +17,7 @@
 """Unit tests"""
 
 from .. import config
+
 if config.is_building_docs():
     from .assertions import AssertionsMixin
     from .test_analyses import TestAnalyses

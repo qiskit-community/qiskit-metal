@@ -12,8 +12,8 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-#pylint: disable-msg=unnecessary-pass
-#pylint: disable-msg=broad-except
+# pylint: disable-msg=unnecessary-pass
+# pylint: disable-msg=broad-except
 """Qiskit Metal unit tests analyses functionality.
 
 Test a planar design and launching the GUI.
@@ -38,7 +38,7 @@ class TestGUIBasic(unittest.TestCase):
     def test_instantiate_branch_node(self):
         """Test instantiation of BranchNode in dict_tree_base.py."""
         try:
-            BranchNode('my_name')
+            BranchNode("my_name")
         except Exception:
             message = "BranchNode instantiation failed"
             self.fail(message)
@@ -46,11 +46,11 @@ class TestGUIBasic(unittest.TestCase):
     def test_instantiate_leaf_node(self):
         """Test instantiation of LeafNode in dict_tree_base.py."""
         try:
-            LeafNode('my_label')
+            LeafNode("my_label")
         except Exception:
             message = "LeafNode instantiation failed"
             self.fail(message)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main(verbosity=2)

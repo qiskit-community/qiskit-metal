@@ -22,7 +22,7 @@ from PySide2 import QtCore, QtGui, QtWidgets
 from PySide2.QtCore import QAbstractTableModel, QModelIndex, Qt
 from PySide2.QtGui import QFont
 
-__all__ = ['parse_param_from_str']
+__all__ = ["parse_param_from_str"]
 
 if TYPE_CHECKING:
     from .component_widget import ComponentWidget
@@ -40,10 +40,7 @@ class QTableModel_Options(QAbstractTableModel):
 
     # __timer_interval = 500  # ms
 
-    def __init__(self,
-                 gui: 'MetalGUI',
-                 parent: 'ComponentWidget' = None,
-                 view=None):
+    def __init__(self, gui: "MetalGUI", parent: "ComponentWidget" = None, view=None):
         """
         Args:
             gui (MetalGUI): The GUI
@@ -57,10 +54,10 @@ class QTableModel_Options(QAbstractTableModel):
         self._view = view
 
         # self._create_timer()
-        self.columns = ['Name', 'Value', 'Parsed value']
+        self.columns = ["Name", "Value", "Parsed value"]
 
     @property
-    def design(self) -> 'QDesign':
+    def design(self) -> "QDesign":
         """Returns the QDesign."""
         return self.gui.design
 
@@ -186,7 +183,7 @@ class QTableModel_Options(QAbstractTableModel):
             data = data[row]
             if column == 2:
                 if isinstance(data, dict):
-                    return 'This is a dictionary.'
+                    return "This is a dictionary."
                 else:
                     return str(self.design.parse_value(data))
             else:
@@ -203,10 +200,9 @@ class QTableModel_Options(QAbstractTableModel):
                 font.setBold(True)
                 return font
 
-    def setData(self,
-                index: QtCore.QModelIndex,
-                value,
-                role=QtCore.Qt.EditRole) -> bool:
+    def setData(
+        self, index: QtCore.QModelIndex, value, role=QtCore.Qt.EditRole
+    ) -> bool:
         """Sets the role data for the item at index to value. The dataChanged()
         signal should be emitted if the data was successfully set.
 
@@ -236,8 +232,9 @@ class QTableModel_Options(QAbstractTableModel):
                 # When we do nothing
                 if isinstance(old_val, dict):
                     self.logger.error(
-                        'You selected a dicitonary this'
-                        'cannot be edited directly edit its items.')
+                        "You selected a dicitonary this"
+                        "cannot be edited directly edit its items."
+                    )
                     return False
 
                 if old_val == value:
@@ -249,16 +246,17 @@ class QTableModel_Options(QAbstractTableModel):
                 # TODO: should retry and if error then reset the value
                 if 1:
                     self.logger.info(
-                        f'Component options: Old value={old_val}; New value={value};'
+                        f"Component options: Old value={old_val}; New value={value};"
                     )
                     if isinstance(old_val, str):
                         data[key] = str(value)
                     else:
                         processed_value, used_ast = parse_param_from_str(value)
                         self.logger.info(
-                            f'  Used paring:  Old value type={type(old_val)}; '
-                            f'New value type={type(processed_value)};  New value={processed_value};'
-                            f'; Used ast={used_ast}')
+                            f"  Used paring:  Old value type={type(old_val)}; "
+                            f"New value type={type(processed_value)};  New value={processed_value};"
+                            f"; Used ast={used_ast}"
+                        )
                         data[key] = processed_value
 
                     self.component.rebuild()

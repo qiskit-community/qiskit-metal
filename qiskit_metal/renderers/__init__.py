@@ -71,6 +71,7 @@ Ansys Renderer
 from .setup_default import setup_renderers
 
 from .. import config
+
 if config.is_building_docs():
     from .renderer_base.renderer_base import QRenderer
     from .renderer_base.renderer_gui_base import QRendererGui

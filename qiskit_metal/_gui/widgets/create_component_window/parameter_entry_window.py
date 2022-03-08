@@ -43,7 +43,7 @@ import numpy as np
 from PySide2 import QtGui, QtWidgets
 from PySide2.QtCore import Qt
 from PySide2.QtWidgets import QDockWidget, QWidget
-from PySide2.QtWidgets import (QMainWindow, QMessageBox)
+from PySide2.QtWidgets import QMainWindow, QMessageBox
 
 from qiskit_metal import designs
 from qiskit_metal.qlibrary.core import QComponent
@@ -59,11 +59,13 @@ if TYPE_CHECKING:
 class ParameterEntryWindow(QMainWindow):
     """Parameter entry window class"""
 
-    def __init__(self,
-                 qcomp_class: Type,
-                 design: designs.DesignPlanar,
-                 parent: QWidget = None,
-                 gui: 'MetalGUI' = None):
+    def __init__(
+        self,
+        qcomp_class: Type,
+        design: designs.DesignPlanar,
+        parent: QWidget = None,
+        gui: "MetalGUI" = None,
+    ):
         """
         Parameter Entry Widget when qcomponent is chosen from GUI's QLibrary
         Args:
@@ -85,9 +87,9 @@ class ParameterEntryWindow(QMainWindow):
         # reloaded
         self.reset_param_dictionary = {}
 
-        self.model = TreeModelParamEntry(self,
-                                         self.ui.qcomponent_param_tree_view,
-                                         design=self._design)
+        self.model = TreeModelParamEntry(
+            self, self.ui.qcomponent_param_tree_view, design=self._design
+        )
 
         self.ui.qcomponent_param_tree_view.setModel(self.model)
         self.ui.qcomponent_param_tree_view.setItemDelegate(ParamDelegate(self))
@@ -108,8 +110,7 @@ class ParameterEntryWindow(QMainWindow):
 
     @property
     def qcomponent_file_path(self):
-        """Get file path to qcomponent
-        """
+        """Get file path to qcomponent"""
         component = self.qcomp_class
         module = inspect.getmodule(component)
         filepath = inspect.getfile(module)
@@ -117,7 +118,7 @@ class ParameterEntryWindow(QMainWindow):
         return filepath
 
     # Exception Handling
-    class QComponentParameterEntryExceptionDecorators():
+    class QComponentParameterEntryExceptionDecorators:
         """
         All exceptions in QComponentParameterEntry should result in a pop-up window.
         This class contains the decorators that control exception handling for all functions
@@ -144,12 +145,17 @@ class ParameterEntryWindow(QMainWindow):
                 # if anticipated Exception throw up error window
                 except (Exception) as lqce:
 
-                    #cls.log_error(args[0], lqce, func, args, kwargs)
+                    # cls.log_error(args[0], lqce, func, args, kwargs)
                     args[0].error_pop_up = QMessageBox()
 
-                    error_message = "In function, " + str(
-                        func.__name__) + "\n" + str(
-                            lqce.__class__.__name__) + ":\n" + str(lqce)
+                    error_message = (
+                        "In function, "
+                        + str(func.__name__)
+                        + "\n"
+                        + str(lqce.__class__.__name__)
+                        + ":\n"
+                        + str(lqce)
+                    )
 
                     # modality set by critical, Don't set Title -- will NOT show
                     # up on MacOs¥
@@ -167,15 +173,19 @@ class ParameterEntryWindow(QMainWindow):
         filepath = self.qcomponent_file_path
 
         imagefilename = Path(filepath.replace(".py", ".png")).name
-        imagepath = Path(
-            filepath
-        ).parent.parent.parent / "_gui" / "_imgs" / "components" / imagefilename
+        imagepath = (
+            Path(filepath).parent.parent.parent
+            / "_gui"
+            / "_imgs"
+            / "components"
+            / imagefilename
+        )
 
         doc_class = self.format_docstr(inspect.getdoc(component))
         doc_init = self.format_docstr(inspect.getdoc(component.__init__))
 
         text = """<body style="color:white;">"""
-        text += f'''
+        text += f"""
         <div class="h1">Summary:</div>
         <table class="table ComponentHeader">
             <tbody>
@@ -184,17 +194,17 @@ class ParameterEntryWindow(QMainWindow):
                 <tr> <th>Path</th><td style="text-color=#BBBBBB;"> {filepath}</td></tr>
             </tbody>
         </table>
-        '''
+        """
 
         if imagepath.is_file():
-            text += f'''<img src="{str(imagepath)}"/>'''
+            text += f"""<img src="{str(imagepath)}"/>"""
 
-        text += f'''
+        text += f"""
             <div class="h1">Class docstring:</div>
             {doc_class}
             <div class="h1">Init docstring:</div>
             {doc_init}
-        '''
+        """
         text += "</body>"
 
         my_help = QtWidgets.QTextEdit()
@@ -215,7 +225,7 @@ class ParameterEntryWindow(QMainWindow):
         """
 
         if doc is None:
-            return ''
+            return ""
         doc = doc.strip()
         text = f"""
     <pre>
@@ -234,13 +244,13 @@ class ParameterEntryWindow(QMainWindow):
 
         text_doc = QtGui.QTextDocument(text_source)
         try:  # For source doc
-            #import pygments
+            # import pygments
             from pygments import highlight
             from pygments.formatters import HtmlFormatter
             from pygments.lexers import get_lexer_by_name
         except ImportError as e:
             self._design.logger.error(
-                f'Error: Could not load python package \'pygments\'; Error: {e}'
+                f"Error: Could not load python package 'pygments'; Error: {e}"
             )
             highlight = None
             HtmlFormatter = None
@@ -251,8 +261,8 @@ class ParameterEntryWindow(QMainWindow):
             text_doc.setPlainText(text)
         else:
             lexer = get_lexer_by_name("python", stripall=True)
-            formatter = HtmlFormatter(linenos='inline')
-            self._html_css_lex = formatter.get_style_defs('.highlight')
+            formatter = HtmlFormatter(linenos="inline")
+            self._html_css_lex = formatter.get_style_defs(".highlight")
             text_doc.setDefaultStyleSheet(self._html_css_lex)
             text_html = highlight(text, lexer, formatter)
             text_doc.setHtml(text_html)
@@ -261,24 +271,26 @@ class ParameterEntryWindow(QMainWindow):
         text_source.setDocument(text_doc)
 
         # set background colour to match that of formatter and text default to black
-        wiget_background_html = '.highlight { background: '
-        newstr = self._html_css_lex[self._html_css_lex.
-                                    index(wiget_background_html) +
-                                    len(wiget_background_html):]
-        bg_color_1 = newstr[:newstr.find(';')]
-        bg_color_2 = newstr[:newstr.find('}')]
-        bg_color = bg_color_2 if len(bg_color_2) < len(
-            bg_color_1) else bg_color_1
-        text_source.setStyleSheet(f"""
+        wiget_background_html = ".highlight { background: "
+        newstr = self._html_css_lex[
+            self._html_css_lex.index(wiget_background_html)
+            + len(wiget_background_html) :
+        ]
+        bg_color_1 = newstr[: newstr.find(";")]
+        bg_color_2 = newstr[: newstr.find("}")]
+        bg_color = bg_color_2 if len(bg_color_2) < len(bg_color_1) else bg_color_1
+        text_source.setStyleSheet(
+            f"""
         background-color: {bg_color}; 
         color: #000000;
-        """)
+        """
+        )
 
         self.ui.tab_source.layout().addWidget(text_source)
 
     @QComponentParameterEntryExceptionDecorators.entry_exception_pop_up_warning
     def add_k_v_row(self):
-        """ Add key, value row to parent row based on what row is highlighted in treeview"""
+        """Add key, value row to parent row based on what row is highlighted in treeview"""
         cur_index = self.ui.qcomponent_param_tree_view.currentIndex()
 
         key = "fake-param"
@@ -287,7 +299,7 @@ class ParameterEntryWindow(QMainWindow):
 
     @QComponentParameterEntryExceptionDecorators.entry_exception_pop_up_warning
     def add_k_dict_row(self):
-        """ Add key, dictionary-value to parent row based on what row is highlighed in treeview"""
+        """Add key, dictionary-value to parent row based on what row is highlighed in treeview"""
         cur_index = self.ui.qcomponent_param_tree_view.currentIndex()
 
         fake_dict = "fake-dict"
@@ -314,9 +326,12 @@ class ParameterEntryWindow(QMainWindow):
                 if param.default:
                     param_dict[param.name] = param.default
                 else:
-                    class_name = self.qcomp_class.__name__ if param.name == 'name' else None
+                    class_name = (
+                        self.qcomp_class.__name__ if param.name == "name" else None
+                    )
                     param_dict[param.name] = create_default_from_type(
-                        param.annotation, param_name=class_name)
+                        param.annotation, param_name=class_name
+                    )
 
         ## Dealing with default options
         try:
@@ -325,12 +340,13 @@ class ParameterEntryWindow(QMainWindow):
 
         except Exception as e:
             self._design.logger.warning(
-                f"Could not use template_options for component: {e}")
-            if 'default_options' in self.qcomp_class.__dict__:
+                f"Could not use template_options for component: {e}"
+            )
+            if "default_options" in self.qcomp_class.__dict__:
                 options = self.qcomp_class.default_options
 
         if options is not None:
-            arg_options = 'options'
+            arg_options = "options"
 
             # deepcopy so instance's options aren't pointing
             # to same dict as template_options nor default_options
@@ -338,14 +354,16 @@ class ParameterEntryWindow(QMainWindow):
             param_dict[arg_options] = copied_options
 
             # custom options for connection_pads
-            def_con_pads = '_default_connection_pads'
-            con_pads = 'connection_pads'
+            def_con_pads = "_default_connection_pads"
+            con_pads = "connection_pads"
             if def_con_pads in param_dict[arg_options]:
                 print(param_dict[arg_options])
-                if con_pads not in param_dict[arg_options] or len(
-                        param_dict[arg_options][con_pads]) < 1:
+                if (
+                    con_pads not in param_dict[arg_options]
+                    or len(param_dict[arg_options][con_pads]) < 1
+                ):
                     param_dict[arg_options][con_pads] = {
-                        'a': param_dict[arg_options][def_con_pads]
+                        "a": param_dict[arg_options][def_con_pads]
                     }
                 param_dict[arg_options].pop(def_con_pads)
 
@@ -356,11 +374,11 @@ class ParameterEntryWindow(QMainWindow):
     @staticmethod
     def is_param_usable(param):
         """Determines if a given parameter is usable."""
-        ignore_params = {'self', 'design', 'make', 'kwargs', 'args'}
+        ignore_params = {"self", "design", "make", "kwargs", "args"}
         if param.name in ignore_params:
             return False
 
-        if_no_default_then_ignore_params = {'options_connection_pads'}
+        if_no_default_then_ignore_params = {"options_connection_pads"}
         if param.name in if_no_default_then_ignore_params:
             return param.default is not None
 
@@ -406,11 +424,10 @@ class ParameterEntryWindow(QMainWindow):
             ) from e
 
 
-def create_parameter_entry_window(gui: 'MetalGUI',
-                                  abs_file_path: str,
-                                  parent=None) -> QtWidgets.QWidget:
-    """Creates the spawned window that has the Parameter Entry Window
-    """
+def create_parameter_entry_window(
+    gui: "MetalGUI", abs_file_path: str, parent=None
+) -> QtWidgets.QWidget:
+    """Creates the spawned window that has the Parameter Entry Window"""
     cur_class = get_class_from_abs_file_path(abs_file_path)
     if cur_class is None:
         gui.logger.error("Unable to get class from abs file: ", abs_file_path)
@@ -489,17 +506,16 @@ def get_class_from_abs_file_path(abs_file_path: str):
     https://stackoverflow.com/questions/452969/does-python-have-an-equivalent-to-java-class-forname
 
     """
-    qis_abs_path = abs_file_path[abs_file_path.index(__name__.split('.')[0]):]
+    qis_abs_path = abs_file_path[abs_file_path.index(__name__.split(".")[0]) :]
 
     # Windows users' qis_abs_path may use os.sep or '/' due to PySide's
     # handling of file names
-    qis_mod_path = qis_abs_path.replace(os.sep, '.')[:-len('.py')]
-    qis_mod_path = qis_mod_path.replace("/",
-                                        '.')  # users cannot use '/' in filename
+    qis_mod_path = qis_abs_path.replace(os.sep, ".")[: -len(".py")]
+    qis_mod_path = qis_mod_path.replace("/", ".")  # users cannot use '/' in filename
 
     cur_module = importlib.import_module(qis_mod_path)
     members = inspect.getmembers(cur_module, inspect.isclass)
-    class_owner = qis_mod_path.split('.')[-1]
+    class_owner = qis_mod_path.split(".")[-1]
     for memtup in members:
         if len(memtup) > 1:
             if str(memtup[1].__module__).endswith(class_owner):
@@ -535,8 +551,9 @@ def create_default_from_type(my_t: type, param_name: str = None):
     elif my_t == OrderedDict:
         return OrderedDict({0: "zeroth"})
     elif my_t == Dict:
-        return Dict(falseparam1=Dict(falseparam2="false-param",
-                                     falseparam3="false-param"))
+        return Dict(
+            falseparam1=Dict(falseparam2="false-param", falseparam3="false-param")
+        )
     elif my_t is None:
         return "fake-param-" + str(random.randint(0, 1000))
     else:

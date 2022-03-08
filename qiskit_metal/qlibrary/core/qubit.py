@@ -32,22 +32,23 @@ class BaseQubit(QComponent):
         * _default_connection_pads: empty Dict -- The default values for the (if any) connection lines of the qubit.
     """
 
-    default_options = Dict(connection_pads=Dict(),
-                           _default_connection_pads=Dict())
+    default_options = Dict(connection_pads=Dict(), _default_connection_pads=Dict())
     """Default options."""
 
-    component_metadata = Dict(short_name='Q', _qgeometry_table_poly='True')
+    component_metadata = Dict(short_name="Q", _qgeometry_table_poly="True")
     """Component metadata"""
 
     TOOLTIP = """Qubit"""
 
-    def __init__(self,
-                 design,
-                 name: str = None,
-                 options: Dict = None,
-                 options_connection_pads: dict = None,
-                 make: bool = True,
-                 **kwargs):
+    def __init__(
+        self,
+        design,
+        name: str = None,
+        options: Dict = None,
+        options_connection_pads: dict = None,
+        make: bool = True,
+        **kwargs,
+    ):
         """
         Args:
             design (QDesign): The parent design.
@@ -59,7 +60,7 @@ class BaseQubit(QComponent):
         """
         super().__init__(design, name, options=options, make=False)
 
-        if self.status == 'Not Built':
+        if self.status == "Not Built":
             # Component is not registered in design.
             # This qubit was not added to design.
             # self.logger.warning(
@@ -80,8 +81,9 @@ class BaseQubit(QComponent):
     def _set_options_connection_pads(self):
         """Applies the default options."""
         # class_name = type(self).__name__
-        assert '_default_connection_pads' in self.design.template_options[
-            self.class_name], f"""When
+        assert (
+            "_default_connection_pads" in self.design.template_options[self.class_name]
+        ), f"""When
         you define your custom qubit class please add a _default_connection_pads
         dictionary name as default_options['_default_connection_pads']. This should specify the default
         creation options for the connection. """
@@ -93,7 +95,8 @@ class BaseQubit(QComponent):
         for name in self.options.connection_pads:
             my_options_connection_pads = self.options.connection_pads[name]
             self.options.connection_pads[name] = deepcopy(
-                self.design.template_options[
-                    self.class_name]['_default_connection_pads'])
-            self.options.connection_pads[name].update(
-                my_options_connection_pads)
+                self.design.template_options[self.class_name][
+                    "_default_connection_pads"
+                ]
+            )
+            self.options.connection_pads[name].update(my_options_connection_pads)

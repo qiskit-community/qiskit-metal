@@ -54,15 +54,18 @@ class ResonatorCoilRect(QComponent):
         * gap: '4um' -- The distance between each layer of the spiral
         * coupler_distance: '10um' -- The pin position from the grounded termination of the spiral
     """
-    component_metadata = Dict(short_name='res')
+
+    component_metadata = Dict(short_name="res")
     """Component metadata"""
 
-    default_options = Dict(n='3',
-                           length='2000um',
-                           line_width='1um',
-                           height='40um',
-                           gap='4um',
-                           coupler_distance='10um')
+    default_options = Dict(
+        n="3",
+        length="2000um",
+        line_width="1um",
+        height="40um",
+        gap="4um",
+        coupler_distance="10um",
+    )
     """Default drawing options"""
 
     TOOLTIP = """A rectangle spiral resonator based on length input. The X dimension is
@@ -80,12 +83,15 @@ class ResonatorCoilRect(QComponent):
 
         spiral_list = []
 
-        #Formulat to determine the size of the spiral based on inputed length.
-        x_n = (p.length / (2 * n)) - (p.height + 2 * (p.gap + p.line_width) *
-                                      (2 * n - 1))
+        # Formulat to determine the size of the spiral based on inputed length.
+        x_n = (p.length / (2 * n)) - (
+            p.height + 2 * (p.gap + p.line_width) * (2 * n - 1)
+        )
 
         if x_n <= p.gap + p.line_width:
-            self._error_message = f'Inputted values results in the width of the spiral being too small.'
+            self._error_message = (
+                f"Inputted values results in the width of the spiral being too small."
+            )
             self.logger.warning(self._error_message)
             return
 
@@ -98,20 +104,24 @@ class ResonatorCoilRect(QComponent):
             spiral_list.append((x_point, y_point))
             spiral_list.append((-x_point - (p.line_width + p.gap), y_point))
 
-        x_point = (x_n / 2 + (step + 1) * (p.line_width + p.gap))
-        y_point = (p.height / 2 + (step + 1) * (p.line_width + p.gap) -
-                   p.line_width / 2)
+        x_point = x_n / 2 + (step + 1) * (p.line_width + p.gap)
+        y_point = p.height / 2 + (step + 1) * (p.line_width + p.gap) - p.line_width / 2
         spiral_list.append((-x_point, -y_point))
         spiral_list = draw.LineString(spiral_list)
 
         spiral_etch = draw.shapely.geometry.box(
-            -(x_point + p.line_width / 2 + p.gap), -y_point,
-            x_point - p.line_width / 2, y_point)
-        #Generates a linestring to track port location
-        points = draw.LineString([
-            (-x_point + p.line_width / 2, -y_point + p.coupler_distance),
-            (-x_point - p.line_width / 2, -y_point + p.coupler_distance)
-        ])
+            -(x_point + p.line_width / 2 + p.gap),
+            -y_point,
+            x_point - p.line_width / 2,
+            y_point,
+        )
+        # Generates a linestring to track port location
+        points = draw.LineString(
+            [
+                (-x_point + p.line_width / 2, -y_point + p.coupler_distance),
+                (-x_point - p.line_width / 2, -y_point + p.coupler_distance),
+            ]
+        )
 
         c_items = [spiral_list, spiral_etch, points]
         c_items = draw.rotate(c_items, p.orientation, origin=(0, 0))
@@ -119,12 +129,13 @@ class ResonatorCoilRect(QComponent):
         [spiral_list, spiral_etch, points] = c_items
         ##############################################
         # add elements
-        self.add_qgeometry('path', {'n_spiral': spiral_list},
-                           width=p.line_width)
-        self.add_qgeometry('poly', {'n_spira_etch': spiral_etch}, subtract=True)
+        self.add_qgeometry("path", {"n_spiral": spiral_list}, width=p.line_width)
+        self.add_qgeometry("poly", {"n_spira_etch": spiral_etch}, subtract=True)
 
         # NEW PIN SPOT
-        self.add_pin('spiralPin',
-                     points=np.array(points.coords),
-                     width=p.line_width,
-                     input_as_norm=True)
+        self.add_pin(
+            "spiralPin",
+            points=np.array(points.coords),
+            width=p.line_width,
+            input_as_norm=True,
+        )

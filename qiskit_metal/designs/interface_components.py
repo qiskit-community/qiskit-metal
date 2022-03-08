@@ -14,7 +14,8 @@
 """Module containing Design interface components."""
 from copy import deepcopy
 from typing import TYPE_CHECKING, List, Union
-#from typing import Any, Optional, TypeVar, Dict as Dict_, Iterable
+
+# from typing import Any, Optional, TypeVar, Dict as Dict_, Iterable
 from qiskit_metal.qlibrary.core._parsed_dynamic_attrs import is_ipython_magic
 from qiskit_metal import logger
 from qiskit_metal import config
@@ -37,7 +38,7 @@ class Components:
     treat the keys as strings.
     """
 
-    def __init__(self, design: 'QDesign'):
+    def __init__(self, design: "QDesign"):
         """Set up variables and logger which are used to emulate a dict which
         is referencing design._components.
 
@@ -98,7 +99,7 @@ class Components:
             # https://github.com/jupyter/notebook/issues/2014
             if not quiet:
                 self.logger.warning(
-                    f'In Components.find_id(), the name={name} is not used in design._components'
+                    f"In Components.find_id(), the name={name} is not used in design._components"
                 )
             return 0
 
@@ -128,9 +129,7 @@ class Components:
     #     else:
     #         return 0
 
-    def __getitem__(self,
-                    name: str,
-                    quiet: bool = False) -> Union[None, 'QComponent']:
+    def __getitem__(self, name: str, quiet: bool = False) -> Union[None, "QComponent"]:
         """Get the QComponent based on string name vs the unique id of
         QComponent.
 
@@ -154,9 +153,10 @@ class Components:
             if not is_ipython_magic(name):
                 if not quiet:
                     self.logger.warning(
-                        f'In Components.__getitem__, name={name} is not '
-                        f'registered in the design class. Return '
-                        f'None for QComponent.')
+                        f"In Components.__getitem__, name={name} is not "
+                        f"registered in the design class. Return "
+                        f"None for QComponent."
+                    )
                 return None
             else:
                 raise AttributeError(name)
@@ -165,7 +165,7 @@ class Components:
 
         raise AttributeError(name)
 
-    def __setitem__(self, name: str, value: 'QComponent'):
+    def __setitem__(self, name: str, value: "QComponent"):
         """Replace QComponent for an existing name. Use this at your own risk.
         There are netids used for pins within a component.  The netids are used
         in the net_info table and qgeometry tables.
@@ -178,25 +178,26 @@ class Components:
         """
         if not isinstance(value, QComponent):
             self.logger.warning(
-                f'The value is NOT a QComponent.  Nothing has been assigned to name={name}'
+                f"The value is NOT a QComponent.  Nothing has been assigned to name={name}"
             )
             return
 
         component_id = self.find_id(name)
         if component_id:
             self.logger.debug(
-                f'The name={name} already exists in design._components.  '
-                f'A component_id={component_id} will be replaced.')
+                f"The name={name} already exists in design._components.  "
+                f"A component_id={component_id} will be replaced."
+            )
             self.components[component_id] = deepcopy(value)
         else:
             self.logger.warning(
-                f'Usualy new components are added to design during init.  '
-                f'The name={name} is not in design._components, and added as a new component.'
+                f"Usualy new components are added to design during init.  "
+                f"The name={name} is not in design._components, and added as a new component."
             )
             value.name = name
             value._add_to_design()
 
-    def __getattr__(self, name: str) -> Union['QComponent', None]:
+    def __getattr__(self, name: str) -> Union["QComponent", None]:
         """Provide same behavior as __getitem__.
 
         Args:
@@ -290,9 +291,7 @@ class Components:
         Returns:
             list: List of (key, value) pairs.
         """
-        all_items = [
-            (value.name, value) for (key, value) in self.components.items()
-        ]
+        all_items = [(value.name, value) for (key, value) in self.components.items()]
         return all_items
 
     def values(self) -> list:

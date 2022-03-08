@@ -48,20 +48,22 @@ class EPRanalysis(QAnalysis):
         * energy_elec_sub (float): Admittance matrix.
 
     """
-    default_setup = Dict(junctions=Dict(
-        jj=Dict(Lj_variable='Lj', Cj_variable='Cj', rect='', line='')),
-                         dissipatives=Dict(dielectrics_bulk=['main']),
-                         cos_trunc=8,
-                         fock_trunc=7,
-                         sweep_variable='Lj')
+
+    default_setup = Dict(
+        junctions=Dict(jj=Dict(Lj_variable="Lj", Cj_variable="Cj", rect="", line="")),
+        dissipatives=Dict(dielectrics_bulk=["main"]),
+        cos_trunc=8,
+        fock_trunc=7,
+        sweep_variable="Lj",
+    )
     """Default setup."""
 
     # supported labels for data generated from the simulation
-    data_labels = ['energy_elec', 'energy_mag', 'energy_elec_sub']
+    data_labels = ["energy_elec", "energy_mag", "energy_elec_sub"]
     """Default data labels."""
 
     # TODO: renderer_name should default to None. Need to create a set renderer method
-    def __init__(self, design: 'QDesign' = None, renderer_name: str = None):
+    def __init__(self, design: "QDesign" = None, renderer_name: str = None):
         """Performs Energy Participation Ratio (EPR) analysis on a simulated or
         user-provided eigenmode matrix.
 
@@ -74,8 +76,9 @@ class EPRanalysis(QAnalysis):
         # QAnalysis are expected to either run simulation or use pre-saved sim outputs
         # we use a Dict() to store the sim outputs previously saved. Its key names need
         # to match those found in the correspondent simulation class.
-        self.sim = Dict() if renderer_name is None else EigenmodeSim(
-            design, renderer_name)
+        self.sim = (
+            Dict() if renderer_name is None else EigenmodeSim(design, renderer_name)
+        )
         super().__init__()
 
     @property
@@ -85,7 +88,7 @@ class EPRanalysis(QAnalysis):
         Returns:
             float: Electric field energy stored in the system based on the eigenmode results.
         """
-        return self.get_data('energy_elec')
+        return self.get_data("energy_elec")
 
     @energy_elec.setter
     def energy_elec(self, data: float):
@@ -96,10 +99,11 @@ class EPRanalysis(QAnalysis):
         """
         if not isinstance(data, float):
             self.logger.warning(
-                'Unsupported type %s. Only accepts float. Please try again.',
-                {type(data)})
+                "Unsupported type %s. Only accepts float. Please try again.",
+                {type(data)},
+            )
             return
-        self.set_data('energy_elec', data)
+        self.set_data("energy_elec", data)
 
     @property
     def energy_mag(self) -> float:
@@ -108,7 +112,7 @@ class EPRanalysis(QAnalysis):
         Returns:
             float: Magnetic field energy stored in the system based on the eigenmode results.
         """
-        return self.get_data('energy_mag')
+        return self.get_data("energy_mag")
 
     @energy_mag.setter
     def energy_mag(self, data: float):
@@ -119,10 +123,11 @@ class EPRanalysis(QAnalysis):
         """
         if not isinstance(data, float):
             self.logger.warning(
-                'Unsupported type %s. Only accepts float. Please try again.',
-                {type(data)})
+                "Unsupported type %s. Only accepts float. Please try again.",
+                {type(data)},
+            )
             return
-        self.set_data('energy_mag', data)
+        self.set_data("energy_mag", data)
 
     @property
     def energy_elec_sub(self) -> float:
@@ -131,7 +136,7 @@ class EPRanalysis(QAnalysis):
         Returns:
             float: Electric field energy stored in the substrate based on the eigenmode results.
         """
-        return self.get_data('energy_elec_sub')
+        return self.get_data("energy_elec_sub")
 
     @energy_elec_sub.setter
     def energy_elec_sub(self, data: float):
@@ -143,10 +148,11 @@ class EPRanalysis(QAnalysis):
         """
         if not isinstance(data, float):
             self.logger.warning(
-                'Unsupported type %s. Only accepts float. Please try again.',
-                {type(data)})
+                "Unsupported type %s. Only accepts float. Please try again.",
+                {type(data)},
+            )
             return
-        self.set_data('energy_elec_sub', data)
+        self.set_data("energy_elec_sub", data)
 
     def run(self, *args, **kwargs):
         """Executes sequentially the system capacitance simulation and lom extraction executing
@@ -175,7 +181,8 @@ class EPRanalysis(QAnalysis):
                 self.report_hamiltonian(self.setup.sweep_variable)
             except AttributeError:
                 self.logger.error(
-                    "Please install a more recent version of pyEPR (>=0.8.5.3)")
+                    "Please install a more recent version of pyEPR (>=0.8.5.3)"
+                )
 
     # TODO: all the epr methods should not use the renderer. Now they are forced to because of the
     #  pyEPR dependency from pinfo. pinfo however is Ansys specific and cannot be generalized as-is
@@ -188,29 +195,33 @@ class EPRanalysis(QAnalysis):
         # pandas cannot handle Dict so need to convert Dict to dict
         system = dict()
         s = self.setup
-        system['junctions'] = {} if no_junctions else {
-            k: dict(v) for (k, v) in s.junctions.items()
-        }
-        system['dissipatives'] = dict(s.dissipatives)
+        system["junctions"] = (
+            {} if no_junctions else {k: dict(v) for (k, v) in s.junctions.items()}
+        )
+        system["dissipatives"] = dict(s.dissipatives)
         self.sim.renderer.epr_start(**system)
         return system
 
     def get_stored_energy(self, no_junctions=False):
-        """Calculate the energy stored in the system based on the eigenmode results.
-        """
+        """Calculate the energy stored in the system based on the eigenmode results."""
         # execute EPR and energy extraction
-        self.energy_elec, self.energy_elec_sub, self.energy_mag = \
-            self.sim.renderer.epr_get_stored_energy(**self.epr_start(no_junctions))
+        (
+            self.energy_elec,
+            self.energy_elec_sub,
+            self.energy_mag,
+        ) = self.sim.renderer.epr_get_stored_energy(**self.epr_start(no_junctions))
 
         # present a human-friendly output
-        print(f"""
+        print(
+            f"""
         energy_elec_all       = {self.energy_elec}
         energy_elec_substrate = {self.energy_elec_sub}
         EPR of substrate = {self.energy_elec_sub / self.energy_elec * 100 :.1f}%
 
         energy_mag    = {self.energy_mag}
         energy_mag % of energy_elec_all  = {self.energy_mag / self.energy_elec * 100 :.1f}%
-        """)
+        """
+        )
 
     def run_analysis(self):
         """Short-cut to the same-name method found in renderers.ansys_renderer.py.
@@ -237,7 +248,7 @@ class EPRanalysis(QAnalysis):
         system = self.epr_start(no_junctions=True)
         return self.sim.renderer.epr_get_frequencies(**system)
 
-    def del_junction(self, name_junction='jj'):
+    def del_junction(self, name_junction="jj"):
         """Remove a junction from the dictionary setup.junctions
 
         Args:
@@ -246,12 +257,9 @@ class EPRanalysis(QAnalysis):
         if name_junction in self.setup.junctions:
             del self.setup.junctions[name_junction]
 
-    def add_junction(self,
-                     name_junction="jj",
-                     lj_var="Lj",
-                     cj_var='Cj',
-                     rect='',
-                     line=''):
+    def add_junction(
+        self, name_junction="jj", lj_var="Lj", cj_var="Cj", rect="", line=""
+    ):
         """Add a new junction for the EPR analysis
 
         Args:
@@ -268,14 +276,12 @@ class EPRanalysis(QAnalysis):
         j_dic = self.setup.junctions
         if name_junction in j_dic:
             self.logger.warning(
-                f"junction already defined. Overwriting {name_junction}")
+                f"junction already defined. Overwriting {name_junction}"
+            )
 
-        j_dic[name_junction] = Dict({
-            'Lj_variable': lj_var,
-            'Cj_variable': cj_var,
-            'rect': rect,
-            'line': line
-        })
+        j_dic[name_junction] = Dict(
+            {"Lj_variable": lj_var, "Cj_variable": cj_var, "rect": rect, "line": line}
+        )
 
     def load_simulation_data(self, data_name: str, data):
         """Load simulation data for the following analysis. This will override any data found

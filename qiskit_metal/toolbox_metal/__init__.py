@@ -52,6 +52,7 @@ from .parsing import is_variable_name
 from .parsing import is_numeric_possible
 
 from .. import config
+
 if config.is_building_docs():
     from . import about
     from .exceptions import QiskitMetalDesignError

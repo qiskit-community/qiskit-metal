@@ -24,7 +24,7 @@ from qutip import Qobj
 
 
 def basis_state_on(mode_size: List[int], excitations: Dict_[int, int]):
-    ''' Construct a qutip Qobj. Taken from pyEPR
+    """Construct a qutip Qobj. Taken from pyEPR
     https://github.com/zlatko-minev/pyEPR/blob/master/pyEPR/calcs/back_box_numeric.py
 
     Args:
@@ -36,17 +36,21 @@ def basis_state_on(mode_size: List[int], excitations: Dict_[int, int]):
 
     Returns:
         qutip Qobj: qutip tensor product representing the state
-    '''
-    return qutip.tensor(*[
-        qutip.basis(mode_size[i], excitations.get(i, 0))
-        for i in range(len(mode_size))
-    ])
+    """
+    return qutip.tensor(
+        *[
+            qutip.basis(mode_size[i], excitations.get(i, 0))
+            for i in range(len(mode_size))
+        ]
+    )
 
 
-def extract_energies(esys_array: np.ndarray,
-                     mode_size: List[int],
-                     zero_evals: bool = True,
-                     chi_prime: bool = False):
+def extract_energies(
+    esys_array: np.ndarray,
+    mode_size: List[int],
+    zero_evals: bool = True,
+    chi_prime: bool = False,
+):
     """
     Returns the frequencies, anharmonicities, and dispersive shifts of the modes.
 
@@ -68,7 +72,7 @@ def extract_energies(esys_array: np.ndarray,
             shifts, i.e., the chi's between the modes
     """
 
-    print("Processing eigensystem...", end='')
+    print("Processing eigensystem...", end="")
     evals, evecs = esys_array
     print("\rFinished eigensystem.     ")
 
@@ -101,7 +105,7 @@ def extract_energies(esys_array: np.ndarray,
             # load ith mode and jth mode with 1 photon
             fs = state_on(d)
             ev, _evec = closest_state_to(fs)
-            chi = (ev - (f1s[i] + f1s[j]))
+            chi = ev - (f1s[i] + f1s[j])
             chis[i][j] = chi
             chis[j][i] = chi
 
@@ -109,7 +113,7 @@ def extract_energies(esys_array: np.ndarray,
                 d[j] += 1
                 fs = state_on(d)
                 ev, _evec = closest_state_to(fs)
-                chip = (ev - (f1s[i] + 2 * f1s[j]) - 2 * chis[i][j])
+                chip = ev - (f1s[i] + 2 * f1s[j]) - 2 * chis[i][j]
                 chips[i][j] = chip
                 chips[j][i] = chip
 

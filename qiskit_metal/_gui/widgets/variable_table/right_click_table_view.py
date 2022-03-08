@@ -35,8 +35,8 @@ class RightClickView(QTableView):
         self.gui = parent.parent()  # this is not the main gui
 
         QTimer.singleShot(
-            200,
-            self.style_me)  # not sure whu the ui isnt unpdating these here.
+            200, self.style_me
+        )  # not sure whu the ui isnt unpdating these here.
 
     def style_me(self):
         """Style this widget."""
@@ -54,15 +54,18 @@ class RightClickView(QTableView):
             event (QContextMenuEvent): The event
         """
         self.right_click_menu = QMenu(self)
-        self.right_click_menu._d = self.right_click_menu.addAction('Delete')
-        self.right_click_menu._r = self.right_click_menu.addAction('Rename')
+        self.right_click_menu._d = self.right_click_menu.addAction("Delete")
+        self.right_click_menu._r = self.right_click_menu.addAction("Rename")
         row_name, index = self.getPosition(event.pos())
         self.right_click_menu._d.triggered.connect(
-            lambda: self.deleteRow(row_name, index.row()))
+            lambda: self.deleteRow(row_name, index.row())
+        )
         self.right_click_menu._r.triggered.connect(
-            lambda: self.renameRow(row_name, index))
+            lambda: self.renameRow(row_name, index)
+        )
         self.right_click_menu.action = self.right_click_menu.exec_(
-            self.mapToGlobal(event.pos()))
+            self.mapToGlobal(event.pos())
+        )
 
     def getPosition(self, clickedIndex: QPoint):
         """Obtain location of clicked cell in form of row name and number.
@@ -88,8 +91,11 @@ class RightClickView(QTableView):
         """
         if row_number > -1:
             choice = QMessageBox.question(
-                self, '', f'Are you sure you want to delete {row_name}?',
-                QMessageBox.Yes | QMessageBox.No)
+                self,
+                "",
+                f"Are you sure you want to delete {row_name}?",
+                QMessageBox.Yes | QMessageBox.No,
+            )
             if choice == QMessageBox.Yes:
                 model = self.model()
                 model.removeRows(row_number)
@@ -102,9 +108,9 @@ class RightClickView(QTableView):
             index (QModelIndex): Index of the row to rename
         """
         if index.row() > -1:
-            text, okPressed = QInputDialog.getText(self, 'Rename',
-                                                   f'Rename {row_name} to:',
-                                                   QLineEdit.Normal, '')
-            if okPressed and (text != ''):
+            text, okPressed = QInputDialog.getText(
+                self, "Rename", f"Rename {row_name} to:", QLineEdit.Normal, ""
+            )
+            if okPressed and (text != ""):
                 model = self.model()
                 model.setData(index, text)

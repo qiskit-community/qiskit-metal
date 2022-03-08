@@ -136,6 +136,7 @@ from .core import QRoute
 from .core import BaseQubit
 
 from .. import config
+
 if config.is_building_docs():
     from .core import QRouteLead
     from .core import QRoutePoint

@@ -16,9 +16,12 @@ from typing import Union, Tuple
 import pandas as pd
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from pyEPR.reports import (plot_convergence_f_vspass, plot_convergence_max_df,
-                           plot_convergence_maxdf_vs_sol,
-                           plot_convergence_solved_elem)
+from pyEPR.reports import (
+    plot_convergence_f_vspass,
+    plot_convergence_max_df,
+    plot_convergence_maxdf_vs_sol,
+    plot_convergence_solved_elem,
+)
 from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
 
 from ... import Dict
@@ -45,22 +48,25 @@ class EigenmodeSim(QSimulation):
         * convergence_t (pd.DataFrame): Convergence of the eigenmode frequency.
 
     """
-    default_setup = Dict(min_freq_ghz=1,
-                         n_modes=1,
-                         max_delta_f=0.5,
-                         max_passes=10,
-                         min_passes=1,
-                         min_converged=1,
-                         pct_refinement=30,
-                         basis_order=1,
-                         vars=Dict(Lj='10 nH', Cj='0 fF'))
+
+    default_setup = Dict(
+        min_freq_ghz=1,
+        n_modes=1,
+        max_delta_f=0.5,
+        max_passes=10,
+        min_passes=1,
+        min_converged=1,
+        pct_refinement=30,
+        basis_order=1,
+        vars=Dict(Lj="10 nH", Cj="0 fF"),
+    )
     """Default setup."""
 
     # supported labels for data generated from the simulation
-    data_labels = ['convergence_t', 'convergence_f']
+    data_labels = ["convergence_t", "convergence_f"]
     """Default data labels."""
 
-    def __init__(self, design: 'QDesign' = None, renderer_name: str = 'hfss'):
+    def __init__(self, design: "QDesign" = None, renderer_name: str = "hfss"):
         """Compute eigenmode, then derive from it using the epr method.
 
         Args:
@@ -82,14 +88,15 @@ class EigenmodeSim(QSimulation):
         self.compute_convergences()
 
     def run_sim(  # pylint: disable=arguments-differ
-            self,
-            name: str = None,
-            components: Union[list, None] = None,
-            open_terminations: Union[list, None] = None,
-            port_list: Union[list, None] = None,
-            jj_to_port: Union[list, None] = None,
-            ignored_jjs: Union[list, None] = None,
-            box_plus_buffer: bool = True) -> Tuple[str, str]:
+        self,
+        name: str = None,
+        components: Union[list, None] = None,
+        open_terminations: Union[list, None] = None,
+        port_list: Union[list, None] = None,
+        jj_to_port: Union[list, None] = None,
+        ignored_jjs: Union[list, None] = None,
+        box_plus_buffer: bool = True,
+    ) -> Tuple[str, str]:
         """Executes the entire eigenmode analysis and convergence result export.
         First it makes sure the tool is running. Then it does what's necessary to render the design.
         Finally it runs the setup defined in this class. So you need to modify the setup ahead.
@@ -118,7 +125,7 @@ class EigenmodeSim(QSimulation):
         # save input variables to run(). This line must be the first in the method
         if components is not None:
             argm = locals()
-            del argm['self']
+            del argm["self"]
             self.save_run_args(**argm)
         # wipe data from the previous run (if any)
         self.clear_data()
@@ -129,14 +136,15 @@ class EigenmodeSim(QSimulation):
         vars_to_initialize = self.setup.vars
         renderer_design_name = self._render(
             name=name,
-            solution_type='eigenmode',
+            solution_type="eigenmode",
             selection=components,
             open_pins=open_terminations,
             port_list=port_list,
             jj_to_port=jj_to_port,
             ignored_jjs=ignored_jjs,
             box_plus_buffer=box_plus_buffer,
-            vars_to_initialize=vars_to_initialize)
+            vars_to_initialize=vars_to_initialize,
+        )
 
         self._analyze()
         return renderer_design_name, self.sim_setup_name
@@ -148,7 +156,7 @@ class EigenmodeSim(QSimulation):
         Returns:
             pd.DataFrame: Convergence of the eigenmode frequency.
         """
-        return self.get_data('convergence_f')
+        return self.get_data("convergence_f")
 
     @convergence_f.setter
     def convergence_f(self, data: pd.DataFrame):
@@ -159,10 +167,11 @@ class EigenmodeSim(QSimulation):
         """
         if not isinstance(data, pd.DataFrame):
             self.logger.warning(
-                'Unsupported type %s. Only accepts pandas dataframes. Please try again.',
-                {type(data)})
+                "Unsupported type %s. Only accepts pandas dataframes. Please try again.",
+                {type(data)},
+            )
             return
-        self.set_data('convergence_f', data)
+        self.set_data("convergence_f", data)
 
     @property
     def convergence_t(self) -> pd.DataFrame:
@@ -171,7 +180,7 @@ class EigenmodeSim(QSimulation):
         Returns:
             pd.DataFrame: Convergence of the eigenmode frequency.
         """
-        return self.get_data('convergence_t')
+        return self.get_data("convergence_t")
 
     @convergence_t.setter
     def convergence_t(self, data: pd.DataFrame):
@@ -182,10 +191,11 @@ class EigenmodeSim(QSimulation):
         """
         if not isinstance(data, pd.DataFrame):
             self.logger.warning(
-                'Unsupported type %s. Only accepts pandas dataframes. Please try again.',
-                {type(data)})
+                "Unsupported type %s. Only accepts pandas dataframes. Please try again.",
+                {type(data)},
+            )
             return
-        self.set_data('convergence_t', data)
+        self.set_data("convergence_t", data)
 
     def compute_convergences(self, variation: str = None):
         """Convergence plots are computed as part of run(). However, in special cases
@@ -196,13 +206,16 @@ class EigenmodeSim(QSimulation):
               variation = "scale_factor='1.2001'". Defaults to None.
         """
         self.convergence_t, self.convergence_f, _ = self.renderer.get_convergences(
-            variation)
+            variation
+        )
 
-    def plot_convergences(self,
-                          convergence_t: pd.DataFrame = None,
-                          convergence_f: pd.DataFrame = None,
-                          fig: mpl.figure.Figure = None,
-                          _display: bool = True):
+    def plot_convergences(
+        self,
+        convergence_t: pd.DataFrame = None,
+        convergence_f: pd.DataFrame = None,
+        fig: mpl.figure.Figure = None,
+        _display: bool = True,
+    ):
         """Creates 3 plots, useful to determin the convergence achieved by the renderer:
         * convergence frequency vs. pass number if fig is None.
         * delta frequency and solved elements vs. pass number.
@@ -221,7 +234,7 @@ class EigenmodeSim(QSimulation):
             convergence_f = self.convergence_f
 
         if fig is None:
-            fig = plt.figure(figsize=(11, 3.))
+            fig = plt.figure(figsize=(11, 3.0))
 
             # Grid spec and axes;    height_ratios=[4, 1], wspace=0.5
             gspec = mpl.gridspec.GridSpec(1, 3, width_ratios=[1.2, 1.5, 1])
@@ -231,8 +244,9 @@ class EigenmodeSim(QSimulation):
             plot_convergence_f_vspass(axs[0], convergence_f)
             plot_convergence_max_df(axs[1], convergence_t.iloc[:, 1])
             plot_convergence_solved_elem(ax0t, convergence_t.iloc[:, 0])
-            plot_convergence_maxdf_vs_sol(axs[2], convergence_t.iloc[:, 1],
-                                          convergence_t.iloc[:, 0])
+            plot_convergence_maxdf_vs_sol(
+                axs[2], convergence_t.iloc[:, 1], convergence_t.iloc[:, 0]
+            )
 
             fig.tight_layout(w_pad=0.1)  # pad=0.0, w_pad=0.1, h_pad=1.0)
 
@@ -243,11 +257,8 @@ class EigenmodeSim(QSimulation):
     ##### Below methods are related to EPR
 
     def plot_fields(  # pylint: disable=keyword-arg-before-vararg
-            self,
-            object_name,
-            eigenmode: int = 1,
-            *args,
-            **kwargs):
+        self, object_name, eigenmode: int = 1, *args, **kwargs
+    ):
         """Plots electro(magnetic) fields in the renderer.
         Accepts as args everything parameter accepted by the homonymous renderer method.
 
@@ -259,9 +270,7 @@ class EigenmodeSim(QSimulation):
             None
         """
         self.renderer.set_mode(eigenmode, self.sim_setup_name)
-        return self.renderer.plot_fields(*args,
-                                         **kwargs,
-                                         object_name=object_name)
+        return self.renderer.plot_fields(*args, **kwargs, object_name=object_name)
 
     def clear_fields(self, names: list = None):
         """

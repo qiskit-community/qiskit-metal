@@ -34,8 +34,11 @@ import qutip
 from qiskit_metal.toolbox_python.display import Color, style_colon_list
 
 __all__ = [
-    'about', 'open_docs', 'orient_me', 'get_platform_info',
-    'get_module_doc_page'
+    "about",
+    "open_docs",
+    "orient_me",
+    "get_platform_info",
+    "get_module_doc_page",
 ]
 
 
@@ -54,15 +57,16 @@ def about():
 
     try:
         import matplotlib
-        #matplotlib_ver = matplotlib.__version__
+
+        # matplotlib_ver = matplotlib.__version__
     except:
-        #matplotlib_ver = 'None'
+        # matplotlib_ver = 'None'
         pass
 
     try:
         from sip import SIP_VERSION_STR
     except:
-        SIP_VERSION_STR = 'Not installed'
+        SIP_VERSION_STR = "Not installed"
     # Riverbank: SIP is a tool for quickly writing Python modules that interface with
     # C++ and C libraries.
 
@@ -100,15 +104,13 @@ IBM Quantum Team"""
 # DOCS
 
 
-def get_module_doc_page(module,
-                        folder=r'../docs/build/html',
-                        page='index.html'):
+def get_module_doc_page(module, folder=r"../docs/build/html", page="index.html"):
     """Get the file path to a module doc folder assumed to be inside the
     package."""
     return Path(os.path.dirname(module.__file__)) / folder / page
 
 
-def open_docs(page='https://qiskit.org/documentation/metal/'):
+def open_docs(page="https://qiskit.org/documentation/metal/"):
     """Open the qiskit_metal documentation in HTML.
 
     Open the URL in new window, raising the window if possible.
@@ -130,15 +132,15 @@ def orient_me(do_print: bool = True) -> Union[None, str]:
     """
 
     text = get_platform_info()
-    text += \
-        f" User and directories:\n\n"\
-        f"    User              : {getpass.getuser()}\n"\
-        f"    User home dirctry : {Path.home()}\n"\
-        f"    Current directory : {Path.cwd()}\n\n"\
-        f"    Conda default env : {os.environ.get('CONDA_DEFAULT_ENV', 'N/A')}\n"\
-        f"    Conda current env : {os.environ.get('CONDA_PREFIX', 'N/A')}\n"\
-        f"    Python executable : {sys.executable}\n"\
-
+    text += (
+        f" User and directories:\n\n"
+        f"    User              : {getpass.getuser()}\n"
+        f"    User home dirctry : {Path.home()}\n"
+        f"    Current directory : {Path.cwd()}\n\n"
+        f"    Conda default env : {os.environ.get('CONDA_DEFAULT_ENV', 'N/A')}\n"
+        f"    Conda current env : {os.environ.get('CONDA_PREFIX', 'N/A')}\n"
+        f"    Python executable : {sys.executable}\n"
+    )
     if do_print:
         text = style_colon_list(text, Color.BOLD, Color.END)
         print(text)
@@ -150,7 +152,7 @@ def orient_me(do_print: bool = True) -> Union[None, str]:
 def get_platform_info() -> str:
     """Returns a string with the platform information."""
 
-    return '''
+    return """
 
  System platform information:
 
@@ -167,7 +169,15 @@ def get_platform_info() -> str:
     version  : %s (implem: %s)
     compiler : %s
 
-''' % (platform.system(), platform.node(), platform.release(),
-       platform.machine(), platform.processor(), platform.platform(),
-       platform.version(), platform.python_version(),
-       platform.python_implementation(), platform.python_compiler())
+""" % (
+        platform.system(),
+        platform.node(),
+        platform.release(),
+        platform.machine(),
+        platform.processor(),
+        platform.platform(),
+        platform.version(),
+        platform.python_version(),
+        platform.python_implementation(),
+        platform.python_compiler(),
+    )

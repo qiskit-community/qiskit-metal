@@ -16,7 +16,8 @@
 from shapely.geometry import CAP_STYLE, JOIN_STYLE
 from qiskit_metal import draw  # , Dict
 from qiskit_metal.qlibrary.core import QComponent
-#from qiskit_metal import is_true
+
+# from qiskit_metal import is_true
 
 
 class CircleCaterpillar(QComponent):
@@ -41,15 +42,16 @@ class CircleCaterpillar(QComponent):
     """
 
     default_options = dict(
-        segments='5',
-        distance='1.2',
-        radius='300um',
-        resolution='16',
-        cap_style='round',  # round, flat, square
+        segments="5",
+        distance="1.2",
+        radius="300um",
+        resolution="16",
+        cap_style="round",  # round, flat, square
         # join_style = 'round', # round, mitre, bevel
         # General
-        subtract='False',
-        helper='False')
+        subtract="False",
+        helper="False",
+    )
     """Default drawing options"""
 
     TOOLTIP = """A single configurable circle"""
@@ -68,8 +70,9 @@ class CircleCaterpillar(QComponent):
                 p.radius,
                 resolution=int(p.resolution),
                 cap_style=getattr(CAP_STYLE, p.cap_style),
-                #join_style = getattr(JOIN_STYLE, p.join_style)
-            ) for i in range(int(p.segments))
+                # join_style = getattr(JOIN_STYLE, p.join_style)
+            )
+            for i in range(int(p.segments))
         ]
         caterpillar = draw.union(caterpillar)
 
@@ -81,11 +84,11 @@ class CircleCaterpillar(QComponent):
         # rect = draw.rectangle(p.radius*0.75, p.radius*0.23,
         #                      xoff=p.pos_x+p.radius*0.3,
         #                      yoff=p.pos_y+p.radius*0.4)
-        #caterpillar = draw.subtract(caterpillar, rect)
+        # caterpillar = draw.subtract(caterpillar, rect)
         # print(caterpillar)
 
         # add qgeometry
-        #self.add_qgeometry('poly', {'mount': rect})
-        self.add_qgeometry('poly', {'caterpillar': caterpillar})
+        # self.add_qgeometry('poly', {'mount': rect})
+        self.add_qgeometry("poly", {"caterpillar": caterpillar})
         # subtract=p.subtract,
         #                   helper=p.helper, layer=p.layer, chip=p.chip)

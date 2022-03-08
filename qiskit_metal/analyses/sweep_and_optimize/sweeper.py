@@ -2,7 +2,7 @@ from qiskit_metal import Dict
 from typing import Tuple, Union
 
 
-class Sweeper():
+class Sweeper:
     """The methods allow users to sweep a variable in a components's options.
     Need access to renderers which are registered in QDesign."""
 
@@ -16,23 +16,23 @@ class Sweeper():
         # Reference to the instance (or child or grandchild) of QAnalysis.
         self.parent = parent
 
-        #For easy access, make a reference to QDesign.
-        if hasattr(self.parent, 'sim'):
+        # For easy access, make a reference to QDesign.
+        if hasattr(self.parent, "sim"):
             self.design = parent.sim.design
-        elif hasattr(self.parent, 'design'):
+        elif hasattr(self.parent, "design"):
             self.design = parent.design
         else:
             self.design = None
 
     def run_sweep(self, *args, **kwarg) -> Tuple[Dict, int]:
-        """Ansys will be opened, if not already open, with an inserted project.  
-        A design will be inserted by this method. 
+        """Ansys will be opened, if not already open, with an inserted project.
+        A design will be inserted by this method.
 
-        There are two ways to pass arguments.  You can use the previous run or 
-        use updated arguments.  With both scenarios, qcomp_name, option_name, and 
+        There are two ways to pass arguments.  You can use the previous run or
+        use updated arguments.  With both scenarios, qcomp_name, option_name, and
         option_sweep must be passed.
 
-        For the previous run, the arguments are all but the three required.  
+        For the previous run, the arguments are all but the three required.
 
         Args:
             qcomp_name (str): A component that contains the option to be swept.
@@ -68,10 +68,10 @@ class Sweeper():
             * 2 option_name is empty.
             * 3 option_name is not found as key in Dict.
             * 4 option_sweep is empty, need at least one entry.
-            * 5 last key in option_name is not in Dict. 
+            * 5 last key in option_name is not in Dict.
             * 6 need to have at least three arguments
         """
-        #Dict of all swept information.
+        # Dict of all swept information.
         all_sweep = Dict()
         previous_run = Dict()
         clean_kwargs = Dict()
@@ -81,7 +81,7 @@ class Sweeper():
         if len(args) == 3 and len(kwarg) == 0:
             use_previous_run = True
             # Do not populate the previous_run if more than minimum required is passed.
-            if hasattr(self.parent, 'sim'):
+            if hasattr(self.parent, "sim"):
                 if self.parent.sim.setup.run:
                     previous_run = self.parent.sim.setup.run
             elif self.parent.setup.run:
@@ -89,7 +89,8 @@ class Sweeper():
 
         if len(args) >= 3:
             option_path, a_value, check_result = self.error_check_sweep_input(
-                args[0], args[1], args[2])
+                args[0], args[1], args[2]
+            )
         else:
             return all_sweep, 6
 
@@ -97,22 +98,22 @@ class Sweeper():
             return all_sweep, check_result
 
         if len(args) > 3:
-            clean_kwargs['components'] = args[3]
+            clean_kwargs["components"] = args[3]
         if len(args) > 4:
-            clean_kwargs['open_terminations'] = args[4]
+            clean_kwargs["open_terminations"] = args[4]
 
-        if 'design_name' in kwarg:
-            #means use_previous_run=False
-            clean_kwargs['name'] = kwarg['design_name']
-            del kwarg['design_name']
+        if "design_name" in kwarg:
+            # means use_previous_run=False
+            clean_kwargs["name"] = kwarg["design_name"]
+            del kwarg["design_name"]
         else:
-            clean_kwargs['name'] = "Sweep_default"
+            clean_kwargs["name"] = "Sweep_default"
 
-        if use_previous_run and 'box_plus_buffer' not in previous_run:
-            clean_kwargs['box_plus_buffer'] = True
+        if use_previous_run and "box_plus_buffer" not in previous_run:
+            clean_kwargs["box_plus_buffer"] = True
 
-        if not use_previous_run and 'box_plus_buffer' not in kwarg:
-            clean_kwargs['box_plus_buffer'] = True
+        if not use_previous_run and "box_plus_buffer" not in kwarg:
+            clean_kwargs["box_plus_buffer"] = True
 
         all_dicts = {**previous_run, **clean_kwargs, **kwarg}
 
@@ -121,21 +122,27 @@ class Sweeper():
             all_dicts=all_dicts,
             option_path=option_path,
             a_value=a_value,
-            all_sweep=all_sweep)
+            all_sweep=all_sweep,
+        )
 
         return all_sweep, check_result
 
-    def iterate_option_sweep(self, args: list, all_dicts: Dict,
-                             option_path: list, a_value: Dict,
-                             all_sweep: Dict) -> Tuple[Dict, int]:
-        """Iterate through the values that user gave in option_sweep.  
+    def iterate_option_sweep(
+        self,
+        args: list,
+        all_dicts: Dict,
+        option_path: list,
+        a_value: Dict,
+        all_sweep: Dict,
+    ) -> Tuple[Dict, int]:
+        """Iterate through the values that user gave in option_sweep.
 
         Args:
             args (Dict): Holds the three mandatory arguments in an expected sequence.
-            all_dicts (Dict): User arguments manipulated to account for using previous_run. 
+            all_dicts (Dict): User arguments manipulated to account for using previous_run.
             option_path (list):  The list has traversed the option Dict.
             a_value (Dict): Has the value from the dictionary of the searched key.
-            all_sweep (Dict): Will be populated during the iteration. 
+            all_sweep (Dict): Will be populated during the iteration.
 
         Returns:
             Tuple[Dict, int]: The dict key is each value of option_sweep, the
@@ -144,7 +151,7 @@ class Sweeper():
             defined below.
 
                 * 0 Have list of capacitance matrix.
-                * 5 last key in option_name is not in Dict. 
+                * 5 last key in option_name is not in Dict.
         """
 
         for _, item in enumerate(args[2]):
@@ -152,8 +159,7 @@ class Sweeper():
             if option_path[-1] in a_value.keys():
                 a_value[option_path[-1]] = item
             else:
-                self.design.logger.warning(
-                    f'Key="{option_path[-1]}" is not in dict.')
+                self.design.logger.warning(f'Key="{option_path[-1]}" is not in dict.')
                 return all_sweep, 5
 
             self.design.rebuild()
@@ -164,7 +170,7 @@ class Sweeper():
                 template = "An exception of type {0} occurred. Arguments:\n{1!r}"
                 message = template.format(type(ex).__name__, ex.args)
                 self.design.logger.warning(
-                    f'For class {self.parent.__class__.__name__}, run() did not execute as expected: {message}'
+                    f"For class {self.parent.__class__.__name__}, run() did not execute as expected: {message}"
                 )
 
             self.populate_all_sweep(all_sweep, item, args[1])
@@ -173,7 +179,7 @@ class Sweeper():
 
     # #######  Populate all_sweep
     def populate_all_sweep(self, all_sweep: Dict, item: str, option_name: str):
-        """Populate the Dict passed in all_sweep from QAnalysis.  
+        """Populate the Dict passed in all_sweep from QAnalysis.
 
         Args:
             all_sweep (Dict): Reference to hold each item which corresponds
@@ -183,19 +189,20 @@ class Sweeper():
             option_name (str): The option of QComponent that we want to sweep.
         """
         sweep_values = Dict()
-        sweep_values['option_name'] = option_name
-        sweep_values['variables'] = self.parent._variables
+        sweep_values["option_name"] = option_name
+        sweep_values["variables"] = self.parent._variables
 
-        if hasattr(self.parent, 'sim'):
-            sweep_values['sim_variables'] = self.parent.sim._variables
+        if hasattr(self.parent, "sim"):
+            sweep_values["sim_variables"] = self.parent.sim._variables
 
         all_sweep[item] = sweep_values
 
     # ####### Error checking user input.
 
-    def error_check_sweep_input(self, qcomp_name: str, option_name: str,
-                                option_sweep: list) -> Tuple[list, Dict, int]:
-        """ Implement error checking of data for sweeping.
+    def error_check_sweep_input(
+        self, qcomp_name: str, option_name: str, option_sweep: list
+    ) -> Tuple[list, Dict, int]:
+        """Implement error checking of data for sweeping.
 
         Args:
             qcomp_name (str): Component that contains the option to be swept.
@@ -222,7 +229,7 @@ class Sweeper():
             return option_path, a_value, 4
 
         if option_name:
-            option_path = option_name.split('.')
+            option_path = option_name.split(".")
         else:
             return option_path, a_value, 2
 

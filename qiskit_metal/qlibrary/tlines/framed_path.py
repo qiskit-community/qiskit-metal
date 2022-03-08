@@ -40,10 +40,12 @@ class RouteFramed(QRoute):
         5. CPWs must be attached to protruding leads via terminations head-on, not from the sides.
     """
 
-    component_metadata = Dict(short_name='cpw')
+    component_metadata = Dict(short_name="cpw")
     """Component metadata"""
 
-    TOOLTIP = """A non-meandered basic CPW that is auto-generated between 2 components."""
+    TOOLTIP = (
+        """A non-meandered basic CPW that is auto-generated between 2 components."""
+    )
 
     def make(self):
         """Use user-specified parameters and geometric orientation of
@@ -81,14 +83,16 @@ class RouteFramed(QRoute):
         m1 = meander_start_point.position
         m2 = meander_end_point.position
 
-        component_start = p.pin_inputs['start_pin']['component']
-        component_end = p.pin_inputs['end_pin']['component']
+        component_start = p.pin_inputs["start_pin"]["component"]
+        component_end = p.pin_inputs["end_pin"]["component"]
 
         # Coordinates of bounding box for each individual component
         minx1, miny1, maxx1, maxy1 = self.design.components[
-            component_start].qgeometry_bounds()
+            component_start
+        ].qgeometry_bounds()
         minx2, miny2, maxx2, maxy2 = self.design.components[
-            component_end].qgeometry_bounds()
+            component_end
+        ].qgeometry_bounds()
 
         # Coordinates of overall bounding box which includes both components
         minx, miny = min(minx1, minx2), min(miny1, miny2)
@@ -113,19 +117,15 @@ class RouteFramed(QRoute):
                 if n1[1] == 0:
                     # Normal vectors horizontal
                     if minx2 < maxx1:
-                        self.__pts = self.connect_frame(3, 0,
-                                                        (minx2 + maxx1) / 2)
+                        self.__pts = self.connect_frame(3, 0, (minx2 + maxx1) / 2)
                     else:
-                        self.__pts = self.connect_frame(3, 0,
-                                                        (minx1 + maxx2) / 2)
+                        self.__pts = self.connect_frame(3, 0, (minx1 + maxx2) / 2)
                 else:
                     # Normal vectors vertical
                     if miny2 < maxy1:
-                        self.__pts = self.connect_frame(3, 1,
-                                                        (miny2 + maxy1) / 2)
+                        self.__pts = self.connect_frame(3, 1, (miny2 + maxy1) / 2)
                     else:
-                        self.__pts = self.connect_frame(3, 1,
-                                                        (miny1 + maxy2) / 2)
+                        self.__pts = self.connect_frame(3, 1, (miny1 + maxy2) / 2)
             elif alignment == 0:
                 # Displacement orthogonal to normal vectors
                 # Connect with 1 segment
@@ -135,11 +135,9 @@ class RouteFramed(QRoute):
                 if n1[1] == 0:
                     # Normal vectors horizontal
                     if maxy1 < miny2:
-                        self.__pts = self.connect_frame(3, 1,
-                                                        (maxy1 + miny2) / 2)
+                        self.__pts = self.connect_frame(3, 1, (maxy1 + miny2) / 2)
                     elif maxy2 < miny1:
-                        self.__pts = self.connect_frame(3, 1,
-                                                        (maxy2 + miny1) / 2)
+                        self.__pts = self.connect_frame(3, 1, (maxy2 + miny1) / 2)
                     else:
                         # Gap running only vertically -> must wrap around with shorter of 2 possibilities
                         # pts_top represents 3-segment CPW running along top edge of overall bounding box
@@ -153,11 +151,9 @@ class RouteFramed(QRoute):
                 else:
                     # Normal vectors vertical
                     if maxx1 < minx2:
-                        self.__pts = self.connect_frame(3, 0,
-                                                        (maxx1 + minx2) / 2)
+                        self.__pts = self.connect_frame(3, 0, (maxx1 + minx2) / 2)
                     elif maxx2 < minx1:
-                        self.__pts = self.connect_frame(3, 0,
-                                                        (maxx2 + minx1) / 2)
+                        self.__pts = self.connect_frame(3, 0, (maxx2 + minx1) / 2)
                     else:
                         # Gap running only horizontally -> must wrap around with shorter of 2 possibilities
                         # pts_left represents 3-segment CPW running along left edge of overall bounding box
@@ -176,9 +172,12 @@ class RouteFramed(QRoute):
             elif (m1[1] in [miny, maxy]) and (m2[0] in [minx, maxx]):
                 # Both pins on perimeter of overall bounding box, but not at corner
                 self.__pts = self.connect_frame(2)
-            elif (m1[0] not in [minx, maxx]) and (m2[0] not in [
-                    minx, maxx
-            ]) and (m1[1] not in [miny, maxy]) and (m2[1] not in [miny, maxy]):
+            elif (
+                (m1[0] not in [minx, maxx])
+                and (m2[0] not in [minx, maxx])
+                and (m1[1] not in [miny, maxy])
+                and (m2[1] not in [miny, maxy])
+            ):
                 # Neither pin lies on perimeter of overall bounding box
                 # Always possible to connect with at most 2 segments
                 if (m1[0] == m2[0]) or (m1[1] == m2[1]):
@@ -196,15 +195,13 @@ class RouteFramed(QRoute):
                         if miny1 > maxy2:
                             self.__pts = self.connect_frame(2)
                         else:
-                            self.__pts = self.connect_frame(
-                                3, 1, maxy + keepouty)
+                            self.__pts = self.connect_frame(3, 1, maxy + keepouty)
                     else:
                         # Pin 2 pointing down
                         if miny2 > maxy1:
                             self.__pts = self.connect_frame(2)
                         else:
-                            self.__pts = self.connect_frame(
-                                3, 1, miny - keepouty)
+                            self.__pts = self.connect_frame(3, 1, miny - keepouty)
                 elif m1[1] in [miny, maxy]:
                     # Pin 1 on bottom or top boundary, pointing down or up, respectively
                     if n2[0] < 0:
@@ -212,15 +209,13 @@ class RouteFramed(QRoute):
                         if minx2 > maxx1:
                             self.__pts = self.connect_frame(2)
                         else:
-                            self.__pts = self.connect_frame(
-                                3, 0, minx - keepoutx)
+                            self.__pts = self.connect_frame(3, 0, minx - keepoutx)
                     else:
                         # Pin 2 pointing right
                         if minx1 > maxx2:
                             self.__pts = self.connect_frame(2)
                         else:
-                            self.__pts = self.connect_frame(
-                                3, 0, maxx + keepoutx)
+                            self.__pts = self.connect_frame(3, 0, maxx + keepoutx)
             elif (m2[0] in [minx, maxx]) or (m2[1] in [miny, maxy]):
                 # Pin 2 lies on boundary of overall bounding box but pin 1 does not
                 if m2[0] in [minx, maxx]:
@@ -230,15 +225,13 @@ class RouteFramed(QRoute):
                         if miny2 > maxy1:
                             self.__pts = self.connect_frame(2)
                         else:
-                            self.__pts = self.connect_frame(
-                                3, 1, maxy + keepouty)
+                            self.__pts = self.connect_frame(3, 1, maxy + keepouty)
                     else:
                         # Pin 1 pointing down
                         if miny1 > maxy2:
                             self.__pts = self.connect_frame(2)
                         else:
-                            self.__pts = self.connect_frame(
-                                3, 1, miny - keepouty)
+                            self.__pts = self.connect_frame(3, 1, miny - keepouty)
                 elif m2[1] in [miny, maxy]:
                     # Pin 2 on bottom or top boundary, pointing down or up, respectively
                     if n1[0] < 0:
@@ -246,19 +239,16 @@ class RouteFramed(QRoute):
                         if minx1 > maxx2:
                             self.__pts = self.connect_frame(2)
                         else:
-                            self.__pts = self.connect_frame(
-                                3, 0, minx - keepoutx)
+                            self.__pts = self.connect_frame(3, 0, minx - keepoutx)
                     else:
                         # Pin 1 pointing right
                         if minx2 > maxx1:
                             self.__pts = self.connect_frame(2)
                         else:
-                            self.__pts = self.connect_frame(
-                                3, 0, maxx + keepoutx)
+                            self.__pts = self.connect_frame(3, 0, maxx + keepoutx)
         else:
             # Normal vectors pointing in same direction
-            if ((m1[0] == m2[0]) or
-                (m1[1] == m2[1])) and (mao.dot(n1, m2 - m1) == 0):
+            if ((m1[0] == m2[0]) or (m1[1] == m2[1])) and (mao.dot(n1, m2 - m1) == 0):
                 # Connect directly with 1 segment
                 self.__pts = self.connect_frame(1)
             elif n1[1] == 0:

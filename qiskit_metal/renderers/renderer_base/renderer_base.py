@@ -26,7 +26,7 @@ from qiskit_metal import designs
 
 from ... import Dict
 
-__all__ = ['QRenderer']
+__all__ = ["QRenderer"]
 
 if TYPE_CHECKING:
     # For linting typechecking, import modules that can't be loaded here under normal conditions.
@@ -37,7 +37,7 @@ if TYPE_CHECKING:
 
 class QRenderer(ABC):
     """Abstract base class for all Renderers of Metal designs and their
-	components and qgeometry.
+        components and qgeometry.
 
     Handles:
         ::
@@ -50,7 +50,7 @@ class QRenderer(ABC):
                 chips
     """
 
-    name = 'base'  # overwrite this!
+    name = "base"  # overwrite this!
     """Name"""
 
     __loaded_renderers__ = set()
@@ -98,7 +98,7 @@ class QRenderer(ABC):
         # Add component extensions
 
         # to be used in the creation of default params for component qgeometry
-        #raise NotImplementedError()
+        # raise NotImplementedError()
 
         # Finish and register officially as ready to use.
         QRenderer.__loaded_renderers__.add(name)
@@ -136,21 +136,23 @@ class QRenderer(ABC):
         """
         if not name in QRenderer.__loaded_renderers__:
             print(
-                'ERROR: The renderer {name} has not yet been loaded. Please use the load function!'
+                "ERROR: The renderer {name} has not yet been loaded. Please use the load function!"
             )
 
         if not name in QRenderer.__instantiated_renderers__:
             print(
-                'ERROR: The renderer {name} has not yet been instantiated. Please instantiate the class!'
+                "ERROR: The renderer {name} has not yet been instantiated. Please instantiate the class!"
             )
 
         return QRenderer.__instantiated_renderers__[name]
 
-    def __init__(self,
-                 design: 'QDesign',
-                 initiate=False,
-                 render_template: Dict = None,
-                 render_options: Dict = None):
+    def __init__(
+        self,
+        design: "QDesign",
+        initiate=False,
+        render_template: Dict = None,
+        render_options: Dict = None,
+    ):
         """
         Args:
             design (QDesign): The design
@@ -161,7 +163,7 @@ class QRenderer(ABC):
 
         # TODO: check that the renderer has been loaded with load_renderer
 
-        self.status = 'Not Init'
+        self.status = "Not Init"
 
         if design is None:
             print(
@@ -170,15 +172,17 @@ class QRenderer(ABC):
             )
             design = designs.DesignPlanar({}, True)
         assert is_design(
-            design), "Error, for the design argument you must provide a\
+            design
+        ), "Error, for the design argument you must provide a\
                                    a child instance of Metal QDesign class."
 
         self._design = design
 
         # Options
         self._options = Dict()
-        self.update_options(render_options=render_options,
-                            render_template=render_template)
+        self.update_options(
+            render_options=render_options, render_template=render_template
+        )
 
         self.initiated = False
         if initiate:
@@ -187,7 +191,7 @@ class QRenderer(ABC):
         # Register as an instantiated renderer.
         QRenderer.__instantiated_renderers__[self.name] = self
 
-        self.status = 'Init Completed'
+        self.status = "Init Completed"
 
     @property
     def options(self) -> Dict:
@@ -195,7 +199,7 @@ class QRenderer(ABC):
         return self._options
 
     @property
-    def design(self) -> 'QDesign':
+    def design(self) -> "QDesign":
         """Return a reference to the parent design object."""
         return self._design
 
@@ -219,12 +223,12 @@ class QRenderer(ABC):
         parents = inspect.getmro(cls)
 
         # QRenderer is not expected to have default_options dict to add to QRenderer class.
-        for child in parents[len(parents) - 2::-1]:
+        for child in parents[len(parents) - 2 :: -1]:
             # There is a developer agreement so the defaults for a renderer will be in a dict named default_options.
-            if hasattr(child, 'default_options'):
+            if hasattr(child, "default_options"):
                 options_from_children = {
                     **options_from_children,
-                    **child.default_options  # pylint: disable=no-member
+                    **child.default_options,  # pylint: disable=no-member
                 }
         return options_from_children
 
@@ -235,11 +239,12 @@ class QRenderer(ABC):
         Returns:
             str: Example: 'qiskit_metal.renders.renderer_gds.gds_renderer.QGDSRenderer'
         """
-        return f'{cls.__module__}.{cls.__name__}'
+        return f"{cls.__module__}.{cls.__name__}"
 
     @classmethod
-    def _register_class_with_design(cls, design: 'QDesign', template_key: str,
-                                    render_template: Dict):
+    def _register_class_with_design(
+        cls, design: "QDesign", template_key: str, render_template: Dict
+    ):
         """Init function to register a renderer class with the design when
         first instantiated. Registers the renderer's template options.
 
@@ -255,11 +260,13 @@ class QRenderer(ABC):
             design.template_options[template_key] = deepcopy(render_template)
 
     @classmethod
-    def get_template_options(cls,
-                             design: 'QDesign',
-                             render_template: Dict = None,
-                             logger_: logging.Logger = None,
-                             template_key: str = None) -> Dict:
+    def get_template_options(
+        cls,
+        design: "QDesign",
+        render_template: Dict = None,
+        logger_: logging.Logger = None,
+        template_key: str = None,
+    ) -> Dict:
         """Creates template options for the Metal QRenderer class required for
         the class to function, based on the design template; i.e., be created,
         made, and rendered. Provides the blank option structure required.
@@ -283,16 +290,15 @@ class QRenderer(ABC):
 
         if template_key not in design.template_options:
             # Registers the renderer's template options.
-            cls._register_class_with_design(design, template_key,
-                                            render_template)
+            cls._register_class_with_design(design, template_key, render_template)
 
         # Only log warning, if template_key not registered within design.
         if template_key not in design.template_options:
             logger_ = logger_ or design.logger
             if logger_:
                 logger_.error(
-                    f'ERROR in creating renderer {cls.__name__}!\nThe default '
-                    f'options for the renderer class {cls.__name__} are missing'
+                    f"ERROR in creating renderer {cls.__name__}!\nThe default "
+                    f"options for the renderer class {cls.__name__} are missing"
                 )
 
         # Specific object render template options
@@ -308,9 +314,7 @@ class QRenderer(ABC):
         """
         return self.design.parse_value(value)
 
-    def update_options(self,
-                       render_options: Dict = None,
-                       render_template: Dict = None):
+    def update_options(self, render_options: Dict = None, render_template: Dict = None):
         """If template options has not been set for this renderer, then gather
         all the default options for children and add to design.  The GUI would
         use this to store the template options.
@@ -325,8 +329,8 @@ class QRenderer(ABC):
                                               Defaults to None.
         """
         self.options.update(
-            self.get_template_options(self.design,
-                                      render_template=render_template))
+            self.get_template_options(self.design, render_template=render_template)
+        )
 
         if render_options:
             self.options.update(render_options)
@@ -341,17 +345,17 @@ class QRenderer(ABC):
         status = set()
         if not isinstance(QRenderer.name, str):
             self.logger.warning(
-                f'In add_table_data_to_QDesign, cls.str={QRenderer.name} is not a str.'
+                f"In add_table_data_to_QDesign, cls.str={QRenderer.name} is not a str."
             )
             return
 
         for table, a_dict in self.element_table_data.items():
             for col_name, col_value in a_dict.items():
                 status = self.design.add_default_data_for_qgeometry_tables(
-                    table, class_name, col_name, col_value)
+                    table, class_name, col_name, col_value
+                )
                 if 5 not in status:
-                    self.logger.warning(
-                        f'col_value={col_value} not added to QDesign')
+                    self.logger.warning(f"col_value={col_value} not added to QDesign")
 
     def start(self, force=False):
         """
@@ -407,9 +411,8 @@ class QRenderer(ABC):
         return True
 
     def get_unique_component_ids(
-            self,
-            highlight_qcomponents: Union[list,
-                                         None] = None) -> Tuple[list, int]:
+        self, highlight_qcomponents: Union[list, None] = None
+    ) -> Tuple[list, int]:
         """Confirm the list doesn't have names of components repeated. Confirm
         that the name of component exists in QDesign. If QDesign doesn't
         contain any component, or if all components in QDesign are found in
@@ -428,13 +431,14 @@ class QRenderer(ABC):
         for qcomp in unique_qcomponents:
             if qcomp not in self.design.name_to_id:
                 self.logger.warning(
-                    f'The component={qcomp} in highlight_qcomponents not'
-                    ' in QDesign.')
+                    f"The component={qcomp} in highlight_qcomponents not" " in QDesign."
+                )
                 return [], 2  # Invalid
         if len(unique_qcomponents) in (0, len(self.design.components)):
             return [], 1  # Everything selected
-        return [self.design.name_to_id[elt] for elt in unique_qcomponents
-               ], 0  # Subset selected
+        return [
+            self.design.name_to_id[elt] for elt in unique_qcomponents
+        ], 0  # Subset selected
 
     @abstractmethod
     def render_design(self):

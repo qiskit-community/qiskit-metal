@@ -41,7 +41,8 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
         self.setFilterRegExp(self.accepted_files__regex)
 
     def filterAcceptsColumn(
-            self, source_column: int, source_parent: QModelIndex) -> bool:  #pylint: disable=unused-argument
+        self, source_column: int, source_parent: QModelIndex
+    ) -> bool:  # pylint: disable=unused-argument
         """
         Filters out unwanted file information in display
         Args:
@@ -57,9 +58,7 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
             return False
         return True
 
-    def data(self,
-             index: QModelIndex,
-             role: int = Qt.DisplayRole) -> typing.Any:
+    def data(self, index: QModelIndex, role: int = Qt.DisplayRole) -> typing.Any:
         """
         Sets standard size hint for indexes and allows
         Args:

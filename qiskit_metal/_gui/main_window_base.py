@@ -23,7 +23,13 @@ from pathlib import Path
 from PySide2 import QtCore, QtGui, QtWidgets
 from PySide2.QtCore import QTimer
 from PySide2.QtGui import QIcon
-from PySide2.QtWidgets import QApplication, QFileDialog, QMainWindow, QMessageBox, QDockWidget
+from PySide2.QtWidgets import (
+    QApplication,
+    QFileDialog,
+    QMainWindow,
+    QMessageBox,
+    QDockWidget,
+)
 
 from .. import Dict, config
 from ..toolbox_python._logging import setup_logger
@@ -58,18 +64,16 @@ class QMainWindowExtensionBase(QMainWindow):
         return self.handler.settings
 
     @property
-    def gui(self) -> 'QMainWindowBaseHandler':
+    def gui(self) -> "QMainWindowBaseHandler":
         """Get the GUI."""
         self.handler
 
     def _remove_log_handlers(self):
         """Remove the log handlers."""
-        if hasattr(self, 'log_text'):
+        if hasattr(self, "log_text"):
             self.log_text.remove_handlers(self.logger)
 
-    def destroy(self,
-                destroyWindow: bool = True,
-                destroySubWindows: bool = True):
+    def destroy(self, destroyWindow: bool = True, destroySubWindows: bool = True):
         """When the window is cleaned up from memory.
 
         Args:
@@ -77,17 +81,18 @@ class QMainWindowExtensionBase(QMainWindow):
             destroySubWindows (bool): Whether or not to destroy sub windows  Defaults to True.
         """
         self._remove_log_handlers()
-        super().destroy(destroyWindow=destroyWindow,
-                        destroySubWindows=destroySubWindows)
+        super().destroy(
+            destroyWindow=destroyWindow, destroySubWindows=destroySubWindows
+        )
 
     def save_window_settings(self):
         """Save the window settings."""
-        self.logger.info('Saving window state')
+        self.logger.info("Saving window state")
         # get the current size and position of the window as a byte array.
-        self.settings.setValue('metal_version', __version__)
-        self.settings.setValue('geometry', self.saveGeometry())
-        self.settings.setValue('windowState', self.saveState())
-        self.settings.setValue('stylesheet', self.handler._stylesheet)
+        self.settings.setValue("metal_version", __version__)
+        self.settings.setValue("geometry", self.saveGeometry())
+        self.settings.setValue("windowState", self.saveState())
+        self.settings.setValue("stylesheet", self.handler._stylesheet)
 
     def restore_window_settings(self):
         """Call a Qt built-in function to restore values from the settings
@@ -97,34 +102,32 @@ class QMainWindowExtensionBase(QMainWindow):
             Exception: Error in restoration
         """
 
-        version_settings = self.settings.value('metal_version',
-                                               defaultValue='0')
+        version_settings = self.settings.value("metal_version", defaultValue="0")
         if __version__ > version_settings:
-            self.logger.debug(
-                f"Clearing window settings [{version_settings}]...")
+            self.logger.debug(f"Clearing window settings [{version_settings}]...")
             self.settings.clear()
 
         try:
             self.logger.debug("Restoring window settings...")
 
             # should probably call .encode("ascii") here
-            geom = self.settings.value('geometry', '')
+            geom = self.settings.value("geometry", "")
             if isinstance(geom, str):
                 geom = geom.encode("ascii")
             self.restoreGeometry(geom)
 
-            window_state = self.settings.value('windowState', '')
+            window_state = self.settings.value("windowState", "")
             if isinstance(window_state, str):
                 window_state = window_state.encode("ascii")
             self.restoreState(window_state)
 
             self.handler.load_stylesheet(
-                self.settings.value('stylesheet',
-                                    self.handler._stylesheet_default))
+                self.settings.value("stylesheet", self.handler._stylesheet_default)
+            )
 
             # TODO: Recent files
         except Exception as e:
-            self.logger.error(f'ERROR [restore_window_settings]: {e}')
+            self.logger.error(f"ERROR [restore_window_settings]: {e}")
 
     def bring_to_top(self):
         """Bring window to top.
@@ -134,11 +137,7 @@ class QMainWindowExtensionBase(QMainWindow):
         self.raise_()
         self.activateWindow()
 
-    def get_screenshot(self,
-                       name='shot',
-                       type_='png',
-                       display=True,
-                       disp_ops=None):
+    def get_screenshot(self, name="shot", type_="png", display=True, disp_ops=None):
         """Grad a screenshot of the main window, save to file, copy to
         clipboard and visualize in jupyter.
 
@@ -149,7 +148,7 @@ class QMainWindowExtensionBase(QMainWindow):
             disp_ops (dict): Used to pass options to IPython.display.Image (example: width)
         """
 
-        path = Path(name + '.' + type_).resolve()
+        path = Path(name + "." + type_).resolve()
 
         # grab the main window
         screenshot = self.grab()  # type: QtGui.QPixMap
@@ -157,20 +156,20 @@ class QMainWindowExtensionBase(QMainWindow):
 
         # copy to clipboard
         QtWidgets.QApplication.clipboard().setPixmap(screenshot)
-        self.logger.info(
-            f'Screenshot copied to clipboard and saved to:\n {path}')
+        self.logger.info(f"Screenshot copied to clipboard and saved to:\n {path}")
 
         # visualize in jupyter (adapt resolution and width first)
         if display:
             from IPython.display import Image, display
+
             _disp_ops = dict(width=500)
             _disp_ops.update(disp_ops or {})
-            width_to_scale = round(
-                min(_disp_ops['width'] * 1.5, screenshot.width()))
+            width_to_scale = round(min(_disp_ops["width"] * 1.5, screenshot.width()))
             if not width_to_scale == screenshot.width():
-                path = Path(name + str(width_to_scale) + '.' + type_).resolve()
+                path = Path(name + str(width_to_scale) + "." + type_).resolve()
                 screenshot = screenshot.scaledToWidth(
-                    width_to_scale, mode=QtCore.Qt.SmoothTransformation)
+                    width_to_scale, mode=QtCore.Qt.SmoothTransformation
+                )
                 screenshot.save(str(path), type_)
             display(Image(filename=str(path), **_disp_ops))
 
@@ -182,22 +181,22 @@ class QMainWindowExtensionBase(QMainWindow):
         """
         # Get all docks to show/hide. Ignore edit source
         docks = [
-            widget for widget in self.children()
-            if isinstance(widget, QDockWidget)
+            widget for widget in self.children() if isinstance(widget, QDockWidget)
         ]
         docks = list(
             filter(
-                lambda x: not x.windowTitle().lower().startswith('edit source'),
-                docks))
+                lambda x: not x.windowTitle().lower().startswith("edit source"), docks
+            )
+        )
         docks += [
-            widget for widget in self.gui.plot_win.children()
+            widget
+            for widget in self.gui.plot_win.children()
             if isinstance(widget, QDockWidget)
         ]  # specific
 
         if do_hide is None:
             dock_states = {dock: dock.isVisible() for dock in docks}
-            do_hide = any(
-                dock_states.values())  # if any are visible then hide all
+            do_hide = any(dock_states.values())  # if any are visible then hide all
 
         for dock in docks:
             if do_hide:
@@ -218,31 +217,32 @@ class QMainWindowExtensionBase(QMainWindow):
     @slot_catch_error()
     def load_stylesheet_default(self, _=None):
         """Used to call from action."""
-        self.handler.load_stylesheet('default')
+        self.handler.load_stylesheet("default")
 
     @slot_catch_error()
     def load_stylesheet_metal_dark(self, _=None):
         """Used to call from action."""
-        self.handler.load_stylesheet('metal_dark')
+        self.handler.load_stylesheet("metal_dark")
 
     @slot_catch_error()
     def load_stylesheet_dark(self, _=None):
         """Used to call from action."""
-        self.handler.load_stylesheet('qdarkstyle')
+        self.handler.load_stylesheet("qdarkstyle")
 
     @slot_catch_error()
     def load_stylesheet_open(self, _=None):
         """Used to call from action."""
         default_path = str(self.gui.path_stylesheets)
         filename = QFileDialog.getOpenFileName(
-            self, 'Select Qt stylesheet file `.qss`', default_path)[0]
+            self, "Select Qt stylesheet file `.qss`", default_path
+        )[0]
         if filename:
-            self.logger.info(f'Attempting to load stylesheet file {filename}')
+            self.logger.info(f"Attempting to load stylesheet file {filename}")
 
             self.handler.load_stylesheet(filename)
 
 
-class QMainWindowBaseHandler():
+class QMainWindowBaseHandler:
     """Abstract Class to wrap and handle main window (QMainWindow).
 
     Assumes a UI that has:
@@ -256,13 +256,14 @@ class QMainWindowBaseHandler():
          * config.log.datefmt
          * config._ipython
     """
-    _myappid = 'QiskitMetal'
-    _img_logo_name = 'my_logo.png'
-    _img_folder_name = '_imgs'
+
+    _myappid = "QiskitMetal"
+    _img_logo_name = "my_logo.png"
+    _img_folder_name = "_imgs"
     _dock_names = []
     _QMainWindowClass = QMainWindowExtensionBase
     __gui_num__ = -1  # used to count the number of gui instances
-    _stylesheet_default = 'default'
+    _stylesheet_default = "default"
 
     @staticmethod
     def __UI__() -> QMainWindow:  # pylint: disable=invalid-name
@@ -284,21 +285,20 @@ class QMainWindowBaseHandler():
         self.__class__.__gui_num__ += 1  # used to give a unique identifier
 
         self.config = deepcopy(config.GUI_CONFIG)
-        self.settings = QtCore.QSettings(self._myappid, 'MainWindow')
+        self.settings = QtCore.QSettings(self._myappid, "MainWindow")
 
         # Logger
         if not logger:
             # print('Setting up logger')
             logger = setup_logger(
                 # so that they are not all the same
-                f'gui{self.__class__.__gui_num__ }',
+                f"gui{self.__class__.__gui_num__ }",
                 config.log.format,
                 config.log.datefmt,
                 force_set=True,
                 create_stream=self.config.stream_to_std,
             )
-            log_level = int(
-                getattr(logging, self.config.logger.get('level', 'DEBUG')))
+            log_level = int(getattr(logging, self.config.logger.get("level", "DEBUG")))
             logger.setLevel(log_level)
 
         self.logger = logger
@@ -307,10 +307,11 @@ class QMainWindowBaseHandler():
 
         # File paths
         self.path_gui = self._get_file_path()  # Path to gui folder
-        self.path_imgs = Path(self.path_gui) / \
-            self._img_folder_name  # Path to gui imgs folder
+        self.path_imgs = (
+            Path(self.path_gui) / self._img_folder_name
+        )  # Path to gui imgs folder
         if not self.path_imgs.is_dir():
-            text = f'Bad File path for images! {self.path_imgs}'
+            text = f"Bad File path for images! {self.path_imgs}"
             print(text)
             self.logger.error(text)
 
@@ -340,7 +341,7 @@ class QMainWindowBaseHandler():
     @property
     def path_stylesheets(self):
         """Returns the path to the stylesheet."""
-        return Path(self.path_gui) / 'styles'
+        return Path(self.path_gui) / "styles"
 
     def style_window(self):
         """Styles the window."""
@@ -385,7 +386,8 @@ class QMainWindowBaseHandler():
 
             if self.qApp is None:
 
-                self.logger.error(r"""ERROR: QApplication.instance is None.
+                self.logger.error(
+                    r"""ERROR: QApplication.instance is None.
                 Did you run a cell with the magic in IPython?
                 ```python
                     %gui qt
@@ -393,16 +395,17 @@ class QMainWindowBaseHandler():
                 This command allows IPython to integrate itself with the Qt event loop,
                 so you can use both a GUI and an interactive prompt together.
                 Reference: https://ipython.readthedocs.io/en/stable/config/eventloops.html
-                """)
+                """
+                )
 
         # for window platofrms only
         # QApplication.platformName() -- on mac: 'cocoa'
-        if os.name.startswith('nt'):
+        if os.name.startswith("nt"):
             # Arbitrary string, needed for icon in taskbar to be custom set proper
             # https://stackoverflow.com/questions/1551605/how-to-set-applications-taskbar-icon-in-windows-7
             import ctypes
-            ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(
-                self._myappid)
+
+            ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(self._myappid)
 
         app = self.qApp
         if app:
@@ -434,8 +437,7 @@ class QMainWindowBaseHandler():
         Returns:
             LogHandler_for_QTextLog: A LogHandler_for_QTextLog
         """
-        return LogHandler_for_QTextLog(name_toshow, self, self.ui.log_text,
-                                       logger)
+        return LogHandler_for_QTextLog(name_toshow, self, self.ui.log_text, logger)
 
     @slot_catch_error()
     def _setup_logger(self):
@@ -443,16 +445,16 @@ class QMainWindowBaseHandler():
 
         Show wellcome message.
         """
-        if hasattr(self.ui, 'log_text'):
+        if hasattr(self.ui, "log_text"):
 
             self.ui.log_text.img_path = self.path_imgs
 
-            self._log_handler = self.create_log_handler('GUI', self.logger)
+            self._log_handler = self.create_log_handler("GUI", self.logger)
 
             QTimer.singleShot(1500, self.ui.log_text.welcome_message)
 
         else:
-            self.logger.warning('UI does not have `log_text`')
+            self.logger.warning("UI does not have `log_text`")
 
     def _setup_window_size(self):
         """Setup the window size."""
@@ -483,25 +485,27 @@ class QMainWindowBaseHandler():
             ImportError: Import failure
         """
         result = True
-        if path == 'default' or path is None:
-            self._style_sheet_path = 'default'
-            self.main_window.setStyleSheet('default')
+        if path == "default" or path is None:
+            self._style_sheet_path = "default"
+            self.main_window.setStyleSheet("default")
 
-        elif path == 'qdarkstyle':
+        elif path == "qdarkstyle":
             try:
                 import qdarkstyle
             except ImportError:
                 QMessageBox.warning(
-                    self.main_window, 'Failed.',
-                    'Error, you did not seem to have installed qdarkstyle.\n'
-                    'Please do so from the terminal using\n'
-                    ' >>> pip install qdarkstyle')
+                    self.main_window,
+                    "Failed.",
+                    "Error, you did not seem to have installed qdarkstyle.\n"
+                    "Please do so from the terminal using\n"
+                    " >>> pip install qdarkstyle",
+                )
 
-            os.environ['QT_API'] = 'pyside2'
+            os.environ["QT_API"] = "pyside2"
             self.main_window.setStyleSheet(qdarkstyle.load_stylesheet())
 
-        elif path == 'metal_dark':
-            path_full = self.path_stylesheets / 'metal_dark' / 'style.qss'
+        elif path == "metal_dark":
+            path_full = self.path_stylesheets / "metal_dark" / "style.qss"
             # print(f'path_full = {path_full}')
             self._load_stylesheet_from_file(path_full)
 
@@ -510,7 +514,7 @@ class QMainWindowBaseHandler():
 
         if result:  # Set successfuly
             self._stylesheet = path
-            self.settings.setValue('stylesheet', self._stylesheet)
+            self.settings.setValue("stylesheet", self._stylesheet)
         else:  # Failed to set
             return False
 
@@ -532,11 +536,12 @@ class QMainWindowBaseHandler():
             if path.is_file():
                 self._style_sheet_path = str(path)
                 stylesheet = path.read_text()
-                stylesheet = stylesheet.replace(':/metal-styles',
-                                                str(self.path_stylesheets))
+                stylesheet = stylesheet.replace(
+                    ":/metal-styles", str(self.path_stylesheets)
+                )
 
                 # if windows, double the slashes in the paths
-                if os.name.startswith('nt'):
+                if os.name.startswith("nt"):
                     stylesheet = stylesheet.replace("\\", "\\\\")
 
                 self.main_window.setStyleSheet(stylesheet)
@@ -544,13 +549,13 @@ class QMainWindowBaseHandler():
 
             else:
                 self.logger.error(
-                    'Could not find the stylesheet file where expected %s',
-                    path)
+                    "Could not find the stylesheet file where expected %s", path
+                )
                 return False
         except Exception as e:
-            self.logger.error(f'_load_stylesheet_from_file error: {e}')
+            self.logger.error(f"_load_stylesheet_from_file error: {e}")
 
-    def screenshot(self, name='shot', type_='png', display=True, disp_ops=None):
+    def screenshot(self, name="shot", type_="png", display=True, disp_ops=None):
         """Alias for get_screenshot()."""
         self.main_window.get_screenshot(name, type_, display, disp_ops)
 
@@ -601,8 +606,7 @@ def kick_start_qApp():
     if qApp is None:
         try:
             # TODO: See
-            QtWidgets.QApplication.setAttribute(
-                QtCore.Qt.AA_EnableHighDpiScaling)
+            QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
         except AttributeError:  # Attribute only exists for Qt >= 5.6
             pass
 
@@ -613,12 +617,12 @@ def kick_start_qApp():
 
             if config._ipython:
                 # iPython has magic for loop
-                logging.error(
-                    "QApplication.instance: Attempt magic IPython %%gui qt5")
+                logging.error("QApplication.instance: Attempt magic IPython %%gui qt5")
                 try:
                     from IPython import get_ipython
+
                     ipython = get_ipython()
-                    ipython.magic('gui qt5')
+                    ipython.magic("gui qt5")
 
                 except Exception as e:
                     print("exception")

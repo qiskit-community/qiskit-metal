@@ -51,29 +51,34 @@ class StarQubit(QComponent):
         * subtract: 'False'
         * helper: 'False'
     """
-    component_metadata = Dict(short_name='Star',
-                              _qgeometry_table_poly='True',
-                              _qgeometry_table_junction='True')
+
+    component_metadata = Dict(
+        short_name="Star",
+        _qgeometry_table_poly="True",
+        _qgeometry_table_junction="True",
+    )
     """Component metadata"""
 
-    default_options = dict(radius='300um',
-                           center_radius='100um',
-                           gap_couplers='25um',
-                           gap_readout='10um',
-                           connector_length='75um',
-                           trap_offset='20um',
-                           junc_h='100um',
-                           cpw_width='0.01',
-                           rotation_cpl1='0.0',
-                           rotation_cpl2='72.0',
-                           rotation_rdout='144.0',
-                           rotation_cpl3='216.0',
-                           rotation_cpl4='288.0',
-                           number_of_connectors='4',
-                           resolution='16',
-                           cap_style='round',
-                           subtract='False',
-                           helper='False')
+    default_options = dict(
+        radius="300um",
+        center_radius="100um",
+        gap_couplers="25um",
+        gap_readout="10um",
+        connector_length="75um",
+        trap_offset="20um",
+        junc_h="100um",
+        cpw_width="0.01",
+        rotation_cpl1="0.0",
+        rotation_cpl2="72.0",
+        rotation_rdout="144.0",
+        rotation_cpl3="216.0",
+        rotation_cpl4="288.0",
+        number_of_connectors="4",
+        resolution="16",
+        cap_style="round",
+        subtract="False",
+        helper="False",
+    )
     """Default drawing options"""
 
     def make(self):
@@ -89,20 +94,19 @@ class StarQubit(QComponent):
         self.make_outer_circle()
 
     def make_circle(self):
-        """This function creates a circle to be accessed later.
-        """
+        """This function creates a circle to be accessed later."""
         p = self.p
         # create a circle
-        circle = draw.Point(0,
-                            0).buffer(p.radius,
-                                      resolution=int(p.resolution),
-                                      cap_style=getattr(CAP_STYLE, p.cap_style))
+        circle = draw.Point(0, 0).buffer(
+            p.radius,
+            resolution=int(p.resolution),
+            cap_style=getattr(CAP_STYLE, p.cap_style),
+        )
 
         return circle
 
     def make_pockets(self):
-        """This function creates the pockets.
-        """
+        """This function creates the pockets."""
         p = self.p
 
         # Connector pocket width/height
@@ -116,8 +120,7 @@ class StarQubit(QComponent):
         return pockets
 
     def make_rotation(self, obj, num):
-        """This function rotates objects.
-        """
+        """This function rotates objects."""
         p = self.p
         if num == 1:
             rotation = [p.rotation_rdout]
@@ -127,20 +130,27 @@ class StarQubit(QComponent):
             x = 1
         elif num == 3:
             rotation = [
-                p.rotation_cpl1 + 180, p.rotation_cpl2 + 180,
-                p.rotation_cpl3 + 180, p.rotation_cpl4 + 180
+                p.rotation_cpl1 + 180,
+                p.rotation_cpl2 + 180,
+                p.rotation_cpl3 + 180,
+                p.rotation_cpl4 + 180,
             ]
             x = 4
         elif num == 4:
             rotation = [
-                p.rotation_cpl1, p.rotation_cpl2, p.rotation_cpl3,
-                p.rotation_cpl4
+                p.rotation_cpl1,
+                p.rotation_cpl2,
+                p.rotation_cpl3,
+                p.rotation_cpl4,
             ]
             x = 4
         elif num == 5:
             rotation = [
-                p.rotation_cpl1, p.rotation_cpl2, p.rotation_rdout,
-                p.rotation_cpl3, p.rotation_cpl4
+                p.rotation_cpl1,
+                p.rotation_cpl2,
+                p.rotation_rdout,
+                p.rotation_cpl3,
+                p.rotation_cpl4,
             ]
             x = 5
 
@@ -151,8 +161,7 @@ class StarQubit(QComponent):
         return obj_array
 
     def make_coordinates_trap(self):
-        """This function creates the coordinates for trapezoid
-        """
+        """This function creates the coordinates for trapezoid"""
         p = self.p
         # Coordinates of the trapezoid to subtract from circle
         coord_y1 = -p.center_radius
@@ -162,14 +171,17 @@ class StarQubit(QComponent):
         coord_x3 = p.center_radius + p.trap_offset
         coord_x4 = -(p.center_radius + p.trap_offset)
         # coordinated for trapezoid to be cut out
-        coords = [((coord_x1), (coord_y1)), ((coord_x2), (coord_y1)),
-                  ((coord_x3), (coord_y2)), ((coord_x4), (coord_y2))]
+        coords = [
+            ((coord_x1), (coord_y1)),
+            ((coord_x2), (coord_y1)),
+            ((coord_x3), (coord_y2)),
+            ((coord_x4), (coord_y2)),
+        ]
 
         return coords
 
     def make_resonator_coordinates(self):
-        """This function creates the coordinates for trapezoid
-        """
+        """This function creates the coordinates for trapezoid"""
         p = self.p
 
         # Coordinates of the polygon defining the coupling resonator (a=x, b=y)
@@ -177,27 +189,28 @@ class StarQubit(QComponent):
         coord_a2 = -p.radius
         coord_a3 = p.radius
         coord_b1 = -(p.center_radius / 4)
-        coord_b2 = (p.center_radius / 4)
-        coord_b3 = (p.center_radius - (p.gap_couplers))
+        coord_b2 = p.center_radius / 4
+        coord_b3 = p.center_radius - (p.gap_couplers)
         coord_b4 = -(p.center_radius - (p.gap_couplers))
         coord_b5 = -p.radius
         coord_b6 = p.radius
 
         # Define the coordinates of the polygon to define connectors
-        coords_coupling_resonator = [((coord_b1), (coord_a1)),
-                                     ((coord_b2), (coord_a1)),
-                                     ((coord_b3), (coord_a2)),
-                                     ((coord_b6), (coord_a2)),
-                                     ((coord_b6), (coord_a3)),
-                                     ((coord_b5), (coord_a3)),
-                                     ((coord_b5), (coord_a2)),
-                                     ((coord_b4), (coord_a2))]
+        coords_coupling_resonator = [
+            ((coord_b1), (coord_a1)),
+            ((coord_b2), (coord_a1)),
+            ((coord_b3), (coord_a2)),
+            ((coord_b6), (coord_a2)),
+            ((coord_b6), (coord_a3)),
+            ((coord_b5), (coord_a3)),
+            ((coord_b5), (coord_a2)),
+            ((coord_b4), (coord_a2)),
+        ]
 
         return coords_coupling_resonator
 
     def make_readout_coordinates(self):
-        """This function creates the coordinates for trapezoid
-        """
+        """This function creates the coordinates for trapezoid"""
         p = self.p
 
         # Coordinates of the polygon defining the readout resonator (c=x, d=y)
@@ -212,16 +225,21 @@ class StarQubit(QComponent):
         coord_d6 = p.radius
 
         # Define the coordinates of the polygon to define readout
-        coords_readout = [((coord_d1), (coord_c1)), ((coord_d2), (coord_c1)),
-                          ((coord_d3), (coord_c2)), ((coord_d6), (coord_c2)),
-                          ((coord_d6), (coord_c3)), ((coord_d5), (coord_c3)),
-                          ((coord_d5), (coord_c2)), ((coord_d4), (coord_c2))]
+        coords_readout = [
+            ((coord_d1), (coord_c1)),
+            ((coord_d2), (coord_c1)),
+            ((coord_d3), (coord_c2)),
+            ((coord_d6), (coord_c2)),
+            ((coord_d6), (coord_c3)),
+            ((coord_d5), (coord_c3)),
+            ((coord_d5), (coord_c2)),
+            ((coord_d4), (coord_c2)),
+        ]
 
         return coords_readout
 
     def make_pin_coordinates(self):
-        """This function creates the coordinates for the pins
-        """
+        """This function creates the coordinates for the pins"""
         p = self.p
         p_in = (0, p.radius)
         p_out = (0, 1.25 * (p.radius))
@@ -230,8 +248,7 @@ class StarQubit(QComponent):
         return pins
 
     def make_inner_star(self):
-        """This function creates the coordinates for the pins
-        """
+        """This function creates the coordinates for the pins"""
         p = self.p
         # Extracting coordinated from the user input values
         coords = self.make_coordinates_trap()
@@ -264,7 +281,7 @@ class StarQubit(QComponent):
         rect2 = draw.translate(rect2, xoff=coords1[1][0] * 1.1, yoff=p.radius)
         rect2 = draw.rotate(rect2, p.rotation_cpl1, origin=(0, 0))
 
-        #junction
+        # junction
         jjunction = draw.LineString([[0, 0], [0, coords[1][0]]])
         jjunction = draw.translate(jjunction, yoff=(1.15 * (p.radius)))
         jjunction = draw.rotate(jjunction, p.rotation_cpl1, origin=(0, 0))
@@ -277,22 +294,28 @@ class StarQubit(QComponent):
         objects = draw.translate(objects, p.pos_x, p.pos_y)
         [total, jjunction] = objects
 
-        self.add_qgeometry('poly', {'circle_inner': total},
-                           subtract=p.subtract,
-                           helper=p.helper,
-                           layer=p.layer,
-                           chip=p.chip)
+        self.add_qgeometry(
+            "poly",
+            {"circle_inner": total},
+            subtract=p.subtract,
+            helper=p.helper,
+            layer=p.layer,
+            chip=p.chip,
+        )
 
-        self.add_qgeometry('junction', {'poly': jjunction},
-                           subtract=p.subtract,
-                           helper=p.helper,
-                           layer=p.layer,
-                           chip=p.chip,
-                           width=p.junc_h)
+        self.add_qgeometry(
+            "junction",
+            {"poly": jjunction},
+            subtract=p.subtract,
+            helper=p.helper,
+            layer=p.layer,
+            chip=p.chip,
+            width=p.junc_h,
+        )
 
     def make_coupling_resonators(self, num):
         """This function draws the coulping resonators.
-           Adds pins. And adds the drawn geometry to qgeomtery table.
+        Adds pins. And adds the drawn geometry to qgeomtery table.
         """
         p = self.p
         # rotate these trapezoids to form the contacts
@@ -327,53 +350,61 @@ class StarQubit(QComponent):
         # Add geometry and Qpin connections
 
         if (p.number_of_connectors) >= 1:
-            self.add_qgeometry('poly', {'contact_cpl1': contacts[0]},
-                               subtract=p.subtract,
-                               helper=p.helper,
-                               layer=p.layer,
-                               chip=p.chip)
+            self.add_qgeometry(
+                "poly",
+                {"contact_cpl1": contacts[0]},
+                subtract=p.subtract,
+                helper=p.helper,
+                layer=p.layer,
+                chip=p.chip,
+            )
             # Add pin connections
-            self.add_pin('pin_cpl1',
-                         pins_cpl[0].coords,
-                         width=p.cpw_width,
-                         input_as_norm=True)
+            self.add_pin(
+                "pin_cpl1", pins_cpl[0].coords, width=p.cpw_width, input_as_norm=True
+            )
         if (p.number_of_connectors) >= 2:
-            self.add_qgeometry('poly', {'contact_cpl2': contacts[1]},
-                               subtract=p.subtract,
-                               helper=p.helper,
-                               layer=p.layer,
-                               chip=p.chip)
+            self.add_qgeometry(
+                "poly",
+                {"contact_cpl2": contacts[1]},
+                subtract=p.subtract,
+                helper=p.helper,
+                layer=p.layer,
+                chip=p.chip,
+            )
             # Add pin connections
-            self.add_pin('pin_cpl2',
-                         pins_cpl[1].coords,
-                         width=p.cpw_width,
-                         input_as_norm=True)
+            self.add_pin(
+                "pin_cpl2", pins_cpl[1].coords, width=p.cpw_width, input_as_norm=True
+            )
         if (p.number_of_connectors) >= 3:
-            self.add_qgeometry('poly', {'contact_cpl3': contacts[2]},
-                               subtract=p.subtract,
-                               helper=p.helper,
-                               layer=p.layer,
-                               chip=p.chip)
+            self.add_qgeometry(
+                "poly",
+                {"contact_cpl3": contacts[2]},
+                subtract=p.subtract,
+                helper=p.helper,
+                layer=p.layer,
+                chip=p.chip,
+            )
             # Add pin connections
-            self.add_pin('pin_cpl3',
-                         pins_cpl[2].coords,
-                         width=p.cpw_width,
-                         input_as_norm=True)
+            self.add_pin(
+                "pin_cpl3", pins_cpl[2].coords, width=p.cpw_width, input_as_norm=True
+            )
         if (p.number_of_connectors) >= 4:
-            self.add_qgeometry('poly', {'contact_cpl4': contacts[3]},
-                               subtract=p.subtract,
-                               helper=p.helper,
-                               layer=p.layer,
-                               chip=p.chip)
+            self.add_qgeometry(
+                "poly",
+                {"contact_cpl4": contacts[3]},
+                subtract=p.subtract,
+                helper=p.helper,
+                layer=p.layer,
+                chip=p.chip,
+            )
             # Add pin connections
-            self.add_pin('pin_cpl4',
-                         pins_cpl[3].coords,
-                         width=p.cpw_width,
-                         input_as_norm=True)
+            self.add_pin(
+                "pin_cpl4", pins_cpl[3].coords, width=p.cpw_width, input_as_norm=True
+            )
 
     def make_readout_resonator(self):
         """This function draws the readout resonator.
-           Adds pins. And adds the drawn geometry to qgeomtery table.
+        Adds pins. And adds the drawn geometry to qgeomtery table.
         """
 
         p = self.p
@@ -406,19 +437,20 @@ class StarQubit(QComponent):
         ##################################################################
         # Add geometry and Qpin connections
 
-        self.add_qgeometry('poly', {'contact_rdout': contact_rdout},
-                           subtract=p.subtract,
-                           helper=p.helper,
-                           layer=p.layer,
-                           chip=p.chip)
-        self.add_pin('pin_rdout',
-                     pins_rdout[0].coords,
-                     width=p.cpw_width,
-                     input_as_norm=True)
+        self.add_qgeometry(
+            "poly",
+            {"contact_rdout": contact_rdout},
+            subtract=p.subtract,
+            helper=p.helper,
+            layer=p.layer,
+            chip=p.chip,
+        )
+        self.add_pin(
+            "pin_rdout", pins_rdout[0].coords, width=p.cpw_width, input_as_norm=True
+        )
 
     def make_outer_circle(self):
-        """This function draws the outer circle.
-        """
+        """This function draws the outer circle."""
 
         p = self.p
 
@@ -427,9 +459,10 @@ class StarQubit(QComponent):
         circle_outer = draw.Point(0, 0).buffer(
             p.radius * (1 + (p.connector_length / p.radius)),
             resolution=int(p.resolution),
-            cap_style=getattr(CAP_STYLE, p.cap_style))
+            cap_style=getattr(CAP_STYLE, p.cap_style),
+        )
 
-        #Connectors for the ground plane
+        # Connectors for the ground plane
         pockets = self.make_pockets()
         pocket_z = draw.rectangle(pockets[0] * 1.4, pockets[1])
         pocket_z = draw.translate(pocket_z, xoff=0, yoff=(coords[2][1]))
@@ -438,19 +471,30 @@ class StarQubit(QComponent):
         if (p.number_of_connectors) == 0:
             circle_outer = draw.union(circle_outer, pockets_ground[2])
         elif (p.number_of_connectors) == 1:
-            circle_outer = draw.union(circle_outer, pockets_ground[0],
-                                      pockets_ground[2])
+            circle_outer = draw.union(
+                circle_outer, pockets_ground[0], pockets_ground[2]
+            )
         elif (p.number_of_connectors) == 2:
-            circle_outer = draw.union(circle_outer, pockets_ground[0],
-                                      pockets_ground[1], pockets_ground[2])
+            circle_outer = draw.union(
+                circle_outer, pockets_ground[0], pockets_ground[1], pockets_ground[2]
+            )
         elif (p.number_of_connectors) == 3:
-            circle_outer = draw.union(circle_outer, pockets_ground[0],
-                                      pockets_ground[1], pockets_ground[2],
-                                      pockets_ground[3])
+            circle_outer = draw.union(
+                circle_outer,
+                pockets_ground[0],
+                pockets_ground[1],
+                pockets_ground[2],
+                pockets_ground[3],
+            )
         elif (p.number_of_connectors) == 4:
-            circle_outer = draw.union(circle_outer, pockets_ground[0],
-                                      pockets_ground[1], pockets_ground[2],
-                                      pockets_ground[3], pockets_ground[4])
+            circle_outer = draw.union(
+                circle_outer,
+                pockets_ground[0],
+                pockets_ground[1],
+                pockets_ground[2],
+                pockets_ground[3],
+                pockets_ground[4],
+            )
 
         ##################################################################
         # Add geometry and Qpin connections
@@ -458,8 +502,11 @@ class StarQubit(QComponent):
         objects = draw.rotate(objects, p.orientation, origin=(0, 0))
         objects = draw.translate(objects, p.pos_x, p.pos_y)
         [circle_outer] = objects
-        self.add_qgeometry('poly', {'circle_outer': circle_outer},
-                           subtract=True,
-                           helper=p.helper,
-                           layer=p.layer,
-                           chip=p.chip)
+        self.add_qgeometry(
+            "poly",
+            {"circle_outer": circle_outer},
+            subtract=True,
+            helper=p.helper,
+            layer=p.layer,
+            chip=p.chip,
+        )

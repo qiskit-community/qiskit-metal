@@ -51,28 +51,33 @@ class ScatteringImpedanceSim(QSimulation):
         * param_s (pd.DataFrame): Scattering matrix.
 
     """
-    default_setup = Dict(freq_ghz=5,
-                         max_delta_s=0.1,
-                         max_passes=10,
-                         min_passes=1,
-                         min_converged=1,
-                         pct_refinement=30,
-                         basis_order=1,
-                         vars=Dict(Lj='10 nH', Cj='0 fF'),
-                         sweep_setup=Dict(name="Sweep",
-                                          start_ghz=2.0,
-                                          stop_ghz=8.0,
-                                          count=101,
-                                          step_ghz=None,
-                                          type="Fast",
-                                          save_fields=False))
+
+    default_setup = Dict(
+        freq_ghz=5,
+        max_delta_s=0.1,
+        max_passes=10,
+        min_passes=1,
+        min_converged=1,
+        pct_refinement=30,
+        basis_order=1,
+        vars=Dict(Lj="10 nH", Cj="0 fF"),
+        sweep_setup=Dict(
+            name="Sweep",
+            start_ghz=2.0,
+            stop_ghz=8.0,
+            count=101,
+            step_ghz=None,
+            type="Fast",
+            save_fields=False,
+        ),
+    )
     """Default setup."""
 
     # supported labels for data generated from the simulation
-    data_labels = ['sweep_name', 'params_z', 'params_y', 'params_s']
+    data_labels = ["sweep_name", "params_z", "params_y", "params_s"]
     """Default data labels."""
 
-    def __init__(self, design: 'QDesign' = None, renderer_name: str = 'hfss'):
+    def __init__(self, design: "QDesign" = None, renderer_name: str = "hfss"):
         """Compute drivenmodal and then extracts impedance, admittance and scattering paramters.
 
         Args:
@@ -89,12 +94,13 @@ class ScatteringImpedanceSim(QSimulation):
         output of the analysis and stores it in self.params_z/params_y/params_s.
         """
         self.sim_setup_name, self.sweep_name = self.renderer.initialize_drivenmodal(
-            **self.setup)
+            **self.setup
+        )
 
         self.renderer.analyze_sweep(self.sweep_name, self.sim_setup_name)
         # TODO: return the impedance, admittance and scattering matrices for later use
 
-    def get_impedance(self, param_name: list = ['Z11', 'Z21']):
+    def get_impedance(self, param_name: list = ["Z11", "Z21"]):
         """Create the impedance plot.
 
         Args:
@@ -104,7 +110,7 @@ class ScatteringImpedanceSim(QSimulation):
         # TODO: move the plot-making to this analysis module. Renderer should recover full data
         return self.renderer.plot_params(param_name)
 
-    def get_admittance(self, param_name: list = ['Y11', 'Y21']):
+    def get_admittance(self, param_name: list = ["Y11", "Y21"]):
         """Create the impedance plot.
 
         Args:
@@ -114,7 +120,7 @@ class ScatteringImpedanceSim(QSimulation):
         # TODO: move the plot in this analysis module. Renderer should recover the entire data
         return self.renderer.plot_params(param_name)
 
-    def get_scattering(self, param_name: list = ['S11', 'S21']):
+    def get_scattering(self, param_name: list = ["S11", "S21"]):
         """Create the scattering plot.
 
         Args:
@@ -125,14 +131,15 @@ class ScatteringImpedanceSim(QSimulation):
         return self.renderer.plot_params(param_name)
 
     def run_sim(  # pylint: disable=arguments-differ
-            self,
-            name: str = None,
-            components: Union[list, None] = None,
-            open_terminations: Union[list, None] = None,
-            port_list: Union[list, None] = None,
-            jj_to_port: Union[list, None] = None,
-            ignored_jjs: Union[list, None] = None,
-            box_plus_buffer: bool = True) -> Tuple[str, str]:
+        self,
+        name: str = None,
+        components: Union[list, None] = None,
+        open_terminations: Union[list, None] = None,
+        port_list: Union[list, None] = None,
+        jj_to_port: Union[list, None] = None,
+        ignored_jjs: Union[list, None] = None,
+        box_plus_buffer: bool = True,
+    ) -> Tuple[str, str]:
         """Executes the entire drivenmodal analysis and convergence result export.
         First it makes sure the tool is running. Then it does what's necessary to render the design.
         Finally it runs the setup and sweep defined in this class. You need to modify the setup
@@ -163,7 +170,7 @@ class ScatteringImpedanceSim(QSimulation):
         # save input variables to run(). This line must be the first in the method
         if components is not None:
             argm = locals()
-            del argm['self']
+            del argm["self"]
             self.save_run_args(**argm)
         # wipe data from the previous run (if any)
         self.clear_data()
@@ -174,14 +181,15 @@ class ScatteringImpedanceSim(QSimulation):
         vars_to_initialize = self.setup.vars
         renderer_design_name = self._render(
             name=name,
-            solution_type='drivenmodal',
+            solution_type="drivenmodal",
             selection=components,
             open_pins=open_terminations,
             port_list=port_list,
             jj_to_port=jj_to_port,
             ignored_jjs=ignored_jjs,
             box_plus_buffer=box_plus_buffer,
-            vars_to_initialize=vars_to_initialize)
+            vars_to_initialize=vars_to_initialize,
+        )
 
         self._analyze()
         return renderer_design_name, self.sim_setup_name
@@ -193,7 +201,7 @@ class ScatteringImpedanceSim(QSimulation):
         Returns:
             str: Name of the sweep being executed.
         """
-        return self.get_data('sweep_name')
+        return self.get_data("sweep_name")
 
     @sweep_name.setter
     def sweep_name(self, data: str):
@@ -204,10 +212,10 @@ class ScatteringImpedanceSim(QSimulation):
         """
         if not isinstance(data, str):
             self.logger.warning(
-                'Unsupported type %s. Only accepts str. Please try again.',
-                {type(data)})
+                "Unsupported type %s. Only accepts str. Please try again.", {type(data)}
+            )
             return
-        self.set_data('sweep_name', data)
+        self.set_data("sweep_name", data)
 
     @property
     def param_z(self) -> pd.DataFrame:
@@ -216,7 +224,7 @@ class ScatteringImpedanceSim(QSimulation):
         Returns:
             str: Impedance matrix.
         """
-        return self.get_data('param_z')
+        return self.get_data("param_z")
 
     @param_z.setter
     def param_z(self, data: pd.DataFrame):
@@ -227,10 +235,11 @@ class ScatteringImpedanceSim(QSimulation):
         """
         if not isinstance(data, pd.DataFrame):
             self.logger.warning(
-                'Unsupported type %s. Only accepts pd.DataFrame. Please try again.',
-                {type(data)})
+                "Unsupported type %s. Only accepts pd.DataFrame. Please try again.",
+                {type(data)},
+            )
             return
-        self.set_data('param_z', data)
+        self.set_data("param_z", data)
 
     @property
     def param_y(self) -> pd.DataFrame:
@@ -239,7 +248,7 @@ class ScatteringImpedanceSim(QSimulation):
         Returns:
             str: Admittance matrix.
         """
-        return self.get_data('param_y')
+        return self.get_data("param_y")
 
     @param_y.setter
     def param_y(self, data: pd.DataFrame):
@@ -250,10 +259,11 @@ class ScatteringImpedanceSim(QSimulation):
         """
         if not isinstance(data, pd.DataFrame):
             self.logger.warning(
-                'Unsupported type %s. Only accepts pd.DataFrame. Please try again.',
-                {type(data)})
+                "Unsupported type %s. Only accepts pd.DataFrame. Please try again.",
+                {type(data)},
+            )
             return
-        self.set_data('param_y', data)
+        self.set_data("param_y", data)
 
     @property
     def param_s(self) -> pd.DataFrame:
@@ -262,7 +272,7 @@ class ScatteringImpedanceSim(QSimulation):
         Returns:
             str: Scattering matrix.
         """
-        return self.get_data('param_s')
+        return self.get_data("param_s")
 
     @param_s.setter
     def param_s(self, data: pd.DataFrame):
@@ -273,7 +283,8 @@ class ScatteringImpedanceSim(QSimulation):
         """
         if not isinstance(data, pd.DataFrame):
             self.logger.warning(
-                'Unsupported type %s. Only accepts pd.DataFrame. Please try again.',
-                {type(data)})
+                "Unsupported type %s. Only accepts pd.DataFrame. Please try again.",
+                {type(data)},
+            )
             return
-        self.set_data('param_s', data)
+        self.set_data("param_s", data)

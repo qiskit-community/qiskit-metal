@@ -52,12 +52,9 @@ class NSquareSpiral(QComponent):
         * helper: 'False'
     """
 
-    default_options = Dict(n='3',
-                           width='1um',
-                           radius='40um',
-                           gap='4um',
-                           subtract='False',
-                           helper='False')
+    default_options = Dict(
+        n="3", width="1um", radius="40um", gap="4um", subtract="False", helper="False"
+    )
     """Default drawing options"""
 
     TOOLTIP = """An n count square spiral"""
@@ -90,16 +87,16 @@ class NSquareSpiral(QComponent):
 
         ##############################################
         # add qgeometry
-        self.add_qgeometry('path', {'n_spiral': spiral_list},
-                           width=p.width,
-                           subtract=p.subtract,
-                           helper=p.helper,
-                           layer=p.layer,
-                           chip=p.chip)
+        self.add_qgeometry(
+            "path",
+            {"n_spiral": spiral_list},
+            width=p.width,
+            subtract=p.subtract,
+            helper=p.helper,
+            layer=p.layer,
+            chip=p.chip,
+        )
 
         points = np.array(spiral_list.coords)
         # FIX POINTS,
-        self.add_pin('spiralPin',
-                     points=points[-2:],
-                     width=p.width,
-                     input_as_norm=True)
+        self.add_pin("spiralPin", points=points[-2:], width=p.width, input_as_norm=True)
