@@ -3,16 +3,16 @@
 which tox &> /dev/null
 ret=$?
 if [[ $ret == 1 ]]; then
-    echo "Please install tox to use pre commit hook\n"
+    echo "Please install tox to use pre commit hook"
     exit 1
 fi
 
 tox -e lint
 ret=$?
 if [[ $ret == 1 ]]; then
-    echo "Please fix linting errors before attempting commit\n"
+    echo "Please fix linting errors before attempting commit"
     exit 1
 fi
 
-echo "Python linting validation completed!\n"
+echo "Python linting validation completed!"
 exit 0
