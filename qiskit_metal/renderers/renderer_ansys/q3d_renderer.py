@@ -128,6 +128,8 @@ class QQ3DRenderer(QAnsysRenderer):
         self.assign_perfE = []
         self.assign_mesh = []
 
+        chip_list = self.get_chip_names()
+
         self.render_tables(skip_junction=True)
         self.add_endcaps(open_pins)
 

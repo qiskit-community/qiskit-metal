@@ -525,9 +525,13 @@ class QGeometryTables(object):
         df = df.assign(**options)
 
         # Set new table. Unfortunately, this creates a new instance. Can just direct append
-        self.tables[kind] = table.append(df, sort=False, ignore_index=True)
-        # concat([table,df], axis=0, join='outer', ignore_index=True,sort=False,
-        #          verify_integrity=False, copy=False)
+        self.tables[kind] = pd.concat([table, df],
+                                      axis=0,
+                                      join='outer',
+                                      ignore_index=True,
+                                      sort=False,
+                                      verify_integrity=False,
+                                      copy=False)
 
     def check_lengths(self, geometry: shapely.geometry.base.BaseGeometry,
                       kind: str, component_name: str, **other_options):
