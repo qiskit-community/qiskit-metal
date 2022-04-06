@@ -12,8 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# modified by Chalmers/SK/20210621
-
 from collections import defaultdict
 from pathlib import Path
 from typing import Union, Tuple
@@ -224,10 +222,18 @@ class QHFSSRenderer(QAnsysRenderer):
                                                        y_max - y_min, 0,
                                                        **dict(transparency=0.0))
             axis = 'x' if abs(x1 - x0) > abs(y1 - y0) else 'y'
-            poly_ansys.make_lumped_port(axis,
-                                        z0=str(impedance) + 'ohm',
-                                        name=f'LumpPort_{qcomp}_{pin}')
-            self.modeler.rename_obj(poly_ansys, port_name)
+
+            # Add port. Adds RLC port if it is an eigenmode simulation. Otherwise, adds a lumped port.
+            if self.solution_type != 'eigenmode':
+                poly_ansys.make_lumped_port(axis,
+                                            z0=str(impedance) + 'ohm',
+                                            name=f'LumpPort_{qcomp}_{pin}')
+                self.modeler.rename_obj(poly_ansys, port_name)
+            else:
+                poly_ansys.make_rlc_boundary(axis,
+                                             r=str(impedance) + 'ohm',
+                                             name=f'RLCBoundary_{qcomp}_{pin}')
+                self.modeler.rename_obj(poly_ansys, port_name)
 
             # Draw line
             lump_line = self.modeler.draw_polyline(
@@ -370,7 +376,7 @@ class QHFSSRenderer(QAnsysRenderer):
         # Draw rectangle for inductor.
         self.logger.debug(f'Drawing a rectangle: {inductor_name}')
         poly_ansys = self.modeler.draw_rect_corner([xmin, ymin, z], xmax - xmin,
-                                                   ymax - ymin, 0,
+                                                   ymax - ymin, z,
                                                    **ansys_options)
         poly_ansys.make_rlc_boundary(axis,
                                      l=qgeom['hfss_inductance'],
@@ -435,8 +441,8 @@ class QHFSSRenderer(QAnsysRenderer):
                               *args,
                               **kwargs):
         """Create a solution setup in Ansys HFSS Driven Modal. If user does
-        not provide arguments, they will be obtained from default_setup dict.  
-        
+        not provide arguments, they will be obtained from default_setup dict.
+
         Args:
             name (str, optional): Name of driven modal setup. Defaults to None.
             freq_ghz (int, optional): Frequency in GHz. Defaults to None.
