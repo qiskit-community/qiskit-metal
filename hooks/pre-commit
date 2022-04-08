@@ -1,17 +1,32 @@
 #!/bin/bash
 
-which tox &> /dev/null
+echo "Checking dependencies"
+which yapf &> /dev/null
 ret=$?
 if [[ $ret == 1 ]]; then
-    echo "Please install tox to use pre commit hook"
+    echo "Please install yapf to use pre-commit hook"
     exit 1
+else
+    echo "All dependencies present"
 fi
 
-tox -e lint
-ret=$?
-if [[ $ret == 1 ]]; then
-    echo "Please fix linting errors before attempting commit"
+echo "Begin linting step"
+linterrorfound=0
+for stagedfile in $(git diff --name-only --cached | grep .*.py)
+do
+    yapf --diff --style .style.yapf $stagedfile
+    ret=$?
+    if [[ $ret == 1 ]]; then
+        linterrorfound=1
+        echo ">>> Errors in file $stagedfile"
+    fi
+done
+
+if [[ $linterrorfound == 1 ]]; then
+    echo "Please fix linting errors before commiting"
     exit 1
+else
+    echo "Linting successful"
 fi
 
 echo "Python linting validation completed!"

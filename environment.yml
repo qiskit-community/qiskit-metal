@@ -20,6 +20,4 @@ dependencies:
   - shapely
   - jupyter
   - scqubits
-  - tox
-  - pylint
   - yapf
