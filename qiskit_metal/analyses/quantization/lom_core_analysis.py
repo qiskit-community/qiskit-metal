@@ -63,7 +63,7 @@ class CouplingType:
     INDUCTIVE = 'INDUCTIVE'
 
 
-def analyze_loaded_tl(fr, CL, vp, Z0, CR=0, shorted=False):
+def analyze_loaded_tl(fr, vp, Z0, cap_loading: Dict[str, float]):
     """ Calculate charge operator zero point fluctuation, Q_zpf at the point of the loading
     capacitor.
     https://arxiv.org/pdf/2103.10344.pdf
@@ -71,19 +71,26 @@ def analyze_loaded_tl(fr, CL, vp, Z0, CR=0, shorted=False):
 
     Args:
         fr (float): TL resonator frequency in MHz
-        CL (float): loading capacitance in fF
         vp (float): phase velocity in m/s
         Z0 (float): characteristic impedance of the TL in ohm
-        CR (float): defalt 0; capacitance of the loading capacitor on the other end of the
-            tranmission line
-        shorted (boolean): default false; true if the other end of the TL is shorted false otherwise
+        cap_loading (dict): a dictionary of the loading capacitors; the keys
+            are the names of the nodes; the values the capacitances in fF
 
     Returns:
         [type]: [description]
     """
     # Convert to SI
     wr = fr * MHzRad
+    if cap_loading == {}:
+        raise ValueError('At least one loading capacitor needs to be defined. ')
+    elif len(cap_loading) == 1:
+        cap_loading['_cl'] = 0
+
+    for node, val in cap_loading.items():
+        cap_loading[node] = val * FEMTO
+
     CL = CL * FEMTO
+    CR = CR * FEMTO
     c = 1 / (Z0 * vp)  # cap/unit length
 
     wL = 1 / (Z0 * CL)
@@ -91,7 +98,6 @@ def analyze_loaded_tl(fr, CL, vp, Z0, CR=0, shorted=False):
     k = wr / vp
     utl = lambda z: np.cos(k * z + phi)
     utl2 = lambda z: utl(z)**2
-    b = int(shorted)  # 1 for short on RHS
     m = 1  # mode number
 
     root_eq = lambda L: wr * L / vp + phi - m * np.pi - b * np.pi / 2  # = 0
@@ -1010,10 +1016,10 @@ class TLResonatorBuilder(QuantumBuilder):
         resonator = scq.Oscillator(**builder_options.view_as(scq.Oscillator))
         subsystem._quantum_system = resonator
 
-        Q_zpf, _, _, _, = analyze_loaded_tl(f_res, CL, vp, Z0, CR=CR)
+        results = analyze_loaded_tl(f_res, CL, vp, Z0, CR=CR)
 
         for node in subsystem.nodes:
-            subsystem._h_params[node]['Q_zpf'] = Q_zpf
+            subsystem._h_params[node]['Q_zpf'] = results[node]['Q_zpf']
             subsystem._h_params[node]['default_charge_op'] = Operator(
                 1j * (resonator.creation_operator() -
                       resonator.annihilation_operator()), False)
