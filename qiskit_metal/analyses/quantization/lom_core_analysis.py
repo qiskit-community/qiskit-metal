@@ -120,7 +120,11 @@ def analyze_loaded_tl(fr, vp, Z0, cap_loading: Dict[str, float]):
     E_cap = (0.5 * c * integrate.quad(utl2, 0, Ltl)[0] +
              0.5 * cap_loading[z['0']] * utl(0)**2 +
              0.5 * cap_loading[z['L']] * utl(Ltl)**2)
-
+    print(f'Ltl:   {Ltl}')
+    print(f'TL energy:   {0.5 * c * integrate.quad(utl2, 0, Ltl)[0]}')
+    print(f'C_z0 energy:   {0.5 * cap_loading[z["0"]] * utl(0)**2}')
+    print(f'C_zL energy:   {0.5 * cap_loading[z["L"]] * utl(0)**2}')
+    print(f'E_cap:   {E_cap}')
     pCL = {}
     Q_zpf = {}
     Phi_zpf = {}
@@ -130,6 +134,7 @@ def analyze_loaded_tl(fr, vp, Z0, cap_loading: Dict[str, float]):
             pCL[node] = 0.5 * val * utl(0)**2 / E_cap
         else:
             pCL[node] = 0.5 * val * utl(Ltl)**2 / E_cap
+        print(f'{node}  pCL:   {pCL[node]}')
         Q_zpf[node] = np.sqrt(hbar * wr / 2 * pCL[node] * val)
 
         # using the uncertainty relationship that Q_zpf * Phi_zpf = hbar / 2
