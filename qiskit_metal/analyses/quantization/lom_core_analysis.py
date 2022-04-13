@@ -110,9 +110,23 @@ def analyze_loaded_tl(fr, vp, Z0, cap_loading: Dict[str, float]):
     m = 1  # mode number
 
     w_loading_vals = list(w_loading.values())
-    root_eq = lambda L: np.arctan(wr * (w_loading_vals[0] + w_loading_vals[1]) /
-                                  (wr**2 - w_loading_vals[0] * w_loading_vals[1]
-                                  )) + m * np.pi - k * L  # = 0
+
+    def _arctan_arg(w_L, w_R):
+        """Need separate handling for limiting cases
+        from different boundary conditions
+        """
+        # left boundary condition is open, i.e., left loading capacitor is 0
+        if w_L == np.infty:
+            return -wr / w_R
+        # right boundary condition is open, i.e., right loading capacitor is 0
+        elif w_R == np.infty:
+            return -wr / w_L
+        else:
+            return wr * (w_L + w_R) / (wr**2 - w_L * w_R)
+
+    root_eq = lambda L: np.arctan(
+        _arctan_arg(w_loading_vals[0], w_loading_vals[1])
+    ) + m * np.pi - k * L  # = 0
     sol = optimize.root(root_eq, [0.007], jac=False,
                         method='hybr')  # in meters SI
     Ltl = sol.x[0]
