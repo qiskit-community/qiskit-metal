@@ -86,37 +86,54 @@ def analyze_loaded_tl(fr, vp, Z0, cap_loading: Dict[str, float]):
     elif len(cap_loading) == 1:
         cap_loading['_cl'] = 0
 
+    w_loading = {}
     for node, val in cap_loading.items():
         cap_loading[node] = val * FEMTO
+        w_loading[node] = 1 / (Z0 * cap_loading[node]) if val else np.infty
 
-    CL = CL * FEMTO
-    CR = CR * FEMTO
+    # assign z = 0 to one of the nodes and z = L to the other; switching
+    # the assignment would not change the result
+    z = {}
+    nodes = set(cap_loading.keys())
+    for node, val in cap_loading.items():
+        z['0'] = node
+        if val != 0 and val < np.infty:
+            break
+    z['L'] = list(nodes - {z['0']})[0]
+
     c = 1 / (Z0 * vp)  # cap/unit length
 
-    wL = 1 / (Z0 * CL)
-    phi = np.arctan(wr / wL)
+    phi = np.arctan(wr / w_loading[z['0']])
     k = wr / vp
     utl = lambda z: np.cos(k * z + phi)
     utl2 = lambda z: utl(z)**2
     m = 1  # mode number
 
-    root_eq = lambda L: wr * L / vp + phi - m * np.pi - b * np.pi / 2  # = 0
+    w_loading_vals = list(w_loading.values())
+    root_eq = lambda L: np.arctan(wr * (w_loading_vals[0] + w_loading_vals[1]) /
+                                  (wr**2 - w_loading_vals[0] * w_loading_vals[1]
+                                  )) + m * np.pi - k * L  # = 0
     sol = optimize.root(root_eq, [0.007], jac=False,
                         method='hybr')  # in meters SI
     Ltl = sol.x[0]
 
-    E_cap = 0.5 * CL * utl(0)**2 + 0.5 * c * integrate.quad(utl2, 0, Ltl)[0]
-    pCL = 0.5 * CL * utl(0)**2 / E_cap
-    Q_zpf = np.sqrt(hbar * wr / 2 * pCL * CL)
+    E_cap = (0.5 * c * integrate.quad(utl2, 0, Ltl)[0] +
+             0.5 * cap_loading[z['0']] * utl(0)**2 +
+             0.5 * cap_loading[z['L']] * utl(Ltl)**2)
 
-    # using the uncertainty relationship that Q_zpf * Phi_zpf = hbar / 2
-    Phi_zpf = 0.5 * hbar / Q_zpf
+    pCL = {}
+    Q_zpf = {}
+    Phi_zpf = {}
 
-    if 0:  # analytic
-        innerprod = CL / c * utl(0)**2 + integrate.quad(utl2, 0, Ltl)[0]
-        Am = np.sqrt(Ltl / innerprod)
-        utl = lambda z: Am * np.cos(k * z + phi)
-        eta = Ltl
+    for node, val in cap_loading.items():
+        if node == z['0']:
+            pCL[node] = 0.5 * val * utl(0)**2 / E_cap
+        else:
+            pCL[node] = 0.5 * val * utl(Ltl)**2 / E_cap
+        Q_zpf[node] = np.sqrt(hbar * wr / 2 * pCL[node] * val)
+
+        # using the uncertainty relationship that Q_zpf * Phi_zpf = hbar / 2
+        Phi_zpf[node] = 0.5 * hbar / Q_zpf[node]
 
     return Q_zpf, Phi_zpf, phi, Ltl
 
@@ -676,8 +693,9 @@ def _find_subsystem_mat_index(cg: CircuitGraph, subsystem, single_node=True):
         raise ValueError(
             f'One and ONLY one node in the reduced node-junction basis should map to the {subsystem.sys_type} subsystem.'
         )
-    elif subsystem_idx.size == 0:
-        raise ValueError('Subsystem not found in the circuit\'s nodes.')
+    elif subsystem_idx.size != node_idx.size:
+        raise ValueError(
+            'One or more subsystem nodes not found in the circuit\'s nodes.')
     return subsystem_idx
 
 
@@ -990,14 +1008,16 @@ class TLResonatorBuilder(QuantumBuilder):
                                                   single_node=False)
 
         subsystem.system_params['subsystem_idx'] = subsystem_idx
-        CL = 1 / c_inv_k[subsystem_idx[0], subsystem_idx[0]]
-        CR = 0
-        if len(subsystem_idx) == 2:
-            CR = 1 / c_inv_k[subsystem_idx[1], subsystem_idx[1]]
-        elif len(subsystem_idx) > 2:
+
+        if len(subsystem_idx) > 2:
             raise ValueError(
                 'Transmission line resonator currently supports at most two nodes.'
             )
+
+        loading_capacitor = {}
+        for ii, node in enumerate(subsystem.nodes):
+            loading_capacitor[node] = 1 / c_inv_k[subsystem_idx[ii],
+                                                  subsystem_idx[ii]]
 
         builder_options = self.builder_options
         f_res = builder_options.f_res
@@ -1016,10 +1036,13 @@ class TLResonatorBuilder(QuantumBuilder):
         resonator = scq.Oscillator(**builder_options.view_as(scq.Oscillator))
         subsystem._quantum_system = resonator
 
-        results = analyze_loaded_tl(f_res, CL, vp, Z0, CR=CR)
+        Q_zpf, *_ = analyze_loaded_tl(f_res,
+                                      vp,
+                                      Z0,
+                                      cap_loading=loading_capacitor)
 
         for node in subsystem.nodes:
-            subsystem._h_params[node]['Q_zpf'] = results[node]['Q_zpf']
+            subsystem._h_params[node]['Q_zpf'] = Q_zpf[node]
             subsystem._h_params[node]['default_charge_op'] = Operator(
                 1j * (resonator.creation_operator() -
                       resonator.annihilation_operator()), False)
