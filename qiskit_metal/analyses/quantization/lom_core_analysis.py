@@ -63,7 +63,7 @@ class CouplingType:
     INDUCTIVE = 'INDUCTIVE'
 
 
-def analyze_loaded_tl(fr, vp, Z0, cap_loading: Dict[str, float]):
+def analyze_loaded_tl(fr, vp, Z0, cap_loading: Dict[str, float], shorted=False):
     """ Calculate charge operator zero point fluctuation, Q_zpf at the point of the loading
     capacitor.
     https://arxiv.org/pdf/2103.10344.pdf
@@ -75,21 +75,27 @@ def analyze_loaded_tl(fr, vp, Z0, cap_loading: Dict[str, float]):
         Z0 (float): characteristic impedance of the TL in ohm
         cap_loading (dict): a dictionary of the loading capacitors; the keys
             are the names of the nodes; the values the capacitances in fF
+        shorted (boolean): default false; true if the other end of the TL is shorted false otherwise
 
     Returns:
         [type]: [description]
     """
+    _POS_INFTY = 1e30
     # Convert to SI
     wr = fr * MHzRad
     if cap_loading == {}:
         raise ValueError('At least one loading capacitor needs to be defined. ')
     elif len(cap_loading) == 1:
-        cap_loading['_cl'] = 0
+        cap_loading['_cl'] = 0 if not shorted else _POS_INFTY
 
     w_loading = {}
     for node, val in cap_loading.items():
         cap_loading[node] = val * FEMTO
-        w_loading[node] = 1 / (Z0 * cap_loading[node]) if val else np.infty
+        if val == _POS_INFTY:
+            w_loading[node] = 0
+        else:
+            w_loading[node] = 1 / (Z0 *
+                                   cap_loading[node]) if val else _POS_INFTY
 
     # assign z = 0 to one of the nodes and z = L to the other; switching
     # the assignment would not change the result
@@ -97,7 +103,7 @@ def analyze_loaded_tl(fr, vp, Z0, cap_loading: Dict[str, float]):
     nodes = set(cap_loading.keys())
     for node, val in cap_loading.items():
         z['0'] = node
-        if val != 0 and val < np.infty:
+        if val != 0 and val < _POS_INFTY:
             break
     z['L'] = list(nodes - {z['0']})[0]
 
@@ -115,11 +121,11 @@ def analyze_loaded_tl(fr, vp, Z0, cap_loading: Dict[str, float]):
         """Need separate handling for limiting cases
         from different boundary conditions
         """
-        # left boundary condition is open, i.e., left loading capacitor is 0
-        if w_L == np.infty:
+        # left boundary of the TL is open, i.e., left loading capacitor is 0
+        if w_L == _POS_INFTY:
             return -wr / w_R
-        # right boundary condition is open, i.e., right loading capacitor is 0
-        elif w_R == np.infty:
+        # right boundary of the TL is open, i.e., right loading capacitor is 0
+        elif w_R == _POS_INFTY:
             return -wr / w_L
         else:
             return wr * (w_L + w_R) / (wr**2 - w_L * w_R)
@@ -134,11 +140,7 @@ def analyze_loaded_tl(fr, vp, Z0, cap_loading: Dict[str, float]):
     E_cap = (0.5 * c * integrate.quad(utl2, 0, Ltl)[0] +
              0.5 * cap_loading[z['0']] * utl(0)**2 +
              0.5 * cap_loading[z['L']] * utl(Ltl)**2)
-    print(f'Ltl:   {Ltl}')
-    print(f'TL energy:   {0.5 * c * integrate.quad(utl2, 0, Ltl)[0]}')
-    print(f'C_z0 energy:   {0.5 * cap_loading[z["0"]] * utl(0)**2}')
-    print(f'C_zL energy:   {0.5 * cap_loading[z["L"]] * utl(0)**2}')
-    print(f'E_cap:   {E_cap}')
+
     pCL = {}
     Q_zpf = {}
     Phi_zpf = {}
@@ -148,7 +150,6 @@ def analyze_loaded_tl(fr, vp, Z0, cap_loading: Dict[str, float]):
             pCL[node] = 0.5 * val * utl(0)**2 / E_cap
         else:
             pCL[node] = 0.5 * val * utl(Ltl)**2 / E_cap
-        print(f'{node}  pCL:   {pCL[node]}')
         Q_zpf[node] = np.sqrt(hbar * wr / 2 * pCL[node] * val)
 
         # using the uncertainty relationship that Q_zpf * Phi_zpf = hbar / 2
@@ -1008,7 +1009,8 @@ class TLResonatorBuilder(QuantumBuilder):
             'substrate_thickness': 750 * 1e-6,
             'film_thickness': 200 * 1e-9
         },
-        'truncated_dim': 3
+        'truncated_dim': 3,
+        'other_end_shorted': False
     }
 
     # pylint: disable=protected-access
@@ -1021,22 +1023,6 @@ class TLResonatorBuilder(QuantumBuilder):
         """
         cg = self.cg
         c_inv_k = cg.C_inv_k
-
-        subsystem_idx = _find_subsystem_mat_index(cg,
-                                                  subsystem,
-                                                  single_node=False)
-
-        subsystem.system_params['subsystem_idx'] = subsystem_idx
-
-        if len(subsystem_idx) > 2:
-            raise ValueError(
-                'Transmission line resonator currently supports at most two nodes.'
-            )
-
-        loading_capacitor = {}
-        for ii, node in enumerate(subsystem.nodes):
-            loading_capacitor[node] = 1 / c_inv_k[subsystem_idx[ii],
-                                                  subsystem_idx[ii]]
 
         builder_options = self.builder_options
         f_res = builder_options.f_res
@@ -1052,13 +1038,34 @@ class TLResonatorBuilder(QuantumBuilder):
         else:
             vp = float(builder_options.vp)
 
+        subsystem_idx = _find_subsystem_mat_index(cg,
+                                                  subsystem,
+                                                  single_node=False)
+
+        subsystem.system_params['subsystem_idx'] = subsystem_idx
+
+        if len(subsystem_idx) > 2:
+            raise ValueError(
+                'Transmission line resonator currently supports at most two nodes.'
+            )
+        elif len(subsystem_idx) == 2 and builder_options.other_end_shorted:
+            raise ValueError(
+                'Transmission line resonator should have only one node \
+                specified if one of its boundaries is shorted to ground.')
+
+        loading_capacitor = {}
+        for ii, node in enumerate(subsystem.nodes):
+            loading_capacitor[node] = 1 / c_inv_k[subsystem_idx[ii],
+                                                  subsystem_idx[ii]]
+
         resonator = scq.Oscillator(**builder_options.view_as(scq.Oscillator))
         subsystem._quantum_system = resonator
 
         Q_zpf, *_ = analyze_loaded_tl(f_res,
                                       vp,
                                       Z0,
-                                      cap_loading=loading_capacitor)
+                                      cap_loading=loading_capacitor,
+                                      shorted=builder_options.other_end_shorted)
 
         for node in subsystem.nodes:
             subsystem._h_params[node]['Q_zpf'] = Q_zpf[node]
