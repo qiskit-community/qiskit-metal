@@ -38,6 +38,7 @@ class QHFSSRenderer(QAnsysRenderer):
         * Cj: 0 -- Cj *must* be 0 for pyEPR analysis! Cj has units of femtofarads (fF)
         * _Rj: 0 -- _Rj *must* be 0 for pyEPR analysis! _Rj has units of Ohms
         * max_mesh_length_jj: '7um' -- Maximum mesh length for Josephson junction elements
+        * max_mesh_length_port: '7um' -- Maximum mesh length for Ports in Eigenmode Simulations
         * project_path: None -- Default project path; if None --> get active
         * project_name: None -- Default project name
         * design_name: None -- Default design name
@@ -162,6 +163,7 @@ class QHFSSRenderer(QAnsysRenderer):
         self.chip_subtract_dict = defaultdict(set)
         self.assign_perfE = []
         self.assign_mesh = []
+        self.assign_port_mesh = []
         self.jj_lumped_ports = {}
         self.jj_to_ignore = set()
 
@@ -183,10 +185,10 @@ class QHFSSRenderer(QAnsysRenderer):
 
         self.render_chips(box_plus_buffer=box_plus_buffer)
         self.subtract_from_ground()
-        self.add_mesh()
-        self.metallize()
         if port_list:
             self.create_ports(port_list)
+        self.add_mesh()
+        self.metallize()
 
     def create_ports(self, port_list: list):
         """Add ports and their respective impedances in Ohms to designated pins
@@ -234,6 +236,7 @@ class QHFSSRenderer(QAnsysRenderer):
                                              r=str(impedance) + 'ohm',
                                              name=f'RLCBoundary_{qcomp}_{pin}')
                 self.modeler.rename_obj(poly_ansys, port_name)
+                self.assign_port_mesh.append(port_name)
 
             # Draw line
             lump_line = self.modeler.draw_polyline(

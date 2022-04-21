@@ -97,6 +97,7 @@ class QAnsysRenderer(QRendererAnalysis):
         * Cj: 0 -- Cj *must* be 0 for pyEPR analysis! Cj has units of femtofarads (fF)
         * _Rj: 0 -- _Rj *must* be 0 for pyEPR analysis! _Rj has units of Ohms
         * max_mesh_length_jj: '7um' -- Maximum mesh length for Josephson junction elements
+        * max_mesh_length_port: '7um' -- Maximum mesh length for Ports in Eigenmode Simulations
         * project_path: None -- Default project path; if None --> get active
         * project_name: None -- Default project name
         * design_name: None -- Default design name
@@ -118,6 +119,7 @@ class QAnsysRenderer(QRendererAnalysis):
         Cj=0,  # Cj *must* be 0 for pyEPR analysis! Cj has units of femtofarads (fF)
         _Rj=0,  # _Rj *must* be 0 for pyEPR analysis! _Rj has units of Ohms
         max_mesh_length_jj='7um',  # maximum mesh length for Josephson junction elements
+        max_mesh_length_port='7um', # maximum mesh length for Ports in Eigenmode Simulations
         project_path=None,  # default project path; if None --> get active
         project_name=None,  # default project name
         design_name=None,  # default design name
@@ -959,9 +961,10 @@ class QAnsysRenderer(QRendererAnalysis):
 
         Chip_subtract_dict consists of component names (keys) and a set of all elements within each component that
         will eventually be subtracted from the ground plane. Add objects that are perfect conductors and/or have
-        meshing to self.assign_perfE and self.assign_mesh, respectively; both are initialized as empty lists. Note
-        that these objects are "refreshed" each time render_design is called (as opposed to in the init function)
-        to clear QAnsysRenderer of any leftover items from the last call to render_design.
+        meshing to self.assign_perfE and self.assign_mesh, respectively; both are initialized as empty lists. Similarly,
+        if the object is a port in an eigenmode simulation, add it to self.assign_port_mesh, which is initialized
+        as an empty list. Note that these objects are "refreshed" each time render_design is called (as opposed to
+        in the init function) to clear QAnsysRenderer of any leftover items from the last call to render_design.
 
         Among the components selected for export, there may or may not be unused (unconnected) pins.
         The second parameter, open_pins, contains tuples of the form (component_name, pin_name) that
@@ -996,6 +999,7 @@ class QAnsysRenderer(QRendererAnalysis):
         self.chip_subtract_dict = defaultdict(set)
         self.assign_perfE = []
         self.assign_mesh = []
+        self.assign_port_mesh = []
 
         self.render_tables()
         self.add_endcaps(open_pins)
@@ -1457,12 +1461,18 @@ class QAnsysRenderer(QRendererAnalysis):
                     raise error
 
     def add_mesh(self):
-        """Add mesh to all elements in self.assign_mesh."""
+        """Add mesh to all elements in self.assign_mesh and self.assign_port_mesh."""
         if self.assign_mesh:
             self.modeler.mesh_length(
                 'small_mesh',
                 self.assign_mesh,
                 MaxLength=self._options['max_mesh_length_jj'])
+
+        if self.assign_port_mesh:
+            self.modeler.mesh_length(
+                'port_mesh',
+                self.assign_port_mesh,
+                MaxLength=self._options['max_mesh_length_port'])
 
     #Still implementing
     def auto_wirebonds(self, table):
