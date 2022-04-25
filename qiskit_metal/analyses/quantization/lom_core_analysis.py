@@ -80,6 +80,18 @@ def analyze_loaded_tl(fr, vp, Z0, cap_loading: Dict[str, float], shorted=False):
     Returns:
         [type]: [description]
     """
+    # An arbitrarily very large positive number in place of positive infinity.
+    # Almost exclusively function as an infinity flag instead of actually
+    # particupating in algebraic calculations, except for the boundary condition
+    # of a shorted end. In that case, in the calculation of the capacitive energy
+    # participation, the shorted end term is proportional to ,
+    # (C_shorted * cos(pi/2)) ^ 2, where C_shorted is infinity. Here, one cannot
+    # use np.infty for C_shorted because np.infty * np.cos(np.pi/2) = np.infty in python
+    # instead of zero as one would expect.
+    #
+    # Ultimately, the energy particpation of the shorted end doesn't matter as
+    # long as it's close to zero and not infinity since it's energy participation
+    # of the other (loaded with finite capacitance) end that matters.
     _POS_INFTY = 1e30
     # Convert to SI
     wr = fr * MHzRad
@@ -1320,6 +1332,8 @@ class CompositeSystem:
     def compute_gs(self, coupling_type: str = CouplingType.CAPACITIVE):
         """compute g matrices from reduced C inverse matrix C^{-1}_{k} and reduced L inverse matrix L^{-1}_{k}
         and zero point flucuations (Q_zpf, Phi_zpf)
+
+        Note that the computed g's are in MHz
 
         Note: the resulting matrix is in the basis of nodes_keep, which may not be in the same order of
         subsystems
