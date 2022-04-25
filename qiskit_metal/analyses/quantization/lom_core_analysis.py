@@ -620,7 +620,7 @@ class CircuitGraph:
                 continue
             _s_r.append(v)
 
-        return np.concatenate(_s_r, axis=1)
+        return np.concatenate(_s_r, axis=1) if _s_r else None
 
     @property
     def S_keep(self):
@@ -629,9 +629,10 @@ class CircuitGraph:
         # FIXME: currently assuming that S_keep can be solely constructed from
         # S_remove (which itself is constructed from the identity matrix) and the identity matrix
         S_remove = self.S_remove
-        dim = S_remove.shape[0]
+        dim = self.L_inv.shape[0]
         eye = np.eye(dim)
-        return eye[:, np.where(S_remove.T.sum(axis=0) == 0)[0]]
+        return eye[:, np.where(S_remove.T.sum(
+            axis=0) == 0)[0]] if S_remove else eye
 
     def get_nodes_keep(self):
         s_keep = self.S_keep
@@ -641,11 +642,13 @@ class CircuitGraph:
 
     def get_nodes_remove(self):
         s_remove = self.S_remove
-        dim = s_remove.shape[0]
-        remove_idx = s_remove.T.dot(np.arange(dim)[:,
-                                                   np.newaxis])[:,
-                                                                0].astype(int)
-        return np.array(self.node_jj_basis)[remove_idx].tolist()
+        if s_remove:
+            dim = s_remove.shape[0]
+            remove_idx = s_remove.T.dot(
+                np.arange(dim)[:, np.newaxis])[:, 0].astype(int)
+            return np.array(self.node_jj_basis)[remove_idx].tolist()
+        else:
+            return []
 
     @property
     def L_inv_k(self):
@@ -668,7 +671,7 @@ class CircuitGraph:
         s_r = self.S_remove
         c = self.C
         _inner = c.dot(s_r).dot(np.linalg.inv(s_r.T.dot(c.dot(s_r)))).dot(
-            s_r.T.dot(c))
+            s_r.T.dot(c)) if s_r else 0
         return LabeledNdarray(
             s_k.T.dot(c - _inner).dot(s_k), self.get_nodes_keep())
 
