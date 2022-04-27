@@ -12,6 +12,8 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
+# modified by Chalmers/SK/20210621
+
 from collections import defaultdict
 from pathlib import Path
 from typing import Union, Tuple
