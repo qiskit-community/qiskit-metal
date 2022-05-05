@@ -3,7 +3,7 @@
 echo "Checking dependencies"
 which yapf &> /dev/null
 ret=$?
-if [[ $ret == 1 ]]; then
+if [[ $ret != 0 ]]; then
     echo "Please install yapf to use pre-commit hook"
     exit 1
 else
@@ -16,7 +16,7 @@ for stagedfile in $(git diff --name-only --cached | grep .*.py)
 do
     yapf --diff --style .style.yapf $stagedfile
     ret=$?
-    if [[ $ret == 1 ]]; then
+    if [[ $ret != 0 ]]; then
         linterrorfound=1
         echo ">>> Errors in file $stagedfile"
     fi
