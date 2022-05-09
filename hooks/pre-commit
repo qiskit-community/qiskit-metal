@@ -10,7 +10,7 @@ else
     echo "All dependencies present"
 fi
 
-echo "Begin linting step"
+echo "Begin linting step using yapf formatting"
 linterrorfound=0
 for stagedfile in $(git diff --name-only --cached | grep .*.py)
 do
@@ -23,7 +23,7 @@ do
 done
 
 if [[ $linterrorfound == 1 ]]; then
-    echo "Please fix linting errors before commiting"
+    echo "Please fix linting errors before committing"
     exit 1
 else
     echo "Linting successful"
