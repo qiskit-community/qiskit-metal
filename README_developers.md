@@ -133,5 +133,5 @@ If are planning on committing, you can run the following in the root of your pro
 ```
 ./hook_setup
 ```
-Please make sure the command is run from the same shell you plan on using to commit. Currently, the precommit hook will check for yapf formatting.
+Please make sure the command is run from the same shell you plan on using to commit. If running on Windows, please make sure that this script is run from git-bash or another Linux-style shell. Currently, the precommit hook will check for yapf formatting.
 
