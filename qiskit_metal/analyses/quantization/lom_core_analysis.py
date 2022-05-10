@@ -1252,7 +1252,9 @@ class CompositeSystem:
                 if n not in _jj_to_node_map:
                     _sys_nodes.append(n)
                 else:
-                    _sys_nodes.extend(list(_jj_to_node_map[n]))
+                    _sys_nodes.extend(
+                        list(filter(lambda x: x != grd_node,
+                                    _jj_to_node_map[n])))
         if len(set(_sys_nodes)) != len(_sys_nodes):
             raise ValueError('Subsystems should not have overlapping nodes.')
         _non_sys_nodes = [n for n in _cell_nodes if n not in _sys_nodes]
