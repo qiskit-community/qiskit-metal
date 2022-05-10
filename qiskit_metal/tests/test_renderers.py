@@ -114,12 +114,11 @@ class TestRenderers(unittest.TestCase):
         renderer = QAnsysRenderer(design, initiate=False)
         options = renderer.default_options
 
-        self.assertEqual(len(options), 14)
+        self.assertEqual(len(options), 13)
         self.assertEqual(options['Lj'], '10nH')
         self.assertEqual(options['Cj'], 0)
         self.assertEqual(options['_Rj'], 0)
         self.assertEqual(options['max_mesh_length_jj'], '7um')
-        self.assertEqual(options['max_mesh_length_port'], '7um')
         self.assertEqual(options['project_path'], None)
         self.assertEqual(options['project_name'], None)
         self.assertEqual(options['design_name'], None)
