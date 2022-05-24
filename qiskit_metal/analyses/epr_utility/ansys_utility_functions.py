@@ -1,4 +1,6 @@
 #-*- coding: utf-8 -*-
+"""The methods in this module were copied from Ansys renderer which used comm-ports."""
+
 from numbers import Number
 from collections.abc import Iterable
 from pint import UnitRegistry
