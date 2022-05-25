@@ -34,7 +34,8 @@ import importlib
 import inspect
 import os
 import random
-from collections import OrderedDict, Callable
+from collections import OrderedDict
+from collections.abc import Callable
 from inspect import signature
 from pathlib import Path
 from typing import TYPE_CHECKING, Union, Type
@@ -132,7 +133,7 @@ class ParameterEntryWindow(QMainWindow):
 
             Args:
                 func (Callable): current function causing exceptions - should  be ONLY  qcpe instance methods
-                    because decoraters
+                    because decorators
                 assumes arg[0] is a self who has a valid logger
 
             """
@@ -287,7 +288,7 @@ class ParameterEntryWindow(QMainWindow):
 
     @QComponentParameterEntryExceptionDecorators.entry_exception_pop_up_warning
     def add_k_dict_row(self):
-        """ Add key, dictionary-value to parent row based on what row is highlighed in treeview"""
+        """ Add key, dictionary-value to parent row based on what row is highlighted in treeview"""
         cur_index = self.ui.qcomponent_param_tree_view.currentIndex()
 
         fake_dict = "fake-dict"
