@@ -15,7 +15,7 @@
 from typing import Union, Tuple
 import pandas as pd
 from pyEPR.ansys import ureg
-from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
+# from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
 from qiskit_metal import Dict
 from qiskit_metal.analyses.core import QSimulation
 

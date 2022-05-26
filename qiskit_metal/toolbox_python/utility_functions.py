@@ -25,7 +25,7 @@ import inspect
 
 import pandas as pd
 
-from qiskit_metal.draw import Vector
+# from qiskit_metal.draw import Vector
 from qiskit_metal.toolbox_metal.exceptions import InputError
 
 if TYPE_CHECKING:
@@ -369,6 +369,9 @@ def bad_fillet_idxs(coords: list,
         list: List of indices of vertices too close to their neighbors to be filleted.
     """
     length = len(coords)
+
+    # isolate dependency to qiskit_metal to just this function
+    from qiskit_metal.draw import Vector
     get_dist = Vector.get_distance
     if isclosed:
         return [
