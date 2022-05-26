@@ -229,6 +229,11 @@ class QDesign():
         return self._qgeometry
 
     @property
+    def qnet(self) -> 'QNet':
+        """Returns the QNet (Use for advanced users only)"""
+        return self._qnet
+
+    @property
     def qcomponent_latest_assigned_id(self) -> int:
         """Return unique number for each instance.
 
@@ -342,8 +347,10 @@ class QDesign():
         Note: If not added to netlist, the net_id will be 0 (zero).
         """
         net_id = 0
-        net_id = self._qnet.add_pins_to_table(comp1_id, pin1_name, comp2_id,
-                                              pin2_name)
+        comp1_name = self._components[comp1_id].name
+        comp2_name = self._components[comp2_id].name
+        net_id = self._qnet.add_pins_to_table(comp1_name, comp1_id, pin1_name,
+                                              comp2_name, comp2_id, pin2_name)
         if net_id:
             # update the components to hold net_id
             self._components[comp1_id].pins[pin1_name].net_id = net_id

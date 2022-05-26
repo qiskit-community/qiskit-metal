@@ -34,6 +34,7 @@ from qiskit_metal._gui.widgets.qlibrary_display.proxy_model_qlibrary import \
 from .. import config, qlibrary
 from ..designs.design_base import QDesign
 from .elements_window import ElementsWindow
+from .net_list_window import NetListWindow
 from .main_window_base import (QMainWindowBaseHandler, QMainWindowExtensionBase,
                                kick_start_qApp)
 from .main_window_ui import Ui_MainWindow
@@ -99,7 +100,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         """
 
         if yesno:
-            self.ui.tabWidget.setCurrentWidget(self.ui.tabElements)
+            self.ui.tabWidget.setCurrentWidget(self.ui.tabQGeometry)
             self.ui.actionElements.setText("View")
         else:
             self.ui.tabWidget.setCurrentWidget(self.ui.mainViewTab)
@@ -311,6 +312,7 @@ class MetalGUI(QMainWindowBaseHandler):
         # UIs
         self.plot_win = None  # type: QMainWindowPlot
         self.elements_win = None  # type: ElementsWindow
+        self.net_list_win = None  # type: NetListWindow
         self.component_window = ComponentWidget(self, self.ui.dockComponent)
         self.variables_window = PropertyTableWidget(self, gui=self)
 
@@ -323,6 +325,7 @@ class MetalGUI(QMainWindowBaseHandler):
         self._setup_variables_widget()
         self._ui_adjustments_final()
         self._setup_library_widget()
+        self._setup_net_list_widget()
 
         # Show and raise
         self.main_window.show()
@@ -499,7 +502,7 @@ class MetalGUI(QMainWindowBaseHandler):
             yesno (bool): True for elements, False for view
         """
         if yesno:
-            self.ui.tabWidget.setCurrentWidget(self.ui.tabElements)
+            self.ui.tabWidget.setCurrentWidget(self.ui.tabQGeometry)
         else:
             self.ui.tabWidget.setCurrentWidget(self.ui.mainViewTab)
 
@@ -556,7 +559,14 @@ class MetalGUI(QMainWindowBaseHandler):
         self.elements_win = ElementsWindow(self, self.main_window)
 
         # Add to the tabbed main view
-        self.ui.tabElements.layout().addWidget(self.elements_win)
+        self.ui.tabQGeometry.layout().addWidget(self.elements_win)
+
+    def _setup_net_list_widget(self):
+        """Create main Window Elements Widget."""
+        self.net_list_win = NetListWindow(self, self.main_window)
+
+        # Add to the tabbed main view
+        self.ui.tabNetList.layout().addWidget(self.net_list_win)
 
     def _setup_design_components_widget(self):
         """Design components.

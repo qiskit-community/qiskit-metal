@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file './main_window_ui.ui',
 # licensing of './main_window_ui.ui' applies.
 #
-# Created: Tue Sep 28 17:11:04 2021
+# Created: Wed May 25 09:29:27 2022
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -48,20 +48,30 @@ class Ui_MainWindow(object):
         icon1.addPixmap(QtGui.QPixmap(":/main_view"), QtGui.QIcon.Normal,
                         QtGui.QIcon.On)
         self.tabWidget.addTab(self.mainViewTab, icon1, "")
-        self.tabElements = QtWidgets.QWidget()
-        self.tabElements.setObjectName("tabElements")
-        self.verticalLayout_10 = QtWidgets.QVBoxLayout(self.tabElements)
+        self.tabQGeometry = QtWidgets.QWidget()
+        self.tabQGeometry.setObjectName("tabQGeometry")
+        self.verticalLayout_10 = QtWidgets.QVBoxLayout(self.tabQGeometry)
         self.verticalLayout_10.setSpacing(0)
         self.verticalLayout_10.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_10.setObjectName("verticalLayout_10")
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap(":/elements"), QtGui.QIcon.Normal,
                         QtGui.QIcon.Off)
-        self.tabWidget.addTab(self.tabElements, icon2, "")
+        self.tabWidget.addTab(self.tabQGeometry, icon2, "")
+        self.tabNetList = QtWidgets.QWidget()
+        self.tabNetList.setObjectName("tabNetList")
+        self.verticalLayout_22 = QtWidgets.QVBoxLayout(self.tabNetList)
+        self.verticalLayout_22.setSpacing(0)
+        self.verticalLayout_22.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_22.setObjectName("verticalLayout_22")
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap("_imgs/frequency.png"),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.tabWidget.addTab(self.tabNetList, icon3, "")
         self.verticalLayout.addWidget(self.tabWidget)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar()
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1310, 24))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1025, 24))
         self.menubar.setBaseSize(QtCore.QSize(0, 0))
         self.menubar.setObjectName("menubar")
         self.menuDesign = QtWidgets.QMenu(self.menubar)
@@ -72,10 +82,10 @@ class Ui_MainWindow(object):
         self.menuView = QtWidgets.QMenu(self.menubar)
         self.menuView.setObjectName("menuView")
         self.menuStylesheet = QtWidgets.QMenu(self.menuView)
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(":/metal_logo"), QtGui.QIcon.Normal,
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap(":/metal_logo"), QtGui.QIcon.Normal,
                         QtGui.QIcon.On)
-        self.menuStylesheet.setIcon(icon3)
+        self.menuStylesheet.setIcon(icon4)
         self.menuStylesheet.setObjectName("menuStylesheet")
         self.menuAnalysis = QtWidgets.QMenu(self.menubar)
         self.menuAnalysis.setObjectName("menuAnalysis")
@@ -83,10 +93,10 @@ class Ui_MainWindow(object):
         self.menuRender.setObjectName("menuRender")
         self.menuHelp = QtWidgets.QMenu(self.menubar)
         self.menuHelp.setMinimumSize(QtCore.QSize(0, 0))
-        icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap(":/help"), QtGui.QIcon.Normal,
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap(":/help"), QtGui.QIcon.Normal,
                         QtGui.QIcon.On)
-        self.menuHelp.setIcon(icon4)
+        self.menuHelp.setIcon(icon5)
         self.menuHelp.setToolTipsVisible(True)
         self.menuHelp.setObjectName("menuHelp")
         self.menuPlot = QtWidgets.QMenu(self.menubar)
@@ -109,10 +119,10 @@ class Ui_MainWindow(object):
         self.toolBarView.setObjectName("toolBarView")
         MainWindow.addToolBar(QtCore.Qt.LeftToolBarArea, self.toolBarView)
         self.dockDesign = QtWidgets.QDockWidget(MainWindow)
-        icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap(":/design"), QtGui.QIcon.Normal,
+        icon6 = QtGui.QIcon()
+        icon6.addPixmap(QtGui.QPixmap(":/design"), QtGui.QIcon.Normal,
                         QtGui.QIcon.On)
-        self.dockDesign.setWindowIcon(icon5)
+        self.dockDesign.setWindowIcon(icon6)
         self.dockDesign.setFloating(False)
         self.dockDesign.setFeatures(QtWidgets.QDockWidget.AllDockWidgetFeatures)
         self.dockDesign.setObjectName("dockDesign")
@@ -128,17 +138,17 @@ class Ui_MainWindow(object):
         self.gridLayout.setContentsMargins(-1, 2, -1, 2)
         self.gridLayout.setObjectName("gridLayout")
         self.btn_comp_zoom = QtWidgets.QToolButton(self.dockWidgetContents)
-        icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap(":/fullscreen"), QtGui.QIcon.Normal,
+        icon7 = QtGui.QIcon()
+        icon7.addPixmap(QtGui.QPixmap(":/fullscreen"), QtGui.QIcon.Normal,
                         QtGui.QIcon.Off)
-        self.btn_comp_zoom.setIcon(icon6)
+        self.btn_comp_zoom.setIcon(icon7)
         self.btn_comp_zoom.setObjectName("btn_comp_zoom")
         self.gridLayout.addWidget(self.btn_comp_zoom, 0, 2, 1, 1)
         self.btn_comp_del = QtWidgets.QToolButton(self.dockWidgetContents)
-        icon7 = QtGui.QIcon()
-        icon7.addPixmap(QtGui.QPixmap(":/delete"), QtGui.QIcon.Normal,
+        icon8 = QtGui.QIcon()
+        icon8.addPixmap(QtGui.QPixmap(":/delete"), QtGui.QIcon.Normal,
                         QtGui.QIcon.Off)
-        self.btn_comp_del.setIcon(icon7)
+        self.btn_comp_del.setIcon(icon8)
         self.btn_comp_del.setPopupMode(QtWidgets.QToolButton.DelayedPopup)
         self.btn_comp_del.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
         self.btn_comp_del.setObjectName("btn_comp_del")
@@ -174,10 +184,10 @@ class Ui_MainWindow(object):
         MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(1), self.dockDesign)
         self.dockLibrary = QtWidgets.QDockWidget(MainWindow)
         self.dockLibrary.setMinimumSize(QtCore.QSize(79, 124))
-        icon8 = QtGui.QIcon()
-        icon8.addPixmap(QtGui.QPixmap(":/component"), QtGui.QIcon.Normal,
+        icon9 = QtGui.QIcon()
+        icon9.addPixmap(QtGui.QPixmap(":/component"), QtGui.QIcon.Normal,
                         QtGui.QIcon.On)
-        self.dockLibrary.setWindowIcon(icon8)
+        self.dockLibrary.setWindowIcon(icon9)
         self.dockLibrary.setFeatures(
             QtWidgets.QDockWidget.AllDockWidgetFeatures)
         self.dockLibrary.setObjectName("dockLibrary")
@@ -196,7 +206,7 @@ class Ui_MainWindow(object):
         self.dockLibrary.setWidget(self.dockLibraryContents)
         MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(1), self.dockLibrary)
         self.dockComponent = QtWidgets.QDockWidget(MainWindow)
-        self.dockComponent.setMinimumSize(QtCore.QSize(62, 38))
+        self.dockComponent.setMinimumSize(QtCore.QSize(300, 73))
         self.dockComponent.setFeatures(
             QtWidgets.QDockWidget.AllDockWidgetFeatures)
         self.dockComponent.setObjectName("dockComponent")
@@ -210,11 +220,11 @@ class Ui_MainWindow(object):
         MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(1),
                                  self.dockComponent)
         self.dockLog = QtWidgets.QDockWidget(MainWindow)
-        self.dockLog.setMinimumSize(QtCore.QSize(79, 101))
-        icon9 = QtGui.QIcon()
-        icon9.addPixmap(QtGui.QPixmap(":/log"), QtGui.QIcon.Normal,
-                        QtGui.QIcon.On)
-        self.dockLog.setWindowIcon(icon9)
+        self.dockLog.setMinimumSize(QtCore.QSize(79, 103))
+        icon10 = QtGui.QIcon()
+        icon10.addPixmap(QtGui.QPixmap(":/log"), QtGui.QIcon.Normal,
+                         QtGui.QIcon.On)
+        self.dockLog.setWindowIcon(icon10)
         self.dockLog.setFeatures(QtWidgets.QDockWidget.AllDockWidgetFeatures)
         self.dockLog.setObjectName("dockLog")
         self.dockWidgetContents_4 = QtWidgets.QWidget()
@@ -245,10 +255,10 @@ class Ui_MainWindow(object):
         MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(8), self.dockLog)
         self.dockConnectors = QtWidgets.QDockWidget(MainWindow)
         self.dockConnectors.setMinimumSize(QtCore.QSize(79, 124))
-        icon10 = QtGui.QIcon()
-        icon10.addPixmap(QtGui.QPixmap(":/connectors"), QtGui.QIcon.Normal,
+        icon11 = QtGui.QIcon()
+        icon11.addPixmap(QtGui.QPixmap(":/connectors"), QtGui.QIcon.Normal,
                          QtGui.QIcon.On)
-        self.dockConnectors.setWindowIcon(icon10)
+        self.dockConnectors.setWindowIcon(icon11)
         self.dockConnectors.setObjectName("dockConnectors")
         self.dockWidgetContents_5 = QtWidgets.QWidget()
         self.dockWidgetContents_5.setObjectName("dockWidgetContents_5")
@@ -294,25 +304,25 @@ class Ui_MainWindow(object):
         self.toolbar_renderers.setObjectName("toolbar_renderers")
         MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolbar_renderers)
         self.actionSave = QtWidgets.QAction(MainWindow)
-        icon11 = QtGui.QIcon()
-        icon11.addPixmap(QtGui.QPixmap(":/save"), QtGui.QIcon.Normal,
+        icon12 = QtGui.QIcon()
+        icon12.addPixmap(QtGui.QPixmap(":/save"), QtGui.QIcon.Normal,
                          QtGui.QIcon.Off)
-        self.actionSave.setIcon(icon11)
+        self.actionSave.setIcon(icon12)
         self.actionSave.setObjectName("actionSave")
         self.actionLoad = QtWidgets.QAction(MainWindow)
-        icon12 = QtGui.QIcon()
-        icon12.addPixmap(QtGui.QPixmap(":/load"), QtGui.QIcon.Normal,
+        icon13 = QtGui.QIcon()
+        icon13.addPixmap(QtGui.QPixmap(":/load"), QtGui.QIcon.Normal,
                          QtGui.QIcon.Off)
-        self.actionLoad.setIcon(icon12)
+        self.actionLoad.setIcon(icon13)
         self.actionLoad.setAutoRepeat(False)
         self.actionLoad.setObjectName("actionLoad")
         self.actionDesign = QtWidgets.QAction(MainWindow)
         self.actionDesign.setCheckable(True)
         self.actionDesign.setChecked(True)
-        icon13 = QtGui.QIcon()
-        icon13.addPixmap(QtGui.QPixmap(":/design"), QtGui.QIcon.Normal,
+        icon14 = QtGui.QIcon()
+        icon14.addPixmap(QtGui.QPixmap(":/design"), QtGui.QIcon.Normal,
                          QtGui.QIcon.Off)
-        self.actionDesign.setIcon(icon13)
+        self.actionDesign.setIcon(icon14)
         self.actionDesign.setObjectName("actionDesign")
         self.actionElements = QtWidgets.QAction(MainWindow)
         self.actionElements.setCheckable(True)
@@ -322,45 +332,45 @@ class Ui_MainWindow(object):
         self.actionLog = QtWidgets.QAction(MainWindow)
         self.actionLog.setCheckable(True)
         self.actionLog.setChecked(True)
-        icon14 = QtGui.QIcon()
-        icon14.addPixmap(QtGui.QPixmap(":/log"), QtGui.QIcon.Normal,
+        icon15 = QtGui.QIcon()
+        icon15.addPixmap(QtGui.QPixmap(":/log"), QtGui.QIcon.Normal,
                          QtGui.QIcon.Off)
-        self.actionLog.setIcon(icon14)
+        self.actionLog.setIcon(icon15)
         self.actionLog.setObjectName("actionLog")
         self.actionNewComponent = QtWidgets.QAction(MainWindow)
         self.actionNewComponent.setCheckable(True)
         self.actionNewComponent.setChecked(False)
-        icon15 = QtGui.QIcon()
-        icon15.addPixmap(QtGui.QPixmap(":/component-library"),
+        icon16 = QtGui.QIcon()
+        icon16.addPixmap(QtGui.QPixmap(":/component-library"),
                          QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.actionNewComponent.setIcon(icon15)
+        self.actionNewComponent.setIcon(icon16)
         self.actionNewComponent.setObjectName("actionNewComponent")
         self.actionDelete_All = QtWidgets.QAction(MainWindow)
-        icon16 = QtGui.QIcon()
-        icon16.addPixmap(QtGui.QPixmap(":/delete_all"), QtGui.QIcon.Normal,
+        icon17 = QtGui.QIcon()
+        icon17.addPixmap(QtGui.QPixmap(":/delete_all"), QtGui.QIcon.Normal,
                          QtGui.QIcon.Off)
-        self.actionDelete_All.setIcon(icon16)
+        self.actionDelete_All.setIcon(icon17)
         self.actionDelete_All.setPriority(QtWidgets.QAction.LowPriority)
         self.actionDelete_All.setObjectName("actionDelete_All")
         self.actionZoom = QtWidgets.QAction(MainWindow)
-        icon17 = QtGui.QIcon()
-        icon17.addPixmap(QtGui.QPixmap(":/plot/zoom"), QtGui.QIcon.Normal,
+        icon18 = QtGui.QIcon()
+        icon18.addPixmap(QtGui.QPixmap(":/plot/zoom"), QtGui.QIcon.Normal,
                          QtGui.QIcon.Off)
-        self.actionZoom.setIcon(icon17)
+        self.actionZoom.setIcon(icon18)
         self.actionZoom.setObjectName("actionZoom")
         self.actionPan = QtWidgets.QAction(MainWindow)
-        icon18 = QtGui.QIcon()
-        icon18.addPixmap(QtGui.QPixmap(":/plot/pan"), QtGui.QIcon.Normal,
+        icon19 = QtGui.QIcon()
+        icon19.addPixmap(QtGui.QPixmap(":/plot/pan"), QtGui.QIcon.Normal,
                          QtGui.QIcon.On)
-        self.actionPan.setIcon(icon18)
+        self.actionPan.setIcon(icon19)
         self.actionPan.setObjectName("actionPan")
         self.actionConnectors = QtWidgets.QAction(MainWindow)
         self.actionConnectors.setCheckable(True)
         self.actionConnectors.setChecked(False)
-        icon19 = QtGui.QIcon()
-        icon19.addPixmap(QtGui.QPixmap(":/connectors"), QtGui.QIcon.Normal,
+        icon20 = QtGui.QIcon()
+        icon20.addPixmap(QtGui.QPixmap(":/connectors"), QtGui.QIcon.Normal,
                          QtGui.QIcon.Off)
-        self.actionConnectors.setIcon(icon19)
+        self.actionConnectors.setIcon(icon20)
         self.actionConnectors.setObjectName("actionConnectors")
         self.actionStyleOpen = QtWidgets.QAction(MainWindow)
         self.actionStyleOpen.setObjectName("actionStyleOpen")
@@ -369,43 +379,43 @@ class Ui_MainWindow(object):
         self.actionStyleDark = QtWidgets.QAction(MainWindow)
         self.actionStyleDark.setObjectName("actionStyleDark")
         self.actionScreenshot = QtWidgets.QAction(MainWindow)
-        icon20 = QtGui.QIcon()
-        icon20.addPixmap(QtGui.QPixmap(":/screenshot"), QtGui.QIcon.Normal,
+        icon21 = QtGui.QIcon()
+        icon21.addPixmap(QtGui.QPixmap(":/screenshot"), QtGui.QIcon.Normal,
                          QtGui.QIcon.Off)
-        self.actionScreenshot.setIcon(icon20)
+        self.actionScreenshot.setIcon(icon21)
         self.actionScreenshot.setObjectName("actionScreenshot")
         self.action_full_refresh = QtWidgets.QAction(MainWindow)
-        icon21 = QtGui.QIcon()
-        icon21.addPixmap(QtGui.QPixmap(":/force_refresh"), QtGui.QIcon.Normal,
+        icon22 = QtGui.QIcon()
+        icon22.addPixmap(QtGui.QPixmap(":/force_refresh"), QtGui.QIcon.Normal,
                          QtGui.QIcon.Off)
-        self.action_full_refresh.setIcon(icon21)
+        self.action_full_refresh.setIcon(icon22)
         self.action_full_refresh.setShortcutContext(
             QtCore.Qt.WidgetWithChildrenShortcut)
         self.action_full_refresh.setAutoRepeat(False)
         self.action_full_refresh.setPriority(QtWidgets.QAction.HighPriority)
         self.action_full_refresh.setObjectName("action_full_refresh")
         self.actionRebuild = QtWidgets.QAction(MainWindow)
-        icon22 = QtGui.QIcon()
-        icon22.addPixmap(QtGui.QPixmap(":/rebuild"), QtGui.QIcon.Normal,
+        icon23 = QtGui.QIcon()
+        icon23.addPixmap(QtGui.QPixmap(":/rebuild"), QtGui.QIcon.Normal,
                          QtGui.QIcon.Off)
-        icon22.addPixmap(QtGui.QPixmap(":/rebuild"), QtGui.QIcon.Active,
+        icon23.addPixmap(QtGui.QPixmap(":/rebuild"), QtGui.QIcon.Active,
                          QtGui.QIcon.On)
-        self.actionRebuild.setIcon(icon22)
+        self.actionRebuild.setIcon(icon23)
         self.actionRebuild.setPriority(QtWidgets.QAction.HighPriority)
         self.actionRebuild.setObjectName("actionRebuild")
         self.actionFull_Screen = QtWidgets.QAction(MainWindow)
-        icon23 = QtGui.QIcon()
-        icon23.addPixmap(QtGui.QPixmap(":/plot/----autozoom"),
+        icon24 = QtGui.QIcon()
+        icon24.addPixmap(QtGui.QPixmap(":/plot/----autozoom"),
                          QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.actionFull_Screen.setIcon(icon23)
+        self.actionFull_Screen.setIcon(icon24)
         self.actionFull_Screen.setObjectName("actionFull_Screen")
         self.actionMetal_Dark = QtWidgets.QAction(MainWindow)
         self.actionMetal_Dark.setObjectName("actionMetal_Dark")
         self.actionSaveAs = QtWidgets.QAction(MainWindow)
-        self.actionSaveAs.setIcon(icon11)
+        self.actionSaveAs.setIcon(icon12)
         self.actionSaveAs.setObjectName("actionSaveAs")
         self.actionSave_window_state = QtWidgets.QAction(MainWindow)
-        self.actionSave_window_state.setIcon(icon11)
+        self.actionSave_window_state.setIcon(icon12)
         self.actionSave_window_state.setObjectName("actionSave_window_state")
         self.actionLabelDesign = QtWidgets.QAction(MainWindow)
         self.actionLabelDesign.setEnabled(False)
@@ -420,52 +430,52 @@ class Ui_MainWindow(object):
         self.actionVariables = QtWidgets.QAction(MainWindow)
         self.actionVariables.setCheckable(True)
         self.actionVariables.setChecked(False)
-        icon24 = QtGui.QIcon()
-        icon24.addPixmap(QtGui.QPixmap(":/variables"), QtGui.QIcon.Normal,
+        icon25 = QtGui.QIcon()
+        icon25.addPixmap(QtGui.QPixmap(":/variables"), QtGui.QIcon.Normal,
                          QtGui.QIcon.Off)
-        self.actionVariables.setIcon(icon24)
+        self.actionVariables.setIcon(icon25)
         self.actionVariables.setObjectName("actionVariables")
         self.actionToggleDocks = QtWidgets.QAction(MainWindow)
-        self.actionToggleDocks.setIcon(icon6)
+        self.actionToggleDocks.setIcon(icon7)
         self.actionToggleDocks.setObjectName("actionToggleDocks")
         self.actionGDS = QtWidgets.QAction(MainWindow)
-        icon25 = QtGui.QIcon()
-        icon25.addPixmap(QtGui.QPixmap(":/renderer/_imgs/renderers/GDS.png"),
+        icon26 = QtGui.QIcon()
+        icon26.addPixmap(QtGui.QPixmap(":/renderer/_imgs/renderers/GDS.png"),
                          QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.actionGDS.setIcon(icon25)
+        self.actionGDS.setIcon(icon26)
         self.actionGDS.setObjectName("actionGDS")
         self.actionHFSS = QtWidgets.QAction(MainWindow)
-        icon26 = QtGui.QIcon()
-        icon26.addPixmap(QtGui.QPixmap(":/renderer/_imgs/renderers/HFSS.png"),
+        icon27 = QtGui.QIcon()
+        icon27.addPixmap(QtGui.QPixmap(":/renderer/_imgs/renderers/HFSS.png"),
                          QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.actionHFSS.setIcon(icon26)
+        self.actionHFSS.setIcon(icon27)
         self.actionHFSS.setObjectName("actionHFSS")
         self.actionQ3D = QtWidgets.QAction(MainWindow)
-        icon27 = QtGui.QIcon()
-        icon27.addPixmap(QtGui.QPixmap(":/renderer/_imgs/renderers/Q3D.png"),
+        icon28 = QtGui.QIcon()
+        icon28.addPixmap(QtGui.QPixmap(":/renderer/_imgs/renderers/Q3D.png"),
                          QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.actionQ3D.setIcon(icon27)
+        self.actionQ3D.setIcon(icon28)
         self.actionQ3D.setObjectName("actionQ3D")
         self.actionBuildHistory = QtWidgets.QAction(MainWindow)
-        icon28 = QtGui.QIcon()
-        icon28.addPixmap(QtGui.QPixmap(":/build_history"), QtGui.QIcon.Normal,
+        icon29 = QtGui.QIcon()
+        icon29.addPixmap(QtGui.QPixmap(":/build_history"), QtGui.QIcon.Normal,
                          QtGui.QIcon.Off)
-        self.actionBuildHistory.setIcon(icon28)
+        self.actionBuildHistory.setIcon(icon29)
         self.actionBuildHistory.setObjectName("actionBuildHistory")
         self.actionDeveloperMode = QtWidgets.QAction(MainWindow)
         self.actionDeveloperMode.setCheckable(True)
-        icon29 = QtGui.QIcon()
-        icon29.addPixmap(QtGui.QPixmap(":/_imgs/lightbulb.png"),
+        icon30 = QtGui.QIcon()
+        icon30.addPixmap(QtGui.QPixmap(":/_imgs/lightbulb.png"),
                          QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        icon29.addPixmap(QtGui.QPixmap(":/_imgs/support.png"),
+        icon30.addPixmap(QtGui.QPixmap(":/_imgs/support.png"),
                          QtGui.QIcon.Normal, QtGui.QIcon.On)
-        self.actionDeveloperMode.setIcon(icon29)
+        self.actionDeveloperMode.setIcon(icon30)
         self.actionDeveloperMode.setObjectName("actionDeveloperMode")
         self.actionWebHelp = QtWidgets.QAction(MainWindow)
-        icon30 = QtGui.QIcon()
-        icon30.addPixmap(QtGui.QPixmap(":/browser"), QtGui.QIcon.Normal,
+        icon31 = QtGui.QIcon()
+        icon31.addPixmap(QtGui.QPixmap(":/browser"), QtGui.QIcon.Normal,
                          QtGui.QIcon.Off)
-        self.actionWebHelp.setIcon(icon30)
+        self.actionWebHelp.setIcon(icon31)
         self.actionWebHelp.setObjectName("actionWebHelp")
         self.menuDesign.addSeparator()
         self.menuDesign.addAction(self.actionLabelDesign)
@@ -521,7 +531,7 @@ class Ui_MainWindow(object):
         self.toolbar_renderers.addAction(self.actionQ3D)
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(2)
         QtCore.QObject.connect(self.actionElements,
                                QtCore.SIGNAL("toggled(bool)"),
                                MainWindow._set_element_tab)
@@ -642,14 +652,22 @@ class Ui_MainWindow(object):
             QtWidgets.QApplication.translate("MainWindow", "Main View", None,
                                              -1))
         self.tabWidget.setTabText(
-            self.tabWidget.indexOf(self.tabElements),
-            QtWidgets.QApplication.translate("MainWindow", "Elements", None,
+            self.tabWidget.indexOf(self.tabQGeometry),
+            QtWidgets.QApplication.translate("MainWindow", "QGeometry", None,
                                              -1))
         self.tabWidget.setTabToolTip(
-            self.tabWidget.indexOf(self.tabElements),
+            self.tabWidget.indexOf(self.tabQGeometry),
             QtWidgets.QApplication.translate(
-                "MainWindow", "Shoe the tables of elements of the the design",
-                None, -1))
+                "MainWindow", "Show the QGeometry elements of the design", None,
+                -1))
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.tabNetList),
+            QtWidgets.QApplication.translate("MainWindow", "Net List", None,
+                                             -1))
+        self.tabWidget.setTabToolTip(
+            self.tabWidget.indexOf(self.tabNetList),
+            QtWidgets.QApplication.translate("MainWindow", "Show the Net List",
+                                             None, -1))
         self.menuDesign.setToolTip(
             QtWidgets.QApplication.translate("MainWindow", "Design Menu", None,
                                              -1))
@@ -1026,7 +1044,7 @@ class Ui_MainWindow(object):
                                              None, -1))
 
 
+from .widgets.qlibrary_display.tree_view_qlibrary import TreeViewQLibrary
 from .widgets.log_widget.log_metal import QTextEditLogger
 from .widgets.all_components.table_view_all_components import QTableView_AllComponents
-from .widgets.qlibrary_display.tree_view_qlibrary import TreeViewQLibrary
 from . import main_window_rc_rc

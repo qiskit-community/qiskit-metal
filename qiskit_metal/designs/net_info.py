@@ -26,7 +26,9 @@ class QNet():
 
     def __init__(self):
         """Hold the net information of all the USED pins within a design."""
-        self.column_names = ['net_id', 'component_id', 'pin_name']
+        self.column_names = [
+            'component_name', 'net_id', 'component_id', 'pin_name'
+        ]
         self._net_info = pd.DataFrame(columns=self.column_names)
         self._qnet_latest_assigned_id = 0
         self.logger = logger  # type: logging.Logger
@@ -94,7 +96,8 @@ class QNet():
 
         return 1
 
-    def add_pins_to_table(self, comp1_id: int, pin1_name: str, comp2_id: int,
+    def add_pins_to_table(self, comp1_name: str, comp1_id: int, pin1_name: str,
+                          comp2_name: str, comp2_id: int,
                           pin2_name: str) -> int:
         """Add two entries into the _net_info table. If either component/pin is
         already in net_info, the connection will NOT be added to the net_info.
@@ -113,7 +116,7 @@ class QNet():
             return 0
 
         # Confirm the component-pin combination is NOT in _net_info, before adding them.
-        for (net_identity, component_id,
+        for (component_name, net_identity, component_id,
              pin_name) in self._net_info.itertuples(index=False):
             if ((component_id == comp1_id) and (pin_name == pin1_name)):
                 self.logger.warning(
@@ -128,8 +131,8 @@ class QNet():
 
         net_id = self._get_new_net_id()
 
-        entry1 = [net_id, comp1_id, pin1_name]
-        entry2 = [net_id, comp2_id, pin2_name]
+        entry1 = [comp1_name, net_id, comp1_id, pin1_name]
+        entry2 = [comp2_name, net_id, comp2_id, pin2_name]
         temp_df = pd.DataFrame([entry1, entry2], columns=self.column_names)
 
         self._net_info = pd.concat([self._net_info, temp_df],
@@ -165,7 +168,7 @@ class QNet():
         """
         all_net_id_deleted = set()
 
-        for (net_identity, component_id,
+        for (component_name, net_identity, component_id,
              dummy_pin_name) in self._net_info.itertuples(index=False):
             if component_id == component_id_to_remove:
                 all_net_id_deleted.add(net_identity)

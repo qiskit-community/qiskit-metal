@@ -58,7 +58,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <property name="usesScrollButtons">
        <bool>false</bool>
@@ -96,21 +96,53 @@
         </property>
        </layout>
       </widget>
-      <widget class="QWidget" name="tabElements">
+      <widget class="QWidget" name="tabQGeometry">
        <attribute name="icon">
         <iconset resource="main_window_rc.qrc">
          <normaloff>:/elements</normaloff>:/elements</iconset>
        </attribute>
        <attribute name="title">
-        <string>Elements</string>
+        <string>QGeometry</string>
        </attribute>
        <attribute name="toolTip">
-        <string>Shoe the tables of elements of the the design</string>
+        <string>Show the QGeometry elements of the design</string>
        </attribute>
        <attribute name="whatsThis">
-        <string>Shoe the tables of elements of the the design</string>
+        <string>Show the QGeometry elements of the design</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_10">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tabNetList">
+       <attribute name="icon">
+        <iconset>
+         <normaloff>_imgs/frequency.png</normaloff>_imgs/frequency.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>Net List</string>
+       </attribute>
+       <attribute name="toolTip">
+        <string>Show the Net List</string>
+       </attribute>
+       <attribute name="whatsThis">
+        <string>Show the Net List</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_22">
         <property name="spacing">
          <number>0</number>
         </property>
@@ -137,7 +169,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1310</width>
+     <width>1025</width>
      <height>24</height>
     </rect>
    </property>
@@ -560,8 +592,8 @@
   <widget class="QDockWidget" name="dockComponent">
    <property name="minimumSize">
     <size>
-     <width>62</width>
-     <height>38</height>
+     <width>300</width>
+     <height>73</height>
     </size>
    </property>
    <property name="features">
@@ -597,7 +629,7 @@
    <property name="minimumSize">
     <size>
      <width>79</width>
-     <height>101</height>
+     <height>103</height>
     </size>
    </property>
    <property name="windowIcon">
