@@ -125,5 +125,13 @@ If you are planning to develop the qiskit metal codebase, you need extra package
 ```
 python -m pip install -r requirements-dev.txt
 ```
-You'll want to also use these instructions to [setup user environment](/docs/NEW_DEVELOPER_SETUP.md)
+You may also want to also use these instructions to [setup user environment](/docs/NEW_DEVELOPER_SETUP.md)
+
+#### Setting up precommit hooks
+
+If are planning on committing, you can run the following in the root of your project to link the available precommit hooks.
+```
+./hook_setup
+```
+Please make sure the command is run from the same shell you plan on using to commit. If running on Windows, please make sure that this script is run from git-bash or another Linux-style shell. Currently, the precommit hook will check for yapf formatting.
 
