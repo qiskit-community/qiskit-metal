@@ -289,7 +289,7 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
         Components(design)
         qnet = QNet()
 
-        qnet.add_pins_to_table('t estname-1', 1, 'my_name-1', 'testname-2', 2,
+        qnet.add_pins_to_table('testname-1', 1, 'my_name-1', 'testname-2', 2,
                                'my_name-2')
         df = qnet.net_info
 
@@ -359,10 +359,10 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
         Components(design)
         qnet = QNet()
 
-        qnet.add_pins_to_table('testname-1', 1, 'my_name-1', 'testname-2', 2,
-                               'my_name-2')
-        qnet.add_pins_to_table('testname-3', 3, 'my_name-3', 'testname-4', 4,
-                               'my_name-4')
+        net_id_1 = qnet.add_pins_to_table('testname-1', 1, 'my_name-1',
+                                          'testname-2', 2, 'my_name-2')
+        net_id_2 = qnet.add_pins_to_table('testname-3', 3, 'my_name-3',
+                                          'testname-4', 4, 'my_name-4')
 
         data = {
             'net_id': [1, 1],
