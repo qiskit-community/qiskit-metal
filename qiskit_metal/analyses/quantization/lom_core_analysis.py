@@ -644,7 +644,7 @@ class CircuitGraph:
         dim = self.L_inv.shape[0]
         eye = np.eye(dim)
         return eye[:, np.where(S_remove.T.sum(
-            axis=0) == 0)[0]] if S_remove else eye
+            axis=0) == 0)[0]] if S_remove is not None else eye
 
     def get_nodes_keep(self):
         s_keep = self.S_keep
@@ -654,7 +654,7 @@ class CircuitGraph:
 
     def get_nodes_remove(self):
         s_remove = self.S_remove
-        if s_remove:
+        if s_remove is not None:
             dim = s_remove.shape[0]
             remove_idx = s_remove.T.dot(
                 np.arange(dim)[:, np.newaxis])[:, 0].astype(int)
@@ -683,7 +683,7 @@ class CircuitGraph:
         s_r = self.S_remove
         c = self.C
         _inner = c.dot(s_r).dot(np.linalg.inv(s_r.T.dot(c.dot(s_r)))).dot(
-            s_r.T.dot(c)) if s_r else 0
+            s_r.T.dot(c)) if s_r is not None else 0
         return LabeledNdarray(
             s_k.T.dot(c - _inner).dot(s_k), self.get_nodes_keep())
 
@@ -1252,7 +1252,9 @@ class CompositeSystem:
                 if n not in _jj_to_node_map:
                     _sys_nodes.append(n)
                 else:
-                    _sys_nodes.extend(list(_jj_to_node_map[n]))
+                    _sys_nodes.extend(
+                        list(filter(lambda x: x != grd_node,
+                                    _jj_to_node_map[n])))
         if len(set(_sys_nodes)) != len(_sys_nodes):
             raise ValueError('Subsystems should not have overlapping nodes.')
         _non_sys_nodes = [n for n in _cell_nodes if n not in _sys_nodes]
