@@ -113,7 +113,7 @@ class ElementTableModel(QAbstractTableModel):
         Args:
             gui (MetalGUI): The GUI
             parent (QMainWindowExtension): Parent window.  Defaults to None.
-            element_type (str): The elment type.  Defaults to 'poly'.
+            element_type (str): The element type.  Defaults to 'poly'.
         """
         self.logger = gui.logger
         self.gui = gui
@@ -163,7 +163,7 @@ class ElementTableModel(QAbstractTableModel):
     def refresh(self):
         """Force refresh.
 
-        Completly rebuild the model.
+        Completely rebuild the model.
         """
         self.modelReset.emit()
 
