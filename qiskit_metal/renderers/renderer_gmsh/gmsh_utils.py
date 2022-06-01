@@ -159,12 +159,12 @@ def transform_arc_points(pts:list, translate:Vec2D, path_vecs:list, chip_z:float
 
     gmsh.model.occ.rotate(dim_tags, x=0, y=0, z=0, ax=0, ay=0, az=1, angle=angle1)
     gmsh.model.occ.translate(dim_tags, translate.x, translate.y, chip_z)
-    return new_pts
+    return new_pts, mirror
 
-def draw_curves(recent_pts:list, lines:list, arcs:list):
+def draw_curves(recent_pts:list, curves1:list, curves2:list, mirror:bool):
     rec_pts = []
-    lns = []
-    acs = []
+    # lns = []
+    # acs = []
 
     # TODO: think of a better error message
     if len(recent_pts) not in [4, 7]:
@@ -172,35 +172,40 @@ def draw_curves(recent_pts:list, lines:list, arcs:list):
 
     l1 = gmsh.model.occ.addLine(recent_pts[0], recent_pts[2])
     l2 = gmsh.model.occ.addLine(recent_pts[1], recent_pts[3])
-    lns += [l1, l2]
+    # lns += [l1, l2]
+    curves1 += [l1] # if not mirror else l2]
+    curves2 += [l2] # if not mirror else l1]
 
     if len(recent_pts) == 7:
         a1 = gmsh.model.occ.addCircleArc(recent_pts[2], recent_pts[4], recent_pts[5])
         a2 = gmsh.model.occ.addCircleArc(recent_pts[3], recent_pts[4], recent_pts[6])
-        acs += [a1, a2]
+        # acs += [a1, a2]
+        curves1 += [a1] # if not mirror else a2]
+        curves2 += [a2] # if not mirror else a1]
 
     rec_pts = recent_pts[-2:]
-    lns += lines
-    acs += arcs
+    # lns += lines
+    # acs += arcs
 
-    return rec_pts, lns, acs
+    return rec_pts, curves1, curves2
 
 def render_path_curves(vecs: Vec2DArray, chip_z:float, fillet:float, width:float, straight_line_tol=1e-9):
     recent_pts = [] # To store recent Gmsh points
-    lines = [] # To store Gmsh Lines
-    arcs = [] # to store Gmsh CircleArcs
+    # lines = [] # To store Gmsh Lines
+    # arcs = [] # to store Gmsh CircleArcs
+    curves1 = []; curves2 = []
 
     for i,v in enumerate(vecs.points):
         if i == 0:
             p1, p2 = line_width_offset_pts(v, vecs.path_vecs[i], width, chip_z)
             recent_pts += [p1, p2]
-            lines += [gmsh.model.occ.addLine(p1, p2)]
+            curves1 += [gmsh.model.occ.addLine(p1, p2)]
             continue
 
         if i == len(vecs.points)-1:
             p1, p2 = line_width_offset_pts(v, vecs.path_vecs[i-1], width, chip_z)
             recent_pts += [p1, p2]
-            lines += [gmsh.model.occ.addLine(p1, p2)]
+            curves1 += [gmsh.model.occ.addLine(p1, p2)]
             continue
 
         pv1 = vecs.path_vecs[i-1]; pv2 = vecs.path_vecs[i]
@@ -214,11 +219,15 @@ def render_path_curves(vecs: Vec2DArray, chip_z:float, fillet:float, width:float
             p1, p2, p4, p5 = arc_width_offset_pts(v1, v3, angle12, width, chip_z)
             p3 = vecs_to_gmsh_points([v2], chip_z)[0]
 
-            new_pts = transform_arc_points([p1, p2, p3, p4, p5], v, [pv1, pv2], chip_z)
+            new_pts, mirror = transform_arc_points([p1, p2, p3, p4, p5], v, [pv1, pv2], chip_z)
             recent_pts += new_pts
 
-        recent_pts, lines, arcs = draw_curves(recent_pts, lines, arcs)
+        recent_pts, curves1, curves2 = draw_curves(recent_pts, curves1, curves2, mirror)
 
-    _, lines, arcs = draw_curves(recent_pts, lines, arcs)
+    _, curves1, curves2 = draw_curves(recent_pts, curves1, curves2, mirror)
 
-    return lines, arcs
+    last_curve = curves1.pop(-2)
+    curves1.append(last_curve)
+    curves = curves1 + curves2[::-1]
+
+    return curves

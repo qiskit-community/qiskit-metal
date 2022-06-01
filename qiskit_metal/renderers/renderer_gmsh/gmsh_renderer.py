@@ -36,12 +36,25 @@ class QGmshRenderer(QRendererAnalysis):
         return False
 
     @property
-    def current_model(self):
-        return self._model_name
+    def modeler(self):
+        return gmsh.model
 
     @property
     def model(self):
-        return gmsh.model
+        return gmsh.model.getCurrent()
+
+    @model.setter
+    def model(self, name:str):
+        print_info = False
+        try:
+            gmsh.model.setCurrent(name)
+        except Exception:
+            gmsh.model.add(name)
+            self._model_name = name
+            print_info = True
+
+        if print_info:
+            self.logger.info(f"Added new model '{name}' and set as current.")
 
     def _initiate_renderer(self):
         gmsh.initialize()
@@ -53,16 +66,6 @@ class QGmshRenderer(QRendererAnalysis):
 
     def close(self):
         return self._close_renderer()
-
-    def add_model(self, name:str):
-        self._model_name = name
-        gmsh.model.add(name)
-
-    def set_current_model(self, name:str):
-        gmsh.model.set_current(name)
-
-    def get_current_model(self) -> str:
-        return gmsh.model.get_current()
 
     def remove_current_model(self):
         gmsh.model.remove()
@@ -223,7 +226,6 @@ class QGmshRenderer(QRendererAnalysis):
         qc_width  = self.parse_units_gmsh(junc.width)
         qc_chip_z = self.parse_units_gmsh(self.design.get_chip_z(junc.chip))
         vecs = Vec2DArray.make_vec2DArray(self.parse_units_gmsh(list(qc_shapely.coords)))
-        qc_angle = vecs.path_vecs[0].angle()
 
         # Considering JJ will always be a rectangle
         # TODO: do we need functionality for arbitrary shape JJ?
@@ -231,20 +233,19 @@ class QGmshRenderer(QRendererAnalysis):
         v3, v4 = line_width_offset_pts(vecs.points[1], vecs.path_vecs[0], qc_width, qc_chip_z, ret_pts=False)
 
         v1_v3 = v1.dist(v3); v1_v4 = v1.dist(v4)
-        # TODO: calculate dx_dir
-        dx_dir = 1 
-        qc_length = v1_v3 if v1_v3 <= v1_v4 else v1_v4
-        rect = gmsh.model.occ.addRectangle(0, 0, qc_chip_z, dx_dir*qc_width, qc_length)
-        gmsh.model.occ.rotate([(2, rect)], 0, 0, 0, 0, 0, 1, (qc_angle - np.pi/2))
-        gmsh.model.occ.translate([(2, rect)], v1.x, v1.y, 0)
-
+        vecs = [v1, v2, v4, v3, v1] if v1_v3 <= v1_v4 else [v1, v2, v3, v4, v1]
+        pts = [gmsh.model.occ.addPoint(v.x, v.y, qc_chip_z) for v in vecs[:-1]]
+        pts += [pts[0]]; lines = []
+        for i,p in enumerate(pts[:-1]):
+            lines += [gmsh.model.occ.addLine(p, pts[i+1])]
+        curve_loop = gmsh.model.occ.addCurveLoop(lines)
+        surface = gmsh.model.occ.addPlaneSurface([curve_loop])
+        
         if junc.chip not in self.juncs_dict:
             self.juncs_dict[junc.chip] = set()
 
-        self.juncs_dict[junc.chip].add(rect)
+        self.juncs_dict[junc.chip].add(surface)
 
-    # TODO: fix path rendering
-    # Refer to jupyter notebook for tests
     def render_element_path(self, path: pd.Series):
         """Render an element path.
 
@@ -256,8 +257,7 @@ class QGmshRenderer(QRendererAnalysis):
         qc_fillet = self.parse_units_gmsh(path.fillet) if float(path.fillet) is not np.nan else 0.0
         qc_chip_z = self.parse_units_gmsh(self.design.get_chip_z(path.chip))
         vecs = Vec2DArray.make_vec2DArray(self.parse_units_gmsh(list(qc_shapely.coords)))
-        lines, arcs = render_path_curves(vecs, qc_chip_z, qc_fillet, qc_width)
-        curves = lines + arcs
+        curves = render_path_curves(vecs, qc_chip_z, qc_fillet, qc_width)
         surface = self.make_general_surface(curves)
 
         if path.chip not in self.chip_subtract_dict:
@@ -275,7 +275,7 @@ class QGmshRenderer(QRendererAnalysis):
         lines = []
         first_tag = -1
         prev_tag = -1
-        for i,pt in points[:-1]:
+        for i,pt in enumerate(points[:-1]):
             p1 = gmsh.model.occ.addPoint(pt.x, pt.y, chip_z) if i == 0 else prev_tag
             p2 = first_tag if i == (len(points)-2) else \
                 gmsh.model.occ.addPoint(points[i+1].x, points[i+1].y, chip_z)
@@ -294,21 +294,20 @@ class QGmshRenderer(QRendererAnalysis):
             poly (Poly): Poly to render.
         """
         qc_shapely = poly.geometry
-        # FIXME (probably): check if parse units returns proper stuff
         qc_chip_z = self.parse_units_gmsh(self.design.get_chip_z(poly.chip))
-        points = Vec2DArray.make_vec2DArray(self.parse_units_gmsh(list(qc_shapely.exterior.coords)))
+        vecs = Vec2DArray.make_vec2DArray(self.parse_units_gmsh(list(qc_shapely.exterior.coords)))
 
         if is_rectangle(qc_shapely):
             x_min, y_min, x_max, y_max = qc_shapely.bounds
             dx, dy = np.abs(x_max - x_min), np.abs(y_max - y_min)
             surface = gmsh.model.occ.addRectangle(x_min, y_min, qc_chip_z, dx, dy)
         else:
-            surface = self.make_poly_surface(points, qc_chip_z)
+            surface = self.make_poly_surface(vecs.points, qc_chip_z)
 
         if len(qc_shapely.interiors) > 0:
-            int_points = Vec2DArray.make_vec2DArray(
+            int_vecs = Vec2DArray.make_vec2DArray(
                 [self.parse_units_gmsh(list(coord)) for coord in qc_shapely.interiors])
-            int_surface = self.make_poly_surface(int_points, qc_chip_z)
+            int_surface = self.make_poly_surface(int_vecs.points, qc_chip_z)
             surface = gmsh.model.occ.cut([surface], [int_surface])
 
 
