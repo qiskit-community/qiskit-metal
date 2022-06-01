@@ -157,7 +157,6 @@ def transform_arc_points(pts:list, translate:Vec2D, path_vecs:list, chip_z:float
         new_pts.append(p4)
         gmsh.model.occ.mirror(dim_tags, a=0, b=1, c=0, d=0)
 
-    print(dim_tags, angle1)
     gmsh.model.occ.rotate(dim_tags, x=0, y=0, z=0, ax=0, ay=0, az=1, angle=angle1)
     gmsh.model.occ.translate(dim_tags, translate.x, translate.y, chip_z)
     return new_pts
@@ -213,7 +212,7 @@ def render_path_curves(vecs: Vec2DArray, chip_z:float, fillet:float, width:float
         else:
             v1, v2, v3 = make_arc_pts(angle12, fillet)
             p1, p2, p4, p5 = arc_width_offset_pts(v1, v3, angle12, width, chip_z)
-            p3 = vecs_to_gmsh_points([v2], chip_z)
+            p3 = vecs_to_gmsh_points([v2], chip_z)[0]
 
             new_pts = transform_arc_points([p1, p2, p3, p4, p5], v, [pv1, pv2], chip_z)
             recent_pts += new_pts

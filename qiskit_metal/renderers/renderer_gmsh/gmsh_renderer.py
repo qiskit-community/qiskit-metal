@@ -253,7 +253,7 @@ class QGmshRenderer(QRendererAnalysis):
         """
         qc_shapely = path.geometry
         qc_width = path.width
-        qc_fillet = self.parse_units_gmsh(path.fillet) if float(path.fillet) != np.nan else 0.0
+        qc_fillet = self.parse_units_gmsh(path.fillet) if float(path.fillet) is not np.nan else 0.0
         qc_chip_z = self.parse_units_gmsh(self.design.get_chip_z(path.chip))
         vecs = Vec2DArray.make_vec2DArray(self.parse_units_gmsh(list(qc_shapely.coords)))
         lines, arcs = render_path_curves(vecs, qc_chip_z, qc_fillet, qc_width)
