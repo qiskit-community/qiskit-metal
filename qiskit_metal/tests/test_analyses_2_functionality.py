@@ -716,7 +716,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
     def test_analyses_hamiltonian_ho_wavefunction(self):
         """Test the wavefunction function in the HO_waefunction.py file."""
         x_range = np.linspace(-5, 5, 5)
-        actual = wavefunction(1.0, 1.0, 0.0, x_range)
+        actual = wavefunction(1.0, 1.0, 0, x_range)
 
         expected = [
             2.10255658e-06, 2.47888124e-02, 5.64189584e-01, 2.47888124e-02,
