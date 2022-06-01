@@ -5,14 +5,14 @@ import gmsh
 from sympy import Chi
 
 from ..renderer_base import QRendererAnalysis
-from gmsh_utils import *
+from .gmsh_utils import *
 from ...draw.basic import is_rectangle
 
 class QGmshRenderer(QRendererAnalysis):
     """Abstract base class for all Renderers intended for Analysis.
     """
 
-    def __init__(self, design: 'QDesign', initiate=False, options: Dict = None):
+    def __init__(self, design: 'QDesign', initiate=True, options: Dict = None):
         """
         Args:
             design (QDesign): The design.
@@ -21,7 +21,7 @@ class QGmshRenderer(QRendererAnalysis):
         """
         super().__init__(design=design,
                          initiate=initiate,
-                         render_options=options)
+                         options=options)
 
         self.render_everything = True
 
@@ -78,9 +78,6 @@ class QGmshRenderer(QRendererAnalysis):
                 if "chip" not in comps[qcomp].options:
                     self.chip_designation_error()
                     return []
-                # elif comps[qcomp].options.chip != 'main':
-                #    self.chip_not_main()
-                #    return []
                 chip_names.add(comps[qcomp].options.chip)
         else:  # Strict subset rendered.
             icomps = self.design._components
@@ -88,9 +85,6 @@ class QGmshRenderer(QRendererAnalysis):
                 if "chip" not in icomps[qcomp_id].options:
                     self.chip_designation_error()
                     return []
-                # elif icomps[qcomp_id].options.chip != 'main':
-                #    self.chip_not_main()
-                #    return []
                 chip_names.add(icomps[qcomp_id].options.chip)
 
         for unique_name in chip_names:
@@ -145,7 +139,7 @@ class QGmshRenderer(QRendererAnalysis):
         # self.subtract_from_ground()
         # self.add_mesh()
 
-    def render_tables(self):#, skip_junction: bool = False):
+    def render_tables(self):
         """
         Render components in design grouped by table type (path, poly, or junction).
         """
@@ -233,13 +227,15 @@ class QGmshRenderer(QRendererAnalysis):
 
         # Considering JJ will always be a rectangle
         # TODO: do we need functionality for arbitrary shape JJ?
-        v1, _ = line_width_offset_pts(vecs.points[0], vecs.path_vecs[0], qc_width, qc_chip_z, ret_pts=False)
+        v1, v2 = line_width_offset_pts(vecs.points[0], vecs.path_vecs[0], qc_width, qc_chip_z, ret_pts=False)
         v3, v4 = line_width_offset_pts(vecs.points[1], vecs.path_vecs[0], qc_width, qc_chip_z, ret_pts=False)
 
         v1_v3 = v1.dist(v3); v1_v4 = v1.dist(v4)
+        # TODO: calculate dx_dir
+        dx_dir = 1 
         qc_length = v1_v3 if v1_v3 <= v1_v4 else v1_v4
-        rect = gmsh.model.occ.addRectangle(0, 0, qc_chip_z, qc_width, qc_length)
-        gmsh.model.occ.rotate([(2, rect)], 0, 0, 0, 0, 0, 1, qc_angle)
+        rect = gmsh.model.occ.addRectangle(0, 0, qc_chip_z, dx_dir*qc_width, qc_length)
+        gmsh.model.occ.rotate([(2, rect)], 0, 0, 0, 0, 0, 1, (qc_angle - np.pi/2))
         gmsh.model.occ.translate([(2, rect)], v1.x, v1.y, 0)
 
         if junc.chip not in self.juncs_dict:
@@ -247,6 +243,8 @@ class QGmshRenderer(QRendererAnalysis):
 
         self.juncs_dict[junc.chip].add(rect)
 
+    # TODO: fix path rendering
+    # Refer to jupyter notebook for tests
     def render_element_path(self, path: pd.Series):
         """Render an element path.
 
@@ -298,8 +296,7 @@ class QGmshRenderer(QRendererAnalysis):
         qc_shapely = poly.geometry
         # FIXME (probably): check if parse units returns proper stuff
         qc_chip_z = self.parse_units_gmsh(self.design.get_chip_z(poly.chip))
-        points = Vec2DArray.make_vec2DArray(
-            [Vec2D(x, y) for x,y in self.parse_units_gmsh(list(qc_shapely.exterior.coords))])
+        points = Vec2DArray.make_vec2DArray(self.parse_units_gmsh(list(qc_shapely.exterior.coords)))
 
         if is_rectangle(qc_shapely):
             x_min, y_min, x_max, y_max = qc_shapely.bounds
@@ -310,8 +307,7 @@ class QGmshRenderer(QRendererAnalysis):
 
         if len(qc_shapely.interiors) > 0:
             int_points = Vec2DArray.make_vec2DArray(
-                [Vec2D(x, y) for x,y in [self.parse_units_gmsh(list(coord)) \
-                    for coord in qc_shapely.interiors]])
+                [self.parse_units_gmsh(list(coord)) for coord in qc_shapely.interiors])
             int_surface = self.make_poly_surface(int_points, qc_chip_z)
             surface = gmsh.model.occ.cut([surface], [int_surface])
 
