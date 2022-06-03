@@ -34,8 +34,8 @@ class NetListWindow(QMainWindow):
     Extends the `QMainWindow` class.
 
     PySide2 Signal / Slots Extensions:
-        The UI can call up to this class to execeute button clicks for instance
-        Extensiosn in qt designer on signals/slots are linked to this class
+        The UI can call up to this class to execute button clicks for instance
+        Extensions in qt designer on signals/slots are linked to this class
     """
 
     def __init__(self, gui: 'MetalGUI', parent_window: 'QMainWindowExtension'):
@@ -66,29 +66,9 @@ class NetListWindow(QMainWindow):
         """Returns the design."""
         return self.gui.design
 
-    def populate_combo_element(self):
-        """Populate the combo elements."""
-        for table_type in self.design.qnet.net_info.keys():
-            if self.ui.combo_element_type.findText(
-                    table_type) == -1:  # not in combo box, add it
-                self.ui.combo_element_type.addItem(
-                    str(
-                        QtWidgets.QApplication.translate(
-                            "NetListWindow", table_type, None, -1)))
-
-    def combo_element_type(self, new_type: str):
-        """Change to the given type.
-
-        Args:
-            new_type (str): Type to change to
-        """
-        self.logger.info(f'Changed element table type to: {new_type}')
-        self.model.set_type(new_type)
-
     def force_refresh(self):
         """Force a refresh."""
         self.model.refresh()
-        self.populate_combo_element()
 
 
 class NetListTableModel(QAbstractTableModel):
@@ -208,7 +188,7 @@ class NetListTableModel(QAbstractTableModel):
         """
         if self.table is None:
             return 0
-        return self.table.shape[1]
+        return self.table.shape[1] + 1
 
     def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
         """Set the headers to be displayed.
@@ -226,8 +206,10 @@ class NetListTableModel(QAbstractTableModel):
             return None
 
         if orientation == QtCore.Qt.Horizontal:
-            if section < self.columnCount():
+            if section < self.columnCount() - 1:
                 return str(self.table.columns[section])
+            elif section == self.columnCount() - 1:
+                return 'component_name'
 
     def flags(self, index: QModelIndex):
         """Set the item flags at the given index. Seems like we're implementing
@@ -268,4 +250,7 @@ class NetListTableModel(QAbstractTableModel):
         if role == QtCore.Qt.DisplayRole:
             row = index.row()
             column = index.column()
-            return str(self.table.iloc[row, column])
+            if column < self.columnCount() - 1:
+                return str(self.table.iloc[row, column])
+            elif column == self.columnCount() - 1:
+                return self.gui.design._components[self.table.iloc[row, 1]].name

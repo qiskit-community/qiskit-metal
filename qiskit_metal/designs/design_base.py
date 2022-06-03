@@ -320,7 +320,7 @@ class QDesign():
         """
         # pylint: disable=protected-access
         df_net_info = self._qnet._net_info
-        for (_, _, _, comp_id, pin_name) in df_net_info.itertuples():
+        for (_, _, comp_id, pin_name) in df_net_info.itertuples():
             self._components[comp_id].pins[pin_name].net_id = 0
 
         # remove rows, but save column names
@@ -347,10 +347,8 @@ class QDesign():
         Note: If not added to netlist, the net_id will be 0 (zero).
         """
         net_id = 0
-        comp1_name = self._components[comp1_id].name
-        comp2_name = self._components[comp2_id].name
-        net_id = self._qnet.add_pins_to_table(comp1_name, comp1_id, pin1_name,
-                                              comp2_name, comp2_id, pin2_name)
+        net_id = self._qnet.add_pins_to_table(comp1_id, pin1_name, comp2_id,
+                                              pin2_name)
         if net_id:
             # update the components to hold net_id
             self._components[comp1_id].pins[pin1_name].net_id = net_id

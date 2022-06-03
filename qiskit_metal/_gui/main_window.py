@@ -387,6 +387,7 @@ class MetalGUI(QMainWindowBaseHandler):
 
         self.plot_win.set_design(design)
         self.elements_win.force_refresh()
+        self.net_list_win.force_refresh()
 
         if self.main_window.gds_gui:
             self.main_window.gds_gui.set_design(design)
