@@ -169,7 +169,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1025</width>
+     <width>1310</width>
      <height>24</height>
     </rect>
    </property>
@@ -592,8 +592,8 @@
   <widget class="QDockWidget" name="dockComponent">
    <property name="minimumSize">
     <size>
-     <width>300</width>
-     <height>73</height>
+     <width>62</width>
+     <height>38</height>
     </size>
    </property>
    <property name="features">
@@ -629,7 +629,7 @@
    <property name="minimumSize">
     <size>
      <width>79</width>
-     <height>103</height>
+     <height>101</height>
     </size>
    </property>
    <property name="windowIcon">
