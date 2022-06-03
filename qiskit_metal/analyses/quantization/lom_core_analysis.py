@@ -63,7 +63,7 @@ class CouplingType:
     INDUCTIVE = 'INDUCTIVE'
 
 
-def analyze_loaded_tl(fr, CL, vp, Z0, shorted=False):
+def analyze_loaded_tl(fr, vp, Z0, cap_loading: Dict[str, float], shorted=False):
     """ Calculate charge operator zero point fluctuation, Q_zpf at the point of the loading
     capacitor.
     https://arxiv.org/pdf/2103.10344.pdf
@@ -71,44 +71,101 @@ def analyze_loaded_tl(fr, CL, vp, Z0, shorted=False):
 
     Args:
         fr (float): TL resonator frequency in MHz
-        CL (float): loading capacitance in fF
         vp (float): phase velocity in m/s
         Z0 (float): characteristic impedance of the TL in ohm
+        cap_loading (dict): a dictionary of the loading capacitors; the keys
+            are the names of the nodes; the values the capacitances in fF
         shorted (boolean): default false; true if the other end of the TL is shorted false otherwise
 
     Returns:
         [type]: [description]
     """
+    # An arbitrarily very large positive number in place of positive infinity.
+    # Almost exclusively function as an infinity flag instead of actually
+    # particupating in algebraic calculations, except for the boundary condition
+    # of a shorted end. In that case, in the calculation of the capacitive energy
+    # participation, the shorted end term is proportional to ,
+    # (C_shorted * cos(pi/2)) ^ 2, where C_shorted is infinity. Here, one cannot
+    # use np.infty for C_shorted because np.infty * np.cos(np.pi/2) = np.infty in python
+    # instead of zero as one would expect.
+    #
+    # Ultimately, the energy particpation of the shorted end doesn't matter as
+    # long as it's close to zero and not infinity since it's energy participation
+    # of the other (loaded with finite capacitance) end that matters.
+    _POS_INFTY = 1e30
     # Convert to SI
     wr = fr * MHzRad
-    CL = CL * FEMTO
+    if cap_loading == {}:
+        raise ValueError('At least one loading capacitor needs to be defined. ')
+    elif len(cap_loading) == 1:
+        cap_loading['_cl'] = 0 if not shorted else _POS_INFTY
+
+    w_loading = {}
+    for node, val in cap_loading.items():
+        cap_loading[node] = val * FEMTO
+        if val == _POS_INFTY:
+            w_loading[node] = 0
+        else:
+            w_loading[node] = 1 / (Z0 *
+                                   cap_loading[node]) if val else _POS_INFTY
+
+    # assign z = 0 to one of the nodes and z = L to the other; switching
+    # the assignment would not change the result
+    z = {}
+    nodes = set(cap_loading.keys())
+    for node, val in cap_loading.items():
+        z['0'] = node
+        if val != 0 and val < _POS_INFTY:
+            break
+    z['L'] = list(nodes - {z['0']})[0]
+
     c = 1 / (Z0 * vp)  # cap/unit length
 
-    wL = 1 / (Z0 * CL)
-    phi = np.arctan(wr / wL)
+    phi = np.arctan(wr / w_loading[z['0']])
     k = wr / vp
     utl = lambda z: np.cos(k * z + phi)
     utl2 = lambda z: utl(z)**2
-    b = int(shorted)  # 1 for short on RHS
     m = 1  # mode number
 
-    root_eq = lambda L: wr * L / vp + phi - m * np.pi - b * np.pi / 2  # = 0
+    w_loading_vals = list(w_loading.values())
+
+    def _arctan_arg(w_L, w_R):
+        """Need separate handling for limiting cases
+        from different boundary conditions
+        """
+        # left boundary of the TL is open, i.e., left loading capacitor is 0
+        if w_L == _POS_INFTY:
+            return -wr / w_R
+        # right boundary of the TL is open, i.e., right loading capacitor is 0
+        elif w_R == _POS_INFTY:
+            return -wr / w_L
+        else:
+            return wr * (w_L + w_R) / (wr**2 - w_L * w_R)
+
+    root_eq = lambda L: np.arctan(
+        _arctan_arg(w_loading_vals[0], w_loading_vals[1])
+    ) + m * np.pi - k * L  # = 0
     sol = optimize.root(root_eq, [0.007], jac=False,
                         method='hybr')  # in meters SI
     Ltl = sol.x[0]
 
-    E_cap = 0.5 * CL * utl(0)**2 + 0.5 * c * integrate.quad(utl2, 0, Ltl)[0]
-    pCL = 0.5 * CL * utl(0)**2 / E_cap
-    Q_zpf = np.sqrt(hbar * wr / 2 * pCL * CL)
+    E_cap = (0.5 * c * integrate.quad(utl2, 0, Ltl)[0] +
+             0.5 * cap_loading[z['0']] * utl(0)**2 +
+             0.5 * cap_loading[z['L']] * utl(Ltl)**2)
 
-    # using the uncertainty relationship that Q_zpf * Phi_zpf = hbar / 2
-    Phi_zpf = 0.5 * hbar / Q_zpf
+    pCL = {}
+    Q_zpf = {}
+    Phi_zpf = {}
 
-    if 0:  # analytic
-        innerprod = CL / c * utl(0)**2 + integrate.quad(utl2, 0, Ltl)[0]
-        Am = np.sqrt(Ltl / innerprod)
-        utl = lambda z: Am * np.cos(k * z + phi)
-        eta = Ltl
+    for node, val in cap_loading.items():
+        if node == z['0']:
+            pCL[node] = 0.5 * val * utl(0)**2 / E_cap
+        else:
+            pCL[node] = 0.5 * val * utl(Ltl)**2 / E_cap
+        Q_zpf[node] = np.sqrt(hbar * wr / 2 * pCL[node] * val)
+
+        # using the uncertainty relationship that Q_zpf * Phi_zpf = hbar / 2
+        Phi_zpf[node] = 0.5 * hbar / Q_zpf[node]
 
     return Q_zpf, Phi_zpf, phi, Ltl
 
@@ -587,7 +644,7 @@ class CircuitGraph:
         dim = self.L_inv.shape[0]
         eye = np.eye(dim)
         return eye[:, np.where(S_remove.T.sum(
-            axis=0) == 0)[0]] if S_remove else eye
+            axis=0) == 0)[0]] if S_remove is not None else eye
 
     def get_nodes_keep(self):
         s_keep = self.S_keep
@@ -597,7 +654,7 @@ class CircuitGraph:
 
     def get_nodes_remove(self):
         s_remove = self.S_remove
-        if s_remove:
+        if s_remove is not None:
             dim = s_remove.shape[0]
             remove_idx = s_remove.T.dot(
                 np.arange(dim)[:, np.newaxis])[:, 0].astype(int)
@@ -626,7 +683,7 @@ class CircuitGraph:
         s_r = self.S_remove
         c = self.C
         _inner = c.dot(s_r).dot(np.linalg.inv(s_r.T.dot(c.dot(s_r)))).dot(
-            s_r.T.dot(c)) if s_r else 0
+            s_r.T.dot(c)) if s_r is not None else 0
         return LabeledNdarray(
             s_k.T.dot(c - _inner).dot(s_k), self.get_nodes_keep())
 
@@ -671,8 +728,9 @@ def _find_subsystem_mat_index(cg: CircuitGraph, subsystem, single_node=True):
         raise ValueError(
             f'One and ONLY one node in the reduced node-junction basis should map to the {subsystem.sys_type} subsystem.'
         )
-    elif subsystem_idx.size == 0:
-        raise ValueError('Subsystem not found in the circuit\'s nodes.')
+    elif subsystem_idx.size != node_idx.size:
+        raise ValueError(
+            'One or more subsystem nodes not found in the circuit\'s nodes.')
     return subsystem_idx
 
 
@@ -728,7 +786,7 @@ class Subsystem:
         self.nodes = nodes
         self.q_opts = q_opts
         self._quantum_system = None
-        self._h_params = {}
+        self._h_params = defaultdict(dict)
         self.system_params = {}
 
     @property
@@ -861,7 +919,7 @@ class TransmonBuilder(QuantumBuilder):
                                                   subsystem,
                                                   single_node=True)
         ss_idx = subsystem_idx[0]
-        subsystem.system_params['subsystem_idx'] = ss_idx
+        subsystem.system_params['subsystem_idx'] = subsystem_idx
 
         # EJ and EC are in MHz
         EJ = Convert.Ej_from_Lj(1 / l_inv_k[ss_idx, ss_idx])
@@ -873,8 +931,9 @@ class TransmonBuilder(QuantumBuilder):
         transmon = scq.Transmon(**builder_options.view_as(scq.Transmon))
 
         subsystem._quantum_system = transmon
-        subsystem._h_params = dict(EJ=EJ, EC=EC, Q_zpf=Q_zpf)
-        subsystem._h_params['default_charge_op'] = Operator(
+        node = subsystem.nodes[0]
+        subsystem._h_params[node] = dict(EJ=EJ, EC=EC, Q_zpf=Q_zpf)
+        subsystem._h_params[node]['default_charge_op'] = Operator(
             transmon.n_operator(), False)
 
 
@@ -915,7 +974,7 @@ class FluxoniumBuilder(QuantumBuilder):
                                                   subsystem,
                                                   single_node=True)
         ss_idx = subsystem_idx[0]
-        subsystem.system_params['subsystem_idx'] = ss_idx
+        subsystem.system_params['subsystem_idx'] = subsystem_idx
 
         # EJ and EC are in MHz
         EC = Convert.Ec_from_Cs(1 / c_inv_k[ss_idx, ss_idx])
@@ -925,12 +984,14 @@ class FluxoniumBuilder(QuantumBuilder):
         fluxonium = scq.Fluxonium(**builder_options.view_as(scq.Fluxonium))
 
         subsystem._quantum_system = fluxonium
-        subsystem._h_params = dict(EJ=builder_options.EJ,
-                                   EC=builder_options.EC,
-                                   EL=builder_options.EL,
-                                   flux=builder_options.flux,
-                                   Q_zpf=Q_zpf)
-        subsystem._h_params['default_charge_op'] = Operator(
+
+        node = subsystem.nodes[0]
+        subsystem._h_params[node] = dict(EJ=builder_options.EJ,
+                                         EC=builder_options.EC,
+                                         EL=builder_options.EL,
+                                         flux=builder_options.flux,
+                                         Q_zpf=Q_zpf)
+        subsystem._h_params[node]['default_charge_op'] = Operator(
             fluxonium.n_operator(), False)
 
 
@@ -963,7 +1024,8 @@ class TLResonatorBuilder(QuantumBuilder):
             'substrate_thickness': 750 * 1e-6,
             'film_thickness': 200 * 1e-9
         },
-        'truncated_dim': 3
+        'truncated_dim': 3,
+        'other_end_shorted': False
     }
 
     # pylint: disable=protected-access
@@ -976,13 +1038,6 @@ class TLResonatorBuilder(QuantumBuilder):
         """
         cg = self.cg
         c_inv_k = cg.C_inv_k
-
-        subsystem_idx = _find_subsystem_mat_index(cg,
-                                                  subsystem,
-                                                  single_node=True)
-        ss_idx = subsystem_idx[0]
-        subsystem.system_params['subsystem_idx'] = ss_idx
-        CL = 1 / c_inv_k[ss_idx, ss_idx]
 
         builder_options = self.builder_options
         f_res = builder_options.f_res
@@ -998,15 +1053,40 @@ class TLResonatorBuilder(QuantumBuilder):
         else:
             vp = float(builder_options.vp)
 
+        subsystem_idx = _find_subsystem_mat_index(cg,
+                                                  subsystem,
+                                                  single_node=False)
+
+        subsystem.system_params['subsystem_idx'] = subsystem_idx
+
+        if len(subsystem_idx) > 2:
+            raise ValueError(
+                'Transmission line resonator currently supports at most two nodes.'
+            )
+        elif len(subsystem_idx) == 2 and builder_options.other_end_shorted:
+            raise ValueError(
+                'Transmission line resonator should have only one node \
+                specified if one of its boundaries is shorted to ground.')
+
+        loading_capacitor = {}
+        for ii, node in enumerate(subsystem.nodes):
+            loading_capacitor[node] = 1 / c_inv_k[subsystem_idx[ii],
+                                                  subsystem_idx[ii]]
+
         resonator = scq.Oscillator(**builder_options.view_as(scq.Oscillator))
         subsystem._quantum_system = resonator
 
-        Q_zpf, _, _, _, = analyze_loaded_tl(f_res, CL, vp, Z0)
-        subsystem._h_params['Q_zpf'] = Q_zpf
-        subsystem._h_params['default_charge_op'] = Operator(
-            1j *
-            (resonator.creation_operator() - resonator.annihilation_operator()),
-            False)
+        Q_zpf, *_ = analyze_loaded_tl(f_res,
+                                      vp,
+                                      Z0,
+                                      cap_loading=loading_capacitor,
+                                      shorted=builder_options.other_end_shorted)
+
+        for node in subsystem.nodes:
+            subsystem._h_params[node]['Q_zpf'] = Q_zpf[node]
+            subsystem._h_params[node]['default_charge_op'] = Operator(
+                1j * (resonator.creation_operator() -
+                      resonator.annihilation_operator()), False)
 
 
 class LumpedResonatorBuilder(QuantumBuilder):
@@ -1047,7 +1127,7 @@ class LumpedResonatorBuilder(QuantumBuilder):
                                                   subsystem,
                                                   single_node=True)
         ss_idx = subsystem_idx[0]
-        subsystem.system_params['subsystem_idx'] = ss_idx
+        subsystem.system_params['subsystem_idx'] = subsystem_idx
 
         builder_options = self.builder_options
 
@@ -1067,8 +1147,9 @@ class LumpedResonatorBuilder(QuantumBuilder):
         resonator = scq.Oscillator(**builder_options.view_as(scq.Oscillator))
         subsystem._quantum_system = resonator
 
-        subsystem._h_params['Q_zpf'] = Q_zpf
-        subsystem._h_params['default_charge_op'] = Operator(
+        node = subsystem.nodes[0]
+        subsystem._h_params[node]['Q_zpf'] = Q_zpf
+        subsystem._h_params[node]['default_charge_op'] = Operator(
             1j *
             (resonator.creation_operator() - resonator.annihilation_operator()),
             False)
@@ -1171,7 +1252,9 @@ class CompositeSystem:
                 if n not in _jj_to_node_map:
                     _sys_nodes.append(n)
                 else:
-                    _sys_nodes.extend(list(_jj_to_node_map[n]))
+                    _sys_nodes.extend(
+                        list(filter(lambda x: x != grd_node,
+                                    _jj_to_node_map[n])))
         if len(set(_sys_nodes)) != len(_sys_nodes):
             raise ValueError('Subsystems should not have overlapping nodes.')
         _non_sys_nodes = [n for n in _cell_nodes if n not in _sys_nodes]
@@ -1207,6 +1290,24 @@ class CompositeSystem:
     def subsystems(self):
         return self._subsystems
 
+    def node_index(self, node: str):
+        """Obtain the index of a given node in the composite system's reduced
+        capacitance matrix
+
+        Args:
+            node (str): name of the node
+        """
+        cg = self.circuitGraph()
+        nodes_keep = cg.get_nodes_keep()
+        reduced_mat_idx = pd.Index(nodes_keep)
+
+        node_idx = reduced_mat_idx.get_indexer([node])
+        subsystem_idx = node_idx[node_idx >= 0]
+
+        if subsystem_idx.size == 0:
+            raise ValueError('Subsystem not found in the circuit\'s nodes.')
+        return subsystem_idx[0]
+
     def create_hilbertspace(self) -> scq.HilbertSpace:
         """ create the composite hilbertspace including all the subsystems. Interaction
             NOT included
@@ -1234,29 +1335,39 @@ class CompositeSystem:
         """compute g matrices from reduced C inverse matrix C^{-1}_{k} and reduced L inverse matrix L^{-1}_{k}
         and zero point flucuations (Q_zpf, Phi_zpf)
 
+        Note that the computed g's are in MHz
+
         Note: the resulting matrix is in the basis of nodes_keep, which may not be in the same order of
         subsystems
         """
         cg = self.circuitGraph()
+        nodes = cg.get_nodes_keep()
+
         if coupling_type == CouplingType.CAPACITIVE:
             c_inv_k = cg.C_inv_k
             g = np.zeros_like(c_inv_k)
             for ii in range(self.num_subsystems):
                 sub1 = self._subsystems[ii]
-                idx1 = sub1.system_params['subsystem_idx']
-                for jj in range(ii + 1, self.num_subsystems):
+                sub1_nodes = sub1.nodes
+                for jj in range(ii, self.num_subsystems):
                     sub2 = self._subsystems[jj]
-                    idx2 = sub2.system_params['subsystem_idx']
-                    c_i = c_inv_k[idx1, idx2]
-                    if c_i == 0:
-                        continue
-                    Q_zpf_1 = sub1.h_params['Q_zpf']
-                    Q_zpf_2 = sub2.h_params['Q_zpf']
-                    g[idx1, idx2] = c_i * Q_zpf_1 * Q_zpf_2 * \
-                                    ONE_OVER_FEMTO / hbar / MHzRad
-                    g[idx2, idx1] = g[idx1, idx2]
+                    sub2_nodes = sub2.nodes
+                    for node1 in sub1_nodes:
+                        for node2 in sub2_nodes:
+                            if node1 == node2:
+                                continue
+                            idx1 = self.node_index(node1)
+                            idx2 = self.node_index(node2)
+                            c_i = c_inv_k[idx1, idx2]
+                            if c_i == 0:
+                                continue
+                            Q_zpf_1 = sub1.h_params[node1]['Q_zpf']
+                            Q_zpf_2 = sub2.h_params[node2]['Q_zpf']
+                            g[idx1, idx2] = c_i * Q_zpf_1 * Q_zpf_2 * \
+                                            ONE_OVER_FEMTO / hbar / MHzRad
+                            g[idx2, idx1] = g[idx1, idx2]
 
-            return LabeledNdarray(g, self.names)
+            return LabeledNdarray(g, nodes)
         else:
             raise NotImplementedError
 
@@ -1292,28 +1403,38 @@ class CompositeSystem:
 
         for ii in range(self.num_subsystems):
             sub1 = self._subsystems[ii]
-            idx1 = sub1.system_params['subsystem_idx']
-            for jj in range(ii + 1, self.num_subsystems):
+            sub1_nodes = sub1.nodes
+            for jj in range(ii, self.num_subsystems):
                 sub2 = self._subsystems[jj]
-                idx2 = sub2.system_params['subsystem_idx']
-                g = gs[idx1, idx2]
-                if g == 0:
-                    continue
-                q1 = sub1.quantum_system
-                q2 = sub2.quantum_system
+                sub2_nodes = sub2.nodes
+                for node1 in sub1_nodes:
+                    for node2 in sub2_nodes:
+                        if node1 == node2:
+                            continue
 
-                if l_inv_k[idx1, idx2] != 0:
-                    raise NotImplementedError(
-                        'Interaction term for inductive coupling not yet implemented.'
-                    )
-                if c_inv_k[idx1, idx2] != 0:
-                    q1_op, add_hc1 = sub1.h_params['default_charge_op']
-                    q2_op, add_hc2 = sub2.h_params['default_charge_op']
+                        idx1 = self.node_index(node1)
+                        idx2 = self.node_index(node2)
 
-                    h.add_interaction(g=g * gscale,
-                                      op1=(q1_op, q1),
-                                      op2=(q2_op, q2),
-                                      add_hc=add_hc1 or add_hc2)
+                        g = gs[idx1, idx2]
+                        if g == 0:
+                            continue
+                        q1 = sub1.quantum_system
+                        q2 = sub2.quantum_system
+
+                        if l_inv_k[idx1, idx2] != 0:
+                            raise NotImplementedError(
+                                'Interaction term for inductive coupling not yet implemented.'
+                            )
+                        if c_inv_k[idx1, idx2] != 0:
+                            q1_op, add_hc1 = sub1.h_params[node1][
+                                'default_charge_op']
+                            q2_op, add_hc2 = sub2.h_params[node2][
+                                'default_charge_op']
+
+                            h.add_interaction(g=g * gscale,
+                                              op1=(q1_op, q1),
+                                              op2=(q2_op, q2),
+                                              add_hc=add_hc1 or add_hc2)
         return h
 
     def hamiltonian_results(self,
