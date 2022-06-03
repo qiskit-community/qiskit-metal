@@ -227,7 +227,7 @@ class QHFSSRenderer(QAnsysRenderer):
                                                        y_max - y_min, 0,
                                                        **dict(transparency=0.0))
             axis = 'x' if abs(x1 - x0) > abs(y1 - y0) else 'y'
-            if self.solution_type != 'eigenmode':
+            if self.pinfo.design.solution_type != 'Eigenmode':
                 poly_ansys.make_lumped_port(axis,
                                             z0=str(impedance) + 'ohm',
                                             name=f'LumpPort_{qcomp}_{pin}')

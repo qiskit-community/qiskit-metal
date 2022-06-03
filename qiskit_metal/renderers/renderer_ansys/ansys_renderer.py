@@ -751,9 +751,6 @@ class QAnsysRenderer(QRendererAnalysis):
         else:
             self.new_ansys_design(design_name, solution_type)
 
-        # Save the solution type in order to choose between Lumped Port and RLC port for simulations
-        self.solution_type = solution_type
-
         self.set_variables(vars_to_initialize)
         self.render_design(**design_selection)
         return self.pinfo.design.name
