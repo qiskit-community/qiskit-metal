@@ -11,8 +11,10 @@ from ... import Dict
 class QGmshRenderer(QRendererAnalysis):
     """Extends QRendererAnalysis class to export designs to Gmsh using the Gmsh python API.
 
-    Default Options:
     TODO: complete the list of default options
+    Default Options:
+        * x_buffer_width_mm -- Buffer between max/min x and edge of ground plane, in mm
+        * y_buffer_width_mm -- Buffer between max/min y and edge of ground plane, in mm
     """
 
     default_options = Dict(
@@ -69,6 +71,7 @@ class QGmshRenderer(QRendererAnalysis):
         return True
 
     def _close_renderer(self):
+        gmsh.clear()
         gmsh.finalize()
         return True
 
@@ -146,14 +149,12 @@ class QGmshRenderer(QRendererAnalysis):
 
         # TODO: sequence of events to perform
         self.render_tables()
-
-        # TODO: fill in stuff to add_endcaps
-        # self.add_endcaps(open_pins)
+        self.add_endcaps(open_pins)
 
         self.render_chips(box_plus_buffer=box_plus_buffer)
         self.subtract_from_ground()
 
-        # self.generate_physical_groups() # add physical groups
+        # self.assign_physical_groups() # add physical groups
         self.isometric_projection() # set isometric projection
 
         # Finalize the renderer
@@ -216,6 +217,11 @@ class QGmshRenderer(QRendererAnalysis):
         _units = {"cm": 10**3, "mm": 1, "um": 10**-3, "nm": 10**-6}
         if isinstance(_input, (int, float)):
             return _input
+        elif isinstance(_input, (np.ndarray)):
+            output = []
+            for i in _input:
+                output += [self.parse_units_gmsh(i)]
+            return np.array(output)
         elif isinstance(_input, (list, tuple)):
             output = []
             for i in _input:
@@ -235,7 +241,7 @@ class QGmshRenderer(QRendererAnalysis):
                 value = float(_input)
             return value
         else:
-            self.logger.error(f"RENDERER ERROR: Expected int, str, list, or tuple. Got: {type(_input)}.")
+            self.logger.error(f"RENDERER ERROR: Expected int, str, list, np.ndarray, or tuple. Got: {type(_input)}.")
 
     def render_element_junction(self, junc: pd.Series):
         """Render an element junction.
@@ -373,6 +379,41 @@ class QGmshRenderer(QRendererAnalysis):
                 max_y_main = max(max_y, max_y_main)
         return min_x_main, min_y_main, max_x_main, max_y_main
 
+    def add_endcaps(self, open_pins: Union[list, None] = None):
+        """Create endcaps (rectangular cutouts) for all pins in the list
+        open_pins and add them to chip_subtract_dict. Each element in open_pins
+        takes on the form (component_name, pin_name) and corresponds to a
+        single pin.
+
+        Args:
+            open_pins (Union[list, None], optional): List of tuples of pins that are open. Defaults to None.
+        """
+        open_pins = open_pins if open_pins is not None else []
+
+        for comp, pin in open_pins:
+            pin_dict = self.design.components[comp].pins[pin]
+            width, gap = self.parse_units_gmsh([pin_dict["width"], pin_dict["gap"]])
+            mid, normal = self.parse_units_gmsh(pin_dict["middle"]), pin_dict["normal"]
+            chip_name = self.design.components[comp].options.chip
+            qc_chip_z = self.parse_units_gmsh(self.design.get_chip_z(chip_name))
+            rect_mid = mid + normal * gap / 2
+            rect_vec = Vec3D(rect_mid[0], rect_mid[1], qc_chip_z)
+            # Assumption: pins only point in x or y directions
+            # If this assumption is not satisfied, draw_rect_center no longer works -> must use draw_polyline
+            if abs(normal[0]) > abs(normal[1]):
+                dx = gap; dy = width + 2*gap
+                rect_x = rect_vec.x - dx/2
+                rect_y = rect_vec.y - dy/2
+                rect_z = rect_vec.z # TODO: For 3D this will change
+            else:
+                dy = gap; dx = width + 2*gap
+                rect_x = rect_vec.x - dx/2
+                rect_y = rect_vec.y - dy/2
+                rect_z = rect_vec.z # TODO: For 3D this will change
+
+            endcap = gmsh.model.occ.addRectangle(x=rect_x, y=rect_y, z=rect_z, dx=dx, dy=dy)
+            self.chip_subtract_dict[chip_name].add(endcap)
+
     def render_chips(self,
                      chips: Union[str, list[str]] = [],
                      draw_sample_holder: bool = True,
@@ -497,14 +538,8 @@ class QGmshRenderer(QRendererAnalysis):
     def launch_gui(self):
         gmsh.fltk.run()
 
-    def render_component(self, component):
-        """Abstract method. Must be implemented by the subclass.
-        Render the specified component.
-
-        Args:
-            component (QComponent): Component to render.
-        """
-        pass
+    def write(self, path: str):
+        gmsh.write(path)
 
     def save_screenshot(self, path: str = None, show: bool = True):
         """Save the screenshot.
@@ -516,4 +551,7 @@ class QGmshRenderer(QRendererAnalysis):
         Returns:
             pathlib.WindowsPath: path to png formatted screenshot. 
         """
+        pass
+
+    def render_component(self, component):
         pass

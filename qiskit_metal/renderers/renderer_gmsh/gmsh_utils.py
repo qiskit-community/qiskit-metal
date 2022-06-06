@@ -293,8 +293,6 @@ def render_path_curves(vecs: Vec3DArray, chip_z:float, fillet:float, width:float
             p2 = gmsh.model.occ.addPoint(offset_vec2.x, offset_vec2.y, chip_z)
             recent_pts += [p2, p1] if right_turn > 0 else [p1, p2]
 
-
-
         recent_pts, curves1, curves2 = draw_curves(recent_pts, curves1, curves2)
 
     _, curves1, curves2 = draw_curves(recent_pts, curves1, curves2)
