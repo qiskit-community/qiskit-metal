@@ -140,25 +140,28 @@ class QGmshRenderer(QRendererAnalysis):
                 "Unable to proceed with rendering. Please check selection.")
             return
 
-        self.chip_subtract_dict = defaultdict(set)
+        # dict: chip -- geom_tag
         self.gnd_plane_dict = defaultdict(int)
-        self.substrate_dict = defaultdict(set)
+        self.substrate_dict = defaultdict(int)
+
+        # dict: chip -- set(geom_tag)
+        self.chip_subtract_dict = defaultdict(set)
         self.polys_dict = defaultdict(set)
         self.paths_dict = defaultdict(set)
         self.juncs_dict = defaultdict(set)
 
         # TODO: sequence of events to perform
         self.render_tables()
-        self.add_endcaps(open_pins)
+        self.add_endcaps(open_pins=open_pins)
 
         self.render_chips(box_plus_buffer=box_plus_buffer)
         self.subtract_from_ground()
 
-        # self.assign_physical_groups() # add physical groups
-        self.isometric_projection() # set isometric projection
-
         # Finalize the renderer
         gmsh.model.occ.synchronize()
+
+        self.assign_physical_groups() # add physical groups
+        self.isometric_projection() # set isometric projection
 
         # self.add_mesh() # generate mesh
 
@@ -516,10 +519,10 @@ class QGmshRenderer(QRendererAnalysis):
             self.gnd_plane_dict[chip_name] = -1
 
         if chip_name not in self.substrate_dict:
-            self.substrate_dict[chip_name] = set()
+            self.substrate_dict[chip_name] = -1
 
         self.gnd_plane_dict[chip_name] = gnd_plane
-        self.substrate_dict[chip_name].add(substrate)
+        self.substrate_dict[chip_name] = substrate
 
     def subtract_from_ground(self):
         for chip_name, shapes in self.chip_subtract_dict.items():
@@ -527,7 +530,24 @@ class QGmshRenderer(QRendererAnalysis):
             shape_dim_tags = [(dim, s) for s in shapes]
             gnd_plane_dim_tag = (2, self.gnd_plane_dict[chip_name])
             subtract_gnd = gmsh.model.occ.cut([gnd_plane_dim_tag], shape_dim_tags)
-            self.gnd_plane_dict[chip_name] = subtract_gnd
+            self.gnd_plane_dict[chip_name] = subtract_gnd[0][0][1]
+    
+    def assign_physical_groups(self):
+        chip_names = list(self.design.chips.keys())
+        for chip in chip_names:
+            # TODO: extend metal for dim=3
+            metal_tag_list = self.paths_dict[chip] | self.polys_dict[chip] | self.juncs_dict[chip]
+            chip_metal = gmsh.model.addPhysicalGroup(2, list(metal_tag_list))
+            gmsh.model.setPhysicalName(2, chip_metal, f"{chip}_metal")
+
+            gnd_tag = gmsh.model.addPhysicalGroup(2, [self.gnd_plane_dict[chip]])
+            gmsh.model.setPhysicalName(2, gnd_tag, f"{chip}_ground_plane")
+
+            sub_tag = gmsh.model.addPhysicalGroup(3, [self.substrate_dict[chip]])
+            gmsh.model.setPhysicalName(3, sub_tag, f"{chip}_dielectric_substrate")
+        
+        vacuum = gmsh.model.addPhysicalGroup(3, [self.vacuum_box])
+        gmsh.model.setPhysicalName(3, vacuum, "vacuum_box")
 
     def isometric_projection(self):
         gmsh.option.setNumber("General.Trackball", 0)

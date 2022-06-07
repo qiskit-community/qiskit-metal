@@ -285,7 +285,7 @@ def render_path_curves(vecs: Vec3DArray, chip_z:float, fillet:float, width:float
             half_angle = angle12 / 2
             right_turn = -np.sign(pv1.cross(pv2).z)
             turn_pt_vec = vecs.points[i]
-            pv1_scaled = pv1.normalize().scale(width/2)
+            pv1_scaled = pv1.normalize().scale(width/(2*np.cos(np.pi/2 - half_angle)))
             pv1_scaled.translate(turn_pt_vec)
             offset_vec1 = pv1_scaled.rotate(turn_pt_vec, az=True, angle=right_turn*half_angle, ret_new_obj=True)
             offset_vec2 = pv1_scaled.rotate(turn_pt_vec, az=True, angle=-right_turn*(np.pi - half_angle), ret_new_obj=True)
