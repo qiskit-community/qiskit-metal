@@ -245,7 +245,7 @@ def draw_curves(recent_pts:list, curves1:list, curves2:list):
 
     return rec_pts, curves1, curves2
 
-def render_path_curves(vecs: Vec3DArray, chip_z:float, fillet:float, width:float, straight_line_tol=1e-9):
+def render_path_curves(vecs: Vec3DArray, chip_z:float, fillet:float, width:float, straight_line_tol:float=1e-9):
     recent_pts = [] # To store recent Gmsh points
     curves1, curves2 = [], [] # To store lines and arcs for each visual side
 
