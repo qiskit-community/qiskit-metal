@@ -1,12 +1,31 @@
+import re
 import pandas as pd
 from typing import *
 from collections import defaultdict
 import gmsh
 
 from ..renderer_base import QRendererAnalysis
+from ...designs.design_base import QDesign
 from .gmsh_utils import *
 from ...draw.basic import is_rectangle
 from ... import Dict
+
+def get_clean_name(name: str) -> str:
+    """Create a valid variable name from the given one by removing having it
+    begin with a letter or underscore followed by an unlimited string of
+    letters, numbers, and underscores.
+
+    Args:
+        name (str): Initial, possibly unusable, string to be modified.
+
+    Returns:
+        str: Variable name consistent with Python naming conventions.
+    """
+    # Remove invalid characters
+    name = re.sub("[^0-9a-zA-Z_]", "", name)
+    # Remove leading characters until we find a letter or underscore
+    name = re.sub("^[^a-zA-Z_]+", "", name)
+    return name
 
 class QGmshRenderer(QRendererAnalysis):
     """Extends QRendererAnalysis class to export designs to Gmsh using the Gmsh python API.
@@ -20,15 +39,23 @@ class QGmshRenderer(QRendererAnalysis):
     default_options = Dict(
         x_buffer_width_mm = 0.2,  # Buffer between max/min x and edge of ground plane, in mm
         y_buffer_width_mm = 0.2,  # Buffer between max/min y and edge of ground plane, in mm
-        max_mesh_size = "100um",
-        min_mesh_size = "3um",
-        mesh_smoothing = 10,
-        mesh_size_from_curvature = 90,
-        mesh_algorithm_3d = 10,
-        num_threads = 8,
+        mesh = Dict(
+            max_size = "100um",
+            min_size = "3um",
+            smoothing = 10,
+            nodes_per_2pi_curvature = 90,
+            algorithm_3d = 10,
+            num_threads = 8,
+            export_dir = "."
+        ),
+        colors = Dict(
+            metal = (84, 140, 168, 255),
+            jj = (84, 140, 168, 150),
+            sub = (180, 180, 180, 255),
+        )
     )
 
-    def __init__(self, design: 'QDesign', initiate=True, options: Dict = None):
+    def __init__(self, design: QDesign, initiate=True, options: Dict = None):
         """
         Args:
             design (QDesign): The design.
@@ -137,7 +164,8 @@ class QGmshRenderer(QRendererAnalysis):
         selection: Union[list, None] = None,
         open_pins: Union[list, None] = None,
         box_plus_buffer: bool = True,
-        mesh_geoms: bool = True
+        mesh_geoms: bool = True,
+        skip_junction: bool = False,
         ):
 
         self.qcomp_ids, self.case = self.get_unique_component_ids(selection)
@@ -151,32 +179,32 @@ class QGmshRenderer(QRendererAnalysis):
         self.gnd_plane_dict = defaultdict(int)
         self.substrate_dict = defaultdict(int)
 
-        # dict: chip -- set(geom_tag)
+        # dict: chip -- dict(geom_name: geom_tag)
         self.chip_subtract_dict = defaultdict(set)
-        self.polys_dict = defaultdict(set)
-        self.paths_dict = defaultdict(set)
-        self.juncs_dict = defaultdict(set)
+        self.polys_dict = defaultdict(dict)
+        self.paths_dict = defaultdict(dict)
+        self.juncs_dict = defaultdict(dict)
 
         # TODO: sequence of events to perform
-        self.render_tables()
+        self.render_tables(skip_junction=skip_junction)
         self.add_endcaps(open_pins=open_pins)
 
         self.render_chips(box_plus_buffer=box_plus_buffer)
-        self.subtract_from_ground()
 
+        gmsh.model.occ.synchronize()
+
+        self.subtract_from_ground()
         self.fragment_interfaces()
 
-        # Finalize the renderer
         gmsh.model.occ.synchronize()
 
         self.assign_physical_groups() # add physical groups
-        self.isometric_projection() # set isometric projection
 
         if mesh_geoms:
             self.add_mesh() # generate mesh
 
 
-    def render_tables(self, skip_junction:bool = False):
+    def render_tables(self, skip_junction:bool = True):
         """
         Render components in design grouped by table type (path, poly, or junction).
         """
@@ -266,6 +294,7 @@ class QGmshRenderer(QRendererAnalysis):
         qc_width  = self.parse_units_gmsh(junc.width)
         qc_chip_z = self.parse_units_gmsh(self.design.get_chip_z(junc.chip))
         vecs = Vec3DArray.make_vec3DArray(self.parse_units_gmsh(list(qc_shapely.coords)), qc_chip_z)
+        qc_name = self.design._components[junc["component"]].name + '_' + get_clean_name(junc["name"])
 
         # Considering JJ will always be a rectangle
         v1, v2 = line_width_offset_pts(vecs.points[0], vecs.path_vecs[0], qc_width, qc_chip_z, ret_pts=False)
@@ -281,9 +310,9 @@ class QGmshRenderer(QRendererAnalysis):
         surface = gmsh.model.occ.addPlaneSurface([curve_loop])
 
         if junc.chip not in self.juncs_dict:
-            self.juncs_dict[junc.chip] = set()
+            self.juncs_dict[junc.chip] = dict()
 
-        self.juncs_dict[junc.chip].add(surface)
+        self.juncs_dict[junc.chip][qc_name] = surface
 
     def render_element_path(self, path: pd.Series):
         """Render an element path.
@@ -298,17 +327,18 @@ class QGmshRenderer(QRendererAnalysis):
         vecs = Vec3DArray.make_vec3DArray(self.parse_units_gmsh(list(qc_shapely.coords)), qc_chip_z)
         curves = render_path_curves(vecs, qc_chip_z, qc_fillet, qc_width)
         surface = self.make_general_surface(curves)
+        qc_name = self.design._components[path["component"]].name + '_' + get_clean_name(path["name"])
 
         if path.chip not in self.chip_subtract_dict:
             self.chip_subtract_dict[path.chip] = set()
 
         if path.chip not in self.paths_dict:
-            self.paths_dict[path.chip] = set()
+            self.paths_dict[path.chip] = dict()
 
         if path["subtract"]:
             self.chip_subtract_dict[path.chip].add(surface)
         else:
-            self.paths_dict[path.chip].add(surface)
+            self.paths_dict[path.chip][qc_name] = surface
 
     def make_poly_surface(self, points: list[Vec3D], chip_z: float) -> int:
         lines = []
@@ -335,6 +365,7 @@ class QGmshRenderer(QRendererAnalysis):
         qc_shapely = poly.geometry
         qc_chip_z = self.parse_units_gmsh(self.design.get_chip_z(poly.chip))
         vecs = Vec3DArray.make_vec3DArray(self.parse_units_gmsh(list(qc_shapely.exterior.coords)), qc_chip_z)
+        qc_name = self.design._components[poly["component"]].name + '_' + get_clean_name(poly["name"])
 
         if is_rectangle(qc_shapely):
             x_min, y_min, x_max, y_max = qc_shapely.bounds
@@ -354,12 +385,12 @@ class QGmshRenderer(QRendererAnalysis):
             self.chip_subtract_dict[poly.chip] = set()
 
         if poly.chip not in self.polys_dict:
-            self.polys_dict[poly.chip] = set()
+            self.polys_dict[poly.chip] = dict()
 
         if poly["subtract"]:
             self.chip_subtract_dict[poly.chip].add(surface)
         else:
-            self.polys_dict[poly.chip].add(surface)
+            self.polys_dict[poly.chip][qc_name] = surface
 
     def get_min_bounding_box(self) -> Tuple[float]:
         """
@@ -501,9 +532,10 @@ class QGmshRenderer(QRendererAnalysis):
             cc_y_left, cc_y_right = np.min(cc_y - cw_y / 2), np.max(cc_y +
                                                                     cw_y / 2)
 
-            x = cc_x_left; y = cc_y_left; z = -vac_height[1]
-            dx = (cc_x_right - cc_x_left)
-            dy = (cc_y_right - cc_y_left)
+            tolerance = self.parse_units_gmsh("1um")
+            x = cc_x_left-tolerance; y = cc_y_left-tolerance; z = -vac_height[1]
+            dx = (cc_x_right - cc_x_left) + 2*tolerance
+            dy = (cc_y_right - cc_y_left) + 2*tolerance
             dz = sum(vac_height)
             self.vacuum_box = gmsh.model.occ.addBox(x, y, z, dx, dy, dz)
 
@@ -546,31 +578,62 @@ class QGmshRenderer(QRendererAnalysis):
         chips = list(self.design.chips.keys())
         # all_metals = []
         for chip in chips:
-            metal_and_gnd = list(self.polys_dict[chip] | self.paths_dict[chip] | \
-                                        self.juncs_dict[chip]) + [self.gnd_plane_dict[chip]]
+            metals_and_gnd = list(self.polys_dict[chip].values()) + list(self.paths_dict[chip].values()) +\
+                                    list(self.juncs_dict[chip].values()) + [self.gnd_plane_dict[chip]]
             dielectric = self.substrate_dict[chip]
-            gmsh.model.occ.fragment([(3, dielectric)], [(2, geom) for geom in metal_and_gnd])
-            # all_metals += [(2, geom) for geom in metal_and_gnd]
+            gmsh.model.occ.fragment([(3, dielectric)], [(2, geom) for geom in metals_and_gnd])
+            # all_metals += [(2, geom) for geom in metals_and_gnd]
 
         # TODO: for 3D, maybe we'll need to cut metal from vacuum-box before meshing
-        # gmsh.model.occ.cut([(3, self.vacuum_box)], all_metals)
+            gmsh.model.occ.fragment([(3, self.substrate_dict[chip])], [(3, self.vacuum_box)])
 
     def assign_physical_groups(self):
         chip_names = list(self.design.chips.keys())
+        self.physical_groups = defaultdict(dict)
+        all_sfs = []
         for chip in chip_names:
-            # TODO: extend metal for dim=3
-            metal_tag_list = self.paths_dict[chip] | self.polys_dict[chip] | self.juncs_dict[chip]
-            chip_metal = gmsh.model.addPhysicalGroup(2, list(metal_tag_list))
-            gmsh.model.setPhysicalName(2, chip_metal, f"{chip}_metal")
+            if chip not in self.physical_groups:
+                self.physical_groups[chip] = dict()
 
-            gnd_tag = gmsh.model.addPhysicalGroup(2, [self.gnd_plane_dict[chip]])
-            gmsh.model.setPhysicalName(2, gnd_tag, f"{chip}_ground_plane")
+            # TODO: extend metal geoms to dim=3
+            chip_geoms = dict(self.paths_dict[chip], **self.polys_dict[chip])
+            chip_geoms.update(self.juncs_dict[chip])
 
-            sub_tag = gmsh.model.addPhysicalGroup(3, [self.substrate_dict[chip]])
-            gmsh.model.setPhysicalName(3, sub_tag, f"{chip}_dielectric_substrate")
+            # Make physical groups for components
+            for name,tag in chip_geoms.items():
+                ph_tag = gmsh.model.addPhysicalGroup(2, [tag], name=name)
+                self.physical_groups[chip][name] = ph_tag
+                all_sfs += [tag]
 
-        vacuum = gmsh.model.addPhysicalGroup(3, [self.vacuum_box])
-        gmsh.model.setPhysicalName(3, vacuum, "vacuum_box")
+            # Make physical groups for ground plane
+            ph_gnd_name = f"ground_plane"
+            gnd_tag = self.gnd_plane_dict[chip]
+            all_sfs += [gnd_tag]
+            ph_gnd_tag = gmsh.model.addPhysicalGroup(2, [gnd_tag], name=ph_gnd_name)
+            self.physical_groups[chip][ph_gnd_name] = ph_gnd_tag
+
+            # Make physical groups for substrate (volume)
+            ph_sub_name = f"dielectric_substrate"
+            sub_tag = self.substrate_dict[chip]
+            ph_sub_tag = gmsh.model.addPhysicalGroup(3, [sub_tag], name=ph_sub_name)
+            self.physical_groups[chip][ph_sub_name] = ph_sub_tag
+
+            # Make physical groups for substrate (surfaces)
+            # sub_bounding_box = gmsh.model.getBoundingBox(3, sub_tag)
+            all_sub_sfs = gmsh.model.occ.getSurfaceLoops(sub_tag)[1][0]
+            all_sfs += list(all_sub_sfs)
+
+        # Make physical groups for vacuum box (volume)
+        vb_name = "vacuum_box"
+        ph_vb_tag = gmsh.model.addPhysicalGroup(3, [self.vacuum_box], name=vb_name)
+        self.physical_groups["global"][vb_name] = ph_vb_tag
+
+        # Make physical groups for vacuum box (surfaces)
+        # vb_bounding_box = gmsh.model.getBoundingBox(3, self.vacuum_box)
+        # all_vb_sfs = [dimtag[1] for dimtag in gmsh.model.getEntitiesInBoundingBox(*vb_bounding_box, 2)]
+        vb_sfs = list(gmsh.model.occ.getSurfaceLoops(self.vacuum_box)[1][0])
+        ph_vb_sfs_tag = gmsh.model.addPhysicalGroup(2, vb_sfs, name=(vb_name+"_sfs"))
+        self.physical_groups["global"][vb_name + "_sfs"] = ph_vb_sfs_tag
 
     def isometric_projection(self):
         gmsh.option.setNumber("General.Trackball", 0)
@@ -579,26 +642,35 @@ class QGmshRenderer(QRendererAnalysis):
         gmsh.option.setNumber("General.RotationZ", -45)
 
     def define_mesh_size_fields(self):
-        pass
         # TODO: How to define fields
+        # DEFINE FOR ALL CHIPS: remove hardcoded "main"
         # 1. Find metal-dielectric interfaces
         # 2. Extract 1D geometries of from the correcponding 2D ones
         # 3. Define "Distance" and "Threshold" fields
         # 4. Adjust the max_mesh_size option in QGmshRenderer accordingly
 
-        min_mesh_size = self.parse_units_gmsh(self._options["min_mesh_size"])
-        max_mesh_size = self.parse_units_gmsh(self._options["max_mesh_size"])
-        metal_and_gnd = list(self.polys_dict["main"] | self.paths_dict["main"] | \
-                                    self.juncs_dict["main"]) + [self.gnd_plane_dict["main"]]
+        min_mesh_size = self.parse_units_gmsh(self._options["mesh"]["min_size"])
+        max_mesh_size = self.parse_units_gmsh(self._options["mesh"]["max_size"])
+        all_geoms = list(self.polys_dict["main"].values()) + list(self.paths_dict["main"].values()) +\
+                                    list(self.juncs_dict["main"].values())
 
-        curve_loops = [gmsh.model.occ.getCurveLoops(geom) for geom in metal_and_gnd]
+        curve_loops = [gmsh.model.occ.getCurveLoops(geom) for geom in all_geoms]
         curves = []
         for i,cl in enumerate(curve_loops):
-            idx = 1 if i == (len(curve_loops)-1) else 0
+            idx = 0 #1 if i == (len(curve_loops)-1) else 0
             for curve in cl[1][idx]:
                 curves += [curve]
 
         # TODO: make this modular using loops and gradient steps
+        # for loop
+        # Distance -> Threshold
+        # options:
+        #     - gradient_dist_min
+        #     - gradient_dist_max
+        #     - gradient_step_count
+        #     - num_points_per_curve
+        # min_field = Min(thresh_field_list)
+        # setAsBackgroundField(min_field)
         dist_field1 = gmsh.model.mesh.field.add("Distance")
         gmsh.model.mesh.field.setNumbers(dist_field1, "CurvesList", curves)
         gmsh.model.mesh.field.setNumber(dist_field1, "NumPointsPerCurve", 100)
@@ -617,7 +689,7 @@ class QGmshRenderer(QRendererAnalysis):
 
         thresh_field2 = gmsh.model.mesh.field.add("Threshold")
         gmsh.model.mesh.field.setNumber(thresh_field2, "InField", dist_field2)
-        gmsh.model.mesh.field.setNumber(thresh_field2, "SizeMin", 0.01)
+        gmsh.model.mesh.field.setNumber(thresh_field2, "SizeMin", 3*min_mesh_size)
         gmsh.model.mesh.field.setNumber(thresh_field2, "SizeMax", max_mesh_size)
         gmsh.model.mesh.field.setNumber(thresh_field2, "DistMin", 0.03)
         gmsh.model.mesh.field.setNumber(thresh_field2, "DistMax", 0.06)
@@ -629,31 +701,61 @@ class QGmshRenderer(QRendererAnalysis):
         gmsh.model.mesh.field.setAsBackgroundMesh(min_field)
 
         gmsh.option.setNumber("Mesh.MeshSizeExtendFromBoundary", 0)
-        gmsh.option.setNumber("Mesh.MeshSizeFromPoints", 0)
+        # gmsh.option.setNumber("Mesh.MeshSizeFromPoints", 0)
         # gmsh.option.setNumber("Mesh.MeshSizeFromCurvature", 0)
 
     def define_mesh_properties(self):
-        min_mesh_size = self.parse_units_gmsh(self._options["min_mesh_size"])
-        max_mesh_size = self.parse_units_gmsh(self._options["max_mesh_size"])
-        gmsh.option.setNumber("Mesh.MeshSizeFromCurvature", self._options["mesh_size_from_curvature"])
-        gmsh.option.setNumber("Mesh.Smoothing", self._options["mesh_smoothing"])
-        gmsh.option.setNumber("Mesh.Algorithm3D", self._options["mesh_algorithm_3d"])
-        gmsh.option.setNumber("General.NumThreads", self._options["num_threads"])
+        min_mesh_size = self.parse_units_gmsh(self._options["mesh"]["min_size"])
+        max_mesh_size = self.parse_units_gmsh(self._options["mesh"]["max_size"])
+        gmsh.option.setNumber("Mesh.MeshSizeFromCurvature", self._options["mesh"]["nodes_per_2pi_curvature"])
+        gmsh.option.setNumber("Mesh.Smoothing", self._options["mesh"]["smoothing"])
+        gmsh.option.setNumber("Mesh.Algorithm3D", self._options["mesh"]["algorithm_3d"])
+        gmsh.option.setNumber("General.NumThreads", self._options["mesh"]["num_threads"])
         gmsh.option.setNumber("Mesh.MeshSizeMin", min_mesh_size)
         gmsh.option.setNumber("Mesh.MeshSizeMax", max_mesh_size)
+
 
     def add_mesh(self, dim:int=3):
         self.define_mesh_size_fields()
         self.define_mesh_properties()
         gmsh.model.mesh.generate(dim=dim)
 
+        color_dict = lambda color: dict(r=color[0], g=color[1], b=color[2], a=color[3])
+        metal_color = color_dict(self._options["colors"]["metal"])
+        jj_color = color_dict(   self._options["colors"]["jj"])
+        sub_color = color_dict(  self._options["colors"]["sub"])
+
+        for chip in list(self.design.chips.keys()):
+            all_metal = list(self.polys_dict[chip].values()) + list(self.paths_dict[chip].values()) +\
+                                [self.gnd_plane_dict[chip]]
+            jjs = list(self.juncs_dict[chip].values())
+            substrate = self.substrate_dict[chip]
+            sub_surfaces = list(gmsh.model.occ.getSurfaceLoops(substrate)[1][0])
+
+            gmsh.model.setColor([(3, substrate)], **sub_color)
+            gmsh.model.setColor([(2, sub_surf) for sub_surf in sub_surfaces], **sub_color)
+            gmsh.model.setColor([(2, metal) for metal in all_metal], **metal_color)
+            gmsh.model.setColor([(2, jj) for jj in jjs], **jj_color)
+
     def launch_gui(self):
+        self.isometric_projection() # set isometric projection
         gmsh.fltk.run()
 
-    def write(self, path: str):
+    def export_mesh(self, filename: str):
+        # TODO: Can gmsh support other mesh exporting formats?
+        if ".msh" not in filename:
+            self.logger.error("RENDERER ERROR: filename needs to have a .msh extension. Exporting failed.")
+            return
+
+        import os
+        mesh_export_dir = self._options["mesh"]["export_dir"]
+        path = mesh_export_dir + '/' + filename
+        if not os.path.exists(mesh_export_dir):
+            os.mkdir(mesh_export_dir)
+
         gmsh.write(path)
 
-    # TODO: This doesn't work right now!!!
+    # FIXME: This doesn't work right now!!!
     def save_screenshot(self, path: str = None, show: bool = True):
         """Save the screenshot.
 
