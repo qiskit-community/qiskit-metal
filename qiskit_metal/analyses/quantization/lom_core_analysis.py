@@ -399,8 +399,8 @@ class CircuitGraph:
         junctions: Mapping[Tuple[str, str], str],
         cj_dicts: List[Dict[Tuple, float]] = None,
         nodes_force_keep: Sequence = None,
-        s_remove_provided: np.ndarray = None,
-        s_keep_provided: np.ndarray = None,
+        s_remove_provided: Union[np.ndarray, bool] = False,
+        s_keep_provided: Union[np.ndarray, bool] = False,
     ):
         """Initialize the class with parameters specifying the circuit
 
@@ -430,8 +430,12 @@ class CircuitGraph:
                 during L and C matrices reduction. Use this parameter to specify non-dynamic
                 nodes (nodes that are connected capacitors only or inductors only) that should
                 be preserved. If not specified (i.e., None), all non-dynamic nodes are eliminated
-            s_remove_provided (np.ndarray): precalculated s_remove; see documentation on S_Remove
-            s_keep_provided (np.ndarray): precalculated s_keep; see documentation on S_Keep
+            s_remove_provided (np.ndarray): precalculated s_remove; see documentation on S_Remove. This is
+                useful when a circuit's topology doesn't change hence s_remove doesn't change and can be
+                reused
+            s_keep_provided (np.ndarray): precalculated s_keep; see documentation on S_Keep. This is
+                useful when a circuit's topology doesn't change hence s_keep doesn't change and can be
+                reused
         """
 
         self.nodes = list(nodes)
@@ -452,6 +456,12 @@ class CircuitGraph:
 
         self._C_n = None
         self._L_n_inv = None
+
+        # TODO: Handle cached properties dependencies more rigorously, i.e., set them to None, when
+        # their dependencies change
+        self._C_inv_k = None
+        self._C_k = None
+        self._L_inv_k = None
 
         self._S_n = None
         self._node_jj_basis = None
@@ -615,7 +625,7 @@ class CircuitGraph:
         matrix. These are nodes that are only touched by capacitors and are
         considered non-dynamic nodes.
         """
-        if self._s_remove_provided is not None:
+        if self._s_remove_provided is not False:
             return self._s_remove_provided
         nodes_force_keep = self.nodes_force_keep if self.nodes_force_keep else []
         force_keep_idx = pd.Index(
@@ -653,7 +663,7 @@ class CircuitGraph:
         """
         # FIXME: currently assuming that S_keep can be solely constructed from
         # S_remove (which itself is constructed from the identity matrix) and the identity matrix
-        if self._s_keep_provided is not None:
+        if self._s_keep_provided is not False:
             return self._s_keep_provided
         S_remove = self.S_remove
         dim = self.L_inv.shape[0]
@@ -683,10 +693,13 @@ class CircuitGraph:
         https://arxiv.org/pdf/2103.10344.pdf
         equation (7a)
         """
+        if self._L_inv_k is not None:
+            return self._L_inv_k
         s_keep = self.S_keep
         l_inv = self.L_inv
-        return LabeledNdarray(
+        self._L_inv_k = LabeledNdarray(
             s_keep.T.dot(l_inv).dot(s_keep), self.get_nodes_keep())
+        return self._L_inv_k
 
     @property
     def C_k(self):
@@ -694,20 +707,27 @@ class CircuitGraph:
         https://arxiv.org/pdf/2103.10344.pdf
         equation (7b)
         """
+        if self._C_k is not None:
+            return self._C_k
         s_k = self.S_keep
         s_r = self.S_remove
         c = self.C
         _inner = c.dot(s_r).dot(np.linalg.inv(s_r.T.dot(c.dot(s_r)))).dot(
             s_r.T.dot(c)) if s_r is not None else 0
-        return LabeledNdarray(
+        self._C_k = LabeledNdarray(
             s_k.T.dot(c - _inner).dot(s_k), self.get_nodes_keep())
+        return self._C_k
 
     @property
     def C_inv_k(self):
+        if self._C_inv_k is not None:
+            return self._C_inv_k
         c_k = self.C_k
         if np.linalg.matrix_rank(c_k) < c_k.shape[0]:
             raise ValueError('C_k is rank deficient hence can\'t be inverted')
-        return LabeledNdarray(np.linalg.inv(self.C_k), self.get_nodes_keep())
+        self._C_inv_k = LabeledNdarray(np.linalg.inv(self.C_k),
+                                       self.get_nodes_keep())
+        return self._C_inv_k
 
 
 #----------------------------------------------------------------------------------------------------
@@ -1237,8 +1257,8 @@ class CompositeSystem:
         cells: List[Cell],
         grd_node: str,
         nodes_force_keep: Sequence = None,
-        s_remove_provided: np.ndarray = None,
-        s_keep_provided: np.ndarray = None,
+        s_remove_provided: Union[np.ndarray, bool] = False,
+        s_keep_provided: Union[np.ndarray, bool] = False,
     ):
         """Initialize the CompositeSystem object
 

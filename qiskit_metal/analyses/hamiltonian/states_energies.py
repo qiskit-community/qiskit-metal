@@ -66,9 +66,7 @@ def extract_energies(esys_array: np.ndarray,
             shifts, i.e., the chi's between the modes
     """
 
-    print("Processing eigensystem...", end='')
     evals, evecs = esys_array
-    print("\rFinished eigensystem.     ")
 
     if zero_evals:
         evals -= evals[0]  # zero out
