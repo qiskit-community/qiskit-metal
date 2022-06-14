@@ -19,6 +19,8 @@
 # geopandas
 import sys
 
+from scipy.fftpack import hilbert
+
 
 # pylint: disable=wrong-import-position
 # pylint: disable=too-few-public-methods
@@ -388,14 +390,18 @@ class CircuitGraph:
     units = {'capacitance': 'fF', 'inductance': 'nH'}
     _IGNORE_GRD_NODE = True
 
-    def __init__(self,
-                 nodes: Sequence,
-                 grd_node: str,
-                 cmats: List[pd.DataFrame],
-                 ind_lists: List[Dict[Tuple, float]],
-                 junctions: Mapping[Tuple[str, str], str],
-                 cj_dicts: List[Dict[Tuple, float]] = None,
-                 nodes_force_keep: Sequence = None):
+    def __init__(
+        self,
+        nodes: Sequence,
+        grd_node: str,
+        cmats: List[pd.DataFrame],
+        ind_lists: List[Dict[Tuple, float]],
+        junctions: Mapping[Tuple[str, str], str],
+        cj_dicts: List[Dict[Tuple, float]] = None,
+        nodes_force_keep: Sequence = None,
+        s_remove_provided: np.ndarray = None,
+        s_keep_provided: np.ndarray = None,
+    ):
         """Initialize the class with parameters specifying the circuit
 
         Args:
@@ -424,6 +430,8 @@ class CircuitGraph:
                 during L and C matrices reduction. Use this parameter to specify non-dynamic
                 nodes (nodes that are connected capacitors only or inductors only) that should
                 be preserved. If not specified (i.e., None), all non-dynamic nodes are eliminated
+            s_remove_provided (np.ndarray): precalculated s_remove; see documentation on S_Remove
+            s_keep_provided (np.ndarray): precalculated s_keep; see documentation on S_Keep
         """
 
         self.nodes = list(nodes)
@@ -447,6 +455,9 @@ class CircuitGraph:
 
         self._S_n = None
         self._node_jj_basis = None
+
+        self._s_remove_provided = s_remove_provided
+        self._s_keep_provided = s_keep_provided
 
     def __str__(self):
         str_out = 'node_jj_basis:\n'
@@ -604,6 +615,8 @@ class CircuitGraph:
         matrix. These are nodes that are only touched by capacitors and are
         considered non-dynamic nodes.
         """
+        if self._s_remove_provided is not None:
+            return self._s_remove_provided
         nodes_force_keep = self.nodes_force_keep if self.nodes_force_keep else []
         force_keep_idx = pd.Index(
             self.node_jj_basis).get_indexer(nodes_force_keep)
@@ -640,6 +653,8 @@ class CircuitGraph:
         """
         # FIXME: currently assuming that S_keep can be solely constructed from
         # S_remove (which itself is constructed from the identity matrix) and the identity matrix
+        if self._s_keep_provided is not None:
+            return self._s_keep_provided
         S_remove = self.S_remove
         dim = self.L_inv.shape[0]
         eye = np.eye(dim)
@@ -1216,11 +1231,15 @@ class CompositeSystem:
     """Class representing the composite system which may consist of multiple subsystems and cells
     """
 
-    def __init__(self,
-                 subsystems: List[Subsystem],
-                 cells: List[Cell],
-                 grd_node: str,
-                 nodes_force_keep: Sequence = None):
+    def __init__(
+        self,
+        subsystems: List[Subsystem],
+        cells: List[Cell],
+        grd_node: str,
+        nodes_force_keep: Sequence = None,
+        s_remove_provided: np.ndarray = None,
+        s_keep_provided: np.ndarray = None,
+    ):
         """Initialize the CompositeSystem object
 
         Args:
@@ -1231,7 +1250,8 @@ class CompositeSystem:
                 during L and C matrices reduction. Use this parameter to specify non-dynamic
                 nodes (nodes that are connected capacitors only or inductors only) that should
                 be preserved. If not specified (i.e., None), all non-dynamic nodes are eliminated
-
+            s_remove_provided (np.ndarray): precalculated s_remove; see documentation on CircuitGraph.S_Remove
+            s_keep_provided (np.ndarray): precalculated s_keep; see documentation on CircuitGraph.S_Keep
         """
         self._subsystems = subsystems
         self.num_subsystems = len(subsystems)
@@ -1240,6 +1260,9 @@ class CompositeSystem:
         self.num_cells = len(cells)
         self.grd_node = grd_node
         self.nodes_force_keep = nodes_force_keep
+
+        self._s_remove_provided = s_remove_provided
+        self._s_keep_provided = s_keep_provided
 
         self._jj = {k: j for c in self._cells for k, j in c.jj_dict.items()}
         _jj_to_node_map = dict(zip(self._jj.values(), self._jj.keys()))
@@ -1281,8 +1304,15 @@ class CompositeSystem:
             cj_dicts = self._cj_dicts
             l_list = self._l_list
             jjs = self._jj
-            self._cg = CircuitGraph(nodes, grd_node, c_list, l_list, jjs,
-                                    cj_dicts, self.nodes_force_keep)
+            self._cg = CircuitGraph(nodes,
+                                    grd_node,
+                                    c_list,
+                                    l_list,
+                                    jjs,
+                                    cj_dicts,
+                                    self.nodes_force_keep,
+                                    s_keep_provided=self._s_keep_provided,
+                                    s_remove_provided=self._s_remove_provided)
 
         return self._cg
 
@@ -1460,13 +1490,16 @@ class CompositeSystem:
         if evals_count is None:
             evals_count = hilbertspace.dimension
 
-        evals, evecs = hilbertspace.eigensys(evals_count=evals_count)
+        hamiltonian_mat = hilbertspace.hamiltonian()
+        evals, evecs = hamiltonian_mat.eigenstates(eigvals=evals_count)
+
+        # evals, evecs = hilbertspace.eigensys(evals_count=evals_count)
         esys_array = np.empty(shape=(2,), dtype=object)
         esys_array[0] = evals
         esys_array[1] = evecs
 
-        f01s, chi_mat = extract_energies(
-            esys_array, mode_size=hilbertspace.hamiltonian().dims[0])
+        f01s, chi_mat = extract_energies(esys_array,
+                                         mode_size=hamiltonian_mat.dims[0])
         f01s = f01s / 1000
         ham_res['fQ_in_Ghz'] = dict(zip(names, f01s))
         ham_res['chi_in_MHz'] = LabeledNdarray(chi_mat, names)
