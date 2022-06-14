@@ -78,7 +78,7 @@ def extract_energies(esys_array: np.ndarray,
     def state_on(excitations):
         return basis_state_on(mode_size, excitations)  # eigenstate on
 
-    chis = [[0] * N for _ in range(N)]
+    chis = np.empty((N, N))
 
     # Reformat the set of eigenvectors as a matrix where each row of the matrix
     # is the hermitian conjugate of the original eigenvector
@@ -132,7 +132,7 @@ def extract_energies(esys_array: np.ndarray,
         for j in range(i, N):
             ev = evals[evec_idx_double[mode_idx_to_state[(i, j)]]]
             chi = (ev - (evals[evec_idx_single[i]] + evals[evec_idx_single[j]]))
-            chis[i][j] = chi
-            chis[j][i] = chi
+            chis[i, j] = chi
+            chis[j, i] = chi
 
-    return evals[evec_idx_single], np.array(chis)
+    return evals[evec_idx_single], chis
