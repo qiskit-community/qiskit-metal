@@ -22,4 +22,4 @@ dependencies:
   - scqubits
   - PythonNet #Needed for pyaedt
   - PyVista #Needed for pyaedt
-  - PyAEDT
+  #- PyAEDT
