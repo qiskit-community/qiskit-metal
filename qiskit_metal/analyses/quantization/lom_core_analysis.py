@@ -1481,7 +1481,8 @@ class CompositeSystem:
                             q2_op, add_hc2 = sub2.h_params[node2][
                                 'default_charge_op']
 
-                            h.add_interaction(g=g * gscale,
+                            h.add_interaction(check_validity=False,
+                                              g=g * gscale,
                                               op1=(q1_op, q1),
                                               op2=(q2_op, q2),
                                               add_hc=add_hc1 or add_hc2)
