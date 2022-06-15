@@ -1,6 +1,6 @@
 import re
 import pandas as pd
-from typing import *
+from typing import Union
 from collections import defaultdict
 import gmsh
 
@@ -8,24 +8,9 @@ from ..renderer_base import QRendererAnalysis
 from ...designs.design_base import QDesign
 from .gmsh_utils import *
 from ...draw.basic import is_rectangle
+from ..utils import *
 from ... import Dict
 
-def get_clean_name(name: str) -> str:
-    """Create a valid variable name from the given one by removing having it
-    begin with a letter or underscore followed by an unlimited string of
-    letters, numbers, and underscores.
-
-    Args:
-        name (str): Initial, possibly unusable, string to be modified.
-
-    Returns:
-        str: Variable name consistent with Python naming conventions.
-    """
-    # Remove invalid characters
-    name = re.sub("[^0-9a-zA-Z_]", "", name)
-    # Remove leading characters until we find a letter or underscore
-    name = re.sub("^[^a-zA-Z_]+", "", name)
-    return name
 
 class QGmshRenderer(QRendererAnalysis):
     """Extends QRendererAnalysis class to export designs to Gmsh using the Gmsh python API.
@@ -113,51 +98,6 @@ class QGmshRenderer(QRendererAnalysis):
 
     def remove_current_model(self):
         gmsh.model.remove()
-
-    def get_chip_names(self):
-        if self.case == 2:  # One or more components not in QDesign.
-            self.logger.warning("One or more components not found.")
-            return []
-        chip_names = set()
-        if self.case == 1:  # All components rendered.
-            comps = self.design.components
-            for qcomp in comps:
-                if "chip" not in comps[qcomp].options:
-                    self.chip_designation_error()
-                    return []
-                chip_names.add(comps[qcomp].options.chip)
-        else:  # Strict subset rendered.
-            icomps = self.design._components
-            for qcomp_id in self.qcomp_ids:
-                if "chip" not in icomps[qcomp_id].options:
-                    self.chip_designation_error()
-                    return []
-                chip_names.add(icomps[qcomp_id].options.chip)
-
-        for unique_name in chip_names:
-            if unique_name not in self.design.chips:
-                self.chip_not_in_design_error(unique_name)
-
-        return list(chip_names)
-
-    def chip_designation_error(self):
-        """
-        Warning message that appears when the Ansys renderer fails to locate a component's chip designation.
-        Provides instructions for a temporary workaround until the layer stack is finalized.
-        """
-        self.logger.warning(
-            "This component currently lacks a chip designation. Please add chip='main' to the component's default_options dictionary, restart the kernel, and try again."
-        )
-
-    def chip_not_in_design_error(self, missing_chip: str):
-        """
-        Warning message that appears when the Ansys renderer fails to locate a component's chip designation in DesignPlanar (or any child of QDesign).
-        Provides instructions for a temporary workaround until the layer stack is finalized.
-        """
-        self.logger.warning(
-            f'This component currently lacks a chip designation in DesignPlanar, or any child of QDesign. '
-            f'Please add dict for chip=\'{missing_chip}\' in DesignPlanar, or child of QDesign. Then restart the kernel, and try again.'
-        )
 
     def render_design(
         self,
@@ -392,37 +332,6 @@ class QGmshRenderer(QRendererAnalysis):
         else:
             self.polys_dict[poly.chip][qc_name] = surface
 
-    def get_min_bounding_box(self) -> Tuple[float]:
-        """
-        Determine the max/min x/y coordinates of the smallest rectangular, axis-aligned
-        bounding box that will enclose a selection of components to render, given by
-        self.qcomp_ids. This method is only used when box_plus_buffer is True.
-
-        Returns:
-            Tuple[float]: min x, min y, max x, and max y coordinates of bounding box.
-        """
-        min_x_main = min_y_main = float("inf")
-        max_x_main = max_y_main = float("-inf")
-        if self.case == 2:  # One or more components not in QDesign.
-            self.logger.warning("One or more components not found.")
-        elif self.case == 1:  # All components rendered.
-            for qcomp in self.design.components:
-                min_x, min_y, max_x, max_y = self.design.components[
-                    qcomp].qgeometry_bounds()
-                min_x_main = min(min_x, min_x_main)
-                min_y_main = min(min_y, min_y_main)
-                max_x_main = max(max_x, max_x_main)
-                max_y_main = max(max_y, max_y_main)
-        else:  # Strict subset rendered.
-            for qcomp_id in self.qcomp_ids:
-                min_x, min_y, max_x, max_y = self.design._components[
-                    qcomp_id].qgeometry_bounds()
-                min_x_main = min(min_x, min_x_main)
-                min_y_main = min(min_y, min_y_main)
-                max_x_main = max(max_x, max_x_main)
-                max_y_main = max(max_y, max_y_main)
-        return min_x_main, min_y_main, max_x_main, max_y_main
-
     def add_endcaps(self, open_pins: Union[list, None] = None):
         """Create endcaps (rectangular cutouts) for all pins in the list
         open_pins and add them to chip_subtract_dict. Each element in open_pins
@@ -487,7 +396,7 @@ class QGmshRenderer(QRendererAnalysis):
         for chip_name in chip_list:
             if box_plus_buffer:  # Get bounding box of components first
                 min_x_main, min_y_main, max_x_main, max_y_main = self.parse_units_gmsh(
-                    self.get_min_bounding_box())
+                            get_min_bounding_box(self.design, self.qcomp_ids, self.case, self.logger))
                 self.cw_x.update({chip_name: max_x_main - min_x_main
                                  })  # chip width along x
                 self.cw_y.update({chip_name: max_y_main - min_y_main
