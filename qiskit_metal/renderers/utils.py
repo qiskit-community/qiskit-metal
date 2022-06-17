@@ -1,6 +1,7 @@
 import re
 from ..designs.design_base import QDesign
 
+
 def get_clean_name(name: str) -> str:
     """Create a valid variable name from the given one by removing having it
     begin with a letter or underscore followed by an unlimited string of
@@ -18,7 +19,9 @@ def get_clean_name(name: str) -> str:
     name = re.sub("^[^a-zA-Z_]+", "", name)
     return name
 
-def get_min_bounding_box(design: QDesign, qcomp_ids: list[int], case: int, logger) -> tuple[float]:
+
+def get_min_bounding_box(design: QDesign, qcomp_ids: list[int], case: int,
+                         logger) -> tuple[float]:
     """
     Determine the max/min x/y coordinates of the smallest rectangular, axis-aligned
     bounding box that will enclose a selection of components to render, given by
@@ -41,7 +44,7 @@ def get_min_bounding_box(design: QDesign, qcomp_ids: list[int], case: int, logge
             max_y_main = max(max_y, max_y_main)
     else:  # Strict subset rendered.
         for qcomp_id in qcomp_ids:
-            min_x, min_y, max_x, max_y = design._components[
+            min_x, min_y, max_x, max_y = design.components[
                 qcomp_id].qgeometry_bounds()
             min_x_main = min(min_x, min_x_main)
             min_y_main = min(min_y, min_y_main)
