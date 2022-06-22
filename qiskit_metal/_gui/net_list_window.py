@@ -119,12 +119,6 @@ class NetListTableModel(QAbstractTableModel):
         if self.design:
             return self.design.qnet.net_info
 
-    # @property
-    # def table(self):
-    #     """Returns all the net info of the type specified in the constructor."""
-    #     if self.design:
-    #         return self.design.qnet.net_info
-
     def _create_timer(self):
         """Refresh the model number of rows, etc."""
         self._timer = QtCore.QTimer(self)
