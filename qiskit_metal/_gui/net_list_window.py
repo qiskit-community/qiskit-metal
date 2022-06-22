@@ -119,11 +119,11 @@ class NetListTableModel(QAbstractTableModel):
         if self.design:
             return self.design.qnet.net_info
 
-    @property
-    def table(self):
-        """Returns all the net info of the type specified in the constructor."""
-        if self.design:
-            return self.design.qnet.net_info
+    # @property
+    # def table(self):
+    #     """Returns all the net info of the type specified in the constructor."""
+    #     if self.design:
+    #         return self.design.qnet.net_info
 
     def _create_timer(self):
         """Refresh the model number of rows, etc."""
@@ -173,9 +173,9 @@ class NetListTableModel(QAbstractTableModel):
         Returns:
             int: The number of rows
         """
-        if self.table is None:
+        if self.net_info is None:
             return 0
-        return self.table.shape[0]
+        return self.net_info.shape[0]
 
     def columnCount(self, parent: QModelIndex = None):
         """Counts all the columns.
@@ -186,9 +186,9 @@ class NetListTableModel(QAbstractTableModel):
         Returns:
             int: The number of columns
         """
-        if self.table is None:
+        if self.net_info is None:
             return 0
-        return self.table.shape[1] + 1
+        return self.net_info.shape[1] + 1
 
     def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
         """Set the headers to be displayed.
@@ -202,12 +202,12 @@ class NetListTableModel(QAbstractTableModel):
             str: The header data, or None if not found
         """
 
-        if (role != QtCore.Qt.DisplayRole) or (self.table is None):
+        if (role != QtCore.Qt.DisplayRole) or (self.net_info is None):
             return None
 
         if orientation == QtCore.Qt.Horizontal:
             if section < self.columnCount() - 1:
-                return str(self.table.columns[section])
+                return str(self.net_info.columns[section])
             elif section == self.columnCount() - 1:
                 return 'component_name'
 
@@ -244,13 +244,14 @@ class NetListTableModel(QAbstractTableModel):
         # if not 0 <= index.row() < self.rowCount():
         #    return None
 
-        if self.table is None:
+        if self.net_info is None:
             return
 
         if role == QtCore.Qt.DisplayRole:
             row = index.row()
             column = index.column()
             if column < self.columnCount() - 1:
-                return str(self.table.iloc[row, column])
+                return str(self.net_info.iloc[row, column])
             elif column == self.columnCount() - 1:
-                return self.gui.design._components[self.table.iloc[row, 1]].name
+                return self.gui.design._components[self.net_info.iloc[row,
+                                                                      1]].name

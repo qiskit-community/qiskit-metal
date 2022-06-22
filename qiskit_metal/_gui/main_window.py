@@ -24,6 +24,7 @@ from PySide2.QtCore import Qt, QTimer
 from PySide2.QtGui import QIcon, QPixmap
 from PySide2.QtWidgets import (QAction, QDialog, QDockWidget, QFileDialog,
                                QLabel, QMainWindow, QMessageBox, QVBoxLayout)
+from PySide2.QtCore import QSortFilterProxyModel
 from qiskit_metal._gui.widgets.qlibrary_display.delegate_qlibrary import \
     LibraryDelegate
 from qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary import \
@@ -371,7 +372,7 @@ class MetalGUI(QMainWindowBaseHandler):
         ]
         setEnabled(self.ui, widgets)
 
-        widgets = ['component_window', 'elements_win']
+        widgets = ['component_window', 'elements_win', 'net_list_win']
         setEnabled(self, widgets)
 
     def set_design(self, design: QDesign):
@@ -559,12 +560,26 @@ class MetalGUI(QMainWindowBaseHandler):
         """Create main Window Elements Widget."""
         self.elements_win = ElementsWindow(self, self.main_window)
 
+        self.ui.tabQGeometry.sort_model = QSortFilterProxyModel()
+        self.ui.tabQGeometry.sort_model.setSourceModel(self.elements_win.model)
+
+        self.elements_win.ui.tableElements.setModel(
+            self.ui.tabQGeometry.sort_model)
+        self.elements_win.ui.tableElements.setSortingEnabled(True)
+
         # Add to the tabbed main view
         self.ui.tabQGeometry.layout().addWidget(self.elements_win)
 
     def _setup_net_list_widget(self):
         """Create main Window Elements Widget."""
         self.net_list_win = NetListWindow(self, self.main_window)
+
+        self.ui.tabNetList.sort_model = QSortFilterProxyModel()
+        self.ui.tabNetList.sort_model.setSourceModel(self.net_list_win.model)
+
+        self.net_list_win.ui.tableElements.setModel(
+            self.ui.tabNetList.sort_model)
+        self.net_list_win.ui.tableElements.setSortingEnabled(True)
 
         # Add to the tabbed main view
         self.ui.tabNetList.layout().addWidget(self.net_list_win)
