@@ -13,6 +13,7 @@
 # that they have been altered from the originals.
 
 # modified by Chalmers/SK/20210621
+# modified by Samarth Hawaldar
 
 from collections import defaultdict
 from pathlib import Path
@@ -40,6 +41,7 @@ class QHFSSRenderer(QAnsysRenderer):
         * Cj: 0 -- Cj *must* be 0 for pyEPR analysis! Cj has units of femtofarads (fF)
         * _Rj: 0 -- _Rj *must* be 0 for pyEPR analysis! _Rj has units of Ohms
         * max_mesh_length_jj: '7um' -- Maximum mesh length for Josephson junction elements
+        * max_mesh_length_port: '7um' -- Maximum mesh length for Ports in Eigenmode Simulations
         * project_path: None -- Default project path; if None --> get active
         * project_name: None -- Default project name
         * design_name: None -- Default design name
@@ -164,6 +166,7 @@ class QHFSSRenderer(QAnsysRenderer):
         self.chip_subtract_dict = defaultdict(set)
         self.assign_perfE = []
         self.assign_mesh = []
+        self.assign_port_mesh = []
         self.jj_lumped_ports = {}
         self.jj_to_ignore = set()
 
@@ -185,10 +188,10 @@ class QHFSSRenderer(QAnsysRenderer):
 
         self.render_chips(box_plus_buffer=box_plus_buffer)
         self.subtract_from_ground()
-        self.add_mesh()
-        self.metallize()
         if port_list:
             self.create_ports(port_list)
+        self.add_mesh()
+        self.metallize()
 
     def create_ports(self, port_list: list):
         """Add ports and their respective impedances in Ohms to designated pins
@@ -224,10 +227,17 @@ class QHFSSRenderer(QAnsysRenderer):
                                                        y_max - y_min, 0,
                                                        **dict(transparency=0.0))
             axis = 'x' if abs(x1 - x0) > abs(y1 - y0) else 'y'
-            poly_ansys.make_lumped_port(axis,
-                                        z0=str(impedance) + 'ohm',
-                                        name=f'LumpPort_{qcomp}_{pin}')
-            self.modeler.rename_obj(poly_ansys, port_name)
+            if self.pinfo.design.solution_type != 'Eigenmode':
+                poly_ansys.make_lumped_port(axis,
+                                            z0=str(impedance) + 'ohm',
+                                            name=f'LumpPort_{qcomp}_{pin}')
+                self.modeler.rename_obj(poly_ansys, port_name)
+            else:
+                poly_ansys.make_rlc_boundary(axis,
+                                             r=str(impedance) + 'ohm',
+                                             name=f'RLCBoundary_{qcomp}_{pin}')
+                self.modeler.rename_obj(poly_ansys, port_name)
+                self.assign_port_mesh.append(port_name)
 
             # Draw line
             lump_line = self.modeler.draw_polyline(
@@ -435,8 +445,8 @@ class QHFSSRenderer(QAnsysRenderer):
                               *args,
                               **kwargs):
         """Create a solution setup in Ansys HFSS Driven Modal. If user does
-        not provide arguments, they will be obtained from default_setup dict.  
-        
+        not provide arguments, they will be obtained from default_setup dict.
+
         Args:
             name (str, optional): Name of driven modal setup. Defaults to None.
             freq_ghz (int, optional): Frequency in GHz. Defaults to None.
