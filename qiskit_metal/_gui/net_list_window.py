@@ -245,7 +245,7 @@ class NetListTableModel(QAbstractTableModel):
             row = index.row()
             column = index.column()
             if column < self.columnCount() - 1:
-                return str(self.net_info.iloc[row, column])
+                return self.net_info.iloc[row, column]
             elif column == self.columnCount() - 1:
                 return self.gui.design._components[self.net_info.iloc[row,
                                                                       1]].name

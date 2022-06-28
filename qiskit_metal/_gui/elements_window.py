@@ -268,4 +268,9 @@ class ElementTableModel(QAbstractTableModel):
         if role == QtCore.Qt.DisplayRole:
             row = index.row()
             column = index.column()
-            return str(self.table.iloc[row, column])
+            # First column (component id) members, are ints so
+            # they should sort as numbers instead of strings.
+            if column == 0:
+                return self.table.iloc[row, column]
+            else:
+                return str(self.table.iloc[row, column])
