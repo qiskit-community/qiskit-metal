@@ -130,8 +130,8 @@
       </widget>
       <widget class="QWidget" name="tabNetList">
        <attribute name="icon">
-        <iconset>
-         <normaloff>_imgs/frequency.png</normaloff>_imgs/frequency.png</iconset>
+        <iconset resource="main_window_rc.qrc">
+         <normaloff>:/elements</normaloff>:/elements</iconset>
        </attribute>
        <attribute name="title">
         <string>Net List</string>
