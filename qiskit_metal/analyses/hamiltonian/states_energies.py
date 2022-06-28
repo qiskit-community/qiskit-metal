@@ -45,8 +45,7 @@ def basis_state_on(mode_size: List[int], excitations: Dict_[int, int]):
 
 def extract_energies(esys_array: np.ndarray,
                      mode_size: List[int],
-                     zero_evals: bool = True,
-                     chi_prime: bool = False):
+                     zero_evals: bool = True):
     """
     Returns the frequencies, anharmonicities, and dispersive shifts of the modes.
 
@@ -59,7 +58,6 @@ def extract_energies(esys_array: np.ndarray,
             for each mode, respectively
         zero_evals (bool, optional): If true, the "ground state" eigenvalue is substracted
             all eigenvalues. Defaults to True.
-        chi_prime (bool, optional): Defaults to False.
 
     Returns:
         np.ndarray, np.ndarray: a tuple of arrays. The first array is the frequencies of
@@ -68,49 +66,71 @@ def extract_energies(esys_array: np.ndarray,
             shifts, i.e., the chi's between the modes
     """
 
-    print("Processing eigensystem...", end='')
     evals, evecs = esys_array
-    print("\rFinished eigensystem.     ")
 
     if zero_evals:
         evals -= evals[0]  # zero out
-
-    # if use_1st_order:
-    def closest_state_to(s: Qobj):
-        # find the eigenvector among evecs that is closest
-        # to s (largest inner product)
-
-        def distance(s2: Qobj):
-            return (s.dag() * s2[1]).norm()
-
-        return max(zip(evals, evecs), key=distance)
 
     N = len(mode_size)
 
     def state_on(excitations):
         return basis_state_on(mode_size, excitations)  # eigenstate on
 
-    f1s = [closest_state_to(state_on({i: 1}))[0] for i in range(N)]
-    chis = [[0] * N for _ in range(N)]
-    chips = [[0] * N for _ in range(N)]
+    chis = np.empty((N, N))
+
+    # Reformat the set of eigenvectors as a matrix where each row of the matrix
+    # is the hermitian conjugate of the original eigenvector
+    evecs_dag_mat = np.squeeze(
+        np.array([evecs[ii].dag() for ii in range(evecs.size)]))
+
+    single_excitation_states = [state_on({i: 1}) for i in range(N)]
+
+    # Prepare states with 2-photon excitations, either in two separate modes or
+    # the same mode
+    double_excitation_states = []
+    mode_idx_to_state = {}
     for i in range(N):
         for j in range(i, N):
             d = {k: 0 for k in range(N)}  # put 0 photons in each mode (k)
+            # load ith mode and jth mode with 1 photon
             d[i] += 1
             d[j] += 1
-            # load ith mode and jth mode with 1 photon
-            fs = state_on(d)
-            ev, _evec = closest_state_to(fs)
-            chi = (ev - (f1s[i] + f1s[j]))
-            chis[i][j] = chi
-            chis[j][i] = chi
+            # mode_idx_to_state keeps track of mode excitation index for each state
+            mode_idx_to_state[(i, j)] = len(double_excitation_states)
+            double_excitation_states.append(state_on(d))
 
-            if chi_prime:
-                d[j] += 1
-                fs = state_on(d)
-                ev, _evec = closest_state_to(fs)
-                chip = (ev - (f1s[i] + 2 * f1s[j]) - 2 * chis[i][j])
-                chips[i][j] = chip
-                chips[j][i] = chip
+    # Format the target states as a matrix where each column of the matrix
+    # is one of the target states
 
-    return np.array(f1s), np.array(chis)
+    single_excitation_states_mat = np.squeeze(
+        np.array([
+            single_excitation_states[ii]
+            for ii in range(len(single_excitation_states))
+        ])).T
+
+    double_excitation_states_mat = np.squeeze(
+        np.array([
+            double_excitation_states[ii]
+            for ii in range(len(double_excitation_states))
+        ])).T
+
+    # Find the inner product of each of the target state with each of the
+    # eigenvector; hence overlap has dimension of number of eigenvectors x number of target states
+    overlap_single = np.absolute(
+        np.array((Qobj(evecs_dag_mat) * Qobj(single_excitation_states_mat))))
+    overlap_double = np.absolute(
+        np.array((Qobj(evecs_dag_mat) * Qobj(double_excitation_states_mat))))
+
+    # find the index of the eigenvector that is closest to each target state
+    # hence evec_idx has shape of (number of target states, )
+    evec_idx_single = np.argsort(overlap_single, axis=0)[::-1, :][0]
+    evec_idx_double = np.argsort(overlap_double, axis=0)[::-1, :][0]
+
+    for i in range(N):
+        for j in range(i, N):
+            ev = evals[evec_idx_double[mode_idx_to_state[(i, j)]]]
+            chi = (ev - (evals[evec_idx_single[i]] + evals[evec_idx_single[j]]))
+            chis[i, j] = chi
+            chis[j, i] = chi
+
+    return evals[evec_idx_single], chis
