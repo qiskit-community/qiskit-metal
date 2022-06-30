@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file './main_window_ui.ui',
 # licensing of './main_window_ui.ui' applies.
 #
-# Created: Tue Jun 28 09:56:18 2022
+# Created: Thu Jun 30 16:30:19 2022
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -1041,7 +1041,7 @@ class Ui_MainWindow(object):
                                              None, -1))
 
 
-from .widgets.log_widget.log_metal import QTextEditLogger
 from .widgets.all_components.table_view_all_components import QTableView_AllComponents
+from .widgets.log_widget.log_metal import QTextEditLogger
 from .widgets.qlibrary_display.tree_view_qlibrary import TreeViewQLibrary
 from . import main_window_rc_rc
