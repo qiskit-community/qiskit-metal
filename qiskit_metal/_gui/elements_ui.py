@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file './elements_ui.ui',
 # licensing of './elements_ui.ui' applies.
 #
-# Created: Sat Jun 19 22:02:31 2021
+# Created: Thu Jun 30 16:30:20 2022
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -117,7 +117,7 @@ class Ui_ElementsWindow(object):
         self.verticalLayout_2.addLayout(self.verticalLayout)
         ElementsWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar()
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 841, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 841, 24))
         self.menubar.setObjectName("menubar")
         ElementsWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(ElementsWindow)
@@ -154,8 +154,8 @@ class Ui_ElementsWindow(object):
                                              "Force refresh the table ", None,
                                              -1))
         self.label.setText(
-            QtWidgets.QApplication.translate("ElementsWindow", "Element type: ",
-                                             None, -1))
+            QtWidgets.QApplication.translate("ElementsWindow",
+                                             "QGeometry type: ", None, -1))
         self.combo_element_type.setToolTip(
             QtWidgets.QApplication.translate(
                 "ElementsWindow",
