@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file './main_window_ui.ui',
 # licensing of './main_window_ui.ui' applies.
 #
-# Created: Tue Sep 28 17:11:04 2021
+# Created: Thu Jun 30 16:30:19 2022
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -48,16 +48,23 @@ class Ui_MainWindow(object):
         icon1.addPixmap(QtGui.QPixmap(":/main_view"), QtGui.QIcon.Normal,
                         QtGui.QIcon.On)
         self.tabWidget.addTab(self.mainViewTab, icon1, "")
-        self.tabElements = QtWidgets.QWidget()
-        self.tabElements.setObjectName("tabElements")
-        self.verticalLayout_10 = QtWidgets.QVBoxLayout(self.tabElements)
+        self.tabQGeometry = QtWidgets.QWidget()
+        self.tabQGeometry.setObjectName("tabQGeometry")
+        self.verticalLayout_10 = QtWidgets.QVBoxLayout(self.tabQGeometry)
         self.verticalLayout_10.setSpacing(0)
         self.verticalLayout_10.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_10.setObjectName("verticalLayout_10")
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap(":/elements"), QtGui.QIcon.Normal,
                         QtGui.QIcon.Off)
-        self.tabWidget.addTab(self.tabElements, icon2, "")
+        self.tabWidget.addTab(self.tabQGeometry, icon2, "")
+        self.tabNetList = QtWidgets.QWidget()
+        self.tabNetList.setObjectName("tabNetList")
+        self.verticalLayout_22 = QtWidgets.QVBoxLayout(self.tabNetList)
+        self.verticalLayout_22.setSpacing(0)
+        self.verticalLayout_22.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_22.setObjectName("verticalLayout_22")
+        self.tabWidget.addTab(self.tabNetList, icon2, "")
         self.verticalLayout.addWidget(self.tabWidget)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar()
@@ -521,7 +528,7 @@ class Ui_MainWindow(object):
         self.toolbar_renderers.addAction(self.actionQ3D)
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(2)
         QtCore.QObject.connect(self.actionElements,
                                QtCore.SIGNAL("toggled(bool)"),
                                MainWindow._set_element_tab)
@@ -642,14 +649,22 @@ class Ui_MainWindow(object):
             QtWidgets.QApplication.translate("MainWindow", "Main View", None,
                                              -1))
         self.tabWidget.setTabText(
-            self.tabWidget.indexOf(self.tabElements),
-            QtWidgets.QApplication.translate("MainWindow", "Elements", None,
+            self.tabWidget.indexOf(self.tabQGeometry),
+            QtWidgets.QApplication.translate("MainWindow", "QGeometry", None,
                                              -1))
         self.tabWidget.setTabToolTip(
-            self.tabWidget.indexOf(self.tabElements),
+            self.tabWidget.indexOf(self.tabQGeometry),
             QtWidgets.QApplication.translate(
-                "MainWindow", "Shoe the tables of elements of the the design",
-                None, -1))
+                "MainWindow", "Show the QGeometry elements of the design", None,
+                -1))
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.tabNetList),
+            QtWidgets.QApplication.translate("MainWindow", "Net List", None,
+                                             -1))
+        self.tabWidget.setTabToolTip(
+            self.tabWidget.indexOf(self.tabNetList),
+            QtWidgets.QApplication.translate("MainWindow", "Show the Net List",
+                                             None, -1))
         self.menuDesign.setToolTip(
             QtWidgets.QApplication.translate("MainWindow", "Design Menu", None,
                                              -1))
@@ -1026,7 +1041,7 @@ class Ui_MainWindow(object):
                                              None, -1))
 
 
-from .widgets.log_widget.log_metal import QTextEditLogger
 from .widgets.all_components.table_view_all_components import QTableView_AllComponents
+from .widgets.log_widget.log_metal import QTextEditLogger
 from .widgets.qlibrary_display.tree_view_qlibrary import TreeViewQLibrary
 from . import main_window_rc_rc

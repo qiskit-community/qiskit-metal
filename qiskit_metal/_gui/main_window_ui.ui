@@ -58,7 +58,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <property name="usesScrollButtons">
        <bool>false</bool>
@@ -96,21 +96,53 @@
         </property>
        </layout>
       </widget>
-      <widget class="QWidget" name="tabElements">
+      <widget class="QWidget" name="tabQGeometry">
        <attribute name="icon">
         <iconset resource="main_window_rc.qrc">
          <normaloff>:/elements</normaloff>:/elements</iconset>
        </attribute>
        <attribute name="title">
-        <string>Elements</string>
+        <string>QGeometry</string>
        </attribute>
        <attribute name="toolTip">
-        <string>Shoe the tables of elements of the the design</string>
+        <string>Show the QGeometry elements of the design</string>
        </attribute>
        <attribute name="whatsThis">
-        <string>Shoe the tables of elements of the the design</string>
+        <string>Show the QGeometry elements of the design</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_10">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tabNetList">
+       <attribute name="icon">
+        <iconset resource="main_window_rc.qrc">
+         <normaloff>:/elements</normaloff>:/elements</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>Net List</string>
+       </attribute>
+       <attribute name="toolTip">
+        <string>Show the Net List</string>
+       </attribute>
+       <attribute name="whatsThis">
+        <string>Show the Net List</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_22">
         <property name="spacing">
          <number>0</number>
         </property>
