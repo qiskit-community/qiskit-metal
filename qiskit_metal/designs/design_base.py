@@ -229,6 +229,11 @@ class QDesign():
         return self._qgeometry
 
     @property
+    def qnet(self) -> 'QNet':
+        """Returns the QNet (Use for advanced users only)"""
+        return self._qnet
+
+    @property
     def qcomponent_latest_assigned_id(self) -> int:
         """Return unique number for each instance.
 
