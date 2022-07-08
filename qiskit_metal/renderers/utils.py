@@ -2,24 +2,6 @@ import re
 from ..designs.design_base import QDesign
 
 
-def get_clean_name(name: str) -> str:
-    """Create a valid variable name from the given one by removing having it
-    begin with a letter or underscore followed by an unlimited string of
-    letters, numbers, and underscores.
-
-    Args:
-        name (str): Initial, possibly unusable, string to be modified.
-
-    Returns:
-        str: Variable name consistent with Python naming conventions.
-    """
-    # Remove invalid characters
-    name = re.sub("[^0-9a-zA-Z_]", "", name)
-    # Remove leading characters until we find a letter or underscore
-    name = re.sub("^[^a-zA-Z_]+", "", name)
-    return name
-
-
 def get_min_bounding_box(design: QDesign, qcomp_ids: list[int], case: int,
                          logger) -> tuple[float]:
     """
