@@ -2,19 +2,21 @@ from typing import Union
 from collections import defaultdict
 import pandas as pd
 import gmsh
+import numpy as np
 
 from ..renderer_base import QRendererAnalysis
 from ...designs.design_base import QDesign
-from .gmsh_utils import *
+from .gmsh_utils import Vec3D, Vec3DArray, line_width_offset_pts, render_path_curves
 from ...draw.basic import is_rectangle
-from ..utils import *
+from ..utils import get_min_bounding_box  # TODO: remove and put the new one written by @PritiShah
+from ...toolbox_metal.parsing import parse_value
+from ...toolbox_python.utility_functions import clean_name
 from ... import Dict
 
 
 class QGmshRenderer(QRendererAnalysis):
     """Extends QRendererAnalysis class to export designs to Gmsh using the Gmsh python API.
 
-    TODO: complete the list of default options
     Default Options:
         * x_buffer_width_mm -- Buffer between max/min x and edge of ground plane, in mm
         * y_buffer_width_mm -- Buffer between max/min y and edge of ground plane, in mm
@@ -24,6 +26,11 @@ class QGmshRenderer(QRendererAnalysis):
             * smoothing -- mesh smoothing value
             * nodes_per_2pi_curve -- number of nodes for every 2π radians of curvature
             * algorithm_3d -- value to indicate meshing algorithm used by Gmsh
+            * mesh_size_fields -- specify mesh size field parameters
+                * min_distance_from_edges -- min distance for mesh gradient generation
+                * max_distance_from_edges -- max distance for mesh gradient generation
+                * distance_delta -- delta change in distance with each consecutive step
+                * gradient_delta -- delta change in gradient with each consecutive step
             * num_threads -- number of threads for parallel meshing
             * export_dir -- path to mesh export directory
         * colors -- specify colors for the mesh elements, chips or layers
@@ -42,6 +49,10 @@ class QGmshRenderer(QRendererAnalysis):
                   smoothing=10,
                   nodes_per_2pi_curve=90,
                   algorithm_3d=10,
+                  mesh_size_fields=Dict(min_distance_from_edges="10um",
+                                        max_distance_from_edges="130um",
+                                        distance_delta="30um",
+                                        gradient_delta="3um"),
                   num_threads=8,
                   export_dir="."),
         colors=Dict(
@@ -250,20 +261,8 @@ class QGmshRenderer(QRendererAnalysis):
                 output += [self.parse_units_gmsh(i)]
             return type(_input)(output)
         elif isinstance(_input, str):
-            # TODO: make this more robust. Might be error prone in the future
-            if 'm' in _input:
-                digits = float(_input[:-2].strip())
-                unit = _input[-2:].strip()
-                try:
-                    value = digits * _units[unit]
-                except KeyError:
-                    value = 0.0
-                    self.logger.error(
-                        f"RENDERER ERROR: Unknown unit: {unit}. Use either 'cm', 'mm', 'um', or 'nm'."
-                    )
-            else:
-                value = float(_input)
-            return value
+            # FIXME: is this correct usage?
+            return parse_value(_input, self.design.variables)
         else:
             self.logger.error(
                 f"RENDERER ERROR: Expected int, str, list, np.ndarray, or tuple. Got: {type(_input)}."
@@ -281,7 +280,7 @@ class QGmshRenderer(QRendererAnalysis):
         vecs = Vec3DArray.make_vec3DArray(
             self.parse_units_gmsh(list(qc_shapely.coords)), qc_chip_z)
         qc_name = self.design._components[
-            junc["component"]].name + '_' + get_clean_name(junc["name"])
+            junc["component"]].name + '_' + clean_name(junc["name"])
 
         # Considering JJ will always be a rectangle
         v1, v2 = line_width_offset_pts(vecs.points[0],
@@ -327,7 +326,7 @@ class QGmshRenderer(QRendererAnalysis):
         curves = render_path_curves(vecs, qc_chip_z, qc_fillet, qc_width)
         surface = self.make_general_surface(curves)
         qc_name = self.design._components[
-            path["component"]].name + '_' + get_clean_name(path["name"])
+            path["component"]].name + '_' + clean_name(path["name"])
 
         if path.chip not in self.chip_subtract_dict:
             self.chip_subtract_dict[path.chip] = set()
@@ -356,8 +355,10 @@ class QGmshRenderer(QRendererAnalysis):
         for i, pt in enumerate(points[:-1]):
             p1 = gmsh.model.occ.addPoint(pt.x, pt.y,
                                          chip_z) if i == 0 else prev_tag
-            p2 = first_tag if i == (len(points)-2) else \
-                gmsh.model.occ.addPoint(points[i+1].x, points[i+1].y, chip_z)
+            p2 = first_tag if i == (len(points) -
+                                    2) else gmsh.model.occ.addPoint(
+                                        points[i + 1].x, points[i +
+                                                                1].y, chip_z)
             lines += [gmsh.model.occ.addLine(p1, p2)]
 
             prev_tag = p2
@@ -377,7 +378,7 @@ class QGmshRenderer(QRendererAnalysis):
         vecs = Vec3DArray.make_vec3DArray(
             self.parse_units_gmsh(list(qc_shapely.exterior.coords)), qc_chip_z)
         qc_name = self.design._components[
-            poly["component"]].name + '_' + get_clean_name(poly["name"])
+            poly["component"]].name + '_' + clean_name(poly["name"])
 
         if is_rectangle(qc_shapely):
             x_min, y_min, x_max, y_max = qc_shapely.bounds
@@ -425,7 +426,7 @@ class QGmshRenderer(QRendererAnalysis):
             chip_name = self.design.components[comp].options.chip
             qc_chip_z = self.parse_units_gmsh(self.design.get_chip_z(chip_name))
             rect_mid = mid + normal * gap / 2
-            rect_vec = Vec3D(rect_mid[0], rect_mid[1], qc_chip_z)
+            rect_vec = Vec3D(np.array([rect_mid[0], rect_mid[1], qc_chip_z]))
             # Assumption: pins only point in x or y directions
             # If this assumption is not satisfied, draw_rect_center no longer works -> must use draw_polyline
             if abs(normal[0]) > abs(normal[1]):
@@ -668,17 +669,34 @@ class QGmshRenderer(QRendererAnalysis):
     def define_mesh_size_fields(self):
         """Define size fields for mesh size.
         """
-        # TODO: How to define fields
-        # DEFINE FOR ALL CHIPS: remove hardcoded "main"
-        # 1. Find metal-dielectric interfaces
-        # 2. Extract 1D geometries of from the correcponding 2D ones
-        # 3. Define "Distance" and "Threshold" fields
-        # 4. Adjust the max_mesh_size option in QGmshRenderer accordingly
-
         min_mesh_size = self.parse_units_gmsh(self._options["mesh"]["min_size"])
         max_mesh_size = self.parse_units_gmsh(self._options["mesh"]["max_size"])
-        all_geoms = list(self.polys_dict["main"].values()) + list(self.paths_dict["main"].values()) +\
-                                    list(self.juncs_dict["main"].values())
+        grad_delta = self.parse_units_gmsh(
+            self._options["mesh"]["mesh_size_fields"]["gradient_delta"])
+        dist_min = self.parse_units_gmsh(
+            self._options["mesh"]["mesh_size_fields"]
+            ["min_distance_from_edges"])
+        dist_max = self.parse_units_gmsh(
+            self._options["mesh"]["mesh_size_fields"]
+            ["max_distance_from_edges"])
+        dist_delta = self.parse_units_gmsh(
+            self._options["mesh"]["mesh_size_fields"]["distance_delta"])
+        grad_steps = int((dist_max - dist_min) / dist_delta)
+        print(grad_steps)
+
+        all_geoms = []
+        poly_chips = [chip for chip in self.polys_dict.keys()]
+        path_chips = [chip for chip in self.paths_dict.keys()]
+        junc_chips = [chip for chip in self.juncs_dict.keys()]
+
+        for chip in poly_chips:
+            all_geoms += list(self.polys_dict[chip].values())
+        for chip in path_chips:
+            all_geoms += list(self.paths_dict[chip].values())
+        for chip in junc_chips:
+            all_geoms += list(self.juncs_dict[chip].values())
+
+        all_geoms += list(self.gnd_plane_dict.values())
 
         curve_loops = [gmsh.model.occ.getCurveLoops(geom) for geom in all_geoms]
         curves = []
@@ -687,50 +705,30 @@ class QGmshRenderer(QRendererAnalysis):
                 for curve in curve_tag_list:
                     curves += [curve]
 
-        # TODO: make this modular using loops and gradient steps
-        # for loop
-        # Distance -> Threshold
-        # options:
-        #     - gradient_dist_min
-        #     - gradient_dist_max
-        #     - gradient_step_count
-        #     - num_points_per_curve
-        # min_field = Min(thresh_field_list)
-        # setAsBackgroundField(min_field)
-        dist_field1 = gmsh.model.mesh.field.add("Distance")
-        gmsh.model.mesh.field.setNumbers(dist_field1, "CurvesList", curves)
-        gmsh.model.mesh.field.setNumber(dist_field1, "NumPointsPerCurve", 100)
+        thresh_fields = []
+        df = gmsh.model.mesh.field.add("Distance")
+        gmsh.model.mesh.field.setNumbers(df, "CurvesList", curves)
+        gmsh.model.mesh.field.setNumber(df, "NumPointsPerCurve", 100)
 
-        thresh_field1 = gmsh.model.mesh.field.add("Threshold")
-        gmsh.model.mesh.field.setNumber(thresh_field1, "InField", dist_field1)
-        gmsh.model.mesh.field.setNumber(thresh_field1, "SizeMin", min_mesh_size)
-        gmsh.model.mesh.field.setNumber(thresh_field1, "SizeMax", max_mesh_size)
-        gmsh.model.mesh.field.setNumber(thresh_field1, "DistMin", 0.01)
-        gmsh.model.mesh.field.setNumber(thresh_field1, "DistMax", 0.03)
-        gmsh.model.mesh.field.setNumber(thresh_field1, "Sigmoid", 1)
+        for i in range(grad_steps):
+            tf = gmsh.model.mesh.field.add("Threshold")
+            gmsh.model.mesh.field.setNumber(tf, "DistMin", dist_min)
+            gmsh.model.mesh.field.setNumber(
+                tf, "DistMax", dist_max - ((grad_steps - i - 1) * dist_delta))
+            gmsh.model.mesh.field.setNumber(tf, "Sigmoid", 1)
+            gmsh.model.mesh.field.setNumber(tf, "InField", df)
+            gmsh.model.mesh.field.setNumber(tf, "SizeMin",
+                                            (i * grad_delta) + min_mesh_size)
+            gmsh.model.mesh.field.setNumber(tf, "SizeMax", max_mesh_size)
 
-        dist_field2 = gmsh.model.mesh.field.add("Distance")
-        gmsh.model.mesh.field.setNumbers(dist_field2, "CurvesList", curves)
-        gmsh.model.mesh.field.setNumber(dist_field2, "NumPointsPerCurve", 100)
-
-        thresh_field2 = gmsh.model.mesh.field.add("Threshold")
-        gmsh.model.mesh.field.setNumber(thresh_field2, "InField", dist_field2)
-        gmsh.model.mesh.field.setNumber(thresh_field2, "SizeMin",
-                                        3 * min_mesh_size)
-        gmsh.model.mesh.field.setNumber(thresh_field2, "SizeMax", max_mesh_size)
-        gmsh.model.mesh.field.setNumber(thresh_field2, "DistMin", 0.03)
-        gmsh.model.mesh.field.setNumber(thresh_field2, "DistMax", 0.06)
-        gmsh.model.mesh.field.setNumber(thresh_field2, "Sigmoid", 1)
+            thresh_fields += [tf]
 
         min_field = gmsh.model.mesh.field.add("Min")
-        gmsh.model.mesh.field.setNumbers(min_field, "FieldsList",
-                                         [thresh_field1, thresh_field2])
+        gmsh.model.mesh.field.setNumbers(min_field, "FieldsList", thresh_fields)
 
         gmsh.model.mesh.field.setAsBackgroundMesh(min_field)
 
         gmsh.option.setNumber("Mesh.MeshSizeExtendFromBoundary", 0)
-        # gmsh.option.setNumber("Mesh.MeshSizeFromPoints", 0)
-        # gmsh.option.setNumber("Mesh.MeshSizeFromCurvature", 0)
 
     def define_mesh_properties(self):
         """Define properties for mesh depending on renderer options.
@@ -748,13 +746,21 @@ class QGmshRenderer(QRendererAnalysis):
         gmsh.option.setNumber("Mesh.MeshSizeMin", min_mesh_size)
         gmsh.option.setNumber("Mesh.MeshSizeMax", max_mesh_size)
 
-    def add_mesh(self, dim: int = 3):
+    def add_mesh(self,
+                 dim: int = 3,
+                 intelli_mesh: bool = True,
+                 custom_mesh_fn: callable = None):
         """Generate mesh for all geometries.
 
         Args:
             dim (int, optional): Specify the dimension of mesh. Defaults to 3.
         """
-        self.define_mesh_size_fields()
+        if intelli_mesh:
+            if custom_mesh_fn is None:
+                self.define_mesh_size_fields()
+            else:
+                custom_mesh_fn()
+
         self.define_mesh_properties()
         gmsh.model.mesh.generate(dim=dim)
 
@@ -765,8 +771,9 @@ class QGmshRenderer(QRendererAnalysis):
         sub_color = color_dict(self._options["colors"]["sub"])
 
         for chip in list(self.design.chips.keys()):
-            all_metal = list(self.polys_dict[chip].values()) + list(self.paths_dict[chip].values()) +\
-                                [self.gnd_plane_dict[chip]]
+            all_metal = list(self.polys_dict[chip].values()) + list(
+                self.paths_dict[chip].values()) + [self.gnd_plane_dict[chip]]
+
             jjs = list(self.juncs_dict[chip].values())
             substrate = self.substrate_dict[chip]
             sub_surfaces = list(gmsh.model.occ.getSurfaceLoops(substrate)[1][0])
