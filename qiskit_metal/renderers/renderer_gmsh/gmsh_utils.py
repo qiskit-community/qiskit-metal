@@ -11,9 +11,19 @@ class Vec3D:
     Returns:
         Vec3D: A 3-dimensional vector object
     """
-    x: float
-    y: float
-    z: float
+    vec: np.ndarray
+
+    @property
+    def x(self):
+        return self.vec[0]
+
+    @property
+    def y(self):
+        return self.vec[1]
+
+    @property
+    def z(self):
+        return self.vec[2]
 
     def mag(self) -> float:
         """Magnitude of the vector
@@ -21,7 +31,7 @@ class Vec3D:
         Returns:
             float: magnitude of the vector calculated by Frobenius norm
         """
-        return np.round(np.sqrt(self.x**2 + self.y**2 + self.z**2), decimals=9)
+        return np.round(np.linalg.norm(self.vec), decimals=9)
 
     def normalize(self):
         """Normalize a vector
@@ -29,8 +39,7 @@ class Vec3D:
         Returns:
             Vec3D: normalized vector
         """
-        mag = self.mag()
-        return Vec3D(x=self.x / mag, y=self.y / mag, z=self.z / mag)
+        return Vec3D(self.vec / self.mag())
 
     def add(self, other):
         """Adds two vectors
@@ -41,7 +50,7 @@ class Vec3D:
         Returns:
             Vec3D: resultant vector
         """
-        return Vec3D(x=self.x + other.x, y=self.y + other.y, z=self.z + other.z)
+        return Vec3D(self.vec + other.vec)
 
     def dot(self, other) -> float:
         """Dot product of two vectors
@@ -52,9 +61,7 @@ class Vec3D:
         Returns:
             float: result from dot product
         """
-        return np.round(
-            (self.x * other.x) + (self.y * other.y) + (self.z * other.z),
-            decimals=9)
+        return np.round(self.vec.dot(other.vec), decimals=9)
 
     def cross(self, other):
         """Cross product of two vectors
@@ -65,11 +72,9 @@ class Vec3D:
         Returns:
             Vec3D: resultant vector
         """
-        self_norm = self.normalize()
-        other_norm = other.normalize()
-        return Vec3D(x=self_norm.y * other_norm.z - self_norm.z * other_norm.y,
-                     y=self_norm.z * other_norm.z - self_norm.x * other_norm.z,
-                     z=self_norm.x * other_norm.y - self_norm.y * other_norm.x)
+        self_norm = self.normalize().vec
+        other_norm = other.normalize().vec
+        return Vec3D(np.cross(self_norm, other_norm))
 
     def sub(self, other):
         """Difference between two vectors
@@ -80,7 +85,7 @@ class Vec3D:
         Returns:
             Vec3D: resultant vector
         """
-        return Vec3D(x=self.x - other.x, y=self.y - other.y, z=self.z - other.z)
+        return Vec3D(self.vec - other.vec)
 
     def scale(self, value: Union[int, float]):
         """Multiply the vector with a scalar
@@ -91,7 +96,7 @@ class Vec3D:
         Returns:
             Vec3D: resultant vector
         """
-        return Vec3D(x=self.x * value, y=self.y * value, z=self.z * value)
+        return Vec3D(self.vec * value)
 
     def dist(self, other) -> float:
         """Calculate Euler distance between two vectors
@@ -102,9 +107,7 @@ class Vec3D:
         Returns:
             float: Euler distance
         """
-        return np.round(np.sqrt((self.x - other.x)**2 + (self.y - other.y)**2 +
-                                (self.z - other.z)**2),
-                        decimals=9)
+        return np.round(np.sqrt(np.sum((self.vec - other.vec)**2)), decimals=9)
 
     def translate(self, translate_vec, ret_new_obj: bool = False):
         """Translate a vector
@@ -119,9 +122,7 @@ class Vec3D:
                                 depending on "ret_new_obj"
         """
         if not ret_new_obj:
-            self.x += translate_vec.x
-            self.y += translate_vec.y
-            self.z += translate_vec.z
+            self.vec += translate_vec.vec
         else:
             return self.add(translate_vec)
 
@@ -148,39 +149,31 @@ class Vec3D:
                                 depending on "ret_new_obj"
         """
 
-        x = self.x
-        y = self.y
-        z = self.z
         if ax:
-            new_y = (y - cvec.y) * np.cos(angle) - (
-                z - cvec.z) * np.sin(angle) + cvec.y
-            new_z = (y - cvec.y) * np.sin(angle) + (
-                z - cvec.z) * np.cos(angle) + cvec.z
-            y = new_y
-            z = new_z
+            rot_x = np.array([[1, 0, 0], [0, np.cos(angle), -np.sin(angle)],
+                              [0, np.sin(angle),
+                               np.cos(angle)]])
+            translate_vec = np.array([0, cvec.y, cvec.z])
+            new_vec = rot_x.dot((self.vec - translate_vec)) + translate_vec
 
         if ay:
-            new_z = (z - cvec.z) * np.cos(angle) - (
-                x - cvec.x) * np.sin(angle) + cvec.z
-            new_x = (z - cvec.z) * np.sin(angle) + (
-                x - cvec.x) * np.cos(angle) + cvec.x
-            x = new_x
-            z = new_z
+            rot_y = np.array([[np.cos(angle), 0,
+                               np.sin(angle)], [0, 1, 0],
+                              [-np.sin(angle), 0,
+                               np.cos(angle)]])
+            translate_vec = np.array([cvec.x, 0, cvec.z])
+            new_vec = rot_y.dot((self.vec - translate_vec)) + translate_vec
 
         if az:
-            new_x = (x - cvec.x) * np.cos(angle) - (
-                y - cvec.y) * np.sin(angle) + cvec.x
-            new_y = (x - cvec.x) * np.sin(angle) + (
-                y - cvec.y) * np.cos(angle) + cvec.y
-            y = new_y
-            x = new_x
+            rot_z = np.array([[np.cos(angle), -np.sin(angle), 0],
+                              [np.sin(angle), np.cos(angle), 0], [0, 0, 1]])
+            translate_vec = np.array([cvec.x, cvec.y, 0])
+            new_vec = rot_z.dot((self.vec - translate_vec)) + translate_vec
 
         if not ret_new_obj:
-            self.x = x
-            self.y = y
-            self.z = z
+            self.vec = new_vec
         else:
-            return Vec3D(x, y, z)
+            return Vec3D(new_vec)
 
     def angle_elevation(self) -> float:
         """Returns the elevation angle of vector
@@ -188,7 +181,7 @@ class Vec3D:
         Returns:
             float: elevation angle in radians
         """
-        unit_z = Vec3D(x=0, y=0, z=1)
+        unit_z = Vec3D(np.array([0, 0, 1]))
         unit_self = self.normalize()
         return np.arccos(unit_self.dot(unit_z))
 
@@ -280,10 +273,10 @@ class Vec3DArray:
         vecs = []
         for xyz in points:
             if len(xyz) > 2:
-                vecs.append(Vec3D(x=xyz[0], y=xyz[1], z=xyz[2]))
+                vecs.append(Vec3D(np.array(xyz)))
             elif len(xyz) == 2:
                 if chip_z is not None:
-                    vecs.append(Vec3D(x=xyz[0], y=xyz[1], z=chip_z))
+                    vecs.append(Vec3D(np.array([xyz[0], xyz[1], chip_z])))
                 else:
                     raise TypeError(
                         f"Expected a chip_z value for 2D geometry, found NoneType."
@@ -339,12 +332,9 @@ def line_width_offset_pts(pt_vec: Vec3D,
     sin_t = np.round(np.sin(perp_angle), decimals=9)
     r = width / 2
 
-    v1 = Vec3D(x=np.round(pt_vec.x + r * cos_t, decimals=9),
-               y=np.round(pt_vec.y + r * sin_t, decimals=9),
-               z=0)
-    v2 = Vec3D(x=np.round(pt_vec.x - r * cos_t, decimals=9),
-               y=np.round(pt_vec.y - r * sin_t, decimals=9),
-               z=0)
+    offset_vec = Vec3D(np.array([r * cos_t, r * sin_t, 0]))
+    v1 = pt_vec.add(offset_vec)
+    v2 = pt_vec.sub(offset_vec)
 
     if ret_pts:
         pts = vecs_to_gmsh_points([v1, v2], chip_z)
@@ -373,17 +363,15 @@ def arc_width_offset_pts(vec1: Vec3D, vec3: Vec3D, angle: float, width: float,
     sin_t = np.round(np.sin(perp_angle), decimals=9)
     r = width / 2
 
-    v1 = Vec3D(x=vec1.x, y=vec1.y + r, z=0)
-    v2 = Vec3D(x=vec1.x, y=vec1.y - r, z=0)
+    offset1 = Vec3D(np.array([0, r, 0]))
+    v1 = vec1.add(offset1)
+    v2 = vec1.sub(offset1)
 
     sign = 1 if angle == np.pi / 2 else -1
+    offset2 = Vec3D(np.array([r * cos_t * sign, r * sin_t * sign, 0]))
 
-    v3 = Vec3D(x=np.round(vec3.x + (r * cos_t * sign), decimals=9),
-               y=np.round(vec3.y + (r * sin_t * sign), decimals=9),
-               z=0)
-    v4 = Vec3D(x=np.round(vec3.x - (r * cos_t * sign), decimals=9),
-               y=np.round(vec3.y - (r * sin_t * sign), decimals=9),
-               z=0)
+    v3 = vec3.add(offset2)
+    v4 = vec3.sub(offset2)
 
     pts = vecs_to_gmsh_points([v1, v2, v3, v4], chip_z)
     return pts
@@ -411,9 +399,9 @@ def make_arc_vecs(angle: float, fillet: float) -> tuple[Vec3D, Vec3D, Vec3D]:
     p3x = np.round(intercept * cos_t, decimals=9)
     p3y = np.round(intercept * sin_t, decimals=9)
 
-    v1 = Vec3D(x=p1x, y=p1y, z=0)
-    v2 = Vec3D(x=p2x, y=p2y, z=0)
-    v3 = Vec3D(x=p3x, y=p3y, z=0)
+    v1 = Vec3D(np.array([p1x, p1y, 0]))
+    v2 = Vec3D(np.array([p2x, p2y, 0]))
+    v3 = Vec3D(np.array([p3x, p3y, 0]))
 
     return v1, v2, v3
 
@@ -541,10 +529,16 @@ def render_path_curves(vecs: Vec3DArray,
         pv2 = vecs.path_vecs[i]
         angle12 = vecs.get_angle_between(i - 1, i)
 
+        pt_vec_prev = vecs.points[i - 1]
+        pt_vec_next = vecs.points[i + 1]
+        is_filleted = True if (v.dist(pt_vec_prev) > 2 * fillet and
+                               v.dist(pt_vec_next) > 2 * fillet) else False
+        # TODO: fix the swapping in recent_pts for filleted to non-filleted edges
+
         if fillet < 0.0:
             raise ValueError(f"Expected positive fillet radius, got {fillet}.")
 
-        elif fillet > 0.0:
+        elif fillet > 0.0 and is_filleted:
             if np.allclose(angle12, np.pi, rtol=straight_line_tol):
                 p1, p2 = line_width_offset_pts(v, pv2, width, chip_z)
                 recent_pts += [p1, p2]
