@@ -595,7 +595,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         """Test angle_azimuth in the Vec3D class in utility.py"""
         vec3d = Vec3D()
 
-        expected = np.pi / 2
+        expected = 0
         actual = vec3d.angle_azimuth([1, 0, 0])
         self.assertAlmostEqualRel(actual, expected, rel_tol=1e-3)
 
