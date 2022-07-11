@@ -10,7 +10,7 @@ from .gmsh_utils import Vec3D, Vec3DArray, line_width_offset_pts, render_path_cu
 from ...draw.basic import is_rectangle
 from ..utils import get_min_bounding_box  # TODO: remove and put the new one written by @PritiShah
 from ...toolbox_metal.parsing import parse_value
-from ...toolbox_python.utility_functions import clean_name
+from ...toolbox_python.utility_functions import clean_name, bad_fillet_idxs
 from ... import Dict
 
 
@@ -44,7 +44,7 @@ class QGmshRenderer(QRendererAnalysis):
         x_buffer_width_mm=0.2,
         # Buffer between max/min y and edge of ground plane, in mm
         y_buffer_width_mm=0.2,
-        mesh=Dict(max_size="100um",
+        mesh=Dict(max_size="50um",
                   min_size="3um",
                   smoothing=10,
                   nodes_per_2pi_curve=90,
@@ -160,7 +160,6 @@ class QGmshRenderer(QRendererAnalysis):
         self.paths_dict = defaultdict(dict)
         self.juncs_dict = defaultdict(dict)
 
-        # TODO: sequence of events to perform
         self.render_tables(skip_junction=skip_junctions)
         self.add_endcaps(open_pins=open_pins)
 
@@ -294,10 +293,12 @@ class QGmshRenderer(QRendererAnalysis):
                                        qc_chip_z,
                                        ret_pts=False)
 
-        v1_v3 = v1.dist(v3)
-        v1_v4 = v1.dist(v4)
+        v1_v3 = Vec3D.get_distance(v1, v3)
+        v1_v4 = Vec3D.get_distance(v1, v4)
         vecs = [v1, v2, v4, v3, v1] if v1_v3 <= v1_v4 else [v1, v2, v3, v4, v1]
-        pts = [gmsh.model.occ.addPoint(v.x, v.y, qc_chip_z) for v in vecs[:-1]]
+        pts = [
+            gmsh.model.occ.addPoint(v[0], v[1], qc_chip_z) for v in vecs[:-1]
+        ]
         pts += [pts[0]]
         lines = []
         for i, p in enumerate(pts[:-1]):
@@ -323,7 +324,9 @@ class QGmshRenderer(QRendererAnalysis):
         qc_chip_z = self.parse_units_gmsh(self.design.get_chip_z(path.chip))
         vecs = Vec3DArray.make_vec3DArray(
             self.parse_units_gmsh(list(qc_shapely.coords)), qc_chip_z)
-        curves = render_path_curves(vecs, qc_chip_z, qc_fillet, qc_width)
+        bad_fillets = bad_fillet_idxs(qc_shapely.coords, qc_fillet)
+        curves = render_path_curves(vecs, qc_chip_z, qc_fillet, qc_width,
+                                    bad_fillets)
         surface = self.make_general_surface(curves)
         qc_name = self.design._components[
             path["component"]].name + '_' + clean_name(path["name"])
@@ -339,11 +342,11 @@ class QGmshRenderer(QRendererAnalysis):
         else:
             self.paths_dict[path.chip][qc_name] = surface
 
-    def make_poly_surface(self, points: list[Vec3D], chip_z: float) -> int:
+    def make_poly_surface(self, points: list[np.ndarray], chip_z: float) -> int:
         """Make a Gmsh surface for creating poly type QGeometries
 
         Args:
-            points (list[Vec3D]): A list of 3D vectors (Vec3D) defining polygon
+            points (list[np.ndarray]): A list of 3D vectors (np.ndarray) defining polygon
             chip_z (float): z-coordinate of the chip
 
         Returns:
@@ -353,12 +356,12 @@ class QGmshRenderer(QRendererAnalysis):
         first_tag = -1
         prev_tag = -1
         for i, pt in enumerate(points[:-1]):
-            p1 = gmsh.model.occ.addPoint(pt.x, pt.y,
+            p1 = gmsh.model.occ.addPoint(pt[0], pt[1],
                                          chip_z) if i == 0 else prev_tag
             p2 = first_tag if i == (len(points) -
                                     2) else gmsh.model.occ.addPoint(
-                                        points[i + 1].x, points[i +
-                                                                1].y, chip_z)
+                                        points[i + 1][0], points[i +
+                                                                 1][1], chip_z)
             lines += [gmsh.model.occ.addLine(p1, p2)]
 
             prev_tag = p2
@@ -426,21 +429,21 @@ class QGmshRenderer(QRendererAnalysis):
             chip_name = self.design.components[comp].options.chip
             qc_chip_z = self.parse_units_gmsh(self.design.get_chip_z(chip_name))
             rect_mid = mid + normal * gap / 2
-            rect_vec = Vec3D(np.array([rect_mid[0], rect_mid[1], qc_chip_z]))
+            rect_vec = np.array([rect_mid[0], rect_mid[1], qc_chip_z])
             # Assumption: pins only point in x or y directions
             # If this assumption is not satisfied, draw_rect_center no longer works -> must use draw_polyline
             if abs(normal[0]) > abs(normal[1]):
                 dx = gap
                 dy = width + 2 * gap
-                rect_x = rect_vec.x - dx / 2
-                rect_y = rect_vec.y - dy / 2
-                rect_z = rect_vec.z  # TODO: For 3D this will change
+                rect_x = rect_vec[0] - dx / 2
+                rect_y = rect_vec[1] - dy / 2
+                rect_z = rect_vec[2]  # TODO: For 3D this will change
             else:
                 dy = gap
                 dx = width + 2 * gap
-                rect_x = rect_vec.x - dx / 2
-                rect_y = rect_vec.y - dy / 2
-                rect_z = rect_vec.z  # TODO: For 3D this will change
+                rect_x = rect_vec[0] - dx / 2
+                rect_y = rect_vec[1] - dy / 2
+                rect_z = rect_vec[2]  # TODO: For 3D this will change
 
             endcap = gmsh.model.occ.addRectangle(x=rect_x,
                                                  y=rect_y,
@@ -626,7 +629,7 @@ class QGmshRenderer(QRendererAnalysis):
                 all_sfs += [tag]
 
             # Make physical groups for ground plane
-            ph_gnd_name = "ground_plane"
+            ph_gnd_name = "ground_plane" + '_' + chip
             gnd_tag = self.gnd_plane_dict[chip]
             all_sfs += [gnd_tag]
             ph_gnd_tag = gmsh.model.addPhysicalGroup(2, [gnd_tag],
@@ -634,7 +637,7 @@ class QGmshRenderer(QRendererAnalysis):
             self.physical_groups[chip][ph_gnd_name] = ph_gnd_tag
 
             # Make physical groups for substrate (volume)
-            ph_sub_name = "dielectric_substrate"
+            ph_sub_name = "dielectric_substrate" + '_' + chip
             sub_tag = self.substrate_dict[chip]
             ph_sub_tag = gmsh.model.addPhysicalGroup(3, [sub_tag],
                                                      name=ph_sub_name)
@@ -682,7 +685,6 @@ class QGmshRenderer(QRendererAnalysis):
         dist_delta = self.parse_units_gmsh(
             self._options["mesh"]["mesh_size_fields"]["distance_delta"])
         grad_steps = int((dist_max - dist_min) / dist_delta)
-        print(grad_steps)
 
         all_geoms = []
         poly_chips = [chip for chip in self.polys_dict.keys()]
@@ -798,7 +800,9 @@ class QGmshRenderer(QRendererAnalysis):
             filename (str): name of the file to be exported to.
         """
         # TODO: Can gmsh support other mesh exporting formats?
-        if ".msh" not in filename:
+        valid_file_exts = ["msh", "msh2", "mesh"]
+        file_ext = filename.split(".")[-1]
+        if file_ext not in valid_file_exts:
             self.logger.error(
                 "RENDERER ERROR: filename needs to have a .msh extension. Exporting failed."
             )
@@ -812,7 +816,6 @@ class QGmshRenderer(QRendererAnalysis):
 
         gmsh.write(path)
 
-    # FIXME: This doesn't work right now!!!
     def save_screenshot(self, path: str = None, show: bool = True):
         """Save the screenshot.
 
@@ -820,11 +823,15 @@ class QGmshRenderer(QRendererAnalysis):
             path (str, optional): Path to save location.  Defaults to None.
             show (bool, optional): Whether or not to display the screenshot.  Defaults to True.
         """
-        if ".png" in path:
-            gmsh.write(path)
-        else:
+        valid_file_exts = ["jpg", "png", "gif", "bmp"]
+        file_ext = path.split(".")[-1]
+        if file_ext not in valid_file_exts:
             self.logger.error(
-                f"Expected .png format, got .{path.split('.')[-1]}.")
+                f"Expected png, jpg, bmp, or gif format, got .{path.split('.')[-1]}."
+            )
+
+        # FIXME: This doesn't work right now!!!
+        gmsh.write(path)
 
     def render_component(self, component):
         pass
