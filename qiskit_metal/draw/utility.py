@@ -831,7 +831,7 @@ class Vec3D(Vector):
         return np.arctan2(*vec[:2])
 
     @staticmethod
-    def two_points_described(points2D: list[np.ndarray]) -> Tuple[np.ndarray]:
+    def two_points_described(points2D: List[np.ndarray]) -> Tuple[np.ndarray]:
         raise NotImplementedError(
             "This method does not need to be implemented for 3D.")
 
