@@ -828,7 +828,7 @@ class Vec3D(Vector):
         Returns:
             float: azimuthal angle of vector
         """
-        return np.arctan2(*vec[:2])
+        return np.arctan2(*vec[:2][::-1])
 
     @staticmethod
     def two_points_described(points2D: List[np.ndarray]) -> Tuple[np.ndarray]:
