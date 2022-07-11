@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, List
 from collections import defaultdict
 import pandas as pd
 import gmsh
@@ -222,11 +222,11 @@ class QGmshRenderer(QRendererAnalysis):
             self.logger.error(
                 f'RENDERER ERROR: Unkown element type: {table_type}')
 
-    def make_general_surface(self, curves: list[int]) -> int:
+    def make_general_surface(self, curves: List[int]) -> int:
         """Create a general Gmsh surface.
 
         Args:
-            curves (list[int]): List of Gmsh curves to make surface
+            curves (List[int]): List of Gmsh curves to make surface
 
         Returns:
             int: tag of created Gmsh surface
@@ -342,11 +342,11 @@ class QGmshRenderer(QRendererAnalysis):
         else:
             self.paths_dict[path.chip][qc_name] = surface
 
-    def make_poly_surface(self, points: list[np.ndarray], chip_z: float) -> int:
+    def make_poly_surface(self, points: List[np.ndarray], chip_z: float) -> int:
         """Make a Gmsh surface for creating poly type QGeometries
 
         Args:
-            points (list[np.ndarray]): A list of 3D vectors (np.ndarray) defining polygon
+            points (List[np.ndarray]): A list of 3D vectors (np.ndarray) defining polygon
             chip_z (float): z-coordinate of the chip
 
         Returns:
@@ -453,13 +453,13 @@ class QGmshRenderer(QRendererAnalysis):
             self.chip_subtract_dict[chip_name].add(endcap)
 
     def render_chips(self,
-                     chips: Union[str, list[str]] = [],
+                     chips: Union[str, List[str]] = [],
                      draw_sample_holder: bool = True,
                      box_plus_buffer: bool = True):
         """Render all chips of the design. calls `render_chip` to render the actual geometries
 
         Args:
-            chips (Union[str, list[str]], optional): List of chips to render.
+            chips (Union[str, List[str]], optional): List of chips to render.
                                 Renders all if [] or "all" is given. Defaults to [].
             draw_sample_holder (bool, optional): To draw the sample holder box. Defaults to True.
             box_plus_buffer (bool, optional): For adding buffer to chip dimensions. Defaults to True.
@@ -473,7 +473,7 @@ class QGmshRenderer(QRendererAnalysis):
                 chip_list = list(self.design.chips.keys())
             else:
                 raise TypeError(
-                    "Expected list of chip names 'list[str]', found 'str'.")
+                    "Expected list of chip names 'List[str]', found 'str'.")
         else:
             if len(chips) == 0:
                 chip_list = list(self.design.chips.keys())
