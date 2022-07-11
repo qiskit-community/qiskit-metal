@@ -632,7 +632,7 @@ class Vec3D(Vector):
         return np.round(np.linalg.norm(vec), decimals=9)
 
     @staticmethod
-    def normed(vec: np.adarray):
+    def normed(vec: np.ndarray):
         """Normed vector
 
         Args:
@@ -641,6 +641,8 @@ class Vec3D(Vector):
         Returns:
             np.ndarray: normed vector
         """
+        if not isinstance(vec, np.ndarray):
+            vec = np.array(vec)
         return vec / Vec3D.norm(vec)
 
     @staticmethod
@@ -654,10 +656,14 @@ class Vec3D(Vector):
         Returns:
             np.ndarray: resultant vector
         """
+        if not isinstance(vec, np.ndarray):
+            vec = np.array(vec)
+        if not isinstance(other, np.ndarray):
+            other = np.array(other)
         return (vec + other)
 
     @staticmethod
-    def dot(vec: np.adarray, other: np.ndarray) -> float:
+    def dot(vec: np.ndarray, other: np.ndarray) -> float:
         """Dot product of two vectors
 
         Args:
@@ -667,6 +673,10 @@ class Vec3D(Vector):
         Returns:
             float: result from dot product
         """
+        if not isinstance(vec, np.ndarray):
+            vec = np.array(vec)
+        if not isinstance(other, np.ndarray):
+            other = np.array(other)
         return np.round(vec.dot(other), decimals=9)
 
     @staticmethod
@@ -693,6 +703,10 @@ class Vec3D(Vector):
         Returns:
             np.ndarray: resultant vector
         """
+        if not isinstance(vec, np.ndarray):
+            vec = np.array(vec)
+        if not isinstance(other, np.ndarray):
+            other = np.array(other)
         return (vec - other)
 
     @staticmethod
@@ -706,6 +720,8 @@ class Vec3D(Vector):
         Returns:
             np.ndarray: resultant vector
         """
+        if not isinstance(vec, np.ndarray):
+            vec = np.array(vec)
         return (vec * value)
 
     @staticmethod
@@ -719,6 +735,10 @@ class Vec3D(Vector):
         Returns:
             float: Euler distance
         """
+        if not isinstance(vec, np.ndarray):
+            vec = np.array(vec)
+        if not isinstance(other, np.ndarray):
+            other = np.array(other)
         return np.round(Vec3D.norm(vec - other), decimals=9)
 
     @staticmethod
@@ -754,6 +774,10 @@ class Vec3D(Vector):
         Returns:
             np.ndarray: return a new np.ndarray object
         """
+        if not isinstance(vec, np.ndarray):
+            vec = np.array(vec)
+        if not isinstance(cvec, np.ndarray):
+            cvec = np.array(cvec)
 
         if ax:
             rot_x = np.array([[1, 0, 0], [0,
@@ -804,7 +828,7 @@ class Vec3D(Vector):
         Returns:
             float: azimuthal angle of vector
         """
-        return np.arctan2(vec[:2])
+        return np.arctan2(*vec[:2])
 
     @staticmethod
     def two_points_described(points2D: list[np.ndarray]) -> Tuple[np.ndarray]:
@@ -828,3 +852,8 @@ class Vec3D(Vector):
         raise NotImplementedError(
             """This method is implemented by 'rotate' method for 3D vector.
             Please use that instead.""")
+
+    @staticmethod
+    def snap_unit_vector(vec_n: Vec2D, flip: bool = False) -> Vec2D:
+        raise NotImplementedError(
+            """This method is not implemented for 3D vector.""")
