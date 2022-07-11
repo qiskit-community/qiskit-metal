@@ -570,7 +570,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
                          radians=np.radians(-45)))
 
         for i in range(2):
-            for j in range(2):
+            for j in range(3):
                 self.assertAlmostEqualRel(actual[i][j],
                                           expected[i][j],
                                           rel_tol=1e-3)
@@ -752,6 +752,87 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
         for i in range(2):
             self.assertAlmostEqualRel(actual[i], expected[i], rel_tol=1e-3)
+
+    def test_draw_vec3d_add(self):
+        """Test add in the Vec3D class in utility.py"""
+        vec3d = Vec3D()
+
+        expected = [[3, 5, 6], [4.5, 6.75, 10.635]]
+        actual = []
+        actual.append(vec3d.add([1, 2, 5], [2, 3, 1]))
+        actual.append(vec3d.add([1, 3.75, 5.13], [3.5, 3, 5.505]))
+        for i in range(2):
+            for j in range(3):
+                self.assertAlmostEqualRel(actual[i][j],
+                                          expected[i][j],
+                                          rel_tol=1e-3)
+
+    def test_draw_vec3d_sub(self):
+        """Test sub in the Vec3D class in utility.py"""
+        vec3d = Vec3D()
+
+        expected = [[3, 5, 6], [4, 6.75, 10.635]]
+        actual = []
+        actual.append(vec3d.sub([5, 8, 7], [2, 3, 1]))
+        actual.append(vec3d.sub([7.5, 9.75, 16.14], [3.5, 3, 5.505]))
+        for i in range(2):
+            for j in range(3):
+                self.assertAlmostEqualRel(actual[i][j],
+                                          expected[i][j],
+                                          rel_tol=1e-3)
+
+    def test_draw_vec3d_scale(self):
+        """Test scale in the Vec3D class in utility.py"""
+        vec3d = Vec3D()
+
+        expected = [[2, 4, 8], [4, 14, 16]]
+        actual = []
+        actual.append(vec3d.scale([1, 2, 4], 2))
+        actual.append(vec3d.scale([1, 3.5, 4], 4))
+        for i in range(2):
+            for j in range(3):
+                self.assertAlmostEqualRel(actual[i][j],
+                                          expected[i][j],
+                                          rel_tol=1e-3)
+
+    def test_draw_vec3d_translate(self):
+        """Test translate in the Vec3D class in utility.py"""
+        vec3d = Vec3D()
+
+        expected = [[3, -1, 4], [4.5, 0.75, -1.43]]
+        actual = []
+        actual.append(vec3d.translate([1, 2, 3], [2, -3, 1]))
+        actual.append(vec3d.translate([1, 3.75, 5.57], [3.5, -3, -7]))
+        for i in range(2):
+            for j in range(3):
+                self.assertAlmostEqualRel(actual[i][j],
+                                          expected[i][j],
+                                          rel_tol=1e-3)
+
+    def test_draw_vec3d_dot(self):
+        """Test dot in the Vec3D class in utility.py"""
+        vec3d = Vec3D()
+
+        expected = [2, 0]
+        actual = []
+        actual.append(vec3d.dot([1, 0, 0], [2, 0, 0]))
+        actual.append(vec3d.dot([1, 0, 0], [0, 1, 0]))
+        for i in range(2):
+            self.assertAlmostEqualRel(actual[i], expected[i], rel_tol=1e-3)
+
+    def test_draw_vec3d_cross(self):
+        """Test cross in the Vec3D class in utility.py"""
+        vec3d = Vec3D()
+
+        expected = [[-1, 2, -1], [7.875, 12.75, -10.125]]
+        actual = []
+        actual.append(vec3d.cross([1, 2, 3], [2, 3, 4]))
+        actual.append(vec3d.cross([1, 3.75, 5.5], [3.5, 3, 6.5]))
+        for i in range(2):
+            for j in range(3):
+                self.assertAlmostEqualRel(actual[i][j],
+                                          expected[i][j],
+                                          rel_tol=1e-3)
 
 
 if __name__ == '__main__':
