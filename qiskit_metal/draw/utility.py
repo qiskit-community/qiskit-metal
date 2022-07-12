@@ -37,6 +37,9 @@ __all__ = [
     'vec_unit_planar', 'Vector'
 ]
 
+# Used for numpy.round()
+PRECISION = 10
+
 #########################################################################
 # Shapely Geometry Basic Coordinates
 
@@ -453,6 +456,7 @@ class Vector:
     @staticmethod
     def angle_between(v1: Vec2D, v2: Vec2D) -> float:
         """Returns the angle in radians between vectors 'v1' and 'v2'.
+        Disclaimer: The same method is also used Vec3D as it is flexible enough.
 
         Args:
             v1 (Vec2D): First vector
@@ -510,6 +514,7 @@ class Vector:
     def are_same(v1: Vec2D, v2: Vec2D, tol: int = 100) -> bool:
         """Check if two vectors are within an infinitesimal distance set by
         `tol` and machine epsilon.
+        Disclaimer: The same method is also used Vec3D as it is flexible enough.
 
         Args:
             v1 (Vec2D): First vector to check
@@ -583,7 +588,8 @@ class Vector:
         # unit vector along the direction of the two point
         unit_vec = distance_vec / norm(distance_vec)
         # tangent vector counter-clockwise 90 deg rotation
-        tangent_vec = np.round(Vector.rotate(unit_vec, np.pi / 2), decimals=11)
+        tangent_vec = np.round(Vector.rotate(unit_vec, np.pi / 2),
+                               decimals=PRECISION)
 
         if Vector.is_zero(distance_vec):
             logger.debug(
@@ -629,7 +635,7 @@ class Vec3D(Vector):
         Returns:
             float: magnitude of the vector calculated by Frobenius norm
         """
-        return np.round(np.linalg.norm(vec), decimals=9)
+        return np.round(np.linalg.norm(vec), decimals=PRECISION)
 
     @staticmethod
     def normed(vec: np.ndarray):
@@ -677,7 +683,7 @@ class Vec3D(Vector):
             vec = np.array(vec)
         if not isinstance(other, np.ndarray):
             other = np.array(other)
-        return np.round(vec.dot(other), decimals=9)
+        return np.round(vec.dot(other), decimals=PRECISION)
 
     @staticmethod
     def cross(vec: np.ndarray, other: np.ndarray):
@@ -690,7 +696,7 @@ class Vec3D(Vector):
         Returns:
             np.ndarray: resultant vector
         """
-        return np.round(np.cross(vec, other), decimals=9)
+        return np.round(np.cross(vec, other), decimals=PRECISION)
 
     @staticmethod
     def sub(vec: np.ndarray, other: np.ndarray):
@@ -739,7 +745,7 @@ class Vec3D(Vector):
             vec = np.array(vec)
         if not isinstance(other, np.ndarray):
             other = np.array(other)
-        return np.round(Vec3D.norm(vec - other), decimals=9)
+        return np.round(Vec3D.norm(vec - other), decimals=PRECISION)
 
     @staticmethod
     def translate(vec: np.ndarray, translate_vec: np.ndarray):
@@ -831,6 +837,31 @@ class Vec3D(Vector):
         return np.arctan2(*vec[:2][::-1])
 
     @staticmethod
+    def snap_unit_vector(vec: np.ndarray, snap_to: str = None) -> Vec2D:
+        """Snaps to either the x, y or z unit vectors with sign.
+
+        Args:
+            vec_n (np.ndarray): 3D vector
+            snap_to (str): Snap to direction with max projection length by default.
+                            Snap to particular axis if specified.
+
+        Returns:
+            np.ndarray: Snapped vector
+        """
+        if snap_to is None:
+            idx = np.argmax(np.abs(vec))
+        else:
+            valid_snap_to = ["x", "y", "z"]
+            if snap_to not in valid_snap_to:
+                raise ValueError(
+                    "The argument 'snap_to' should be one of 'x', 'y', or 'z'.")
+            idx = valid_snap_to.index(snap_to)
+
+        new_vec = np.array([0, 0, 0])
+        new_vec[idx] = np.sign(vec[idx])
+        return new_vec
+
+    @staticmethod
     def two_points_described(points2D: List[np.ndarray]) -> Tuple[np.ndarray]:
         raise NotImplementedError(
             "This method does not need to be implemented for 3D.")
@@ -852,8 +883,3 @@ class Vec3D(Vector):
         raise NotImplementedError(
             """This method is implemented by 'rotate' method for 3D vector.
             Please use that instead.""")
-
-    @staticmethod
-    def snap_unit_vector(vec_n: Vec2D, flip: bool = False) -> Vec2D:
-        raise NotImplementedError(
-            """This method is not implemented for 3D vector.""")

@@ -727,6 +727,25 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
                                           expected[i][j],
                                           rel_tol=1e-3)
 
+    def test_draw_vec3d_snap_unit_vector(self):
+        """Test snap_unit_vector in Vec3D class in utility.py."""
+        vec3d = Vec3D()
+
+        expected = [[0, 0, 1], [0, 1, 0], [-1, 0, 0]]
+
+        data = np.array([-10., 15., 20])
+
+        actual = []
+        actual.append(vec3d.snap_unit_vector(data))
+        actual.append(vec3d.snap_unit_vector(data, snap_to='y'))
+        actual.append(vec3d.snap_unit_vector(data, snap_to='x'))
+
+        for i in range(2):
+            for j in range(3):
+                self.assertAlmostEqualRel(actual[i][j],
+                                          expected[i][j],
+                                          rel_tol=1e-3)
+
     def test_draw_get_distance(self):
         """Test the functionality of get_distance in utility.py."""
         vector = Vector()
