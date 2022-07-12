@@ -1,4 +1,3 @@
-import re
 from ..designs.design_base import QDesign
 
 
@@ -26,7 +25,7 @@ def get_min_bounding_box(design: QDesign, qcomp_ids: list[int], case: int,
             max_y_main = max(max_y, max_y_main)
     else:  # Strict subset rendered.
         for qcomp_id in qcomp_ids:
-            min_x, min_y, max_x, max_y = design.components[
+            min_x, min_y, max_x, max_y = design._components[
                 qcomp_id].qgeometry_bounds()
             min_x_main = min(min_x, min_x_main)
             min_y_main = min(min_y, min_y_main)
