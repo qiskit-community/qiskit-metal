@@ -862,9 +862,45 @@ class Vec3D(Vector):
         return new_vec
 
     @staticmethod
-    def two_points_described(points2D: List[np.ndarray]) -> Tuple[np.ndarray]:
-        raise NotImplementedError(
-            "This method does not need to be implemented for 3D.")
+    def two_points_described(points3D: List[np.ndarray],
+                             user_plane: np.ndarray) -> Tuple[np.ndarray]:
+        """Get the distance, units and tangents.
+
+        Args:
+            points3D (List[np.ndarray]): 3D list of points
+            user_plane (np.ndarray): 2D plane containing the input points and
+                                    defined by coefficients A,B,C,D in
+                                    equation (Ax + By + Cz + D = 0)
+
+        Returns:
+            tuple: (distance_vec, dist_unit_vec, tangent_vec) -- Each is a vector np.array
+        """
+        if len(points3D) != 2:
+            raise ValueError(f"Expected only 2 points, found {len(points3D)}.")
+        if len(user_plane) != 4:
+            raise ValueError(
+                f"""Expected all four coefficients A,B,C,D for the plane.
+                Found {len(user_plane)} instead.""")
+
+        if not isinstance(user_plane, np.ndarray):
+            user_plane = np.array(user_plane)
+        if not isinstance(points3D, np.ndarray):
+            points3D = np.array(points3D)
+
+        # Check if both points are on the user_plane
+        pt1_on_plane = True if (user_plane.dot(np.append(points3D[0], [1]))
+                                == 0) else False
+        pt2_on_plane = True if (user_plane.dot(np.append(points3D[1], [1]))
+                                == 0) else False
+
+        if pt1_on_plane and pt2_on_plane:
+            distance_vec = points3D[0] - points3D[1]
+            dist_unit_vec = Vec3D.normed(distance_vec)
+            plane_normal = Vec3D.normed(user_plane[:3])
+            tangent_vec = Vec3D.cross(dist_unit_vec, plane_normal)
+            return distance_vec, dist_unit_vec, tangent_vec
+        else:
+            raise ValueError("Either one or both points not on the user_plane.")
 
     @staticmethod
     def add_z(vec2D: np.array, z: float = 0.):

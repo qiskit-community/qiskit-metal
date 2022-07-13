@@ -853,6 +853,27 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
                                           expected[i][j],
                                           rel_tol=1e-3)
 
+    def test_draw_vec3d_two_points_described(self):
+        """Test two_points_described in Vec3D class in utility.py."""
+        vec3d = Vec3D()
+
+        expected = [([0, 0, -2], [0, 0, -1], [1, 0, 0]),
+                    ([0, 0, -2], [0, 0, -1], [0, -1, 0])]
+
+        actual = []
+        actual.append(
+            vec3d.two_points_described([[1, 0, 2], [1, 0, 4]], [0, 1, 0, 0]))
+        actual.append(
+            vec3d.two_points_described([[0, 1, 2], [0, 1, 4]], [1, 0, 0, 0]))
+
+        for i in range(2):
+            for j in range(3):
+                for k in range(3):
+                    print(i, j, k)
+                    self.assertAlmostEqualRel(actual[i][j][k],
+                                              expected[i][j][k],
+                                              rel_tol=1e-3)
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
