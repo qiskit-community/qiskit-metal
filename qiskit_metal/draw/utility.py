@@ -888,10 +888,12 @@ class Vec3D(Vector):
             points3D = np.array(points3D)
 
         # Check if both points are on the user_plane
-        pt1_on_plane = True if (user_plane.dot(np.append(points3D[0], [1]))
-                                == 0) else False
-        pt2_on_plane = True if (user_plane.dot(np.append(points3D[1], [1]))
-                                == 0) else False
+        pt1_on_plane = True if (np.round(user_plane.dot(
+            np.append(points3D[0], [1])),
+                                         decimals=PRECISION) == 0) else False
+        pt2_on_plane = True if (np.round(user_plane.dot(
+            np.append(points3D[1], [1])),
+                                         decimals=PRECISION) == 0) else False
 
         if pt1_on_plane and pt2_on_plane:
             distance_vec = points3D[0] - points3D[1]
