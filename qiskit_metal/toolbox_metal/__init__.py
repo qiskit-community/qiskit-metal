@@ -59,3 +59,4 @@ if config.is_building_docs():
     from . import import_export
     from . import parsing
     from . import math_and_overrides
+    from . import layer_stack_handler
