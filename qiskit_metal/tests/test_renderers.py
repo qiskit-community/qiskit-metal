@@ -31,6 +31,7 @@ from qiskit_metal.renderers.renderer_base.renderer_base import QRenderer
 from qiskit_metal.renderers.renderer_base.renderer_gui_base import QRendererGui
 from qiskit_metal.renderers.renderer_gds.gds_renderer import QGDSRenderer
 from qiskit_metal.renderers.renderer_mpl.mpl_interaction import MplInteraction
+from qiskit_metal.renderers.renderer_gmsh.gmsh_renderer import QGmshRenderer
 
 from qiskit_metal.renderers.renderer_ansys import ansys_renderer
 
@@ -93,7 +94,7 @@ class TestRenderers(unittest.TestCase):
             self.fail("MplInteraction(None) failed")
 
     def test_renderer_instantiate_qq3d_renderer(self):
-        """Test instantiation of QQ3DRenderer in q3d_render.py."""
+        """Test instantiation of QQ3DRenderer in q3d_renderer.py."""
         design = designs.DesignPlanar()
         try:
             QQ3DRenderer(design, initiate=False)
@@ -101,12 +102,33 @@ class TestRenderers(unittest.TestCase):
             self.fail("QQ3DRenderer failed")
 
     def test_renderer_instantiate_qhfss_renderer(self):
-        """Test instantiation of QHFSSRenderer in q3d_render.py."""
+        """Test instantiation of QHFSSRenderer in hfss_renderer.py."""
         design = designs.DesignPlanar()
         try:
             QHFSSRenderer(design, initiate=False)
         except Exception:
             self.fail("QHFSSRenderer failed")
+
+    def test_renderer_instantiate_qgmsh_renderer(self):
+        """Test instantiation of QGmshRenderer in gmsh_renderer.py."""
+        design = designs.DesignPlanar()
+        try:
+            QGmshRenderer(design)
+        except Exception:
+            self.fail("QGmshRenderer(design) failed")
+
+        try:
+            QGmshRenderer(design, initiate=False)
+        except Exception:
+            self.fail(
+                "QGmshRenderer(design, initiate=False) failed in DesignPLanar")
+
+        try:
+            QGmshRenderer(design, initiate=False, options={})
+        except Exception:
+            self.fail(
+                "QGmshRenderer(design, initiate=False, options={}) failed in DesignPLanar"
+            )
 
     def test_renderer_qansys_renderer_options(self):
         """Test that defaults in QAnsysRenderer were not accidentally changed."""
@@ -274,6 +296,40 @@ class TestRenderers(unittest.TestCase):
         self.assertEqual(len(options['no_cheese']['view_in_file']['main']), 1)
         self.assertEqual(options['no_cheese']['view_in_file']['main'][1], True)
 
+    def test_renderer_qgmsh_renderer_options(self):
+        """Test that default_options in QGmshRenderer were not accidentally
+        changed."""
+        design = designs.DesignPlanar()
+        renderer = QGmshRenderer(design)
+        options = renderer.default_options
+
+        self.assertEqual(len(options), 4)
+        self.assertEqual(len(options["mesh"]), 8)
+        self.assertEqual(len(options["mesh"]["mesh_size_fields"]), 4)
+        self.assertEqual(len(options["colors"]), 3)
+        self.assertEqual(options["x_buffer_width_mm"], 0.2)
+        self.assertEqual(options["y_buffer_width_mm"], 0.2)
+        self.assertEqual(options["mesh"]["max_size"], "50um")
+        self.assertEqual(options["mesh"]["min_size"], "3um")
+        self.assertEqual(options["mesh"]["smoothing"], 10)
+        self.assertEqual(options["mesh"]["nodes_per_2pi_curve"], 90)
+        self.assertEqual(options["mesh"]["algorithm_3d"], 10)
+        self.assertEqual(options["mesh"]["num_threads"], 8)
+        self.assertEqual(options["mesh"]["export_dir"], ".")
+        self.assertEqual(
+            options["mesh"]["mesh_size_fields"]["min_distance_from_edges"],
+            "10um")
+        self.assertEqual(
+            options["mesh"]["mesh_size_fields"]["max_distance_from_edges"],
+            "130um")
+        self.assertEqual(options["mesh"]["mesh_size_fields"]["distance_delta"],
+                         "30um")
+        self.assertEqual(options["mesh"]["mesh_size_fields"]["gradient_delta"],
+                         "3um")
+        self.assertEqual(options["colors"]["metal"], (84, 140, 168, 255))
+        self.assertEqual(options["colors"]["jj"], (84, 140, 168, 150))
+        self.assertEqual(options["colors"]["substrate"], (180, 180, 180, 255))
+
     def test_renderer_ansys_renderer_get_clean_name(self):
         """Test get_clean_name in ansys_renderer.py"""
         self.assertEqual(ansys_renderer.get_clean_name('name12'), 'name12')
@@ -301,6 +357,12 @@ class TestRenderers(unittest.TestCase):
         """Test name in QRenderer."""
         renderer = QRendererGui
         self.assertEqual(renderer.name, 'guibase')
+
+    def test_renderer_qgmsh_renderer_name(self):
+        """Test name in QGmshRenderer."""
+        design = designs.DesignPlanar()
+        renderer = QGmshRenderer(design, initiate=False)
+        self.assertEqual(renderer.name, 'gmsh')
 
     def test_renderer_gdsrenderer_inclusive_bound(self):
         """Test functionality of inclusive_bound in gds_renderer.py."""

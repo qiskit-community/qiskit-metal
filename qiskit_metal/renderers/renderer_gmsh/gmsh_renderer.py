@@ -36,7 +36,7 @@ class QGmshRenderer(QRendererAnalysis):
         * colors -- specify colors for the mesh elements, chips or layers
             * metal -- color for metallized entities
             * jj -- color for JJs
-            * sub -- color for substrate entity
+            * substrate -- color for substrate entity
     """
 
     default_options = Dict(
@@ -58,8 +58,11 @@ class QGmshRenderer(QRendererAnalysis):
         colors=Dict(
             metal=(84, 140, 168, 255),
             jj=(84, 140, 168, 150),
-            sub=(180, 180, 180, 255),
+            substrate=(180, 180, 180, 255),
         ))
+
+    name = "gmsh"
+    """Name"""
 
     def __init__(self, design: QDesign, initiate=True, options: Dict = None):
         """
@@ -773,6 +776,9 @@ class QGmshRenderer(QRendererAnalysis):
 
         Args:
             dim (int, optional): Specify the dimension of mesh. Defaults to 3.
+            intelli_mesh (bool): Set to mesh the geometries intelligently. True by default.
+            custom_mesh_fn (callable): Custom meshing function specifying mesh size fields
+                                        using Gmsh python script (for advanced users only)
         """
         if intelli_mesh:
             if custom_mesh_fn is None:
@@ -848,7 +854,11 @@ class QGmshRenderer(QRendererAnalysis):
             )
 
         # FIXME: This doesn't work right now!!!
-        gmsh.write(path)
+        # There is no method in Gmsh python wrapper to give
+        # the 'Print' command which can provide screenshot feature.
+        raise NotImplementedError("""This feature is pending and depends on Gmsh
+                                    general command 'Print' being available through the API."""
+                                 )
 
     def render_component(self, component):
         pass
