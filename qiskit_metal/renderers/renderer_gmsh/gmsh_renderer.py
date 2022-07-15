@@ -136,11 +136,16 @@ class QGmshRenderer(QRendererAnalysis):
         """_summary_
 
         Args:
-            selection (Union[list, None], optional): List of selected components to render. Defaults to None.
-            open_pins (Union[list, None], optional): List of open pins to add end caps. Defaults to None.
-            box_plus_buffer (bool, optional): Set to True for adding buffer to chip dimensions. Defaults to True.
-            mesh_geoms (bool, optional): Set to True for meshing the geometries. Defaults to True.
-            skip_junctions (bool, optional): Set to True to sip rendering the junctions. Defaults to False.
+            selection (Union[list, None], optional): List of selected components
+                                                        to render. Defaults to None.
+            open_pins (Union[list, None], optional): List of open pins to add
+                                                        endcaps. Defaults to None.
+            box_plus_buffer (bool, optional): Set to True for adding buffer to
+                                                        chip dimensions. Defaults to True.
+            mesh_geoms (bool, optional): Set to True for meshing the geometries.
+                                                        Defaults to True.
+            skip_junctions (bool, optional): Set to True to sip rendering the
+                                                        junctions. Defaults to False.
         """
 
         self.qcomp_ids, self.case = self.get_unique_component_ids(selection)
@@ -465,7 +470,7 @@ class QGmshRenderer(QRendererAnalysis):
             box_plus_buffer (bool, optional): For adding buffer to chip dimensions. Defaults to True.
 
         Raises:
-            TypeError: _description_
+            TypeError: raise when user provides 'str' instead of 'List[str]' for chips argument.
         """
         chip_list = []
         if isinstance(chips, str):
@@ -542,12 +547,15 @@ class QGmshRenderer(QRendererAnalysis):
             cc_y_left, cc_y_right = np.min(cc_y - cw_y / 2), np.max(cc_y +
                                                                     cw_y / 2)
 
-            tolerance = self.parse_units_gmsh("1um")
-            x = cc_x_left - tolerance
-            y = cc_y_left - tolerance
+            # This tolerance is needed for Gmsh to not cut
+            # the vacuum_box into two separate volumes when the
+            # substrate volume is subtracted from it
+            tol = self.parse_units_gmsh("1um")
+            x = cc_x_left - tol
+            y = cc_y_left - tol
             z = -vac_height[1]
-            dx = (cc_x_right - cc_x_left) + 2 * tolerance
-            dy = (cc_y_right - cc_y_left) + 2 * tolerance
+            dx = (cc_x_right - cc_x_left) + 2 * tol
+            dy = (cc_y_right - cc_y_left) + 2 * tol
             dz = sum(vac_height)
             self.vacuum_box = gmsh.model.occ.addBox(x, y, z, dx, dy, dz)
 
@@ -604,7 +612,10 @@ class QGmshRenderer(QRendererAnalysis):
                                     [(2, geom) for geom in metals_and_gnd])
             # all_metals += [(2, geom) for geom in metals_and_gnd]
 
-            # TODO: for 3D, maybe we'll need to cut metal from vacuum-box before meshing
+            # TODO: for 3D, we'll need to:
+            # 1. Extract metal surfaces
+            # 2. Cut metal from vacuum_box
+            # 3. Fragment the metal surfaces with substrate and vacuum_box
             gmsh.model.occ.fragment([(3, self.substrate_dict[chip])],
                                     [(3, self.vacuum_box)])
 
@@ -613,7 +624,6 @@ class QGmshRenderer(QRendererAnalysis):
         """
         chip_names = list(self.design.chips.keys())
         self.physical_groups = defaultdict(dict)
-        all_sfs = []
         for chip in chip_names:
             if chip not in self.physical_groups:
                 self.physical_groups[chip] = dict()
@@ -626,12 +636,10 @@ class QGmshRenderer(QRendererAnalysis):
             for name, tag in chip_geoms.items():
                 ph_tag = gmsh.model.addPhysicalGroup(2, [tag], name=name)
                 self.physical_groups[chip][name] = ph_tag
-                all_sfs += [tag]
 
             # Make physical groups for ground plane
             ph_gnd_name = "ground_plane" + '_' + chip
             gnd_tag = self.gnd_plane_dict[chip]
-            all_sfs += [gnd_tag]
             ph_gnd_tag = gmsh.model.addPhysicalGroup(2, [gnd_tag],
                                                      name=ph_gnd_name)
             self.physical_groups[chip][ph_gnd_name] = ph_gnd_tag
@@ -643,9 +651,18 @@ class QGmshRenderer(QRendererAnalysis):
                                                      name=ph_sub_name)
             self.physical_groups[chip][ph_sub_name] = ph_sub_tag
 
-            # Make physical groups for substrate (surfaces)
-            all_sub_sfs = gmsh.model.occ.getSurfaceLoops(sub_tag)[1][0]
-            all_sfs += list(all_sub_sfs)
+            # Make physical group for everything in a single chip
+            # NOTE: not used for any simulations, just to keep
+            # everything together in the Gmsh GUI
+            metals_and_gnd = list(self.polys_dict[chip].values(
+            )) + list(self.paths_dict[chip].values()) + list(
+                self.juncs_dict[chip].values()) + [self.gnd_plane_dict[chip]]
+
+            ph_chip_tag = gmsh.model.addPhysicalGroup(2,
+                                                      metals_and_gnd,
+                                                      name="chip_" + chip)
+
+            self.physical_groups["chips"][chip] = ph_chip_tag
 
         # Make physical groups for vacuum box (volume)
         vb_name = "vacuum_box"
