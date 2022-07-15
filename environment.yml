@@ -20,3 +20,4 @@ dependencies:
   - shapely
   - jupyter
   - scqubits
+  - gmsh
