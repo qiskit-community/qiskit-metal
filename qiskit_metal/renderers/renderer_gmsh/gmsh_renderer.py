@@ -839,6 +839,31 @@ class QGmshRenderer(QRendererAnalysis):
 
         gmsh.write(path)
 
+    def import_post_processing_data(self,
+                                    filename: str,
+                                    launch_gui: bool = True,
+                                    close_gmsh_on_closing_gui: bool = False):
+        """Import the post processing data for visualization in Gmsh.
+
+        Args:
+            filename (str): a target file ending with '.msh' extension
+        """
+        if ".msh" not in filename:
+            raise ValueError(
+                "Only .msh files supported for post processing views.")
+
+        if self.initialized:
+            self.model = str(self.model) + "_post_processing"
+        else:
+            self.model = "post_processing"
+
+        gmsh.merge(filename)
+        if launch_gui:
+            self.launch_gui()
+
+        if close_gmsh_on_closing_gui:
+            self.close()
+
     def save_screenshot(self, path: str = None, show: bool = True):
         """Save the screenshot.
 
