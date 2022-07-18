@@ -847,6 +847,9 @@ class QGmshRenderer(QRendererAnalysis):
 
         Args:
             filename (str): a target file ending with '.msh' extension
+            launch_gui (bool): launch the Gmsh GUI. Defaults to True.
+            close_gmsh_on_closing_gui (bool): finalize gmsh when the GUI
+                                                is closed. Defaults to True.
         """
         if ".msh" not in filename:
             raise ValueError(
