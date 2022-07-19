@@ -850,6 +850,9 @@ class QGmshRenderer(QRendererAnalysis):
             launch_gui (bool): launch the Gmsh GUI. Defaults to True.
             close_gmsh_on_closing_gui (bool): finalize gmsh when the GUI
                                                 is closed. Defaults to True.
+
+        Raises:
+            ValueError: raises when the input file isn't a .msh file
         """
         if ".msh" not in filename:
             raise ValueError(
@@ -872,7 +875,7 @@ class QGmshRenderer(QRendererAnalysis):
 
         Args:
             path (str, optional): Path to save location.  Defaults to None.
-            show (bool, optional): Whether or not to display the screenshot.  Defaults to True.
+            show (bool, optional): Whether or not to display the screenshot. Defaults to True.
         """
         valid_file_exts = ["jpg", "png", "gif", "bmp"]
         file_ext = path.split(".")[-1]
