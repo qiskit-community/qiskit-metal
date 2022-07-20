@@ -793,7 +793,7 @@ class QGmshRenderer(QRendererAnalysis):
             r=color[0], g=color[1], b=color[2], a=color[3])
         metal_color = color_dict(self._options["colors"]["metal"])
         jj_color = color_dict(self._options["colors"]["jj"])
-        sub_color = color_dict(self._options["colors"]["sub"])
+        sub_color = color_dict(self._options["colors"]["substrate"])
 
         for chip in list(self.design.chips.keys()):
             all_metal = list(self.polys_dict[chip].values()) + list(
