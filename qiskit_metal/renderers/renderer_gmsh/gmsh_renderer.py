@@ -254,7 +254,6 @@ class QGmshRenderer(QRendererAnalysis):
         Returns:
             float: parsed input value
         """
-        _units = {"cm": 10**3, "mm": 1, "um": 10**-3, "nm": 10**-6}
         if isinstance(_input, (int, float)):
             return _input
         elif isinstance(_input, (np.ndarray)):
@@ -268,7 +267,6 @@ class QGmshRenderer(QRendererAnalysis):
                 output += [self.parse_units_gmsh(i)]
             return type(_input)(output)
         elif isinstance(_input, str):
-            # FIXME: is this correct usage?
             return parse_value(_input, self.design.variables)
         else:
             self.logger.error(
@@ -837,6 +835,7 @@ class QGmshRenderer(QRendererAnalysis):
         if not os.path.exists(mesh_export_dir):
             os.mkdir(mesh_export_dir)
 
+        gmsh.option.setNumber("Mesh.ScalingFactor", 0.001)
         gmsh.write(path)
 
     def import_post_processing_data(self,
