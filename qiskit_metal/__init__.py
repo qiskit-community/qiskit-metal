@@ -15,7 +15,7 @@
 # pylint: disable=wrong-import-order
 # pylint: disable=wrong-import-position
 """Qiskit Metal"""
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 __license__ = "Apache 2.0"
 __copyright__ = 'Copyright IBM 2019-2020'
 __author__ = 'Zlatko Minev, Thomas McConkey, and them IBM Quantum Team'

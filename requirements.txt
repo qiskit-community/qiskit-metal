@@ -7,7 +7,7 @@ matplotlib
 numpy
 pandas
 pint
-pyEPR-quantum>=0.8.5.5
+pyEPR-quantum>=0.8.5.6
 pygments
 pyside2
 qutip
