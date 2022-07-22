@@ -20,6 +20,11 @@ class LayerStackHandler():
 
     """
 
+    Col_Names = [
+        'chip_name', 'layer', 'datatype', 'material', 'thickness', 'z_coord',
+        'fill'
+    ]
+
     def __init__(self,
                  multi_planar_design: 'MultiPlanar',
                  fname: Union['str', None] = None) -> None:
