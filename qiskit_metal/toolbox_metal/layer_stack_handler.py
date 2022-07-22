@@ -20,12 +20,9 @@ class LayerStackHandler():
 
     """
 
-    Col_Names = [
-        'chip_name', 'layer', 'datatype', 'material', 'thickness', 'z_coord',
-        'fill'
-    ]
-
-    def __init__(self, multi_planar_design: 'MultiPlanar') -> None:
+    def __init__(self,
+                 multi_planar_design: 'MultiPlanar',
+                 fname: Union['str', None] = None) -> None:
         """Use the information in MultiPlanar design to parse_value
         and get the name of filename for layer stack.
 
@@ -37,9 +34,12 @@ class LayerStackHandler():
         self.logger = self.multi_planar_design.logger  # type: logging.Logger
 
         self.filename_csv_df = None
-        if self.multi_planar_design.ls_filename:
+        if hasattr(self.multi_planar_design,
+                   'ls_filename') and self.multi_planar_design.ls_filename:
             #populate pandas table from data in this file.
             self.filename_csv_df = self.multi_planar_design.ls_filename
+        elif fname:
+            self.filename_csv_df = fname
 
         self.ls_df = None
         # self.column_names = [
@@ -189,7 +189,7 @@ class LayerStackHandler():
 
         if len(search_result_df) > 0:
             try:
-                thickness = self.multi_planar_design.parse_units(
+                thickness = parse_units(
                     search_result_df.thickness.iloc[0].strip('\''))
             except Exception as ex:
                 self._warning_search(chip_name, layer_number, datatype, ex)
