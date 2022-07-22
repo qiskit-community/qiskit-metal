@@ -20,6 +20,11 @@ class LayerStackHandler():
 
     """
 
+    Col_Names = [
+        'chip_name', 'layer', 'datatype', 'material', 'thickness', 'z_coord',
+        'fill'
+    ]
+
     def __init__(self, multi_planar_design: 'MultiPlanar') -> None:
         """Use the information in MultiPlanar design to parse_value
         and get the name of filename for layer stack.
@@ -47,7 +52,7 @@ class LayerStackHandler():
                                         material=['pec'],
                                         thickness=['2um'],
                                         z_coord=['0um'],
-                                        fill=['false'])
+                                        fill=['true'])
 
         self._init_dataframe()
 
