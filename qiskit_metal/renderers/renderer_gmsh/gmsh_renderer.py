@@ -44,22 +44,25 @@ class QGmshRenderer(QRendererAnalysis):
         x_buffer_width_mm=0.2,
         # Buffer between max/min y and edge of ground plane, in mm
         y_buffer_width_mm=0.2,
-        mesh=Dict(max_size="50um",
-                  min_size="3um",
-                  smoothing=10,
-                  nodes_per_2pi_curve=90,
-                  algorithm_3d=10,
-                  mesh_size_fields=Dict(min_distance_from_edges="10um",
-                                        max_distance_from_edges="130um",
-                                        distance_delta="30um",
-                                        gradient_delta="3um"),
-                  num_threads=8,
-                  export_dir="."),
+        mesh=Dict(
+            max_size="50um",
+            min_size="3um",
+            smoothing=10,
+            nodes_per_2pi_curve=90,
+            algorithm_3d=10,
+            mesh_size_fields=Dict(min_distance_from_edges="10um",
+                                  max_distance_from_edges="130um",
+                                  distance_delta="30um",
+                                  gradient_delta="3um"),
+            num_threads=8,
+            export_dir=".",
+        ),
         colors=Dict(
             metal=(84, 140, 168, 255),
             jj=(84, 140, 168, 150),
             substrate=(180, 180, 180, 255),
-        ))
+        ),
+    )
 
     name = "gmsh"
     """Name"""
@@ -391,13 +394,14 @@ class QGmshRenderer(QRendererAnalysis):
         qc_name = self.design._components[
             poly["component"]].name + '_' + clean_name(poly["name"])
 
-        if is_rectangle(qc_shapely):
-            x_min, y_min, x_max, y_max = qc_shapely.bounds
-            dx, dy = np.abs(x_max - x_min), np.abs(y_max - y_min)
-            surface = gmsh.model.occ.addRectangle(x_min, y_min, qc_chip_z, dx,
-                                                  dy)
-        else:
-            surface = self.make_poly_surface(vecs.points, qc_chip_z)
+        # TODO: why is this failing?
+        # if is_rectangle(qc_shapely):
+        #     x_min, y_min, x_max, y_max = qc_shapely.bounds
+        #     dx, dy = np.abs(x_max - x_min), np.abs(y_max - y_min)
+        #     surface = gmsh.model.occ.addRectangle(x_min, y_min, qc_chip_z, dx,
+        #                                           dy)
+        # else:
+        surface = self.make_poly_surface(vecs.points, qc_chip_z)
 
         if len(qc_shapely.interiors) > 0:
             pts = np.array(list(qc_shapely.interiors[0].coords))
