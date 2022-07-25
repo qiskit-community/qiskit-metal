@@ -10,7 +10,7 @@ pylint
 yapf
 
 # Doc Build
-sphinx
+sphinx==5.0.2
 numpydoc
 sphinx-automodapi
 jupyter_sphinx
