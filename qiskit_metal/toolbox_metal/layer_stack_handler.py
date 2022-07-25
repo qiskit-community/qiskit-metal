@@ -122,9 +122,9 @@ class LayerStackHandler():
         fill_value = None
 
         # yapf: disable
-        mask = (self.ls_df['layer'] == layer_number) & 
-               (self.ls_df['datatype'] == datatype) & 
-               (self.ls_df['chip_name'].str.contains(chip_name))
+        mask = (self.ls_df['layer'] == layer_number) & (
+                self.ls_df['datatype'] == datatype) & (
+                self.ls_df['chip_name'].str.contains(chip_name))
         # yapf: enable
         search_result_df = self.ls_df[mask]
 
@@ -133,9 +133,9 @@ class LayerStackHandler():
                 thickness = self.multi_planar_design.parse_value(
                     search_result_df.thickness.iloc[0].strip('\''))
                 z_coord = self.multi_planar_design.parse_value(
-                    search_result_df.z_coord.iloc[0].strip('\''))          
-                material = search_result_df.material.iloc[0].strip('\'')           
-                value = search_result_df.fill.iloc[0].strip('\'')            
+                    search_result_df.z_coord.iloc[0].strip('\''))
+                material = search_result_df.material.iloc[0].strip('\'')
+                value = search_result_df.fill.iloc[0].strip('\'')
                 if value in TRUE_STR:
                     fill_value = True
                 elif value in FALSE_STR:
@@ -151,10 +151,10 @@ class LayerStackHandler():
                 props['fill'] = fill_value
             except Exception as ex:
                 self._warning_search(chip_name, layer_number, datatype, ex)
-        result = tuple()
+        result = list()
         for item in properties:
             result.append(props[item])
-        return result
+        return tuple(result)
 
     def is_layer_unique(self) -> bool:
         """Check to sort on layer number make sure they are unique.
