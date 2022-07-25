@@ -10,11 +10,11 @@ pylint
 yapf
 
 # Doc Build
-sphinx
+sphinx==5.0.2
 numpydoc
 sphinx-automodapi
 jupyter_sphinx
-nbsphinx==0.8.6
+nbsphinx
 qiskit-sphinx-theme
 jupyter_nbgallery
 
