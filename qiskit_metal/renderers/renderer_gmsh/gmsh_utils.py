@@ -323,14 +323,14 @@ def render_path_curves(vecs: Vec3DArray,
     for i, v in enumerate(vecs.points):
         if i == 0:
             p1, p2 = line_width_offset_pts(v, vecs.path_vecs[i], width, chip_z)
-            recent_pts += [p1, p2]  # if fillet != 0.0 else [p2, p1]
+            recent_pts += [p1, p2]
             curves1 += [gmsh.model.occ.addLine(p1, p2)]
             continue
 
         if i == len(vecs.points) - 1:
             p1, p2 = line_width_offset_pts(v, vecs.path_vecs[i - 1], width,
                                            chip_z)
-            recent_pts += [p1, p2]  # if fillet != 0.0 else [p2, p1]
+            recent_pts += [p1, p2]
             curves1 += [gmsh.model.occ.addLine(p1, p2)]
             continue
 
@@ -359,7 +359,10 @@ def render_path_curves(vecs: Vec3DArray,
 
         else:
             half_angle = angle12 / 2
-            right_turn = -np.sign(Vec3D.normed(Vec3D.cross(pv1, pv2))[2])
+            if np.allclose(angle12, np.pi, rtol=straight_line_tol):
+                right_turn = 1
+            else:
+                right_turn = -np.sign(Vec3D.normed(Vec3D.cross(pv1, pv2))[2])
             turn_pt_vec = vecs.points[i]
             pv1_normed = Vec3D.normed(pv1)
             pv1_scaled = Vec3D.scale(

@@ -12,7 +12,7 @@ dependencies:
   - numpy
   - pandas
   - pint
-  - pyepr-quantum>=0.8.5.5
+  - pyepr-quantum>=0.8.5.7
   - pygments
   - pyside2
   - qutip
