@@ -14,7 +14,7 @@ sphinx==5.0.2
 numpydoc
 sphinx-automodapi
 jupyter_sphinx
-nbsphinx
+nbsphinx==0.8.6
 qiskit-sphinx-theme
 jupyter_nbgallery
 
