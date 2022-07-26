@@ -156,6 +156,80 @@ class LayerStackHandler():
             result.append(props[item])
         return tuple(result)
 
+    def get_properties_for_layer_datatype(
+            self,
+            properties: List[str],
+            layer_number: int,
+            datatype: int = 0) -> Union[Tuple[Union[float, str, bool]], None]:
+        """When user provides a layer and datatype, they can get properties
+         from the layer_stack file. The allowed options for properties must 
+         be in Col_Names.  If any of the properties are not in Col_Names, 
+         None will be returned.  Otherwise a Tuple will be returned with properties 
+         in the same order as provided in input variable properties. 
+
+        Args:
+            properties (List[str]): The column(s) within the layer stack that you want 
+            for a row based on layer, and datatype.
+            layer_number (int): The layer number within the column denoted by layer.
+            datatype (int, optional): The datatype within the column denoted 
+                                    by datatype. Defaults to 0.
+
+        Returns:
+            Union[Tuple[Union[float, str, bool]], None]: If the search data provided 
+                            in the arguments are not in the layer_stack file, 
+                            None will be returned.  If the search values are found in
+                            layer_stack file, then a Tuple will be returned with the 
+                            requested properties in the same order as provided in 
+                            input variable denoted by properties.
+        """
+        if not properties:
+            return None
+
+        # Check if parameter is not a subset if Col_Names T.
+        if not set(properties).issubset(set(self.Col_Names)):
+            self._warning_properties(properties)
+            return None
+
+        props = Dict()
+        thickness = 0.0
+        z_coord = 0.0
+        material = None
+        fill_value = None
+
+        # yapf: disable
+        mask = (self.ls_df['layer'] == layer_number) & (
+                self.ls_df['datatype'] == datatype)
+        # yapf: enable
+        search_result_df = self.ls_df[mask]
+
+        if len(search_result_df) > 0:
+            try:
+                thickness = self.multi_planar_design.parse_value(
+                    search_result_df.thickness.iloc[0].strip('\''))
+                z_coord = self.multi_planar_design.parse_value(
+                    search_result_df.z_coord.iloc[0].strip('\''))
+                material = search_result_df.material.iloc[0].strip('\'')
+                value = search_result_df.fill.iloc[0].strip('\'')
+                if value in TRUE_STR:
+                    fill_value = True
+                elif value in FALSE_STR:
+                    fill_value = False
+                else:
+                    self.logger.warning(
+                        f'The \"fill\" value is neither True nor False.'
+                        f'You have:{value}.  '
+                        f'Will return NULL for fill value.')
+                props['thickness'] = thickness
+                props['z_coord'] = z_coord
+                props['material'] = material
+                props['fill'] = fill_value
+            except Exception as ex:
+                self._warning_search_minus_chip(layer_number, datatype, ex)
+        result = list()
+        for item in properties:
+            result.append(props[item])
+        return tuple(result)
+
     def is_layer_unique(self) -> bool:
         """Check to sort on layer number make sure they are unique.
         This method is not so relevant, since layers can have datatype entries.
@@ -255,3 +329,19 @@ class LayerStackHandler():
             f'\nThere is an error searching in layer_stack dataframe using '
             f'chip_name={chip_name}, layer={layer_number}, datatype={data_type}'
         )
+
+    def _warning_search_minus_chip(self, layer_number: int, data_type: int,
+                                   ex: Exception):
+        """Give warning when the layerstack pandas table doesn't
+        have requested layer, and datatype information.
+
+        Args:
+            layer_number (int): The unique layer number through out all chips.
+                            The same layer number can  not be used on multiple chips.
+            datatype (int, optional): Datatype of the layer number.
+        """
+
+        self.logger.warning(
+            f'\nERROR: {ex}'
+            f'\nThere is an error searching in layer_stack dataframe using '
+            f' layer={layer_number}, datatype={data_type}')
