@@ -4,7 +4,7 @@ import pandas as pd
 import gmsh
 import numpy as np
 
-from ..renderer_base import QRendererAnalysis
+from ..renderer_base import QRenderer
 from ...designs.design_base import QDesign
 from .gmsh_utils import Vec3D, Vec3DArray, line_width_offset_pts, render_path_curves
 from ...draw.basic import is_rectangle
@@ -14,7 +14,7 @@ from ...toolbox_python.utility_functions import clean_name, bad_fillet_idxs
 from ... import Dict
 
 
-class QGmshRenderer(QRendererAnalysis):
+class QGmshRenderer(QRenderer):
     """Extends QRendererAnalysis class to export designs to Gmsh using the Gmsh python API.
 
     Default Options:
@@ -74,7 +74,10 @@ class QGmshRenderer(QRendererAnalysis):
             initiate (bool): True to initiate the renderer (Default: False).
             settings (Dict, optional): Used to override default settings. Defaults to None.
         """
-        super().__init__(design=design, initiate=initiate, options=options)
+        super().__init__(design=design,
+                         initiate=initiate,
+                         render_options=options)
+        self._model_name = "gmsh_model"
 
     @property
     def initialized(self):
@@ -165,28 +168,37 @@ class QGmshRenderer(QRendererAnalysis):
         self.gnd_plane_dict = defaultdict(int)
         self.substrate_dict = defaultdict(int)
 
-        # defaultdict: chip -- dict(geom_name: geom_tag)
+        # defaultdict: chip -- set(geom_tag)
         self.chip_subtract_dict = defaultdict(set)
+
+        # defaultdict: chip -- dict(geom_name: geom_tag)
         self.polys_dict = defaultdict(dict)
         self.paths_dict = defaultdict(dict)
         self.juncs_dict = defaultdict(dict)
+        self.physical_groups = defaultdict(dict)
 
         self.render_tables(skip_junction=skip_junctions)
         self.add_endcaps(open_pins=open_pins)
 
         self.render_chips(box_plus_buffer=box_plus_buffer)
 
-        gmsh.model.occ.synchronize()
+        self.gmsh_occ_synchronize()
 
         self.subtract_from_ground()
         self.fragment_interfaces()
 
-        gmsh.model.occ.synchronize()
+        self.gmsh_occ_synchronize()
 
-        self.assign_physical_groups()  # add physical groups
+        # Add physical groups
+        self.physical_groups = self.assign_physical_groups()
 
         if mesh_geoms:
             self.add_mesh()  # generate mesh
+
+    def gmsh_occ_synchronize(self):
+        """Synchronize Gmsh with the internal OpenCascade graphics engine
+        """
+        gmsh.model.occ.synchronize()
 
     def render_tables(self, skip_junction: bool = True):
         """Render components in design grouped by table type (path, poly, or junction).
@@ -628,10 +640,10 @@ class QGmshRenderer(QRendererAnalysis):
         """Assign physical groups to classify different geometries physically.
         """
         chip_names = list(self.design.chips.keys())
-        self.physical_groups = defaultdict(dict)
+        phys_grps = defaultdict(dict)
         for chip in chip_names:
             if chip not in self.physical_groups:
-                self.physical_groups[chip] = dict()
+                phys_grps[chip] = dict()
 
             # TODO: extend metal geoms to dim=3
             chip_geoms = dict(self.paths_dict[chip], **self.polys_dict[chip])
@@ -640,21 +652,21 @@ class QGmshRenderer(QRendererAnalysis):
             # Make physical groups for components
             for name, tag in chip_geoms.items():
                 ph_tag = gmsh.model.addPhysicalGroup(2, [tag], name=name)
-                self.physical_groups[chip][name] = ph_tag
+                phys_grps[chip][name] = ph_tag
 
             # Make physical groups for ground plane
             ph_gnd_name = "ground_plane" + '_' + chip
             gnd_tag = self.gnd_plane_dict[chip]
             ph_gnd_tag = gmsh.model.addPhysicalGroup(2, [gnd_tag],
                                                      name=ph_gnd_name)
-            self.physical_groups[chip][ph_gnd_name] = ph_gnd_tag
+            phys_grps[chip][ph_gnd_name] = ph_gnd_tag
 
             # Make physical groups for substrate (volume)
             ph_sub_name = "dielectric_substrate" + '_' + chip
             sub_tag = self.substrate_dict[chip]
             ph_sub_tag = gmsh.model.addPhysicalGroup(3, [sub_tag],
                                                      name=ph_sub_name)
-            self.physical_groups[chip][ph_sub_name] = ph_sub_tag
+            phys_grps[chip][ph_sub_name] = ph_sub_tag
 
             # Make physical group for everything in a single chip
             # NOTE: not used for any simulations, just to keep
@@ -667,20 +679,22 @@ class QGmshRenderer(QRendererAnalysis):
                                                       metals_and_gnd,
                                                       name="chip_" + chip)
 
-            self.physical_groups["chips"][chip] = ph_chip_tag
+            phys_grps["chips"][chip] = ph_chip_tag
 
         # Make physical groups for vacuum box (volume)
         vb_name = "vacuum_box"
         ph_vb_tag = gmsh.model.addPhysicalGroup(3, [self.vacuum_box],
                                                 name=vb_name)
-        self.physical_groups["global"][vb_name] = ph_vb_tag
+        phys_grps["global"][vb_name] = ph_vb_tag
 
         # Make physical groups for vacuum box (surfaces)
         vb_sfs = list(gmsh.model.occ.getSurfaceLoops(self.vacuum_box)[1][0])
         ph_vb_sfs_tag = gmsh.model.addPhysicalGroup(2,
                                                     vb_sfs,
                                                     name=(vb_name + "_sfs"))
-        self.physical_groups["global"][vb_name + "_sfs"] = ph_vb_sfs_tag
+        phys_grps["global"][vb_name + "_sfs"] = ph_vb_sfs_tag
+
+        return phys_grps
 
     def isometric_projection(self):
         """Set the view in Gmsh to isometric view manually.
