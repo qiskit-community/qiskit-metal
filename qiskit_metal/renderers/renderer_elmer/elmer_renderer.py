@@ -196,9 +196,8 @@ class QElmerRenderer(QRendererAnalysis):
         self._elmer_runner.run_elmersolver(
             sim_dir, sif_name, [cap_matrix_file, postprocessing_file])
 
+        self.capacitance_matrix = self.get_capacitance_matrix(cap_matrix_file)
         if display_cap_matrix:
-            self.capacitance_matrix = self.get_capacitance_matrix(
-                cap_matrix_file)
             return self.capacitance_matrix
 
     def add_solution_setup(
