@@ -60,6 +60,7 @@ class LayerStackHandler():
                                         fill=['true', 'true'])
 
         self._init_dataframe()
+        self.is_layer_data_unique()
 
     def _init_dataframe(self) -> None:
         """Must check if filename for layerstack is valid before trying to import to a pandas table.
@@ -174,6 +175,7 @@ class LayerStackHandler():
                 mask = self.ls_df['layer'] == num
                 search_result_num = self.ls_df[mask]
                 if not search_result_num.datatype.is_unique:
+                    self.logger.warning(f'There WILL BE PROBLEMS since layer {num} does not have unique datatypes.')
                     return False
 
         return True
