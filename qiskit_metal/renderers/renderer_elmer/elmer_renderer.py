@@ -213,7 +213,7 @@ class QElmerRenderer(QRendererAnalysis):
 
         return netlists
 
-    def run(self, sim_type: str, display_cap_matrix: bool = True):
+    def run(self, sim_type: str, display_cap_matrix: bool = False):
         setup = self.default_setup[sim_type]
         sim_dir = self._options["simulation_dir"]
         meshfile = self._options["mesh_file"]
