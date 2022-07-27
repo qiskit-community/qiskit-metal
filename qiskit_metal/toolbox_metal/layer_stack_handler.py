@@ -79,83 +79,6 @@ class LayerStackHandler():
             #enter very basic default data for pandas table.
             self.ls_df = pd.DataFrame(data=self.layer_stack_default)
 
-    def get_properties_for_chip_layer_datatype(
-            self,
-            properties: List[str],
-            chip_name: str,
-            layer_number: int,
-            datatype: int = 0) -> Union[Tuple[Union[float, str, bool]], None]:
-        """When user provides a chip_name, layer and datatype, they can get properties
-         from the layer_stack file. The allowed options for properties must 
-         be in Col_Names.  If any of the properties are not in Col_Names, 
-         None will be returned.  Otherwise a Tuple will be returned with properties 
-         in the same order as provided in input variable properties. 
-
-        Args:
-            properties (List[str]): The column(s) within the layer stack that you want 
-            for a row based on chip_name, layer, and datatype.
-            chip_name (str): The chip name within the column denoted by chip_name.
-            layer_number (int): The layer number within the column denoted by layer.
-            datatype (int, optional): The datatype within the column denoted 
-                                    by datatype. Defaults to 0.
-
-        Returns:
-            Union[Tuple[Union[float, str, bool]], None]: If the search data provided 
-                            in the arguments are not in the layer_stack file, 
-                            None will be returned.  If the search values are found in
-                            layer_stack file, then a Tuple will be returned with the 
-                            requested properties in the same order as provided in 
-                            input variable denoted by properties.
-        """
-        if not properties:
-            return None
-
-        # Check if parameter is not a subset if Col_Names T.
-        if not set(properties).issubset(set(self.Col_Names)):
-            self._warning_properties(properties)
-            return None
-
-        props = Dict()
-        thickness = 0.0
-        z_coord = 0.0
-        material = None
-        fill_value = None
-
-        # yapf: disable
-        mask = (self.ls_df['layer'] == layer_number) & (
-                self.ls_df['datatype'] == datatype) & (
-                self.ls_df['chip_name'].str.contains(chip_name))
-        # yapf: enable
-        search_result_df = self.ls_df[mask]
-
-        if len(search_result_df) > 0:
-            try:
-                thickness = self.multi_planar_design.parse_value(
-                    search_result_df.thickness.iloc[0].strip('\''))
-                z_coord = self.multi_planar_design.parse_value(
-                    search_result_df.z_coord.iloc[0].strip('\''))
-                material = search_result_df.material.iloc[0].strip('\'')
-                value = search_result_df.fill.iloc[0].strip('\'')
-                if value in TRUE_STR:
-                    fill_value = True
-                elif value in FALSE_STR:
-                    fill_value = False
-                else:
-                    self.logger.warning(
-                        f'The \"fill\" value is neither True nor False.'
-                        f'You have:{value}.  '
-                        f'Will return NULL for fill value.')
-                props['thickness'] = thickness
-                props['z_coord'] = z_coord
-                props['material'] = material
-                props['fill'] = fill_value
-            except Exception as ex:
-                self._warning_search(chip_name, layer_number, datatype, ex)
-        result = list()
-        for item in properties:
-            result.append(props[item])
-        return tuple(result)
-
     def get_properties_for_layer_datatype(
             self,
             properties: List[str],
@@ -195,11 +118,17 @@ class LayerStackHandler():
         z_coord = 0.0
         material = None
         fill_value = None
+        chip_name = None
 
-        # yapf: disable
-        mask = (self.ls_df['layer'] == layer_number) & (
-                self.ls_df['datatype'] == datatype)
-        # yapf: enable
+        if self.ls_df is None:
+            abs_path = os.path.abspath(self.filename_csv_df)
+            self.logger.error(
+                f'Not able to read file.'
+                f'File:{abs_path} not read. Check the name and path.')
+
+        mask = (self.ls_df['layer'] == layer_number) & (self.ls_df['datatype']
+                                                        == datatype)
+
         search_result_df = self.ls_df[mask]
 
         if len(search_result_df) > 0:
@@ -209,6 +138,7 @@ class LayerStackHandler():
                 z_coord = self.multi_planar_design.parse_value(
                     search_result_df.z_coord.iloc[0].strip('\''))
                 material = search_result_df.material.iloc[0].strip('\'')
+                chip_name = search_result_df.chip_name.iloc[0].strip('\'')
                 value = search_result_df.fill.iloc[0].strip('\'')
                 if value in TRUE_STR:
                     fill_value = True
@@ -223,6 +153,7 @@ class LayerStackHandler():
                 props['z_coord'] = z_coord
                 props['material'] = material
                 props['fill'] = fill_value
+                props['chip_name'] = chip_name
             except Exception as ex:
                 self._warning_search_minus_chip(layer_number, datatype, ex)
         result = list()
