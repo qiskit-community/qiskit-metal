@@ -233,3 +233,10 @@ class LayerStackHandler():
             f'\nERROR: {ex}'
             f'\nThere is an error searching in layer_stack dataframe using '
             f' layer={layer_number}, datatype={data_type}')
+
+    def layer_stack_handler_pilot_error(self):
+        """ The handler will return None if incorrect arguments are passed.
+        """
+        self.logger.error(
+            f'User is not using LayerStackHandler.get_properties_for_chip_layer_datatype correctly.'
+        )
