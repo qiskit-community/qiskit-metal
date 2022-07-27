@@ -1,5 +1,6 @@
 from typing import Union, List, Tuple
 from collections import defaultdict
+import os
 import pandas as pd
 
 from ..renderer_base import QRendererAnalysis
@@ -9,36 +10,8 @@ from ... import Dict
 from .elmer_runner import ElmerRunner
 
 
-def get_capacitance_matrix(filename: str, nets: dict, constants: dict):
-    with open(filename, "r", encoding="utf-8") as f:
-        lines = f.readlines()
-        f.close()
-
-    new_lines = [(l.replace("  ", " ").strip() + '\n') for l in lines]
-
-    with open(filename, "w", encoding="utf-8") as f:
-        f.writelines(new_lines)
-        f.close()
-
-    df = pd.read_csv(filename, delimiter=" ", header=None)
-
-    # Convert from SPICE cap matrix to Maxwell cap matrix
-    df2 = df.multiply(-1e15)
-    row_sum = df2.sum(axis=0)
-    for i, s in enumerate(row_sum):
-        df2[i][i] = -s
-
-    name_cap = {k: v[-1] for k, v in nets.items()}
-    df2.rename(index=name_cap, columns=name_cap, inplace=True)
-
-    gnd_caps = -1 * df2.sum(axis=0)
-    df2.loc["ground_plane"] = gnd_caps
-    df2["ground_plane"] = gnd_caps
-    df2 = df2.multiply(constants["Permittivity_of_Vacuum"])
-
-    # dummy value set to high as it's shorted to ground
-    df2["ground_plane"]["ground_plane"] = 300
-    return df2
+def load_capacitance_matrix_from_file(filename: str):
+    return pd.read_csv(filename, delimiter=' ', index_col=0)
 
 
 class QElmerRenderer(QRendererAnalysis):
@@ -218,20 +191,53 @@ class QElmerRenderer(QRendererAnalysis):
         sim_dir = self._options["simulation_dir"]
         meshfile = self._options["mesh_file"]
         sif_name = self._options["simulation_input_file"]
-        postprocessing_file = self._options["postprocessing_file"]
         if sim_type == "capacitance":
-            cap_matrix_file = setup["Capacitance_Matrix_Filename"]
+            cap_matrix_file = os.path.join(self._options["simulation_dir"],
+                                           setup["Capacitance_Matrix_Filename"])
 
         self.logger.info("Running ElmerGrid on input mesh from Gmsh...")
         self._elmer_runner.run_elmergrid(sim_dir, meshfile)
         self.logger.info(f"Running ElmerSolver for solver type: '{sim_type}'")
-        self._elmer_runner.run_elmersolver(
-            sim_dir, sif_name, [cap_matrix_file, postprocessing_file])
+        self._elmer_runner.run_elmersolver(sim_dir, sif_name)
 
-        self.capacitance_matrix = get_capacitance_matrix(
-            cap_matrix_file, self.nets, self.default_setup["constants"])
+        self.capacitance_matrix = self._get_capacitance_matrix(cap_matrix_file)
         if display_cap_matrix:
             return self.capacitance_matrix
+
+    def save_capacitance_matrix(self, path: str):
+        self.capacitance_matrix.to_csv(path, sep=' ', header=True)
+
+    def _get_capacitance_matrix(self, filename: str):
+        with open(filename, "r", encoding="utf-8") as f:
+            lines = f.readlines()
+            f.close()
+
+        new_lines = [(l.replace("  ", " ").strip() + '\n') for l in lines]
+
+        with open(filename, "w", encoding="utf-8") as f:
+            f.writelines(new_lines)
+            f.close()
+
+        df = pd.read_csv(filename, delimiter=" ", header=None)
+
+        # Convert from SPICE cap matrix to Maxwell cap matrix
+        df2 = df.multiply(-1e15)
+        row_sum = df2.sum(axis=0)
+        for i, s in enumerate(row_sum):
+            df2[i][i] = -s
+
+        name_cap = {k: v[-1] for k, v in self.nets.items()}
+        df2.rename(index=name_cap, columns=name_cap, inplace=True)
+
+        gnd_caps = -1 * df2.sum(axis=0)
+        df2.loc["ground_plane"] = gnd_caps
+        df2["ground_plane"] = gnd_caps
+        df2 = df2.multiply(
+            self.default_setup["constants"]["Permittivity_of_Vacuum"])
+
+        # dummy value set to high as it's shorted to ground
+        df2["ground_plane"]["ground_plane"] = 300
+        return df2
 
     def add_solution_setup(
         self,
@@ -449,5 +455,6 @@ class QElmerRenderer(QRendererAnalysis):
     def display_post_processing_data(self):
         """Import data given by ElmerFEM for Post-Processing in Gmsh
         """
-        self.gmsh.import_post_processing_data(
-            self._options["postprocessing_file"])
+        postprocessing_file = os.path.join(self._options["simulation_dir"],
+                                           self._options["postprocessing_file"])
+        self.gmsh.import_post_processing_data(postprocessing_file)

@@ -342,12 +342,13 @@ class ElmerRunner:
             shutil.move(os.path.join(mesh_dir, f), sim_dir)
         shutil.rmtree(mesh_dir)
 
-    def run_elmersolver(self,
-                        sim_dir: str,
-                        sif_file: str,
-                        out_files: ty.List[str],
-                        elmersolver: str = None,
-                        options: list = []):
+    def run_elmersolver(
+            self,
+            sim_dir: str,
+            sif_file: str,
+            # out_files: ty.List[str],
+            elmersolver: str = None,
+            options: list = []):
 
         os_platform = platform.system()
         if elmersolver is None:
@@ -365,11 +366,11 @@ class ElmerRunner:
                       encoding="utf=8") as f:
                 subprocess.run(args, cwd=sim_dir, stdout=f, stderr=f)
 
-            for f in out_files:
-                out_file = os.path.join(sim_dir, f)
-                if os.path.exists(os.path.join(".", f)):
-                    os.remove(os.path.join(".", f))
-                shutil.move(out_file, ".")
+            # for f in out_files:
+            #     out_file = os.path.join(sim_dir, f)
+            #     if os.path.exists(os.path.join(".", f)):
+            #         os.remove(os.path.join(".", f))
+            #     shutil.move(out_file, ".")
 
     # def run_elmersolver_mpi(self,
     #                     sim_dir: str,
