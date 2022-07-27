@@ -9,6 +9,38 @@ from ... import Dict
 from .elmer_runner import ElmerRunner
 
 
+def get_capacitance_matrix(filename: str, nets: dict, constants: dict):
+    with open(filename, "r", encoding="utf-8") as f:
+        lines = f.readlines()
+        f.close()
+
+    new_lines = [(l.replace("  ", " ").strip() + '\n') for l in lines]
+
+    with open(filename, "w", encoding="utf-8") as f:
+        f.writelines(new_lines)
+        f.close()
+
+    df = pd.read_csv(filename, delimiter=" ", header=None)
+
+    # Convert from SPICE cap matrix to Maxwell cap matrix
+    df2 = df.multiply(-1e15)
+    row_sum = df2.sum(axis=0)
+    for i, s in enumerate(row_sum):
+        df2[i][i] = -s
+
+    name_cap = {k: v[-1] for k, v in nets.items()}
+    df2.rename(index=name_cap, columns=name_cap, inplace=True)
+
+    gnd_caps = -1 * df2.sum(axis=0)
+    df2.loc["ground_plane"] = gnd_caps
+    df2["ground_plane"] = gnd_caps
+    df2 = df2.multiply(constants["Permittivity_of_Vacuum"])
+
+    # dummy value set to high as it's shorted to ground
+    df2["ground_plane"]["ground_plane"] = 300
+    return df2
+
+
 class QElmerRenderer(QRendererAnalysis):
     """Extends QRendererAnalysis class and imports meshes from Gmsh using the ElmerFEM python API.
 
@@ -196,7 +228,8 @@ class QElmerRenderer(QRendererAnalysis):
         self._elmer_runner.run_elmersolver(
             sim_dir, sif_name, [cap_matrix_file, postprocessing_file])
 
-        self.capacitance_matrix = self.get_capacitance_matrix(cap_matrix_file)
+        self.capacitance_matrix = get_capacitance_matrix(
+            cap_matrix_file, self.nets, self.default_setup["constants"])
         if display_cap_matrix:
             return self.capacitance_matrix
 
@@ -316,38 +349,6 @@ class QElmerRenderer(QRendererAnalysis):
         sim_dir = self._options["simulation_dir"]
         self._elmer_runner.write_startinfo_and_sif(filename=filename,
                                                    sim_dir=sim_dir)
-
-    def get_capacitance_matrix(self, filename: str):
-        with open(filename, "r", encoding="utf-8") as f:
-            lines = f.readlines()
-            f.close()
-
-        new_lines = [(l.replace("  ", " ").strip() + '\n') for l in lines]
-
-        with open(filename, "w", encoding="utf-8") as f:
-            f.writelines(new_lines)
-            f.close()
-
-        df = pd.read_csv(filename, delimiter=" ", header=None)
-
-        # Convert from SPICE cap matrix to Maxwell cap matrix
-        df2 = df.multiply(-1e15)
-        row_sum = df2.sum(axis=0)
-        for i, s in enumerate(row_sum):
-            df2[i][i] = -s
-
-        name_cap = {k: v[-1] for k, v in self.nets.items()}
-        df2.rename(index=name_cap, columns=name_cap, inplace=True)
-
-        gnd_caps = -1 * df2.sum(axis=0)
-        df2.loc["ground_plane"] = gnd_caps
-        df2["ground_plane"] = gnd_caps
-        df2 = df2.multiply(
-            self.default_setup["constants"]["Permittivity_of_Vacuum"])
-
-        # dummy value set to high as it's shorted to ground
-        df2["ground_plane"]["ground_plane"] = 300
-        return df2
 
     def render_chips(self,
                      chips: Union[str, List[str]] = [],
