@@ -180,49 +180,6 @@ class LayerStackHandler():
                 f'File:{abs_path} not imported. Expected a CSV formatted file.')
             self.logger.error(f'The exception: {error}')
 
-    def get_fill_for_chip_layer_datatype(self,
-                                         chip_name: str,
-                                         layer_num: int,
-                                         datatype=0) -> Tuple[bool, bool]:
-        """Determine if geometry should be filled in Ansys.
-
-        Args:
-            chip_name (str): Name of chip which has the layer of interest.
-            layer_num (int): The unique layer number through out all chips.
-                            The same layer number can  not be used on multiple chips.
-            datatype (int, optional):  Datatype of the layer number. Defaults to 0.
-
-        Returns:
-            Tuple[bool, bool]: 1st bool denotes if value for fill was available,
-                            2nd value denotes value for fill. Default is None.
-        """
-        found_fill_value = False
-        fill_value = None
-        mask = (self.ls_df['layer']
-                == layer_num) & (self.ls_df['datatype'] == datatype) & (
-                    self.ls_df['chip_name'].str.contains(chip_name))
-        search_result_df = self.ls_df[mask]
-        if len(search_result_df) > 0:
-            try:
-                value = search_result_df.fill.iloc[0].strip('\'')
-                if value in TRUE_STR:
-                    found_fill_value = True
-                    fill_value = True
-                    return found_fill_value, fill_value
-                if value in FALSE_STR:
-                    found_fill_value = True
-                    fill_value = False
-                    return found_fill_value, fill_value
-                self.logger.warning(
-                    f'The \"fill\" value is neither True nor False.'
-                    f'You have:{value}.  '
-                    f'Will return NULL for fill value.')
-
-            except Exception as ex:
-                self._warning_search(chip_name, layer_num, datatype, ex)
-
-        return found_fill_value, fill_value
-
     def get_unique_chip_names(self) -> set:
         """Get a set of unique names used in the layer_stack dataframe.
 
