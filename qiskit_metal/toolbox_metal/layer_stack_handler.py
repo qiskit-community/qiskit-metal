@@ -161,14 +161,22 @@ class LayerStackHandler():
             result.append(props[item])
         return tuple(result)
 
-    def is_layer_unique(self) -> bool:
-        """Check to sort on layer number make sure they are unique.
-        This method is not so relevant, since layers can have datatype entries.
-        Thus there can be rows with same layer number.
-        """
+    def is_layer_data_unique(self) -> bool:
+        """For each layer number make sure the datatypes are unique.  A layers can 
+        #have multiple datatypes.
 
-        #TODO Check for each layer, confirm that every datatype is unique.
-        return self.ls_df['layer'].is_unique
+        Returns:
+            bool: True if empty dataframe, True if for each layer, there is ONLY one datatype. Otherwise, False.
+        """
+        layer_nums = self.get_unique_layer_ints()
+        if layer_nums:
+            for num in layer_nums:
+                mask = self.ls_df['layer'] == num
+                search_result_num = self.ls_df[mask]
+                if not search_result_num.datatype.is_unique:
+                    return False
+
+        return True
 
     def _read_csv_df(self, abs_path: str) -> None:
         #ASSUME that self.filename_csv_df is valid file path and name.
@@ -191,6 +199,15 @@ class LayerStackHandler():
         names = self.ls_df['chip_name']
         result = set(names.str.strip('\''))
         return result
+
+    def get_unique_layer_ints(self) -> set:
+        """Get a set of unique layer ints used in the layer_stack dataframe.
+
+        Returns:
+            set: Unique layer numbers used in the layer stack used as either default or provided by user.
+        """
+        layers = self.ls_df['layer']
+        return set(layers.unique())
 
     def _warning_properties(self, properties: list):
         """_Give warning if the properties is 
