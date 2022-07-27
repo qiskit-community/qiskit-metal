@@ -51,13 +51,13 @@ class LayerStackHandler():
         #     'chip_name', 'layer', 'datatype', 'material', 'thickness',
         #     'z_coord', 'fill'
         # ]
-        self.layer_stack_default = Dict(chip_name=['main'],
-                                        layer=[1],
-                                        datatype=[0],
-                                        material=['pec'],
-                                        thickness=['2um'],
-                                        z_coord=['0um'],
-                                        fill=['true'])
+        self.layer_stack_default = Dict(chip_name=['main', 'main'],
+                                        layer=[1, 3],
+                                        datatype=[0, 0],
+                                        material=['pec', 'silicon'],
+                                        thickness=['2um', '-750um'],
+                                        z_coord=['0um', '0um'],
+                                        fill=['true', 'true'])
 
         self._init_dataframe()
 
@@ -166,6 +166,8 @@ class LayerStackHandler():
         This method is not so relevant, since layers can have datatype entries.
         Thus there can be rows with same layer number.
         """
+
+        #TODO Check for each layer, confirm that every datatype is unique.
         return self.ls_df['layer'].is_unique
 
     def _read_csv_df(self, abs_path: str) -> None:
