@@ -175,7 +175,9 @@ class LayerStackHandler():
                 mask = self.ls_df['layer'] == num
                 search_result_num = self.ls_df[mask]
                 if not search_result_num.datatype.is_unique:
-                    self.logger.warning(f'There WILL BE PROBLEMS since layer {num} does not have unique datatypes.')
+                    self.logger.warning(
+                        f'There WILL BE PROBLEMS since layer {num} does not have unique datatypes.'
+                    )
                     return False
 
         return True
