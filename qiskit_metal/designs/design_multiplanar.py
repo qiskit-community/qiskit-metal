@@ -24,7 +24,7 @@ __all__ = ['DesignMulti']
 
 
 class MultiPlanar(QDesign):
-    """Metal class for a planar (2D) design, consisting of a single plane chip.
+    """Metal class for a multiple planar design, consisting of either single or multiple chips.
     Typically assumed to have some CPW geometries.
 
     Inherits QDesign class.
@@ -84,14 +84,6 @@ class MultiPlanar(QDesign):
 
         NOTE: self._chips dict comes from QDesign base class.
         """
-        self._chips['qubit_chip'] = Dict()
-        self._chips.qubit_chip.size = Dict(
-            center_x='0.0mm',
-            center_y='0.0mm',
-            size_x='9mm',
-            size_y='7mm',
-        )
-
         self._chips['main'] = Dict()
 
         self._chips['main']['size'] = Dict(
