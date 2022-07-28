@@ -59,14 +59,14 @@ nbsphinx_prolog = """
 {% set docname = docname|replace("F.Small-quantum-chips", "F.Small-quantum-chips/") %}
 {% set docname = docname|replace("full-design-flow-examples", "full-design-flow-examples/") %}
 {% set docname = docname|replace("tut", "tut/") %}
-{% set docname = docname|replace("1-Overview", "1 Overview/") %}
+{% set docname = docname|replace("1-Overview", "1-Overview/") %}
 {% set docname = docname|replace("2-From-components-to-chip", "2-From-components-to-chip/") %}
 {% set docname = docname|replace("3-Renderers", "3-Renderers/") %}
 {% set docname = docname|replace("4-Analysis", "4-Analysis/") %}
 {% set docname = docname|replace("quick-topics", "quick-topics/") %}
 
 .. only:: html
-    
+
     .. role:: raw-html(raw)
         :format: html
 
@@ -83,7 +83,7 @@ nbsphinx_prolog = """
 nbsphinx_epilog = """
 {% set docname = env.doc2path(env.docname, base=None) %}
 .. only:: html
-    
+
     .. role:: raw-html(raw)
         :format: html
 
