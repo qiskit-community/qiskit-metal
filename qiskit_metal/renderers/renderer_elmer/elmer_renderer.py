@@ -121,21 +121,15 @@ class QElmerRenderer(QRendererAnalysis):
         elif self.gmsh.case == 2:
             raise ValueError("Selection provided is invalid.")
 
-        def create_mask(table: pd.Series, qcomp_ids: list):
-            mask = 0
-            for qid in qcomp_ids:
-                mask |= (table["component"] == qid)
-            mask &= ~table["subtract"]
-            return mask
+        mask = lambda table: table["component"].isin(qcomp_ids) & ~table[
+            "subtract"]
 
         netlists = defaultdict(list)
         netlist_id = 0
         path_table = self.design.qgeometry.tables["path"]
         poly_table = self.design.qgeometry.tables["poly"]
-        qcomp_paths = path_table[create_mask(table=path_table,
-                                             qcomp_ids=qcomp_ids)]
-        qcomp_polys = poly_table[create_mask(table=poly_table,
-                                             qcomp_ids=qcomp_ids)]
+        qcomp_paths = path_table[mask(table=path_table)]
+        qcomp_polys = poly_table[mask(table=poly_table)]
         qcomp_geom_table = pd.concat([qcomp_paths, qcomp_polys],
                                      ignore_index=True)
         qgeom_names = qcomp_geom_table["name"]
