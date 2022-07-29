@@ -76,11 +76,11 @@ class MultiPlanar(QDesign):
         return LayerStackHandler(self)
 
     def _add_chip_info(self):
-        """
+        """Used to determine size of fill box by either 'size' data or box_plus_buffer.
 
-        # GDSPY is using numbers based on 1 meter unit.
-        # When the gds file is exported, data is converted to "user-selected" units.
-        # centered at (0,0) and 9 by 6 size.
+        GDSPY is using numbers based on 1 meter unit.
+        When the gds file is exported, data is converted to "user-selected" units.
+        centered at (0,0) and 9 by 6 size.
 
         NOTE: self._chips dict comes from QDesign base class.
         """
