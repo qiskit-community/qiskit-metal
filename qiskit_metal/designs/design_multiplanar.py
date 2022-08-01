@@ -20,7 +20,7 @@ from qiskit_metal.designs.design_base import QDesign
 from qiskit_metal.toolbox_metal.layer_stack_handler import LayerStackHandler
 from addict import Dict
 
-__all__ = ['DesignMulti']
+__all__ = ['MultiPlanar']
 
 
 class MultiPlanar(QDesign):
