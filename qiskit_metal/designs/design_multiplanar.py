@@ -64,7 +64,7 @@ class MultiPlanar(QDesign):
         """Can be updated by user.
         """
         self._uwave_package[
-            'sample_holder_top'] = '890um',  # how tall is the vacuum above center_z
+            'sample_holder_top'] = '890um'  # how tall is the vacuum above center_z
         self._uwave_package[
             'sample_holder_bottom'] = '1650um'  # how tall is the vacuum below z=0
 
