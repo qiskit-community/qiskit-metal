@@ -20,6 +20,6 @@ dependencies:
   - shapely
   - jupyter
   - scqubits
-  #- pythonnet #Needed for pyaedt
-  #- pyvista #Needed for pyaedt
+  - pythonnet #Needed for pyaedt
+  - pyvista #Needed for pyaedt
   #- PyAEDT
