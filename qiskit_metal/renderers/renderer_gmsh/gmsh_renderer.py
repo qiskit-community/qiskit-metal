@@ -1,13 +1,12 @@
-from typing import Union, List
+from typing import Union, List, Optional
 from collections import defaultdict
 import pandas as pd
 import gmsh
 import numpy as np
 
 from ..renderer_base import QRenderer
-from ...designs.design_base import QDesign
+from ...designs.design_multiplanar import MultiPlanar
 from .gmsh_utils import Vec3D, Vec3DArray, line_width_offset_pts, render_path_curves
-from ...draw.basic import is_rectangle
 from ..utils import get_min_bounding_box  # TODO: remove and put the new one written by @PritiShah
 from ...toolbox_metal.parsing import parse_value
 from ...toolbox_python.utility_functions import clean_name, bad_fillet_idxs
@@ -67,10 +66,13 @@ class QGmshRenderer(QRenderer):
     name = "gmsh"
     """Name"""
 
-    def __init__(self, design: QDesign, initiate=True, options: Dict = None):
+    def __init__(self,
+                 design: MultiPlanar,
+                 initiate=True,
+                 options: Dict = None):
         """
         Args:
-            design (QDesign): The design.
+            design (MultiPlanar): The design.
             initiate (bool): True to initiate the renderer (Default: False).
             settings (Dict, optional): Used to override default settings. Defaults to None.
         """
@@ -141,6 +143,7 @@ class QGmshRenderer(QRenderer):
         box_plus_buffer: bool = True,
         mesh_geoms: bool = True,
         skip_junctions: bool = False,
+        cut_metal_from_vacuum: bool = False,
     ):
         """_summary_
 
@@ -155,6 +158,9 @@ class QGmshRenderer(QRenderer):
                                                         Defaults to True.
             skip_junctions (bool, optional): Set to True to sip rendering the
                                                         junctions. Defaults to False.
+            cut_metal_volumes (bool, optional): cut the volume of metals and replace
+                                                        it with a list of surfaces instead.
+                                                        Defaults to False.
         """
 
         self.qcomp_ids, self.case = self.get_unique_component_ids(selection)
@@ -165,11 +171,12 @@ class QGmshRenderer(QRenderer):
             return
 
         # defaultdict: chip -- geom_tag
-        self.gnd_plane_dict = defaultdict(int)
-        self.substrate_dict = defaultdict(int)
+        # self.gnd_plane_dict = defaultdict(int)
+        # self.substrate_dict = defaultdict(int)
+        self.layers_dict = defaultdict(int)
 
         # defaultdict: chip -- set(geom_tag)
-        self.chip_subtract_dict = defaultdict(set)
+        self.layer_subtract_dict = defaultdict(set)
 
         # defaultdict: chip -- dict(geom_name: geom_tag)
         self.polys_dict = defaultdict(dict)
@@ -180,17 +187,23 @@ class QGmshRenderer(QRenderer):
         self.render_tables(skip_junction=skip_junctions)
         self.add_endcaps(open_pins=open_pins)
 
-        self.render_chips(box_plus_buffer=box_plus_buffer)
+        self.render_layers(box_plus_buffer=box_plus_buffer)
 
         self.gmsh_occ_synchronize()
 
-        self.subtract_from_ground()
+        self.subtract_from_layers()
+        # TODO: 3D change:
+        # 1. Cut the metal volumes from vacuum only for capacitance sim
+        # 2. Think on how to handle 3D metals for eigenmode sim?
+        if cut_metal_from_vacuum:
+            self.cut_metal_from_vacuum()
+
         self.fragment_interfaces()
 
         self.gmsh_occ_synchronize()
 
         # Add physical groups
-        self.physical_groups = self.assign_physical_groups()
+        # self.physical_groups = self.assign_physical_groups()
 
         if mesh_geoms:
             self.add_mesh()  # generate mesh
@@ -296,9 +309,13 @@ class QGmshRenderer(QRenderer):
         """
         qc_shapely = junc.geometry
         qc_width = self.parse_units_gmsh(junc.width)
-        qc_chip_z = self.parse_units_gmsh(self.design.get_chip_z(junc.chip))
+        # TODO: 3D change: to accommodate layer stack
+        qc_thickness, qc_z = self.parse_units_gmsh(
+            self.design.ls.get_properties_for_layer_datatype(
+                properties=["thickness", "z_coord"], layer_number=junc.layer))
+        # qc_chip_z = self.parse_units_gmsh(self.design.get_chip_z(junc.chip))
         vecs = Vec3DArray.make_vec3DArray(
-            self.parse_units_gmsh(list(qc_shapely.coords)), qc_chip_z)
+            self.parse_units_gmsh(list(qc_shapely.coords)), qc_z)
         qc_name = self.design._components[
             junc["component"]].name + '_' + clean_name(junc["name"])
 
@@ -306,31 +323,35 @@ class QGmshRenderer(QRenderer):
         v1, v2 = line_width_offset_pts(vecs.points[0],
                                        vecs.path_vecs[0],
                                        qc_width,
-                                       qc_chip_z,
+                                       qc_z,
                                        ret_pts=False)
         v3, v4 = line_width_offset_pts(vecs.points[1],
                                        vecs.path_vecs[0],
                                        qc_width,
-                                       qc_chip_z,
+                                       qc_z,
                                        ret_pts=False)
 
         v1_v3 = Vec3D.get_distance(v1, v3)
         v1_v4 = Vec3D.get_distance(v1, v4)
         vecs = [v1, v2, v4, v3, v1] if v1_v3 <= v1_v4 else [v1, v2, v3, v4, v1]
-        pts = [
-            gmsh.model.occ.addPoint(v[0], v[1], qc_chip_z) for v in vecs[:-1]
-        ]
+        pts = [gmsh.model.occ.addPoint(v[0], v[1], qc_z) for v in vecs[:-1]]
         pts += [pts[0]]
         lines = []
         for i, p in enumerate(pts[:-1]):
             lines += [gmsh.model.occ.addLine(p, pts[i + 1])]
         curve_loop = gmsh.model.occ.addCurveLoop(lines)
         surface = gmsh.model.occ.addPlaneSurface([curve_loop])
+        # TODO: 3D change: do I need to translate the created surface?
+        # Translate the junction to the middle of the layer
+        gmsh.model.occ.translate([(2, surface)],
+                                 dx=0,
+                                 dy=0,
+                                 dz=qc_thickness / 2)
 
-        if junc.chip not in self.juncs_dict:
-            self.juncs_dict[junc.chip] = dict()
+        if junc.layer not in self.juncs_dict:
+            self.juncs_dict[junc.layer] = dict()
 
-        self.juncs_dict[junc.chip][qc_name] = surface
+        self.juncs_dict[junc.layer][qc_name] = surface
 
     def render_element_path(self, path: pd.Series):
         """Render an element path.
@@ -342,26 +363,44 @@ class QGmshRenderer(QRenderer):
         qc_width = path.width
         qc_fillet = self.parse_units_gmsh(path.fillet) if float(
             path.fillet) is not np.nan else 0.0
-        qc_chip_z = self.parse_units_gmsh(self.design.get_chip_z(path.chip))
+        # TODO: 3D change: to accommodate layer stack
+        qc_thickness, qc_z = self.parse_units_gmsh(
+            self.design.ls.get_properties_for_layer_datatype(
+                properties=["thickness", "z_coord"], layer_number=path.layer))
+        # qc_chip_z = self.parse_units_gmsh(self.design.get_chip_z(path.chip))
         vecs = Vec3DArray.make_vec3DArray(
-            self.parse_units_gmsh(list(qc_shapely.coords)), qc_chip_z)
+            self.parse_units_gmsh(list(qc_shapely.coords)), qc_z)
         bad_fillets = bad_fillet_idxs(qc_shapely.coords, qc_fillet)
-        curves = render_path_curves(vecs, qc_chip_z, qc_fillet, qc_width,
+        curves = render_path_curves(vecs, qc_z, qc_fillet, qc_width,
                                     bad_fillets)
         surface = self.make_general_surface(curves)
         qc_name = self.design._components[
             path["component"]].name + '_' + clean_name(path["name"])
 
-        if path.chip not in self.chip_subtract_dict:
-            self.chip_subtract_dict[path.chip] = set()
+        if path.layer not in self.layer_subtract_dict:
+            self.layer_subtract_dict[path.layer] = set()
 
-        if path.chip not in self.paths_dict:
-            self.paths_dict[path.chip] = dict()
+        if path.layer not in self.paths_dict:
+            self.paths_dict[path.layer] = dict()
 
-        if path["subtract"]:
-            self.chip_subtract_dict[path.chip].add(surface)
+        # TODO: 3D change: extrude surface to make volume
+        if np.abs(qc_thickness) > 0:
+            extruded_entity = gmsh.model.occ.extrude([(2, surface)],
+                                                     dx=0,
+                                                     dy=0,
+                                                     dz=qc_thickness)
+            volume = [tag for dim, tag in extruded_entity if dim == 3]
+
+            if path["subtract"]:
+                self.layer_subtract_dict[path.layer].add(volume[0])
+            else:
+                self.paths_dict[path.layer][qc_name] = volume[0]
+
         else:
-            self.paths_dict[path.chip][qc_name] = surface
+            if path["subtract"]:
+                self.layer_subtract_dict[path.layer].add(surface)
+            else:
+                self.paths_dict[path.layer][qc_name] = surface
 
     def make_poly_surface(self, points: List[np.ndarray], chip_z: float) -> int:
         """Make a Gmsh surface for creating poly type QGeometries
@@ -398,42 +437,53 @@ class QGmshRenderer(QRenderer):
             poly (pd.Series): Poly to render.
         """
         qc_shapely = poly.geometry
-        qc_chip_z = self.parse_units_gmsh(self.design.get_chip_z(poly.chip))
+        # TODO: 3D change: to accommodate layer stack
+        qc_thickness, qc_z = self.parse_units_gmsh(
+            self.design.ls.get_properties_for_layer_datatype(
+                properties=["thickness", "z_coord"], layer_number=poly.layer))
+        # qc_chip_z = self.parse_units_gmsh(self.design.get_chip_z(poly.chip))
         vecs = Vec3DArray.make_vec3DArray(
-            self.parse_units_gmsh(list(qc_shapely.exterior.coords)), qc_chip_z)
+            self.parse_units_gmsh(list(qc_shapely.exterior.coords)), qc_z)
         qc_name = self.design._components[
             poly["component"]].name + '_' + clean_name(poly["name"])
 
-        # TODO: why is this failing?
-        # if is_rectangle(qc_shapely):
-        #     x_min, y_min, x_max, y_max = qc_shapely.bounds
-        #     dx, dy = np.abs(x_max - x_min), np.abs(y_max - y_min)
-        #     surface = gmsh.model.occ.addRectangle(x_min, y_min, qc_chip_z, dx,
-        #                                           dy)
-        # else:
-        surface = self.make_poly_surface(vecs.points, qc_chip_z)
+        surface = self.make_poly_surface(vecs.points, qc_z)
 
         if len(qc_shapely.interiors) > 0:
             pts = np.array(list(qc_shapely.interiors[0].coords))
-            int_vecs = Vec3DArray.make_vec3DArray(pts, qc_chip_z)
-            int_surface = self.make_poly_surface(int_vecs.points, qc_chip_z)
+            int_vecs = Vec3DArray.make_vec3DArray(pts, qc_z)
+            int_surface = self.make_poly_surface(int_vecs.points, qc_z)
             surface = gmsh.model.occ.cut([(2, surface)],
                                          [(2, int_surface)])[0][0][1]
 
-        if poly.chip not in self.chip_subtract_dict:
-            self.chip_subtract_dict[poly.chip] = set()
+        if poly.layer not in self.layer_subtract_dict:
+            self.layer_subtract_dict[poly.layer] = set()
 
-        if poly.chip not in self.polys_dict:
-            self.polys_dict[poly.chip] = dict()
+        if poly.layer not in self.polys_dict:
+            self.polys_dict[poly.layer] = dict()
 
-        if poly["subtract"]:
-            self.chip_subtract_dict[poly.chip].add(surface)
+        # TODO: 3D change: extrude surface to make volume
+        if np.abs(qc_thickness) > 0:
+            extruded_entity = gmsh.model.occ.extrude([(2, surface)],
+                                                     dx=0,
+                                                     dy=0,
+                                                     dz=qc_thickness)
+            volume = [tag for dim, tag in extruded_entity if dim == 3]
+
+            if poly["subtract"]:
+                self.layer_subtract_dict[poly.layer].add(volume[0])
+            else:
+                self.polys_dict[poly.layer][qc_name] = volume[0]
+
         else:
-            self.polys_dict[poly.chip][qc_name] = surface
+            if poly["subtract"]:
+                self.layer_subtract_dict[poly.layer].add(surface)
+            else:
+                self.polys_dict[poly.layer][qc_name] = surface
 
     def add_endcaps(self, open_pins: Union[list, None] = None):
         """Create endcaps (rectangular cutouts) for all pins in the list
-        open_pins and add them to chip_subtract_dict. Each element in open_pins
+        open_pins and add them to layer_subtract_dict. Each element in open_pins
         takes on the form (component_name, pin_name) and corresponds to a
         single pin.
 
@@ -443,15 +493,24 @@ class QGmshRenderer(QRenderer):
         open_pins = open_pins if open_pins is not None else []
 
         for comp, pin in open_pins:
-            pin_dict = self.design.components[comp].pins[pin]
+            qcomp = self.design.components[comp]
+            qc_layer = int(qcomp.options.layer)
+            pin_dict = qcomp.pins[pin]
             width, gap = self.parse_units_gmsh(
                 [pin_dict["width"], pin_dict["gap"]])
             mid, normal = self.parse_units_gmsh(
                 pin_dict["middle"]), pin_dict["normal"]
-            chip_name = self.design.components[comp].options.chip
-            qc_chip_z = self.parse_units_gmsh(self.design.get_chip_z(chip_name))
+            # chip_name = self.design.components[comp].options.chip
+            # TODO: 3D change: to accommodate layer stack
+            qc_thickness, qc_z = self.parse_units_gmsh(
+                self.design.ls.get_properties_for_layer_datatype(
+                    properties=["thickness", "z_coord"], layer_number=qc_layer))
+
+            # if qc_thickness is None or qc_z is None:
+            #     self.logger.error("Properties for")
+            # qc_chip_z = self.parse_units_gmsh(self.design.get_chip_z(chip_name))
             rect_mid = mid + normal * gap / 2
-            rect_vec = np.array([rect_mid[0], rect_mid[1], qc_chip_z])
+            rect_vec = np.array([rect_mid[0], rect_mid[1], qc_z])
             # Assumption: pins only point in x or y directions
             # If this assumption is not satisfied, draw_rect_center no longer works -> must use draw_polyline
             if abs(normal[0]) > abs(normal[1]):
@@ -459,25 +518,36 @@ class QGmshRenderer(QRenderer):
                 dy = width + 2 * gap
                 rect_x = rect_vec[0] - dx / 2
                 rect_y = rect_vec[1] - dy / 2
-                rect_z = rect_vec[2]  # TODO: For 3D this will change
+                rect_z = rect_vec[2]
             else:
                 dy = gap
                 dx = width + 2 * gap
                 rect_x = rect_vec[0] - dx / 2
                 rect_y = rect_vec[1] - dy / 2
-                rect_z = rect_vec[2]  # TODO: For 3D this will change
+                rect_z = rect_vec[2]
 
-            endcap = gmsh.model.occ.addRectangle(x=rect_x,
-                                                 y=rect_y,
-                                                 z=rect_z,
-                                                 dx=dx,
-                                                 dy=dy)
-            self.chip_subtract_dict[chip_name].add(endcap)
+            # TODO: 3D change: addBox instead of addRectangle
+            if np.abs(qc_thickness) > 0:
+                endcap = gmsh.model.occ.addBox(x=rect_x,
+                                               y=rect_y,
+                                               z=rect_z,
+                                               dx=dx,
+                                               dy=dy,
+                                               dz=qc_thickness)
+            else:
+                endcap = gmsh.model.occ.addRectangle(x=rect_x,
+                                                     y=rect_y,
+                                                     z=rect_z,
+                                                     dx=dx,
+                                                     dy=dy)
+            self.layer_subtract_dict[qc_layer].add(endcap)
 
-    def render_chips(self,
-                     chips: Union[str, List[str]] = [],
-                     draw_sample_holder: bool = True,
-                     box_plus_buffer: bool = True):
+    def render_layers(
+            self,
+            # TODO: 3D change: give option to render layers instead of chips?
+            layers: Optional[List[int]] = None,
+            draw_sample_holder: bool = True,
+            box_plus_buffer: bool = True):
         """Render all chips of the design. calls `render_chip` to render the actual geometries
 
         Args:
@@ -489,67 +559,45 @@ class QGmshRenderer(QRenderer):
         Raises:
             TypeError: raise when user provides 'str' instead of 'List[str]' for chips argument.
         """
-        chip_list = []
-        if isinstance(chips, str):
-            if chips == "all":
-                chip_list = list(self.design.chips.keys())
-            else:
-                raise TypeError(
-                    "Expected list of chip names 'List[str]', found 'str'.")
-        else:
-            if len(chips) == 0:
-                chip_list = list(self.design.chips.keys())
-            else:
-                chip_list = set()
-                chips_in_design = self.design.chips.keys()
-                for chip_name in chips:
-                    if chip_name in chips_in_design:
-                        chip_list.add(chip_name)
+        # TODO: 3D change: give option to render layers instead of chips?
+        layer_list = [l for l in self.design.ls.ls_df["layer"]
+                     ] if layers is None else layers
 
         self.cw_x, self.cw_y = Dict(), Dict()
         self.cc_x, self.cc_y = Dict(), Dict()
 
-        for chip_name in chip_list:
+        for layer in layer_list:
             if box_plus_buffer:  # Get bounding box of components first
-                # TODO: Use gmsh.model.getBoundingBox() when shifting to 3D like so:
+                # TODO: 3D change: Use gmsh.model.getBoundingBox() when shifting to 3D like so:
                 # xmin, ymin, zmin, xmax, ymax, zmax = gmsh.model.getBoundingBox()
                 min_x, min_y, max_x, max_y = self.parse_units_gmsh(
                     get_min_bounding_box(self.design, self.qcomp_ids, self.case,
                                          self.logger))
-                self.cw_x.update({chip_name: max_x - min_x
-                                 })  # chip width along x
-                self.cw_y.update({chip_name: max_y - min_y
-                                 })  # chip width along y
-                self.cw_x[chip_name] += 2 * self.parse_units_gmsh(
+                self.cw_x.update({layer: max_x - min_x})  # chip width along x
+                self.cw_y.update({layer: max_y - min_y})  # chip width along y
+                self.cw_x[layer] += 2 * self.parse_units_gmsh(
                     self._options["x_buffer_width_mm"])
-                self.cw_y[chip_name] += 2 * self.parse_units_gmsh(
+                self.cw_y[layer] += 2 * self.parse_units_gmsh(
                     self._options["y_buffer_width_mm"])
-                self.cc_x.update({chip_name:
-                    (max_x + min_x) / 2})  # x coord of chip center
-                self.cc_y.update({chip_name:
-                    (max_y + min_y) / 2})  # y coord of chip center
+                # x coord of chip center
+                self.cc_x.update({layer: (max_x + min_x) / 2})
+                # y coord of chip center
+                self.cc_y.update({layer: (max_y + min_y) / 2})
             else:  # Adhere to chip placement and dimensions in QDesign
-                p = self.design.get_chip_size(
-                    chip_name)  # x/y center/width same for all chips
-                self.cw_x.update(
-                    {chip_name: self.parse_units_gmsh(p["size_x"])})
-                self.cw_y.update(
-                    {chip_name: self.parse_units_gmsh(p["size_y"])})
-                self.cc_x.update(
-                    {chip_name: self.parse_units_gmsh(p["center_x"])})
-                self.cc_y.update(
-                    {chip_name: self.parse_units_gmsh(p["center_y"])})
-                # self.cw_x, self.cw_y, _ = self.parse_units_gmsh(
-                #    [p['size_x'], p['size_y'], p['size_z']])
-                # self.cc_x, self.cc_y, _ = parse_units(
-                #    [p['center_x'], p['center_y'], p['center_z']])
-            self.render_chip(chip_name)  #, draw_sample_holder)
+                # x/y center/width same for all chips
+                p = self.design.get_chip_size(layer)
+                self.cw_x.update({layer: self.parse_units_gmsh(p["size_x"])})
+                self.cw_y.update({layer: self.parse_units_gmsh(p["size_y"])})
+                self.cc_x.update({layer: self.parse_units_gmsh(p["center_x"])})
+                self.cc_y.update({layer: self.parse_units_gmsh(p["center_y"])})
+            self.render_layer(layer)
 
         if draw_sample_holder:
             if "sample_holder_top" in self.design.variables.keys():
                 p = self.design.variables
             else:
-                p = self.design.get_chip_size(chip_list[0])
+                p = self.design._uwave_package
+
             vac_height = self.parse_units_gmsh(
                 [p["sample_holder_top"], p["sample_holder_bottom"]])
             # very simple algorithm to build the vacuum box. It could be made better in the future
@@ -576,123 +624,116 @@ class QGmshRenderer(QRenderer):
             dz = sum(vac_height)
             self.vacuum_box = gmsh.model.occ.addBox(x, y, z, dx, dy, dz)
 
-    def render_chip(self, chip_name: str):
+    def render_layer(self, layer_number: int, datatype: int = 0):
         """Render the given chip.
 
         Args:
             chip_name (str): name of the chip to render
         """
-        chip_dims = self.design.get_chip_size(chip_name)
-        cc_z, height = self.parse_units_gmsh(
-            [chip_dims["center_z"], chip_dims["size_z"]])
+        # TODO: change get_chip_size
+        thickness, z_coord = self.parse_units_gmsh(
+            self.design.ls.get_properties_for_layer_datatype(
+                properties=["thickness", "z_coord"],
+                layer_number=layer_number,
+                datatype=datatype))
 
-        chip_x = self.cc_x[chip_name] - self.cw_x[chip_name] / 2
-        chip_y = self.cc_y[chip_name] - self.cw_y[chip_name] / 2
-        chip_wx, chip_wy = self.cw_x[chip_name], self.cw_y[chip_name]
-        gnd_plane = gmsh.model.occ.addRectangle(chip_x, chip_y, cc_z, chip_wx,
-                                                chip_wy)
+        chip_x = self.cc_x[layer_number] - self.cw_x[layer_number] / 2
+        chip_y = self.cc_y[layer_number] - self.cw_y[layer_number] / 2
+        chip_wx, chip_wy = self.cw_x[layer_number], self.cw_y[layer_number]
 
-        substrate = gmsh.model.occ.addBox(chip_x, chip_y, cc_z, chip_wx,
-                                          chip_wy, height)
+        layer_tag = gmsh.model.occ.addBox(chip_x, chip_y, z_coord, chip_wx,
+                                          chip_wy, thickness)
 
-        if chip_name not in self.gnd_plane_dict:
-            self.gnd_plane_dict[chip_name] = -1
+        if layer_number not in self.layers_dict:
+            self.layers_dict[layer_number] = -1
 
-        if chip_name not in self.substrate_dict:
-            self.substrate_dict[chip_name] = -1
+        self.layers_dict[layer_number] = layer_tag
 
-        self.gnd_plane_dict[chip_name] = gnd_plane
-        self.substrate_dict[chip_name] = substrate
-
-    def subtract_from_ground(self):
+    def subtract_from_layers(self):
         """Subtract the QGeometries in tables from the chip ground plane"""
-        for chip_name, shapes in self.chip_subtract_dict.items():
-            dim = 2  # TODO: extend this to 3D in the future
+        dim = 3
+        for layer_num, shapes in self.layer_subtract_dict.items():
             shape_dim_tags = [(dim, s) for s in shapes]
-            gnd_plane_dim_tag = (2, self.gnd_plane_dict[chip_name])
-            subtract_gnd = gmsh.model.occ.cut([gnd_plane_dim_tag],
-                                              shape_dim_tags)
-            self.gnd_plane_dict[chip_name] = subtract_gnd[0][0][1]
+            layer_dim_tag = (3, self.layers_dict[layer_num])
+            subtract_layer = gmsh.model.occ.cut([layer_dim_tag], shape_dim_tags)
+            self.layers_dict[layer_num] = subtract_layer[0][0][1]
+
+    def cut_metal_from_vacuum(self):
+        # layers = self.design.ls.ls_df["layer"]
+        # for layer in layers:
+        #     metals_and_gnd = list(self.polys_dict[layer].values(
+        #     )) + list(self.paths_dict[layer].values()) + list(
+        #         self.juncs_dict[layer].values()) + [self.gnd_plane_dict[layer]]
+        #     dielectric = self.substrate_dict[layer]
+        #     gmsh.model.occ.fragment([(3, dielectric)],
+        #                             [(2, geom) for geom in metals_and_gnd])
+        pass
 
     def fragment_interfaces(self):
         """Fragment Gmsh surfaces to ensure consistent tetrahedral meshing
         across interfaces between different materials.
         """
-        chips = list(self.design.chips.keys())
-        # all_metals = []
-        for chip in chips:
-            metals_and_gnd = list(self.polys_dict[chip].values(
-            )) + list(self.paths_dict[chip].values()) + list(
-                self.juncs_dict[chip].values()) + [self.gnd_plane_dict[chip]]
-            dielectric = self.substrate_dict[chip]
-            gmsh.model.occ.fragment([(3, dielectric)],
-                                    [(2, geom) for geom in metals_and_gnd])
-            # all_metals += [(2, geom) for geom in metals_and_gnd]
-
-            # TODO: for 3D, we'll need to:
-            # 1. Extract metal surfaces
-            # 2. Cut metal from vacuum_box
-            # 3. Fragment the metal surfaces with substrate and vacuum_box
-            gmsh.model.occ.fragment([(3, self.substrate_dict[chip])],
-                                    [(3, self.vacuum_box)])
+        pass
+        # gmsh.model.occ.fragment([(3, self.substrate_dict[layer])],
+        #                         [(3, self.vacuum_box)])
 
     def assign_physical_groups(self):
         """Assign physical groups to classify different geometries physically.
         """
         chip_names = list(self.design.chips.keys())
         phys_grps = defaultdict(dict)
-        for chip in chip_names:
-            if chip not in self.physical_groups:
-                phys_grps[chip] = dict()
+        # for chip in chip_names:
+        #     if chip not in self.physical_groups:
+        #         phys_grps[chip] = dict()
 
-            # TODO: extend metal geoms to dim=3
-            chip_geoms = dict(self.paths_dict[chip], **self.polys_dict[chip])
-            chip_geoms.update(self.juncs_dict[chip])
+        #     # TODO: extend metal geoms to dim=3
+        #     chip_geoms = dict(self.paths_dict[chip], **self.polys_dict[chip])
+        #     chip_geoms.update(self.juncs_dict[chip])
 
-            # Make physical groups for components
-            for name, tag in chip_geoms.items():
-                ph_tag = gmsh.model.addPhysicalGroup(2, [tag], name=name)
-                phys_grps[chip][name] = ph_tag
+        #     # Make physical groups for components
+        #     for name, tag in chip_geoms.items():
+        #         ph_tag = gmsh.model.addPhysicalGroup(2, [tag], name=name)
+        #         phys_grps[chip][name] = ph_tag
 
-            # Make physical groups for ground plane
-            ph_gnd_name = "ground_plane" + '_' + chip
-            gnd_tag = self.gnd_plane_dict[chip]
-            ph_gnd_tag = gmsh.model.addPhysicalGroup(2, [gnd_tag],
-                                                     name=ph_gnd_name)
-            phys_grps[chip][ph_gnd_name] = ph_gnd_tag
+        #     # Make physical groups for ground plane
+        #     ph_gnd_name = "ground_plane" + '_' + chip
+        #     gnd_tag = self.gnd_plane_dict[chip]
+        #     ph_gnd_tag = gmsh.model.addPhysicalGroup(2, [gnd_tag],
+        #                                              name=ph_gnd_name)
+        #     phys_grps[chip][ph_gnd_name] = ph_gnd_tag
 
-            # Make physical groups for substrate (volume)
-            ph_sub_name = "dielectric_substrate" + '_' + chip
-            sub_tag = self.substrate_dict[chip]
-            ph_sub_tag = gmsh.model.addPhysicalGroup(3, [sub_tag],
-                                                     name=ph_sub_name)
-            phys_grps[chip][ph_sub_name] = ph_sub_tag
+        #     # Make physical groups for substrate (volume)
+        #     ph_sub_name = "dielectric_substrate" + '_' + chip
+        #     sub_tag = self.substrate_dict[chip]
+        #     ph_sub_tag = gmsh.model.addPhysicalGroup(3, [sub_tag],
+        #                                              name=ph_sub_name)
+        #     phys_grps[chip][ph_sub_name] = ph_sub_tag
 
-            # Make physical group for everything in a single chip
-            # NOTE: not used for any simulations, just to keep
-            # everything together in the Gmsh GUI
-            metals_and_gnd = list(self.polys_dict[chip].values(
-            )) + list(self.paths_dict[chip].values()) + list(
-                self.juncs_dict[chip].values()) + [self.gnd_plane_dict[chip]]
+        #     # Make physical group for everything in a single chip
+        #     # NOTE: not used for any simulations, just to keep
+        #     # everything together in the Gmsh GUI
+        #     metals_and_gnd = list(self.polys_dict[chip].values(
+        #     )) + list(self.paths_dict[chip].values()) + list(
+        #         self.juncs_dict[chip].values()) + [self.gnd_plane_dict[chip]]
 
-            ph_chip_tag = gmsh.model.addPhysicalGroup(2,
-                                                      metals_and_gnd,
-                                                      name="chip_" + chip)
+        #     ph_chip_tag = gmsh.model.addPhysicalGroup(2,
+        #                                               metals_and_gnd,
+        #                                               name="chip_" + chip)
 
-            phys_grps["chips"][chip] = ph_chip_tag
+        #     phys_grps["chips"][chip] = ph_chip_tag
 
-        # Make physical groups for vacuum box (volume)
-        vb_name = "vacuum_box"
-        ph_vb_tag = gmsh.model.addPhysicalGroup(3, [self.vacuum_box],
-                                                name=vb_name)
-        phys_grps["global"][vb_name] = ph_vb_tag
+        # # Make physical groups for vacuum box (volume)
+        # vb_name = "vacuum_box"
+        # ph_vb_tag = gmsh.model.addPhysicalGroup(3, [self.vacuum_box],
+        #                                         name=vb_name)
+        # phys_grps["global"][vb_name] = ph_vb_tag
 
-        # Make physical groups for vacuum box (surfaces)
-        vb_sfs = list(gmsh.model.occ.getSurfaceLoops(self.vacuum_box)[1][0])
-        ph_vb_sfs_tag = gmsh.model.addPhysicalGroup(2,
-                                                    vb_sfs,
-                                                    name=(vb_name + "_sfs"))
-        phys_grps["global"][vb_name + "_sfs"] = ph_vb_sfs_tag
+        # # Make physical groups for vacuum box (surfaces)
+        # vb_sfs = list(gmsh.model.occ.getSurfaceLoops(self.vacuum_box)[1][0])
+        # ph_vb_sfs_tag = gmsh.model.addPhysicalGroup(2,
+        #                                             vb_sfs,
+        #                                             name=(vb_name + "_sfs"))
+        # phys_grps["global"][vb_name + "_sfs"] = ph_vb_sfs_tag
 
         return phys_grps
 
@@ -734,7 +775,7 @@ class QGmshRenderer(QRenderer):
         for chip in junc_chips:
             all_geoms += list(self.juncs_dict[chip].values())
 
-        all_geoms += list(self.gnd_plane_dict.values())
+        # all_geoms += list(self.gnd_plane_dict.values())
 
         curve_loops = [gmsh.model.occ.getCurveLoops(geom) for geom in all_geoms]
         curves = []
@@ -813,15 +854,15 @@ class QGmshRenderer(QRenderer):
 
         for chip in list(self.design.chips.keys()):
             all_metal = list(self.polys_dict[chip].values()) + list(
-                self.paths_dict[chip].values()) + [self.gnd_plane_dict[chip]]
+                self.paths_dict[chip].values())  #+ [self.gnd_plane_dict[chip]]
 
             jjs = list(self.juncs_dict[chip].values())
-            substrate = self.substrate_dict[chip]
-            sub_surfaces = list(gmsh.model.occ.getSurfaceLoops(substrate)[1][0])
+            # substrate = self.substrate_dict[chip]
+            # sub_surfaces = list(gmsh.model.occ.getSurfaceLoops(substrate)[1][0])
 
-            gmsh.model.setColor([(3, substrate)], **sub_color)
-            gmsh.model.setColor([(2, sub_surf) for sub_surf in sub_surfaces],
-                                **sub_color)
+            # gmsh.model.setColor([(3, substrate)], **sub_color)
+            # gmsh.model.setColor([(2, sub_surf) for sub_surf in sub_surfaces],
+            #                     **sub_color)
             gmsh.model.setColor([(2, metal) for metal in all_metal],
                                 **metal_color)
             gmsh.model.setColor([(2, jj) for jj in jjs], **jj_color)
