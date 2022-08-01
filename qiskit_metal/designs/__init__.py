@@ -41,6 +41,16 @@ DesignPlanar
 
     DesignPlanar
 
+
+MultiPlanar
+---------------
+
+.. autosummary::
+    :toctree: ../stubs/
+
+    MultiPlanar
+
+
 DesignFlipChip
 ---------------
 
@@ -71,6 +81,7 @@ from .. import Dict
 from .. import is_design
 from .design_base import QDesign
 from .design_planar import DesignPlanar
+from .design_multiplanar import MultiPlanar
 from .design_flipchip import DesignFlipChip
 from .net_info import QNet
 from .interface_components import Components
