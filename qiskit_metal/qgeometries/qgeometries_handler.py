@@ -782,6 +782,41 @@ class QGeometryTables(object):
         else:
             return True
 
+    def get_all_unique_layers_for_all_tables(self,
+                                             qcomp_ids: Union[list, None] = None
+                                            ) -> list:
+        """Get a list of all unique layer number used in all of the geometry tables.
+        User can get for all components or a subset.
+
+        Args:
+            qcomp_ids (Union[list, None], optional): The list has integers
+                                        which denote component_id. Defaults to None.
+
+        Returns:
+            list: The unique layer numbers for the list of component ids passed in argument.
+        """
+        if qcomp_ids is None:
+            qcomp_ids = []
+        frames = list()
+        unique_layers = None
+
+        if len(qcomp_ids) == 0:
+            # use all components
+            frames = [self.tables[a_df] for a_df in self.tables]
+        else:
+            # Use just the component ID's in qcomp_ids.
+            for table_key in self.tables:
+                temp_df = self.tables[table_key]
+                mask_temp = temp_df['component'].isin(qcomp_ids)
+                subset_temp_df = temp_df[mask_temp]
+                frames.append(subset_temp_df)
+
+        #Concat the frames and then determine the unique layer numbers.
+        unique_layers = list(
+            pd.concat(frames, ignore_index=True)['layer'].unique())
+
+        return unique_layers
+
     def get_all_unique_layers(self, chip_name: str) -> list:
         """Returns a lit of unique layers for the given chip names.
 
