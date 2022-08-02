@@ -2,7 +2,7 @@ name: Release Artifacts
 on:
   push:
     tags:
-      - '*'
+      - "*"
 jobs:
   wheel-build:
     name: Build and Publish Release Artifacts
@@ -12,7 +12,7 @@ jobs:
       - uses: actions/setup-python@v2
         name: Install Python
         with:
-          python-version: '3.7'
+          python-version: "3.9"
       - name: Install Deps
         run: pip install -U twine wheel
       - name: Build Artifacts

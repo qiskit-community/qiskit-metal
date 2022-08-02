@@ -2,7 +2,7 @@ name: qiskit-metal
 channels:
   - conda-forge
 dependencies:
-  - python>=3.7
+  - python>=3.9
   - addict
   - descartes
   - gdspy>=1.5.2
@@ -20,4 +20,7 @@ dependencies:
   - shapely
   - jupyter
   - scqubits
+  - pythonnet #Needed for pyaedt
+  - pyvista #Needed for pyaedt
+  #- PyAEDT
   - gmsh
