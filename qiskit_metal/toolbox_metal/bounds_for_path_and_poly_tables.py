@@ -8,7 +8,7 @@ import pandas as pd
 
 
 class BoundsForPathAndPolyTables():
-    """Create class which can be used by multiple renderers.  In particular, this class 
+    """Create class which can be used by multiple renderers.  In particular, this class
     assumes a LayerStack is being used within QDesign.
     """
 
@@ -37,7 +37,7 @@ class BoundsForPathAndPolyTables():
             y_buff (float): If box_plus_buffer, need the buffer value in y coordinate.
 
         Returns:
-            tuple[tuple[float, float, float, float], pd.DataFrame, bool, Union[None,set]]: 
+            tuple[tuple[float, float, float, float], pd.DataFrame, bool, Union[None,set]]:
                                     tuple: minx, miny, maxx, maxy values based
                                                     on either total chip size or box_plus_buffer.
                                     pd.DataFrame: The path and poly dataframes concatenated for qcomp_ids
