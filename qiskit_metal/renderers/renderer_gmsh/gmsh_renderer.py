@@ -141,11 +141,12 @@ class QGmshRenderer(QRenderer):
         selection: Union[list, None] = None,
         open_pins: Union[list, None] = None,
         box_plus_buffer: bool = True,
-        mesh_geoms: bool = True,
         skip_junctions: bool = False,
+        mesh_geoms: bool = True,
         cut_metal_from_vacuum: bool = False,
     ):
-        """_summary_
+        """Render the design in Gmsh and apply changes to modify the geometries
+        according to the type of simulation. Simulation parameters provided by the user.
 
         Args:
             selection (Union[list, None], optional): List of selected components
@@ -158,21 +159,12 @@ class QGmshRenderer(QRenderer):
                                                         Defaults to True.
             skip_junctions (bool, optional): Set to True to sip rendering the
                                                         junctions. Defaults to False.
-            cut_metal_volumes (bool, optional): cut the volume of metals and replace
+            cut_metal_from_vacuum (bool, optional): cut the volume of metals and replace
                                                         it with a list of surfaces instead.
                                                         Defaults to False.
         """
 
-        self.qcomp_ids, self.case = self.get_unique_component_ids(selection)
-
-        if self.case == 2:
-            self.logger.warning(
-                "Unable to proceed with rendering. Please check selection.")
-            return
-
         # defaultdict: chip -- geom_tag
-        # self.gnd_plane_dict = defaultdict(int)
-        # self.substrate_dict = defaultdict(int)
         self.layers_dict = defaultdict(int)
 
         # defaultdict: chip -- set(geom_tag)
@@ -184,14 +176,37 @@ class QGmshRenderer(QRenderer):
         self.juncs_dict = defaultdict(dict)
         self.physical_groups = defaultdict(dict)
 
+        self.draw_geometries(selection=selection,
+                             open_pins=open_pins,
+                             box_plus_buffer=box_plus_buffer,
+                             skip_junctions=skip_junctions)
+
+        self.apply_changes_for_simulation(
+            cut_metal_from_vacuum=cut_metal_from_vacuum)
+
+        if mesh_geoms:
+            self.add_mesh()  # generate mesh
+
+    def draw_geometries(self,
+                        selection: Union[list, None] = None,
+                        open_pins: Union[list, None] = None,
+                        box_plus_buffer: bool = True,
+                        skip_junctions: bool = False):
+
+        self.qcomp_ids, self.case = self.get_unique_component_ids(selection)
+
+        if self.case == 2:
+            self.logger.warning(
+                "Unable to proceed with rendering. Please check selection.")
+            return
+
         self.render_tables(skip_junction=skip_junctions)
         self.add_endcaps(open_pins=open_pins)
-
         self.render_layers(box_plus_buffer=box_plus_buffer)
-
+        self.subtract_from_layers()
         self.gmsh_occ_synchronize()
 
-        self.subtract_from_layers()
+    def apply_changes_for_simulation(self, cut_metal_from_vacuum: bool = False):
         # TODO: 3D change:
         # 1. Cut the metal volumes from vacuum only for capacitance sim
         # 2. Think on how to handle 3D metals for eigenmode sim?
@@ -203,10 +218,7 @@ class QGmshRenderer(QRenderer):
         self.gmsh_occ_synchronize()
 
         # Add physical groups
-        # self.physical_groups = self.assign_physical_groups()
-
-        if mesh_geoms:
-            self.add_mesh()  # generate mesh
+        self.physical_groups = self.assign_physical_groups()
 
     def gmsh_occ_synchronize(self):
         """Synchronize Gmsh with the internal OpenCascade graphics engine
