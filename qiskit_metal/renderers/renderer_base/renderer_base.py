@@ -421,7 +421,10 @@ class QRenderer(ABC):
             highlight_qcomponents (Union[list, None], optional): Components to render. Defaults to None.
 
         Returns:
-            Tuple[list, int]: Empty or partial list of components in QDesign.
+            Tuple[list, int]: Tuple: Empty or partial list of components in QDesign.
+                            int: 0 subset selected
+                                 1 every component selected
+                                 2 invalid
         """
         highlight_qcomponents = highlight_qcomponents if highlight_qcomponents else []
         unique_qcomponents = set(highlight_qcomponents)
