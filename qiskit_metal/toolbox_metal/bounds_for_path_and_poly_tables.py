@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from typing import List, Tuple, Union
 
-from qiskit_metal.designs.design_multiplanar import MultiPlanar
 from qiskit_metal.toolbox_python.utility_functions import determine_larger_box
 
 import pandas as pd
@@ -12,7 +11,7 @@ class BoundsForPathAndPolyTables():
     assumes a LayerStack is being used within QDesign.
     """
 
-    def __init__(self, design: MultiPlanar):
+    def __init__(self, design: "MultiPlanar"):
         self.design = design
         self.chip_names_matched = None  # bool
         self.valid_chip_names = None  # set of valid chip names from layer_stack
