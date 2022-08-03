@@ -119,6 +119,10 @@ class QGmshRenderer(QRenderer):
         """Removes the current Gmsh model"""
         gmsh.model.remove()
 
+    def clear_design(self):
+        """Clear the design in the current Gmsh model"""
+        gmsh.clear()
+
     def _initiate_renderer(self):
         """Initializes the Gmsh renderer"""
         gmsh.initialize()
@@ -176,6 +180,8 @@ class QGmshRenderer(QRenderer):
         self.paths_dict = defaultdict(dict)
         self.juncs_dict = defaultdict(dict)
         self.physical_groups = defaultdict(dict)
+
+        self.clear_design()
 
         self.render_tables(skip_junction=skip_junctions)
         self.add_endcaps(open_pins=open_pins)
