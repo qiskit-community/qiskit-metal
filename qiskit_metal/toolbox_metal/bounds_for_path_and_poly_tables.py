@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from typing import List, Tuple, Union
 
-from qiskit_metal.designs import MultiPlanar
+from qiskit_metal.designs.design_multiplanar import MultiPlanar
 from qiskit_metal.toolbox_python.utility_functions import determine_larger_box
 
 import pandas as pd
