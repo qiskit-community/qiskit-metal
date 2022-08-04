@@ -331,10 +331,12 @@ class QGmshRenderer(QRenderer):
             self.design.ls.get_properties_for_layer_datatype(
                 properties=props, layer_number=junc.layer))
         if result:
-            thickness, qc_z = result
+            qc_thickness, qc_z = result
         else:
-            raise ValueError(f"Could not find {props} for the layer_number={junc.layer} in component"
-                             f" '{junc['component'].name}'. Check your design and try again.")
+            raise ValueError(
+                f"Could not find {props} for the layer_number={junc.layer} in component"
+                f" '{junc['component'].name}'. Check your design and try again."
+            )
 
         vecs = Vec3DArray.make_vec3DArray(
             self.parse_units_gmsh(list(qc_shapely.coords)), qc_z)
@@ -391,10 +393,12 @@ class QGmshRenderer(QRenderer):
             self.design.ls.get_properties_for_layer_datatype(
                 properties=props, layer_number=path.layer))
         if result:
-            thickness, qc_z = result
+            qc_thickness, qc_z = result
         else:
-            raise ValueError(f"Could not find {props} for the layer_number={path.layer} in component"
-                             f" '{path['component'].name}'. Check your design and try again.")
+            raise ValueError(
+                f"Could not find {props} for the layer_number={path.layer} in component"
+                f" '{path['component'].name}'. Check your design and try again."
+            )
 
         # qc_chip_z = self.parse_units_gmsh(self.design.get_chip_z(path.chip))
         vecs = Vec3DArray.make_vec3DArray(
@@ -472,10 +476,12 @@ class QGmshRenderer(QRenderer):
             self.design.ls.get_properties_for_layer_datatype(
                 properties=props, layer_number=poly.layer))
         if result:
-            thickness, qc_z = result
+            qc_thickness, qc_z = result
         else:
-            raise ValueError(f"Could not find {props} for the layer_number={poly.layer} in component"
-                             f" '{poly['component'].name}'. Check your design and try again.")
+            raise ValueError(
+                f"Could not find {props} for the layer_number={poly.layer} in component"
+                f" '{poly['component'].name}'. Check your design and try again."
+            )
 
         # qc_chip_z = self.parse_units_gmsh(self.design.get_chip_z(poly.chip))
         vecs = Vec3DArray.make_vec3DArray(
@@ -543,10 +549,11 @@ class QGmshRenderer(QRenderer):
                 self.design.ls.get_properties_for_layer_datatype(
                     properties=props, layer_number=qc_layer))
             if result:
-                thickness, qc_z = result
+                qc_thickness, qc_z = result
             else:
-                raise ValueError(f"Could not find {props} for the layer_number={qc_layer} in component"
-                                 f" '{qcomp.name}'. Check your design and try again.")
+                raise ValueError(
+                    f"Could not find {props} for the layer_number={qc_layer} in component"
+                    f" '{qcomp.name}'. Check your design and try again.")
 
             # if qc_thickness is None or qc_z is None:
             #     self.logger.error("Properties for")
@@ -677,10 +684,11 @@ class QGmshRenderer(QRenderer):
             self.design.ls.get_properties_for_layer_datatype(
                 properties=props, layer_number=layer_number, datatype=datatype))
         if result:
-            thickness, qc_z = result
+            thickness, z_coord = result
         else:
-            raise ValueError(f"Could not find {props} for the layer_number={layer_number} and dataype="
-                             f"{dataype}. Check your design and try again.")
+            raise ValueError(
+                f"Could not find {props} for the layer_number={layer_number} and dataype="
+                f"{datatype}. Check your design and try again.")
 
         chip_x = self.cc_x[layer_number] - self.cw_x[layer_number] / 2
         chip_y = self.cc_y[layer_number] - self.cw_y[layer_number] / 2
