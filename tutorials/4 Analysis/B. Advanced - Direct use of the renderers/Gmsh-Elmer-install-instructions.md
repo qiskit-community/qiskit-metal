@@ -47,11 +47,12 @@ Type "help", "copyright", "credits" or "license" for more information.
 ```
 
 **NOTE:**
-- On Apple Silicon Macs (with M1 and M2-series chips), installing Gmsh using `pip install` might not work for importing the package using python. Instead use [Homebrew](https://brew.sh/) to install Gmsh as follows:
+- On Apple Silicon Macs (with M1 and M2-series chips), installing Gmsh using `pip install ...` might not work for importing the package using python. Instead use [Homebrew](https://brew.sh/) to install Gmsh as follows:
 ```
+$ pip uninstall gmsh
 $ brew install gmsh
 ```
-- Then use `$ which gmsh` to find the path to your installed `gmsh` executable. This command will return something of the form `<install_path_on_your_system>/bin/gmsh`. Add the path until `<install_path_on_your_system>/bin` to your `PATH` environment variable. Restart your terminal, and check if you're able to do `import gmsh` in a scratch jupyter notebook. If the import is successful, then congratulations, you've installed Gmsh successfully!
+- Restart your terminal, activate the environment, and check if you're able to do `import gmsh` in a python REPL or a scratch jupyter notebook. If the import is successful, then congratulations, you've installed Gmsh successfully!
 
 ## ElmerFEM
 - Congratulations on making it until here! Now we'll see how to install ElmerFEM.
