@@ -340,6 +340,7 @@ def vec_unit_planar(vector: np.array):
         raise Exception('You did not give a 2 or 3 vec')
 
 
+# pylint: disable=invalid-name
 def to_vec3D(list_of_2d_pts: List[Tuple], z=0) -> np.ndarray:
     """Adds 3rd point to list of 2D points. For the given design, get the z
     values in HFSS UNITS! Manually specify z dimension.
@@ -356,6 +357,23 @@ def to_vec3D(list_of_2d_pts: List[Tuple], z=0) -> np.ndarray:
     vec3d = np.array([list(a_2d_pt) + add_me for a_2d_pt in list_of_2d_pts],
                      dtype="object")
     return vec3d
+
+
+def to_vec3D_list(list_of_2d_pts: List[Tuple], z=0) -> list:
+    """Adds 3rd point to list of 2D points. For the given design, get the z
+    values in HFSS UNITS! Manually specify z dimension.
+
+    Args:
+        list_of_2d_pts (List[Tuple]): List of 2D points
+        z (int, optional): z-value in hfss. Defaults to 0.
+
+    Returns:
+        list: vec3d of points
+    """
+    add_me = [z]
+
+    vec3d_list = [list(a_2d_pt) + add_me for a_2d_pt in list_of_2d_pts]
+    return vec3d_list
 
 
 Vec2D = Union[list, np.ndarray]
