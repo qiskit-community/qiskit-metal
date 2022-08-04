@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from typing import List, Tuple, Union
-
+from copy import deepcopy
 from qiskit_metal.toolbox_python.utility_functions import determine_larger_box
 
 import pandas as pd
@@ -25,12 +25,13 @@ class BoundsForPathAndPolyTables():
         bounds of what was selected to be rendered.
         Else, use the chip size for Tuple.
 
-        Also, return the Tuple within the class to can be used later within a renderer.
+        Also, return the Tuple so can be used later within a renderer.
 
         Args:
             box_plus_buffer (bool): Use the box of selected components plus a buffer size OR
                                 the chip size based on QComponents selected.
-            qcomp_ids (List):  Empty or partial list of components in QDesign. From QRenderer.get_unique_component_ids
+            qcomp_ids (List):  Empty or partial list of components in QDesign.
+                                From QRenderer.get_unique_component_ids
             case (int): Return code used from QRenderer.get_unique_component_ids()
             x_buff (float): If box_plus_buffer, need the buffer value in x coordinate.
             y_buff (float): If box_plus_buffer, need the buffer value in y coordinate.
@@ -39,6 +40,9 @@ class BoundsForPathAndPolyTables():
             tuple[tuple[float, float, float, float], pd.DataFrame, bool, Union[None,set]]:
                                     tuple: minx, miny, maxx, maxy values based
                                                     on either total chip size or box_plus_buffer.
+                                                    In xy plane, the box_for_xy_bounds will be limited
+                                                    by the chip_bounds_xy if box_for_xy_bounds is larger
+                                                    than chip_bounds_xy.
                                     pd.DataFrame: The path and poly dataframes concatenated for qcomp_ids
                                     bool: If there is a key in design with same chip_name as in layer_stack
                                     Union[None,set]: Either None if the names don't match,
@@ -50,6 +54,12 @@ class BoundsForPathAndPolyTables():
 
         path_dataframe = self.design.qgeometry.tables['path']
         poly_dataframe = self.design.qgeometry.tables['poly']
+
+        # NOTE:get_box_for_xy_bounds populates self.chip_names_matched and self.valid_chip_names
+        chip_minx, chip_miny, chip_maxx, chip_maxy = self.get_box_for_xy_bounds(
+        )
+
+        chip_bounds_xy = (chip_minx, chip_miny, chip_maxx, chip_maxy)
 
         if box_plus_buffer:
             # Based on component selection, determine the bounds for box_plus_buffer.
@@ -84,16 +94,66 @@ class BoundsForPathAndPolyTables():
             maxx += x_buff
             maxy += y_buff
             box_for_xy_bounds = (minx, miny, maxx, maxy)
-            return box_for_xy_bounds, path_and_poly_with_valid_comps, self.chip_names_matched, self.valid_chip_names
-        else:  # Incorporate all the chip sizes.
 
-            minx, miny, maxx, maxy = self.get_box_for_xy_bounds()
-            box_for_xy_bounds = (minx, miny, maxx, maxy)
+            safe_xy_bounds = self.ensure_component_box_smaller_than_chip_box_(
+                box_for_xy_bounds, chip_bounds_xy)
+
+            return safe_xy_bounds, path_and_poly_with_valid_comps, self.chip_names_matched, self.valid_chip_names
+        else:  # Incorporate all the chip sizes.
 
             frames = [path_dataframe, poly_dataframe]
             path_and_poly_with_valid_comps = pd.concat(frames,
                                                        ignore_index=True)
-            return box_for_xy_bounds, path_and_poly_with_valid_comps, self.chip_names_matched, self.valid_chip_names
+            return chip_bounds_xy, path_and_poly_with_valid_comps, self.chip_names_matched, self.valid_chip_names
+
+    @classmethod
+    def ensure_component_box_smaller_than_chip_box_(
+            cls, box_for_xy_bounds: Tuple, chip_bounds_xy: Tuple) -> Tuple:
+        """If the box_plus_buffer is larger than the aggregate chip bounds from DesignPlanar,
+        use the chip bounds as the cutoff.
+
+        Args:
+            box_for_xy_bounds (Tuple): In xy plane, the bounding box for the components to render.
+                                    Box from QGeometry tables.
+            chip_bounds_xy (Tuple): In xy plane, the bounding box for aggregate chip size.
+                                    Box from MultiPlanar chip size.
+
+        Returns:
+            Tuple: In xy plane, the box_for_xy_bounds will be limited by the chip_bounds_xy
+                                    if box_for_xy_bounds is larger than chip_bounds_xy.
+                                    If chip_bounds_xy is None (bad input), no checking
+                                    will happen and box_for_xy_bounds will be returned.
+        """
+
+        chip_minx, chip_miny, chip_maxx, chip_maxy = chip_bounds_xy
+        if chip_minx is None or chip_miny is None or chip_maxx is None or chip_maxy is None:
+            input_xy_box = deepcopy(box_for_xy_bounds)
+            return input_xy_box
+
+        box_minx, box_miny, box_maxx, box_maxy = box_for_xy_bounds
+        safe_xy_box = list()
+        #  Keep the order of appends in this way.  It should match (minx, miny, maxx, maxy)
+        if box_minx < chip_minx:
+            safe_xy_box.append(chip_minx)
+        else:
+            safe_xy_box.append(box_minx)
+
+        if box_miny < chip_miny:
+            safe_xy_box.append(chip_miny)
+        else:
+            safe_xy_box.append(box_miny)
+
+        if box_maxx > chip_maxx:
+            safe_xy_box.append(chip_maxx)
+        else:
+            safe_xy_box.append(box_maxx)
+
+        if box_maxy > chip_maxy:
+            safe_xy_box.append(chip_maxy)
+        else:
+            safe_xy_box.append(box_maxy)
+
+        return tuple(safe_xy_box)
 
     def get_box_for_xy_bounds(
             self
