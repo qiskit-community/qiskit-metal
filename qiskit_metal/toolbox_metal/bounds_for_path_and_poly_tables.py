@@ -11,7 +11,7 @@ class BoundsForPathAndPolyTables():
     assumes a LayerStack is being used within QDesign.
     """
 
-    def __init__(self, design: "MultiPlanar"):
+    def __init__(self, design: 'MultiPlanar'):
         self.design = design
         self.chip_names_matched = None  # bool
         self.valid_chip_names = None  # set of valid chip names from layer_stack
