@@ -44,7 +44,7 @@ class BoundsForPathAndPolyTables():
                                     Union[None,set]: Either None if the names don't match,
                                                     or the set of chip_names that can be used.
         """
-        box_for_ansys = None
+        box_for_xy_bounds = None
         self.chip_names_matched = None
         self.valid_chip_names = None
 
@@ -83,19 +83,19 @@ class BoundsForPathAndPolyTables():
             miny -= y_buff
             maxx += x_buff
             maxy += y_buff
-            box_for_ansys = (minx, miny, maxx, maxy)
-            return box_for_ansys, path_and_poly_with_valid_comps, self.chip_names_matched, self.valid_chip_names
+            box_for_xy_bounds = (minx, miny, maxx, maxy)
+            return box_for_xy_bounds, path_and_poly_with_valid_comps, self.chip_names_matched, self.valid_chip_names
         else:  # Incorporate all the chip sizes.
 
-            minx, miny, maxx, maxy = self.get_box_for_ansys()
-            box_for_ansys = (minx, miny, maxx, maxy)
+            minx, miny, maxx, maxy = self.get_box_for_xy_bounds()
+            box_for_xy_bounds = (minx, miny, maxx, maxy)
 
             frames = [path_dataframe, poly_dataframe]
             path_and_poly_with_valid_comps = pd.concat(frames,
                                                        ignore_index=True)
-            return box_for_ansys, path_and_poly_with_valid_comps, self.chip_names_matched, self.valid_chip_names
+            return box_for_xy_bounds, path_and_poly_with_valid_comps, self.chip_names_matched, self.valid_chip_names
 
-    def get_box_for_ansys(
+    def get_box_for_xy_bounds(
             self
     ) -> Union[None, Union[Tuple[float, float, float, float], None]]:
         """Assuming the chip size is used from Multiplanar design, and list of chip_names
