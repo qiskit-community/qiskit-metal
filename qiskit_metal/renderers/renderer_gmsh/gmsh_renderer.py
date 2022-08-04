@@ -121,6 +121,10 @@ class QGmshRenderer(QRenderer):
         """Removes the current Gmsh model"""
         gmsh.model.remove()
 
+    def clear_design(self):
+        """Clears the design in the currenet Gmsh model"""
+        gmsh.clear()
+
     def _initiate_renderer(self):
         """Initializes the Gmsh renderer"""
         gmsh.initialize()
@@ -322,10 +326,16 @@ class QGmshRenderer(QRenderer):
         qc_shapely = junc.geometry
         qc_width = self.parse_units_gmsh(junc.width)
         # TODO: 3D change: to accommodate layer stack
-        qc_thickness, qc_z = self.parse_units_gmsh(
+        props = ["thickness", "z_coord"]
+        result = self.parse_units_gmsh(
             self.design.ls.get_properties_for_layer_datatype(
-                properties=["thickness", "z_coord"], layer_number=junc.layer))
-        # qc_chip_z = self.parse_units_gmsh(self.design.get_chip_z(junc.chip))
+                properties=props, layer_number=junc.layer))
+        if result:
+            thickness, qc_z = result
+        else:
+            raise ValueError(f"Could not find {props} for the layer_number={junc.layer} in component"
+                             f" '{junc['component'].name}'. Check your design and try again.")
+
         vecs = Vec3DArray.make_vec3DArray(
             self.parse_units_gmsh(list(qc_shapely.coords)), qc_z)
         qc_name = self.design._components[
@@ -376,18 +386,25 @@ class QGmshRenderer(QRenderer):
         qc_fillet = self.parse_units_gmsh(path.fillet) if float(
             path.fillet) is not np.nan else 0.0
         # TODO: 3D change: to accommodate layer stack
-        qc_thickness, qc_z = self.parse_units_gmsh(
+        props = ["thickness", "z_coord"]
+        result = self.parse_units_gmsh(
             self.design.ls.get_properties_for_layer_datatype(
-                properties=["thickness", "z_coord"], layer_number=path.layer))
+                properties=props, layer_number=path.layer))
+        if result:
+            thickness, qc_z = result
+        else:
+            raise ValueError(f"Could not find {props} for the layer_number={path.layer} in component"
+                             f" '{path['component'].name}'. Check your design and try again.")
+
         # qc_chip_z = self.parse_units_gmsh(self.design.get_chip_z(path.chip))
         vecs = Vec3DArray.make_vec3DArray(
             self.parse_units_gmsh(list(qc_shapely.coords)), qc_z)
+        qc_name = self.design._components[
+            path["component"]].name + '_' + clean_name(path["name"])
         bad_fillets = bad_fillet_idxs(qc_shapely.coords, qc_fillet)
         curves = render_path_curves(vecs, qc_z, qc_fillet, qc_width,
                                     bad_fillets)
         surface = self.make_general_surface(curves)
-        qc_name = self.design._components[
-            path["component"]].name + '_' + clean_name(path["name"])
 
         if path.layer not in self.layer_subtract_dict:
             self.layer_subtract_dict[path.layer] = set()
@@ -450,9 +467,16 @@ class QGmshRenderer(QRenderer):
         """
         qc_shapely = poly.geometry
         # TODO: 3D change: to accommodate layer stack
-        qc_thickness, qc_z = self.parse_units_gmsh(
+        props = ["thickness", "z_coord"]
+        result = self.parse_units_gmsh(
             self.design.ls.get_properties_for_layer_datatype(
-                properties=["thickness", "z_coord"], layer_number=poly.layer))
+                properties=props, layer_number=poly.layer))
+        if result:
+            thickness, qc_z = result
+        else:
+            raise ValueError(f"Could not find {props} for the layer_number={poly.layer} in component"
+                             f" '{poly['component'].name}'. Check your design and try again.")
+
         # qc_chip_z = self.parse_units_gmsh(self.design.get_chip_z(poly.chip))
         vecs = Vec3DArray.make_vec3DArray(
             self.parse_units_gmsh(list(qc_shapely.exterior.coords)), qc_z)
@@ -514,9 +538,15 @@ class QGmshRenderer(QRenderer):
                 pin_dict["middle"]), pin_dict["normal"]
             # chip_name = self.design.components[comp].options.chip
             # TODO: 3D change: to accommodate layer stack
-            qc_thickness, qc_z = self.parse_units_gmsh(
+            props = ["thickness", "z_coord"]
+            result = self.parse_units_gmsh(
                 self.design.ls.get_properties_for_layer_datatype(
-                    properties=["thickness", "z_coord"], layer_number=qc_layer))
+                    properties=props, layer_number=qc_layer))
+            if result:
+                thickness, qc_z = result
+            else:
+                raise ValueError(f"Could not find {props} for the layer_number={qc_layer} in component"
+                                 f" '{qcomp.name}'. Check your design and try again.")
 
             # if qc_thickness is None or qc_z is None:
             #     self.logger.error("Properties for")
@@ -642,12 +672,15 @@ class QGmshRenderer(QRenderer):
         Args:
             chip_name (str): name of the chip to render
         """
-        # TODO: change get_chip_size
-        thickness, z_coord = self.parse_units_gmsh(
+        props = ["thickness", "z_coord"]
+        result = self.parse_units_gmsh(
             self.design.ls.get_properties_for_layer_datatype(
-                properties=["thickness", "z_coord"],
-                layer_number=layer_number,
-                datatype=datatype))
+                properties=props, layer_number=layer_number, datatype=datatype))
+        if result:
+            thickness, qc_z = result
+        else:
+            raise ValueError(f"Could not find {props} for the layer_number={layer_number} and dataype="
+                             f"{dataype}. Check your design and try again.")
 
         chip_x = self.cc_x[layer_number] - self.cw_x[layer_number] / 2
         chip_y = self.cc_y[layer_number] - self.cw_y[layer_number] / 2
