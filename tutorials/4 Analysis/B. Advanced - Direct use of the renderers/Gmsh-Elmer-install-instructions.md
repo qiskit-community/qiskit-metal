@@ -1,6 +1,6 @@
 # Softwares to Install for Open-source simulation toolchain for Qiskit Metal
 
-## Qiskit Metal (`elmer_rednerer` branch)
+## Qiskit Metal (`elmer_renderer` branch)
 ### Steps to reinstall Qiskit Metal with proper interfacing code
 
 1. Clone a fresh copy of the Qiskit Metal GitHub repo in your working directory
