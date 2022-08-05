@@ -3,6 +3,7 @@ from collections import defaultdict
 import pandas as pd
 import gmsh
 import numpy as np
+from copy import deepcopy
 
 from ..renderer_base import QRenderer
 from ...designs.design_multiplanar import MultiPlanar
@@ -148,6 +149,8 @@ class QGmshRenderer(QRenderer):
         skip_junctions: bool = False,
         mesh_geoms: bool = True,
         cut_metal_from_vacuum: bool = False,
+        layer_types: Union[dict, None] = None,
+        # {metal=[1, 2, 3, 4], dielectric=[5, 6, 7, 8]}
     ):
         """Render the design in Gmsh and apply changes to modify the geometries
         according to the type of simulation. Simulation parameters provided by the user.
@@ -166,6 +169,9 @@ class QGmshRenderer(QRenderer):
             cut_metal_from_vacuum (bool, optional): cut the volume of metals and replace
                                                         it with a list of surfaces instead.
                                                         Defaults to False.
+            layer_types (dict): Dictionary for mapping metal/dielectrics to layer numbers.
+                                    Used for cutting internal volume of metal volume in the
+                                    geometry if `cut_metal_from_vacuum=True`
         """
 
         # defaultdict: chip -- geom_tag
@@ -186,6 +192,7 @@ class QGmshRenderer(QRenderer):
                              skip_junctions=skip_junctions)
 
         self.apply_changes_for_simulation(
+            layer_types=layer_types,
             cut_metal_from_vacuum=cut_metal_from_vacuum)
 
         if mesh_geoms:
@@ -210,14 +217,22 @@ class QGmshRenderer(QRenderer):
         self.subtract_from_layers()
         self.gmsh_occ_synchronize()
 
-    def apply_changes_for_simulation(self, cut_metal_from_vacuum: bool = False):
+    def apply_changes_for_simulation(self,
+                                     layer_types: Union[dict, None] = None,
+                                     cut_metal_from_vacuum: bool = False):
         # TODO: 3D change:
         # 1. Cut the metal volumes from vacuum only for capacitance sim
         # 2. Think on how to handle 3D metals for eigenmode sim?
         if cut_metal_from_vacuum:
-            self.cut_metal_from_vacuum()
+            if layer_types is None:
+                raise ValueError(
+                    f"Expected dict for `layer_types`, but found {type(layer_types)}."
+                )
+            else:
+                self.cut_metal_from_vacuum(layer_types=layer_types)
 
-        self.fragment_interfaces()
+        self.fragment_interfaces(layer_types=layer_types,
+                                 cut_metal_from_vacuum=cut_metal_from_vacuum)
 
         self.gmsh_occ_synchronize()
 
@@ -375,7 +390,7 @@ class QGmshRenderer(QRenderer):
         if junc.layer not in self.juncs_dict:
             self.juncs_dict[junc.layer] = dict()
 
-        self.juncs_dict[junc.layer][qc_name] = surface
+        self.juncs_dict[junc.layer][qc_name] = [surface]
 
     def render_element_path(self, path: pd.Series):
         """Render an element path.
@@ -427,13 +442,13 @@ class QGmshRenderer(QRenderer):
             if path["subtract"]:
                 self.layer_subtract_dict[path.layer].add(volume[0])
             else:
-                self.paths_dict[path.layer][qc_name] = volume[0]
+                self.paths_dict[path.layer][qc_name] = [volume[0]]
 
         else:
             if path["subtract"]:
                 self.layer_subtract_dict[path.layer].add(surface)
             else:
-                self.paths_dict[path.layer][qc_name] = surface
+                self.paths_dict[path.layer][qc_name] = [surface]
 
     def make_poly_surface(self, points: List[np.ndarray], chip_z: float) -> int:
         """Make a Gmsh surface for creating poly type QGeometries
@@ -515,13 +530,13 @@ class QGmshRenderer(QRenderer):
             if poly["subtract"]:
                 self.layer_subtract_dict[poly.layer].add(volume[0])
             else:
-                self.polys_dict[poly.layer][qc_name] = volume[0]
+                self.polys_dict[poly.layer][qc_name] = [volume[0]]
 
         else:
             if poly["subtract"]:
                 self.layer_subtract_dict[poly.layer].add(surface)
             else:
-                self.polys_dict[poly.layer][qc_name] = surface
+                self.polys_dict[poly.layer][qc_name] = [surface]
 
     def add_endcaps(self, open_pins: Union[list, None] = None):
         """Create endcaps (rectangular cutouts) for all pins in the list
@@ -700,35 +715,66 @@ class QGmshRenderer(QRenderer):
         if layer_number not in self.layers_dict:
             self.layers_dict[layer_number] = -1
 
-        self.layers_dict[layer_number] = layer_tag
+        self.layers_dict[layer_number] = [layer_tag]
 
     def subtract_from_layers(self):
         """Subtract the QGeometries in tables from the chip ground plane"""
         dim = 3
         for layer_num, shapes in self.layer_subtract_dict.items():
             shape_dim_tags = [(dim, s) for s in shapes]
-            layer_dim_tag = (3, self.layers_dict[layer_num])
+            layer_dim_tag = (3, self.layers_dict[layer_num][0])
             subtract_layer = gmsh.model.occ.cut([layer_dim_tag], shape_dim_tags)
-            self.layers_dict[layer_num] = subtract_layer[0][0][1]
+            self.layers_dict[layer_num] = [subtract_layer[0][0][1]]
 
-    def cut_metal_from_vacuum(self):
-        # layers = self.design.ls.ls_df["layer"]
-        # for layer in layers:
-        #     metals_and_gnd = list(self.polys_dict[layer].values(
-        #     )) + list(self.paths_dict[layer].values()) + list(
-        #         self.juncs_dict[layer].values()) + [self.gnd_plane_dict[layer]]
-        #     dielectric = self.substrate_dict[layer]
-        #     gmsh.model.occ.fragment([(3, dielectric)],
-        #                             [(2, geom) for geom in metals_and_gnd])
-        pass
+    def cut_metal_from_vacuum(self, layer_types: dict):
+        metal_layers = layer_types["metal"]
+        volumes_to_subtract = list()
 
-    def fragment_interfaces(self):
+        for layer in metal_layers:
+            polys_on_layer = self.polys_dict[layer]
+            paths_on_layer = self.paths_dict[layer]
+            for name, vol in polys_on_layer.items():
+                volumes_to_subtract += vol
+                surfaces = gmsh.model.occ.getSurfaceLoops(vol[0])[1][0]
+                self.polys_dict[layer][name] = surfaces
+
+            for name, vol in paths_on_layer.items():
+                volumes_to_subtract += vol
+                surfaces = gmsh.model.occ.getSurfaceLoops(vol[0])[1][0]
+                self.paths_dict[layer][name] = surfaces
+
+            layer_vol = self.layers_dict[layer]
+            volumes_to_subtract += layer_vol
+            surfaces = gmsh.model.occ.getSurfaceLoops(layer_vol[0])[1][0]
+            self.layers_dict[layer] = surfaces
+
+        volumes_sub_dimtags = [(3, vol) for vol in volumes_to_subtract]
+        gmsh.model.occ.cut([(3, self.vacuum_box)], volumes_sub_dimtags)
+
+    def fragment_interfaces(self, layer_types: dict,
+                            cut_metal_from_vacuum: bool):
         """Fragment Gmsh surfaces to ensure consistent tetrahedral meshing
         across interfaces between different materials.
         """
-        pass
-        # gmsh.model.occ.fragment([(3, self.substrate_dict[layer])],
-        #                         [(3, self.vacuum_box)])
+        all_vol_ids = list()
+        vol_dimtags = list()
+        if cut_metal_from_vacuum:
+            dielectric_layers = layer_types['dielectric']
+            for layer in dielectric_layers:
+                all_vol_id += self.layers_dict[layer]
+
+            vol_dimtags = [(3, vol) for vol in all_vol_ids]
+        else:
+            all_layer_geoms = deepcopy(self.polys_dict)
+            all_layer_geoms.update(self.paths_dict)
+            all_layer_geoms.update(self.layers_dict)
+            for _, geoms in all_layer_geoms:
+                for _, vol in geoms.items():
+                    all_vol_ids += vol
+
+            vol_dimtags = [(3, vol) for vol in all_vol_ids]
+
+        gmsh.model.occ.fragment([(3, self.vacuum_box)], vol_dimtags)
 
     def assign_physical_groups(self):
         """Assign physical groups to classify different geometries physically.
