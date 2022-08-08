@@ -23,6 +23,7 @@ class QGmshRenderer(QRenderer):
         * mesh -- to define meshing parameters
             * max_size -- upper bound for the size of mesh node
             * min_size -- lower bound for the size of mesh node
+            * max_size_jj -- maximum size of mesh nodes at jj
             * smoothing -- mesh smoothing value
             * nodes_per_2pi_curve -- number of nodes for every 2π radians of curvature
             * algorithm_3d -- value to indicate meshing algorithm used by Gmsh
@@ -36,7 +37,7 @@ class QGmshRenderer(QRenderer):
         * colors -- specify colors for the mesh elements, chips or layers
             * metal -- color for metallized entities
             * jj -- color for JJs
-            * substrate -- color for substrate entity
+            * dielectric -- color for dielectric entity
     """
 
     default_options = Dict(
@@ -45,8 +46,9 @@ class QGmshRenderer(QRenderer):
         # Buffer between max/min y and edge of ground plane, in mm
         y_buffer_width_mm=0.2,
         mesh=Dict(
-            max_size="50um",
-            min_size="3um",
+            max_size="70um",
+            min_size="5um",
+            max_size_jj="5um",
             smoothing=10,
             nodes_per_2pi_curve=90,
             algorithm_3d=10,
@@ -60,7 +62,7 @@ class QGmshRenderer(QRenderer):
         colors=Dict(
             metal=(84, 140, 168, 255),
             jj=(84, 140, 168, 150),
-            substrate=(180, 180, 180, 255),
+            dielectric=(180, 180, 180, 255),
         ),
     )
 
@@ -69,6 +71,7 @@ class QGmshRenderer(QRenderer):
 
     def __init__(self,
                  design: MultiPlanar,
+                 layer_types: Union[dict, None] = None,
                  initiate=True,
                  options: Dict = None):
         """
@@ -81,6 +84,9 @@ class QGmshRenderer(QRenderer):
                          initiate=initiate,
                          render_options=options)
         self._model_name = "gmsh_model"
+
+        self.layer_types = dict(
+            metal=[1], dielectric=[3]) if layer_types is None else layer_types
 
     @property
     def initialized(self):
@@ -148,9 +154,7 @@ class QGmshRenderer(QRenderer):
         box_plus_buffer: bool = True,
         skip_junctions: bool = False,
         mesh_geoms: bool = True,
-        cut_metal_from_vacuum: bool = False,
-        layer_types: Union[dict, None] = None,
-        # {metal=[1, 2, 3, 4], dielectric=[5, 6, 7, 8]}
+        ignore_metal_volume: bool = False,
     ):
         """Render the design in Gmsh and apply changes to modify the geometries
         according to the type of simulation. Simulation parameters provided by the user.
@@ -166,12 +170,9 @@ class QGmshRenderer(QRenderer):
                                                         Defaults to True.
             skip_junctions (bool, optional): Set to True to sip rendering the
                                                         junctions. Defaults to False.
-            cut_metal_from_vacuum (bool, optional): cut the volume of metals and replace
+            ignore_metal_volume (bool, optional): ignore the volume of metals and replace
                                                         it with a list of surfaces instead.
                                                         Defaults to False.
-            layer_types (dict): Dictionary for mapping metal/dielectrics to layer numbers.
-                                    Used for cutting internal volume of metal volume in the
-                                    geometry if `cut_metal_from_vacuum=True`
         """
 
         # defaultdict: chip -- geom_tag
@@ -186,14 +187,15 @@ class QGmshRenderer(QRenderer):
         self.juncs_dict = defaultdict(dict)
         self.physical_groups = defaultdict(dict)
 
+        self.clear_design()
+
         self.draw_geometries(selection=selection,
                              open_pins=open_pins,
                              box_plus_buffer=box_plus_buffer,
                              skip_junctions=skip_junctions)
 
         self.apply_changes_for_simulation(
-            layer_types=layer_types,
-            cut_metal_from_vacuum=cut_metal_from_vacuum)
+            ignore_metal_volume=ignore_metal_volume)
 
         if mesh_geoms:
             self.add_mesh()  # generate mesh
@@ -217,27 +219,20 @@ class QGmshRenderer(QRenderer):
         self.subtract_from_layers()
         self.gmsh_occ_synchronize()
 
-    def apply_changes_for_simulation(self,
-                                     layer_types: Union[dict, None] = None,
-                                     cut_metal_from_vacuum: bool = False):
+    def apply_changes_for_simulation(self, ignore_metal_volume: bool = False):
         # TODO: 3D change:
         # 1. Cut the metal volumes from vacuum only for capacitance sim
         # 2. Think on how to handle 3D metals for eigenmode sim?
-        if cut_metal_from_vacuum:
-            if layer_types is None:
-                raise ValueError(
-                    f"Expected dict for `layer_types`, but found {type(layer_types)}."
-                )
-            else:
-                self.cut_metal_from_vacuum(layer_types=layer_types)
+        if ignore_metal_volume and self.layer_types is None:
+            raise ValueError(
+                f"Expected dict for `layer_types`, but found {type(self.layer_types)}."
+            )
 
-        self.fragment_interfaces(layer_types=layer_types,
-                                 cut_metal_from_vacuum=cut_metal_from_vacuum)
-
+        self.fragment_interfaces()
         self.gmsh_occ_synchronize()
 
         # Add physical groups
-        self.physical_groups = self.assign_physical_groups()
+        self.assign_physical_groups(ignore_metal_volume=ignore_metal_volume)
 
     def gmsh_occ_synchronize(self):
         """Synchronize Gmsh with the internal OpenCascade graphics engine
@@ -624,8 +619,8 @@ class QGmshRenderer(QRenderer):
             TypeError: raise when user provides 'str' instead of 'List[str]' for chips argument.
         """
         # TODO: 3D change: give option to render layers instead of chips?
-        layer_list = [l for l in self.design.ls.ls_df["layer"]
-                     ] if layers is None else layers
+        layer_list = list(set(l for l in self.design.ls.ls_df["layer"])
+                         ) if layers is None else layers
 
         self.cw_x, self.cw_y = Dict(), Dict()
         self.cc_x, self.cc_y = Dict(), Dict()
@@ -726,115 +721,112 @@ class QGmshRenderer(QRenderer):
             subtract_layer = gmsh.model.occ.cut([layer_dim_tag], shape_dim_tags)
             self.layers_dict[layer_num] = [subtract_layer[0][0][1]]
 
-    def cut_metal_from_vacuum(self, layer_types: dict):
-        metal_layers = layer_types["metal"]
-        volumes_to_subtract = list()
-
-        for layer in metal_layers:
-            polys_on_layer = self.polys_dict[layer]
-            paths_on_layer = self.paths_dict[layer]
-            for name, vol in polys_on_layer.items():
-                volumes_to_subtract += vol
-                surfaces = gmsh.model.occ.getSurfaceLoops(vol[0])[1][0]
-                self.polys_dict[layer][name] = surfaces
-
-            for name, vol in paths_on_layer.items():
-                volumes_to_subtract += vol
-                surfaces = gmsh.model.occ.getSurfaceLoops(vol[0])[1][0]
-                self.paths_dict[layer][name] = surfaces
-
-            layer_vol = self.layers_dict[layer]
-            volumes_to_subtract += layer_vol
-            surfaces = gmsh.model.occ.getSurfaceLoops(layer_vol[0])[1][0]
-            self.layers_dict[layer] = surfaces
-
-        volumes_sub_dimtags = [(3, vol) for vol in volumes_to_subtract]
-        gmsh.model.occ.cut([(3, self.vacuum_box)], volumes_sub_dimtags)
-
-    def fragment_interfaces(self, layer_types: dict,
-                            cut_metal_from_vacuum: bool):
+    def fragment_interfaces(self):
         """Fragment Gmsh surfaces to ensure consistent tetrahedral meshing
         across interfaces between different materials.
         """
         all_vol_ids = list()
-        vol_dimtags = list()
-        if cut_metal_from_vacuum:
-            dielectric_layers = layer_types['dielectric']
-            for layer in dielectric_layers:
-                all_vol_id += self.layers_dict[layer]
+        all_layer_geoms = defaultdict(dict)
+        all_dicts = (self.polys_dict, self.paths_dict)
+        for d in all_dicts:
+            for layer, geoms in d.items():
+                if layer not in all_layer_geoms:
+                    all_layer_geoms[layer] = dict()
+                all_layer_geoms[layer].update(geoms)
 
-            vol_dimtags = [(3, vol) for vol in all_vol_ids]
-        else:
-            all_layer_geoms = deepcopy(self.polys_dict)
-            all_layer_geoms.update(self.paths_dict)
-            all_layer_geoms.update(self.layers_dict)
-            for _, geoms in all_layer_geoms:
-                for _, vol in geoms.items():
-                    all_vol_ids += vol
+        for _, geoms in all_layer_geoms.items():
+            for _, vol in geoms.items():
+                all_vol_ids += vol
 
-            vol_dimtags = [(3, vol) for vol in all_vol_ids]
+        for _, vol in self.layers_dict.items():
+            all_vol_ids += vol
 
+        vol_dimtags = [(3, vol) for vol in all_vol_ids]
         gmsh.model.occ.fragment([(3, self.vacuum_box)], vol_dimtags)
 
-    def assign_physical_groups(self):
+        # TODO: Do we require 3D junctions?
+        # all_juncs = []
+        # for layer_juncs in self.juncs_dict.values():
+        #     for _, surf in layer_juncs.items():
+        #         all_juncs += surf
+
+        # junc_dimtags = [(2, junc) for junc in all_juncs]
+        # gmsh.model.occ.fragment([(3, self.vacuum_box)], junc_dimtags)
+
+    def assign_physical_groups(self, ignore_metal_volume: bool):
         """Assign physical groups to classify different geometries physically.
         """
-        chip_names = list(self.design.chips.keys())
-        phys_grps = defaultdict(dict)
-        # for chip in chip_names:
-        #     if chip not in self.physical_groups:
-        #         phys_grps[chip] = dict()
+        layer_numbers = list(self.layers_dict.keys())
+        metal_dim = 2 if ignore_metal_volume else 3
+        for layer in layer_numbers:
+            if layer not in self.physical_groups:
+                self.physical_groups[layer] = dict()
 
-        #     # TODO: extend metal geoms to dim=3
-        #     chip_geoms = dict(self.paths_dict[chip], **self.polys_dict[chip])
-        #     chip_geoms.update(self.juncs_dict[chip])
+            # Check if a component is drawn on that layer
+            valid_layers = set(
+                list(self.paths_dict.keys()) + list(self.polys_dict.keys()))
+            if layer in valid_layers:
+                # Make physical groups for components
+                layer_geoms = dict(self.paths_dict[layer],
+                                   **self.polys_dict[layer])
+                for name, tag in layer_geoms.items():
+                    if ignore_metal_volume:
+                        tags = gmsh.model.occ.getSurfaceLoops(tag[0])[1][0]
+                    else:
+                        tags = tag
+                    ph_tag = gmsh.model.addPhysicalGroup(dim=metal_dim,
+                                                         tags=tags,
+                                                         name=name)
+                    self.physical_groups[layer][name] = ph_tag
 
-        #     # Make physical groups for components
-        #     for name, tag in chip_geoms.items():
-        #         ph_tag = gmsh.model.addPhysicalGroup(2, [tag], name=name)
-        #         phys_grps[chip][name] = ph_tag
+                # TODO: Do we require 3D junctions?
+                for name, tag in self.juncs_dict[layer].items():
+                    ph_junc_tag = gmsh.model.addPhysicalGroup(dim=2,
+                                                              tags=tag,
+                                                              name=name)
+                    self.physical_groups[layer][name] = ph_junc_tag
 
-        #     # Make physical groups for ground plane
-        #     ph_gnd_name = "ground_plane" + '_' + chip
-        #     gnd_tag = self.gnd_plane_dict[chip]
-        #     ph_gnd_tag = gmsh.model.addPhysicalGroup(2, [gnd_tag],
-        #                                              name=ph_gnd_name)
-        #     phys_grps[chip][ph_gnd_name] = ph_gnd_tag
+            # Make physical groups for each layer
+            if self.layer_types is None:
+                raise ValueError(
+                    f"Expected `self.layer_types` to be a dict, found {type(self.layer_types)}"
+                )
+            else:
+                if layer in self.layer_types["metal"]:
+                    layer_type = "ground_plane"
+                elif layer in self.layer_types["dielectric"]:
+                    layer_type = "dielectric"
+                else:
+                    raise ValueError(
+                        "Layer number not in the specified `self.layer_types` dict."
+                    )
 
-        #     # Make physical groups for substrate (volume)
-        #     ph_sub_name = "dielectric_substrate" + '_' + chip
-        #     sub_tag = self.substrate_dict[chip]
-        #     ph_sub_tag = gmsh.model.addPhysicalGroup(3, [sub_tag],
-        #                                              name=ph_sub_name)
-        #     phys_grps[chip][ph_sub_name] = ph_sub_tag
+                layer_name = layer_type + f' (layer {layer})'
+                layer_tag = self.layers_dict[layer]
+                layer_dim = 3
+                if ignore_metal_volume and layer_type == "ground_plane":
+                    layer_tag = gmsh.model.occ.getSurfaceLoops(
+                        layer_tag[0])[1][0]
+                    layer_dim = metal_dim
 
-        #     # Make physical group for everything in a single chip
-        #     # NOTE: not used for any simulations, just to keep
-        #     # everything together in the Gmsh GUI
-        #     metals_and_gnd = list(self.polys_dict[chip].values(
-        #     )) + list(self.paths_dict[chip].values()) + list(
-        #         self.juncs_dict[chip].values()) + [self.gnd_plane_dict[chip]]
+                ph_layer_tag = gmsh.model.addPhysicalGroup(dim=layer_dim,
+                                                           tags=layer_tag,
+                                                           name=layer_name)
+                self.physical_groups[layer][layer_name] = ph_layer_tag
 
-        #     ph_chip_tag = gmsh.model.addPhysicalGroup(2,
-        #                                               metals_and_gnd,
-        #                                               name="chip_" + chip)
+        # Make physical groups for vacuum box (volume)
+        vb_name = "vacuum_box"
+        ph_vb_tag = gmsh.model.addPhysicalGroup(dim=3,
+                                                tags=[self.vacuum_box],
+                                                name=vb_name)
+        self.physical_groups["global"][vb_name] = ph_vb_tag
 
-        #     phys_grps["chips"][chip] = ph_chip_tag
-
-        # # Make physical groups for vacuum box (volume)
-        # vb_name = "vacuum_box"
-        # ph_vb_tag = gmsh.model.addPhysicalGroup(3, [self.vacuum_box],
-        #                                         name=vb_name)
-        # phys_grps["global"][vb_name] = ph_vb_tag
-
-        # # Make physical groups for vacuum box (surfaces)
-        # vb_sfs = list(gmsh.model.occ.getSurfaceLoops(self.vacuum_box)[1][0])
-        # ph_vb_sfs_tag = gmsh.model.addPhysicalGroup(2,
-        #                                             vb_sfs,
-        #                                             name=(vb_name + "_sfs"))
-        # phys_grps["global"][vb_name + "_sfs"] = ph_vb_sfs_tag
-
-        return phys_grps
+        # Make physical groups for vacuum box (surfaces)
+        vb_sfs = list(gmsh.model.occ.getSurfaceLoops(self.vacuum_box)[1][0])
+        ph_vb_sfs_tag = gmsh.model.addPhysicalGroup(dim=2,
+                                                    tags=vb_sfs,
+                                                    name=(vb_name + "_sfs"))
+        self.physical_groups["global"][vb_name + "_sfs"] = ph_vb_sfs_tag
 
     def isometric_projection(self):
         """Set the view in Gmsh to isometric view manually.
@@ -850,6 +842,8 @@ class QGmshRenderer(QRenderer):
         """
         min_mesh_size = self.parse_units_gmsh(self._options["mesh"]["min_size"])
         max_mesh_size = self.parse_units_gmsh(self._options["mesh"]["max_size"])
+        min_mesh_size_jj = self.parse_units_gmsh(
+            self._options["mesh"]["max_size_jj"])
         grad_delta = self.parse_units_gmsh(
             self._options["mesh"]["mesh_size_fields"]["gradient_delta"])
         dist_min = self.parse_units_gmsh(
@@ -862,21 +856,22 @@ class QGmshRenderer(QRenderer):
             self._options["mesh"]["mesh_size_fields"]["distance_delta"])
         grad_steps = int((dist_max - dist_min) / dist_delta)
 
-        all_geoms = []
-        poly_chips = [chip for chip in self.polys_dict.keys()]
-        path_chips = [chip for chip in self.paths_dict.keys()]
-        junc_chips = [chip for chip in self.juncs_dict.keys()]
+        all_vols = []
+        for _, geoms in self.polys_dict.items():
+            all_vols += [tag[0] for tag in geoms.values()]
+        for _, geoms in self.paths_dict.items():
+            all_vols += [tag[0] for tag in geoms.values()]
+        # Ground plane layers
+        for layer in self.layer_types["metal"]:
+            all_vols += self.layers_dict[layer]
 
-        for chip in poly_chips:
-            all_geoms += list(self.polys_dict[chip].values())
-        for chip in path_chips:
-            all_geoms += list(self.paths_dict[chip].values())
-        for chip in junc_chips:
-            all_geoms += list(self.juncs_dict[chip].values())
+        all_surfs = []
+        for vol in all_vols:
+            all_surfs += [
+                surf for surf in gmsh.model.occ.getSurfaceLoops(vol)[1][0]
+            ]
 
-        # all_geoms += list(self.gnd_plane_dict.values())
-
-        curve_loops = [gmsh.model.occ.getCurveLoops(geom) for geom in all_geoms]
+        curve_loops = [gmsh.model.occ.getCurveLoops(surf) for surf in all_surfs]
         curves = []
         for cl in curve_loops:
             for curve_tag_list in cl[1]:  # extract curves
@@ -900,6 +895,32 @@ class QGmshRenderer(QRenderer):
             gmsh.model.mesh.field.setNumber(tf, "SizeMax", max_mesh_size)
 
             thresh_fields += [tf]
+
+        jj_surfs = []
+        for _, geoms in self.juncs_dict.items():
+            jj_surfs += [tag[0] for tag in geoms.values()]
+
+        jj_curve_loops = [
+            gmsh.model.occ.getCurveLoops(surf) for surf in all_surfs
+        ]
+        jj_curves = []
+        for cl in jj_curve_loops:
+            for curve_tag_list in cl[1]:  # extract curves
+                for curve in curve_tag_list:
+                    jj_curves += [curve]
+
+        jj_df = gmsh.model.mesh.field.add("Distance")
+        gmsh.model.mesh.field.setNumbers(df, "CurvesList", jj_curves)
+        gmsh.model.mesh.field.setNumber(df, "NumPointsPerCurve", 100)
+
+        jj_tf = gmsh.model.mesh.field.add("Threshold")
+        gmsh.model.mesh.field.setNumber(jj_tf, "DistMin", dist_min)
+        gmsh.model.mesh.field.setNumber(jj_tf, "DistMax", dist_max)
+        gmsh.model.mesh.field.setNumber(jj_tf, "Sigmoid", 1)
+        gmsh.model.mesh.field.setNumber(jj_tf, "InField", jj_df)
+        gmsh.model.mesh.field.setNumber(jj_tf, "SizeMin", min_mesh_size_jj)
+        gmsh.model.mesh.field.setNumber(jj_tf, "SizeMax", max_mesh_size)
+        thresh_fields += [jj_tf]
 
         min_field = gmsh.model.mesh.field.add("Min")
         gmsh.model.mesh.field.setNumbers(min_field, "FieldsList", thresh_fields)
@@ -944,27 +965,53 @@ class QGmshRenderer(QRenderer):
 
         self.define_mesh_properties()
         gmsh.model.mesh.generate(dim=dim)
+        self.assign_mesh_color()
 
+    def assign_mesh_color(self):
         color_dict = lambda color: dict(
             r=color[0], g=color[1], b=color[2], a=color[3])
         metal_color = color_dict(self._options["colors"]["metal"])
         jj_color = color_dict(self._options["colors"]["jj"])
-        sub_color = color_dict(self._options["colors"]["substrate"])
+        dielectric_color = color_dict(self._options["colors"]["dielectric"])
 
-        for chip in list(self.design.chips.keys()):
-            all_metal = list(self.polys_dict[chip].values()) + list(
-                self.paths_dict[chip].values())  #+ [self.gnd_plane_dict[chip]]
+        for layer in list(self.layers_dict.keys()):
+            valid_layers = set(
+                list(self.paths_dict.keys()) + list(self.polys_dict.keys()))
+            if layer in valid_layers:
+                metal_vols = []
+                for _, geom in self.polys_dict[layer].items():
+                    metal_vols += geom
+                for _, geom in self.paths_dict[layer].items():
+                    metal_vols += geom
 
-            jjs = list(self.juncs_dict[chip].values())
-            # substrate = self.substrate_dict[chip]
-            # sub_surfaces = list(gmsh.model.occ.getSurfaceLoops(substrate)[1][0])
+                metal_surfs = []
+                for vol in metal_vols:
+                    surfs = [
+                        tag for tag in gmsh.model.occ.getSurfaceLoops(vol)[1][0]
+                    ]
+                    metal_surfs += surfs
 
-            # gmsh.model.setColor([(3, substrate)], **sub_color)
-            # gmsh.model.setColor([(2, sub_surf) for sub_surf in sub_surfaces],
-            #                     **sub_color)
-            gmsh.model.setColor([(2, metal) for metal in all_metal],
-                                **metal_color)
-            gmsh.model.setColor([(2, jj) for jj in jjs], **jj_color)
+                gmsh.model.setColor([(3, metal) for metal in metal_vols],
+                                    **metal_color)
+                gmsh.model.setColor([(2, metal) for metal in metal_surfs],
+                                    **metal_color)
+
+                jj_surfs = []
+                for _, surf in self.juncs_dict[layer].items():
+                    jj_surfs += surf
+
+                gmsh.model.setColor([(2, jj) for jj in jj_surfs], **jj_color)
+
+            layer_tag = self.layers_dict[layer][0]
+            layer_sfs = list(gmsh.model.occ.getSurfaceLoops(layer_tag)[1][0])
+            if layer in self.layer_types['metal']:
+                gmsh.model.setColor([(3, layer_tag)], **metal_color)
+                gmsh.model.setColor([(2, sf) for sf in layer_sfs],
+                                    **metal_color)
+            else:
+                gmsh.model.setColor([(3, layer_tag)], **dielectric_color)
+                gmsh.model.setColor([(2, sf) for sf in layer_sfs],
+                                    **dielectric_color)
 
     def launch_gui(self):
         """Launch Gmsh GUI for viewing the model.
