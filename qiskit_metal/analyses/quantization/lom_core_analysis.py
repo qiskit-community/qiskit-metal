@@ -394,10 +394,10 @@ class CircuitGraph:
     def __init__(
         self,
         nodes: Sequence,
+        grd_node: str,
         cmats: List[pd.DataFrame],
         ind_lists: List[Dict[Tuple, float]],
         junctions: Mapping[Tuple[str, str], str],
-        grd_node: str = None,
         cj_dicts: List[Dict[Tuple, float]] = None,
         nodes_force_keep: Sequence = None,
         s_remove_provided: Union[np.ndarray, bool] = False,
@@ -1520,8 +1520,8 @@ class CompositeSystem:
         esys_array[0] = evals
         esys_array[1] = evecs
 
-        f01, chi_mat = extract_energies(esys_array,
-                                        mode_size=hamiltonian_mat.dims[0])
+        f01s, chi_mat = extract_energies(esys_array,
+                                         mode_size=hamiltonian_mat.dims[0])
         f01s = f01s / 1000
         ham_res['fQ_in_Ghz'] = dict(zip(names, f01s))
         ham_res['chi_in_MHz'] = LabeledNdarray(chi_mat, names)
