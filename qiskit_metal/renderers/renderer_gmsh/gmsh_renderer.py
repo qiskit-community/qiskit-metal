@@ -18,6 +18,7 @@ class QGmshRenderer(QRenderer):
     """Extends QRendererAnalysis class to export designs to Gmsh using the Gmsh python API.
 
     Default Options:
+        # Buffer between max/min x and edge of ground plane, in mm
         * x_buffer_width_mm -- Buffer between max/min x and edge of ground plane, in mm
         * y_buffer_width_mm -- Buffer between max/min y and edge of ground plane, in mm
         * mesh -- to define meshing parameters
@@ -41,9 +42,7 @@ class QGmshRenderer(QRenderer):
     """
 
     default_options = Dict(
-        # Buffer between max/min x and edge of ground plane, in mm
         x_buffer_width_mm=0.2,
-        # Buffer between max/min y and edge of ground plane, in mm
         y_buffer_width_mm=0.2,
         mesh=Dict(
             max_size="70um",
@@ -129,7 +128,7 @@ class QGmshRenderer(QRenderer):
         gmsh.model.remove()
 
     def clear_design(self):
-        """Clears the design in the currenet Gmsh model"""
+        """Clears the design in the current Gmsh model"""
         gmsh.clear()
 
     def _initiate_renderer(self):
@@ -166,10 +165,10 @@ class QGmshRenderer(QRenderer):
                                                         endcaps. Defaults to None.
             box_plus_buffer (bool, optional): Set to True for adding buffer to
                                                         chip dimensions. Defaults to True.
-            mesh_geoms (bool, optional): Set to True for meshing the geometries.
-                                                        Defaults to True.
             skip_junctions (bool, optional): Set to True to sip rendering the
                                                         junctions. Defaults to False.
+            mesh_geoms (bool, optional): Set to True for meshing the geometries.
+                                                        Defaults to True.
             ignore_metal_volume (bool, optional): ignore the volume of metals and replace
                                                         it with a list of surfaces instead.
                                                         Defaults to False.
@@ -205,6 +204,19 @@ class QGmshRenderer(QRenderer):
                         open_pins: Union[list, None] = None,
                         box_plus_buffer: bool = True,
                         skip_junctions: bool = False):
+        """This function draws the raw geometries in Gmsh as taken from the
+        QGeometry tables and applies thickness depending on the layer-stack.
+
+        Args:
+            selection (Union[list, None], optional): List of selected components
+                                                        to render. Defaults to None.
+            open_pins (Union[list, None], optional): List of open pins to add
+                                                        endcaps. Defaults to None.
+            box_plus_buffer (bool, optional): Set to True for adding buffer to
+                                                        chip dimensions. Defaults to True.
+            skip_junctions (bool, optional): Set to True to sip rendering the
+                                                        junctions. Defaults to False.
+        """
 
         self.qcomp_ids, self.case = self.get_unique_component_ids(selection)
 
@@ -219,10 +231,18 @@ class QGmshRenderer(QRenderer):
         self.subtract_from_layers()
         self.gmsh_occ_synchronize()
 
-    def apply_changes_for_simulation(self, ignore_metal_volume: bool = False):
-        # TODO: 3D change:
-        # 1. Cut the metal volumes from vacuum only for capacitance sim
-        # 2. Think on how to handle 3D metals for eigenmode sim?
+    def apply_changes_for_simulation(self, ignore_metal_volume: bool):
+        """This function fragments interfaces to fuse the boundaries and assigns
+        physical groups to be used by an FEM solvers for defining bodies and
+        boundary conditions.
+
+        Args:
+            ignore_metal_volume (bool, optional): ignore the volume of metals and replace
+                                                        it with a list of surfaces instead.
+
+        Raises:
+            ValueError: raised when self.layer_types isn't set to a valid dictionary
+        """
         if ignore_metal_volume and self.layer_types is None:
             raise ValueError(
                 f"Expected dict for `layer_types`, but found {type(self.layer_types)}."
@@ -328,7 +348,7 @@ class QGmshRenderer(QRenderer):
             )
 
     def render_element_junction(self, junc: pd.Series):
-        """Render an element junction.
+        """Render an element of type: 'junction'
 
         Args:
             junc (pd.Series): Junction to render.
@@ -388,7 +408,7 @@ class QGmshRenderer(QRenderer):
         self.juncs_dict[junc.layer][qc_name] = [surface]
 
     def render_element_path(self, path: pd.Series):
-        """Render an element path.
+        """Render an element of type: 'path'
 
         Args:
             path (pd.Series): Path to render.
@@ -474,7 +494,7 @@ class QGmshRenderer(QRenderer):
         return self.make_general_surface(lines)
 
     def render_element_poly(self, poly: pd.Series):
-        """Render an element poly.
+        """Render an element of type: 'poly'
 
         Args:
             poly (pd.Series): Poly to render.
@@ -601,22 +621,17 @@ class QGmshRenderer(QRenderer):
                                                      dy=dy)
             self.layer_subtract_dict[qc_layer].add(endcap)
 
-    def render_layers(
-            self,
-            # TODO: 3D change: give option to render layers instead of chips?
-            layers: Optional[List[int]] = None,
-            draw_sample_holder: bool = True,
-            box_plus_buffer: bool = True):
+    def render_layers(self,
+                      layers: Optional[List[int]] = None,
+                      draw_sample_holder: bool = True,
+                      box_plus_buffer: bool = True):
         """Render all chips of the design. calls `render_chip` to render the actual geometries
 
         Args:
-            chips (Union[str, List[str]], optional): List of chips to render.
-                                Renders all if [] or "all" is given. Defaults to [].
+            layers (Optional[List[int]]): List of layers to render.
+                                Renders all if [] or None is given. Defaults to None.
             draw_sample_holder (bool, optional): To draw the sample holder box. Defaults to True.
             box_plus_buffer (bool, optional): For adding buffer to chip dimensions. Defaults to True.
-
-        Raises:
-            TypeError: raise when user provides 'str' instead of 'List[str]' for chips argument.
         """
         # TODO: 3D change: give option to render layers instead of chips?
         layer_list = list(set(l for l in self.design.ls.ls_df["layer"])
@@ -634,10 +649,10 @@ class QGmshRenderer(QRenderer):
                                          self.logger))
                 self.cw_x.update({layer: max_x - min_x})  # chip width along x
                 self.cw_y.update({layer: max_y - min_y})  # chip width along y
-                self.cw_x[layer] += 2 * self.parse_units_gmsh(
-                    self._options["x_buffer_width_mm"])
-                self.cw_y[layer] += 2 * self.parse_units_gmsh(
-                    self._options["y_buffer_width_mm"])
+                self.cw_x[layer] *= self.parse_units_gmsh(
+                    self._options["bounding_box_scale_x"])
+                self.cw_y[layer] *= self.parse_units_gmsh(
+                    self._options["bounding_box_scale_y"])
                 # x coord of chip center
                 self.cc_x.update({layer: (max_x + min_x) / 2})
                 # y coord of chip center
@@ -684,10 +699,15 @@ class QGmshRenderer(QRenderer):
             self.vacuum_box = gmsh.model.occ.addBox(x, y, z, dx, dy, dz)
 
     def render_layer(self, layer_number: int, datatype: int = 0):
-        """Render the given chip.
+        """Render the given layer number and datatype.
 
         Args:
-            chip_name (str): name of the chip to render
+            layer_number (int): number of the layer to render
+            datatype (int): number of the datatype. Defaults to 0.
+
+        Raises:
+            ValueError: if the required properties are not found
+                            in the layer-stack
         """
         props = ["thickness", "z_coord"]
         result = self.parse_units_gmsh(
@@ -755,6 +775,14 @@ class QGmshRenderer(QRenderer):
 
     def assign_physical_groups(self, ignore_metal_volume: bool):
         """Assign physical groups to classify different geometries physically.
+
+        Args:
+            ignore_metal_volume (bool, optional): ignore the volume of metals and replace
+                                                        it with a list of surfaces instead.
+
+        Raises:
+            ValueError: if self.layer_types is not a dict
+            ValueError: if layer number is not in self.layer_types
         """
         layer_numbers = list(self.layers_dict.keys())
         metal_dim = 2 if ignore_metal_volume else 3
@@ -968,6 +996,9 @@ class QGmshRenderer(QRenderer):
         self.assign_mesh_color()
 
     def assign_mesh_color(self):
+        """Assign mesh color according to the type of layer specified by
+        self.layer_types and colors taken from self._options as provided by the user.
+        """
         color_dict = lambda color: dict(
             r=color[0], g=color[1], b=color[2], a=color[3])
         metal_color = color_dict(self._options["colors"]["metal"])
@@ -1019,15 +1050,14 @@ class QGmshRenderer(QRenderer):
         self.isometric_projection()  # set isometric projection
         gmsh.fltk.run()
 
-    def export_mesh(self, filename: str):
+    def export_mesh(self, filepath: str):
         """Export mesh from Gmsh into a file.
 
         Args:
-            filename (str): name of the file to be exported to.
+            filepath (str): path of the file to export mesh to.
         """
-        # TODO: Can gmsh support other mesh exporting formats?
         valid_file_exts = ["msh", "msh2", "mesh"]
-        file_ext = filename.split(".")[-1]
+        file_ext = filepath.split(".")[-1]
         if file_ext not in valid_file_exts:
             self.logger.error(
                 "RENDERER ERROR: filename needs to have a .msh extension. Exporting failed."
@@ -1035,13 +1065,13 @@ class QGmshRenderer(QRenderer):
             return
 
         import os
-        mesh_export_dir = self._options["mesh"]["export_dir"]
-        path = mesh_export_dir + '/' + filename
-        if not os.path.exists(mesh_export_dir):
-            os.mkdir(mesh_export_dir)
+        from pathlib import Path
+        par_dir = Path(filepath).parent.absolute()
+        if not os.path.exists(par_dir):
+            raise ValueError(f"Directory not found: {par_dir}")
 
         gmsh.option.setNumber("Mesh.ScalingFactor", 0.001)
-        gmsh.write(path)
+        gmsh.write(filepath)
 
     def import_post_processing_data(self,
                                     filename: str,
