@@ -52,6 +52,7 @@ from .parsing import is_variable_name
 from .parsing import is_numeric_possible
 from .parsing import parse_units
 from .layer_stack_handler import LayerStackHandler
+from .bounds_for_path_and_poly_tables import BoundsForPathAndPolyTables
 
 from .. import config
 if config.is_building_docs():
@@ -62,3 +63,4 @@ if config.is_building_docs():
     from . import parsing
     from . import math_and_overrides
     from . import layer_stack_handler
+    from . import bounds_for_path_and_poly_tables
