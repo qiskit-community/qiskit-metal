@@ -75,7 +75,7 @@ def is_rectangle(obj):
     """Test if a shapely object is a rectangle.
 
     If there are 4 ext cooridnate then
-    check if consequtive vectors are orhtogonal.
+    check if consecutive vectors are orthogonal.
     Assumes that the last point is not repeating.
 
     Args:

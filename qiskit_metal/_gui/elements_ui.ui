@@ -93,7 +93,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Element type: </string>
+           <string>QGeometry type: </string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -200,7 +200,7 @@
      <x>0</x>
      <y>0</y>
      <width>841</width>
-     <height>22</height>
+     <height>24</height>
     </rect>
    </property>
   </widget>

@@ -14,10 +14,10 @@ jobs:
     # Set matrix for runs-on
     strategy:
       matrix:
-        python-version: [3.7, 3.8, 3.9]
+        python-version: ["3.9", "3.10"]
         os: ["macOS-latest", "ubuntu-latest"]
     steps:
-      - name: Chekout code
+      - name: Checkout code
         uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
@@ -36,43 +36,43 @@ jobs:
         run: python -m pip install -U tox setuptools virtualenv wheel
       - name: Install and Run Tests
         run: tox -e py
-#  windows-tests:
-#    name: tests-python${{ matrix.python-version }}-windows
-#    runs-on: windows-latest
-#    strategy:
-#      matrix:
-#        python-version: [3.7, 3.8, 3.9]
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Set up Python ${{ matrix.python-version }}
-#        uses: actions/setup-python@v2
-#        with:
-#          python-version: ${{ matrix.python-version }}
-#      - name: Pip cache
-#        uses: actions/cache@v2
-#        with:
-#          path: ~\AppData\Local\pip\Cache
-#          key: ${{ runner.os }}-${{ matrix.python-version }}-pip-tests-${{ hashFiles('setup.py','requirements-dev.txt','requirements.txt') }}
-#          restore-keys: |
-#            ${{ runner.os }}-${{ matrix.python-version }}-pip-tests-
-#            ${{ runner.os }}-${{ matrix.python-version }}-pip-
-#            ${{ runner.os }}-${{ matrix.python-version }}-
-#      - name: Install deps
-#        run: |
-#          pip install -U tox cvxopt setuptools virtualenv wheel
-#        shell: pwsh
-#      - name: Install and Run Tests
-#        run: tox --sitepackages -e py
-#        shell: bash -l {0}
+  #  windows-tests:
+  #    name: tests-python${{ matrix.python-version }}-windows
+  #    runs-on: windows-latest
+  #    strategy:
+  #      matrix:
+  #        python-version: ["3.9", "3.10"]
+  #    steps:
+  #      - uses: actions/checkout@v2
+  #      - name: Set up Python ${{ matrix.python-version }}
+  #        uses: actions/setup-python@v2
+  #        with:
+  #          python-version: ${{ matrix.python-version }}
+  #      - name: Pip cache
+  #        uses: actions/cache@v2
+  #        with:
+  #          path: ~\AppData\Local\pip\Cache
+  #          key: ${{ runner.os }}-${{ matrix.python-version }}-pip-tests-${{ hashFiles('setup.py','requirements-dev.txt','requirements.txt') }}
+  #          restore-keys: |
+  #            ${{ runner.os }}-${{ matrix.python-version }}-pip-tests-
+  #            ${{ runner.os }}-${{ matrix.python-version }}-pip-
+  #            ${{ runner.os }}-${{ matrix.python-version }}-
+  #      - name: Install deps
+  #        run: |
+  #          pip install -U tox cvxopt setuptools virtualenv wheel
+  #        shell: pwsh
+  #      - name: Install and Run Tests
+  #        run: tox --sitepackages -e py
+  #        shell: bash -l {0}
   lint:
     name: lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python 3.7
+      - name: Set up Python 3.9
         uses: actions/setup-python@v2
         with:
-          python-version: 3.7
+          python-version: 3.9
       - name: Pip cache
         uses: actions/cache@v2
         with:
@@ -93,10 +93,10 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Set up Python 3.7
+      - name: Set up Python 3.9
         uses: actions/setup-python@v2
         with:
-          python-version: 3.7
+          python-version: 3.9
       - name: Pip cache
         uses: actions/cache@v2
         with:

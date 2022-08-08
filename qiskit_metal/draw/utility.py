@@ -37,6 +37,9 @@ __all__ = [
     'vec_unit_planar', 'Vector'
 ]
 
+# Used for numpy.round()
+PRECISION = 10
+
 #########################################################################
 # Shapely Geometry Basic Coordinates
 
@@ -337,6 +340,7 @@ def vec_unit_planar(vector: np.array):
         raise Exception('You did not give a 2 or 3 vec')
 
 
+# pylint: disable=invalid-name
 def to_vec3D(list_of_2d_pts: List[Tuple], z=0) -> np.ndarray:
     """Adds 3rd point to list of 2D points. For the given design, get the z
     values in HFSS UNITS! Manually specify z dimension.
@@ -353,6 +357,23 @@ def to_vec3D(list_of_2d_pts: List[Tuple], z=0) -> np.ndarray:
     vec3d = np.array([list(a_2d_pt) + add_me for a_2d_pt in list_of_2d_pts],
                      dtype="object")
     return vec3d
+
+
+def to_vec3D_list(list_of_2d_pts: List[Tuple], z=0) -> list:
+    """Adds 3rd point to list of 2D points. For the given design, get the z
+    values in HFSS UNITS! Manually specify z dimension.
+
+    Args:
+        list_of_2d_pts (List[Tuple]): List of 2D points
+        z (int, optional): z-value in hfss. Defaults to 0.
+
+    Returns:
+        list: vec3d of points
+    """
+    add_me = [z]
+
+    vec3d_list = [list(a_2d_pt) + add_me for a_2d_pt in list_of_2d_pts]
+    return vec3d_list
 
 
 Vec2D = Union[list, np.ndarray]
@@ -453,6 +474,7 @@ class Vector:
     @staticmethod
     def angle_between(v1: Vec2D, v2: Vec2D) -> float:
         """Returns the angle in radians between vectors 'v1' and 'v2'.
+        Disclaimer: The same method is also used Vec3D as it is flexible enough.
 
         Args:
             v1 (Vec2D): First vector
@@ -506,9 +528,11 @@ class Vector:
         """
         return norm(vec)
 
+    @staticmethod
     def are_same(v1: Vec2D, v2: Vec2D, tol: int = 100) -> bool:
         """Check if two vectors are within an infinitesimal distance set by
         `tol` and machine epsilon.
+        Disclaimer: The same method is also used Vec3D as it is flexible enough.
 
         Args:
             v1 (Vec2D): First vector to check
@@ -582,7 +606,8 @@ class Vector:
         # unit vector along the direction of the two point
         unit_vec = distance_vec / norm(distance_vec)
         # tangent vector counter-clockwise 90 deg rotation
-        tangent_vec = np.round(Vector.rotate(unit_vec, np.pi / 2), decimals=11)
+        tangent_vec = np.round(Vector.rotate(unit_vec, np.pi / 2),
+                               decimals=PRECISION)
 
         if Vector.is_zero(distance_vec):
             logger.debug(
@@ -609,3 +634,308 @@ class Vector:
         v[m] = np.sign(vec_n[m])
         vec_n = v
         return vec_n
+
+
+class Vec3D(Vector):
+    """Class to define a 3D vector and perform operations on them.
+
+    Returns:
+        Vec3D: A 3-dimensional vector object
+    """
+
+    @staticmethod
+    def norm(vec: np.ndarray) -> float:
+        """Magnitude of the vector
+
+        Args:
+            vec (np.ndarray): input vector
+
+        Returns:
+            float: magnitude of the vector calculated by Frobenius norm
+        """
+        return np.round(np.linalg.norm(vec), decimals=PRECISION)
+
+    @staticmethod
+    def normed(vec: np.ndarray):
+        """Normed vector
+
+        Args:
+            vec (np.ndarray): input vector
+
+        Returns:
+            np.ndarray: normed vector
+        """
+        if not isinstance(vec, np.ndarray):
+            vec = np.array(vec)
+        return vec / Vec3D.norm(vec)
+
+    @staticmethod
+    def add(vec: np.ndarray, other: np.ndarray):
+        """Adds two vectors
+
+        Args:
+            vec (np.ndarray): input vector
+            other (np.ndarray): the other vector
+
+        Returns:
+            np.ndarray: resultant vector
+        """
+        if not isinstance(vec, np.ndarray):
+            vec = np.array(vec)
+        if not isinstance(other, np.ndarray):
+            other = np.array(other)
+        return (vec + other)
+
+    @staticmethod
+    def dot(vec: np.ndarray, other: np.ndarray) -> float:
+        """Dot product of two vectors
+
+        Args:
+            vec (np.ndarray): input vector
+            other (np.ndarray): the other vector
+
+        Returns:
+            float: result from dot product
+        """
+        if not isinstance(vec, np.ndarray):
+            vec = np.array(vec)
+        if not isinstance(other, np.ndarray):
+            other = np.array(other)
+        return np.round(vec.dot(other), decimals=PRECISION)
+
+    @staticmethod
+    def cross(vec: np.ndarray, other: np.ndarray):
+        """Cross product of two vectors
+
+        Args:
+            vec (np.ndarray): input vector
+            other (np.ndarray): the other vector
+
+        Returns:
+            np.ndarray: resultant vector
+        """
+        return np.round(np.cross(vec, other), decimals=PRECISION)
+
+    @staticmethod
+    def sub(vec: np.ndarray, other: np.ndarray):
+        """Difference between two vectors
+
+        Args:
+            vec (np.ndarray): input vector
+            other (np.ndarray): the other vector
+
+        Returns:
+            np.ndarray: resultant vector
+        """
+        if not isinstance(vec, np.ndarray):
+            vec = np.array(vec)
+        if not isinstance(other, np.ndarray):
+            other = np.array(other)
+        return (vec - other)
+
+    @staticmethod
+    def scale(vec: np.ndarray, value: Union[int, float]):
+        """Multiply the vector with a scalar
+
+        Args:
+            vec (np.ndarray): input vector
+            value (Union[int, float]): scalar value
+
+        Returns:
+            np.ndarray: resultant vector
+        """
+        if not isinstance(vec, np.ndarray):
+            vec = np.array(vec)
+        return (vec * value)
+
+    @staticmethod
+    def get_distance(vec: np.ndarray, other: np.ndarray) -> float:
+        """Calculate Euler distance between two vectors
+
+        Args:
+            vec (np.ndarray): input vector
+            other (np.ndarray): the other vector
+
+        Returns:
+            float: Euler distance
+        """
+        if not isinstance(vec, np.ndarray):
+            vec = np.array(vec)
+        if not isinstance(other, np.ndarray):
+            other = np.array(other)
+        return np.round(Vec3D.norm(vec - other), decimals=PRECISION)
+
+    @staticmethod
+    def translate(vec: np.ndarray, translate_vec: np.ndarray):
+        """Translate a vector
+
+        Args:
+            vec (np.ndarray): vector to transform
+            translate_vec (np.ndarray): translation values as a vector
+
+        Returns:
+            np.ndarray: return a new np.ndarray object
+        """
+        return Vec3D.add(vec, translate_vec)
+
+    @staticmethod
+    def rotate(vec: np.ndarray,
+               cvec: np.ndarray,
+               ax: bool = False,
+               ay: bool = False,
+               az: bool = False,
+               radians: float = 0.0):
+        """Rotate a vector
+
+        Args:
+            vec (np.ndarray): vector to transform
+            cvec (np.ndarray): center of rotation as a vector
+            ax (bool, optional): Rotate around x-axis. Defaults to False.
+            ay (bool, optional): Rotate around y-axis. Defaults to False.
+            az (bool, optional): Rotate around z-axis. Defaults to False.
+            radians (float, optional): radians of rotation. Defaults to 0.0.
+
+        Returns:
+            np.ndarray: return a new np.ndarray object
+        """
+        if not isinstance(vec, np.ndarray):
+            vec = np.array(vec)
+        if not isinstance(cvec, np.ndarray):
+            cvec = np.array(cvec)
+
+        if ax:
+            rot_x = np.array([[1, 0, 0], [0,
+                                          np.cos(radians), -np.sin(radians)],
+                              [0, np.sin(radians),
+                               np.cos(radians)]])
+            translate_vec = np.array([0, cvec[1], cvec[2]])
+            new_vec = rot_x.dot((vec - translate_vec)) + translate_vec
+
+        if ay:
+            rot_y = np.array([[np.cos(radians), 0,
+                               np.sin(radians)], [0, 1, 0],
+                              [-np.sin(radians), 0,
+                               np.cos(radians)]])
+            translate_vec = np.array([cvec[0], 0, cvec[2]])
+            new_vec = rot_y.dot((vec - translate_vec)) + translate_vec
+
+        if az:
+            rot_z = np.array([[np.cos(radians), -np.sin(radians), 0],
+                              [np.sin(radians),
+                               np.cos(radians), 0], [0, 0, 1]])
+            translate_vec = np.array([cvec[0], cvec[1], 0])
+            new_vec = rot_z.dot((vec - translate_vec)) + translate_vec
+
+        return new_vec
+
+    @staticmethod
+    def angle_elevation(vec: np.ndarray) -> float:
+        """Returns the elevation angle of vector
+
+        Args:
+            vec (np.ndarray): input vector
+
+        Returns:
+            float: elevation angle in radians
+        """
+        unit_z = np.array([0, 0, 1])
+        unit_self = Vec3D.normed(vec)
+        return np.arccos(unit_self.dot(unit_z))
+
+    @staticmethod
+    def angle_azimuth(vec: np.ndarray) -> float:
+        """Returns the azimuthal angle of vector
+
+        Args:
+            vec (np.ndarray): input vector
+
+        Returns:
+            float: azimuthal angle of vector
+        """
+        return np.arctan2(*vec[:2][::-1])
+
+    @staticmethod
+    def snap_unit_vector(vec: np.ndarray, snap_to: str = None) -> Vec2D:
+        """Snaps to either the x, y or z unit vectors with sign.
+
+        Args:
+            vec_n (np.ndarray): 3D vector
+            snap_to (str): Snap to direction with max projection length by default.
+                            Snap to particular axis if specified.
+
+        Returns:
+            np.ndarray: Snapped vector
+        """
+        if snap_to is None:
+            idx = np.argmax(np.abs(vec))
+        else:
+            valid_snap_to = ["x", "y", "z"]
+            if snap_to not in valid_snap_to:
+                raise ValueError(
+                    "The argument 'snap_to' should be one of 'x', 'y', or 'z'.")
+            idx = valid_snap_to.index(snap_to)
+
+        new_vec = np.array([0, 0, 0])
+        new_vec[idx] = np.sign(vec[idx])
+        return new_vec
+
+    @staticmethod
+    def two_points_described(points3D: List[np.ndarray],
+                             user_plane: np.ndarray) -> Tuple[np.ndarray]:
+        """Get the distance, units and tangents.
+
+        Args:
+            points3D (List[np.ndarray]): 3D list of points
+            user_plane (np.ndarray): 2D plane containing the input points and
+                                    defined by coefficients A,B,C,D in
+                                    equation (Ax + By + Cz + D = 0)
+
+        Returns:
+            tuple: (distance_vec, dist_unit_vec, tangent_vec) -- Each is a vector np.array
+        """
+        if len(points3D) != 2:
+            raise ValueError(f"Expected only 2 points, found {len(points3D)}.")
+        if len(user_plane) != 4:
+            raise ValueError(
+                f"""Expected all four coefficients A,B,C,D for the plane.
+                Found {len(user_plane)} instead.""")
+
+        if not isinstance(user_plane, np.ndarray):
+            user_plane = np.array(user_plane)
+        if not isinstance(points3D, np.ndarray):
+            points3D = np.array(points3D)
+
+        # Check if both points are on the user_plane
+        pt1_on_plane = True if (np.round(user_plane.dot(
+            np.append(points3D[0], [1])),
+                                         decimals=PRECISION) == 0) else False
+        pt2_on_plane = True if (np.round(user_plane.dot(
+            np.append(points3D[1], [1])),
+                                         decimals=PRECISION) == 0) else False
+
+        if pt1_on_plane and pt2_on_plane:
+            distance_vec = points3D[0] - points3D[1]
+            dist_unit_vec = Vec3D.normed(distance_vec)
+            plane_normal = Vec3D.normed(user_plane[:3])
+            tangent_vec = Vec3D.cross(dist_unit_vec, plane_normal)
+            return distance_vec, dist_unit_vec, tangent_vec
+        else:
+            raise ValueError("Either one or both points not on the user_plane.")
+
+    @staticmethod
+    def add_z(vec2D: np.array, z: float = 0.):
+        raise NotImplementedError(
+            "This method does not need to be implemented for 3D.")
+
+    @staticmethod
+    def angle(vector: Vec2D) -> float:
+        raise NotImplementedError(
+            """This method is implemented by 'angle_azimuth' method for 3D vector.
+            Please use that instead.""")
+
+    @staticmethod
+    def rotate_around_point(xy: Vec2D, radians: float,
+                            origin=(0, 0)) -> np.ndarray:
+        raise NotImplementedError(
+            """This method is implemented by 'rotate' method for 3D vector.
+            Please use that instead.""")

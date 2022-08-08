@@ -20,22 +20,22 @@ from PySide2 import QtCore, QtWidgets
 from PySide2.QtCore import QAbstractTableModel, QModelIndex
 from PySide2.QtWidgets import QMainWindow
 
-from .elements_ui import Ui_ElementsWindow
+from .net_list_ui import Ui_NetListWindow
 
 if TYPE_CHECKING:
     # https://stackoverflow.com/questions/39740632/python-type-hinting-without-cyclic-imports
     from .main_window import MetalGUI, QMainWindowExtension
 
 
-class ElementsWindow(QMainWindow):
+class NetListWindow(QMainWindow):
     """This is just a handler (container) for the UI; it a child object of the
     main gui.
 
     Extends the `QMainWindow` class.
 
     PySide2 Signal / Slots Extensions:
-        The UI can call up to this class to execeute button clicks for instance
-        Extensiosn in qt designer on signals/slots are linked to this class
+        The UI can call up to this class to execute button clicks for instance
+        Extensions in qt designer on signals/slots are linked to this class
     """
 
     def __init__(self, gui: 'MetalGUI', parent_window: 'QMainWindowExtension'):
@@ -53,12 +53,12 @@ class ElementsWindow(QMainWindow):
         self.statusbar_label = gui.statusbar_label
 
         # UI
-        self.ui = Ui_ElementsWindow()
+        self.ui = Ui_NetListWindow()
         self.ui.setupUi(self)
 
         self.statusBar().hide()
 
-        self.model = ElementTableModel(gui, self)
+        self.model = NetListTableModel(gui, self)
         self.ui.tableElements.setModel(self.model)
 
     @property
@@ -66,32 +66,12 @@ class ElementsWindow(QMainWindow):
         """Returns the design."""
         return self.gui.design
 
-    def populate_combo_element(self):
-        """Populate the combo elements."""
-        for table_type in self.design.qgeometry.tables.keys():
-            if self.ui.combo_element_type.findText(
-                    table_type) == -1:  # not in combo box, add it
-                self.ui.combo_element_type.addItem(
-                    str(
-                        QtWidgets.QApplication.translate(
-                            "ElementsWindow", table_type, None, -1)))
-
-    def combo_element_type(self, new_type: str):
-        """Change to the given type.
-
-        Args:
-            new_type (str): Type to change to
-        """
-        self.logger.info(f'Changed element table type to: {new_type}')
-        self.model.set_type(new_type)
-
     def force_refresh(self):
         """Force a refresh."""
         self.model.refresh()
-        self.populate_combo_element()
 
 
-class ElementTableModel(QAbstractTableModel):
+class NetListTableModel(QAbstractTableModel):
     """MVC ElementTableModel class See
     https://doc.qt.io/qt-5/qabstracttablemodel.html.
 
@@ -107,7 +87,7 @@ class ElementTableModel(QAbstractTableModel):
     """
     __timer_interval = 500  # ms
 
-    def __init__(self, gui, parent=None, element_type='poly'):
+    def __init__(self, gui, parent=None):
         super().__init__(parent=parent)
         """
         Args:
@@ -118,7 +98,7 @@ class ElementTableModel(QAbstractTableModel):
         self.logger = gui.logger
         self.gui = gui
         self._row_count = -1
-        self.type = element_type
+        # self.type = element_type
 
         self._create_timer()
 
@@ -128,22 +108,16 @@ class ElementTableModel(QAbstractTableModel):
         return self.gui.design
 
     @property
-    def qgeometry(self):
-        """Returns the qgeometry."""
+    def qnet(self):
+        """Returns the qnet."""
         if self.design:
-            return self.design.qgeometry
+            return self.design.qnet
 
     @property
-    def tables(self):
-        """Returns all the tables."""
+    def net_info(self):
+        """Returns all the net info."""
         if self.design:
-            return self.design.qgeometry.tables
-
-    @property
-    def table(self):
-        """Returns all the tables of the type specified in the constructor."""
-        if self.design:
-            return self.design.qgeometry.tables[self.type]
+            return self.design.qnet.net_info
 
     def _create_timer(self):
         """Refresh the model number of rows, etc."""
@@ -193,9 +167,9 @@ class ElementTableModel(QAbstractTableModel):
         Returns:
             int: The number of rows
         """
-        if self.table is None:
+        if self.net_info is None:
             return 0
-        return self.table.shape[0]
+        return self.net_info.shape[0]
 
     def columnCount(self, parent: QModelIndex = None):
         """Counts all the columns.
@@ -206,9 +180,9 @@ class ElementTableModel(QAbstractTableModel):
         Returns:
             int: The number of columns
         """
-        if self.table is None:
+        if self.net_info is None:
             return 0
-        return self.table.shape[1]
+        return self.net_info.shape[1] + 1
 
     def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
         """Set the headers to be displayed.
@@ -222,12 +196,14 @@ class ElementTableModel(QAbstractTableModel):
             str: The header data, or None if not found
         """
 
-        if (role != QtCore.Qt.DisplayRole) or (self.table is None):
+        if (role != QtCore.Qt.DisplayRole) or (self.net_info is None):
             return None
 
         if orientation == QtCore.Qt.Horizontal:
-            if section < self.columnCount():
-                return str(self.table.columns[section])
+            if section < self.columnCount() - 1:
+                return str(self.net_info.columns[section])
+            elif section == self.columnCount() - 1:
+                return 'component_name'
 
     def flags(self, index: QModelIndex):
         """Set the item flags at the given index. Seems like we're implementing
@@ -262,15 +238,14 @@ class ElementTableModel(QAbstractTableModel):
         # if not 0 <= index.row() < self.rowCount():
         #    return None
 
-        if self.table is None:
+        if self.net_info is None:
             return
 
         if role == QtCore.Qt.DisplayRole:
             row = index.row()
             column = index.column()
-            # First column (component id) members, are ints so
-            # they should sort as numbers instead of strings.
-            if column == 0:
-                return self.table.iloc[row, column]
-            else:
-                return str(self.table.iloc[row, column])
+            if column < self.columnCount() - 1:
+                return self.net_info.iloc[row, column]
+            elif column == self.columnCount() - 1:
+                return self.gui.design._components[self.net_info.iloc[row,
+                                                                      1]].name
