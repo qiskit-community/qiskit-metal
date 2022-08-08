@@ -28,7 +28,7 @@ from PySide2.QtWidgets import QApplication, QFileDialog, QMainWindow, QMessageBo
 from .. import Dict, config
 from ..toolbox_python._logging import setup_logger
 from . import __version__
-from .main_window_ui import Ui_MainWindow
+from .main_window_modern_ui import Ui_MainWindow
 from .utility._handle_qt_messages import slot_catch_error
 from .widgets.log_widget.log_metal import LogHandler_for_QTextLog
 
@@ -229,6 +229,11 @@ class QMainWindowExtensionBase(QMainWindow):
     def load_stylesheet_dark(self, _=None):
         """Used to call from action."""
         self.handler.load_stylesheet('qdarkstyle')
+
+    @slot_catch_error()
+    def load_stylesheet_metal_modern(self, _=None):
+        """Used to call from action."""
+        self.handler.load_stylesheet('metal_modern')
 
     @slot_catch_error()
     def load_stylesheet_open(self, _=None):
@@ -503,6 +508,10 @@ class QMainWindowBaseHandler():
         elif path == 'metal_dark':
             path_full = self.path_stylesheets / 'metal_dark' / 'style.qss'
             # print(f'path_full = {path_full}')
+            self._load_stylesheet_from_file(path_full)
+
+        elif path == 'metal_modern':
+            path_full = self.path_stylesheets / 'metal_modern' / 'style.qss'
             self._load_stylesheet_from_file(path_full)
 
         else:

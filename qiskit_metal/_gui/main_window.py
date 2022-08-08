@@ -38,7 +38,7 @@ from .elements_window import ElementsWindow
 from .net_list_window import NetListWindow
 from .main_window_base import (QMainWindowBaseHandler, QMainWindowExtensionBase,
                                kick_start_qApp)
-from .main_window_ui import Ui_MainWindow
+from .main_window_modern_ui import Ui_MainWindow
 from .renderer_gds_gui import RendererGDSWidget
 from .renderer_hfss_gui import RendererHFSSWidget
 from .renderer_q3d_gui import RendererQ3DWidget

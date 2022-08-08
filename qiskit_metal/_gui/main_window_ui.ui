@@ -226,6 +226,7 @@
      </property>
      <addaction name="actionMetal_Dark"/>
      <addaction name="actionStyleDark"/>
+     <addaction name="actionMetal_Modern"/>
      <addaction name="separator"/>
      <addaction name="actionStyleDefault"/>
      <addaction name="actionStyleOpen"/>
@@ -1281,6 +1282,11 @@
     <string>Open Web Help</string>
    </property>
   </action>
+  <action name="actionMetal_Modern">
+   <property name="text">
+    <string>Metal Modern</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -1879,6 +1885,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionMetal_Modern</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>load_stylesheet_metal_modern()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>654</x>
+     <y>423</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>showHelp()</slot>
@@ -1893,6 +1915,7 @@
   <slot>full_refresh()</slot>
   <slot>rebuild()</slot>
   <slot>load_stylesheet_metal_dark()</slot>
+  <slot>load_stylesheet_metal_modern()</slot>
   <slot>save_design_copy()</slot>
   <slot>save_window_settings()</slot>
   <slot>toggle_all_docks()</slot>
