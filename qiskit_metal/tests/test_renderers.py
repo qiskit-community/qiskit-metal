@@ -304,7 +304,7 @@ class TestRenderers(unittest.TestCase):
         options = renderer.default_options
 
         self.assertEqual(len(options), 4)
-        self.assertEqual(len(options["mesh"]), 9)
+        self.assertEqual(len(options["mesh"]), 8)
         self.assertEqual(len(options["mesh"]["mesh_size_fields"]), 4)
         self.assertEqual(len(options["colors"]), 3)
         self.assertEqual(options["x_buffer_width_mm"], 0.2)
@@ -316,7 +316,6 @@ class TestRenderers(unittest.TestCase):
         self.assertEqual(options["mesh"]["nodes_per_2pi_curve"], 90)
         self.assertEqual(options["mesh"]["algorithm_3d"], 10)
         self.assertEqual(options["mesh"]["num_threads"], 8)
-        self.assertEqual(options["mesh"]["export_dir"], ".")
         self.assertEqual(
             options["mesh"]["mesh_size_fields"]["min_distance_from_edges"],
             "10um")

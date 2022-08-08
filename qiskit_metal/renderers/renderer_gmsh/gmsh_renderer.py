@@ -28,13 +28,12 @@ class QGmshRenderer(QRenderer):
             * smoothing -- mesh smoothing value
             * nodes_per_2pi_curve -- number of nodes for every 2π radians of curvature
             * algorithm_3d -- value to indicate meshing algorithm used by Gmsh
+            * num_threads -- number of threads for parallel meshing
             * mesh_size_fields -- specify mesh size field parameters
                 * min_distance_from_edges -- min distance for mesh gradient generation
                 * max_distance_from_edges -- max distance for mesh gradient generation
                 * distance_delta -- delta change in distance with each consecutive step
                 * gradient_delta -- delta change in gradient with each consecutive step
-            * num_threads -- number of threads for parallel meshing
-            * export_dir -- path to mesh export directory
         * colors -- specify colors for the mesh elements, chips or layers
             * metal -- color for metallized entities
             * jj -- color for JJs
@@ -51,12 +50,11 @@ class QGmshRenderer(QRenderer):
             smoothing=10,
             nodes_per_2pi_curve=90,
             algorithm_3d=10,
+            num_threads=8,
             mesh_size_fields=Dict(min_distance_from_edges="10um",
                                   max_distance_from_edges="130um",
                                   distance_delta="30um",
                                   gradient_delta="3um"),
-            num_threads=8,
-            export_dir=".",
         ),
         colors=Dict(
             metal=(84, 140, 168, 255),
@@ -649,10 +647,10 @@ class QGmshRenderer(QRenderer):
                                          self.logger))
                 self.cw_x.update({layer: max_x - min_x})  # chip width along x
                 self.cw_y.update({layer: max_y - min_y})  # chip width along y
-                self.cw_x[layer] *= self.parse_units_gmsh(
-                    self._options["bounding_box_scale_x"])
-                self.cw_y[layer] *= self.parse_units_gmsh(
-                    self._options["bounding_box_scale_y"])
+                self.cw_x[layer] += 2 * self.parse_units_gmsh(
+                    self._options["x_buffer_width_mm"])
+                self.cw_y[layer] += 2 * self.parse_units_gmsh(
+                    self._options["y_buffer_width_mm"])
                 # x coord of chip center
                 self.cc_x.update({layer: (max_x + min_x) / 2})
                 # y coord of chip center
