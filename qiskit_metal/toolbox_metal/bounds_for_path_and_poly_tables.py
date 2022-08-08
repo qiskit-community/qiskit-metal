@@ -4,7 +4,6 @@ from copy import deepcopy
 from qiskit_metal.toolbox_python.utility_functions import determine_larger_box
 
 import pandas as pd
-import numpy as np
 
 
 class BoundsForPathAndPolyTables():
@@ -135,32 +134,14 @@ class BoundsForPathAndPolyTables():
         safe_xy_box = list()
         #  Keep the order of appends in this way.  It should match (minx, miny, maxx, maxy)
 
-        # # yapf: disable
-        # safe_xy_box.append(chip_minx) if box_minx < chip_minx else safe_xy_box.append(box_minx)
-        # safe_xy_box.append(chip_miny) if box_miny < chip_miny else safe_xy_box.append(box_miny)
-        # safe_xy_box.append(chip_maxx) if box_maxx > chip_maxx else safe_xy_box.append(box_maxx)
-        # safe_xy_box.append(chip_maxy) if box_maxy > chip_maxy else safe_xy_box.append(box_maxy)
-        # # yapf: enable
-
-        if box_minx < chip_minx:
-            safe_xy_box.append(chip_minx)
-        else:
-            safe_xy_box.append(box_minx)
-
-        if box_miny < chip_miny:
-            safe_xy_box.append(chip_miny)
-        else:
-            safe_xy_box.append(box_miny)
-
-        if box_maxx > chip_maxx:
-            safe_xy_box.append(chip_maxx)
-        else:
-            safe_xy_box.append(box_maxx)
-
-        if box_maxy > chip_maxy:
-            safe_xy_box.append(chip_maxy)
-        else:
-            safe_xy_box.append(box_maxy)
+        safe_xy_box.append(
+            chip_minx) if box_minx < chip_minx else safe_xy_box.append(box_minx)
+        safe_xy_box.append(
+            chip_miny) if box_miny < chip_miny else safe_xy_box.append(box_miny)
+        safe_xy_box.append(
+            chip_maxx) if box_maxx > chip_maxx else safe_xy_box.append(box_maxx)
+        safe_xy_box.append(
+            chip_maxy) if box_maxy > chip_maxy else safe_xy_box.append(box_maxy)
 
         return tuple(safe_xy_box)
 
