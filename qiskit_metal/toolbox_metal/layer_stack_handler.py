@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from textwrap import fill
-from xmlrpc.client import Boolean
 import pandas as pd
 from typing import List, Tuple
 from typing import Union
@@ -9,7 +7,7 @@ from addict import Dict
 import os
 import logging
 
-from .parsing import parse_units, TRUE_STR, FALSE_STR
+from .parsing import TRUE_STR, FALSE_STR
 
 
 class LayerStackHandler():
