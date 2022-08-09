@@ -6,12 +6,16 @@ import numpy as np
 
 from ..renderer_base import QRenderer
 from ...designs.design_multiplanar import MultiPlanar
+
 from .gmsh_utils import Vec3D, Vec3DArray, line_width_offset_pts, render_path_curves
 from ...toolbox_metal.bounds_for_path_and_poly_tables import BoundsForPathAndPolyTables
 from ...toolbox_metal.parsing import parse_value
-from ...toolbox_python.utility_functions import clean_name, bad_fillet_idxs
+
 from ... import Dict
 
+from .. import config
+if not config.is_building_docs():
+    from ...toolbox_python.utility_functions import clean_name, bad_fillet_idxs
 
 class QGmshRenderer(QRenderer):
     """Extends QRendererAnalysis class to export designs to Gmsh using the Gmsh python API.

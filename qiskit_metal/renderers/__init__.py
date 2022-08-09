@@ -106,5 +106,5 @@ if config.is_building_docs():
     from .renderer_ansys.hfss_renderer import QHFSSRenderer
     from .renderer_ansys.q3d_renderer import QQ3DRenderer
 
-    from .renderer_gmsh.gmsh_renderer import QGmshRenderer
     from .renderer_gmsh.gmsh_utils import Vec3DArray
+    from .renderer_gmsh.gmsh_renderer import QGmshRenderer
