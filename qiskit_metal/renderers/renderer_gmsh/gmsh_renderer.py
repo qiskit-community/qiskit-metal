@@ -5,7 +5,7 @@ import gmsh
 import numpy as np
 
 from ..renderer_base import QRenderer
-from ...designs.design_multiplanar import MultiPlanar
+#from ...designs.design_multiplanar import MultiPlanar
 
 from .gmsh_utils import Vec3D, Vec3DArray, line_width_offset_pts, render_path_curves
 from ...toolbox_metal.bounds_for_path_and_poly_tables import BoundsForPathAndPolyTables
@@ -71,13 +71,13 @@ class QGmshRenderer(QRenderer):
     """Name"""
 
     def __init__(self,
-                 design: MultiPlanar,
+                 design: 'MultiPlanar',
                  layer_types: Union[dict, None] = None,
                  initiate=True,
                  options: Dict = None):
         """
         Args:
-            design (MultiPlanar): The design.
+            design ('MultiPlanar'): The design.
             initiate (bool): True to initiate the renderer (Default: False).
             settings (Dict, optional): Used to override default settings. Defaults to None.
         """
