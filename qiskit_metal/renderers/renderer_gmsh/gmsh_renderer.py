@@ -3,7 +3,6 @@ from collections import defaultdict
 import pandas as pd
 import gmsh
 import numpy as np
-from copy import deepcopy
 
 from ..renderer_base import QRenderer
 from ...designs.design_multiplanar import MultiPlanar
@@ -625,9 +624,6 @@ class QGmshRenderer(QRenderer):
         layer_list = list(set(l for l in self.design.ls.ls_df["layer"])
                          ) if layers is None else layers
 
-        # self.cw_x, self.cw_y = Dict(), Dict()
-        # self.cc_x, self.cc_y = Dict(), Dict()
-
         for layer in layer_list:
             # Add the buffer, using options for renderer.
             x_buff = self.parse_units_gmsh(self._options["x_buffer_width_mm"])
@@ -644,28 +640,6 @@ class QGmshRenderer(QRenderer):
                     "The chip names in Qgeometry tables do not match with "
                     "the ones in the layer-stack. Please re-check your design.")
 
-            # if box_plus_buffer:  # Get bounding box of components first
-            #     # TODO: change this to use the new BoundingBox calculation by @PritiShah
-            #     min_x, min_y, max_x, max_y = self.parse_units_gmsh(
-            #         get_min_bounding_box(self.design, self.qcomp_ids, self.case,
-            #                              self.logger))
-            #     self.cw_x.update({layer: max_x - min_x})  # chip width along x
-            #     self.cw_y.update({layer: max_y - min_y})  # chip width along y
-            #     self.cw_x[layer] += 2 * self.parse_units_gmsh(
-            #         self._options["x_buffer_width_mm"])
-            #     self.cw_y[layer] += 2 * self.parse_units_gmsh(
-            #         self._options["y_buffer_width_mm"])
-            #     # x coord of chip center
-            #     self.cc_x.update({layer: (max_x + min_x) / 2})
-            #     # y coord of chip center
-            #     self.cc_y.update({layer: (max_y + min_y) / 2})
-            # else:  # Adhere to chip placement and dimensions in QDesign
-            #     # x/y center/width same for all chips
-            #     p = self.design.get_chip_size(layer)
-            #     self.cw_x.update({layer: self.parse_units_gmsh(p["size_x"])})
-            #     self.cw_y.update({layer: self.parse_units_gmsh(p["size_y"])})
-            #     self.cc_x.update({layer: self.parse_units_gmsh(p["center_x"])})
-            #     self.cc_y.update({layer: self.parse_units_gmsh(p["center_y"])})
             self.render_layer(layer)
 
         if draw_sample_holder:
@@ -676,17 +650,6 @@ class QGmshRenderer(QRenderer):
 
             vac_height = self.parse_units_gmsh(
                 [p["sample_holder_top"], p["sample_holder_bottom"]])
-            # very simple algorithm to build the vacuum box. It could be made better in the future
-            # # assuming that both
-            # cc_x = np.array([item for item in self.cc_x.values()])
-            # cc_y = np.array([item for item in self.cc_y.values()])
-            # cw_x = np.array([item for item in self.cw_x.values()])
-            # cw_y = np.array([item for item in self.cw_y.values()])
-
-            # cc_x_left, cc_x_right = np.min(cc_x - cw_x / 2), np.max(cc_x +
-            #                                                         cw_x / 2)
-            # cc_y_left, cc_y_right = np.min(cc_y - cw_y / 2), np.max(cc_y +
-            #                                                         cw_y / 2)
 
             # This tolerance is needed for Gmsh to not cut
             # the vacuum_box into two separate volumes when the
@@ -1120,7 +1083,7 @@ class QGmshRenderer(QRenderer):
                 f"Expected png, jpg, bmp, or gif format, got .{path.split('.')[-1]}."
             )
 
-        # FIXME: This doesn't work right now!!!
+        # FIXME: This doesn't work right now!!! Active issue: #843
         # There is no method in Gmsh python wrapper to give
         # the 'Print' command which can provide screenshot feature.
         raise NotImplementedError("""This feature is pending and depends on Gmsh
