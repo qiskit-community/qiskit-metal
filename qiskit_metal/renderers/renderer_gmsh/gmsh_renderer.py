@@ -8,7 +8,7 @@ from copy import deepcopy
 from ..renderer_base import QRenderer
 from ...designs.design_multiplanar import MultiPlanar
 from .gmsh_utils import Vec3D, Vec3DArray, line_width_offset_pts, render_path_curves
-from ..utils import get_min_bounding_box  # TODO: remove and put the new one written by @PritiShah
+from ...toolbox_metal.bounds_for_path_and_poly_tables import BoundsForPathAndPolyTables
 from ...toolbox_metal.parsing import parse_value
 from ...toolbox_python.utility_functions import clean_name, bad_fillet_idxs
 from ... import Dict
@@ -82,8 +82,10 @@ class QGmshRenderer(QRenderer):
                          render_options=options)
         self._model_name = "gmsh_model"
 
-        self.layer_types = dict(
-            metal=[1], dielectric=[3]) if layer_types is None else layer_types
+        default_layer_types = dict(metal=[1], dielectric=[3])
+        self.layer_types = default_layer_types if layer_types is None else layer_types
+
+        self.bounds_handler = BoundsForPathAndPolyTables(self.design)
 
     @property
     def initialized(self):
@@ -281,7 +283,7 @@ class QGmshRenderer(QRenderer):
             self.render_element(qgeom, table_type)
 
         if table_type == "path":
-            # TODO: how to do auto wirebonds? (ON HOLD for now)
+            # TODO: how to do auto wirebonds? Active issue: #841
             # Make a function to render wire bonds manually?
             pass
 
@@ -353,7 +355,6 @@ class QGmshRenderer(QRenderer):
         """
         qc_shapely = junc.geometry
         qc_width = self.parse_units_gmsh(junc.width)
-        # TODO: 3D change: to accommodate layer stack
         props = ["thickness", "z_coord"]
         result = self.parse_units_gmsh(
             self.design.ls.get_properties_for_layer_datatype(
@@ -393,7 +394,7 @@ class QGmshRenderer(QRenderer):
             lines += [gmsh.model.occ.addLine(p, pts[i + 1])]
         curve_loop = gmsh.model.occ.addCurveLoop(lines)
         surface = gmsh.model.occ.addPlaneSurface([curve_loop])
-        # TODO: 3D change: do I need to translate the created surface?
+
         # Translate the junction to the middle of the layer
         gmsh.model.occ.translate([(2, surface)],
                                  dx=0,
@@ -415,7 +416,6 @@ class QGmshRenderer(QRenderer):
         qc_width = path.width
         qc_fillet = self.parse_units_gmsh(path.fillet) if float(
             path.fillet) is not np.nan else 0.0
-        # TODO: 3D change: to accommodate layer stack
         props = ["thickness", "z_coord"]
         result = self.parse_units_gmsh(
             self.design.ls.get_properties_for_layer_datatype(
@@ -428,7 +428,6 @@ class QGmshRenderer(QRenderer):
                 f" '{path['component'].name}'. Check your design and try again."
             )
 
-        # qc_chip_z = self.parse_units_gmsh(self.design.get_chip_z(path.chip))
         vecs = Vec3DArray.make_vec3DArray(
             self.parse_units_gmsh(list(qc_shapely.coords)), qc_z)
         qc_name = self.design._components[
@@ -444,7 +443,6 @@ class QGmshRenderer(QRenderer):
         if path.layer not in self.paths_dict:
             self.paths_dict[path.layer] = dict()
 
-        # TODO: 3D change: extrude surface to make volume
         if np.abs(qc_thickness) > 0:
             extruded_entity = gmsh.model.occ.extrude([(2, surface)],
                                                      dx=0,
@@ -498,7 +496,6 @@ class QGmshRenderer(QRenderer):
             poly (pd.Series): Poly to render.
         """
         qc_shapely = poly.geometry
-        # TODO: 3D change: to accommodate layer stack
         props = ["thickness", "z_coord"]
         result = self.parse_units_gmsh(
             self.design.ls.get_properties_for_layer_datatype(
@@ -532,7 +529,6 @@ class QGmshRenderer(QRenderer):
         if poly.layer not in self.polys_dict:
             self.polys_dict[poly.layer] = dict()
 
-        # TODO: 3D change: extrude surface to make volume
         if np.abs(qc_thickness) > 0:
             extruded_entity = gmsh.model.occ.extrude([(2, surface)],
                                                      dx=0,
@@ -570,8 +566,6 @@ class QGmshRenderer(QRenderer):
                 [pin_dict["width"], pin_dict["gap"]])
             mid, normal = self.parse_units_gmsh(
                 pin_dict["middle"]), pin_dict["normal"]
-            # chip_name = self.design.components[comp].options.chip
-            # TODO: 3D change: to accommodate layer stack
             props = ["thickness", "z_coord"]
             result = self.parse_units_gmsh(
                 self.design.ls.get_properties_for_layer_datatype(
@@ -583,13 +577,11 @@ class QGmshRenderer(QRenderer):
                     f"Could not find {props} for the layer_number={qc_layer} in component"
                     f" '{qcomp.name}'. Check your design and try again.")
 
-            # if qc_thickness is None or qc_z is None:
-            #     self.logger.error("Properties for")
-            # qc_chip_z = self.parse_units_gmsh(self.design.get_chip_z(chip_name))
             rect_mid = mid + normal * gap / 2
             rect_vec = np.array([rect_mid[0], rect_mid[1], qc_z])
             # Assumption: pins only point in x or y directions
-            # If this assumption is not satisfied, draw_rect_center no longer works -> must use draw_polyline
+            # If this assumption is not satisfied, addBox() no longer works
+            # Solution: must draw points, lines, and shapes manually and then extrude
             if abs(normal[0]) > abs(normal[1]):
                 dx = gap
                 dy = width + 2 * gap
@@ -603,7 +595,6 @@ class QGmshRenderer(QRenderer):
                 rect_y = rect_vec[1] - dy / 2
                 rect_z = rect_vec[2]
 
-            # TODO: 3D change: addBox instead of addRectangle
             if np.abs(qc_thickness) > 0:
                 endcap = gmsh.model.occ.addBox(x=rect_x,
                                                y=rect_y,
@@ -631,37 +622,50 @@ class QGmshRenderer(QRenderer):
             draw_sample_holder (bool, optional): To draw the sample holder box. Defaults to True.
             box_plus_buffer (bool, optional): For adding buffer to chip dimensions. Defaults to True.
         """
-        # TODO: 3D change: give option to render layers instead of chips?
         layer_list = list(set(l for l in self.design.ls.ls_df["layer"])
                          ) if layers is None else layers
 
-        self.cw_x, self.cw_y = Dict(), Dict()
-        self.cc_x, self.cc_y = Dict(), Dict()
+        # self.cw_x, self.cw_y = Dict(), Dict()
+        # self.cc_x, self.cc_y = Dict(), Dict()
 
         for layer in layer_list:
-            if box_plus_buffer:  # Get bounding box of components first
-                # TODO: 3D change: Use gmsh.model.getBoundingBox() when shifting to 3D like so:
-                # xmin, ymin, zmin, xmax, ymax, zmax = gmsh.model.getBoundingBox()
-                min_x, min_y, max_x, max_y = self.parse_units_gmsh(
-                    get_min_bounding_box(self.design, self.qcomp_ids, self.case,
-                                         self.logger))
-                self.cw_x.update({layer: max_x - min_x})  # chip width along x
-                self.cw_y.update({layer: max_y - min_y})  # chip width along y
-                self.cw_x[layer] += 2 * self.parse_units_gmsh(
-                    self._options["x_buffer_width_mm"])
-                self.cw_y[layer] += 2 * self.parse_units_gmsh(
-                    self._options["y_buffer_width_mm"])
-                # x coord of chip center
-                self.cc_x.update({layer: (max_x + min_x) / 2})
-                # y coord of chip center
-                self.cc_y.update({layer: (max_y + min_y) / 2})
-            else:  # Adhere to chip placement and dimensions in QDesign
-                # x/y center/width same for all chips
-                p = self.design.get_chip_size(layer)
-                self.cw_x.update({layer: self.parse_units_gmsh(p["size_x"])})
-                self.cw_y.update({layer: self.parse_units_gmsh(p["size_y"])})
-                self.cc_x.update({layer: self.parse_units_gmsh(p["center_x"])})
-                self.cc_y.update({layer: self.parse_units_gmsh(p["center_y"])})
+            # Add the buffer, using options for renderer.
+            x_buff = self.parse_units_gmsh(self._options["x_buffer_width_mm"])
+            y_buff = self.parse_units_gmsh(self._options["y_buffer_width_mm"])
+
+            result = self.bounds_handler.get_bounds_of_path_and_poly_tables(
+                box_plus_buffer, self.qcomp_ids, self.case, x_buff, y_buff)
+
+            (self.box_xy_bounds, self.path_and_poly_with_valid_comps,
+             self.chip_names_matched, self.valid_chip_names) = result
+
+            if not self.chip_names_matched:
+                raise ValueError(
+                    "The chip names in Qgeometry tables do not match with "
+                    "the ones in the layer-stack. Please re-check your design.")
+
+            # if box_plus_buffer:  # Get bounding box of components first
+            #     # TODO: change this to use the new BoundingBox calculation by @PritiShah
+            #     min_x, min_y, max_x, max_y = self.parse_units_gmsh(
+            #         get_min_bounding_box(self.design, self.qcomp_ids, self.case,
+            #                              self.logger))
+            #     self.cw_x.update({layer: max_x - min_x})  # chip width along x
+            #     self.cw_y.update({layer: max_y - min_y})  # chip width along y
+            #     self.cw_x[layer] += 2 * self.parse_units_gmsh(
+            #         self._options["x_buffer_width_mm"])
+            #     self.cw_y[layer] += 2 * self.parse_units_gmsh(
+            #         self._options["y_buffer_width_mm"])
+            #     # x coord of chip center
+            #     self.cc_x.update({layer: (max_x + min_x) / 2})
+            #     # y coord of chip center
+            #     self.cc_y.update({layer: (max_y + min_y) / 2})
+            # else:  # Adhere to chip placement and dimensions in QDesign
+            #     # x/y center/width same for all chips
+            #     p = self.design.get_chip_size(layer)
+            #     self.cw_x.update({layer: self.parse_units_gmsh(p["size_x"])})
+            #     self.cw_y.update({layer: self.parse_units_gmsh(p["size_y"])})
+            #     self.cc_x.update({layer: self.parse_units_gmsh(p["center_x"])})
+            #     self.cc_y.update({layer: self.parse_units_gmsh(p["center_y"])})
             self.render_layer(layer)
 
         if draw_sample_holder:
@@ -673,26 +677,26 @@ class QGmshRenderer(QRenderer):
             vac_height = self.parse_units_gmsh(
                 [p["sample_holder_top"], p["sample_holder_bottom"]])
             # very simple algorithm to build the vacuum box. It could be made better in the future
-            # assuming that both
-            cc_x = np.array([item for item in self.cc_x.values()])
-            cc_y = np.array([item for item in self.cc_y.values()])
-            cw_x = np.array([item for item in self.cw_x.values()])
-            cw_y = np.array([item for item in self.cw_y.values()])
+            # # assuming that both
+            # cc_x = np.array([item for item in self.cc_x.values()])
+            # cc_y = np.array([item for item in self.cc_y.values()])
+            # cw_x = np.array([item for item in self.cw_x.values()])
+            # cw_y = np.array([item for item in self.cw_y.values()])
 
-            cc_x_left, cc_x_right = np.min(cc_x - cw_x / 2), np.max(cc_x +
-                                                                    cw_x / 2)
-            cc_y_left, cc_y_right = np.min(cc_y - cw_y / 2), np.max(cc_y +
-                                                                    cw_y / 2)
+            # cc_x_left, cc_x_right = np.min(cc_x - cw_x / 2), np.max(cc_x +
+            #                                                         cw_x / 2)
+            # cc_y_left, cc_y_right = np.min(cc_y - cw_y / 2), np.max(cc_y +
+            #                                                         cw_y / 2)
 
             # This tolerance is needed for Gmsh to not cut
             # the vacuum_box into two separate volumes when the
             # substrate volume is subtracted from it
             tol = self.parse_units_gmsh("1um")
-            x = cc_x_left - tol
-            y = cc_y_left - tol
+            x = self.box_xy_bounds[0] - tol
+            y = self.box_xy_bounds[1] - tol
             z = -vac_height[1]
-            dx = (cc_x_right - cc_x_left) + 2 * tol
-            dy = (cc_y_right - cc_y_left) + 2 * tol
+            dx = (self.box_xy_bounds[2] - self.box_xy_bounds[0]) + 2 * tol
+            dy = (self.box_xy_bounds[3] - self.box_xy_bounds[1]) + 2 * tol
             dz = sum(vac_height)
             self.vacuum_box = gmsh.model.occ.addBox(x, y, z, dx, dy, dz)
 
@@ -718,12 +722,12 @@ class QGmshRenderer(QRenderer):
                 f"Could not find {props} for the layer_number={layer_number} and dataype="
                 f"{datatype}. Check your design and try again.")
 
-        chip_x = self.cc_x[layer_number] - self.cw_x[layer_number] / 2
-        chip_y = self.cc_y[layer_number] - self.cw_y[layer_number] / 2
-        chip_wx, chip_wy = self.cw_x[layer_number], self.cw_y[layer_number]
+        layer_x, layer_y = self.box_xy_bounds[0:2]
+        layer_wx = (self.box_xy_bounds[2] - self.box_xy_bounds[0])
+        layer_wy = (self.box_xy_bounds[3] - self.box_xy_bounds[1])
 
-        layer_tag = gmsh.model.occ.addBox(chip_x, chip_y, z_coord, chip_wx,
-                                          chip_wy, thickness)
+        layer_tag = gmsh.model.occ.addBox(layer_x, layer_y, z_coord, layer_wx,
+                                          layer_wy, thickness)
 
         if layer_number not in self.layers_dict:
             self.layers_dict[layer_number] = -1
@@ -762,7 +766,7 @@ class QGmshRenderer(QRenderer):
         vol_dimtags = [(3, vol) for vol in all_vol_ids]
         gmsh.model.occ.fragment([(3, self.vacuum_box)], vol_dimtags)
 
-        # TODO: Do we require 3D junctions?
+        # TODO: Do we require 3D junctions? Active issue: #842
         # all_juncs = []
         # for layer_juncs in self.juncs_dict.values():
         #     for _, surf in layer_juncs.items():
@@ -805,7 +809,7 @@ class QGmshRenderer(QRenderer):
                                                          name=name)
                     self.physical_groups[layer][name] = ph_tag
 
-                # TODO: Do we require 3D junctions?
+                # TODO: Do we require 3D junctions? Active issue: #842
                 for name, tag in self.juncs_dict[layer].items():
                     ph_junc_tag = gmsh.model.addPhysicalGroup(dim=2,
                                                               tags=tag,
