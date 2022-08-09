@@ -15,7 +15,8 @@ from ... import Dict
 
 from .. import config
 if not config.is_building_docs():
-    from ...toolbox_python.utility_functions import clean_name, bad_fillet_idxs
+    from ...toolbox_python.utility_functions import clean_name
+    from ...toolbox_python.utility_functions import bad_fillet_idxs
 
 class QGmshRenderer(QRenderer):
     """Extends QRendererAnalysis class to export designs to Gmsh using the Gmsh python API.
