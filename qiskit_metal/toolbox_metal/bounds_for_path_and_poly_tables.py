@@ -8,7 +8,7 @@ import pandas as pd
 def determine_larger_box(minx: Union[None, float], miny: Union[None, float],
                          maxx: Union[None, float], maxy: Union[None, float],
                          chip_box: tuple) -> Tuple[float, float, float, float]:
-    """Return box which includes the two boxes. 
+    """Return box which includes the two boxes.
 
     Args:
         minx (Union[None, float]): Minimum of x coordinate
@@ -20,7 +20,7 @@ def determine_larger_box(minx: Union[None, float], miny: Union[None, float],
 
     Returns:
         Tuple[float, float, float, float]: The size:  minx, miny, maxx, maxy of
-                                        box which includes both boxes. 
+                                        box which includes both boxes.
     """
 
     large_minx, large_miny, large_maxx, large_maxy = None, None, None, None
@@ -36,6 +36,7 @@ def determine_larger_box(minx: Union[None, float], miny: Union[None, float],
         large_minx, large_miny, large_maxx, large_maxy = chip_box
 
     return large_minx, large_miny, large_maxx, large_maxy
+
 
 class BoundsForPathAndPolyTables():
     """Create class which can be used by multiple renderers.  In particular, this class

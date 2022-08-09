@@ -5,7 +5,6 @@ import gmsh
 import numpy as np
 
 from ..renderer_base import QRenderer
-#from ...designs.design_multiplanar import MultiPlanar
 
 from .gmsh_utils import Vec3D, Vec3DArray, line_width_offset_pts, render_path_curves
 from ...toolbox_metal.bounds_for_path_and_poly_tables import BoundsForPathAndPolyTables
@@ -17,6 +16,7 @@ from .. import config
 if not config.is_building_docs():
     from ...toolbox_python.utility_functions import clean_name
     from ...toolbox_python.utility_functions import bad_fillet_idxs
+
 
 class QGmshRenderer(QRenderer):
     """Extends QRendererAnalysis class to export designs to Gmsh using the Gmsh python API.
@@ -78,8 +78,11 @@ class QGmshRenderer(QRenderer):
         """
         Args:
             design ('MultiPlanar'): The design.
+            layer_types (Union[dict, None]): the type of layer in the format:
+                                                dict(metal=[...], dielectric=[...]).
+                                                Defaults to None.
             initiate (bool): True to initiate the renderer (Default: False).
-            settings (Dict, optional): Used to override default settings. Defaults to None.
+            options (Dict, optional): Used to override default options. Defaults to None.
         """
         super().__init__(design=design,
                          initiate=initiate,
@@ -959,6 +962,7 @@ class QGmshRenderer(QRenderer):
             if custom_mesh_fn is None:
                 self.define_mesh_size_fields()
             else:
+                self.logger.info("Applying custom meshing function...")
                 custom_mesh_fn()
 
         self.define_mesh_properties()
