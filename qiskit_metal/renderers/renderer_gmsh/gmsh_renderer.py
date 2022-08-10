@@ -4,7 +4,7 @@ import pandas as pd
 import gmsh
 import numpy as np
 
-from qiskit_metal.renderer_base import QRenderer
+from qiskit_metal.renderers.renderer_base import QRenderer
 
 from .gmsh_utils import Vec3D, Vec3DArray, line_width_offset_pts, render_path_curves
 from qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables import BoundsForPathAndPolyTables
