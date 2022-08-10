@@ -204,7 +204,10 @@ class QGmshRenderer(QRenderer):
             ignore_metal_volume=ignore_metal_volume)
 
         if mesh_geoms:
-            self.add_mesh()  # generate mesh
+            try:
+                self.add_mesh()  # generate mesh
+            except Exception as e:
+                print(e)
 
     def draw_geometries(self,
                         selection: Union[list, None] = None,
