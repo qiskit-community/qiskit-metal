@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from typing import Union, List, Tuple
 import numpy as np
 import gmsh
-from ...draw.utility import Vec3D
+from qiskit_metal.draw.utility import Vec3D
 
 
 @dataclass

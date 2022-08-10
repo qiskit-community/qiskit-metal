@@ -4,18 +4,18 @@ import pandas as pd
 import gmsh
 import numpy as np
 
-from ..renderer_base import QRenderer
+from qiskit_metal.renderer_base import QRenderer
 
 from .gmsh_utils import Vec3D, Vec3DArray, line_width_offset_pts, render_path_curves
-from ...toolbox_metal.bounds_for_path_and_poly_tables import BoundsForPathAndPolyTables
-from ...toolbox_metal.parsing import parse_value
+from qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables import BoundsForPathAndPolyTables
+from qiskit_metal.toolbox_metal.parsing import parse_value
 
-from ... import Dict
+from qiskit_metal import Dict
 
-from .. import config
+from qiskit_metal import config
 if not config.is_building_docs():
-    from ...toolbox_python.utility_functions import clean_name
-    from ...toolbox_python.utility_functions import bad_fillet_idxs
+    from qiskit_metal.toolbox_python.utility_functions import clean_name
+    from qiskit_metal.toolbox_python.utility_functions import bad_fillet_idxs
 
 
 class QGmshRenderer(QRenderer):
