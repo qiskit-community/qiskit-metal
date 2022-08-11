@@ -132,7 +132,10 @@ class QGmshRenderer(QRenderer):
 
     def remove_current_model(self):
         """Removes the current Gmsh model"""
-        gmsh.model.remove()
+        try:
+            gmsh.model.remove()
+        except Exception:
+            self.logger.error("No model found in Gmsh to be removed.")
 
     def clear_design(self):
         """Clears the design in the current Gmsh model"""
