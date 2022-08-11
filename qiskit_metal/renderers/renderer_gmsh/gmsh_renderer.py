@@ -1025,7 +1025,11 @@ class QGmshRenderer(QRenderer):
         """Launch Gmsh GUI for viewing the model.
         """
         self.isometric_projection()  # set isometric projection
-        gmsh.fltk.run()
+        try:
+            gmsh.fltk.run()
+        except Exception:
+            self.logger.info("Encountered an error while launching the Gmsh GUI. Retrying to launch the GUI...")
+            gmsh.fltk.run()
 
     def export_mesh(self, filepath: str):
         """Export mesh from Gmsh into a file.

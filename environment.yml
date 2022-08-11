@@ -20,7 +20,8 @@ dependencies:
   - shapely
   - jupyter
   - scqubits
+  - gmsh
+  - python-gmsh
   - pip
   - pip:
       - pyaedt
-      - gmsh
