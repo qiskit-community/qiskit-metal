@@ -1031,7 +1031,9 @@ class QGmshRenderer(QRenderer):
         try:
             gmsh.fltk.run()
         except Exception:
-            self.logger.info("Encountered an error while launching the Gmsh GUI. Retrying to launch the GUI...")
+            self.logger.info(
+                "Encountered an error while launching the Gmsh GUI. Retrying to launch the GUI..."
+            )
             gmsh.fltk.run()
 
     def export_mesh(self, filepath: str):
