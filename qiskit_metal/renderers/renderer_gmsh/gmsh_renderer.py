@@ -705,8 +705,8 @@ class QGmshRenderer(QRenderer):
 
         # TODO: check if thickness == 0, then draw a rectangle instead
         # Active issue: #846
-        layer_tag = gmsh.model.occ.addBox(layer_x, layer_y, z_coord,
-                                          layer_wx, layer_wy, thickness)
+        layer_tag = gmsh.model.occ.addBox(layer_x, layer_y, z_coord, layer_wx,
+                                          layer_wy, thickness)
 
         if layer_number not in self.layers_dict:
             self.layers_dict[layer_number] = -1
