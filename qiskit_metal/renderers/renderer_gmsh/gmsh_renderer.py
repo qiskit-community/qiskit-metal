@@ -703,8 +703,10 @@ class QGmshRenderer(QRenderer):
         layer_wx = (self.box_xy_bounds[2] - self.box_xy_bounds[0])
         layer_wy = (self.box_xy_bounds[3] - self.box_xy_bounds[1])
 
-        layer_tag = gmsh.model.occ.addBox(layer_x, layer_y, z_coord, layer_wx,
-                                          layer_wy, thickness)
+        # TODO: check if thickness == 0, then draw a rectangle instead
+        # Active issue: #846
+        layer_tag = gmsh.model.occ.addBox(layer_x, layer_y, z_coord,
+                                          layer_wx, layer_wy, thickness)
 
         if layer_number not in self.layers_dict:
             self.layers_dict[layer_number] = -1
@@ -713,17 +715,30 @@ class QGmshRenderer(QRenderer):
 
     def subtract_from_layers(self):
         """Subtract the QGeometries in tables from the chip ground plane"""
+        # TODO: check if thickness == 0, then set subtract dim differently
+        # Active issue: #846
         dim = 3
         for layer_num, shapes in self.layer_subtract_dict.items():
             shape_dim_tags = [(dim, s) for s in shapes]
-            layer_dim_tag = (3, self.layers_dict[layer_num][0])
-            subtract_layer = gmsh.model.occ.cut([layer_dim_tag], shape_dim_tags)
-            self.layers_dict[layer_num] = [subtract_layer[0][0][1]]
+            layer_dim_tag = (dim, self.layers_dict[layer_num][0])
+            tool_dimtags = [layer_dim_tag]
+            subtract_layer = gmsh.model.occ.cut(tool_dimtags, shape_dim_tags)
+
+            updated_layer_geoms = []
+            for i in range(len(tool_dimtags)):
+                if len(subtract_layer[1][i]) > 0:
+                    updated_layer_geoms += [
+                        tag for _, tag in subtract_layer[1][i]
+                    ]
+
+            self.layers_dict[layer_num] = updated_layer_geoms
 
     def fragment_interfaces(self):
         """Fragment Gmsh surfaces to ensure consistent tetrahedral meshing
         across interfaces between different materials.
         """
+        # TODO: check if thickness == 0, then fragment differently
+        # Active issue: #846
         all_vol_ids = list()
         all_layer_geoms = defaultdict(dict)
         all_dicts = (self.polys_dict, self.paths_dict)
@@ -741,7 +756,11 @@ class QGmshRenderer(QRenderer):
             all_vol_ids += vol
 
         vol_dimtags = [(3, vol) for vol in all_vol_ids]
-        gmsh.model.occ.fragment([(3, self.vacuum_box)], vol_dimtags)
+        fragmented_geoms = gmsh.model.occ.fragment([(3, self.vacuum_box)],
+                                                   vol_dimtags)
+
+        # Extract the new vacuum_box volume
+        self.vacuum_box = fragmented_geoms[1][0][0][1]
 
         # TODO: Do we require 3D junctions? Active issue: #842
         # all_juncs = []
