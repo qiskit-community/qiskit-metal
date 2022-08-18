@@ -193,6 +193,12 @@ class QDesign():
         design."""
         return self._variables
 
+    # @property
+    # def components(self) -> Dict:
+    #     """Return the Dict object that keeps track of all components in the
+    #     design."""
+    #     return self._components
+
     @property
     def template_options(self) -> Dict:
         """Return default_options dictionary, which contain default options
