@@ -22,10 +22,10 @@ from collections import OrderedDict
 from typing import Union, TYPE_CHECKING, Any
 
 import numpy as np
-from PySide2 import QtCore
-from PySide2.QtCore import QAbstractItemModel, QModelIndex, QTimer, Qt
-from PySide2.QtGui import QFont
-from PySide2.QtWidgets import (QComboBox, QTreeView, QWidget)
+from PySide6 import QtCore
+from PySide6.QtCore import QAbstractItemModel, QModelIndex, QTimer, Qt
+from PySide6.QtGui import QFont
+from PySide6.QtWidgets import (QComboBox, QTreeView, QWidget)
 from addict import Dict
 
 if TYPE_CHECKING:

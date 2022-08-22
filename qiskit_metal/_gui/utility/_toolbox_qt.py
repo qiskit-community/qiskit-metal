@@ -13,10 +13,10 @@
 # that they have been altered from the originals.
 """This is a utility module used for qt."""
 
-from PySide2 import QtCore, QtWidgets
-from PySide2.QtCore import QTimer
-from PySide2.QtGui import QColor
-from PySide2.QtWidgets import QDockWidget
+from PySide6 import QtCore, QtWidgets
+from PySide6.QtCore import QTimer
+from PySide6.QtGui import QColor
+from PySide6.QtWidgets import QDockWidget
 
 __all__ = ['blend_colors']
 
@@ -73,8 +73,8 @@ def doShowHighlighWidget(self: QDockWidget,
 
 ### Alternative to doShowHighlighWidget:
 
-# from PySide2.QtWidgets import QFrame, QWidget
-# from PySide2 import QtCore
+# from PySide6.QtWidgets import QFrame, QWidget
+# from PySide6 import QtCore
 # obj = gui.canvas
 # frame = QFrame(obj.parent())
 # frame.setGeometry(obj.frameGeometry())

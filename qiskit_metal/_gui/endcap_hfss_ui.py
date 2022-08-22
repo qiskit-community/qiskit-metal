@@ -4,11 +4,11 @@
 # licensing of './endcap_hfss_ui.ui' applies.
 #
 # Created: Sat Jun 19 22:02:30 2021
-#      by: pyside2-uic  running on PySide2 5.13.2
+#      by: pyside6-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
 
-from PySide2 import QtCore, QtGui, QtWidgets
+from PySide6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_mainWindow(object):

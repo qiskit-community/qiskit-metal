@@ -17,8 +17,8 @@ Proxy Model to clean display of QComponents in Library tab
 
 import typing
 
-from PySide2.QtCore import QModelIndex, QSortFilterProxyModel, Qt, QSize
-from PySide2.QtWidgets import QWidget
+from PySide6.QtCore import QModelIndex, QSortFilterProxyModel, Qt, QSize
+from PySide6.QtWidgets import QWidget
 
 
 class LibraryFileProxyModel(QSortFilterProxyModel):
@@ -38,7 +38,7 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
         # (Aren't hidden (begin w/ .), don't begin with __init__, don't begin with _template, etc. AND end in .py)  OR (don't begin with __pycache__ and don't have a '.' in the name   # pylint: disable=line-too-long
         # (QComponent files) OR (Directories)
         self.accepted_files__regex = r"(^((?!\.))(?!base)(?!__init__)(?!_template)(?!_parsed)(?!__pycache__).*\.py)|(?!__pycache__)(^([^.]+)$)"  # pylint: disable=line-too-long
-        self.setFilterRegExp(self.accepted_files__regex)
+        self.setFilterRegularExpression(self.accepted_files__regex)
 
     def filterAcceptsColumn(
             self, source_column: int, source_parent: QModelIndex) -> bool:  #pylint: disable=unused-argument

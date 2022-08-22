@@ -4,11 +4,11 @@
 # licensing of './plot_window_ui.ui' applies.
 #
 # Created: Sat Jun 19 22:02:29 2021
-#      by: pyside2-uic  running on PySide2 5.13.2
+#      by: pyside6-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
 
-from PySide2 import QtCore, QtGui, QtWidgets
+from PySide6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_MainWindowPlot(object):
@@ -37,19 +37,19 @@ class Ui_MainWindowPlot(object):
         self.toolBar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
         self.toolBar.setObjectName("toolBar")
         MainWindowPlot.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
-        self.actionPan = QtWidgets.QAction(MainWindowPlot)
+        self.actionPan = QtGui.QAction(MainWindowPlot)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/plot/pan"), QtGui.QIcon.Normal,
                        QtGui.QIcon.On)
         self.actionPan.setIcon(icon)
         self.actionPan.setObjectName("actionPan")
-        self.actionZoom = QtWidgets.QAction(MainWindowPlot)
+        self.actionZoom = QtGui.QAction(MainWindowPlot)
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(":/plot/zoom"), QtGui.QIcon.Normal,
                         QtGui.QIcon.Off)
         self.actionZoom.setIcon(icon1)
         self.actionZoom.setObjectName("actionZoom")
-        self.actionConnectors = QtWidgets.QAction(MainWindowPlot)
+        self.actionConnectors = QtGui.QAction(MainWindowPlot)
         self.actionConnectors.setCheckable(True)
         self.actionConnectors.setChecked(False)
         icon2 = QtGui.QIcon()
@@ -57,7 +57,7 @@ class Ui_MainWindowPlot(object):
                         QtGui.QIcon.Off)
         self.actionConnectors.setIcon(icon2)
         self.actionConnectors.setObjectName("actionConnectors")
-        self.actionCoords = QtWidgets.QAction(MainWindowPlot)
+        self.actionCoords = QtGui.QAction(MainWindowPlot)
         self.actionCoords.setCheckable(True)
         self.actionCoords.setChecked(True)
         icon3 = QtGui.QIcon()
@@ -65,19 +65,19 @@ class Ui_MainWindowPlot(object):
                         QtGui.QIcon.Off)
         self.actionCoords.setIcon(icon3)
         self.actionCoords.setObjectName("actionCoords")
-        self.actionAuto = QtWidgets.QAction(MainWindowPlot)
+        self.actionAuto = QtGui.QAction(MainWindowPlot)
         icon4 = QtGui.QIcon()
         icon4.addPixmap(QtGui.QPixmap(":/plot/autozoom"), QtGui.QIcon.Normal,
                         QtGui.QIcon.Off)
         self.actionAuto.setIcon(icon4)
         self.actionAuto.setObjectName("actionAuto")
-        self.actionReplot = QtWidgets.QAction(MainWindowPlot)
+        self.actionReplot = QtGui.QAction(MainWindowPlot)
         icon5 = QtGui.QIcon()
         icon5.addPixmap(QtGui.QPixmap(":/plot/refresh_plot"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionReplot.setIcon(icon5)
         self.actionReplot.setObjectName("actionReplot")
-        self.actionRuler = QtWidgets.QAction(MainWindowPlot)
+        self.actionRuler = QtGui.QAction(MainWindowPlot)
         icon6 = QtGui.QIcon()
         icon6.addPixmap(QtGui.QPixmap(":/plot/ruler"), QtGui.QIcon.Normal,
                         QtGui.QIcon.Off)

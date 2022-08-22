@@ -14,7 +14,7 @@
 """"""
 
 import matplotlib.pyplot as plt
-from PySide2.QtCore import QTimer
+from PySide6.QtCore import QTimer
 
 from ...._gui.utility._handle_qt_messages import slot_catch_error
 

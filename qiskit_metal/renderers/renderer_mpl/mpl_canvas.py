@@ -26,8 +26,8 @@ from matplotlib.backends.backend_qt5agg import \
     FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.transforms import Bbox
-from PySide2.QtCore import QTimer
-from PySide2.QtWidgets import QSizePolicy
+from PySide6.QtCore import QTimer
+from PySide6.QtWidgets import QSizePolicy
 from ... import Dict
 from ...designs import QDesign
 from .mpl_interaction import PanAndZoom

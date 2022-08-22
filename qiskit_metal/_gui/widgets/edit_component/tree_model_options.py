@@ -14,9 +14,9 @@
 """Tree model for component options menu."""
 
 from typing import TYPE_CHECKING
-from PySide2.QtCore import QModelIndex, Qt
-from PySide2.QtGui import QFont
-from PySide2.QtWidgets import QTreeView, QWidget
+from PySide6.QtCore import QModelIndex, Qt
+from PySide6.QtGui import QFont
+from PySide6.QtWidgets import QTreeView, QWidget
 from ..bases.dict_tree_base import LeafNode, BranchNode, QTreeModel_Base, parse_param_from_str
 
 if TYPE_CHECKING:

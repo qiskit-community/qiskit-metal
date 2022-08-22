@@ -55,10 +55,10 @@ def __setup_Qt_backend():  # pylint: disable=invalid-name
 
     # When in vscode and in debug-mode, may want to comment
     # next line out, "os.environ["QT_API"] = "pyside2""
-    os.environ["QT_API"] = "pyside2"
+    os.environ["QT_API"] = "pyside6"
 
-    from PySide2 import QtCore  #, QtWidgets
-    from PySide2.QtCore import Qt
+    from PySide6 import QtCore  #, QtWidgets
+    from PySide6.QtCore import Qt
 
     def set_attribute(name: str, value=True):
         """Describes attributes that change the behavior of application-wide

@@ -20,10 +20,10 @@ import sys
 from copy import deepcopy
 from pathlib import Path
 
-from PySide2 import QtCore, QtGui, QtWidgets
-from PySide2.QtCore import QTimer
-from PySide2.QtGui import QIcon
-from PySide2.QtWidgets import QApplication, QFileDialog, QMainWindow, QMessageBox, QDockWidget
+from PySide6 import QtCore, QtGui, QtWidgets
+from PySide6.QtCore import QTimer
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import QApplication, QFileDialog, QMainWindow, QMessageBox, QDockWidget
 
 from .. import Dict, config
 from ..toolbox_python._logging import setup_logger

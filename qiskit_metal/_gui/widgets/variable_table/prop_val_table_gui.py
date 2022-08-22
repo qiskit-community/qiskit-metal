@@ -12,8 +12,8 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from PySide2.QtCore import QModelIndex
-from PySide2.QtWidgets import QDialog, QMainWindow
+from PySide6.QtCore import QModelIndex
+from PySide6.QtWidgets import QDialog, QMainWindow
 
 from .add_delete_table_ui import Ui_MainWindow
 from .dialog_popup_ui import Ui_Dialog

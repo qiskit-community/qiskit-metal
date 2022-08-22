@@ -14,10 +14,10 @@
 
 from typing import TYPE_CHECKING
 
-from PySide2 import QtCore, QtWidgets
-from PySide2.QtCore import QModelIndex, Qt
-from PySide2.QtGui import QContextMenuEvent
-from PySide2.QtWidgets import (QInputDialog, QLineEdit, QMenu, QMessageBox,
+from PySide6 import QtCore, QtWidgets
+from PySide6.QtCore import QModelIndex, Qt
+from PySide6.QtGui import QContextMenuEvent
+from PySide6.QtWidgets import (QInputDialog, QLineEdit, QMenu, QMessageBox,
                                QTableView, QLabel, QVBoxLayout, QWidget)
 
 

@@ -18,9 +18,9 @@ import inspect
 from inspect import getfile, signature
 from pathlib import Path
 from typing import TYPE_CHECKING, Union
-from PySide2 import QtCore, QtGui, QtWidgets
-from PySide2.QtCore import QAbstractTableModel, QModelIndex, Qt
-from PySide2.QtGui import QFont
+from PySide6 import QtCore, QtGui, QtWidgets
+from PySide6.QtCore import QAbstractTableModel, QModelIndex, Qt
+from PySide6.QtGui import QFont
 
 __all__ = ['parse_param_from_str']
 

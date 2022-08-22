@@ -15,9 +15,9 @@
 Tree view for Param Entry Window
 """
 
-from PySide2 import QtCore, QtGui, QtWidgets
-from PySide2.QtCore import QModelIndex, Signal
-from PySide2.QtWidgets import QTreeView, QWidget
+from PySide6 import QtCore, QtGui, QtWidgets
+from PySide6.QtCore import QModelIndex, Signal
+from PySide6.QtWidgets import QTreeView, QWidget
 
 from qiskit_metal._gui.widgets.qlibrary_display.proxy_model_qlibrary import LibraryFileProxyModel
 from qiskit_metal.toolbox_metal.exceptions import QLibraryGUIException

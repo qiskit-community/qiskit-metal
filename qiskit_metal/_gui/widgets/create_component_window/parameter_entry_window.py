@@ -41,10 +41,10 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Union, Type
 
 import numpy as np
-from PySide2 import QtGui, QtWidgets
-from PySide2.QtCore import Qt
-from PySide2.QtWidgets import QDockWidget, QWidget
-from PySide2.QtWidgets import (QMainWindow, QMessageBox)
+from PySide6 import QtGui, QtWidgets
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QDockWidget, QWidget
+from PySide6.QtWidgets import (QMainWindow, QMessageBox)
 
 from qiskit_metal import designs
 from qiskit_metal.qlibrary.core import QComponent

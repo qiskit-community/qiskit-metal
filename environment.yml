@@ -14,7 +14,6 @@ dependencies:
   - pint
   - pyepr-quantum>=0.8.5.7
   - pygments
-  - pyside2
   - qutip
   - scipy
   - shapely
@@ -24,3 +23,4 @@ dependencies:
   - pip:
       - pyaedt
       - gmsh
+      - pyside6

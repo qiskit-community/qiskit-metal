@@ -7,9 +7,9 @@ cd "$(dirname "$0")"
 echo -e "Present working directory: ${RED}${PWD}${NC}"
 
 # Define conversion
-ui_to_py=pyside2-uic
-rc_to_py=pyside2-rcc
-# pyside2-uic
+ui_to_py=pyside6-uic
+rc_to_py=pyside6-rcc
+# pyside6-uic
 #     -o : The Python code generated is written to the file <FILE>.
 #     -i : Resource modules are imported using
 #          from <PACKAGE> import ... rather than a simple import ....
