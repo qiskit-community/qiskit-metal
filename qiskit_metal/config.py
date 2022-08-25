@@ -113,12 +113,6 @@ def is_using_ipython():
     Returns:
         bool -- True if ran in IPython
     """
-    # try:
-    #     __IPYTHON__  # pylint: disable=undefined-variable, pointless-statement
-    #     return True
-    # except NameError:
-    #     return False
-    print('Running from a jupyter notebook:', 'JPY_PARENT_PID' in os.environ)
     return 'JPY_PARENT_PID' in os.environ
 
 

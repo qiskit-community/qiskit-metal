@@ -35,6 +35,7 @@ from qiskit_metal.draw.utility import to_vec3D
 from qiskit_metal.draw.basic import is_rectangle
 from qiskit_metal.renderers.renderer_base import QRendererAnalysis
 from qiskit_metal.toolbox_metal.parsing import is_true
+from qiskit_metal.designs.design_base import QDesign
 
 from qiskit_metal import Dict
 
