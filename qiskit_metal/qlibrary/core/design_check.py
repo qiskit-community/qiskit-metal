@@ -5,7 +5,9 @@ import pandas as pd
 
 
 class QDesignCheck():
-    """QDesign_Check contains various design checks.
+    """QDesign_Check contains various design checks, such as
+    testing designs in qiskit metal for unintended overlap
+    between components and/or connections between components.
     """
 
     def __init__(self, design: 'QDesign'):
@@ -16,8 +18,9 @@ class QDesignCheck():
 
     def overlap_tester(self):
         design = self
-        """This particular function tests for overlap between qcomponents
-        and CPWs.
+        """This particular function tests for overlap amongst qcomponents
+        and CPWs. It will change qubit/qubit overlap, qubit, CPW overlap
+        and CPW/CPW overlap.
         """
 
         for unique_int in self.design._components:
