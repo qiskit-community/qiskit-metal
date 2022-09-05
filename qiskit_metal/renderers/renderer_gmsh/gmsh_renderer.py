@@ -647,7 +647,8 @@ class QGmshRenderer(QRenderer):
                 box_plus_buffer, self.qcomp_ids, self.case, x_buff, y_buff)
 
             (self.box_xy_bounds, self.path_and_poly_with_valid_comps,
-             self.chip_names_matched, self.valid_chip_names) = result
+             self.path_poly_and_junction_valid_comps, self.chip_names_matched,
+             self.valid_chip_names) = result
 
             if not self.chip_names_matched:
                 raise ValueError(
