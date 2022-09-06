@@ -811,8 +811,11 @@ class QGmshRenderer(QRenderer):
         # 4. Check thickness and assign respective dim phys grp
 
         layer_numbers = list(self.layers_dict.keys())
-        metal_dim = 2 if ignore_metal_volume else 3
         for layer in layer_numbers:
+            layer_thickness = self.get_thickness_for_layer_datatype(
+                layer_num=layer)
+            layer_dim = 3 if np.abs(layer_thickness) > 0 else 2
+
             if layer not in self.physical_groups:
                 self.physical_groups[layer] = dict()
 
@@ -824,14 +827,21 @@ class QGmshRenderer(QRenderer):
                 layer_geoms = dict(self.paths_dict[layer],
                                    **self.polys_dict[layer])
                 for name, tag in layer_geoms.items():
-                    if ignore_metal_volume:
+                    if layer_dim == 3:
                         tags = gmsh.model.occ.getSurfaceLoops(tag[0])[1][0]
+                        if not ignore_metal_volume:
+                            ph_vol_tag = gmsh.model.addPhysicalGroup(
+                                dim=layer_dim, tags=tag, name=name)
+                            self.physical_groups[layer][name] = ph_vol_tag
+
+                        ph_sfs_tag = gmsh.model.addPhysicalGroup(
+                            dim=2, tags=tags, name=f"{name}_sfs")
+                        self.physical_groups[layer][f"{name}_sfs"] = ph_sfs_tag
                     else:
-                        tags = tag
-                    ph_tag = gmsh.model.addPhysicalGroup(dim=metal_dim,
-                                                         tags=tags,
-                                                         name=name)
-                    self.physical_groups[layer][name] = ph_tag
+                        ph_tag = gmsh.model.addPhysicalGroup(dim=layer_dim,
+                                                             tags=tag,
+                                                             name=name)
+                        self.physical_groups[layer][name] = ph_tag
 
                 # TODO: Do we require 3D junctions? Active issue: #842
                 for name, tag in self.juncs_dict[layer].items():
@@ -855,32 +865,35 @@ class QGmshRenderer(QRenderer):
                         "Layer number not in the specified `self.layer_types` dict."
                     )
 
-                layer_name = layer_type + f' (layer {layer})'
+                layer_name = layer_type + f'_(layer {layer})'
                 layer_tag = self.layers_dict[layer]
-                layer_dim = 3
-                if ignore_metal_volume and layer_type == "ground_plane":
-                    layer_tag = gmsh.model.occ.getSurfaceLoops(
+                if layer_dim == 3:
+                    layer_sfs_tags = gmsh.model.occ.getSurfaceLoops(
                         layer_tag[0])[1][0]
-                    layer_dim = metal_dim
+                    if not ignore_metal_volume:
+                        ph_vol_tag = gmsh.model.addPhysicalGroup(
+                            dim=layer_dim, tags=layer_tag, name=layer_name)
+                        self.physical_groups[layer][layer_name] = ph_vol_tag
 
-                ph_layer_tag = gmsh.model.addPhysicalGroup(dim=layer_dim,
-                                                           tags=layer_tag,
-                                                           name=layer_name)
-                self.physical_groups[layer][layer_name] = ph_layer_tag
+                    ph_sfs_tag = gmsh.model.addPhysicalGroup(
+                        dim=2, tags=layer_sfs_tags, name=f"{layer_name}_sfs")
+                    self.physical_groups[layer][
+                        f"{layer_name}_sfs"] = ph_sfs_tag
 
-        # Make physical groups for vacuum box (volume)
-        vb_name = "vacuum_box"
-        ph_vb_tag = gmsh.model.addPhysicalGroup(dim=3,
-                                                tags=[self.vacuum_box],
-                                                name=vb_name)
-        self.physical_groups["global"][vb_name] = ph_vb_tag
+        if draw_sample_holder:
+            # Make physical groups for vacuum box (volume)
+            vb_name = "vacuum_box"
+            ph_vb_tag = gmsh.model.addPhysicalGroup(dim=3,
+                                                    tags=[self.vacuum_box],
+                                                    name=vb_name)
+            self.physical_groups["global"][vb_name] = ph_vb_tag
 
-        # Make physical groups for vacuum box (surfaces)
-        vb_sfs = list(gmsh.model.occ.getSurfaceLoops(self.vacuum_box)[1][0])
-        ph_vb_sfs_tag = gmsh.model.addPhysicalGroup(dim=2,
-                                                    tags=vb_sfs,
-                                                    name=(vb_name + "_sfs"))
-        self.physical_groups["global"][vb_name + "_sfs"] = ph_vb_sfs_tag
+            # Make physical groups for vacuum box (surfaces)
+            vb_sfs = list(gmsh.model.occ.getSurfaceLoops(self.vacuum_box)[1][0])
+            ph_vb_sfs_tag = gmsh.model.addPhysicalGroup(dim=2,
+                                                        tags=vb_sfs,
+                                                        name=(vb_name + "_sfs"))
+            self.physical_groups["global"][vb_name + "_sfs"] = ph_vb_sfs_tag
 
     def isometric_projection(self):
         """Set the view in Gmsh to isometric view manually.
