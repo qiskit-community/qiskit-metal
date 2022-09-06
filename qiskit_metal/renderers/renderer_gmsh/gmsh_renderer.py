@@ -760,6 +760,10 @@ class QGmshRenderer(QRenderer):
             for _, geom_ids in geoms.items():
                 all_geom_dimtags += [(geom_dim, id) for id in geom_ids]
 
+        for _, geoms in self.juncs_dict.items():
+            for _, jj_sfs in geoms.items():
+                all_geom_dimtags += [(2, jj) for jj in jj_sfs]
+
         if draw_sample_holder:
             fragmented_geoms = gmsh.model.occ.fragment([(3, self.vacuum_box)],
                                                        all_geom_dimtags)
@@ -1016,7 +1020,7 @@ class QGmshRenderer(QRenderer):
 
         self.define_mesh_properties()
         gmsh.model.mesh.generate(dim=dim)
-        self.assign_mesh_color()
+        # self.assign_mesh_color()
 
     def assign_mesh_color(self):
         """Assign mesh color according to the type of layer specified by
