@@ -158,7 +158,17 @@ class QGmshRenderer(QRenderer):
 
     def get_thickness_for_layer_datatype(self,
                                          layer_num: int,
-                                         datatype: int = 0):
+                                         datatype: int = 0) -> float:
+        """Function to get thickness of a particular layer and datatype
+        from the layer stack.
+
+        Args:
+            layer_num (int): layer number in the layer stack
+            datatype (int): datatype in the layer stack
+
+        Returns:
+            float: returns the thickness value
+"""
         props = ["thickness"]
         result = self.parse_units_gmsh(
             self.design.ls.get_properties_for_layer_datatype(
@@ -172,7 +182,18 @@ class QGmshRenderer(QRenderer):
 
     def get_thickness_zcoord_for_layer_datatype(self,
                                                 layer_num: int,
-                                                datatype: int = 0):
+                                                datatype: int = 0
+                                               ) -> tuple[float, float]:
+        """Function to get the thickness and z_coord of a particular layer
+        and datatype from the layer stack.
+
+        Args:
+            layer_num (int): layer number in the layer stack
+            datatype (int): datatype in the layer stack
+
+        Returns:
+            tuple[float, float]: returns the tuple (thickness, z_coord)
+        """
         props = ["thickness", "z_coord"]
         result = self.parse_units_gmsh(
             self.design.ls.get_properties_for_layer_datatype(
