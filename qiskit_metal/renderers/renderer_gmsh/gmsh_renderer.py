@@ -156,6 +156,34 @@ class QGmshRenderer(QRenderer):
         """Public method to close the Gmsh renderer"""
         return self._close_renderer()
 
+    def get_thickness_for_layer_datatype(self,
+                                         layer_num: int,
+                                         datatype: int = 0):
+        props = ["thickness"]
+        result = self.parse_units_gmsh(
+            self.design.ls.get_properties_for_layer_datatype(
+                properties=props, layer_number=layer_num, datatype=datatype))
+        if result:
+            return result[0]  # thickness is result[0]
+        else:
+            raise ValueError(
+                f"Could not find {props} for the layer_number={layer_num}. "
+                "Check your design and try again.")
+
+    def get_thickness_zcoord_for_layer_datatype(self,
+                                                layer_num: int,
+                                                datatype: int = 0):
+        props = ["thickness", "z_coord"]
+        result = self.parse_units_gmsh(
+            self.design.ls.get_properties_for_layer_datatype(
+                properties=props, layer_number=layer_num, datatype=datatype))
+        if result:
+            return result
+        else:
+            raise ValueError(
+                f"Could not find {props} for the layer_number={layer_num}. "
+                "Check your design and try again.")
+
     def render_design(
         self,
         selection: Union[list, None] = None,
@@ -232,7 +260,7 @@ class QGmshRenderer(QRenderer):
                                                         endcaps. Defaults to None.
             box_plus_buffer (bool, optional): Set to True for adding buffer to
                                                         chip dimensions. Defaults to True.
-            draw_sample_holder (bool, optional): To draw the sample holder box. Defaults to True.
+            draw_sample_holder (bool): To draw the sample holder box.
             skip_junctions (bool, optional): Set to True to sip rendering the
                                                         junctions. Defaults to False.
         """
@@ -260,6 +288,7 @@ class QGmshRenderer(QRenderer):
         Args:
             ignore_metal_volume (bool, optional): ignore the volume of metals and replace
                                                         it with a list of surfaces instead.
+            draw_sample_holder (bool): To draw the sample holder box.
 
         Raises:
             ValueError: raised when self.layer_types isn't set to a valid dictionary
@@ -273,7 +302,8 @@ class QGmshRenderer(QRenderer):
         self.gmsh_occ_synchronize()
 
         # Add physical groups
-        # self.assign_physical_groups(ignore_metal_volume=ignore_metal_volume)
+        self.assign_physical_groups(ignore_metal_volume=ignore_metal_volume,
+                                    draw_sample_holder=draw_sample_holder)
 
     def gmsh_occ_synchronize(self):
         """Synchronize Gmsh with the internal OpenCascade graphics engine
@@ -346,7 +376,7 @@ class QGmshRenderer(QRenderer):
             _input (Union[int, float, np.ndarray, list, tuple, str]): input to parse
 
         Returns:
-            float: parsed input value
+            Union[int, float, np.ndarray, list, tuple, str]: parsed input value
         """
         if isinstance(_input, (int, float)):
             return _input
@@ -375,17 +405,8 @@ class QGmshRenderer(QRenderer):
         """
         qc_shapely = junc.geometry
         qc_width = self.parse_units_gmsh(junc.width)
-        props = ["thickness", "z_coord"]
-        result = self.parse_units_gmsh(
-            self.design.ls.get_properties_for_layer_datatype(
-                properties=props, layer_number=junc.layer))
-        if result:
-            qc_thickness, qc_z = result
-        else:
-            raise ValueError(
-                f"Could not find {props} for the layer_number={junc.layer} in component"
-                f" '{junc['component'].name}'. Check your design and try again."
-            )
+        qc_thickness, qc_z = self.get_thickness_zcoord_for_layer_datatype(
+            layer_num=junc.layer)
 
         vecs = Vec3DArray.make_vec3DArray(
             self.parse_units_gmsh(list(qc_shapely.coords)), qc_z)
@@ -436,17 +457,8 @@ class QGmshRenderer(QRenderer):
         qc_width = path.width
         qc_fillet = self.parse_units_gmsh(path.fillet) if float(
             path.fillet) is not np.nan else 0.0
-        props = ["thickness", "z_coord"]
-        result = self.parse_units_gmsh(
-            self.design.ls.get_properties_for_layer_datatype(
-                properties=props, layer_number=path.layer))
-        if result:
-            qc_thickness, qc_z = result
-        else:
-            raise ValueError(
-                f"Could not find {props} for the layer_number={path.layer} in component"
-                f" '{path['component'].name}'. Check your design and try again."
-            )
+        qc_thickness, qc_z = self.get_thickness_zcoord_for_layer_datatype(
+            layer_num=path.layer)
 
         vecs = Vec3DArray.make_vec3DArray(
             self.parse_units_gmsh(list(qc_shapely.coords)), qc_z)
@@ -516,19 +528,9 @@ class QGmshRenderer(QRenderer):
             poly (pd.Series): Poly to render.
         """
         qc_shapely = poly.geometry
-        props = ["thickness", "z_coord"]
-        result = self.parse_units_gmsh(
-            self.design.ls.get_properties_for_layer_datatype(
-                properties=props, layer_number=poly.layer))
-        if result:
-            qc_thickness, qc_z = result
-        else:
-            raise ValueError(
-                f"Could not find {props} for the layer_number={poly.layer} in component"
-                f" '{poly['component'].name}'. Check your design and try again."
-            )
+        qc_thickness, qc_z = self.get_thickness_zcoord_for_layer_datatype(
+            layer_num=poly.layer)
 
-        # qc_chip_z = self.parse_units_gmsh(self.design.get_chip_z(poly.chip))
         vecs = Vec3DArray.make_vec3DArray(
             self.parse_units_gmsh(list(qc_shapely.exterior.coords)), qc_z)
         qc_name = self.design._components[
@@ -586,16 +588,8 @@ class QGmshRenderer(QRenderer):
                 [pin_dict["width"], pin_dict["gap"]])
             mid, normal = self.parse_units_gmsh(
                 pin_dict["middle"]), pin_dict["normal"]
-            props = ["thickness", "z_coord"]
-            result = self.parse_units_gmsh(
-                self.design.ls.get_properties_for_layer_datatype(
-                    properties=props, layer_number=qc_layer))
-            if result:
-                qc_thickness, qc_z = result
-            else:
-                raise ValueError(
-                    f"Could not find {props} for the layer_number={qc_layer} in component"
-                    f" '{qcomp.name}'. Check your design and try again.")
+            qc_thickness, qc_z = self.get_thickness_zcoord_for_layer_datatype(
+                layer_num=qc_layer)
 
             rect_mid = mid + normal * gap / 2
             rect_vec = np.array([rect_mid[0], rect_mid[1], qc_z])
@@ -639,7 +633,7 @@ class QGmshRenderer(QRenderer):
         Args:
             layers (Optional[List[int]]): List of layers to render.
                                 Renders all if [] or None is given. Defaults to None.
-            draw_sample_holder (bool, optional): To draw the sample holder box. Defaults to True.
+            draw_sample_holder (bool): To draw the sample holder box.
             box_plus_buffer (bool, optional): For adding buffer to chip dimensions. Defaults to True.
         """
         layer_list = list(set(l for l in self.design.ls.ls_df["layer"])
@@ -695,16 +689,8 @@ class QGmshRenderer(QRenderer):
             ValueError: if the required properties are not found
                             in the layer-stack
         """
-        props = ["thickness", "z_coord"]
-        result = self.parse_units_gmsh(
-            self.design.ls.get_properties_for_layer_datatype(
-                properties=props, layer_number=layer_number, datatype=datatype))
-        if result:
-            thickness, z_coord = result
-        else:
-            raise ValueError(
-                f"Could not find {props} for the layer_number={layer_number} and dataype="
-                f"{datatype}. Check your design and try again.")
+        thickness, z_coord = self.get_thickness_zcoord_for_layer_datatype(
+            layer_num=layer_number, datatype=datatype)
 
         layer_x, layer_y = self.box_xy_bounds[0:2]
         layer_wx = (self.box_xy_bounds[2] - self.box_xy_bounds[0])
@@ -726,16 +712,8 @@ class QGmshRenderer(QRenderer):
     def subtract_from_layers(self):
         """Subtract the QGeometries in tables from the chip ground plane"""
         for layer_num, shapes in self.layer_subtract_dict.items():
-            props = ["thickness"]
-            result = self.parse_units_gmsh(
-                self.design.ls.get_properties_for_layer_datatype(
-                    properties=props, layer_number=layer_num))
-            if result:
-                thickness = result[0]
-            else:
-                raise ValueError(
-                    f"Could not find {props} for the layer_number={layer_num}. "
-                    "Check your design and try again.")
+            thickness = self.get_thickness_for_layer_datatype(
+                layer_num=layer_num)
 
             # Check if thickness == 0, then subtract with dim=2
             dim = 3 if np.abs(thickness) > 0 else 2
@@ -756,33 +734,47 @@ class QGmshRenderer(QRenderer):
     def fragment_interfaces(self, draw_sample_holder: bool):
         """Fragment Gmsh surfaces to ensure consistent tetrahedral meshing
         across interfaces between different materials.
+
+        Args:
+            draw_sample_holder (bool): To draw the sample holder box.
         """
-        # TODO: check if thickness == 0, then fragment differently
-        # Active issue: #846
-        # NOTE: Rewrite the whole function to have one by one
-        # fragmenting instead of all at once
-        all_vol_ids = list()
+        all_geom_dimtags = list()
         all_layer_geoms = defaultdict(dict)
         all_dicts = (self.polys_dict, self.paths_dict)
+
         for d in all_dicts:
             for layer, geoms in d.items():
                 if layer not in all_layer_geoms:
                     all_layer_geoms[layer] = dict()
                 all_layer_geoms[layer].update(geoms)
 
-        for _, geoms in all_layer_geoms.items():
-            for _, vol in geoms.items():
-                all_vol_ids += vol
+        for layer, geom_id in self.layers_dict.items():
+            if layer not in all_layer_geoms:
+                all_layer_geoms[layer] = dict()
+            all_layer_geoms[layer].update({f"ground_layer_{layer}": geom_id})
 
-        for i, vol in self.layers_dict.items():
-            all_vol_ids += vol
+        for layer, geoms in all_layer_geoms.items():
+            # Check if thickness == 0, then fragment differently
+            thickness = self.get_thickness_for_layer_datatype(layer_num=layer)
+            geom_dim = 3 if np.abs(thickness) > 0 else 2
+            for _, geom_ids in geoms.items():
+                all_geom_dimtags += [(geom_dim, id) for id in geom_ids]
 
-        vol_dimtags = [(3, vol) for vol in all_vol_ids]
-        fragmented_geoms = gmsh.model.occ.fragment([(3, self.vacuum_box)],
-                                                   vol_dimtags)
-
-        # Extract the new vacuum_box volume
-        self.vacuum_box = fragmented_geoms[1][0][0][1]
+        if draw_sample_holder:
+            fragmented_geoms = gmsh.model.occ.fragment([(3, self.vacuum_box)],
+                                                       all_geom_dimtags)
+            # Extract the new vacuum_box volume
+            self.vacuum_box = fragmented_geoms[1][0][0][1]
+        else:
+            # Get one of the dim=3 objects
+            dim3_dimtag = [
+                (dim, tag) for dim, tag in all_geom_dimtags if dim == 3
+            ]
+            object_dimtag = dim3_dimtag[0] if len(
+                dim3_dimtag) > 0 else all_geom_dimtags[0]
+            all_geom_dimtags.remove(object_dimtag)
+            fragmented_geoms = gmsh.model.occ.fragment([object_dimtag],
+                                                       all_geom_dimtags)
 
         # TODO: Do we require 3D junctions? Active issue: #842
         # all_juncs = []
@@ -793,12 +785,14 @@ class QGmshRenderer(QRenderer):
         # junc_dimtags = [(2, junc) for junc in all_juncs]
         # gmsh.model.occ.fragment([(3, self.vacuum_box)], junc_dimtags)
 
-    def assign_physical_groups(self, ignore_metal_volume: bool):
+    def assign_physical_groups(self, ignore_metal_volume: bool,
+                               draw_sample_holder: bool):
         """Assign physical groups to classify different geometries physically.
 
         Args:
             ignore_metal_volume (bool, optional): ignore the volume of metals and replace
                                                         it with a list of surfaces instead.
+            draw_sample_holder (bool): To draw the sample holder box.
 
         Raises:
             ValueError: if self.layer_types is not a dict
@@ -806,6 +800,12 @@ class QGmshRenderer(QRenderer):
         """
         # TODO: check if thickness == 0, then fragment differently
         # Active issue: #846
+        # NOTE:
+        # 1. Add phys grp for every geom per layer
+        # 2. Add phys grp for vacuum_box if draw_sample_holder
+        # 3. Add phys grp for volumes and surfaces
+        # 4. Check thickness and assign respective dim phys grp
+
         layer_numbers = list(self.layers_dict.keys())
         metal_dim = 2 if ignore_metal_volume else 3
         for layer in layer_numbers:
