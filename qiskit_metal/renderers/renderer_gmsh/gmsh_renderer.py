@@ -927,7 +927,7 @@ class QGmshRenderer(QRenderer):
         gmsh.option.setNumber("General.RotationZ", -45)
 
     def define_mesh_size_fields(self):
-        """Define size fields for mesh size.
+        """Define size fields for mesh varying the mesh density across the design.
         """
         min_mesh_size = self.parse_units_gmsh(self._options["mesh"]["min_size"])
         max_mesh_size = self.parse_units_gmsh(self._options["mesh"]["max_size"])
@@ -946,15 +946,25 @@ class QGmshRenderer(QRenderer):
         grad_steps = int((dist_max - dist_min) / dist_delta)
 
         all_vols = []
-        for _, geoms in self.polys_dict.items():
-            all_vols += [tag[0] for tag in geoms.values()]
-        for _, geoms in self.paths_dict.items():
-            all_vols += [tag[0] for tag in geoms.values()]
-        # Ground plane layers
-        for layer in self.layer_types["metal"]:
-            all_vols += self.layers_dict[layer]
-
         all_surfs = []
+        all_dicts = (self.polys_dict, self.paths_dict)
+
+        for d in all_dicts:
+            for layer, geoms in d.items():
+                thickness = self.get_thickness_for_layer_datatype(layer)
+                if np.abs(thickness) > 0:
+                    all_vols += [tag[0] for tag in geoms.values()]
+                else:
+                    all_surfs += [tag[0] for tag in geoms.values()]
+
+        # Metal layers
+        for layer in self.layer_types["metal"]:
+            thickness = self.get_thickness_for_layer_datatype(layer)
+            if np.abs(thickness) > 0:
+                all_vols += self.layers_dict[layer]
+            else:
+                all_surfs += self.layers_dict[layer]
+
         for vol in all_vols:
             all_surfs += [
                 surf for surf in gmsh.model.occ.getSurfaceLoops(vol)[1][0]
@@ -1055,7 +1065,7 @@ class QGmshRenderer(QRenderer):
 
         self.define_mesh_properties()
         gmsh.model.mesh.generate(dim=dim)
-        # self.assign_mesh_color()
+        self.assign_mesh_color()
 
     def assign_mesh_color(self):
         """Assign mesh color according to the type of layer specified by
