@@ -12,7 +12,7 @@ pygments
 pyside2
 qutip
 scipy
-shapely==1.8.2  #using conda on Windows OS: pip install of shapely will fail on import for missing geos_c.dll, if <= v1.7.x. For as long as a 1.8.0 version is not released (already patched in github), you will need to run `conda install shapely` (before installing qiskit_metal).
+shapely==1.8.2 #using conda on Windows OS: pip install of shapely will fail on import for missing geos_c.dll, if <= v1.7.x. For as long as a 1.8.0 version is not released (already patched in github), you will need to run `conda install shapely` (before installing qiskit_metal).
 scqubits
 gmsh
 pyaedt   #since conda-forge doesn't have pyaedt, we have to manually pip install or completely switch to virtualenv .  virtualenv uses less memory than conda. 
