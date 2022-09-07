@@ -1076,45 +1076,75 @@ class QGmshRenderer(QRenderer):
         metal_color = color_dict(self._options["colors"]["metal"])
         jj_color = color_dict(self._options["colors"]["jj"])
         dielectric_color = color_dict(self._options["colors"]["dielectric"])
+        valid_layers = set(
+            list(self.paths_dict.keys()) + list(self.polys_dict.keys()))
 
+        # Assign mesh color to dielectric layer
         for layer in list(self.layers_dict.keys()):
-            valid_layers = set(
-                list(self.paths_dict.keys()) + list(self.polys_dict.keys()))
+            if layer not in self.layer_types["dielectric"]:
+                continue
+
+            thickness = self.get_thickness_for_layer_datatype(layer)
+
+            layer_tags = self.layers_dict[layer]
+            layer_dim = 3 if np.abs(thickness) > 0 else 2
+            if layer_dim == 3:
+                layer_sfs = []
+                for vol in layer_tags:
+                    layer_sfs += list(gmsh.model.occ.getSurfaceLoops(vol)[1][0])
+                gmsh.model.setColor([(3, tag) for tag in layer_tags],
+                                    **dielectric_color)
+            else:
+                layer_sfs = layer_tags
+
+            print(layer_sfs)
+            gmsh.model.setColor([(2, sf) for sf in layer_sfs],
+                                **dielectric_color)
+
+        # Assign colors to geometries and metal (ground plane) layers
+        for layer in list(self.layers_dict.keys()):
+            if layer in self.layer_types["dielectric"]:
+                continue
+
+            thickness = self.get_thickness_for_layer_datatype(layer)
+
             if layer in valid_layers:
                 metal_vols = []
-                for _, geom in self.polys_dict[layer].items():
-                    metal_vols += geom
-                for _, geom in self.paths_dict[layer].items():
-                    metal_vols += geom
-
                 metal_surfs = []
-                for vol in metal_vols:
-                    surfs = [
-                        tag for tag in gmsh.model.occ.getSurfaceLoops(vol)[1][0]
-                    ]
-                    metal_surfs += surfs
+                metal_dicts = (self.polys_dict[layer], self.paths_dict[layer])
 
-                gmsh.model.setColor([(3, metal) for metal in metal_vols],
-                                    **metal_color)
+                # Component geomtries
+                for d in metal_dicts:
+                    for _, geoms in d.items():
+                        if np.abs(thickness) > 0:
+                            metal_vols += geoms
+                        else:
+                            metal_surfs += geoms
+
+                # Metal layers
+                if np.abs(thickness) > 0:
+                    metal_vols += self.layers_dict[layer]
+                else:
+                    metal_surfs += self.layers_dict[layer]
+
+                for vol in metal_vols:
+                    metal_surfs += [
+                        surf
+                        for surf in gmsh.model.occ.getSurfaceLoops(vol)[1][0]
+                    ]
+
+                if len(metal_vols) > 0:
+                    gmsh.model.setColor([(3, metal) for metal in metal_vols],
+                                        **metal_color)
                 gmsh.model.setColor([(2, metal) for metal in metal_surfs],
                                     **metal_color)
 
+                # Junctions
                 jj_surfs = []
                 for _, surf in self.juncs_dict[layer].items():
                     jj_surfs += surf
 
                 gmsh.model.setColor([(2, jj) for jj in jj_surfs], **jj_color)
-
-            layer_tag = self.layers_dict[layer][0]
-            layer_sfs = list(gmsh.model.occ.getSurfaceLoops(layer_tag)[1][0])
-            if layer in self.layer_types['metal']:
-                gmsh.model.setColor([(3, layer_tag)], **metal_color)
-                gmsh.model.setColor([(2, sf) for sf in layer_sfs],
-                                    **metal_color)
-            else:
-                gmsh.model.setColor([(3, layer_tag)], **dielectric_color)
-                gmsh.model.setColor([(2, sf) for sf in layer_sfs],
-                                    **dielectric_color)
 
     def launch_gui(self):
         """Launch Gmsh GUI for viewing the model.
