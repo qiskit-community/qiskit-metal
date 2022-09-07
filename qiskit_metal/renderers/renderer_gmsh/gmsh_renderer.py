@@ -263,7 +263,7 @@ class QGmshRenderer(QRenderer):
             try:
                 self.add_mesh()  # generate mesh
             except Exception as e:
-                print(e)
+                self.logger.info(f"ERROR: Generate Mesh: {e}")
 
     def draw_geometries(self,
                         draw_sample_holder: bool,
@@ -823,16 +823,9 @@ class QGmshRenderer(QRenderer):
             ValueError: if self.layer_types is not a dict
             ValueError: if layer number is not in self.layer_types
         """
-        # TODO: check if thickness == 0, then fragment differently
-        # Active issue: #846
-        # NOTE:
-        # 1. Add phys grp for every geom per layer
-        # 2. Add phys grp for vacuum_box if draw_sample_holder
-        # 3. Add phys grp for volumes and surfaces
-        # 4. Check thickness and assign respective dim phys grp
-
         layer_numbers = list(self.layers_dict.keys())
         for layer in layer_numbers:
+            # TODO: check if thickness == 0, then fragment differently
             layer_thickness = self.get_thickness_for_layer_datatype(
                 layer_num=layer)
             layer_dim = 3 if np.abs(layer_thickness) > 0 else 2
@@ -889,10 +882,12 @@ class QGmshRenderer(QRenderer):
                 layer_name = layer_type + f'_(layer {layer})'
                 layer_tag = self.layers_dict[layer]
                 if layer_dim == 3:
-                    layer_sfs_tags = gmsh.model.occ.getSurfaceLoops(
-                        layer_tag[0])[1][0]
-                    if not (ignore_metal_volume and
-                            layer_type == "ground_plane"):
+                    layer_sfs_tags = []
+                    for vol in layer_tag:
+                        layer_sfs_tags += list(
+                            gmsh.model.occ.getSurfaceLoops(vol)[1][0])
+
+                    if layer_type == "ground_plane" and not ignore_metal_volume:
                         ph_vol_tag = gmsh.model.addPhysicalGroup(
                             dim=layer_dim, tags=layer_tag, name=layer_name)
                         self.physical_groups[layer][layer_name] = ph_vol_tag
@@ -901,6 +896,11 @@ class QGmshRenderer(QRenderer):
                         dim=2, tags=layer_sfs_tags, name=f"{layer_name}_sfs")
                     self.physical_groups[layer][
                         f"{layer_name}_sfs"] = ph_sfs_tag
+                else:
+                    ph_tag = gmsh.model.addPhysicalGroup(dim=layer_dim,
+                                                         tags=layer_tag,
+                                                         name=layer_name)
+                    self.physical_groups[layer][layer_name] = ph_tag
 
         if draw_sample_holder:
             # Make physical groups for vacuum box (volume)
@@ -1097,7 +1097,6 @@ class QGmshRenderer(QRenderer):
             else:
                 layer_sfs = layer_tags
 
-            print(layer_sfs)
             gmsh.model.setColor([(2, sf) for sf in layer_sfs],
                                 **dielectric_color)
 
