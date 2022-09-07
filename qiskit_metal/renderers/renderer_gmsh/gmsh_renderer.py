@@ -1193,7 +1193,7 @@ class QGmshRenderer(QRenderer):
         file_ext = filepath.split(".")[-1]
         if file_ext not in valid_file_exts:
             self.logger.error(
-                "RENDERER ERROR: filename needs to have a .msh extension. Exporting failed."
+                "RENDERER ERROR: filename needs to have a .geo_unrolled extension. Exporting failed."
             )
             return
 
