@@ -19,7 +19,7 @@ class QDesignCheck():
     def overlap_tester(self):
         design = self
         """This particular function tests for overlap amongst qcomponents
-        and CPWs. It will change qubit/qubit overlap, qubit, CPW overlap
+        and CPWs. It will catch qubit/qubit overlap, qubit, CPW overlap
         and CPW/CPW overlap.
         """
 
