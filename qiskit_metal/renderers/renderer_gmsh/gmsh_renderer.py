@@ -762,7 +762,7 @@ class QGmshRenderer(QRenderer):
         """
         all_geom_dimtags = list()
         all_layer_geoms = defaultdict(dict)
-        all_dicts = (self.polys_dict, self.paths_dict)
+        all_dicts = (self.paths_dict, self.polys_dict)
 
         for d in all_dicts:
             for layer, geoms in d.items():
@@ -773,7 +773,11 @@ class QGmshRenderer(QRenderer):
         for layer, geom_id in self.layers_dict.items():
             if layer not in all_layer_geoms:
                 all_layer_geoms[layer] = dict()
-            all_layer_geoms[layer].update({f"ground_layer_{layer}": geom_id})
+
+            layer_type = "ground" if layer in self.layer_types[
+                "metal"] else "dielectric"
+            all_layer_geoms[layer].update(
+                {f"{layer_type}_layer_{layer}": geom_id})
 
         for layer, geoms in all_layer_geoms.items():
             # Check if thickness == 0, then fragment differently
@@ -787,7 +791,9 @@ class QGmshRenderer(QRenderer):
                 all_geom_dimtags += [(2, jj) for jj in jj_sfs]
 
         if draw_sample_holder:
-            fragmented_geoms = gmsh.model.occ.fragment([(3, self.vacuum_box)],
+            object_dimtag = (3, self.vacuum_box)
+            all_layer_geoms[-1] = dict(vacuum_box=[self.vacuum_box])
+            fragmented_geoms = gmsh.model.occ.fragment([object_dimtag],
                                                        all_geom_dimtags)
             # Extract the new vacuum_box volume
             self.vacuum_box = fragmented_geoms[1][0][0][1]
@@ -801,6 +807,29 @@ class QGmshRenderer(QRenderer):
             all_geom_dimtags.remove(object_dimtag)
             fragmented_geoms = gmsh.model.occ.fragment([object_dimtag],
                                                        all_geom_dimtags)
+
+        all_geom_dimtags.insert(0, object_dimtag)
+        updated_geoms = fragmented_geoms[0]
+        all_dicts = {
+            0: self.paths_dict,
+            1: self.polys_dict,
+            2: self.juncs_dict,
+            3: self.layers_dict
+        }
+        for old, new in zip(all_geom_dimtags, updated_geoms):
+            if old != new:
+                for i, d in all_dicts.items():
+                    for l, geoms in d.items():
+                        if isinstance(geoms, dict):
+                            for name, geom_id in geoms.items():
+                                if len(geom_id) > 0 and geom_id[0] == old[1]:
+                                    all_dicts[i][l][name].append(new[1])
+                                    all_dicts[i][l][name].remove(old[1])
+                        elif isinstance(geoms, list):
+                            for geom_id in geoms:
+                                if geom_id == old[1]:
+                                    all_dicts[i][l].append(new[1])
+                                    all_dicts[i][l].remove(old[1])
 
         # TODO: Do we require 3D junctions? Active issue: #842
         # all_juncs = []
