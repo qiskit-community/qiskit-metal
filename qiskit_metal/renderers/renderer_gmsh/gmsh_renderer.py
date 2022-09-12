@@ -1187,12 +1187,13 @@ class QGmshRenderer(QRenderer):
             )
             gmsh.fltk.run()
 
-    def export_mesh(self, filepath: str):
+    def export_mesh(self, filepath: str, scaling_factor: float = 1e-3):
         """Export mesh from Gmsh into a file.
         Supported formats: (.msh, .msh2, .mesh).
 
         Args:
             filepath (str): path of the file to export mesh to.
+            scaling_factor (float): specify a scaling factor for the mesh. Defaults to 1e-3.
         """
         valid_file_exts = ["msh", "msh2", "mesh"]
         file_ext = filepath.split(".")[-1]
@@ -1208,7 +1209,7 @@ class QGmshRenderer(QRenderer):
         if not os.path.exists(par_dir):
             raise ValueError(f"Directory not found: {par_dir}")
 
-        gmsh.option.setNumber("Mesh.ScalingFactor", 0.001)
+        gmsh.option.setNumber("Mesh.ScalingFactor", scaling_factor)
         gmsh.write(filepath)
 
     def export_geo_unrolled(self, filepath: str):
