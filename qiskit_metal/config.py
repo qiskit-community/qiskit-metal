@@ -21,6 +21,7 @@ Mostly internal.
 
 from .toolbox_python.attr_dict import Dict
 from ._defaults import DefaultMetalOptions, DefaultOptionsRenderer
+import os
 
 renderers_to_load = Dict(
     hfss=Dict(path_name='qiskit_metal.renderers.renderer_ansys.hfss_renderer',
@@ -112,11 +113,7 @@ def is_using_ipython():
     Returns:
         bool -- True if ran in IPython
     """
-    try:
-        __IPYTHON__  # pylint: disable=undefined-variable, pointless-statement
-        return True
-    except NameError:
-        return False
+    return 'JPY_PARENT_PID' in os.environ
 
 
 def is_building_docs():
