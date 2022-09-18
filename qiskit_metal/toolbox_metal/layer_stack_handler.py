@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from textwrap import fill
-from xmlrpc.client import Boolean
+from re import search
 import pandas as pd
-from typing import List, Tuple
+from typing import List, Tuple, Dict
 from typing import Union
 from addict import Dict
 import os
 import logging
 
-from .parsing import parse_units, TRUE_STR, FALSE_STR
+from .parsing import TRUE_STR, FALSE_STR
 
 
 class LayerStackHandler():
@@ -80,30 +79,74 @@ class LayerStackHandler():
             #enter very basic default data for pandas table.
             self.ls_df = pd.DataFrame(data=self.layer_stack_default)
 
+    def get_layer_datatype_when_fill_is_true(self) -> Union[dict, None]:
+        """If a row has fill=True, then for each layer/datatype pair, 
+        return the rest of information in the row within a dict. 
+
+        Returns:
+            Union[dict, None]: Dict with key being tuple (layer, datatype) 
+                             Value is dict with key of column name of layerstack, and parsed value of column.
+                         None if fill != True
+        """
+        if self.ls_df is None:
+            abs_path = os.path.abspath(self.filename_csv_df)
+            self.logger.error(
+                f'Not able to read file.'
+                f'File:{abs_path} not read. Check the name and path.')
+
+        mask = self.ls_df['fill'].astype(str).str.replace(
+            "[']", "", regex=True).isin(TRUE_STR)
+        search_result_df = self.ls_df[mask]
+
+        if len(search_result_df) > 0:
+            try:
+                layer_datatype_fill = dict()
+                for row in search_result_df.itertuples():
+                    a_key = (row.layer, row.datatype)
+                    layer_datatype_fill[a_key] = dict()
+                    layer_datatype_fill[a_key]['layer'] = row.layer
+                    layer_datatype_fill[a_key]['datatype'] = row.datatype
+                    layer_datatype_fill[a_key][
+                        'thickness'] = self.multi_planar_design.parse_value(
+                            row.thickness.strip('\''))
+                    layer_datatype_fill[a_key][
+                        'z_coord'] = self.multi_planar_design.parse_value(
+                            row.z_coord.strip('\''))
+                    layer_datatype_fill[a_key]['material'] = row.material.strip(
+                        '\'')
+                    layer_datatype_fill[a_key][
+                        'chip_name'] = row.chip_name.strip('\'')
+                return layer_datatype_fill
+            except Exception as ex:
+                self.logger.error(
+                    f'User is not using LayerStackHandler.get_layer_datatype_when_fill_is_true correctly. Check your input file.'
+                    f'\nERROR:{ex}')
+        return None
+
     def get_properties_for_layer_datatype(
             self,
             properties: List[str],
             layer_number: int,
             datatype: int = 0) -> Union[Tuple[Union[float, str, bool]], None]:
         """When user provides a layer and datatype, they can get properties
-         from the layer_stack file. The allowed options for properties must 
-         be in Col_Names.  If any of the properties are not in Col_Names, 
-         None will be returned.  Otherwise a Tuple will be returned with properties 
-         in the same order as provided in input variable properties. 
+         from the layer_stack file. The allowed options for properties must
+         be in Col_Names.  If any of the properties are not in Col_Names,
+         None will be returned.  Otherwise a Tuple will be returned with properties
+         in the same order as provided in input variable properties.
 
         Args:
-            properties (List[str]): The column(s) within the layer stack that you want 
+            properties (List[str]): The column(s) within the layer stack that you want
             for a row based on layer, and datatype.
             layer_number (int): The layer number within the column denoted by layer.
-            datatype (int, optional): The datatype within the column denoted 
+            datatype (int, optional): The datatype within the column denoted
                                     by datatype. Defaults to 0.
 
         Returns:
-            Union[Tuple[Union[float, str, bool]], None]: If the search data provided 
-                            in the arguments are not in the layer_stack file, 
+            Union[Tuple[Union[float, str, bool]], None]: If the search data provided
+                            in the arguments are not in the layer_stack file,
                             None will be returned.  If the search values are found in
-                            layer_stack file, then a Tuple will be returned with the 
-                            requested properties in the same order as provided in 
+                            layer_stack file, then a Tuple will be returned with the
+                            requested properties in the same order as provided in
                             input variable denoted by properties.
         """
         if not properties:
@@ -163,7 +206,7 @@ class LayerStackHandler():
         return tuple(result)
 
     def is_layer_data_unique(self) -> bool:
-        """For each layer number make sure the datatypes are unique.  A layers can 
+        """For each layer number make sure the datatypes are unique.  A layers can
         #have multiple datatypes.
 
         Returns:
@@ -214,7 +257,7 @@ class LayerStackHandler():
         return set(layers.unique())
 
     def _warning_properties(self, properties: list):
-        """_Give warning if the properties is 
+        """_Give warning if the properties is
 
         Args:
             parameters (list): _description_

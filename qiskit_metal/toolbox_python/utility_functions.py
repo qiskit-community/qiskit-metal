@@ -524,39 +524,6 @@ def compress_vertex_list(individual_vertex: list) -> list:
         return reduced_idx
 
 
-def determine_larger_box(minx: Union[None, float], miny: Union[None, float],
-                         maxx: Union[None, float], maxy: Union[None, float],
-                         chip_box: tuple) -> Tuple[float, float, float, float]:
-    """Return box which includes the two boxes. 
-
-    Args:
-        minx (Union[None, float]): Minimum of x coordinate
-        miny (Union[None, float]): Minimum of y coordinate
-        maxx (Union[None, float]): Maximum of x coordinate
-        maxy (Union[None, float]): Maximum of y coordinate
-        chip_box (tuple):  Second box in following format:
-                            minx, miny, maxx, maxy
-
-    Returns:
-        Tuple[float, float, float, float]: The size:  minx, miny, maxx, maxy of
-                                        box which includes both boxes. 
-    """
-
-    large_minx, large_miny, large_maxx, large_maxy = None, None, None, None
-
-    if minx and miny and maxx and maxy:
-        chip_minx, chip_miny, chip_maxx, chip_maxy = chip_box
-        large_minx = min(minx, chip_minx)
-        large_miny = min(miny, chip_miny)
-        large_maxx = max(maxx, chip_maxx)
-        large_maxy = max(maxy, chip_maxy)
-    else:
-        # First time getting chip size, so just use chip_box
-        large_minx, large_miny, large_maxx, large_maxy = chip_box
-
-    return large_minx, large_miny, large_maxx, large_maxy
-
-
 #######################################################################################
 # File checking
 
