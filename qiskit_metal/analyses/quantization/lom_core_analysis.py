@@ -19,8 +19,6 @@
 # geopandas
 import sys
 
-from scipy.fftpack import hilbert
-
 
 # pylint: disable=wrong-import-position
 # pylint: disable=too-few-public-methods
@@ -35,7 +33,7 @@ if sys.platform == "win32":
     sys.modules['h5py'] = DummyH5py
 
 from collections import defaultdict, namedtuple
-from typing import Any, List, Dict, Tuple, DefaultDict, Sequence, Mapping, Union, Callable
+from typing import Any, List, Dict, Tuple, DefaultDict, Sequence, Mapping, Union
 import argparse
 
 import numpy as np
@@ -50,7 +48,8 @@ from pyEPR.calcs.constants import e_el as ele, hbar
 from qiskit_metal.toolbox_python.utility_functions import get_all_args
 from qiskit_metal.analyses.em.cpw_calculations import guided_wavelength
 from qiskit_metal.analyses.hamiltonian.states_energies import extract_energies
-from .constants import (MHzRad, GHzRad, NANO, FEMTO, ONE_OVER_FEMTO)
+from qiskit_metal.analyses.quantization.constants import (MHzRad, NANO, FEMTO,
+                                                          ONE_OVER_FEMTO)
 
 from qiskit_metal import logger
 
@@ -1029,6 +1028,66 @@ class FluxoniumBuilder(QuantumBuilder):
                                          Q_zpf=Q_zpf)
         subsystem._h_params[node]['default_charge_op'] = Operator(
             fluxonium.n_operator(), False)
+
+
+class TunableTransmonBuilder(QuantumBuilder):
+    """
+    Concrete builder class for a type of quantum subsystem
+    Each subsystem of a composite system calls make_quantum() method of this class
+    to map LOM analysis results, the reduced L and C matrix elements to hamiltonian
+    parameters, such as Ej, Ec and etc
+
+    To create your own custom quantum builder, follow the patterns of the existing
+    ones, such this one, or the other ones implemented in this library
+
+        system_type (str): name of the quantum subsystem
+        default_opts (dict): default options relevant to the type of quantum
+            subsystem. Provide any default values for the paremeters that
+            make_quantum() needs. In the case of qubit subsystems, make_quantum()
+            takes advantage of the scQbuits package (https://scqubits.readthedocs.io).
+            Consequently, the default options correspond to the default options of
+            the qubit classes in scQubits
+    """
+
+    system_type = 'TUNABLE_TRANSMON'
+    default_opts = {'ng': 0.0, 'ncut': 22, 'truncated_dim': 10}
+
+    # pylint: disable=protected-access
+    # pylint: disable=no-member
+    @set_builder_options
+    def make_quantum(self, subsystem: Subsystem):
+        """ concrete building function for the builder to build the quantum
+        system based on default options and input options set for the
+        Subsystem object
+        """
+        cg = self.cg
+        c_inv_k = cg.C_inv_k
+
+        subsystem_idx = _find_subsystem_mat_index(cg,
+                                                  subsystem,
+                                                  single_node=True)
+        ss_idx = subsystem_idx[0]
+        subsystem.system_params['subsystem_idx'] = subsystem_idx
+
+        # EJ and EC are in MHz
+        EC = Convert.Ec_from_Cs(1 / c_inv_k[ss_idx, ss_idx])
+        Q_zpf = 2 * ele
+        builder_options = self.builder_options
+        builder_options.EC = EC
+        tunable_transmon = scq.TunableTransmon(
+            **builder_options.view_as(scq.TunableTransmon))
+
+        subsystem._quantum_system = tunable_transmon
+
+        node = subsystem.nodes[0]
+        subsystem._h_params[node] = dict(EJmax=builder_options.EJmax,
+                                         EC=builder_options.EC,
+                                         d=builder_options.d,
+                                         flux=builder_options.flux,
+                                         ng=builder_options.ng,
+                                         Q_zpf=Q_zpf)
+        subsystem._h_params[node]['default_charge_op'] = Operator(
+            tunable_transmon.n_operator(), False)
 
 
 class TLResonatorBuilder(QuantumBuilder):
