@@ -1233,7 +1233,23 @@ class QGmshRenderer(QRenderer):
         if not os.path.exists(par_dir):
             raise ValueError(f"Directory not found: {par_dir}")
 
+        has_mesh = False if len(gmsh.model.mesh.field.list()) == 0 else True
+        if has_mesh:
+            self.logger.warning(
+                "WARNING: The existing model contains mesh size field definitions, "
+                "which will show up in your exported .geo_unrolled file. If "
+                "you aren't explicitly handling the mesh size fields, we recommend "
+                "to export the geometry before generating the mesh in your design as "
+                "it might interfere with your .geo_unrolled file imports.")
+
         gmsh.write(filepath)
+
+        # Prepend "SetFactory("OpenCASCADE");" in the exported file
+        line = 'SetFactory("OpenCASCADE");'
+        with open(filepath, 'r+') as f:
+            content = f.read()
+            f.seek(0, 0)
+            f.write(line.rstrip('\r\n') + '\n' + content)
 
     def import_post_processing_data(self,
                                     filename: str,
