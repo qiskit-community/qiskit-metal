@@ -808,8 +808,9 @@ class QGmshRenderer(QRenderer):
             fragmented_geoms = gmsh.model.occ.fragment([object_dimtag],
                                                        all_geom_dimtags)
 
-        all_geom_dimtags.insert(0, object_dimtag)
         updated_geoms = fragmented_geoms[0]
+        insert_idx = updated_geoms.index(object_dimtag)
+        all_geom_dimtags.insert(insert_idx, object_dimtag)
         all_dicts = {
             0: self.paths_dict,
             1: self.polys_dict,
