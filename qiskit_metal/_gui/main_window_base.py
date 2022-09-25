@@ -497,7 +497,7 @@ class QMainWindowBaseHandler():
                     'Please do so from the terminal using\n'
                     ' >>> pip install qdarkstyle')
 
-            os.environ['QT_API'] = 'pyside2'
+            os.environ['QT_API'] = 'pyside6'
             self.main_window.setStyleSheet(qdarkstyle.load_stylesheet())
 
         elif path == 'metal_dark':

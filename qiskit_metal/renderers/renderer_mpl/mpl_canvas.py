@@ -44,7 +44,7 @@ if TYPE_CHECKING:
     from ..._gui.widgets.plot_widget.plot_window import QMainWindowPlot
 
 # @mfacchin - moved to the root __init__ to prevent windows from hanging
-# mpl.use("Qt5Agg")
+mpl.use("QtAgg")
 
 BACKGROUND_COLOR = '#F4F4F4'
 MPL_CONTEXT_DEFAULT = {

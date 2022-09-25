@@ -107,7 +107,7 @@ def __setup_Qt_backend():  # pylint: disable=invalid-name
     if not os.getenv('QISKIT_METAL_HEADLESS', None):
         # pylint: disable=import-outside-toplevel
         import matplotlib as mpl
-        mpl.use("Qt5Agg")
+        mpl.use("QtAgg")
         # pylint: disable=redefined-outer-name
         import matplotlib.pyplot as plt
         plt.ion()  # interactive

@@ -86,7 +86,7 @@ ____________________________________
 
 GUI
 ____________________________________
- PySide2 version     {PYSIDE_VERSION_STR}
+ PySide6 version     {PYSIDE_VERSION_STR}
  Qt version          {QT_VERSION_STR}
  SIP version         {SIP_VERSION_STR}
 
