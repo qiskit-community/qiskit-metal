@@ -20,10 +20,12 @@
 
 import unittest
 import numpy as np
+from typing import Union
 
 from qiskit_metal.toolbox_metal import about
 from qiskit_metal.toolbox_metal import parsing
 from qiskit_metal.toolbox_metal import math_and_overrides
+from qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables import BoundsForPathAndPolyTables
 from qiskit_metal.toolbox_metal.exceptions import QiskitMetalExceptions
 from qiskit_metal.toolbox_metal.exceptions import QiskitMetalDesignError
 from qiskit_metal.toolbox_metal.exceptions import IncorrectQtException
@@ -280,6 +282,11 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
         my_array_1 = np.array([3, 4])
         my_array_2 = np.array([12, 14])
         self.assertEqual(math_and_overrides.cross(my_array_1, my_array_2), -6)
+
+    def test_toolbox_metal_aligned_pts(self):
+        #   """Test functionality of aligned_pts in toolbox_metal.py."""
+        self.assertTrue(math_and_overrides.aligned_pts([0, 1, 2]))
+        self.assertFalse(math_and_overrides.aligned_pts([7, 1, 2]))
 
 
 if __name__ == '__main__':
