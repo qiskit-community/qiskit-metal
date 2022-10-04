@@ -80,6 +80,14 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
         except Exception:
             self.fail("about() failed")
 
+    def test_toolbox_metal_open_docs(self):
+        """Test that open_docs in about.py opens qiskit_metal documentation in HTML without any
+        errors."""
+        try:
+            about.open_docs()
+        except Exception:
+            self.fail("about() failed")
+
     # pylint: disable-msg=unused-variable
     def test_toolbox_metal_parsing_true_str(self):
         """Test that TRUE_STR in parsing.py has not accidentally changed."""
