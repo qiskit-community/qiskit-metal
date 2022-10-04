@@ -293,6 +293,11 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
                                           expected[x][i],
                                           rel_tol=1e-3)
 
+    def test_toolbox_metal_extract_value_unit(self):
+        """Test functionality of extract_value_unit in toolbox_metal.py."""
+        self.assertEqual(parsing.extract_value_unit("200", "mm"), 200.0)
+        self.assertEqual(parsing.extract_value_unit("20.5", "units"), 20.5)
+
     def test_toolbox_metal_set_decimal_precision(self):
         """Test functionality of set_decimal_precision in toolbox_metal.py."""
         self.assertEqual(math_and_overrides.DECIMAL_PRECISION, 10)
