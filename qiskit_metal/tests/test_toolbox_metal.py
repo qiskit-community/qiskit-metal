@@ -86,7 +86,19 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
         try:
             about.open_docs()
         except Exception:
-            self.fail("about() failed")
+            self.fail("open_docs() failed")
+
+    def test_toolbox_metal_orient_me(self):
+        """Test that orient_me in about.py returns detailed information about the user without any
+        errors."""
+        try:
+            about.orient_me(True)
+        except Exception:
+            self.fail("orient_me() failed")
+        try:
+            about.orient_me(False)
+        except Exception:
+            self.fail("orient_me() failed")
 
     # pylint: disable-msg=unused-variable
     def test_toolbox_metal_parsing_true_str(self):
