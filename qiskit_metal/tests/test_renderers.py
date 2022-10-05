@@ -309,13 +309,13 @@ class TestRenderers(unittest.TestCase):
         self.assertEqual(len(options["colors"]), 3)
         self.assertEqual(options["x_buffer_width_mm"], 0.2)
         self.assertEqual(options["y_buffer_width_mm"], 0.2)
-        self.assertEqual(options["mesh"]["max_size"], "50um")
-        self.assertEqual(options["mesh"]["min_size"], "3um")
+        self.assertEqual(options["mesh"]["max_size"], "70um")
+        self.assertEqual(options["mesh"]["min_size"], "5um")
+        self.assertEqual(options["mesh"]["max_size_jj"], "5um")
         self.assertEqual(options["mesh"]["smoothing"], 10)
         self.assertEqual(options["mesh"]["nodes_per_2pi_curve"], 90)
         self.assertEqual(options["mesh"]["algorithm_3d"], 10)
         self.assertEqual(options["mesh"]["num_threads"], 8)
-        self.assertEqual(options["mesh"]["export_dir"], ".")
         self.assertEqual(
             options["mesh"]["mesh_size_fields"]["min_distance_from_edges"],
             "10um")
@@ -328,7 +328,7 @@ class TestRenderers(unittest.TestCase):
                          "3um")
         self.assertEqual(options["colors"]["metal"], (84, 140, 168, 255))
         self.assertEqual(options["colors"]["jj"], (84, 140, 168, 150))
-        self.assertEqual(options["colors"]["substrate"], (180, 180, 180, 255))
+        self.assertEqual(options["colors"]["dielectric"], (180, 180, 180, 255))
 
     def test_renderer_ansys_renderer_get_clean_name(self):
         """Test get_clean_name in ansys_renderer.py"""

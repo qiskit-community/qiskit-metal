@@ -36,4 +36,6 @@ Join the [Qiskit](https://ibm.co/joinqiskitslack) `#metal` slack channel to requ
 | Feb 24, 2022 | Tutorial | [Flip chip by guest speaker, Sandoko Kosen.](https://youtu.be/BUojR6Uti5Q)|
 | Mar 10, 2022 | Forum| Metal community provide feedback.|
 | Mar 24, 2022 | Tutorial | [Time Evolution for the CR gate](https://www.youtube.com/watch?v=icDryjZrUQ4)|
+| Aug 4, 2022 | Tutorial | [Open-Source Rendering and Simulation Solution for Qiskit Metal](https://youtu.be/sA0uXtCAhWw)|
+| Aug 11, 2022 | Tutorial | [Qiskit Metal E21. Quantum Spice Web App - Sneak Peak](https://youtu.be/3UE57DaG-HI)|
 | 2022 &rightarrow; ... | TBD | Topics to potentially schedule:<ul><li>Analysis deep dives (as needed)</li><li>What happens frequently when analyzing a chip.</li><li>Metal use cases: Common problems with pins, ports, fillet matches meander distance</li><li>GDS fabrication option, use cases</li><li>QRenderers: How to use, modify and add new renderers</li><li>New QAnalysis/QRenderer structure and usage</li><li>...</li></ul> |

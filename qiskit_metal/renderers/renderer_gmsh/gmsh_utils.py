@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from typing import Union, List, Tuple
 import numpy as np
 import gmsh
-from ...draw.utility import Vec3D
+from qiskit_metal.draw.utility import Vec3D
 
 
 @dataclass
@@ -10,7 +10,7 @@ class Vec3DArray:
     """Class to define an array of np.ndarray objects
 
     Raises:
-        TypeError: if chip_z value is not provided for 2D design
+        TypeError: if layer_z value is not provided for 2D design
         ValueError: if dimensionality of coordinate > 3
 
     Returns:
@@ -20,6 +20,12 @@ class Vec3DArray:
     path_vecs: List[np.ndarray] = field(init=False)
 
     def __post_init__(self):
+        """This is to initialize the `path_vecs` field separately
+        as it depends on the `points` field, and needs to be
+        calculated after the __init__ for the dataclass is called.
+
+        CAUTION: Please don't change this unless you really need to!
+        """
         self.path_vecs = []
         for i in range(0, len(self.points) - 1):
             v1 = self.points[i]
@@ -61,16 +67,16 @@ class Vec3DArray:
 
     @staticmethod
     def make_vec3DArray(points: List[List[Union[int, float]]],
-                        chip_z: float = None):
+                        layer_z: float = None):
         """Create a Vec3DArray object from list of points
 
         Args:
             points (List[List[Union[int, float]]]): list of points
-            chip_z (float, optional): z-coordinate of chip in case
+            layer_z (float, optional): z-coordinate of layer in case
                                     of 2D design. Defaults to None.
 
         Raises:
-            TypeError: if chip_z value is not provided for 2D design
+            TypeError: if layer_z value is not provided for 2D design
             ValueError: if dimensionality of coordinate > 3
 
         Returns:
@@ -81,11 +87,11 @@ class Vec3DArray:
             if len(xyz) > 2:
                 vecs.append(np.array(xyz))
             elif len(xyz) == 2:
-                if chip_z is not None:
-                    vecs.append(np.array([xyz[0], xyz[1], chip_z]))
+                if layer_z is not None:
+                    vecs.append(np.array([xyz[0], xyz[1], layer_z]))
                 else:
                     raise TypeError(
-                        f"Expected a chip_z value for 2D geometry, found NoneType."
+                        f"Expected a layer_z value for 2D geometry, found NoneType."
                     )
             else:
                 raise ValueError(
@@ -95,19 +101,19 @@ class Vec3DArray:
         return Vec3DArray(vecs)
 
 
-def vecs_to_gmsh_points(vecs: List[np.ndarray], chip_z: float) -> list:
+def vecs_to_gmsh_points(vecs: List[np.ndarray], layer_z: float) -> list:
     """Create Gmsh points from np.ndarray objs
 
     Args:
         vecs (List[np.ndarray]): list of np.ndarray objs
-        chip_z (float): z-coordinate of chip
+        layer_z (float): z-coordinate of layer
 
     Returns:
         list: list of Gmsh points
     """
     points = []
     for v in vecs:
-        p = gmsh.model.occ.addPoint(v[0], v[1], chip_z)
+        p = gmsh.model.occ.addPoint(v[0], v[1], layer_z)
         points.append(p)
 
     return points
@@ -116,7 +122,7 @@ def vecs_to_gmsh_points(vecs: List[np.ndarray], chip_z: float) -> list:
 def line_width_offset_pts(pt_vec: np.ndarray,
                           path_vec: np.ndarray,
                           width: float,
-                          chip_z: float,
+                          layer_z: float,
                           ret_pts: bool = True) -> list:
     """Create offset points for straight line
 
@@ -124,14 +130,13 @@ def line_width_offset_pts(pt_vec: np.ndarray,
         pt_vec (np.ndarray): vectors of points in line
         path_vec (np.ndarray): vectors along lines
         width (float): width for offset
-        chip_z (float): z-coordinate of chip
+        layer_z (float): z-coordinate of layer
         ret_pts (bool, optional): Return Gmsh points if True
                         else return np.ndarray. Defaults to True.
 
     Returns:
         list: list of Gmsh points or vec3D objs
     """
-    # TODO: change this to use np.ndarray translate and rotate
     path_angle = Vec3D.angle_azimuth(path_vec)
     perp_angle = path_angle + np.pi / 2
     cos_t = np.round(np.cos(perp_angle), decimals=9)
@@ -143,14 +148,14 @@ def line_width_offset_pts(pt_vec: np.ndarray,
     v2 = Vec3D.sub(pt_vec, offset_vec)
 
     if ret_pts:
-        pts = vecs_to_gmsh_points([v1, v2], chip_z)
+        pts = vecs_to_gmsh_points([v1, v2], layer_z)
         return pts
     else:
         return [v1, v2]
 
 
 def arc_width_offset_pts(vec1: np.ndarray, vec3: np.ndarray, angle: float,
-                         width: float, chip_z: float) -> list:
+                         width: float, layer_z: float) -> list:
     """Create offset points for Circle Arcs
 
     Args:
@@ -158,12 +163,11 @@ def arc_width_offset_pts(vec1: np.ndarray, vec3: np.ndarray, angle: float,
         vec3 (np.ndarray): outgoing vector from arc
         angle (float): angle of arc
         width (float): width for offset
-        chip_z (float): z-coordinate of chip
+        layer_z (float): z-coordinate of layer
 
     Returns:
         list: list of Gmsh points
     """
-    # TODO: change this to use np.ndarray translate and rotate
     perp_angle = np.pi / 2 - angle  # π - (angle + π/2)
     cos_t = np.round(np.cos(perp_angle), decimals=9)
     sin_t = np.round(np.sin(perp_angle), decimals=9)
@@ -179,7 +183,7 @@ def arc_width_offset_pts(vec1: np.ndarray, vec3: np.ndarray, angle: float,
     v3 = Vec3D.add(vec3, offset2)
     v4 = Vec3D.sub(vec3, offset2)
 
-    pts = vecs_to_gmsh_points([v1, v2, v3, v4], chip_z)
+    pts = vecs_to_gmsh_points([v1, v2, v3, v4], layer_z)
     return pts
 
 
@@ -213,15 +217,14 @@ def make_arc_vecs(angle: float,
     return v1, v2, v3
 
 
-def transform_arc_points(pts: list, translate: np.ndarray, path_vecs: list,
-                         chip_z: float) -> list:
+def transform_arc_points(pts: list, translate: np.ndarray,
+                         path_vecs: list) -> list:
     """Apply transformation to arc points
 
     Args:
         pts (list): list of Gmsh points
         translate (np.ndarray): translation vector
         path_vecs (list): vectors of actual position
-        chip_z (float): z-coordinate of chip
 
     Returns:
         list: list of Gmsh points
@@ -249,7 +252,7 @@ def transform_arc_points(pts: list, translate: np.ndarray, path_vecs: list,
                           ay=0,
                           az=1,
                           angle=angle1)
-    gmsh.model.occ.translate(dim_tags, translate[0], translate[1], chip_z)
+    gmsh.model.occ.translate(dim_tags, translate[0], translate[1], 0)
     return new_pts
 
 
@@ -271,7 +274,6 @@ def draw_curves(recent_pts: list, curves1: list,
     """
     rec_pts = []
 
-    # TODO: think of a better error message
     if len(recent_pts) not in [4, 7]:
         raise RuntimeError(
             "Unexpected geometry {len(recent_pts) not in [4,7]}. Check your geometry and retry."
@@ -296,7 +298,7 @@ def draw_curves(recent_pts: list, curves1: list,
 
 
 def render_path_curves(vecs: Vec3DArray,
-                       chip_z: float,
+                       layer_z: float,
                        fillet: float,
                        width: float,
                        bad_fillet_idxs: List[int],
@@ -305,7 +307,7 @@ def render_path_curves(vecs: Vec3DArray,
 
     Args:
         vecs (Vec3DArray): vector array
-        chip_z (float): z-coordinate of chip
+        layer_z (float): z-coordinate of layer
         fillet (float): fillet radius
         width (float): width for offset
         straight_line_tol (float, optional): Tolerance for straight line
@@ -322,14 +324,14 @@ def render_path_curves(vecs: Vec3DArray,
 
     for i, v in enumerate(vecs.points):
         if i == 0:
-            p1, p2 = line_width_offset_pts(v, vecs.path_vecs[i], width, chip_z)
+            p1, p2 = line_width_offset_pts(v, vecs.path_vecs[i], width, layer_z)
             recent_pts += [p1, p2]
             curves1 += [gmsh.model.occ.addLine(p1, p2)]
             continue
 
         if i == len(vecs.points) - 1:
             p1, p2 = line_width_offset_pts(v, vecs.path_vecs[i - 1], width,
-                                           chip_z)
+                                           layer_z)
             recent_pts += [p1, p2]
             curves1 += [gmsh.model.occ.addLine(p1, p2)]
             continue
@@ -344,17 +346,17 @@ def render_path_curves(vecs: Vec3DArray,
 
         elif fillet > 0.0 and is_filleted:
             if np.allclose(angle12, np.pi, rtol=straight_line_tol):
-                p1, p2 = line_width_offset_pts(v, pv2, width, chip_z)
+                p1, p2 = line_width_offset_pts(v, pv2, width, layer_z)
                 recent_pts += [p1, p2]
 
             else:
                 v1, v2, v3 = make_arc_vecs(angle12, fillet)
                 p1, p2, p4, p5 = arc_width_offset_pts(v1, v3, angle12, width,
-                                                      chip_z)
-                p3 = vecs_to_gmsh_points([v2], chip_z)[0]
+                                                      layer_z)
+                p3 = vecs_to_gmsh_points([v2], layer_z)[0]
 
                 new_pts = transform_arc_points([p1, p2, p3, p4, p5], v,
-                                               [pv1, pv2], chip_z)
+                                               [pv1, pv2])
                 recent_pts += new_pts
 
         else:
@@ -377,8 +379,10 @@ def render_path_curves(vecs: Vec3DArray,
                                        az=True,
                                        radians=-right_turn *
                                        (np.pi - half_angle))
-            p1 = gmsh.model.occ.addPoint(offset_vec1[0], offset_vec1[1], chip_z)
-            p2 = gmsh.model.occ.addPoint(offset_vec2[0], offset_vec2[1], chip_z)
+            p1 = gmsh.model.occ.addPoint(offset_vec1[0], offset_vec1[1],
+                                         layer_z)
+            p2 = gmsh.model.occ.addPoint(offset_vec2[0], offset_vec2[1],
+                                         layer_z)
             recent_pts += [p1, p2] if right_turn > 0 else [p2, p1]
 
         recent_pts, curves1, curves2 = draw_curves(recent_pts, curves1, curves2)
