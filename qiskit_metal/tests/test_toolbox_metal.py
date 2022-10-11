@@ -32,6 +32,8 @@ from qiskit_metal.toolbox_metal.exceptions import IncorrectQtException
 from qiskit_metal.toolbox_metal.exceptions import QLibraryGUIException
 from qiskit_metal.toolbox_metal.exceptions import InputError
 from qiskit_metal.tests.assertions import AssertionsMixin
+from qiskit_metal.qlibrary.qubits.transmon_concentric import TransmonConcentric
+from qiskit_metal.designs.design_multiplanar import MultiPlanar
 
 
 class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
@@ -297,6 +299,24 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
         """Test functionality of extract_value_unit in toolbox_metal.py."""
         self.assertEqual(parsing.extract_value_unit("200", "mm"), 200.0)
         self.assertEqual(parsing.extract_value_unit("20.5", "units"), 20.5)
+
+    def test_toolbox_metal_fix_units(self):
+        """Test functionality of fix_units in toolbox_metal.py."""
+        self.assertIsInstance(parsing.fix_units(2.5, "mm"), str)
+        self.assertEqual(parsing.fix_units(10.5, None), "10.5mm")
+
+    def test_toolbox_metal_parse_entry(self):
+        """Test functionality of parse_entry in toolbox_metal.py."""
+        self.assertIsInstance(parsing.parse_entry([2, "two"]), list)
+        self.assertEqual(parsing.parse_entry(5.5), 5.5)
+        self.assertIsInstance(parsing.parse_entry("test"), str)
+
+    def test_toolbox_metal_parse_units(self):
+        """Test functionality of parse_units in toolbox_metal.py."""
+        self.assertEqual(parsing.parse_units(8), 0.008)
+        self.assertEqual(parsing.parse_units("two"), "two")
+        self.assertEqual(parsing.parse_units([2, 3.5, 5]),
+                         [0.002, 0.0035, 0.005])
 
     def test_toolbox_metal_set_decimal_precision(self):
         """Test functionality of set_decimal_precision in toolbox_metal.py."""
