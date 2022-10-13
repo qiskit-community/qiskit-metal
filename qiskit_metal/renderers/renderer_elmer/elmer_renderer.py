@@ -131,8 +131,10 @@ class QElmerRenderer(QRendererAnalysis):
         elif self.gmsh.case == 2:
             raise ValueError("Selection provided is invalid.")
 
+        metal_layers = self.layer_types["metal"]
+
         mask = lambda table: table["component"].isin(qcomp_ids) & ~table[
-            "subtract"]
+            "subtract"] & table["layer"].isin(metal_layers)
 
         netlists = defaultdict(list)
         netlist_id = 0
@@ -157,15 +159,27 @@ class QElmerRenderer(QRendererAnalysis):
             i = qgeom_idxs.pop(0)
             shape_i = qcomp_geom_table.iloc[[i]]["geometry"][i]
             chip_i = qcomp_geom_table.iloc[[i]]["chip"][i]
+            layer_i = qcomp_geom_table.iloc[[i]]["layer"][i]
+            thick_i, z_coord_i = self.gmsh.get_thickness_zcoord_for_layer_datatype(
+                layer_i)
             id_net_dict[phys_grps[i]] = netlist_id if (
                 id_net_dict[phys_grps[i]] == -1) else id_net_dict[phys_grps[i]]
             for j in qgeom_idxs:
                 shape_j = qcomp_geom_table.iloc[[j]]["geometry"][j]
                 chip_j = qcomp_geom_table.iloc[[j]]["chip"][j]
+                layer_j = qcomp_geom_table.iloc[[j]]["layer"][j]
+                thick_j, z_coord_j = self.gmsh.get_thickness_zcoord_for_layer_datatype(
+                    layer_j)
                 dist = shape_i.distance(shape_j)
 
+                layers_touch = False
+                if (layer_i == layer_j or z_coord_j == z_coord_i or
+                        z_coord_i + thick_i == z_coord_j or
+                        z_coord_j + thick_j == z_coord_i):
+                    layers_touch = True
+
                 # TODO: change this to be compatible with layer-stack
-                if dist == 0.0 and chip_i == chip_j:
+                if dist == 0.0 and chip_i == chip_j and layers_touch:
                     if id_net_dict[phys_grps[j]] == -1:
                         id_net_dict[phys_grps[j]] = id_net_dict[phys_grps[i]]
                     else:
