@@ -297,7 +297,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_extract_value_unit(self):
         """Test functionality of extract_value_unit in toolbox_metal.py."""
-        self.assertEqual(parsing.extract_value_unit("200", "mm"), 200.0)
+        self.assertEqual(parsing.extract_value_unit("200mm", "mm"), 200.0)
         self.assertEqual(parsing.extract_value_unit("20.5", "units"), 20.5)
 
     def test_toolbox_metal_fix_units(self):
