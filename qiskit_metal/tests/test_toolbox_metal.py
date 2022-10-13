@@ -20,14 +20,17 @@
 
 import unittest
 import numpy as np
+from typing import Union
 
 from qiskit_metal.toolbox_metal import about
 from qiskit_metal.toolbox_metal import parsing
 from qiskit_metal.toolbox_metal import math_and_overrides
+from qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables import BoundsForPathAndPolyTables
 from qiskit_metal.toolbox_metal.exceptions import QiskitMetalExceptions
 from qiskit_metal.toolbox_metal.exceptions import QiskitMetalDesignError
 from qiskit_metal.toolbox_metal.exceptions import IncorrectQtException
 from qiskit_metal.toolbox_metal.exceptions import QLibraryGUIException
+from qiskit_metal.toolbox_metal.exceptions import InputError
 from qiskit_metal.tests.assertions import AssertionsMixin
 
 
@@ -63,12 +66,19 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
         except Exception:
             self.fail("IncorrectQtException failed.")
 
-    def test_toolbox_metal_instantiation_qlibrary_gui__excpetion(self):
+    def test_toolbox_metal_instantiation_qlibrary_gui_exception(self):
         """Test instantiation of QLibraryGUIException."""
         try:
             QLibraryGUIException("test message")
         except Exception:
             self.fail("QLibraryGUIException failed.")
+
+    def test_toolbox_metal_instantiation_input_error(self):
+        """Test instantiation of InputError."""
+        try:
+            InputError("test message")
+        except Exception:
+            self.fail("InputError failed.")
 
     def test_toolbox_metal_about(self):
         """Test that about in about.py produces about text without any
@@ -77,6 +87,33 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
             about.about()
         except Exception:
             self.fail("about() failed")
+
+    def test_toolbox_metal_open_docs(self):
+        """Test that open_docs in about.py opens qiskit_metal documentation in HTML without any
+        errors."""
+        try:
+            about.open_docs()
+        except Exception:
+            self.fail("open_docs() failed")
+
+    def test_toolbox_metal_orient_me(self):
+        """Test that orient_me in about.py produces detailed information about the user without any
+        errors."""
+        try:
+            about.orient_me(True)
+        except Exception:
+            self.fail("orient_me() failed")
+        try:
+            about.orient_me(False)
+        except Exception:
+            self.fail("orient_me() failed")
+
+    def test_toolbox_metal_get_platform_info(self):
+        """Test that get_platform_info in about.py returns a string with the platform information without any errors."""
+        try:
+            return about.get_platform_info()
+        except Exception:
+            self.fail("get_platform_info() failed")
 
     # pylint: disable-msg=unused-variable
     def test_toolbox_metal_parsing_true_str(self):
@@ -256,6 +293,11 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
                                           expected[x][i],
                                           rel_tol=1e-3)
 
+    def test_toolbox_metal_extract_value_unit(self):
+        """Test functionality of extract_value_unit in toolbox_metal.py."""
+        self.assertEqual(parsing.extract_value_unit("200mm", "mm"), 200.0)
+        self.assertEqual(parsing.extract_value_unit("20.5", "units"), 20.5)
+
     def test_toolbox_metal_set_decimal_precision(self):
         """Test functionality of set_decimal_precision in toolbox_metal.py."""
         self.assertEqual(math_and_overrides.DECIMAL_PRECISION, 10)
@@ -280,6 +322,11 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
         my_array_1 = np.array([3, 4])
         my_array_2 = np.array([12, 14])
         self.assertEqual(math_and_overrides.cross(my_array_1, my_array_2), -6)
+
+    def test_toolbox_metal_aligned_pts(self):
+        #   """Test functionality of aligned_pts in toolbox_metal.py."""
+        self.assertTrue(math_and_overrides.aligned_pts([0, 1, 2]))
+        self.assertFalse(math_and_overrides.aligned_pts([7, 1, 2]))
 
 
 if __name__ == '__main__':
