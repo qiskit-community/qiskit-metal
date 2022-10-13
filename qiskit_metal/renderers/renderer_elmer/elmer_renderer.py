@@ -70,13 +70,23 @@ class QElmerRenderer(QRendererAnalysis):
         ),
     )
 
-    def __init__(self, design: QDesign, initiate=True, options: Dict = None):
+    def __init__(self,
+                 design: 'MultiPlanar',
+                 layer_types: Union[dict, None] = None,
+                 initiate=True,
+                 options: Dict = None):
         """
         Args:
-            design (QDesign): The design.
+            design ('MultiPlanar'): The design.
+            layer_types (Union[dict, None]): the type of layer in the format:
+                                                dict(metal=[...], dielectric=[...]).
+                                                Defaults to None.
             initiate (bool): True to initiate the renderer (Default: False).
             settings (Dict, optional): Used to override default settings. Defaults to None.
         """
+        default_layer_types = dict(metal=[1], dielectric=[3])
+        self.layer_types = default_layer_types if layer_types is None else layer_types
+
         super().__init__(design=design, initiate=initiate, options=options)
 
     @property
@@ -88,7 +98,7 @@ class QElmerRenderer(QRendererAnalysis):
         return self.gmsh.initialized
 
     def _initiate_renderer(self):
-        self.gmsh = QGmshRenderer(self.design)
+        self.gmsh = QGmshRenderer(self.design, self.layer_types)
         self._elmer_runner = ElmerRunner()
 
     def _close_renderer(self):
