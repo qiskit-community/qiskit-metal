@@ -136,6 +136,10 @@ class QElmerRenderer(QRendererAnalysis):
         mask = lambda table: table["component"].isin(qcomp_ids) & ~table[
             "subtract"] & table["layer"].isin(metal_layers)
 
+        min_z = lambda layer: min(
+            sum(self.gmsh.get_thickness_zcoord_for_layer_datatype(layer)),
+            self.gmsh.get_thickness_zcoord_for_layer_datatype(layer)[1])
+
         netlists = defaultdict(list)
         netlist_id = 0
         path_table = self.design.qgeometry.tables["path"]
@@ -143,6 +147,11 @@ class QElmerRenderer(QRendererAnalysis):
         qcomp_paths = path_table[mask(table=path_table)]
         qcomp_polys = poly_table[mask(table=poly_table)]
         qcomp_geom_table = pd.concat([qcomp_paths, qcomp_polys],
+                                     ignore_index=True)
+
+        qcomp_geom_table['min_z'] = qcomp_geom_table['layer'].apply(min_z)
+        qcomp_geom_table.sort_values(by=['min_z'],
+                                     inplace=True,
                                      ignore_index=True)
         qgeom_names = qcomp_geom_table["name"]
         qcomp_names_for_qgeom = [
