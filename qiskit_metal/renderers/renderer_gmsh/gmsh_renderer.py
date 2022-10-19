@@ -874,7 +874,10 @@ class QGmshRenderer(QRenderer):
                 for name, tag in layer_geoms.items():
                     if layer_dim == 3:
                         tags = gmsh.model.occ.getSurfaceLoops(tag[0])[1][0]
-                        if not ignore_metal_volume:
+                        metal_layer = True if layer in self.layer_types[
+                            "metal"] else False
+                        if not metal_layer or (metal_layer and
+                                               not ignore_metal_volume):
                             ph_vol_tag = gmsh.model.addPhysicalGroup(
                                 dim=layer_dim, tags=tag, name=name)
                             self.physical_groups[layer][name] = ph_vol_tag
@@ -918,7 +921,9 @@ class QGmshRenderer(QRenderer):
                         layer_sfs_tags += list(
                             gmsh.model.occ.getSurfaceLoops(vol)[1][0])
 
-                    if layer_type == "ground_plane" and not ignore_metal_volume:
+                    if layer_type != "ground_plane" or (
+                            layer_type == "ground_plane" and
+                            not ignore_metal_volume):
                         ph_vol_tag = gmsh.model.addPhysicalGroup(
                             dim=layer_dim, tags=layer_tag, name=layer_name)
                         self.physical_groups[layer][layer_name] = ph_vol_tag
