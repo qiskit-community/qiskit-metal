@@ -108,7 +108,8 @@ class TransmonConcentricType2(BaseQubit):
                                      ((p.rad_outer + p.finger_NE_length)*cos(45*3.14159/180),
                                       (p.rad_outer+p.finger_NE_length)*sin(45*3.14159/180))])
         # draw the coupling resonator to the northeast finger
-        r = p.rad_outer + 0.5*p.finger_NE_length + 0.5*(0.5*p.finger_NE_length + p.coupler_NE_gap + p.coupler_NE_width)
+        r = (p.rad_outer + 0.5*p.finger_NE_length
+             + 0.5*(0.5*p.finger_NE_length + p.coupler_NE_gap + p.coupler_NE_width))
         coupler_NE = draw.rectangle(2.0*p.coupler_NE_width + p.finger_NE_width + 2*p.coupler_NE_gap,
                                     0.5*p.finger_NE_length + p.coupler_NE_gap + p.coupler_NE_width,
                                     r*cos(45*3.14159/180),
@@ -118,7 +119,8 @@ class TransmonConcentricType2(BaseQubit):
                                  origin=(r*cos(45*3.14159/180), r*sin(45*3.14159/180)))
         l = p.rad_outer + 0.5*p.finger_NE_length + 0.5*(0.5*p.finger_NE_length + p.coupler_NE_gap)
         coupler_NE_cut = draw.rectangle(p.finger_NE_width + 2.0*p.coupler_NE_gap,
-                                        0.5*p.finger_NE_length+p.coupler_NE_gap+0.05*p.finger_NE_length,
+                                        0.5*p.finger_NE_length
+                                        +p.coupler_NE_gap+0.05*p.finger_NE_length,
                                         l*cos(45*3.145159/180),
                                         l*sin(45*3.14159/180))
         coupler_NE_cut = draw.rotate(coupler_NE_cut,
@@ -131,7 +133,8 @@ class TransmonConcentricType2(BaseQubit):
                                      (-1.0*(p.rad_outer + p.finger_NW_length)*cos(45*3.14159/180),
                                       (p.rad_outer+p.finger_NW_length)*sin(45*3.14159/180))])
         # draw the coupling resonator to the northwest finger
-        r_nw = p.rad_outer+0.5*p.finger_NW_length+0.5*(0.5*p.finger_NW_length+p.coupler_NW_gap+p.coupler_NW_width)
+        r_nw = (p.rad_outer+0.5*p.finger_NW_length
+                + 0.5*(0.5*p.finger_NW_length+p.coupler_NW_gap+p.coupler_NW_width))
         coupler_NW = draw.rectangle(2.0*p.coupler_NW_width + p.finger_NW_width + 2*p.coupler_NW_gap,
                                     0.5*p.finger_NW_length + p.coupler_NW_gap + p.coupler_NW_width,
                                     -1.0*r_nw*cos(45*3.14159/180),
@@ -141,7 +144,8 @@ class TransmonConcentricType2(BaseQubit):
                                          r_nw*sin(45*3.14159/180)))
         l_nw = p.rad_outer + 0.5*p.finger_NW_length+0.5*(0.5*p.finger_NW_length+p.coupler_NW_gap)
         coupler_NW_cut = draw.rectangle(p.finger_NW_width + 2.0*p.coupler_NW_gap,
-                                        0.5*p.finger_NW_length + p.coupler_NW_gap + 0.05*p.finger_NW_length,
+                                        0.5*p.finger_NW_length
+                                        + p.coupler_NW_gap + 0.05*p.finger_NW_length,
                                         -1.0*l_nw*cos(45*3.145159/180),
                                         l_nw*sin(45*3.14159/180))
         coupler_NW_cut = draw.rotate(coupler_NW_cut, 45,
@@ -154,7 +158,8 @@ class TransmonConcentricType2(BaseQubit):
                                      (-1.0*(p.rad_outer + p.finger_SW_length)*cos(45*3.14159/180),
                                       -1.0*(p.rad_outer+p.finger_SW_length)*sin(45*3.14159/180))])
         # draw the coupling resonator to the southwest finger
-        r_sw = p.rad_outer + 0.5*p.finger_SW_length + 0.5*(0.5*p.finger_SW_length + p.coupler_SW_gap + p.coupler_SW_width)
+        r_sw = (p.rad_outer + 0.5*p.finger_SW_length
+                + 0.5*(0.5*p.finger_SW_length + p.coupler_SW_gap + p.coupler_SW_width))
         coupler_SW = draw.rectangle(2.0*p.coupler_SW_width + p.finger_SW_width + 2*p.coupler_SW_gap,
                                     0.5*p.finger_SW_length + p.coupler_SW_gap + p.coupler_SW_width,
                                     -1.0*r_sw*cos(45*3.14159/180),
@@ -164,7 +169,8 @@ class TransmonConcentricType2(BaseQubit):
                                          -1.0*r_sw*sin(45*3.14159/180)))
         l_sw = p.rad_outer+0.5*p.finger_SW_length+0.5*(0.5*p.finger_SW_length+p.coupler_SW_gap)
         coupler_SW_cut = draw.rectangle(p.finger_SW_width + 2.0*p.coupler_SW_gap,
-                                        0.5*p.finger_SW_length + p.coupler_SW_gap + 0.05*p.finger_SW_length,
+                                        0.5*p.finger_SW_length
+                                        + p.coupler_SW_gap + 0.05*p.finger_SW_length,
                                         -1.0*l_sw*cos(45*3.145159/180),
                                         -1.0*l_sw*sin(45*3.14159/180))
         coupler_SW_cut = draw.rotate(coupler_SW_cut, 135,
@@ -183,14 +189,16 @@ class TransmonConcentricType2(BaseQubit):
                                   0.0,
                                   p.rad_inner + p.finger_N_length + 0.5*p.triangle_height)
         cut1 = draw.rotate(padtop_i, 45,
-                           origin=(0.5*p.triangle_base, p.rad_inner + p.finger_N_length + p.triangle_height))
+                           origin=(0.5*p.triangle_base,
+                                   p.rad_inner + p.finger_N_length + p.triangle_height))
         padtop = draw.subtract(padtop_i, cut1)
         cut2 = draw.rotate(padtop_i, 315,
-                           origin=(-0.5*p.triangle_base, p.rad_inner + p.finger_N_length + p.triangle_height))
+                           origin=(-0.5*p.triangle_base,
+                                   p.rad_inner + p.finger_N_length + p.triangle_height))
         padtop = draw.subtract(padtop, cut2)
         padtop = draw.translate(padtop, 0.0, -.05*p.triangle_height)
         # draw the transmon pocket bounding box
-        pocket = draw.rectangle(p.pocket_w, p.pocket_h)
+        # pocket = draw.rectangle(p.pocket_w, p.pocket_h)
         # Translate and rotate all shapes
         objects = [outer_pad, inner_pad, JJ, finger_NE,
                    finger_NW, finger_SW, finger_E, box,
