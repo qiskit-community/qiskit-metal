@@ -26,6 +26,8 @@ from qiskit_metal.toolbox_metal import about
 from qiskit_metal.toolbox_metal import parsing
 from qiskit_metal.toolbox_metal import math_and_overrides
 from qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables import BoundsForPathAndPolyTables
+from qiskit_metal.toolbox_metal.layer_stack_handler import LayerStackHandler
+from qiskit_metal.toolbox_metal import bounds_for_path_and_poly_tables
 from qiskit_metal.toolbox_metal.exceptions import QiskitMetalExceptions
 from qiskit_metal.toolbox_metal.exceptions import QiskitMetalDesignError
 from qiskit_metal.toolbox_metal.exceptions import IncorrectQtException
@@ -111,7 +113,8 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
             self.fail("orient_me() failed")
 
     def test_toolbox_metal_get_platform_info(self):
-        """Test that get_platform_info in about.py returns a string with the platform information without any errors."""
+        """Test that get_platform_info in about.py returns a string with the
+        platform information without any errors."""
         try:
             return about.get_platform_info()
         except Exception:
@@ -344,9 +347,342 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
         self.assertEqual(math_and_overrides.cross(my_array_1, my_array_2), -6)
 
     def test_toolbox_metal_aligned_pts(self):
-        #   """Test functionality of aligned_pts in toolbox_metal.py."""
+        """Test functionality of aligned_pts in toolbox_metal.py."""
         self.assertTrue(math_and_overrides.aligned_pts([0, 1, 2]))
         self.assertFalse(math_and_overrides.aligned_pts([7, 1, 2]))
+
+    def test_toolbox_metal_determine_larger_box(self):
+        """Test functionality of determine_larger_box in toolbox_metal.py."""
+        self.assertEqual(
+            bounds_for_path_and_poly_tables.determine_larger_box(
+                0.0, 0.0, 11.0, 11.0, (0.0, 0.0, 10.0, 10.0)),
+            (0.0, 0.0, 10.0, 10.0))
+
+    def test_toolbox_metal_get_bounds_of_path_and_poly_tables(self):
+        """Test functionality of get_bounds_of_path_and_poly_tables in toolbox_metal.py"""
+        ls_file_path = """/Users/christinadelnano/Documents/
+                          qiskit-metal/tutorials/resources/
+                          flip_chip_layer_stack.txt"""
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        self.assertIsInstance(
+            BoundsForPathAndPolyTables(
+                multiplanar_design).get_bounds_of_path_and_poly_tables(
+                    False, [], 1, 0, 0), tuple)
+
+    def test_toolbox_metal_ensure_component_box_smaller_than_chip_box_(self):
+        """Test functionality of ensure_component_box_smaller_than_chip_box in toolbox_metal.py"""
+        ls_file_path = """/Users/christinadelnano/Documents/
+                          qiskit-metal/tutorials/resources/
+                          flip_chip_layer_stack.txt"""
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        chip = getattr(multiplanar_design, "_chips")
+        for main in chip.items():
+            coords = main[1]
+        for item in coords.values():
+            x_0 = item['center_x']
+            y_0 = item['center_y']
+            x_1 = item['size_x']
+            y_1 = item['size_y']
+        x_0 = int(float(x_0[:-2]))
+        y_0 = int(float(y_0[:-2]))
+        x_1 = int(x_1[:-2])
+        y_1 = int(y_1[:-2])
+        self.assertEqual(
+            BoundsForPathAndPolyTables(
+                multiplanar_design).ensure_component_box_smaller_than_chip_box_(
+                    (0, 0, 2, 3), (x_0, y_0, x_1, y_1)), (0, 0, 2, 3))
+        self.assertEqual(
+            BoundsForPathAndPolyTables(
+                multiplanar_design).ensure_component_box_smaller_than_chip_box_(
+                    (0, 0, 9, 7), (None, None, None, None)), (0, 0, 9, 7))
+
+    def test_toolbox_metal_get_box_for_xy_bounds(self):
+        """Test functionality of get_box_for_xy_bounds in toolbox_metal.py."""
+        ls_file_path = """/Users/christinadelnano/Documents/
+                          qiskit-metal/tutorials/resources/
+                          flip_chip_layer_stack.txt"""
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        multiplanar_design.chips['c_chip'] = {
+            'size': {
+                'center_x': '0.0mm',
+                'center_y': '0.0mm',
+                'size_x': '9mm',
+                'size_y': '7mm'
+            }
+        }
+        multiplanar_design.chips['q_chip'] = {
+            'size': {
+                'center_x': '0.0mm',
+                'center_y': '0.0mm',
+                'size_x': '9mm',
+                'size_y': '7mm'
+            }
+        }
+        self.assertEqual(
+            BoundsForPathAndPolyTables(
+                multiplanar_design).get_box_for_xy_bounds(),
+            (-4.5, -3.5, 4.5, 3.5))
+
+    def test_toolbox_metal_are_all_chipnames_in_design(self):
+        """Test functionality of are_all_chipnames_in_design in toolbox_metal.py."""
+        ls_file_path = """/Users/christinadelnano/Documents/
+                          qiskit-metal/tutorials/resources/
+                          flip_chip_layer_stack.txt"""
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        multiplanar_design.chips['c_chip'] = {
+            'size': {
+                'center_x': '0.0mm',
+                'center_y': '0.0mm',
+                'size_x': '9mm',
+                'size_y': '7mm'
+            }
+        }
+        multiplanar_design.chips['q_chip'] = {
+            'size': {
+                'center_x': '0.0mm',
+                'center_y': '0.0mm',
+                'size_x': '9mm',
+                'size_y': '7mm'
+            }
+        }
+        self.assertEqual(
+            BoundsForPathAndPolyTables(
+                multiplanar_design).are_all_chipnames_in_design(),
+            (True, {'q_chip', 'c_chip'}))
+
+    def test_toolbox_metal_get_x_y_for_chip(self):
+        """Test functionality of get_x_y_for_chip in toolbox_metal.py."""
+        ls_file_path = """/Users/christinadelnano/Documents/
+                          qiskit-metal/tutorials/resources/
+                          flip_chip_layer_stack.txt"""
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        multiplanar_design.chips['c_chip'] = {
+            'size': {
+                'center_x': '0.0mm',
+                'center_y': '0.0mm',
+                'size_x': '9mm',
+                'size_y': '7mm'
+            }
+        }
+        multiplanar_design.chips['q_chip'] = {
+            'size': {
+                'center_x': '0.0mm',
+                'center_y': '0.0mm',
+                'size_x': '9mm',
+                'size_y': '7mm'
+            }
+        }
+        self.assertEqual(
+            BoundsForPathAndPolyTables(multiplanar_design).get_x_y_for_chip(
+                'q_chip'), ((-4.5, -3.5, 4.5, 3.5), 0))
+        self.assertEqual(
+            BoundsForPathAndPolyTables(multiplanar_design).get_x_y_for_chip(
+                'c_chip'), ((-4.5, -3.5, 4.5, 3.5), 0))
+
+    def test_toolbox_metal_chip_names_not_in_design(self):
+        """Test functionality of chip_names_not_in_design in toolbox_metal.py."""
+        ls_file_path = """/Users/christinadelnano/Documents/
+                          qiskit-metal/tutorials/resources/
+                          flip_chip_layer_stack.txt"""
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        self.assertEqual(
+            BoundsForPathAndPolyTables(
+                multiplanar_design).chip_names_not_in_design(
+                    set(multiplanar_design.chips.keys()),
+                    multiplanar_design.ls.get_unique_chip_names()), None)
+
+    def test_toolbox_metal_chip_size_not_in_chipname_within_design(self):
+        """Test functionality of chip_size_not_in_chipname_within_design in toolbox_metal.py."""
+        ls_file_path = """/Users/christinadelnano/Documents/
+                          qiskit-metal/tutorials/resources/
+                          flip_chip_layer_stack.txt"""
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        self.assertEqual(
+            BoundsForPathAndPolyTables(multiplanar_design).
+            chip_size_not_in_chipname_within_design('c_chip'), None)
+
+    def test_toolbox_metal_get_layer_datatype_when_fill_is_true(self):
+        """Test functionality of get_layer_datatype_when_fill_is_true in toolbox_metal.py."""
+        ls_file_path = """/Users/christinadelnano/Documents/
+                          qiskit-metal/tutorials/resources/
+                          flip_chip_layer_stack.txt"""
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        self.assertEqual(
+            LayerStackHandler(
+                multiplanar_design,
+                (ls_file_path, None)).get_layer_datatype_when_fill_is_true(), {
+                    (1, 0): {
+                        'layer': 1,
+                        'datatype': 0,
+                        'thickness': 0.002,
+                        'z_coord': 0.0,
+                        'material': 'pec',
+                        'chip_name': 'c_chip'
+                    },
+                    (3, 0): {
+                        'layer': 3,
+                        'datatype': 0,
+                        'thickness': -0.5,
+                        'z_coord': 0.0,
+                        'material': 'silicon',
+                        'chip_name': 'c_chip'
+                    },
+                    (2, 0): {
+                        'layer': 2,
+                        'datatype': 0,
+                        'thickness': 0.002,
+                        'z_coord': 0.06,
+                        'material': 'pec',
+                        'chip_name': 'q_chip'
+                    },
+                    (4, 0): {
+                        'layer': 4,
+                        'datatype': 0,
+                        'thickness': 0.5,
+                        'z_coord': 0.062,
+                        'material': 'silicon',
+                        'chip_name': 'q_chip'
+                    }
+                })
+
+    def test_toolbox_metal_get_properties_for_layer_datatype(self):
+        """Test functionality of get_properties_for_layer_datatype in toolbox_metal.py."""
+        ls_file_path = """/Users/christinadelnano/Documents/
+                          qiskit-metal/tutorials/resources/
+                          flip_chip_layer_stack.txt"""
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        self.assertEqual(
+            LayerStackHandler(
+                multiplanar_design,
+                (ls_file_path, None)).get_properties_for_layer_datatype(
+                    ['material', 'thickness'], 2, 0), ('pec', 0.002))
+        self.assertEqual(
+            LayerStackHandler(
+                multiplanar_design,
+                (ls_file_path, None)).get_properties_for_layer_datatype(
+                    ['material', 'thickness'], 3, 0), ('silicon', -0.5))
+
+    def test_toolbox_metal_is_layer_data_unique(self):
+        """Test functionality of is_layer_data_unique in toolbox_metal.py."""
+        ls_file_path = """/Users/christinadelnano/Documents/
+                          qiskit-metal/tutorials/resources/
+                          flip_chip_layer_stack.txt"""
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        self.assertEqual(
+            LayerStackHandler(multiplanar_design,
+                              (ls_file_path, None)).is_layer_data_unique(),
+            True)
+
+    def test_toolbox_metal_read_csv_df(self):
+        """Test functionality of read_csv_df in toolbox_metal.py."""
+        ls_file_path = """/Users/christinadelnano/Documents/
+                          qiskit-metal/tutorials/resources/
+                          flip_chip_layer_stack.txt"""
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        self.assertEqual(
+            LayerStackHandler(multiplanar_design,
+                              (ls_file_path, None))._read_csv_df(ls_file_path),
+            None)
+
+    def test_toolbox_metal_get_unique_chip_names(self):
+        """Test functionality of get_unique_chip_names in toolbox_metal.py."""
+        ls_file_path = """/Users/christinadelnano/Documents/
+                          qiskit-metal/tutorials/resources/
+                          flip_chip_layer_stack.txt"""
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        self.assertEqual(
+            LayerStackHandler(multiplanar_design,
+                              (ls_file_path, None)).get_unique_chip_names(),
+            {'q_chip', 'c_chip'})
+
+    def test_toolbox_metal_get_unique_layer_ints(self):
+        """Test functionality of get_unique_layer_ints in toolbox_metal.py."""
+        ls_file_path = """/Users/christinadelnano/Documents/
+                          qiskit-metal/tutorials/resources/
+                          flip_chip_layer_stack.txt"""
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        self.assertEqual(
+            LayerStackHandler(multiplanar_design,
+                              (ls_file_path, None)).get_unique_layer_ints(),
+            {1, 2, 3, 4})
+
+    def test_toolbox_metal_warning_properties(self):
+        """Test functionality of _warning_properties in toolbox_metal.py."""
+        ls_file_path = """/Users/christinadelnano/Documents/
+                          qiskit-metal/tutorials/resources/
+                          flip_chip_layer_stack.txt"""
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        self.assertEqual(
+            LayerStackHandler(multiplanar_design,
+                              (ls_file_path, None))._warning_properties(
+                                  ['test']), None)
+
+    def test_toolbox_metal_warning_search(self):
+        """Test functionality of _warning_search in toolbox_metal.py."""
+        ls_file_path = """/Users/christinadelnano/Documents/
+                          qiskit-metal/tutorials/resources/
+                          flip_chip_layer_stack.txt"""
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        self.assertEqual(
+            LayerStackHandler(multiplanar_design,
+                              (ls_file_path, None))._warning_search(
+                                  'test_chip', 7, 1, "FAIL"), None)
+
+    def test_toolbox_metal_warning_search_minus_chip(self):
+        """Test functionality of _warning_search_minus_chip in toolbox_metal.py."""
+        ls_file_path = """/Users/christinadelnano/Documents/
+                          qiskit-metal/tutorials/resources/
+                          flip_chip_layer_stack.txt"""
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        self.assertEqual(
+            LayerStackHandler(multiplanar_design,
+                              (ls_file_path, None))._warning_search_minus_chip(
+                                  5, 1, "FAIL"), None)
+
+    def test_toolbox_metal_layer_stack_handler_pilot_error(self):
+        """Test functionality of layer_stack_handler_pilot_error in toolbox_metal.py."""
+        ls_file_path = """/Users/christinadelnano/Documents/
+                          qiskit-metal/tutorials/resources/
+                          flip_chip_layer_stack.txt"""
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        self.assertEqual(
+            LayerStackHandler(
+                multiplanar_design,
+                (ls_file_path, None)).layer_stack_handler_pilot_error(), None)
 
 
 if __name__ == '__main__':
