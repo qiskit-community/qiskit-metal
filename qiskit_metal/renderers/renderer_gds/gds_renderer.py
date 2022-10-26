@@ -607,7 +607,7 @@ class QGDSRenderer(QRenderer):
             return 1
         self.dict_bounds.clear()
 
-        for chip_name in self.chip_info.items():
+        for chip_name, _ in self.chip_info.items():
             # put the QGeometry into GDS format.
             # There can be more than one chip in QGeometry.
             # They all export to one gds file.
@@ -790,7 +790,7 @@ class QGDSRenderer(QRenderer):
         The "status" returned in int:
             * -1: Method needs to update the return code.
             * 0: No issues, no short segments found
-            * int: The number of shapelys returned. New shapeleys, should
+            * int: The number of shapelys returned. New shapelys, should
                     replace the ones provided in a_shapely
 
         The "shorter_lines" returned in dict:
@@ -1352,7 +1352,7 @@ class QGDSRenderer(QRenderer):
 
         fab = is_true(self.options.fabricate)
 
-        for chip_name in self.chip_info.items():
+        for chip_name, _ in self.chip_info.items():
             layers_in_chip = self.design.qgeometry.get_all_unique_layers(
                 chip_name)
 
@@ -1519,7 +1519,7 @@ class QGDSRenderer(QRenderer):
             all_chips_top_name = 'TOP'
             all_chips_top = lib.new_cell(all_chips_top_name,
                                          overwrite_duplicate=True)
-            for chip_name in self.chip_info.items():
+            for chip_name, _ in self.chip_info.items():
                 chip_only_top_name = f'TOP_{chip_name}'
                 chip_only_top = lib.new_cell(chip_only_top_name,
                                              overwrite_duplicate=True)
@@ -1886,7 +1886,7 @@ class QGDSRenderer(QRenderer):
                             hold_all_jj_cell = lib.new_cell(
                                 hold_all_jj_cell_name, overwrite_duplicate=True)
 
-                            self._add_negative_extention_to_jj(
+                            self._add_negative_extension_to_jj(
                                 chip_name, iter_layer, lib, chip_only_top,
                                 chip_only_top_layer, hold_all_pads_cell,
                                 hold_all_jj_cell)
@@ -1903,7 +1903,7 @@ class QGDSRenderer(QRenderer):
 
                             if row.gds_cell_name in lib.cells.keys():
                                 # When positive mask, just add the pads to chip_only_top
-                                self._add_positive_extention_to_jj(
+                                self._add_positive_extension_to_jj(
                                     lib, row, chip_layer_cell)
                             else:
                                 self.logger.warning(
@@ -1918,7 +1918,7 @@ class QGDSRenderer(QRenderer):
                 f'Not used to replace junction.'
                 f' Checked directory:"{directory_name}".')
 
-    def _add_negative_extention_to_jj(self, chip_name: str, jj_layer: int,
+    def _add_negative_extension_to_jj(self, chip_name: str, jj_layer: int,
                                       lib: gdspy.library,
                                       chip_only_top: gdspy.library.Cell,
                                       chip_only_top_layer: gdspy.library.Cell,
@@ -1949,7 +1949,7 @@ class QGDSRenderer(QRenderer):
             if row.gds_cell_name in lib.cells.keys():
                 # For negative mask, collect the pads to subtract per layer,
                 # and subtract from chip_only_top_layer
-                self._gather_negative_extention_for_jj(lib, row,
+                self._gather_negative_extension_for_jj(lib, row,
                                                        hold_all_pads_cell,
                                                        hold_all_jj_cell)
             else:
@@ -2011,11 +2011,11 @@ class QGDSRenderer(QRenderer):
             lib.remove(value.ref_cell.name)
         lib.remove(hold_all_pads_cell)
 
-    def _gather_negative_extention_for_jj(
+    def _gather_negative_extension_for_jj(
             self, lib: gdspy.library, row: 'pd.core.frame.Pandas',
             hold_all_pads_cell: gdspy.library.Cell,
             hold_all_jj_cell: gdspy.library.Cell):
-        """Gather the pads and jjs and put them in seperate cells.  The
+        """Gather the pads and jjs and put them in separate cells.  The
         the pads can be boolean'd 'not' just once. After boolean for pads, then
         the jjs will be added to result.  The boolean is very
         time intensive, so just want to do it once.
@@ -2047,10 +2047,10 @@ class QGDSRenderer(QRenderer):
         hold_all_pads_cell.add(
             gdspy.CellReference(temp_cell, origin=center, rotation=rotation))
 
-    def _add_positive_extention_to_jj(self, lib: gdspy.library,
+    def _add_positive_extension_to_jj(self, lib: gdspy.library,
                                       row: 'pd.core.frame.Pandas',
                                       chip_only_top_layer: gdspy.library.Cell):
-        """Get the extention pads, then add or subtract to extracted cell based on
+        """Get the extension pads, then add or subtract to extracted cell based on
         positive or negative mask.
 
         Args:
