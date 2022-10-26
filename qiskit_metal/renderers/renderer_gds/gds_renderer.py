@@ -305,7 +305,7 @@ class QGDSRenderer(QRenderer):
                                         Defaults to True.
             render_template (Dict, optional): Typically used by GUI for
                                 template options for GDS.  Defaults to None.
-            render_options (Dict, optional): Used to overide all options.
+            render_options (Dict, optional): Used to override all options.
                                             Defaults to None.
         """
 
@@ -340,7 +340,6 @@ class QGDSRenderer(QRenderer):
     def render_design(self):
         """Export the design to GDS."""
         self.export_to_gds(file_name=self.design.name, highlight_qcomponents=[])
-        pass
 
     def _check_bounding_box_scale(self):
         """Some error checking for bounding_box_scale_x and
@@ -420,11 +419,12 @@ class QGDSRenderer(QRenderer):
 
     @staticmethod
     def _get_bounds(
-            gs_table: geopandas.GeoSeries) -> Tuple[float, float, float, float]:
+            gs_table: geopandas.GeoDataFrame
+    ) -> Tuple[float, float, float, float]:
         """Get the bounds for all of the elements in gs_table.
 
         Args:
-            gs_table (pandas.GeoSeries): A pandas GeoSeries used to describe
+            gs_table (geopandas.GeoDataFrame): A GeoPandas GeoDataFrame used to describe
                                         components in a design.
 
         Returns:
@@ -530,7 +530,7 @@ class QGDSRenderer(QRenderer):
 
     def _check_qcomps(self,
                       highlight_qcomponents: list = None) -> Tuple[list, int]:
-        """Confirm the list doesn't have names of components repeated. Comfirm
+        """Confirm the list doesn't have names of components repeated. Confirm
         that the name of component exists in QDesign.
 
         Args:
@@ -577,7 +577,7 @@ class QGDSRenderer(QRenderer):
         """Using self.design, this method does the following:
 
         1. Gather the QGeometries to be used to write to file.
-           Duplicate names in hightlight_qcomponents will be removed without
+           Duplicate names in highlight_qcomponents will be removed without
            warning.
 
         2. Populate self.dict_bounds, for each chip, contains the maximum bound
@@ -607,7 +607,7 @@ class QGDSRenderer(QRenderer):
             return 1
         self.dict_bounds.clear()
 
-        for chip_name in self.chip_info:
+        for chip_name in self.chip_info.items():
             # put the QGeometry into GDS format.
             # There can be more than one chip in QGeometry.
             # They all export to one gds file.
@@ -632,7 +632,7 @@ class QGDSRenderer(QRenderer):
                 else:
                     # For every chip, and layer, separate the "subtract"
                     # and "no_subtract" elements and gather bounds.
-                    # dict_bounds[chip_name] = list_bounds
+                    # self.dict_bounds[chip_name] = list_bounds
                     self._gather_subtract_elements_and_bounds(
                         chip_name, table_name, table, all_table_subtracts,
                         all_table_no_subtracts)
@@ -732,7 +732,7 @@ class QGDSRenderer(QRenderer):
         """Update self.chip_info geopandas.GeoDataFrame.
 
         Will iterate through the rows to examine the LineString.
-        Then determine if there is a segment that is shorter than the critera
+        Then determine if there is a segment that is shorter than the criteria
         based on default_options. If so, then remove the row, and append
         shorter LineString with no fillet, within the dataframe.
 
@@ -784,7 +784,7 @@ class QGDSRenderer(QRenderer):
         """Determine if a_shapely has short segments based on scaled fillet
         value.
 
-        Use check_short_segments_by_scaling_fillet to determine the critera
+        Use check_short_segments_by_scaling_fillet to determine the criteria
         for flagging a segment.  Return Tuple with flagged segments.
 
         The "status" returned in int:
@@ -965,7 +965,7 @@ class QGDSRenderer(QRenderer):
             Key 'midpoints' will hold list of tuples.
                     The index of a tuple corresponds to two index within coords.
             For example, a index in midpoints is x,
-            that coresponds midpoint of segment x-1 to x.
+            that corresponds midpoint of segment x-1 to x.
         """
 
         # Depreciated since there is no longer a scale factor
@@ -1352,7 +1352,7 @@ class QGDSRenderer(QRenderer):
 
         fab = is_true(self.options.fabricate)
 
-        for chip_name in self.chip_info:
+        for chip_name in self.chip_info.items():
             layers_in_chip = self.design.qgeometry.get_all_unique_layers(
                 chip_name)
 
@@ -1422,7 +1422,7 @@ class QGDSRenderer(QRenderer):
         Returns:
             Union[None, shapely.geometry.multipolygon.MultiPolygon]: The
             shapely which combines the polygons and linestrings and creates
-            buffer as specificed through default_options.
+            buffer as specified through default_options.
         """
         # pylint: disable=too-many-locals
         style_cap = int(self.parse_value(self.options.no_cheese.cap_style))
@@ -1519,7 +1519,7 @@ class QGDSRenderer(QRenderer):
             all_chips_top_name = 'TOP'
             all_chips_top = lib.new_cell(all_chips_top_name,
                                          overwrite_duplicate=True)
-            for chip_name in self.chip_info:
+            for chip_name in self.chip_info.items():
                 chip_only_top_name = f'TOP_{chip_name}'
                 chip_only_top = lib.new_cell(chip_only_top_name,
                                              overwrite_duplicate=True)
@@ -1736,12 +1736,12 @@ class QGDSRenderer(QRenderer):
             lib.remove(ground_cell)
 
     def _get_linestring_characteristics(
-            self, row: 'pandas.Pandas') -> Tuple[Tuple, float, float]:
+            self, row: 'pd.Pandas') -> Tuple[Tuple, float, float]:
         """Given a row in the Junction table, give the characteristics of
         LineString in row.geometry.
 
         Args:
-            row (pandas.Pandas): A row from Junction table of QGeometry.
+            row (pd.Pandas): A row from Junction table of QGeometry.
 
         Returns:
             Tuple:
@@ -1766,14 +1766,13 @@ class QGDSRenderer(QRenderer):
         return center, rotation, magnitude
 
     def _give_rotation_center_twopads(
-            self, row: 'pandas.Pandas',
-            a_cell_bounding_box: 'numpy.ndarray') -> Tuple:
+            self, row: 'pd.Pandas', a_cell_bounding_box: 'np.ndarray') -> Tuple:
         """Calculate the angle for rotation, center of LineString in
         row.geometry, and if needed create two pads to connect the junction to
         qubit.
 
         Args:
-            row (pandas.Pandas): A row from Junction table of QGeometry.
+            row (pd.Pandas): A row from Junction table of QGeometry.
             a_cell_bounding_box (numpy.ndarray): Give the bounding box of cell
                 used in row.gds_cell_name.
 
@@ -1926,7 +1925,7 @@ class QGDSRenderer(QRenderer):
                                       hold_all_pads_cell: gdspy.library.Cell,
                                       hold_all_jj_cell: gdspy.library.Cell):
         """Manipulate existing geometries for the layer that the junctions need
-         to be added.  Since boolean subtaction is computationally intensive,
+         to be added.  Since boolean subtraction is computationally intensive,
          the method will gather the pads for a layer, and do the boolean just
          once. Then add the junctions to difference.
 
@@ -2013,17 +2012,17 @@ class QGDSRenderer(QRenderer):
         lib.remove(hold_all_pads_cell)
 
     def _gather_negative_extention_for_jj(
-            self, lib: gdspy.library, row: 'pandas.core.frame.Pandas',
+            self, lib: gdspy.library, row: 'pd.core.frame.Pandas',
             hold_all_pads_cell: gdspy.library.Cell,
             hold_all_jj_cell: gdspy.library.Cell):
-        """Gather the pads and jjs and put them in seprate cells.  The
+        """Gather the pads and jjs and put them in seperate cells.  The
         the pads can be boolean'd 'not' just once. After boolean for pads, then
         the jjs will be added to result.  The boolean is very
         time intensive, so just want to do it once.
 
         Args:
             lib (gdspy.library): The library used to export the entire QDesign.
-            row (pandas.core.frame.Pandas): Each row is from the qgeometry junction table.
+            row (pd.core.frame.Pandas): Each row is from the qgeometry junction table.
             hold_all_pads_cell (gdspy.library.Cell): Collect all the pads with movement.
             hold_all_jj_cell (gdspy.library.Cell): Collect all the jj's with movement.
         """
@@ -2049,14 +2048,14 @@ class QGDSRenderer(QRenderer):
             gdspy.CellReference(temp_cell, origin=center, rotation=rotation))
 
     def _add_positive_extention_to_jj(self, lib: gdspy.library,
-                                      row: 'pandas.core.frame.Pandas',
+                                      row: 'pd.core.frame.Pandas',
                                       chip_only_top_layer: gdspy.library.Cell):
         """Get the extention pads, then add or subtract to extracted cell based on
         positive or negative mask.
 
         Args:
             lib (gdspy.library): The library used to export the entire QDesign.
-            row (pandas.core.frame.Pandas): Each row is from the qgeometry
+            row (pd.core.frame.Pandas): Each row is from the qgeometry
                                             junction table.
             chip_only_top_layer (gdspy.library.Cell): The cell used for
                                             chip_name and layer_num.
@@ -2193,14 +2192,14 @@ class QGDSRenderer(QRenderer):
                                        layer=layer,
                                        datatype=data_type,
                                        precision=precision)
-                # Poly facturing leading to a funny shape. Leave this out of gds output for now.
+                # Poly fracturing leading to a funny shape. Leave this out of gds output for now.
                 # a_poly.fillet(no_cheese_buffer,
                 #               points_per_2pi=128,
                 #               max_points=max_points,
                 #               precision=precision)
                 all_gds.append(a_poly)
             else:
-                # Poly facturing leading to a funny shape. Leave this out of gds output for now.
+                # Poly fracturing leading to a funny shape. Leave this out of gds output for now.
                 # exterior_poly.fillet(no_cheese_buffer,
                 #                      points_per_2pi=128,
                 #                      max_points=max_points,
