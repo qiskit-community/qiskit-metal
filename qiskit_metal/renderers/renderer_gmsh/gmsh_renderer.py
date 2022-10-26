@@ -808,8 +808,9 @@ class QGmshRenderer(QRenderer):
             fragmented_geoms = gmsh.model.occ.fragment([object_dimtag],
                                                        all_geom_dimtags)
 
-        all_geom_dimtags.insert(0, object_dimtag)
         updated_geoms = fragmented_geoms[0]
+        insert_idx = updated_geoms.index(object_dimtag)
+        all_geom_dimtags.insert(insert_idx, object_dimtag)
         all_dicts = {
             0: self.paths_dict,
             1: self.polys_dict,
@@ -873,7 +874,10 @@ class QGmshRenderer(QRenderer):
                 for name, tag in layer_geoms.items():
                     if layer_dim == 3:
                         tags = gmsh.model.occ.getSurfaceLoops(tag[0])[1][0]
-                        if not ignore_metal_volume:
+                        metal_layer = True if layer in self.layer_types[
+                            "metal"] else False
+                        if not metal_layer or (metal_layer and
+                                               not ignore_metal_volume):
                             ph_vol_tag = gmsh.model.addPhysicalGroup(
                                 dim=layer_dim, tags=tag, name=name)
                             self.physical_groups[layer][name] = ph_vol_tag
@@ -917,7 +921,9 @@ class QGmshRenderer(QRenderer):
                         layer_sfs_tags += list(
                             gmsh.model.occ.getSurfaceLoops(vol)[1][0])
 
-                    if layer_type == "ground_plane" and not ignore_metal_volume:
+                    if layer_type != "ground_plane" or (
+                            layer_type == "ground_plane" and
+                            not ignore_metal_volume):
                         ph_vol_tag = gmsh.model.addPhysicalGroup(
                             dim=layer_dim, tags=layer_tag, name=layer_name)
                         self.physical_groups[layer][layer_name] = ph_vol_tag
@@ -1233,7 +1239,23 @@ class QGmshRenderer(QRenderer):
         if not os.path.exists(par_dir):
             raise ValueError(f"Directory not found: {par_dir}")
 
+        has_mesh = False if len(gmsh.model.mesh.field.list()) == 0 else True
+        if has_mesh:
+            self.logger.warning(
+                "WARNING: The existing model contains mesh size field definitions, "
+                "which will show up in your exported .geo_unrolled file. If "
+                "you aren't explicitly handling the mesh size fields, we recommend "
+                "to export the geometry before generating the mesh in your design as "
+                "it might interfere with your .geo_unrolled file imports.")
+
         gmsh.write(filepath)
+
+        # Prepend "SetFactory("OpenCASCADE");" in the exported file
+        line = 'SetFactory("OpenCASCADE");'
+        with open(filepath, 'r+') as f:
+            content = f.read()
+            f.seek(0, 0)
+            f.write(line.rstrip('\r\n') + '\n' + content)
 
     def import_post_processing_data(self,
                                     filename: str,

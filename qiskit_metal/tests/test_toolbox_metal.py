@@ -27,7 +27,6 @@ from qiskit_metal.toolbox_metal import parsing
 from qiskit_metal.toolbox_metal import math_and_overrides
 from qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables import BoundsForPathAndPolyTables
 from qiskit_metal.toolbox_metal.layer_stack_handler import LayerStackHandler
-from qiskit_metal.toolbox_metal import bounds_for_path_and_poly_tables
 from qiskit_metal.toolbox_metal.exceptions import QiskitMetalExceptions
 from qiskit_metal.toolbox_metal.exceptions import QiskitMetalDesignError
 from qiskit_metal.toolbox_metal.exceptions import IncorrectQtException
@@ -113,8 +112,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
             self.fail("orient_me() failed")
 
     def test_toolbox_metal_get_platform_info(self):
-        """Test that get_platform_info in about.py returns a string with the
-        platform information without any errors."""
+        """Test that get_platform_info in about.py returns a string with the platform information without any errors."""
         try:
             return about.get_platform_info()
         except Exception:
