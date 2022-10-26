@@ -354,9 +354,6 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
             self.assertEqual(len(actual[x]), len(expected[x]))
             for i in range(len(actual[x])):
                 for j in range(2):
-                    print(actual[x][i][j])
-                    print(expected[x][i][j])
-                    print("\n")
                     self.assertAlmostEqualRel(actual[x][i][j],
                                               expected[x][i][j],
                                               rel_tol=1e-3)
