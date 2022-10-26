@@ -40,6 +40,7 @@ class TunableCoupler02(BaseQubit):
         * fbl_width: '0.1mm' -- the width of the flux bias line drawn near the JJ
         * fbl_length: '0.5mm' -- the length of the flux bias line drawn near the JJ
         * fbl_offset: '0.1mm' -- the lateral offset between the flux bias line and the JJ
+        * layer: '1' -- the default design layer
     """
 
     default_options = Dict(pocket_width='3mm',
@@ -56,7 +57,8 @@ class TunableCoupler02(BaseQubit):
                            JJ_length='0.4mm',
                            fbl_width='0.1mm',
                            fbl_length='0.5mm',
-                           fbl_offset='0.1mm')
+                           fbl_offset='0.1mm',
+                           layer='1')
 
     component_metadata = Dict(short_name='Pocket',
                               _qgeometry_table_path='True',
@@ -129,22 +131,28 @@ class TunableCoupler02(BaseQubit):
         # add to qgeometry
         self.add_qgeometry('junction',
                            geom_jj,
-                           layer=1,
+                           layer=p.layer,
                            subtract=False,
                            width=p.JJ_width)
         self.add_qgeometry('poly',
                            geom_bus_vertical_left,
-                           layer=1,
+                           layer=p.layer,
                            subtract=False)
         self.add_qgeometry('poly',
                            geom_bus_vertical_right,
-                           layer=1,
+                           layer=p.layer,
                            subtract=False)
-        self.add_qgeometry('poly', geom_bus_left, layer=1, subtract=False)
-        self.add_qgeometry('poly', geom_bus_right, layer=1, subtract=False)
-        self.add_qgeometry('poly', geom_left_pad, layer=1, subtract=False)
-        self.add_qgeometry('poly', geom_right_pad, layer=1, subtract=False)
-        self.add_qgeometry('poly', geom_fbl, layer=1, subtract=False)
+        self.add_qgeometry('poly', geom_bus_left, layer=p.layer, subtract=False)
+        self.add_qgeometry('poly',
+                           geom_bus_right,
+                           layer=p.layer,
+                           subtract=False)
+        self.add_qgeometry('poly', geom_left_pad, layer=p.layer, subtract=False)
+        self.add_qgeometry('poly',
+                           geom_right_pad,
+                           layer=p.layer,
+                           subtract=False)
+        self.add_qgeometry('poly', geom_fbl, layer=p.layer, subtract=False)
 
         #self.add_qgeometry('poly', geom_pocket, layer=1, subtract=True)
         ###########################################################################

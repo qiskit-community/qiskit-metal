@@ -71,6 +71,7 @@ Couplers
     LineTee
     CapNInterdigitalTee
 	TunableCoupler01
+    TunableCoupler02
 
 
 Terminations
@@ -109,6 +110,7 @@ Qubits
     jj_dolan
     jj_manhattan
     TransmonConcentric
+    TransmonConcentricType2
     TransmonCross
     TransmonCrossFL
     TransmonInterdigitated
@@ -150,6 +152,7 @@ if config.is_building_docs():
     from .couplers.line_tee import LineTee
     from .couplers.cap_n_interdigital_tee import CapNInterdigitalTee
     from .couplers.tunable_coupler_01 import TunableCoupler01
+    from .couplers.tunable_coupler_02 import TunableCoupler02
     from .lumped.cap_n_interdigital import CapNInterdigital
     from .lumped.cap_3_interdigital import Cap3Interdigital
     from .lumped.resonator_coil_rect import ResonatorCoilRect
@@ -167,6 +170,7 @@ if config.is_building_docs():
     from .qubits.JJ_Dolan import jj_dolan
     from .qubits.JJ_Manhattan import jj_manhattan
     from .qubits.transmon_concentric import TransmonConcentric
+    from .qubits.transmon_concentric_type_2 import TransmonConcentricType2
     from .qubits.transmon_cross import TransmonCross
     from .qubits.transmon_cross_fl import TransmonCrossFL
     from .qubits.Transmon_Interdigitated import TransmonInterdigitated

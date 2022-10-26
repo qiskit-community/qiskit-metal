@@ -253,43 +253,52 @@ class TransmonConcentricType2(BaseQubit):
         geom_coupler_NE = {'coupler_NE': coupler_NE}
         geom_coupler_NW = {'coupler_NW': coupler_NW}
         geom_coupler_SW = {'coupler_SW': coupler_SW}
-        self.add_qgeometry('poly', geom_outer, layer=1, subtract=False)
-        self.add_qgeometry('poly', geom_inner, layer=1, subtract=False)
+        self.add_qgeometry('poly', geom_outer, layer=p.layer, subtract=False)
+        self.add_qgeometry('poly', geom_inner, layer=p.layer, subtract=False)
         self.add_qgeometry('junction',
                            geom_jj,
-                           layer=1,
+                           layer=p.layer,
                            subtract=False,
                            width=p.jj_w)
         self.add_qgeometry('path',
                            geom_finger_NE,
-                           layer=1,
+                           layer=p.layer,
                            subtract=False,
                            width=p.finger_NE_width)
         self.add_qgeometry('path',
                            geom_finger_NW,
-                           layer=1,
+                           layer=p.layer,
                            subtract=False,
                            width=p.finger_NW_width)
         self.add_qgeometry('path',
                            geom_finger_SW,
-                           layer=1,
+                           layer=p.layer,
                            subtract=False,
                            width=p.finger_SW_width)
         self.add_qgeometry('path',
                            geom_finger_E,
-                           layer=1,
+                           layer=p.layer,
                            subtract=False,
                            width=p.finger_E_width)
-        self.add_qgeometry('poly', geom_box_E, layer=1, subtract=False)
+        self.add_qgeometry('poly', geom_box_E, layer=p.layer, subtract=False)
         self.add_qgeometry('path',
                            geom_finger_N,
-                           layer=1,
+                           layer=p.layer,
                            subtract=False,
                            width=p.finger_N_width)
-        self.add_qgeometry('poly', geom_pad_top, layer=1, subtract=False)
-        self.add_qgeometry('poly', geom_coupler_NE, layer=1, subtract=False)
-        self.add_qgeometry('poly', geom_coupler_NW, layer=1, subtract=False)
-        self.add_qgeometry('poly', geom_coupler_SW, layer=1, subtract=False)
+        self.add_qgeometry('poly', geom_pad_top, layer=p.layer, subtract=False)
+        self.add_qgeometry('poly',
+                           geom_coupler_NE,
+                           layer=p.layer,
+                           subtract=False)
+        self.add_qgeometry('poly',
+                           geom_coupler_NW,
+                           layer=p.layer,
+                           subtract=False)
+        self.add_qgeometry('poly',
+                           geom_coupler_SW,
+                           layer=p.layer,
+                           subtract=False)
 
         ###########################################################################
         # Add Qpin connections
