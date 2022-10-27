@@ -325,6 +325,9 @@ class QGDSRenderer(QRenderer):
         # check the scale
         self._check_bounding_box_scale()
 
+        # if imported, hold the path to file name, otherwise None.
+        self.imported_junction_gds = None
+
         QGDSRenderer.load()
 
     def _initiate_renderer(self):
@@ -1835,6 +1838,38 @@ class QGDSRenderer(QRenderer):
 
 ############
 
+    def _import_junction_gds_file(self, lib: gdspy.library,
+                                  directory_name: str) -> bool:
+        """Import the file which contains all junctions for design.
+        If the file has already been imported, just return True.
+
+        When the design has junctions on multiple chips,
+        we only need to import file once to get ALL of the junctions.
+
+        Args:
+            lib (gdspy.library): The library used to export the entire QDesign.
+            directory_name (str): The path of directory to read file with junctions.
+
+        Returns:
+            bool: True if file imported to GDS lib or previously imported.
+                   False if file not found.
+        """
+
+        if self.imported_junction_gds is not None:
+            return True
+
+        if os.path.isfile(self.options.path_filename):
+            lib.read_gds(self.options.path_filename, units='convert')
+            self.imported_junction_gds = self.options.path_filename
+            return True
+        else:
+            message_str = (
+                f'Not able to find file:"{self.options.path_filename}".  '
+                f'Not used to replace junction.'
+                f' Checked directory:"{directory_name}".')
+            self.logger.warning(message_str)
+            return False
+
     def _import_junctions_to_one_cell(self, chip_name: str, lib: gdspy.library,
                                       chip_only_top: gdspy.library.Cell,
                                       layers_in_chip: list):
@@ -1864,8 +1899,9 @@ class QGDSRenderer(QRenderer):
         layers_in_junction_table = set(
             self.chip_info[chip_name]['junction']['layer'])
 
-        if os.path.isfile(self.options.path_filename):
-            lib.read_gds(self.options.path_filename, units='convert')
+        if self._import_junction_gds_file(lib=lib,
+                                          directory_name=directory_name):
+
             for iter_layer in layers_in_chip:
                 if self._is_negative_mask(chip_name, iter_layer):
                     # Want to export negative mask
@@ -1911,12 +1947,6 @@ class QGDSRenderer(QRenderer):
                                     f' "{row.gds_cell_name}"",  is not in '
                                     f'file: {self.options.path_filename}.'
                                     f' The cell was not used.')
-
-        else:
-            self.logger.warning(
-                f'Not able to find file:"{self.options.path_filename}".  '
-                f'Not used to replace junction.'
-                f' Checked directory:"{directory_name}".')
 
     def _add_negative_extension_to_jj(self, chip_name: str, jj_layer: int,
                                       lib: gdspy.library,
@@ -2124,6 +2154,9 @@ class QGDSRenderer(QRenderer):
         # chip_info[chip_name][layer_number][all_no_subtract_elements]
         self.chip_info.clear()
         self.chip_info.update(self._get_chip_names())
+
+        # if imported, hold the path to file name, otherwise None.
+        self.imported_junction_gds = None
 
         if self._create_qgeometry_for_gds(highlight_qcomponents) == 0:
             # Create self.lib and populate path and poly.
