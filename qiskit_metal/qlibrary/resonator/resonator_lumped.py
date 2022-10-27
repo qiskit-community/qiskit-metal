@@ -22,6 +22,13 @@ class ResonatorLumped(QComponent):
     '''
     The base ResonatorLumped class
     Inherits the QComponent class
+
+    .. image::
+        resonator_lumped.png
+
+    .. meta::
+        Lumped Resonator
+
     Default Options:
         * pos_x: '0um' -- x-coordinate of the bottom center of the resonator
         * pos_y: '0um' -- y-coordinate of the bottom center of the resonator

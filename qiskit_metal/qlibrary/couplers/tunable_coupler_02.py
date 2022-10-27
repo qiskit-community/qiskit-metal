@@ -22,6 +22,13 @@ from qiskit_metal.qlibrary.core import BaseQubit
 
 class TunableCoupler02(BaseQubit):
     """One of the tunable couplers
+
+    .. image::
+        tunable_coupler_02.png
+
+    .. meta::
+        Tunable Coupler 2
+
     BaseQubit Default Options:
         * connection_pads: empty Dict -- Currently not used, connection count is static. (WIP)
     Default Options:

@@ -25,6 +25,13 @@ class TransmonConcentricType2(BaseQubit):
     Metal transmon object consisting of a circle surrounding by a concentric
     ring. There are two Josephson Junction connecting the circle to the ring;
     one at the south end and one at the north end. There is a readout resonator.
+
+    .. image::
+        transmon_concentric_type_2.png
+
+    .. meta::
+        Transmon Concentric Type 2
+
     BaseQubit Default Options:
         * connection_pads: empty Dict -- the dictionary which contains all active
           connection lines for the qubit.
