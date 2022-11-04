@@ -1,5 +1,0 @@
-chip_name,layer,datatype,material,thickness,z_coord,fill
-'c_chip',1,0,'pec','2um','0um','True'
-'c_chip',3,0,'silicon','-500um','0um','True'
-'q_chip',2,0,'pec','2um','60um','True'
-'q_chip',4,0,'silicon','500um','62um','True'

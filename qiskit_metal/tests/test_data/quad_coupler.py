@@ -26,13 +26,15 @@ class QuadCoupler(QComponent):
         p = self.p
 
         coupler_pad = draw.rectangle(p.pad_width, p.pad_height)
-        coupler_sub_pad = draw.rectangle(p.pad_width+p.pad_gap*2, p.pad_height+p.pad_gap*2)
+        coupler_sub_pad = draw.rectangle(p.pad_width + p.pad_gap * 2,
+                                         p.pad_height + p.pad_gap * 2)
 
-        yoff = (p.pad_height+p.cpw_stub_height)/2
-        cpw_conn = draw.LineString([[0, -p.pad_height/2],
-                                    [0, -p.pad_height/2-p.cpw_stub_height]])
-        cpw_conn_sub = draw.LineString([[0, -p.pad_height/2],
-                                    [0, -p.pad_height/2-p.cpw_stub_height]])
+        yoff = (p.pad_height + p.cpw_stub_height) / 2
+        cpw_conn = draw.LineString([[0, -p.pad_height / 2],
+                                    [0, -p.pad_height / 2 - p.cpw_stub_height]])
+        cpw_conn_sub = draw.LineString(
+            [[0, -p.pad_height / 2], [0,
+                                      -p.pad_height / 2 - p.cpw_stub_height]])
 
         items = [coupler_pad, coupler_sub_pad, cpw_conn, cpw_conn_sub]
         items = draw.rotate(items, p.orientation, origin=(0, 0))
@@ -49,7 +51,7 @@ class QuadCoupler(QComponent):
                            width=p.cpw_stub_width)
         self.add_qgeometry('path', {'stub_sub': cpw_conn_sub},
                            layer=p.layer,
-                           width=p.cpw_stub_width+p.pad_gap*2,
+                           width=p.cpw_stub_width + p.pad_gap * 2,
                            subtract=True)
 
         pin_list = cpw_conn.coords
