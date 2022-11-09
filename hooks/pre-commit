@@ -12,7 +12,7 @@ fi
 
 echo "Begin linting step using yapf formatting"
 linterrorfound=0
-for stagedfile in $(git diff --name-only --cached | grep .*.py)
+for stagedfile in $(git diff --name-only --cached | grep *.py)
 do
     yapf --diff --style .style.yapf $stagedfile
     ret=$?
