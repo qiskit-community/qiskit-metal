@@ -112,14 +112,37 @@ class QElmerRenderer(QRendererAnalysis):
         selection: Union[list, None] = None,
         open_pins: Union[list, None] = None,
         box_plus_buffer: bool = True,
-        mesh_geoms: bool = True,
+        draw_sample_holder: bool = True,
         skip_junctions: bool = False,
+        mesh_geoms: bool = True,
+        ignore_metal_volume: bool = False,
     ):
+        """Render the design in Gmsh and apply changes to modify the geometries
+        according to the type of simulation. Simulation parameters provided by the user.
+
+        Args:
+            selection (Union[list, None], optional): List of selected components
+                                                        to render. Defaults to None.
+            open_pins (Union[list, None], optional): List of open pins to add
+                                                        endcaps. Defaults to None.
+            box_plus_buffer (bool, optional): Set to True for adding buffer to
+                                                        chip dimensions. Defaults to True.
+            draw_sample_holder (bool, optional): To draw the sample holder box. Defaults to True.
+            skip_junctions (bool, optional): Set to True to sip rendering the
+                                                        junctions. Defaults to False.
+            mesh_geoms (bool, optional): Set to True for meshing the geometries.
+                                                        Defaults to True.
+            ignore_metal_volume (bool, optional): ignore the volume of metals and replace
+                                                        it with a list of surfaces instead.
+                                                        Defaults to False.
+        """
         self.gmsh.render_design(selection=selection,
                                 open_pins=open_pins,
                                 box_plus_buffer=box_plus_buffer,
+                                draw_sample_holder=draw_sample_holder,
+                                skip_junctions=skip_junctions,
                                 mesh_geoms=mesh_geoms,
-                                skip_junctions=skip_junctions)
+                                ignore_metal_volume=ignore_metal_volume)
 
         self.nets = self.assign_nets(open_pins=open_pins)
 
@@ -322,12 +345,14 @@ class QElmerRenderer(QRendererAnalysis):
                 ]
             if material == "silicon":
                 substrate_geoms = dict()
-                for chip, ph_geoms in self.gmsh.physical_groups.items():
-                    if chip in ["global", "chips"]:
+                for layer, ph_geoms in self.gmsh.physical_groups.items():
+                    if layer in ["global", "chips"]:
                         continue
 
                     sub = {
-                        k: v for k, v in ph_geoms.items() if "substrate" in k
+                        k: v
+                        for k, v in ph_geoms.items()
+                        if ("dielectric" in k) and ("_sfs" not in k)
                     }
                     substrate_geoms.update(sub)
 
@@ -344,21 +369,23 @@ class QElmerRenderer(QRendererAnalysis):
         phys_grps_dict = dict()
         ground_planes = list()
         cap_body = 1
-        for chip, ph_geoms in self.gmsh.physical_groups.items():
-            if chip in ["global", "chips"]:
+        for layer, ph_geoms in self.gmsh.physical_groups.items():
+            if layer in ["global", "chips"]:
                 continue
 
             for name, geom in ph_geoms.items():
-                if "ground_plane" in name:
+                if ("ground_plane" in name) and ("sfs" in name):
                     ground_planes.append(geom)
 
-                if "substrate" in name:
+                if "dielectric" in name:
                     continue
 
             phys_grps_dict.update(ph_geoms)
 
         for _, geom_names in self.nets.items():
-            geom_id_list = [phys_grps_dict[name] for name in geom_names]
+            geom_id_list = [
+                phys_grps_dict[f"{name}_sfs"] for name in geom_names
+            ]
 
             boundaries += [
                 self._elmer_runner.add_boundary_condition(
