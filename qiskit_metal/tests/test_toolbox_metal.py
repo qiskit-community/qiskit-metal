@@ -369,7 +369,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
                                               coup2=dict(loc_W=1, loc_H=1)))
         q1 = TransmonPocket6(multiplanar_design,
                              "Q1",
-                             options=dict(**conn_pads, chip="q_chip", layer=2))
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
         qc1 = QuadCoupler(multiplanar_design,
                           "qc1",
                           options=dict(pos_x="0mm",
@@ -384,6 +384,9 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
             BoundsForPathAndPolyTables(
                 multiplanar_design).get_bounds_of_path_and_poly_tables(
                     False, [], 1, 0, 0), tuple)
+        self.assertEqual(len(BoundsForPathAndPolyTables(
+                multiplanar_design).get_bounds_of_path_and_poly_tables(
+                    False, [], 1, 0, 0)), 5)
 
     def test_toolbox_metal_ensure_component_box_smaller_than_chip_box_(self):
         """Test functionality of ensure_component_box_smaller_than_chip_box in toolbox_metal.py"""
@@ -395,7 +398,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
                                               coup2=dict(loc_W=1, loc_H=1)))
         q1 = TransmonPocket6(multiplanar_design,
                              "Q1",
-                             options=dict(**conn_pads, chip="q_chip", layer=2))
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
         qc1 = QuadCoupler(multiplanar_design,
                           "qc1",
                           options=dict(pos_x="0mm",
@@ -436,7 +439,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
                                               coup2=dict(loc_W=1, loc_H=1)))
         q1 = TransmonPocket6(multiplanar_design,
                              "Q1",
-                             options=dict(**conn_pads, chip="q_chip", layer=2))
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
         qc1 = QuadCoupler(multiplanar_design,
                           "qc1",
                           options=dict(pos_x="0mm",
@@ -446,14 +449,6 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
                                        cpw_stub_height="250um",
                                        chip="c_chip",
                                        layer=1))
-        multiplanar_design.chips['c_chip'] = {
-            'size': {
-                'center_x': '0.0mm',
-                'center_y': '0.0mm',
-                'size_x': '9mm',
-                'size_y': '7mm'
-            }
-        }
         multiplanar_design.chips['c_chip'] = {
             'size': {
                 'center_x': '0.0mm',
@@ -477,7 +472,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
                                               coup2=dict(loc_W=1, loc_H=1)))
         q1 = TransmonPocket6(multiplanar_design,
                              "Q1",
-                             options=dict(**conn_pads, chip="q_chip", layer=2))
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
         qc1 = QuadCoupler(multiplanar_design,
                           "qc1",
                           options=dict(pos_x="0mm",
@@ -487,14 +482,6 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
                                        cpw_stub_height="250um",
                                        chip="c_chip",
                                        layer=1))
-        multiplanar_design.chips['c_chip'] = {
-            'size': {
-                'center_x': '0.0mm',
-                'center_y': '0.0mm',
-                'size_x': '9mm',
-                'size_y': '7mm'
-            }
-        }
         multiplanar_design.chips['c_chip'] = {
             'size': {
                 'center_x': '0.0mm',
@@ -518,7 +505,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
                                               coup2=dict(loc_W=1, loc_H=1)))
         q1 = TransmonPocket6(multiplanar_design,
                              "Q1",
-                             options=dict(**conn_pads, chip="q_chip", layer=2))
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
         qc1 = QuadCoupler(multiplanar_design,
                           "qc1",
                           options=dict(pos_x="0mm",
@@ -536,20 +523,12 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
                 'size_y': '7mm'
             }
         }
-        multiplanar_design.chips['c_chip'] = {
-            'size': {
-                'center_x': '0.0mm',
-                'center_y': '0.0mm',
-                'size_x': '9mm',
-                'size_y': '7mm'
-            }
-        }
         self.assertEqual(
             BoundsForPathAndPolyTables(multiplanar_design).get_x_y_for_chip(
                 'c_chip'), ((-4.5, -3.5, 4.5, 3.5), 0))
         self.assertEqual(
             BoundsForPathAndPolyTables(multiplanar_design).get_x_y_for_chip(
-                'c_chip'), ((-4.5, -3.5, 4.5, 3.5), 0))
+                'TEST_chip'), ((), 1))
 
     def test_toolbox_metal_chip_names_not_in_design(self):
         """Test functionality of chip_names_not_in_design in toolbox_metal.py."""
@@ -561,7 +540,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
                                               coup2=dict(loc_W=1, loc_H=1)))
         q1 = TransmonPocket6(multiplanar_design,
                              "Q1",
-                             options=dict(**conn_pads, chip="q_chip", layer=2))
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
         qc1 = QuadCoupler(multiplanar_design,
                           "qc1",
                           options=dict(pos_x="0mm",
@@ -587,7 +566,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
                                               coup2=dict(loc_W=1, loc_H=1)))
         q1 = TransmonPocket6(multiplanar_design,
                              "Q1",
-                             options=dict(**conn_pads, chip="q_chip", layer=2))
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
         qc1 = QuadCoupler(multiplanar_design,
                           "qc1",
                           options=dict(pos_x="0mm",
@@ -611,7 +590,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
                                               coup2=dict(loc_W=1, loc_H=1)))
         q1 = TransmonPocket6(multiplanar_design,
                              "Q1",
-                             options=dict(**conn_pads, chip="q_chip", layer=2))
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
         qc1 = QuadCoupler(multiplanar_design,
                           "qc1",
                           options=dict(pos_x="0mm",
@@ -653,7 +632,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
                                               coup2=dict(loc_W=1, loc_H=1)))
         q1 = TransmonPocket6(multiplanar_design,
                              "Q1",
-                             options=dict(**conn_pads, chip="q_chip", layer=2))
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
         qc1 = QuadCoupler(multiplanar_design,
                           "qc1",
                           options=dict(pos_x="0mm",
@@ -684,7 +663,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
                                               coup2=dict(loc_W=1, loc_H=1)))
         q1 = TransmonPocket6(multiplanar_design,
                              "Q1",
-                             options=dict(**conn_pads, chip="q_chip", layer=2))
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
         qc1 = QuadCoupler(multiplanar_design,
                           "qc1",
                           options=dict(pos_x="0mm",
@@ -709,7 +688,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
                                               coup2=dict(loc_W=1, loc_H=1)))
         q1 = TransmonPocket6(multiplanar_design,
                              "Q1",
-                             options=dict(**conn_pads, chip="q_chip", layer=2))
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
         qc1 = QuadCoupler(multiplanar_design,
                           "qc1",
                           options=dict(pos_x="0mm",
@@ -734,7 +713,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
                                               coup2=dict(loc_W=1, loc_H=1)))
         q1 = TransmonPocket6(multiplanar_design,
                              "Q1",
-                             options=dict(**conn_pads, chip="q_chip", layer=2))
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
         qc1 = QuadCoupler(multiplanar_design,
                           "qc1",
                           options=dict(pos_x="0mm",
@@ -747,7 +726,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
         self.assertEqual(
             LayerStackHandler(multiplanar_design,
                               (ls_file_path, None)).get_unique_chip_names(),
-            {'c_chip', 'c_chip'})
+            {'c_chip'})
 
     def test_toolbox_metal_get_unique_layer_ints(self):
         """Test functionality of get_unique_layer_ints in toolbox_metal.py."""
@@ -759,7 +738,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
                                               coup2=dict(loc_W=1, loc_H=1)))
         q1 = TransmonPocket6(multiplanar_design,
                              "Q1",
-                             options=dict(**conn_pads, chip="q_chip", layer=2))
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
         qc1 = QuadCoupler(multiplanar_design,
                           "qc1",
                           options=dict(pos_x="0mm",
@@ -784,7 +763,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
                                               coup2=dict(loc_W=1, loc_H=1)))
         q1 = TransmonPocket6(multiplanar_design,
                              "Q1",
-                             options=dict(**conn_pads, chip="q_chip", layer=2))
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
         qc1 = QuadCoupler(multiplanar_design,
                           "qc1",
                           options=dict(pos_x="0mm",
@@ -809,7 +788,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
                                               coup2=dict(loc_W=1, loc_H=1)))
         q1 = TransmonPocket6(multiplanar_design,
                              "Q1",
-                             options=dict(**conn_pads, chip="q_chip", layer=2))
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
         qc1 = QuadCoupler(multiplanar_design,
                           "qc1",
                           options=dict(pos_x="0mm",
@@ -834,7 +813,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
                                               coup2=dict(loc_W=1, loc_H=1)))
         q1 = TransmonPocket6(multiplanar_design,
                              "Q1",
-                             options=dict(**conn_pads, chip="q_chip", layer=2))
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
         qc1 = QuadCoupler(multiplanar_design,
                           "qc1",
                           options=dict(pos_x="0mm",
@@ -859,7 +838,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
                                               coup2=dict(loc_W=1, loc_H=1)))
         q1 = TransmonPocket6(multiplanar_design,
                              "Q1",
-                             options=dict(**conn_pads, chip="q_chip", layer=2))
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
         qc1 = QuadCoupler(multiplanar_design,
                           "qc1",
                           options=dict(pos_x="0mm",
