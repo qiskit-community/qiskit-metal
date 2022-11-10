@@ -22,6 +22,7 @@ class QGmshRenderer(QRenderer):
     """Extends QRendererAnalysis class to export designs to Gmsh using the Gmsh python API.
 
     Default Options:
+        # Buffer between max/min x and edge of ground plane, in mm
         * x_buffer_width_mm -- Buffer between max/min x and edge of ground plane, in mm
         * y_buffer_width_mm -- Buffer between max/min y and edge of ground plane, in mm
         * mesh -- to define meshing parameters
@@ -79,7 +80,7 @@ class QGmshRenderer(QRenderer):
             design ('MultiPlanar'): The design.
             layer_types (Union[dict, None]): the type of layer in the format:
                                                 dict(metal=[...], dielectric=[...]).
-                                                Defaults to None.
+                                                x_buffer_width_mm
             initiate (bool): True to initiate the renderer (Default: False).
             options (Dict, optional): Used to override default options. Defaults to None.
         """
@@ -663,7 +664,7 @@ class QGmshRenderer(QRenderer):
             # Add the buffer, using options for renderer.
             x_buff = self.parse_units_gmsh(self._options["x_buffer_width_mm"])
             y_buff = self.parse_units_gmsh(self._options["y_buffer_width_mm"])
-
+            self.x_buff = x_buff
             result = self.bounds_handler.get_bounds_of_path_and_poly_tables(
                 box_plus_buffer, self.qcomp_ids, self.case, x_buff, y_buff)
 
@@ -873,7 +874,10 @@ class QGmshRenderer(QRenderer):
                 for name, tag in layer_geoms.items():
                     if layer_dim == 3:
                         tags = gmsh.model.occ.getSurfaceLoops(tag[0])[1][0]
-                        if not ignore_metal_volume:
+                        metal_layer = True if layer in self.layer_types[
+                            "metal"] else False
+                        if not metal_layer or (metal_layer and
+                                               not ignore_metal_volume):
                             ph_vol_tag = gmsh.model.addPhysicalGroup(
                                 dim=layer_dim, tags=tag, name=name)
                             self.physical_groups[layer][name] = ph_vol_tag
@@ -911,26 +915,31 @@ class QGmshRenderer(QRenderer):
 
                 layer_name = layer_type + f'_(layer {layer})'
                 layer_tag = self.layers_dict[layer]
-                if layer_dim == 3:
-                    layer_sfs_tags = []
-                    for vol in layer_tag:
-                        layer_sfs_tags += list(
-                            gmsh.model.occ.getSurfaceLoops(vol)[1][0])
+                if len(layer_tag) > 0:
+                    if layer_dim == 3:
+                        layer_sfs_tags = []
+                        for vol in layer_tag:
+                            layer_sfs_tags += list(
+                                gmsh.model.occ.getSurfaceLoops(vol)[1][0])
 
-                    if layer_type == "ground_plane" and not ignore_metal_volume:
-                        ph_vol_tag = gmsh.model.addPhysicalGroup(
-                            dim=layer_dim, tags=layer_tag, name=layer_name)
-                        self.physical_groups[layer][layer_name] = ph_vol_tag
+                        if layer_type != "ground_plane" or (
+                                layer_type == "ground_plane" and
+                                not ignore_metal_volume):
+                            ph_vol_tag = gmsh.model.addPhysicalGroup(
+                                dim=layer_dim, tags=layer_tag, name=layer_name)
+                            self.physical_groups[layer][layer_name] = ph_vol_tag
 
-                    ph_sfs_tag = gmsh.model.addPhysicalGroup(
-                        dim=2, tags=layer_sfs_tags, name=f"{layer_name}_sfs")
-                    self.physical_groups[layer][
-                        f"{layer_name}_sfs"] = ph_sfs_tag
-                else:
-                    ph_tag = gmsh.model.addPhysicalGroup(dim=layer_dim,
-                                                         tags=layer_tag,
-                                                         name=layer_name)
-                    self.physical_groups[layer][layer_name] = ph_tag
+                        ph_sfs_tag = gmsh.model.addPhysicalGroup(
+                            dim=2,
+                            tags=layer_sfs_tags,
+                            name=f"{layer_name}_sfs")
+                        self.physical_groups[layer][
+                            f"{layer_name}_sfs"] = ph_sfs_tag
+                    else:
+                        ph_tag = gmsh.model.addPhysicalGroup(dim=layer_dim,
+                                                             tags=layer_tag,
+                                                             name=layer_name)
+                        self.physical_groups[layer][layer_name] = ph_tag
 
         if draw_sample_holder:
             # Make physical groups for vacuum box (volume)
