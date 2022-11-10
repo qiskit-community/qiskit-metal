@@ -387,7 +387,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
         self.assertEqual(
             len(
                 BoundsForPathAndPolyTables(
-                multiplanar_design).get_bounds_of_path_and_poly_tables(
+             multiplanar_design).get_bounds_of_path_and_poly_tables(
                     False, [], 1, 0, 0)), 5)
 
     def test_toolbox_metal_ensure_component_box_smaller_than_chip_box_(self):
