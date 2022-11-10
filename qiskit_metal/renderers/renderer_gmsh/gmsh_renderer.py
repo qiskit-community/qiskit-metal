@@ -80,7 +80,7 @@ class QGmshRenderer(QRenderer):
             design ('MultiPlanar'): The design.
             layer_types (Union[dict, None]): the type of layer in the format:
                                                 dict(metal=[...], dielectric=[...]).
-                                                x_buffer_width_mm
+                                                Defaults to None.
             initiate (bool): True to initiate the renderer (Default: False).
             options (Dict, optional): Used to override default options. Defaults to None.
         """
@@ -664,7 +664,7 @@ class QGmshRenderer(QRenderer):
             # Add the buffer, using options for renderer.
             x_buff = self.parse_units_gmsh(self._options["x_buffer_width_mm"])
             y_buff = self.parse_units_gmsh(self._options["y_buffer_width_mm"])
-            self.x_buff = x_buff
+
             result = self.bounds_handler.get_bounds_of_path_and_poly_tables(
                 box_plus_buffer, self.qcomp_ids, self.case, x_buff, y_buff)
 
