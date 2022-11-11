@@ -384,6 +384,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
             BoundsForPathAndPolyTables(
                 multiplanar_design).get_bounds_of_path_and_poly_tables(
                     False, [], 1, 0, 0), tuple)
+
         self.assertEqual(
             len(
                 BoundsForPathAndPolyTables(
