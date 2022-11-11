@@ -384,9 +384,11 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
             BoundsForPathAndPolyTables(
                 multiplanar_design).get_bounds_of_path_and_poly_tables(
                     False, [], 1, 0, 0), tuple)
-        self.assertEqual(len(BoundsForPathAndPolyTables(
-                multiplanar_design).get_bounds_of_path_and_poly_tables(
-                    False, [], 1, 0, 0)), 5)
+        self.assertEqual(
+            len(
+                BoundsForPathAndPolyTables(
+                    multiplanar_design).get_bounds_of_path_and_poly_tables(
+                        False, [], 1, 0, 0)), 5)
 
     def test_toolbox_metal_ensure_component_box_smaller_than_chip_box_(self):
         """Test functionality of ensure_component_box_smaller_than_chip_box in toolbox_metal.py"""
@@ -493,7 +495,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
         self.assertEqual(
             BoundsForPathAndPolyTables(
                 multiplanar_design).are_all_chipnames_in_design(),
-            (True, {'c_chip', 'c_chip'}))
+            (True, {'c_chip'}))
 
     def test_toolbox_metal_get_x_y_for_chip(self):
         """Test functionality of get_x_y_for_chip in toolbox_metal.py."""
