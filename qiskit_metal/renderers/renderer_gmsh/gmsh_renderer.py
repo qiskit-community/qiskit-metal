@@ -742,16 +742,18 @@ class QGmshRenderer(QRenderer):
             shape_dim_tags = [(dim, s) for s in shapes]
             layer_dim_tag = (dim, self.layers_dict[layer_num][0])
             tool_dimtags = [layer_dim_tag]
-            subtract_layer = gmsh.model.occ.cut(tool_dimtags, shape_dim_tags)
+            if len(shape_dim_tags) > 0:
+                subtract_layer = gmsh.model.occ.cut(tool_dimtags,
+                                                    shape_dim_tags)
 
-            updated_layer_geoms = []
-            for i in range(len(tool_dimtags)):
-                if len(subtract_layer[1][i]) > 0:
-                    updated_layer_geoms += [
-                        tag for _, tag in subtract_layer[1][i]
-                    ]
+                updated_layer_geoms = []
+                for i in range(len(tool_dimtags)):
+                    if len(subtract_layer[1][i]) > 0:
+                        updated_layer_geoms += [
+                            tag for _, tag in subtract_layer[1][i]
+                        ]
 
-            self.layers_dict[layer_num] = updated_layer_geoms
+                self.layers_dict[layer_num] = updated_layer_geoms
 
     def fragment_interfaces(self, draw_sample_holder: bool):
         """Fragment Gmsh surfaces to ensure consistent tetrahedral meshing
@@ -797,6 +799,7 @@ class QGmshRenderer(QRenderer):
                                                        all_geom_dimtags)
             # Extract the new vacuum_box volume
             self.vacuum_box = fragmented_geoms[1][0][0][1]
+            object_dimtag = (3, self.vacuum_box)
         else:
             # Get one of the dim=3 objects
             dim3_dimtag = [
