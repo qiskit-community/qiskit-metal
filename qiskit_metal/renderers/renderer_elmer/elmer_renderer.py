@@ -210,12 +210,17 @@ class QElmerRenderer(QRendererAnalysis):
                         z_coord_j + thick_j == z_coord_i):
                     layers_touch = True
 
-                # TODO: change this to be compatible with layer-stack
                 if dist == 0.0 and chip_i == chip_j and layers_touch:
                     if id_net_dict[phys_grps[j]] == -1:
                         id_net_dict[phys_grps[j]] = id_net_dict[phys_grps[i]]
                     else:
-                        id_net_dict[phys_grps[i]] = id_net_dict[phys_grps[j]]
+                        ij_min_net = min(id_net_dict[phys_grps[j]],
+                                         id_net_dict[phys_grps[i]])
+                        ij_max_net = max(id_net_dict[phys_grps[j]],
+                                         id_net_dict[phys_grps[i]])
+                        for k, v in id_net_dict.items():
+                            if v == ij_max_net:
+                                id_net_dict[k] = ij_min_net
 
             if -1 not in id_net_dict.values():
                 break
