@@ -213,19 +213,23 @@ class QElmerRenderer(QRendererAnalysis):
                 if dist == 0.0 and chip_i == chip_j and layers_touch:
                     if id_net_dict[phys_grps[j]] == -1:
                         id_net_dict[phys_grps[j]] = id_net_dict[phys_grps[i]]
-                    else:
-                        ij_min_net = min(id_net_dict[phys_grps[j]],
-                                         id_net_dict[phys_grps[i]])
-                        ij_max_net = max(id_net_dict[phys_grps[j]],
-                                         id_net_dict[phys_grps[i]])
+                    elif id_net_dict[phys_grps[j]] != id_net_dict[phys_grps[i]]:
+                        net_id_i = id_net_dict[phys_grps[i]]
                         for k, v in id_net_dict.items():
-                            if v == ij_max_net:
-                                id_net_dict[k] = ij_min_net
+                            if v == net_id_i:
+                                id_net_dict[k] = id_net_dict[phys_grps[j]]
 
             if -1 not in id_net_dict.values():
                 break
 
             netlist_id = max(list(id_net_dict.values())) + 1
+
+        id_net_dict_vals = set(id_net_dict.values())
+        rebase_dict = {
+            k: v
+            for (k, v) in zip(id_net_dict_vals, range(max(id_net_dict_vals)))
+        }
+        id_net_dict = {k: rebase_dict.get(v) for k, v in id_net_dict.items()}
 
         # TODO: include the ground_plane_{chip} in netlist
         # using open_pins argument
