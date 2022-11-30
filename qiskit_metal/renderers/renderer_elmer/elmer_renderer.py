@@ -184,7 +184,7 @@ class QElmerRenderer(QRendererAnalysis):
         phys_grps = [
             s1 + '_' + s2 for s1, s2 in zip(qcomp_names_for_qgeom, qgeom_names)
         ]
-        qgeom_idxs = [i for i in range(len(qcomp_geom_table))]
+        qgeom_idxs = list(range(len(qcomp_geom_table)))
         id_net_dict = {k: -1 for k in phys_grps}
 
         while len(qgeom_idxs) != 0:
@@ -225,10 +225,7 @@ class QElmerRenderer(QRendererAnalysis):
             netlist_id = max(list(id_net_dict.values())) + 1
 
         id_net_dict_vals = set(id_net_dict.values())
-        rebase_dict = {
-            k: v
-            for (k, v) in zip(id_net_dict_vals, range(max(id_net_dict_vals)))
-        }
+        rebase_dict = dict(zip(id_net_dict_vals, range(max(id_net_dict_vals))))
         id_net_dict = {k: rebase_dict.get(v) for k, v in id_net_dict.items()}
 
         # TODO: include the ground_plane_{chip} in netlist
