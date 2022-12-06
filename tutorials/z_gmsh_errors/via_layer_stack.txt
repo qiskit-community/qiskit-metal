@@ -1,5 +1,0 @@
-chip_name,layer,datatype,material,thickness,z_coord,fill
-'main',1,0,'pec','5um','0um','True'
-'main',2,0,'pec','10um','5um','True'
-'main',3,0,'pec','5um','15um','True'
-'main',4,0,'silicon','-200um','0um','True'
