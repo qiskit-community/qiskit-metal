@@ -58,7 +58,7 @@ class QElmerRenderer(QRendererAnalysis):
             Linear_System_Convergence_Tolerance=1.0e-10,
             Linear_System_Max_Iterations=500,
             Linear_System_Iterative_Method="BiCGStab",
-            BiCGstabl_Polynomial_Degree=2,
+            BiCGstabl_polynomial_degree=2,
         ),
 
         # TODO: Update this later when working on eigenmode setup
