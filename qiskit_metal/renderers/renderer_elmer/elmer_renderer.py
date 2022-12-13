@@ -98,14 +98,17 @@ class QElmerRenderer(QRendererAnalysis):
         return self.gmsh.initialized
 
     def _initiate_renderer(self):
+        """Initializes the Gmsh and Elmer renderer"""
         self.gmsh = QGmshRenderer(self.design, self.layer_types)
         self._elmer_runner = ElmerRunner()
 
     def _close_renderer(self):
+        """Finalizes the Gmsh renderer"""
         self.gmsh.close()
 
     def close(self):
-        self.gmsh.close()
+        """Public method to close the Gmsh renderer"""
+        return self._close_renderer()
 
     def render_design(
         self,
@@ -123,8 +126,8 @@ class QElmerRenderer(QRendererAnalysis):
         Args:
             selection (Union[list, None], optional): List of selected components
                                                         to render. Defaults to None.
-            open_pins (Union[list, None], optional): List of open pins to add
-                                                        endcaps. Defaults to None.
+            open_pins (Union[list, None], optional): List of open pins that are open.
+                                                        Defaults to None.
             box_plus_buffer (bool, optional): Set to True for adding buffer to
                                                         chip dimensions. Defaults to True.
             draw_sample_holder (bool, optional): To draw the sample holder box. Defaults to True.
@@ -147,6 +150,18 @@ class QElmerRenderer(QRendererAnalysis):
         self.nets = self.assign_nets(open_pins=open_pins)
 
     def assign_nets(self, open_pins: Union[list, None] = None):
+        """This function assigns a netlist number to each galvanically connected metal region,
+        and returns a dictionary with each net as a key, and the corresponding list of
+        geometries associated with that net as values.
+
+        Args:
+            open_pins (Union[list, None], optional): List of tuples of pins that are open.
+                                                        Defaults to None.
+
+        Returns:
+            dict: dictionary with keys type int for each net, and values type list with the
+                    corresponding geometries associated with that net as values.
+        """
         if self.gmsh.case == 0:
             qcomp_ids = self.gmsh.qcomp_ids
         elif self.gmsh.case == 1:
