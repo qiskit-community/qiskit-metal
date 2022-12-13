@@ -258,6 +258,18 @@ class QElmerRenderer(QRendererAnalysis):
         return netlists
 
     def run(self, sim_type: str, display_cap_matrix: bool = False):
+        """Runs ElmerFEM analysis.
+
+        Args:
+            sim_type (str): Type of simulation to be executed by ElmerFEM.
+            display_cap_matrix (bool, optional): Whether or not to return cap matrix.
+                                                    Defaults to False.
+
+        Returns:
+            self.capacitance_matrix (DataFrame): Returns Panda's Dataframe with
+                                                    extracted capacitance matrix if
+                                                    display_cap_matrix = True.
+        """
         setup = self.default_setup[sim_type]
         sim_dir = self._options["simulation_dir"]
         meshfile = self._options["mesh_file"]
@@ -276,6 +288,11 @@ class QElmerRenderer(QRendererAnalysis):
             return self.capacitance_matrix
 
     def save_capacitance_matrix(self, path: str):
+        """Saves capacitance matrix to file.
+
+        Args:
+            path (str): path where capacitance matrix should be saved.
+        """
         self.capacitance_matrix.to_csv(path, sep=' ', header=True)
 
     def _get_capacitance_matrix(self, filename: str):
