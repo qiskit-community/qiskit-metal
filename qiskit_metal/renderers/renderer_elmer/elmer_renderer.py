@@ -225,7 +225,7 @@ class QElmerRenderer(QRendererAnalysis):
             netlist_id = max(list(id_net_dict.values())) + 1
 
         id_net_dict_vals = set(id_net_dict.values())
-        rebase_dict = dict(zip(id_net_dict_vals, range(max(id_net_dict_vals))))
+        rebase_dict = dict(zip(id_net_dict_vals, range(len(id_net_dict_vals))))
         id_net_dict = {k: rebase_dict.get(v) for k, v in id_net_dict.items()}
 
         # TODO: include the ground_plane_{chip} in netlist
