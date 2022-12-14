@@ -342,14 +342,14 @@ class QElmerRenderer(QRendererAnalysis):
         solver_names: List[str] = ["capacitance", "postprocessing_gmsh"],
         equation_name: str = "poisson",
     ):
-        """Initializes ElmerFEM analysis to run. 
+        """Initializes ElmerFEM analysis to run.
             Currently only supports Electrostatic capacitance extraction
 
         Args:
             sim_name (str, optional): Type of ElmerFEM analysis to initialize.
                                         Defaults to "capacitance".
-            solver_names (List[str], optional): ElmerFEM solver to use.
-                                                    Defaults to ["capacitance", "postprocessing_gmsh"].
+            solver_names (List[str], optional): ElmerFEM solver to use. Defaults
+                                                    to ["capacitance", "postprocessing_gmsh"].
             equation_name (str, optional): Type of equation for solver. Defaults to "poisson".
         """
         setup = self.default_setup
