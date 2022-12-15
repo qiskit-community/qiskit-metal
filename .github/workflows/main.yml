@@ -26,7 +26,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Pip cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.cache/pip
           key: ubuntu-latest-${{ matrix.python-version }}-pip-tests-${{ hashFiles('setup.py','requirements-dev.txt','requirements.txt') }}
@@ -57,7 +57,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Pip cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.cache/pip
           key: macOS-latest-${{ matrix.python-version }}-pip-tests-${{ hashFiles('setup.py','requirements-dev.txt','requirements.txt') }}
@@ -82,7 +82,7 @@ jobs:
   #        with:
   #          python-version: ${{ matrix.python-version }}
   #      - name: Pip cache
-  #        uses: actions/cache@v2
+  #        uses: actions/cache@v3
   #        with:
   #          path: ~\AppData\Local\pip\Cache
   #          key: ${{ runner.os }}-${{ matrix.python-version }}-pip-tests-${{ hashFiles('setup.py','requirements-dev.txt','requirements.txt') }}
@@ -107,7 +107,7 @@ jobs:
         with:
           python-version: 3.9
       - name: Pip cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-${{ matrix.python-version }}-pip-lint-${{ hashFiles('setup.py','requirements-dev.txt','requirements.txt') }}
@@ -131,7 +131,7 @@ jobs:
         with:
           python-version: 3.9
       - name: Pip cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-${{ matrix.python-version }}-pip-docs-${{ hashFiles('setup.py','requirements-dev.txt','requirements.txt') }}
@@ -160,7 +160,7 @@ jobs:
 #        with:
 #          python-version: 3.7
 #      - name: Pip cache
-#        uses: actions/cache@v2
+#        uses: actions/cache@v3
 #        with:
 #          path: ~/.cache/pip
 #          key: ${{ runner.os }}-${{ matrix.python-version }}-pip-tutorials-${{ hashFiles('setup.py','requirements-dev.txt','requirements.txt') }}
