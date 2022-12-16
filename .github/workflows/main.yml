@@ -13,7 +13,7 @@ jobs:
     # Name the Job
     name: tests-python${{ matrix.python-version }}-ubuntu-latest
     # Set the type of machine to run on
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     # Set matrix for runs-on
     strategy:
       matrix:
