@@ -37,6 +37,7 @@ jobs:
       - name: Install Deps
         run: |
           python -m pip install -U tox setuptools virtualenv wheel
+          python -m pip install --no-cache-dir pyside2
           sudo apt install libglu1-mesa libglu1-mesa-dev
       - name: Install and Run Tests
         run: tox -e py
