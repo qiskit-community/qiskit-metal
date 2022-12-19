@@ -22,11 +22,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
       - name: Pip cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.cache/pip
           key: ubuntu-latest-${{ matrix.python-version }}-pip-tests-${{ hashFiles('setup.py','requirements-dev.txt','requirements.txt') }}
@@ -53,7 +53,7 @@ jobs:
       - name: Chekout code
         uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
       - name: Pip cache
@@ -78,7 +78,7 @@ jobs:
   #    steps:
   #      - uses: actions/checkout@v2
   #      - name: Set up Python ${{ matrix.python-version }}
-  #        uses: actions/setup-python@v2
+  #        uses: actions/setup-python@v4
   #        with:
   #          python-version: ${{ matrix.python-version }}
   #      - name: Pip cache
@@ -103,7 +103,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python 3.9
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: 3.9
       - name: Pip cache
@@ -127,7 +127,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Set up Python 3.9
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: 3.9
       - name: Pip cache
@@ -156,7 +156,7 @@ jobs:
 #    steps:
 #      - uses: actions/checkout@v2
 #      - name: Set up Python 3.7
-#        uses: actions/setup-python@v2
+#        uses: actions/setup-python@v4
 #        with:
 #          python-version: 3.7
 #      - name: Pip cache
