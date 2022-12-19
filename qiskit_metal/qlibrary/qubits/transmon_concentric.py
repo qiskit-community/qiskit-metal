@@ -59,6 +59,7 @@ class TransmonConcentric(BaseQubit):
         * pocket_w: '1500um' -- Transmon pocket width
         * pocket_h: '1000um' -- Transmon pocket height
         * cpw_width: '10.0um' -- Width of the readout resonator and flux bias line
+        * layer: '1' -- the design layer where the component will go
     """
 
     # default drawing options
@@ -80,7 +81,8 @@ class TransmonConcentric(BaseQubit):
         pocket_w='1500um',  # transmon pocket width
         pocket_h='1000um',  # transmon pocket height
         cpw_width='10.0um',  # width of the readout resonator and flux bias line
-        inductor_width='5.0um'  # width of the Josephson Junctions
+        inductor_width='5.0um',  # width of the Josephson Junctions
+        layer='1'  # design layer
     )
     """Default drawing options"""
 
@@ -168,24 +170,24 @@ class TransmonConcentric(BaseQubit):
 
         self.add_qgeometry('path',
                            geom_rr,
-                           layer=1,
+                           layer=p.layer,
                            subtract=False,
                            width=p.cpw_width)
         self.add_qgeometry('path',
                            geom_fbl,
-                           layer=1,
+                           layer=p.layer,
                            subtract=False,
                            width=p.cpw_width)
-        self.add_qgeometry('poly', geom_outer, layer=1, subtract=False)
-        self.add_qgeometry('poly', geom_inner, layer=1, subtract=False)
+        self.add_qgeometry('poly', geom_outer, layer=p.layer, subtract=False)
+        self.add_qgeometry('poly', geom_inner, layer=p.layer, subtract=False)
         self.add_qgeometry('junction',
                            geom_jjt,
-                           layer=1,
+                           layer=p.layer,
                            subtract=False,
                            width=p.inductor_width)
         self.add_qgeometry('junction',
                            geom_jjb,
-                           layer=1,
+                           layer=p.layer,
                            subtract=False,
                            width=p.inductor_width)
         self.add_qgeometry('poly', geom_pocket, layer=1, subtract=True)
