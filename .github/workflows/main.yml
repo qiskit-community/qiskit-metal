@@ -8,7 +8,7 @@ on:
 jobs:
   # NOTE: The ubuntu-latest and macos-latest tests have been separated out because ubuntu
   # requires installing some additional libraries (libglu1-mesa) for Gmsh to run. Please
-  # consider this aspect before combining the tests for both the OS platforms.
+  # consider this aspect before combining the tests for both the OS platforms. 
   ubuntu-tests:
     # Name the Job
     name: tests-python${{ matrix.python-version }}-ubuntu-latest
