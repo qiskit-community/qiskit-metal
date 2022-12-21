@@ -162,35 +162,12 @@ class QElmerRenderer(QRendererAnalysis):
             dict: dictionary with keys type int for each net, and values type list with the
                     corresponding geometries associated with that net as values.
         """
-        if self.gmsh.case == 0:
-            qcomp_ids = self.gmsh.qcomp_ids
-        elif self.gmsh.case == 1:
-            qcomp_ids = list(set(self.design._components.keys()))
-        elif self.gmsh.case == 2:
-            raise ValueError("Selection provided is invalid.")
-
-        metal_layers = self.layer_types["metal"]
-
-        mask = lambda table: table["component"].isin(qcomp_ids) & ~table[
-            "subtract"] & table["layer"].isin(metal_layers)
-
-        min_z = lambda layer: min(
-            sum(self.gmsh.get_thickness_zcoord_for_layer_datatype(layer)),
-            self.gmsh.get_thickness_zcoord_for_layer_datatype(layer)[1])
 
         netlists = defaultdict(list)
         netlist_id = 0
-        path_table = self.design.qgeometry.tables["path"]
-        poly_table = self.design.qgeometry.tables["poly"]
-        qcomp_paths = path_table[mask(table=path_table)]
-        qcomp_polys = poly_table[mask(table=poly_table)]
-        qcomp_geom_table = pd.concat([qcomp_paths, qcomp_polys],
-                                     ignore_index=True)
 
-        qcomp_geom_table['min_z'] = qcomp_geom_table['layer'].apply(min_z)
-        qcomp_geom_table.sort_values(by=['min_z'],
-                                     inplace=True,
-                                     ignore_index=True)
+        qcomp_geom_table = self.get_qgeometry_table()
+
         qgeom_names = qcomp_geom_table["name"]
         qcomp_names_for_qgeom = [
             list(self.design.components.keys())[i - 1]
@@ -243,19 +220,52 @@ class QElmerRenderer(QRendererAnalysis):
         rebase_dict = dict(zip(id_net_dict_vals, range(len(id_net_dict_vals))))
         id_net_dict = {k: rebase_dict.get(v) for k, v in id_net_dict.items()}
 
-        # TODO: include the ground_plane_{chip} in netlist
-        # using open_pins argument
-        # 1. For loop: filter by chips
-        # 2. Compare with design.net_info and get left out pins
-        # 3. Add ground plane to left out pins lists and merge
-        #    the lists in which ground plane was added
-
         for k, v in id_net_dict.items():
             if v not in netlists.keys():
                 netlists[v] = list()
             netlists[v].append(k)
 
         return netlists
+
+    def get_qgeometry_table(self) -> pd.DataFrame:
+        """_summary_
+
+        Raises:
+            ValueError: _description_
+
+        Returns:
+            pd.DataFrame: _description_
+        """
+
+        if self.gmsh.case == 0:
+            qcomp_ids = self.gmsh.qcomp_ids
+        elif self.gmsh.case == 1:
+            qcomp_ids = list(set(self.design._components.keys()))
+        elif self.gmsh.case == 2:
+            raise ValueError("Selection provided is invalid.")
+
+        metal_layers = self.layer_types["metal"]
+
+        mask = lambda table: table["component"].isin(qcomp_ids) & ~table[
+            "subtract"] & table["layer"].isin(metal_layers)
+
+        min_z = lambda layer: min(
+            sum(self.gmsh.get_thickness_zcoord_for_layer_datatype(layer)),
+            self.gmsh.get_thickness_zcoord_for_layer_datatype(layer)[1])
+
+        path_table = self.design.qgeometry.tables["path"]
+        poly_table = self.design.qgeometry.tables["poly"]
+        qcomp_paths = path_table[mask(table=path_table)]
+        qcomp_polys = poly_table[mask(table=poly_table)]
+        qcomp_geom_table = pd.concat([qcomp_paths, qcomp_polys],
+                                     ignore_index=True)
+
+        qcomp_geom_table['min_z'] = qcomp_geom_table['layer'].apply(min_z)
+        qcomp_geom_table.sort_values(by=['min_z'],
+                                     inplace=True,
+                                     ignore_index=True)
+
+        return qcomp_geom_table
 
     def run(self, sim_type: str, display_cap_matrix: bool = False):
         """Runs ElmerFEM analysis.
