@@ -602,8 +602,17 @@ class QGmshRenderer(QRenderer):
         open_pins = open_pins if open_pins is not None else []
 
         for comp, pin in open_pins:
+            if comp not in self.design.components:
+                raise ValueError(
+                    f"Component '{comp}' not present in current design.")
+
             qcomp = self.design.components[comp]
             qc_layer = int(qcomp.options.layer)
+
+            if pin not in qcomp.pins:
+                raise ValueError(
+                    f"Pin '{pin}' not present in component '{comp}'.")
+
             pin_dict = qcomp.pins[pin]
             width, gap = self.parse_units_gmsh(
                 [pin_dict["width"], pin_dict["gap"]])
