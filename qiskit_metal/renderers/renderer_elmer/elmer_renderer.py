@@ -6,7 +6,7 @@ import pandas as pd
 from ..renderer_base import QRendererAnalysis
 from ..renderer_gmsh.gmsh_renderer import QGmshRenderer
 from ...designs.design_base import QDesign
-from ... import Dict
+from ... import Dict, draw
 from .elmer_runner import ElmerRunner
 
 
@@ -147,85 +147,8 @@ class QElmerRenderer(QRendererAnalysis):
                                 mesh_geoms=mesh_geoms,
                                 ignore_metal_volume=ignore_metal_volume)
 
+        self.qcomp_geom_table = self.get_qgeometry_table()
         self.nets = self.assign_nets(open_pins=open_pins)
-
-    def assign_nets(self, open_pins: Union[list, None] = None):
-        """This function assigns a netlist number to each galvanically connected metal region,
-        and returns a dictionary with each net as a key, and the corresponding list of
-        geometries associated with that net as values.
-
-        Args:
-            open_pins (Union[list, None], optional): List of tuples of pins that are open.
-                                                        Defaults to None.
-
-        Returns:
-            dict: dictionary with keys type int for each net, and values type list with the
-                    corresponding geometries associated with that net as values.
-        """
-
-        netlists = defaultdict(list)
-        netlist_id = 0
-
-        qcomp_geom_table = self.get_qgeometry_table()
-
-        qgeom_names = qcomp_geom_table["name"]
-        qcomp_names_for_qgeom = [
-            list(self.design.components.keys())[i - 1]
-            for i in qcomp_geom_table["component"]
-        ]
-        phys_grps = [
-            s1 + '_' + s2 for s1, s2 in zip(qcomp_names_for_qgeom, qgeom_names)
-        ]
-        qgeom_idxs = list(range(len(qcomp_geom_table)))
-        id_net_dict = {k: -1 for k in phys_grps}
-
-        while len(qgeom_idxs) != 0:
-            i = qgeom_idxs.pop(0)
-            shape_i = qcomp_geom_table.iloc[[i]]["geometry"][i]
-            chip_i = qcomp_geom_table.iloc[[i]]["chip"][i]
-            layer_i = qcomp_geom_table.iloc[[i]]["layer"][i]
-            thick_i, z_coord_i = self.gmsh.get_thickness_zcoord_for_layer_datatype(
-                layer_i)
-            id_net_dict[phys_grps[i]] = netlist_id if (
-                id_net_dict[phys_grps[i]] == -1) else id_net_dict[phys_grps[i]]
-            for j in qgeom_idxs:
-                shape_j = qcomp_geom_table.iloc[[j]]["geometry"][j]
-                chip_j = qcomp_geom_table.iloc[[j]]["chip"][j]
-                layer_j = qcomp_geom_table.iloc[[j]]["layer"][j]
-                thick_j, z_coord_j = self.gmsh.get_thickness_zcoord_for_layer_datatype(
-                    layer_j)
-                dist = shape_i.distance(shape_j)
-
-                layers_touch = False
-                if (layer_i == layer_j or z_coord_j == z_coord_i or
-                        z_coord_i + thick_i == z_coord_j or
-                        z_coord_j + thick_j == z_coord_i):
-                    layers_touch = True
-
-                if dist == 0.0 and chip_i == chip_j and layers_touch:
-                    if id_net_dict[phys_grps[j]] == -1:
-                        id_net_dict[phys_grps[j]] = id_net_dict[phys_grps[i]]
-                    elif id_net_dict[phys_grps[j]] != id_net_dict[phys_grps[i]]:
-                        net_id_i = id_net_dict[phys_grps[i]]
-                        for k, v in id_net_dict.items():
-                            if v == net_id_i:
-                                id_net_dict[k] = id_net_dict[phys_grps[j]]
-
-            if -1 not in id_net_dict.values():
-                break
-
-            netlist_id = max(list(id_net_dict.values())) + 1
-
-        id_net_dict_vals = set(id_net_dict.values())
-        rebase_dict = dict(zip(id_net_dict_vals, range(len(id_net_dict_vals))))
-        id_net_dict = {k: rebase_dict.get(v) for k, v in id_net_dict.items()}
-
-        for k, v in id_net_dict.items():
-            if v not in netlists.keys():
-                netlists[v] = list()
-            netlists[v].append(k)
-
-        return netlists
 
     def get_qgeometry_table(self) -> pd.DataFrame:
         """_summary_
@@ -266,6 +189,138 @@ class QElmerRenderer(QRendererAnalysis):
                                      ignore_index=True)
 
         return qcomp_geom_table
+
+    def assign_nets(self, open_pins: Union[list, None] = None):
+        """This function assigns a netlist number to each galvanically connected metal region,
+        and returns a dictionary with each net as a key, and the corresponding list of
+        geometries associated with that net as values.
+
+        Args:
+            open_pins (Union[list, None], optional): List of tuples of pins that are open.
+                                                        Defaults to None.
+
+        Returns:
+            dict: dictionary with keys type int for each net, and values type list with the
+                    corresponding geometries associated with that net as values.
+        """
+
+        netlists = defaultdict(list)
+        netlist_id = 0
+
+        qgeom_names = self.qcomp_geom_table["name"]
+        qcomp_names_for_qgeom = [
+            list(self.design.components.keys())[i - 1]
+            for i in self.qcomp_geom_table["component"]
+        ]
+        phys_grps = [
+            s1 + '_' + s2 for s1, s2 in zip(qcomp_names_for_qgeom, qgeom_names)
+        ]
+        qgeom_idxs = list(range(len(self.qcomp_geom_table)))
+        id_net_dict = {k: -1 for k in phys_grps}
+
+        while len(qgeom_idxs) != 0:
+            i = qgeom_idxs.pop(0)
+            shape_i = self.qcomp_geom_table.iloc[[i]]["geometry"][i]
+            chip_i = self.qcomp_geom_table.iloc[[i]]["chip"][i]
+            layer_i = self.qcomp_geom_table.iloc[[i]]["layer"][i]
+            thick_i, z_coord_i = self.gmsh.get_thickness_zcoord_for_layer_datatype(
+                layer_i)
+            id_net_dict[phys_grps[i]] = netlist_id if (
+                id_net_dict[phys_grps[i]] == -1) else id_net_dict[phys_grps[i]]
+            for j in qgeom_idxs:
+                shape_j = self.qcomp_geom_table.iloc[[j]]["geometry"][j]
+                chip_j = self.qcomp_geom_table.iloc[[j]]["chip"][j]
+                layer_j = self.qcomp_geom_table.iloc[[j]]["layer"][j]
+                thick_j, z_coord_j = self.gmsh.get_thickness_zcoord_for_layer_datatype(
+                    layer_j)
+                dist = shape_i.distance(shape_j)
+
+                layers_touch = False
+                if (layer_i == layer_j or z_coord_j == z_coord_i or
+                        z_coord_i + thick_i == z_coord_j or
+                        z_coord_j + thick_j == z_coord_i):
+                    layers_touch = True
+
+                if dist == 0.0 and chip_i == chip_j and layers_touch:
+                    if id_net_dict[phys_grps[j]] == -1:
+                        id_net_dict[phys_grps[j]] = id_net_dict[phys_grps[i]]
+                    elif id_net_dict[phys_grps[j]] != id_net_dict[phys_grps[i]]:
+                        net_id_i = id_net_dict[phys_grps[i]]
+                        for k, v in id_net_dict.items():
+                            if v == net_id_i:
+                                id_net_dict[k] = id_net_dict[phys_grps[j]]
+
+            if -1 not in id_net_dict.values():
+                break
+
+            netlist_id = max(list(id_net_dict.values())) + 1
+
+        gnd_phys_grps = self.get_gnd_qgeoms(open_pins)
+        gnd_netlist = list({
+            net for (name, net) in id_net_dict.items()
+            if (name in gnd_phys_grps)
+        })
+
+        netlists['gnd'] = list()
+        for k, v in id_net_dict.items():
+            if v in gnd_netlist:
+                netlists['gnd'].append(k)
+            else:
+                if v not in netlists.keys():
+                    netlists[v] = list()
+                netlists[v].append(k)
+
+        netlists = {(i if (k != 'gnd') else k): v
+                    for i, (k, v) in enumerate(netlists.items())}
+        print(netlists)
+        return netlists
+
+    def get_gnd_qgeoms(self, open_pins: Union[list, None] = None) -> list:
+        """_summary_
+
+        Args:
+            open_pins (Union[list, None], optional): _description_. Defaults to None.
+
+        Returns:
+            dict: _description_
+        """
+
+        qcomp_lst = self.design.components.keys()
+        all_pins = list()
+        gnd_qgeoms = set()
+
+        for qcomp in qcomp_lst:
+            qcomp_pins = self.design.components[qcomp].pins.keys()
+            all_pins += list(zip([qcomp] * len(qcomp_pins), qcomp_pins))
+
+        nets_table = self.design.net_info
+        gnd_nets = list(nets_table[nets_table["pin_name"] == "short"]["net_id"])
+        gnd_nets_mask = nets_table["net_id"].isin(gnd_nets)
+        port_nets_table = nets_table[~gnd_nets_mask]
+        port_pins_names = port_nets_table["pin_name"]
+        qcomp_names_for_port_pins = [
+            list(qcomp_lst)[i - 1] for i in port_nets_table["component_id"]
+        ]
+        port_pins = list(zip(qcomp_names_for_port_pins, port_pins_names))
+        all_open_pins = list(set(port_pins + open_pins))
+        gnd_pins = [pin for pin in all_pins if pin not in all_open_pins]
+
+        for pin in gnd_pins:
+            qcomp_name, qcomp_pin = pin
+            pin_qcomp_id = self.design.components[qcomp_name].id
+
+            if pin_qcomp_id in list(self.qcomp_geom_table["component"]):
+                pin_qcomp_geom_table = self.qcomp_geom_table[
+                    self.qcomp_geom_table["component"] == pin_qcomp_id]
+                pin_point = draw.Point(
+                    self.design.components[qcomp_name].pins[qcomp_pin]
+                    ['middle'])
+
+                for _, qgeom_row in pin_qcomp_geom_table.iterrows():
+                    if pin_point.intersects(qgeom_row["geometry"]):
+                        gnd_qgeoms.add(qcomp_name + '_' + qgeom_row["name"])
+
+        return list(gnd_qgeoms)
 
     def run(self, sim_type: str, display_cap_matrix: bool = False):
         """Runs ElmerFEM analysis.
