@@ -270,7 +270,7 @@ class QElmerRenderer(QRendererAnalysis):
                     netlists[v] = list()
                 netlists[v].append(k)
 
-        netlists = {(i if (k != 'gnd') else k): v
+        netlists = {(i - 1 if (k != 'gnd') else k): v
                     for i, (k, v) in enumerate(netlists.items())}
         print(netlists)
         return netlists
@@ -388,7 +388,7 @@ class QElmerRenderer(QRendererAnalysis):
         for i, s in enumerate(row_sum):
             df2[i][i] = -s
 
-        name_cap = {k: v[-1] for k, v in self.nets.items()}
+        name_cap = {k: v[-1] for k, v in self.nets.items() if k != "gnd"}
         df2.rename(index=name_cap, columns=name_cap, inplace=True)
 
         gnd_caps = -1 * df2.sum(axis=0)
@@ -504,18 +504,21 @@ class QElmerRenderer(QRendererAnalysis):
 
             phys_grps_dict.update(ph_geoms)
 
-        for _, geom_names in self.nets.items():
+        for net, geom_names in self.nets.items():
             geom_id_list = [
                 phys_grps_dict[f"{name}_sfs"] for name in geom_names
             ]
 
-            boundaries += [
-                self._elmer_runner.add_boundary_condition(
-                    geom_names[-1],
-                    geom_id_list,
-                    options={"Capacitance Body": cap_body})
-            ]
-            cap_body += 1
+            if net == "gnd":
+                ground_planes += geom_id_list
+            else:
+                boundaries += [
+                    self._elmer_runner.add_boundary_condition(
+                        geom_names[-1],
+                        geom_id_list,
+                        options={"Capacitance Body": cap_body})
+                ]
+                cap_body += 1
 
         self._elmer_runner.add_boundary_condition(
             "ground_plane", ground_planes, options={"Capacitance Body": 0})
