@@ -272,7 +272,7 @@ class QElmerRenderer(QRendererAnalysis):
 
         netlists = {(i - 1 if (k != 'gnd') else k): v
                     for i, (k, v) in enumerate(netlists.items())}
-        print(netlists)
+
         return netlists
 
     def get_gnd_qgeoms(self, open_pins: Union[list, None] = None) -> list:
