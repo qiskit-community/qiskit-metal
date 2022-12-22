@@ -36,7 +36,7 @@ jobs:
             ubuntu-latest-${{ matrix.python-version }}
       - name: Install Deps
         run: |
-          python -m pip install -U tox setuptools virtualenv wheel
+          python -m pip install -U git+https://github.com/tox-dev/tox.git@3.28.0 setuptools virtualenv wheel
           sudo apt install libglu1-mesa libglu1-mesa-dev
       - name: Install and Run Tests
         run: tox -e py
