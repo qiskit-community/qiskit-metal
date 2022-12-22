@@ -13,7 +13,7 @@ jobs:
     # Name the Job
     name: tests-python${{ matrix.python-version }}-ubuntu-latest
     # Set the type of machine to run on
-    runs-on: self-hosted
+    runs-on: ubuntu-20.04
     # Set matrix for runs-on
     strategy:
       matrix:
@@ -99,7 +99,7 @@ jobs:
   #        shell: bash -l {0}
   lint:
     name: lint
-    runs-on: self-hosted
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python 3.9
