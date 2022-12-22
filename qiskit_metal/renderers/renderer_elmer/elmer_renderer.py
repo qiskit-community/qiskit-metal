@@ -10,28 +10,50 @@ from ... import Dict, draw
 from .elmer_runner import ElmerRunner
 
 
-def load_capacitance_matrix_from_file(filename: str):
+def load_capacitance_matrix_from_file(filename: str) -> pd.DataFrame:
+    """Loads capacitance matrix from file.
+
+    Args:
+        filename (str): A '.txt' file containing the capacitance matrix.
+
+    Returns:
+        pd.DataFrame:: Table containing capacitance matrix.
+    """
     return pd.read_csv(filename, delimiter=' ', index_col=0)
 
 
 class QElmerRenderer(QRendererAnalysis):
     """Extends QRendererAnalysis class and imports meshes from Gmsh using the ElmerFEM python API.
 
+    QElmerRenderer Default Options:
+        * simulation_type --
+        * simulation_dir --
+        * mesh_file --
+        * simulation_input_file --
+        * postprocessing_file --
+        * output_file --
+
     QGmshRenderer Default Options:
+        # Buffer between max/min x and edge of ground plane, in mm
         * x_buffer_width_mm -- Buffer between max/min x and edge of ground plane, in mm
         * y_buffer_width_mm -- Buffer between max/min y and edge of ground plane, in mm
         * mesh -- to define meshing parameters
             * max_size -- upper bound for the size of mesh node
             * min_size -- lower bound for the size of mesh node
+            * max_size_jj -- maximum size of mesh nodes at jj
             * smoothing -- mesh smoothing value
             * nodes_per_2pi_curve -- number of nodes for every 2π radians of curvature
             * algorithm_3d -- value to indicate meshing algorithm used by Gmsh
             * num_threads -- number of threads for parallel meshing
-            * export_dir -- path to mesh export directory
+            * mesh_size_fields -- specify mesh size field parameters
+                * min_distance_from_edges -- min distance for mesh gradient generation
+                * max_distance_from_edges -- max distance for mesh gradient generation
+                * distance_delta -- delta change in distance with each consecutive step
+                * gradient_delta -- delta change in gradient with each consecutive step
         * colors -- specify colors for the mesh elements, chips or layers
             * metal -- color for metallized entities
             * jj -- color for JJs
-            * sub -- color for substrate entity
+            * dielectric -- color for dielectric entity
 
     TODO: update QElmerRenderer options docstring
     """
@@ -190,7 +212,7 @@ class QElmerRenderer(QRendererAnalysis):
 
         return qcomp_geom_table
 
-    def assign_nets(self, open_pins: Union[list, None] = None):
+    def assign_nets(self, open_pins: Union[list, None] = None) -> dict:
         """This function assigns a netlist number to each galvanically connected metal region,
         and returns a dictionary with each net as a key, and the corresponding list of
         geometries associated with that net as values.
@@ -204,7 +226,7 @@ class QElmerRenderer(QRendererAnalysis):
                     corresponding geometries associated with that net as values.
         """
 
-        netlists = defaultdict(list)
+        netlists = dict()
         netlist_id = 0
 
         qgeom_names = self.qcomp_geom_table["name"]
