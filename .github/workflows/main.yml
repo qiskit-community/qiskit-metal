@@ -8,25 +8,25 @@ on:
 jobs:
   # NOTE: The ubuntu-latest and macos-latest tests have been separated out because ubuntu
   # requires installing some additional libraries (libglu1-mesa) for Gmsh to run. Please
-  # consider this aspect before combining the tests for both the OS platforms.
+  # consider this aspect before combining the tests for both the OS platforms. 
   ubuntu-tests:
     # Name the Job
     name: tests-python${{ matrix.python-version }}-ubuntu-latest
     # Set the type of machine to run on
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     # Set matrix for runs-on
     strategy:
       matrix:
         python-version: ["3.9", "3.10"]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
       - name: Pip cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.cache/pip
           key: ubuntu-latest-${{ matrix.python-version }}-pip-tests-${{ hashFiles('setup.py','requirements-dev.txt','requirements.txt') }}
@@ -36,7 +36,7 @@ jobs:
             ubuntu-latest-${{ matrix.python-version }}
       - name: Install Deps
         run: |
-          python -m pip install -U tox setuptools virtualenv wheel
+          python -m pip install -U git+https://github.com/tox-dev/tox.git@3.28.0 setuptools virtualenv wheel
           sudo apt install libglu1-mesa libglu1-mesa-dev
       - name: Install and Run Tests
         run: tox -e py
@@ -51,13 +51,13 @@ jobs:
         python-version: ["3.9", "3.10"]
     steps:
       - name: Chekout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
       - name: Pip cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.cache/pip
           key: macOS-latest-${{ matrix.python-version }}-pip-tests-${{ hashFiles('setup.py','requirements-dev.txt','requirements.txt') }}
@@ -66,7 +66,7 @@ jobs:
             macOS-latest-${{ matrix.python-version }}-pip-
             macOS-latest-${{ matrix.python-version }}
       - name: Install Deps
-        run: python -m pip install -U tox setuptools virtualenv wheel
+        run: python -m pip install -U git+https://github.com/tox-dev/tox.git@3.28.0 setuptools virtualenv wheel
       - name: Install and Run Tests
         run: tox -e py
   #  windows-tests:
@@ -76,13 +76,13 @@ jobs:
   #      matrix:
   #        python-version: ["3.9", "3.10"]
   #    steps:
-  #      - uses: actions/checkout@v2
+  #      - uses: actions/checkout@v3
   #      - name: Set up Python ${{ matrix.python-version }}
-  #        uses: actions/setup-python@v2
+  #        uses: actions/setup-python@v4
   #        with:
   #          python-version: ${{ matrix.python-version }}
   #      - name: Pip cache
-  #        uses: actions/cache@v2
+  #        uses: actions/cache@v3
   #        with:
   #          path: ~\AppData\Local\pip\Cache
   #          key: ${{ runner.os }}-${{ matrix.python-version }}-pip-tests-${{ hashFiles('setup.py','requirements-dev.txt','requirements.txt') }}
@@ -92,22 +92,22 @@ jobs:
   #            ${{ runner.os }}-${{ matrix.python-version }}-
   #      - name: Install deps
   #        run: |
-  #          pip install -U tox cvxopt setuptools virtualenv wheel
+  #          python -m pip install -U git+https://github.com/tox-dev/tox.git@3.28.0 cvxopt setuptools virtualenv wheel
   #        shell: pwsh
   #      - name: Install and Run Tests
   #        run: tox --sitepackages -e py
   #        shell: bash -l {0}
   lint:
     name: lint
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python 3.9
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: 3.9
       - name: Pip cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-${{ matrix.python-version }}-pip-lint-${{ hashFiles('setup.py','requirements-dev.txt','requirements.txt') }}
@@ -116,22 +116,22 @@ jobs:
             ${{ runner.os }}-${{ matrix.python-version }}-pip-
             ${{ runner.os }}-${{ matrix.python-version }}-
       - name: Install Deps
-        run: python -m pip install -U tox
+        run: python -m pip install -U git+https://github.com/tox-dev/tox.git@3.28.0
       - name: Run lint
         run: tox -elint
   docs:
     name: docs
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set up Python 3.9
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: 3.9
       - name: Pip cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-${{ matrix.python-version }}-pip-docs-${{ hashFiles('setup.py','requirements-dev.txt','requirements.txt') }}
@@ -141,7 +141,7 @@ jobs:
             ${{ runner.os }}-
       - name: Install Deps
         run: |
-          python -m pip install -U tox
+          python -m pip install -U git+https://github.com/tox-dev/tox.git@3.28.0
           sudo apt update
           sudo apt install -y graphviz pandoc qt5-default
       - name: Build Docs
@@ -152,15 +152,15 @@ jobs:
           path: docs/_build/html
 #  tutorials:
 #    name: tutorials
-#    runs-on: ubuntu-latest
+#    runs-on: ubuntu-20.04
 #    steps:
-#      - uses: actions/checkout@v2
+#      - uses: actions/checkout@v3
 #      - name: Set up Python 3.7
-#        uses: actions/setup-python@v2
+#        uses: actions/setup-python@v4
 #        with:
 #          python-version: 3.7
 #      - name: Pip cache
-#        uses: actions/cache@v2
+#        uses: actions/cache@v3
 #        with:
 #          path: ~/.cache/pip
 #          key: ${{ runner.os }}-${{ matrix.python-version }}-pip-tutorials-${{ hashFiles('setup.py','requirements-dev.txt','requirements.txt') }}
@@ -172,7 +172,7 @@ jobs:
 #        run: |
 #          set -e
 #          python -m pip install --upgrade pip
-#          pip install -U tox
+#          python -m pip install -U git+https://github.com/tox-dev/tox.git@3.28.0
 #          sudo apt install -y graphviz pandoc qt5-default
 #          pip check
 #        shell: bash
