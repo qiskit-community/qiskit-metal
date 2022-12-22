@@ -1,11 +1,9 @@
-from typing import Union, List, Tuple
-from collections import defaultdict
+from typing import Union, List, Dict as Dict_
 import os
 import pandas as pd
 
 from ..renderer_base import QRendererAnalysis
 from ..renderer_gmsh.gmsh_renderer import QGmshRenderer
-from ...designs.design_base import QDesign
 from ... import Dict, draw
 from .elmer_runner import ElmerRunner
 
@@ -26,12 +24,13 @@ class QElmerRenderer(QRendererAnalysis):
     """Extends QRendererAnalysis class and imports meshes from Gmsh using the ElmerFEM python API.
 
     QElmerRenderer Default Options:
-        * simulation_type --
-        * simulation_dir --
-        * mesh_file --
-        * simulation_input_file --
-        * postprocessing_file --
-        * output_file --
+        * simulation_type -- Type of ElmerFEM simulation to run.
+                                Default options found in elmer_configs.py under "simulations".
+        * simulation_dir -- Directory to store simulation-related files.
+        * mesh_file -- Name of GMSH output mesh file ending in '.msh'.
+        * simulation_input_file -- Name of ElmerFEM simulation input file ending in '.sif'.
+        * postprocessing_file -- Name of ElmerFEM postprocessing output file ending in '.msh'.
+        * output_file -- Name of ElmerFEM results output file ending in '.result'.
 
     QGmshRenderer Default Options:
         # Buffer between max/min x and edge of ground plane, in mm
@@ -54,8 +53,6 @@ class QElmerRenderer(QRendererAnalysis):
             * metal -- color for metallized entities
             * jj -- color for JJs
             * dielectric -- color for dielectric entity
-
-    TODO: update QElmerRenderer options docstring
     """
 
     default_options = Dict(
@@ -114,8 +111,8 @@ class QElmerRenderer(QRendererAnalysis):
     @property
     def initialized(self):
         """Abstract method. Must be implemented by the subclass.
-        Is renderer ready to be used?
-        Implementation must return boolean True if successful. False otherwise.
+            Is renderer ready to be used?
+            Implementation must return boolean True if successful. False otherwise.
         """
         return self.gmsh.initialized
 
@@ -173,13 +170,15 @@ class QElmerRenderer(QRendererAnalysis):
         self.nets = self.assign_nets(open_pins=open_pins)
 
     def get_qgeometry_table(self) -> pd.DataFrame:
-        """_summary_
+        """Combines the "path" and "poly" qgeometry tables into a single table, and adds
+                column containing the minimum z coordinate of the layer associated with
+                each qgeometry.
 
         Raises:
-            ValueError: _description_
+            ValueError: Raised when component in selection of qcomponents is not in QDesign.
 
         Returns:
-            pd.DataFrame: _description_
+            pd.DataFrame: Table with elements in both "path" and "poly" qgeometry tables.
         """
 
         if self.gmsh.case == 0:
@@ -212,8 +211,11 @@ class QElmerRenderer(QRendererAnalysis):
 
         return qcomp_geom_table
 
-    def assign_nets(self, open_pins: Union[list, None] = None) -> dict:
-        """This function assigns a netlist number to each galvanically connected metal region,
+    def assign_nets(
+        self,
+        open_pins: Union[list,
+                         None] = None) -> Dict_[Union[str, int], List[int]]:
+        """Assigns a netlist number to each galvanically connected metal region,
         and returns a dictionary with each net as a key, and the corresponding list of
         geometries associated with that net as values.
 
@@ -222,8 +224,8 @@ class QElmerRenderer(QRendererAnalysis):
                                                         Defaults to None.
 
         Returns:
-            dict: dictionary with keys type int for each net, and values type list with the
-                    corresponding geometries associated with that net as values.
+            Dict_[Union[str, int], List[int]]: dictionary with keys for each net, and list of
+                    values with the corresponding geometries associated with that net as values.
         """
 
         netlists = dict()
@@ -297,14 +299,15 @@ class QElmerRenderer(QRendererAnalysis):
 
         return netlists
 
-    def get_gnd_qgeoms(self, open_pins: Union[list, None] = None) -> list:
-        """_summary_
+    def get_gnd_qgeoms(self, open_pins: Union[list, None] = None) -> List[str]:
+        """ Obtain a list of qgeometry names associated with pins shorted to ground.
 
         Args:
-            open_pins (Union[list, None], optional): _description_. Defaults to None.
+            open_pins (Union[list, None], optional): List of tuples of pins that are open.
+                                                        Defaults to None.
 
         Returns:
-            dict: _description_
+            List[str]: Names of qgeometry components with pins connected to ground plane.
         """
 
         qcomp_lst = self.design.components.keys()
@@ -344,7 +347,9 @@ class QElmerRenderer(QRendererAnalysis):
 
         return list(gnd_qgeoms)
 
-    def run(self, sim_type: str, display_cap_matrix: bool = False):
+    def run(self,
+            sim_type: str,
+            display_cap_matrix: bool = False) -> Union[None, pd.DataFrame]:
         """Runs ElmerFEM analysis.
 
         Args:
@@ -353,9 +358,10 @@ class QElmerRenderer(QRendererAnalysis):
                                                     Defaults to False.
 
         Returns:
-            pd.DataFrame: extracted capacitance matrix if
+            Union[None, pd.DataFrame]: extracted capacitance matrix if
                             display_cap_matrix = True.
         """
+
         setup = self.default_setup[sim_type]
         sim_dir = self._options["simulation_dir"]
         meshfile = self._options["mesh_file"]
@@ -381,10 +387,9 @@ class QElmerRenderer(QRendererAnalysis):
         """
         self.capacitance_matrix.to_csv(path, sep=' ', header=True)
 
-    def _get_capacitance_matrix(self, filename: str):
+    def _get_capacitance_matrix(self, filename: str) -> pd.DataFrame:
         """Reads SPICE capacitance matrix file generated by ElmerFEM, converts
         and returns Maxwell capacitance matrix
-
 
         Args:
             filename (str): Name of capacitance matrix file generated by ElmerFEM
@@ -478,6 +483,16 @@ class QElmerRenderer(QRendererAnalysis):
         self.write_sif()
 
     def define_bodies(self, setup: dict, equation: int, materials: List[int]):
+        """_summary_
+
+        Args:
+            setup (dict): _description_
+            equation (int): _description_
+            materials (List[int]): _description_
+
+        Returns:
+            _type_: _description_
+        """
         bodies = []
         for i, material in enumerate(setup["materials"]):
             if material == "vacuum":
