@@ -6,7 +6,7 @@ on:
 jobs:
   wheel-build:
     name: Build and Publish Release Artifacts
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
