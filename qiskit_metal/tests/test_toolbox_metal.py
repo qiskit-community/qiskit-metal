@@ -20,15 +20,24 @@
 
 import unittest
 import numpy as np
+from typing import Union
 
 from qiskit_metal.toolbox_metal import about
 from qiskit_metal.toolbox_metal import parsing
 from qiskit_metal.toolbox_metal import math_and_overrides
+from qiskit_metal.toolbox_metal import bounds_for_path_and_poly_tables
+from qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables import BoundsForPathAndPolyTables
+from qiskit_metal.toolbox_metal.layer_stack_handler import LayerStackHandler
 from qiskit_metal.toolbox_metal.exceptions import QiskitMetalExceptions
 from qiskit_metal.toolbox_metal.exceptions import QiskitMetalDesignError
 from qiskit_metal.toolbox_metal.exceptions import IncorrectQtException
 from qiskit_metal.toolbox_metal.exceptions import QLibraryGUIException
+from qiskit_metal.toolbox_metal.exceptions import InputError
 from qiskit_metal.tests.assertions import AssertionsMixin
+from qiskit_metal.qlibrary.qubits.transmon_concentric import TransmonConcentric
+from qiskit_metal.designs.design_multiplanar import MultiPlanar
+from qiskit_metal.qlibrary.qubits.transmon_pocket_6 import TransmonPocket6
+from qiskit_metal.tests.test_data.quad_coupler import QuadCoupler
 
 
 class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
@@ -63,12 +72,19 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
         except Exception:
             self.fail("IncorrectQtException failed.")
 
-    def test_toolbox_metal_instantiation_qlibrary_gui__excpetion(self):
+    def test_toolbox_metal_instantiation_qlibrary_gui_exception(self):
         """Test instantiation of QLibraryGUIException."""
         try:
             QLibraryGUIException("test message")
         except Exception:
             self.fail("QLibraryGUIException failed.")
+
+    def test_toolbox_metal_instantiation_input_error(self):
+        """Test instantiation of InputError."""
+        try:
+            InputError("test message")
+        except Exception:
+            self.fail("InputError failed.")
 
     def test_toolbox_metal_about(self):
         """Test that about in about.py produces about text without any
@@ -77,6 +93,33 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
             about.about()
         except Exception:
             self.fail("about() failed")
+
+    def test_toolbox_metal_open_docs(self):
+        """Test that open_docs in about.py opens qiskit_metal documentation in HTML without any
+        errors."""
+        try:
+            about.open_docs()
+        except Exception:
+            self.fail("open_docs() failed")
+
+    def test_toolbox_metal_orient_me(self):
+        """Test that orient_me in about.py produces detailed information about the user without any
+        errors."""
+        try:
+            about.orient_me(True)
+        except Exception:
+            self.fail("orient_me() failed")
+        try:
+            about.orient_me(False)
+        except Exception:
+            self.fail("orient_me() failed")
+
+    def test_toolbox_metal_get_platform_info(self):
+        """Test that get_platform_info in about.py returns a string with the platform information without any errors."""
+        try:
+            return about.get_platform_info()
+        except Exception:
+            self.fail("get_platform_info() failed")
 
     # pylint: disable-msg=unused-variable
     def test_toolbox_metal_parsing_true_str(self):
@@ -256,6 +299,29 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
                                           expected[x][i],
                                           rel_tol=1e-3)
 
+    def test_toolbox_metal_extract_value_unit(self):
+        """Test functionality of extract_value_unit in toolbox_metal.py."""
+        self.assertEqual(parsing.extract_value_unit("200mm", "mm"), 200.0)
+        self.assertEqual(parsing.extract_value_unit("20.5", "units"), 20.5)
+
+    def test_toolbox_metal_fix_units(self):
+        """Test functionality of fix_units in toolbox_metal.py."""
+        self.assertIsInstance(parsing.fix_units(2.5, "mm"), str)
+        self.assertEqual(parsing.fix_units(10.5, None), "10.5mm")
+
+    def test_toolbox_metal_parse_entry(self):
+        """Test functionality of parse_entry in toolbox_metal.py."""
+        self.assertIsInstance(parsing.parse_entry([2, "two"]), list)
+        self.assertEqual(parsing.parse_entry(5.5), 5.5)
+        self.assertIsInstance(parsing.parse_entry("test"), str)
+
+    def test_toolbox_metal_parse_units(self):
+        """Test functionality of parse_units in toolbox_metal.py."""
+        self.assertEqual(parsing.parse_units(8), 0.008)
+        self.assertEqual(parsing.parse_units("two"), "two")
+        self.assertEqual(parsing.parse_units([2, 3.5, 5]),
+                         [0.002, 0.0035, 0.005])
+
     def test_toolbox_metal_set_decimal_precision(self):
         """Test functionality of set_decimal_precision in toolbox_metal.py."""
         self.assertEqual(math_and_overrides.DECIMAL_PRECISION, 10)
@@ -280,6 +346,515 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
         my_array_1 = np.array([3, 4])
         my_array_2 = np.array([12, 14])
         self.assertEqual(math_and_overrides.cross(my_array_1, my_array_2), -6)
+
+    def test_toolbox_metal_aligned_pts(self):
+        """Test functionality of aligned_pts in toolbox_metal.py."""
+        self.assertTrue(math_and_overrides.aligned_pts([0, 1, 2]))
+        self.assertFalse(math_and_overrides.aligned_pts([7, 1, 2]))
+
+    def test_toolbox_metal_determine_larger_box(self):
+        """Test functionality of determine_larger_box in toolbox_metal.py."""
+        self.assertEqual(
+            bounds_for_path_and_poly_tables.determine_larger_box(
+                0.0, 0.0, 11.0, 11.0, (0.0, 0.0, 10.0, 10.0)),
+            (0.0, 0.0, 10.0, 10.0))
+
+    def test_toolbox_metal_get_bounds_of_path_and_poly_tables(self):
+        """Test functionality of get_bounds_of_path_and_poly_tables in toolbox_metal.py"""
+        ls_file_path = ("./qiskit_metal/tests/test_data/planar_chip.txt")
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        conn_pads = dict(connection_pads=dict(coup1=dict(loc_W=-1, loc_H=1),
+                                              coup2=dict(loc_W=1, loc_H=1)))
+        q1 = TransmonPocket6(multiplanar_design,
+                             "Q1",
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
+        qc1 = QuadCoupler(multiplanar_design,
+                          "qc1",
+                          options=dict(pos_x="0mm",
+                                       pos_y="-0.08mm",
+                                       pad_width="120um",
+                                       pad_height="30um",
+                                       cpw_stub_height="250um",
+                                       chip="c_chip",
+                                       layer=1))
+
+        self.assertIsInstance(
+            BoundsForPathAndPolyTables(
+                multiplanar_design).get_bounds_of_path_and_poly_tables(
+                    False, [], 1, 0, 0), tuple)
+
+        self.assertEqual(
+            len(
+                BoundsForPathAndPolyTables(
+                    multiplanar_design).get_bounds_of_path_and_poly_tables(
+                        False, [], 1, 0, 0)), 5)
+
+    def test_toolbox_metal_ensure_component_box_smaller_than_chip_box_(self):
+        """Test functionality of ensure_component_box_smaller_than_chip_box in toolbox_metal.py"""
+        ls_file_path = ("./qiskit_metal/tests/test_data/planar_chip.txt")
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        conn_pads = dict(connection_pads=dict(coup1=dict(loc_W=-1, loc_H=1),
+                                              coup2=dict(loc_W=1, loc_H=1)))
+        q1 = TransmonPocket6(multiplanar_design,
+                             "Q1",
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
+        qc1 = QuadCoupler(multiplanar_design,
+                          "qc1",
+                          options=dict(pos_x="0mm",
+                                       pos_y="-0.08mm",
+                                       pad_width="120um",
+                                       pad_height="30um",
+                                       cpw_stub_height="250um",
+                                       chip="c_chip",
+                                       layer=1))
+        chip = getattr(multiplanar_design, "_chips")
+        for main in chip.items():
+            coords = main[1]
+        for item in coords.values():
+            x_0 = item['center_x']
+            y_0 = item['center_y']
+            x_1 = item['size_x']
+            y_1 = item['size_y']
+        x_0 = int(float(x_0[:-2]))
+        y_0 = int(float(y_0[:-2]))
+        x_1 = int(x_1[:-2])
+        y_1 = int(y_1[:-2])
+        self.assertEqual(
+            BoundsForPathAndPolyTables(
+                multiplanar_design).ensure_component_box_smaller_than_chip_box_(
+                    (0, 0, 2, 3), (x_0, y_0, x_1, y_1)), (0, 0, 2, 3))
+        self.assertEqual(
+            BoundsForPathAndPolyTables(
+                multiplanar_design).ensure_component_box_smaller_than_chip_box_(
+                    (0, 0, 9, 7), (None, None, None, None)), (0, 0, 9, 7))
+
+    def test_toolbox_metal_get_box_for_xy_bounds(self):
+        """Test functionality of get_box_for_xy_bounds in toolbox_metal.py."""
+        ls_file_path = ("./qiskit_metal/tests/test_data/planar_chip.txt")
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        conn_pads = dict(connection_pads=dict(coup1=dict(loc_W=-1, loc_H=1),
+                                              coup2=dict(loc_W=1, loc_H=1)))
+        q1 = TransmonPocket6(multiplanar_design,
+                             "Q1",
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
+        qc1 = QuadCoupler(multiplanar_design,
+                          "qc1",
+                          options=dict(pos_x="0mm",
+                                       pos_y="-0.08mm",
+                                       pad_width="120um",
+                                       pad_height="30um",
+                                       cpw_stub_height="250um",
+                                       chip="c_chip",
+                                       layer=1))
+        multiplanar_design.chips['c_chip'] = {
+            'size': {
+                'center_x': '0.0mm',
+                'center_y': '0.0mm',
+                'size_x': '9mm',
+                'size_y': '7mm'
+            }
+        }
+        self.assertEqual(
+            BoundsForPathAndPolyTables(
+                multiplanar_design).get_box_for_xy_bounds(),
+            (-4.5, -3.5, 4.5, 3.5))
+
+    def test_toolbox_metal_are_all_chipnames_in_design(self):
+        """Test functionality of are_all_chipnames_in_design in toolbox_metal.py."""
+        ls_file_path = ("./qiskit_metal/tests/test_data/planar_chip.txt")
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        conn_pads = dict(connection_pads=dict(coup1=dict(loc_W=-1, loc_H=1),
+                                              coup2=dict(loc_W=1, loc_H=1)))
+        q1 = TransmonPocket6(multiplanar_design,
+                             "Q1",
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
+        qc1 = QuadCoupler(multiplanar_design,
+                          "qc1",
+                          options=dict(pos_x="0mm",
+                                       pos_y="-0.08mm",
+                                       pad_width="120um",
+                                       pad_height="30um",
+                                       cpw_stub_height="250um",
+                                       chip="c_chip",
+                                       layer=1))
+        multiplanar_design.chips['c_chip'] = {
+            'size': {
+                'center_x': '0.0mm',
+                'center_y': '0.0mm',
+                'size_x': '9mm',
+                'size_y': '7mm'
+            }
+        }
+        self.assertEqual(
+            BoundsForPathAndPolyTables(
+                multiplanar_design).are_all_chipnames_in_design(),
+            (True, {'c_chip'}))
+
+    def test_toolbox_metal_get_x_y_for_chip(self):
+        """Test functionality of get_x_y_for_chip in toolbox_metal.py."""
+        ls_file_path = ("./qiskit_metal/tests/test_data/planar_chip.txt")
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        conn_pads = dict(connection_pads=dict(coup1=dict(loc_W=-1, loc_H=1),
+                                              coup2=dict(loc_W=1, loc_H=1)))
+        q1 = TransmonPocket6(multiplanar_design,
+                             "Q1",
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
+        qc1 = QuadCoupler(multiplanar_design,
+                          "qc1",
+                          options=dict(pos_x="0mm",
+                                       pos_y="-0.08mm",
+                                       pad_width="120um",
+                                       pad_height="30um",
+                                       cpw_stub_height="250um",
+                                       chip="c_chip",
+                                       layer=1))
+        multiplanar_design.chips['c_chip'] = {
+            'size': {
+                'center_x': '0.0mm',
+                'center_y': '0.0mm',
+                'size_x': '9mm',
+                'size_y': '7mm'
+            }
+        }
+        self.assertEqual(
+            BoundsForPathAndPolyTables(multiplanar_design).get_x_y_for_chip(
+                'c_chip'), ((-4.5, -3.5, 4.5, 3.5), 0))
+        self.assertEqual(
+            BoundsForPathAndPolyTables(multiplanar_design).get_x_y_for_chip(
+                'TEST_chip'), ((), 1))
+
+    def test_toolbox_metal_chip_names_not_in_design(self):
+        """Test functionality of chip_names_not_in_design in toolbox_metal.py."""
+        ls_file_path = ("./qiskit_metal/tests/test_data/planar_chip.txt")
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        conn_pads = dict(connection_pads=dict(coup1=dict(loc_W=-1, loc_H=1),
+                                              coup2=dict(loc_W=1, loc_H=1)))
+        q1 = TransmonPocket6(multiplanar_design,
+                             "Q1",
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
+        qc1 = QuadCoupler(multiplanar_design,
+                          "qc1",
+                          options=dict(pos_x="0mm",
+                                       pos_y="-0.08mm",
+                                       pad_width="120um",
+                                       pad_height="30um",
+                                       cpw_stub_height="250um",
+                                       chip="c_chip",
+                                       layer=1))
+        self.assertEqual(
+            BoundsForPathAndPolyTables(
+                multiplanar_design).chip_names_not_in_design(
+                    set(multiplanar_design.chips.keys()),
+                    multiplanar_design.ls.get_unique_chip_names()), None)
+
+    def test_toolbox_metal_chip_size_not_in_chipname_within_design(self):
+        """Test functionality of chip_size_not_in_chipname_within_design in toolbox_metal.py."""
+        ls_file_path = ("./qiskit_metal/tests/test_data/planar_chip.txt")
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        conn_pads = dict(connection_pads=dict(coup1=dict(loc_W=-1, loc_H=1),
+                                              coup2=dict(loc_W=1, loc_H=1)))
+        q1 = TransmonPocket6(multiplanar_design,
+                             "Q1",
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
+        qc1 = QuadCoupler(multiplanar_design,
+                          "qc1",
+                          options=dict(pos_x="0mm",
+                                       pos_y="-0.08mm",
+                                       pad_width="120um",
+                                       pad_height="30um",
+                                       cpw_stub_height="250um",
+                                       chip="c_chip",
+                                       layer=1))
+        self.assertEqual(
+            BoundsForPathAndPolyTables(multiplanar_design).
+            chip_size_not_in_chipname_within_design('c_chip'), None)
+
+    def test_toolbox_metal_get_layer_datatype_when_fill_is_true(self):
+        """Test functionality of get_layer_datatype_when_fill_is_true in toolbox_metal.py."""
+        ls_file_path = ("./qiskit_metal/tests/test_data/planar_chip.txt")
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        conn_pads = dict(connection_pads=dict(coup1=dict(loc_W=-1, loc_H=1),
+                                              coup2=dict(loc_W=1, loc_H=1)))
+        q1 = TransmonPocket6(multiplanar_design,
+                             "Q1",
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
+        qc1 = QuadCoupler(multiplanar_design,
+                          "qc1",
+                          options=dict(pos_x="0mm",
+                                       pos_y="-0.08mm",
+                                       pad_width="120um",
+                                       pad_height="30um",
+                                       cpw_stub_height="250um",
+                                       chip="c_chip",
+                                       layer=1))
+        self.assertEqual(
+            LayerStackHandler(
+                multiplanar_design,
+                (ls_file_path, None)).get_layer_datatype_when_fill_is_true(), {
+                    (1, 0): {
+                        'layer': 1,
+                        'datatype': 0,
+                        'thickness': 0.002,
+                        'z_coord': 0.01,
+                        'material': 'pec',
+                        'chip_name': 'c_chip'
+                    },
+                    (3, 0): {
+                        'layer': 3,
+                        'datatype': 0,
+                        'thickness': -0.5,
+                        'z_coord': 0.0,
+                        'material': 'silicon',
+                        'chip_name': 'c_chip'
+                    }
+                })
+
+    def test_toolbox_metal_get_properties_for_layer_datatype(self):
+        """Test functionality of get_properties_for_layer_datatype in toolbox_metal.py."""
+        ls_file_path = ("./qiskit_metal/tests/test_data/planar_chip.txt")
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        conn_pads = dict(connection_pads=dict(coup1=dict(loc_W=-1, loc_H=1),
+                                              coup2=dict(loc_W=1, loc_H=1)))
+        q1 = TransmonPocket6(multiplanar_design,
+                             "Q1",
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
+        qc1 = QuadCoupler(multiplanar_design,
+                          "qc1",
+                          options=dict(pos_x="0mm",
+                                       pos_y="-0.08mm",
+                                       pad_width="120um",
+                                       pad_height="30um",
+                                       cpw_stub_height="250um",
+                                       chip="c_chip",
+                                       layer=1))
+        self.assertEqual(
+            LayerStackHandler(
+                multiplanar_design,
+                (ls_file_path, None)).get_properties_for_layer_datatype(
+                    ['material', 'thickness'], 1, 0), ('pec', 0.002))
+        self.assertEqual(
+            LayerStackHandler(
+                multiplanar_design,
+                (ls_file_path, None)).get_properties_for_layer_datatype(
+                    ['material', 'thickness'], 3, 0), ('silicon', -0.5))
+
+    def test_toolbox_metal_is_layer_data_unique(self):
+        """Test functionality of is_layer_data_unique in toolbox_metal.py."""
+        ls_file_path = ("./qiskit_metal/tests/test_data/planar_chip.txt")
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        conn_pads = dict(connection_pads=dict(coup1=dict(loc_W=-1, loc_H=1),
+                                              coup2=dict(loc_W=1, loc_H=1)))
+        q1 = TransmonPocket6(multiplanar_design,
+                             "Q1",
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
+        qc1 = QuadCoupler(multiplanar_design,
+                          "qc1",
+                          options=dict(pos_x="0mm",
+                                       pos_y="-0.08mm",
+                                       pad_width="120um",
+                                       pad_height="30um",
+                                       cpw_stub_height="250um",
+                                       chip="c_chip",
+                                       layer=1))
+        self.assertEqual(
+            LayerStackHandler(multiplanar_design,
+                              (ls_file_path, None)).is_layer_data_unique(),
+            True)
+
+    def test_toolbox_metal_read_csv_df(self):
+        """Test functionality of read_csv_df in toolbox_metal.py."""
+        ls_file_path = ("./qiskit_metal/tests/test_data/planar_chip.txt")
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        conn_pads = dict(connection_pads=dict(coup1=dict(loc_W=-1, loc_H=1),
+                                              coup2=dict(loc_W=1, loc_H=1)))
+        q1 = TransmonPocket6(multiplanar_design,
+                             "Q1",
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
+        qc1 = QuadCoupler(multiplanar_design,
+                          "qc1",
+                          options=dict(pos_x="0mm",
+                                       pos_y="-0.08mm",
+                                       pad_width="120um",
+                                       pad_height="30um",
+                                       cpw_stub_height="250um",
+                                       chip="c_chip",
+                                       layer=1))
+        self.assertEqual(
+            LayerStackHandler(multiplanar_design,
+                              (ls_file_path, None))._read_csv_df(ls_file_path),
+            None)
+
+    def test_toolbox_metal_get_unique_chip_names(self):
+        """Test functionality of get_unique_chip_names in toolbox_metal.py."""
+        ls_file_path = ("./qiskit_metal/tests/test_data/planar_chip.txt")
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        conn_pads = dict(connection_pads=dict(coup1=dict(loc_W=-1, loc_H=1),
+                                              coup2=dict(loc_W=1, loc_H=1)))
+        q1 = TransmonPocket6(multiplanar_design,
+                             "Q1",
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
+        qc1 = QuadCoupler(multiplanar_design,
+                          "qc1",
+                          options=dict(pos_x="0mm",
+                                       pos_y="-0.08mm",
+                                       pad_width="120um",
+                                       pad_height="30um",
+                                       cpw_stub_height="250um",
+                                       chip="c_chip",
+                                       layer=1))
+        self.assertEqual(
+            LayerStackHandler(multiplanar_design,
+                              (ls_file_path, None)).get_unique_chip_names(),
+            {'c_chip'})
+
+    def test_toolbox_metal_get_unique_layer_ints(self):
+        """Test functionality of get_unique_layer_ints in toolbox_metal.py."""
+        ls_file_path = ("./qiskit_metal/tests/test_data/planar_chip.txt")
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        conn_pads = dict(connection_pads=dict(coup1=dict(loc_W=-1, loc_H=1),
+                                              coup2=dict(loc_W=1, loc_H=1)))
+        q1 = TransmonPocket6(multiplanar_design,
+                             "Q1",
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
+        qc1 = QuadCoupler(multiplanar_design,
+                          "qc1",
+                          options=dict(pos_x="0mm",
+                                       pos_y="-0.08mm",
+                                       pad_width="120um",
+                                       pad_height="30um",
+                                       cpw_stub_height="250um",
+                                       chip="c_chip",
+                                       layer=1))
+        self.assertEqual(
+            LayerStackHandler(multiplanar_design,
+                              (ls_file_path, None)).get_unique_layer_ints(),
+            {1, 3})
+
+    def test_toolbox_metal_warning_properties(self):
+        """Test functionality of _warning_properties in toolbox_metal.py."""
+        ls_file_path = ("./qiskit_metal/tests/test_data/planar_chip.txt")
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        conn_pads = dict(connection_pads=dict(coup1=dict(loc_W=-1, loc_H=1),
+                                              coup2=dict(loc_W=1, loc_H=1)))
+        q1 = TransmonPocket6(multiplanar_design,
+                             "Q1",
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
+        qc1 = QuadCoupler(multiplanar_design,
+                          "qc1",
+                          options=dict(pos_x="0mm",
+                                       pos_y="-0.08mm",
+                                       pad_width="120um",
+                                       pad_height="30um",
+                                       cpw_stub_height="250um",
+                                       chip="c_chip",
+                                       layer=1))
+        self.assertEqual(
+            LayerStackHandler(multiplanar_design,
+                              (ls_file_path, None))._warning_properties(
+                                  ['test']), None)
+
+    def test_toolbox_metal_warning_search(self):
+        """Test functionality of _warning_search in toolbox_metal.py."""
+        ls_file_path = ("./qiskit_metal/tests/test_data/planar_chip.txt")
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        conn_pads = dict(connection_pads=dict(coup1=dict(loc_W=-1, loc_H=1),
+                                              coup2=dict(loc_W=1, loc_H=1)))
+        q1 = TransmonPocket6(multiplanar_design,
+                             "Q1",
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
+        qc1 = QuadCoupler(multiplanar_design,
+                          "qc1",
+                          options=dict(pos_x="0mm",
+                                       pos_y="-0.08mm",
+                                       pad_width="120um",
+                                       pad_height="30um",
+                                       cpw_stub_height="250um",
+                                       chip="c_chip",
+                                       layer=1))
+        self.assertEqual(
+            LayerStackHandler(multiplanar_design,
+                              (ls_file_path, None))._warning_search(
+                                  'test_chip', 7, 1, "FAIL"), None)
+
+    def test_toolbox_metal_warning_search_minus_chip(self):
+        """Test functionality of _warning_search_minus_chip in toolbox_metal.py."""
+        ls_file_path = ("./qiskit_metal/tests/test_data/planar_chip.txt")
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        conn_pads = dict(connection_pads=dict(coup1=dict(loc_W=-1, loc_H=1),
+                                              coup2=dict(loc_W=1, loc_H=1)))
+        q1 = TransmonPocket6(multiplanar_design,
+                             "Q1",
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
+        qc1 = QuadCoupler(multiplanar_design,
+                          "qc1",
+                          options=dict(pos_x="0mm",
+                                       pos_y="-0.08mm",
+                                       pad_width="120um",
+                                       pad_height="30um",
+                                       cpw_stub_height="250um",
+                                       chip="c_chip",
+                                       layer=1))
+        self.assertEqual(
+            LayerStackHandler(multiplanar_design,
+                              (ls_file_path, None))._warning_search_minus_chip(
+                                  5, 1, "FAIL"), None)
+
+    def test_toolbox_metal_layer_stack_handler_pilot_error(self):
+        """Test functionality of layer_stack_handler_pilot_error in toolbox_metal.py."""
+        ls_file_path = ("./qiskit_metal/tests/test_data/planar_chip.txt")
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        conn_pads = dict(connection_pads=dict(coup1=dict(loc_W=-1, loc_H=1),
+                                              coup2=dict(loc_W=1, loc_H=1)))
+        q1 = TransmonPocket6(multiplanar_design,
+                             "Q1",
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
+        qc1 = QuadCoupler(multiplanar_design,
+                          "qc1",
+                          options=dict(pos_x="0mm",
+                                       pos_y="-0.08mm",
+                                       pad_width="120um",
+                                       pad_height="30um",
+                                       cpw_stub_height="250um",
+                                       chip="c_chip",
+                                       layer=1))
+        self.assertEqual(
+            LayerStackHandler(
+                multiplanar_design,
+                (ls_file_path, None)).layer_stack_handler_pilot_error(), None)
 
 
 if __name__ == '__main__':

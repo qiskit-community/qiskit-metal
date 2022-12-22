@@ -17,7 +17,7 @@ dependencies:
   - pyside2
   - qutip
   - scipy
-  - shapely
+  - shapely==1.8.2
   - jupyter
   - scqubits
   - pip
