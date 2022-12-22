@@ -1,4 +1,4 @@
-from typing import Union, List, Dict as Dict_
+from typing import Union, List, Tuple, Dict as Dict_
 import os
 import pandas as pd
 
@@ -482,16 +482,17 @@ class QElmerRenderer(QRendererAnalysis):
         # Write the simulation input file (SIF)
         self.write_sif()
 
-    def define_bodies(self, setup: dict, equation: int, materials: List[int]):
-        """_summary_
+    def define_bodies(self, setup: dict, equation: int,
+                      materials: List[int]) -> List[List]:
+        """Assigns bodies to simulation model.
 
         Args:
-            setup (dict): _description_
-            equation (int): _description_
-            materials (List[int]): _description_
+            setup (dict): Setup parameters to be used in simulation.
+            equation (int): Type of equation for solver.
+            materials (List[int]): Materials used by bodies in the design.
 
         Returns:
-            _type_: _description_
+            List[List]: Information about the bodies in the design.
         """
         bodies = []
         for i, material in enumerate(setup["materials"]):
@@ -523,7 +524,14 @@ class QElmerRenderer(QRendererAnalysis):
 
         return bodies
 
-    def define_boundaries(self):
+    def define_boundaries(self) -> Tuple[List[List], int]:
+        """Assigns boundaries to simulation model.
+
+        Returns:
+            Tuple[List[List], int]: Information about the bodies in the design,
+                                        and total number of capacitance bodies.
+        """
+
         boundaries = list()
         phys_grps_dict = dict()
         ground_planes = list()
@@ -567,29 +575,30 @@ class QElmerRenderer(QRendererAnalysis):
         return boundaries, cap_body
 
     def write_sif(self):
+        """Write sif (simulation input file) used by ElmerFEM to run analysis"""
         filename = self._options["simulation_input_file"]
         sim_dir = self._options["simulation_dir"]
         self._elmer_runner.write_startinfo_and_sif(filename=filename,
                                                    sim_dir=sim_dir)
 
-    def render_chips(self,
-                     chips: Union[str, List[str]] = [],
-                     draw_sample_holder: bool = True,
-                     box_plus_buffer: bool = True):
+    def render_layers(self,
+                      draw_sample_holder: bool = True,
+                      layers: Union[List[int], None] = None,
+                      box_plus_buffer: bool = True):
         """Abstract method. Must be implemented by the subclass.
-        Render all chips of the design.
-        Calls render_chip for each chip.
+        Render all layers of the design.
+        Calls render_layer for each layer.
         """
-        self.gmsh.render_chips(chips, draw_sample_holder, box_plus_buffer)
+        self.gmsh.render_layers(draw_sample_holder, layers, box_plus_buffer)
 
-    def render_chip(self, chip_name: str):
+    def render_layer(self, layer_number: str, datatype: int = 0):
         """Abstract method. Must be implemented by the subclass.
-        Render the given chip.
+        Render the given layer.
 
         Args:
-            name (str): chip to render
+            name (str): layer to render
         """
-        self.gmsh.render_chip(chip_name)
+        self.gmsh.render_layer(layer_number, datatype)
 
     def render_components(self, table_type: str):
         """Abstract method. Must be implemented by the subclass.
