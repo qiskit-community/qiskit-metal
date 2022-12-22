@@ -121,7 +121,7 @@ jobs:
         run: tox -elint
   docs:
     name: docs
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
         with:
@@ -152,7 +152,7 @@ jobs:
           path: docs/_build/html
 #  tutorials:
 #    name: tutorials
-#    runs-on: ubuntu-latest
+#    runs-on: ubuntu-20.04
 #    steps:
 #      - uses: actions/checkout@v3
 #      - name: Set up Python 3.7
