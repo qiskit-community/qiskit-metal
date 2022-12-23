@@ -119,49 +119,49 @@ if not is_building_docs():
     __setup_Qt_backend()
     del __setup_Qt_backend
 
-## Setup logging
-from . import config
-from .toolbox_python._logging import setup_logger
+    ## Setup logging
+    from . import config
+    from .toolbox_python._logging import setup_logger
 
-logger = setup_logger('metal',
-                      config.log.format,
-                      config.log.datefmt,
-                      capture_warnings=True)  # type: logging.Logger
-del setup_logger
+    logger = setup_logger('metal',
+                          config.log.format,
+                          config.log.datefmt,
+                          capture_warnings=True)  # type: logging.Logger
+    del setup_logger
 
-###########################################################################
-### User-accessible scope
+    ###########################################################################
+    ### User-accessible scope
 
-# Metal Dict
-from .toolbox_python.attr_dict import Dict
+    # Metal Dict
+    from .toolbox_python.attr_dict import Dict
 
-# Due to order of imports
-from ._is_design import is_design, is_component
+    # Due to order of imports
+    from ._is_design import is_design, is_component
 
-# Core modules for user to use
-from .toolbox_metal.parsing import is_true
-from . import qlibrary
-from . import designs
-from . import draw
-from . import renderers
-from . import qgeometries
-from . import analyses
-from . import toolbox_python
-from . import toolbox_metal
+    # Core modules for user to use
+    from .toolbox_metal.parsing import is_true
+    from . import qlibrary
+    from . import designs
+    from . import draw
+    from . import renderers
+    from . import qgeometries
+    from . import analyses
+    from . import toolbox_python
+    from . import toolbox_metal
 
-# Metal GUI
-from ._gui.main_window import MetalGUI
+    # Metal GUI
+    from ._gui.main_window import MetalGUI
 
-# Utility modules
-# For plotting in matplotlib;  May be superseded by a renderer?
-from .renderers.renderer_mpl import mpl_toolbox as plt
+    # Utility modules
+    # For plotting in matplotlib;  May be superseded by a renderer?
+    from .renderers.renderer_mpl import mpl_toolbox as plt
 
-# Utility functions
-from .toolbox_python.display import Headings
+    # Utility functions
+    from .toolbox_python.display import Headings
 
-# Import default renderers
-from .renderers import setup_renderers
+    # Import default renderers
+    from .renderers import setup_renderers
 
-# Common-use
-from .qlibrary import QComponent
-from .toolbox_metal.about import about, open_docs
+    # Common-use
+    from .qlibrary import QComponent
+    from .toolbox_metal.about import about, open_docs
