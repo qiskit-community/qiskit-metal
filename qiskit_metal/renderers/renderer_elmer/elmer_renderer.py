@@ -310,6 +310,7 @@ class QElmerRenderer(QRendererAnalysis):
             List[str]: Names of qgeometry components with pins connected to ground plane.
         """
 
+        open_pins = open_pins if open_pins is not None else []
         qcomp_lst = self.design.components.keys()
         all_pins = list()
         gnd_qgeoms = set()
