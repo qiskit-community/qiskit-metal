@@ -113,8 +113,11 @@ def __setup_Qt_backend():  # pylint: disable=invalid-name
         plt.ion()  # interactive
 
 
-__setup_Qt_backend()
-del __setup_Qt_backend
+from .config import is_building_docs
+
+if not is_building_docs():
+    __setup_Qt_backend()
+    del __setup_Qt_backend
 
 ## Setup logging
 from . import config
