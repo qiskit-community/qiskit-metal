@@ -19,8 +19,6 @@
 Mostly internal.
 """
 
-from ._defaults import DefaultMetalOptions, DefaultOptionsRenderer
-
 def is_building_docs():
     """Checks for the existance of the .buildingdocs file which is only present
     when building the docs.
@@ -34,6 +32,7 @@ def is_building_docs():
 
 
 if not is_building_docs():
+    from ._defaults import DefaultMetalOptions, DefaultOptionsRenderer
     from .toolbox_python.attr_dict import Dict
     import os
 
