@@ -581,6 +581,25 @@ class QElmerRenderer(QRendererAnalysis):
         self._elmer_runner.write_startinfo_and_sif(filename=filename,
                                                    sim_dir=sim_dir)
 
+    def render_chips(self,
+                     chips: Union[str, List[str]] = [],
+                     draw_sample_holder: bool = True,
+                     box_plus_buffer: bool = True):
+        """Abstract method. Must be implemented by the subclass.
+        Render all chips of the design.
+        Calls render_chip for each chip.
+        """
+        pass
+
+    def render_chip(self, chip_name: str):
+        """Abstract method. Must be implemented by the subclass.
+        Render the given chip.
+
+        Args:
+            name (str): chip to render
+        """
+        pass
+
     def render_layers(self,
                       draw_sample_holder: bool = True,
                       layers: Union[List[int], None] = None,
