@@ -30,16 +30,11 @@ import sys
 
 sys.path.insert(0, os.path.abspath('..'))
 
-import qiskit_metal
+from qiskit_metal import __version__ as qiskit_metal_version
 import qiskit_sphinx_theme
 """
 Sphinx documentation builder
 """
-
-# The short X.Y version
-version = qiskit_metal.__version__
-# The full version, including alpha/beta/rc tags
-release = qiskit_metal.__version__
 
 rst_prolog = """
 .. raw:: html
@@ -47,7 +42,7 @@ rst_prolog = """
     <br><br><br>
 
 .. |version| replace:: {0}
-""".format(release)
+""".format(qiskit_metal_version)
 
 nbsphinx_prolog = """
 {% set docname = env.doc2path(env.docname, base=None)|replace("circuit-examples", "circuit-examples/") %}
@@ -121,7 +116,7 @@ nbsphinx_epilog = """
 """
 
 # -- Project information -----------------------------------------------------
-project = 'Qiskit Metal {}'.format(version)
+project = 'Qiskit Metal {}'.format(qiskit_metal_version)
 copyright = '2019, Qiskit Development Team'  # pylint: disable=redefined-builtin
 author = 'Qiskit Metal Development Team'
 # -- General configuration ---------------------------------------------------
