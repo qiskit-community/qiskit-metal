@@ -19,6 +19,7 @@
 Mostly internal.
 """
 
+
 def is_building_docs():
     """Checks for the existance of the .buildingdocs file which is only present
     when building the docs.
@@ -37,21 +38,23 @@ if not is_building_docs():
     import os
 
     renderers_to_load = Dict(
-        hfss=Dict(path_name='qiskit_metal.renderers.renderer_ansys.hfss_renderer',
-                class_name='QHFSSRenderer'),
+        hfss=Dict(
+            path_name='qiskit_metal.renderers.renderer_ansys.hfss_renderer',
+            class_name='QHFSSRenderer'),
         q3d=Dict(path_name='qiskit_metal.renderers.renderer_ansys.q3d_renderer',
-                class_name='QQ3DRenderer'),
+                 class_name='QQ3DRenderer'),
         gds=Dict(path_name='qiskit_metal.renderers.renderer_gds.gds_renderer',
-                class_name='QGDSRenderer'),
+                 class_name='QGDSRenderer'),
     )
     """
     Define the renderes to load. Just provide the module names here.
     """
 
     GUI_CONFIG = Dict(
-        load_metal_modules=Dict(Qubits='qiskit_metal.qlibrary.qubits',
-                                TLines='qiskit_metal.qlibrary.tlines',
-                                Terminations='qiskit_metal.qlibrary.terminations'),
+        load_metal_modules=Dict(
+            Qubits='qiskit_metal.qlibrary.qubits',
+            TLines='qiskit_metal.qlibrary.tlines',
+            Terminations='qiskit_metal.qlibrary.terminations'),
         exclude_metal_classes=['Metal_Qubit'],
         tips=[
             'Right clicking the tree elements allows you to do neat things.',
@@ -114,11 +117,10 @@ if not is_building_docs():
     """
 
     log = Dict(format='%(asctime)s %(levelname)s [%(funcName)s]: %(message)s',
-            datefmt='%I:%M%p %Ss')
+               datefmt='%I:%M%p %Ss')
     """
     A dictionary containing the log format for standard text and date/time
     """
-
 
     def is_using_ipython():
         """Check if we're in IPython.
@@ -127,7 +129,6 @@ if not is_building_docs():
             bool -- True if ran in IPython
         """
         return 'JPY_PARENT_PID' in os.environ
-
 
     _ipython = is_using_ipython()
 
