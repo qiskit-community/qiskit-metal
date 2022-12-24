@@ -476,6 +476,12 @@ class QElmerRenderer(QRendererAnalysis):
         # Add boundary conditions
         boundaries, cap_body = self.define_boundaries()
 
+        if cap_body == 1:
+            self.logger.warning(
+                "WARNING: No capacitance bodies added to the model other "
+                "than those connected to ground. ElmerFEM cannot run a "
+                "capacitance extraction analysis without any bodies. ")
+
         # Update capacitance bodies in solver
         self._elmer_runner.solver["capacitance"].update(
             {"Capacitance Bodies": cap_body - 1})
