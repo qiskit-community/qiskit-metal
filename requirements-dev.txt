@@ -10,6 +10,7 @@ pylint
 yapf
 
 # Doc Build
+addict
 sphinx
 numpydoc
 sphinx-automodapi
