@@ -115,6 +115,23 @@ def __setup_Qt_backend():  # pylint: disable=invalid-name
 
 from .config import is_building_docs
 
+# Metal Dict
+from .toolbox_python.attr_dict import Dict
+
+# Due to order of imports
+from ._is_design import is_design, is_component
+
+# Core modules for user to use
+from .toolbox_metal.parsing import is_true
+from . import qlibrary
+from . import designs
+from . import draw
+from . import renderers
+from . import qgeometries
+from . import analyses
+from . import toolbox_python
+from . import toolbox_metal
+
 if not is_building_docs():
     __setup_Qt_backend()
     del __setup_Qt_backend
@@ -131,23 +148,6 @@ if not is_building_docs():
 
     ###########################################################################
     ### User-accessible scope
-
-    # Metal Dict
-    from .toolbox_python.attr_dict import Dict
-
-    # Due to order of imports
-    from ._is_design import is_design, is_component
-
-    # Core modules for user to use
-    from .toolbox_metal.parsing import is_true
-    from . import qlibrary
-    from . import designs
-    from . import draw
-    from . import renderers
-    from . import qgeometries
-    from . import analyses
-    from . import toolbox_python
-    from . import toolbox_metal
 
     # Metal GUI
     from ._gui.main_window import MetalGUI
