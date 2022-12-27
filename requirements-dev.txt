@@ -11,6 +11,24 @@ yapf
 
 # Doc Build
 addict
+descartes
+gdspy>=1.5.2
+geopandas; platform_system != "Windows"  #pip install geopandas causes fiona errors. Therefore, if you use `conda env`, you must first run `conda install fiona`, while if you use `python venv` you must first download the gdal and fiona wheels from https://www.lfd.uci.edu/~gohlke/pythonlibs/ and manually pip install them in that order.
+ipython
+matplotlib
+numpy
+pandas
+pint
+pyEPR-quantum>=0.8.5.7
+pygments
+qutip
+scipy
+shapely==1.8.2 #using conda on Windows OS: pip install of shapely will fail on import for missing geos_c.dll, if <= v1.7.x. For as long as a 1.8.0 version is not released (already patched in github), you will need to run `conda install shapely` (before installing qiskit_metal).
+scqubits
+gmsh
+pyaedt   #since conda-forge doesn't have pyaedt, we have to manually pip install or completely switch to virtualenv .  virtualenv uses less memory than conda.
+# jupyter (if you need a fresh install) or ipykernel (if you prefer to make of this a new kernel to use from an existing jupyter install)
+
 sphinx
 numpydoc
 sphinx-automodapi
