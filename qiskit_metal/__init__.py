@@ -132,6 +132,16 @@ from . import analyses
 from . import toolbox_python
 from . import toolbox_metal
 
+# Utility functions
+from .toolbox_python.display import Headings
+
+# Import default renderers
+from .renderers import setup_renderers
+
+# Common-use
+from .qlibrary import QComponent
+from .toolbox_metal.about import about, open_docs
+
 if not is_building_docs():
     __setup_Qt_backend()
     del __setup_Qt_backend
