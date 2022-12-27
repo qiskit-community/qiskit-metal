@@ -142,6 +142,10 @@ from .renderers import setup_renderers
 from .qlibrary import QComponent
 from .toolbox_metal.about import about, open_docs
 
+## Setup logging
+from . import config
+from .toolbox_python._logging import setup_logger
+
 if not is_building_docs():
     __setup_Qt_backend()
     del __setup_Qt_backend
