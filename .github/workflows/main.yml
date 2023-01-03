@@ -93,7 +93,7 @@ jobs:
       - name: Install deps
         run: |
           python -m pip install -U tox cvxopt setuptools virtualenv wheel
-          shell: pwsh
+        shell: pwsh
       - name: Install and Run Tests
         run: tox --sitepackages -e py
         shell: bash -l {0}
