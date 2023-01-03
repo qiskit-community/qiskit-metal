@@ -1,11 +1,11 @@
 from dataclasses import dataclass
 import typing as ty
-import yaml
 import os
 import subprocess
 import shutil
 from collections import defaultdict
 import platform
+import yaml
 
 from ... import Dict
 from .elmer_configs import materials, simulations, solvers

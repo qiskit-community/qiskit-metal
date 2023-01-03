@@ -2,10 +2,10 @@ from typing import Union, List, Tuple, Dict as Dict_
 import os
 import pandas as pd
 
-from ..renderer_base import QRendererAnalysis
-from ..renderer_gmsh.gmsh_renderer import QGmshRenderer
-from ... import Dict, draw
-from .elmer_runner import ElmerRunner
+from qiskit_metal import Dict, draw
+from qiskit_metal.renderers.renderer_base import QRendererAnalysis
+from qiskit_metal.renderers.renderer_gmsh.gmsh_renderer import QGmshRenderer
+from qiskit_metal.renderers.renderer_elmer.elmer_runner import ElmerRunner
 
 
 def load_capacitance_matrix_from_file(filename: str) -> pd.DataFrame:
