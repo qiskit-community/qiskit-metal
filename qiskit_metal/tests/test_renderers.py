@@ -32,6 +32,7 @@ from qiskit_metal.renderers.renderer_base.renderer_gui_base import QRendererGui
 from qiskit_metal.renderers.renderer_gds.gds_renderer import QGDSRenderer
 from qiskit_metal.renderers.renderer_mpl.mpl_interaction import MplInteraction
 from qiskit_metal.renderers.renderer_gmsh.gmsh_renderer import QGmshRenderer
+from qiskit_metal.renderers.renderer_elmer.elmer_renderer import QElmerRenderer
 
 from qiskit_metal.renderers.renderer_ansys import ansys_renderer
 
@@ -130,6 +131,27 @@ class TestRenderers(unittest.TestCase):
                 "QGmshRenderer(design, initiate=False, options={}) failed in DesignPLanar"
             )
 
+    def test_renderer_instantiate_qelmer_renderer(self):
+        """Test instantiation of QElmerRenderer in elmer_renderer.py."""
+        design = designs.MultiPlanar()
+        try:
+            QElmerRenderer(design)
+        except Exception:
+            self.fail("QElmerRenderer(design) failed")
+
+        try:
+            QElmerRenderer(design, initiate=False)
+        except Exception:
+            self.fail(
+                "QElmerRenderer(design, initiate=False) failed in MultiPlanar")
+
+        try:
+            QElmerRenderer(design, initiate=False, options={})
+        except Exception:
+            self.fail(
+                "QElmerRenderer(design, initiate=False, options={}) failed in MultiPlanar"
+            )
+
     def test_renderer_qansys_renderer_options(self):
         """Test that defaults in QAnsysRenderer were not accidentally changed."""
         design = designs.DesignPlanar()
@@ -221,6 +243,52 @@ class TestRenderers(unittest.TestCase):
                          'True')
         self.assertEqual(default_setup['q3d']['solution_order'], 'High')
         self.assertEqual(default_setup['q3d']['solver_type'], 'Iterative')
+
+    def test_renderer_qelmer_renderer_default_setup(self):
+        """Test that default_setup in QElmerRenderer have not been accidentally changed."""
+        default_setup = QElmerRenderer.default_setup
+
+        self.assertEqual(len(default_setup), 4)
+        self.assertEqual(len(default_setup['capacitance']), 12)
+        self.assertEqual(len(default_setup['eigenmode']), 0)
+        self.assertEqual(len(default_setup['materials']), 2)
+        self.assertEqual(len(default_setup['constants']), 2)
+
+        self.assertEqual(
+            default_setup['capacitance']['Calculate_Electric_Field'], True)
+        self.assertEqual(
+            default_setup['capacitance']['Calculate_Electric_Energy'], True)
+        self.assertEqual(
+            default_setup['capacitance']['Calculate_Capacitance_Matrix'], True)
+        self.assertEqual(
+            default_setup['capacitance']['Capacitance_Matrix_Filename'],
+            'cap_matrix.txt')
+        self.assertEqual(default_setup['capacitance']['Linear_System_Solver'],
+                         'Iterative')
+        self.assertEqual(
+            default_setup['capacitance']['Steady_State_Convergence_Tolerance'],
+            1e-05)
+        self.assertEqual(
+            default_setup['capacitance']
+            ['Nonlinear_System_Convergence_Tolerance'], 1e-07)
+        self.assertEqual(
+            default_setup['capacitance']['Nonlinear_System_Max_Iterations'], 20)
+        self.assertEqual(
+            default_setup['capacitance']['Linear_System_Convergence_Tolerance'],
+            1e-10)
+        self.assertEqual(
+            default_setup['capacitance']['Linear_System_Max_Iterations'], 500)
+        self.assertEqual(
+            default_setup['capacitance']['Linear_System_Iterative_Method'],
+            'BiCGStab')
+        self.assertEqual(
+            default_setup['capacitance']['BiCGstabl_polynomial_degree'], 2)
+
+        self.assertEqual(default_setup['materials'], ['vacuum', 'silicon'])
+
+        self.assertEqual(default_setup['constants']['Permittivity_of_Vacuum'],
+                         8.8542e-12)
+        self.assertEqual(default_setup['constants']['Unit_Charge'], 1.602e-19)
 
     def test_renderer_qq3d_render_options(self):
         """Test that defaults in QQ3DRenderer were not accidentally changed."""
@@ -330,6 +398,21 @@ class TestRenderers(unittest.TestCase):
         self.assertEqual(options["colors"]["jj"], (84, 140, 168, 150))
         self.assertEqual(options["colors"]["dielectric"], (180, 180, 180, 255))
 
+    def test_renderer_qelmer_renderer_options(self):
+        """Test that default_options in QElmerRenderer were not accidentally
+        changed."""
+        design = designs.MultiPlanar()
+        renderer = QElmerRenderer(design)
+        options = renderer.default_options
+
+        self.assertEqual(len(options), 6)
+        self.assertEqual(options["simulation_type"], "steady_3D")
+        self.assertEqual(options["simulation_dir"], "./simdata")
+        self.assertEqual(options["mesh_file"], "out.msh")
+        self.assertEqual(options["simulation_input_file"], "case.sif")
+        self.assertEqual(options["postprocessing_file"], "case.msh")
+        self.assertEqual(options["output_file"], "case.result")
+
     def test_renderer_ansys_renderer_get_clean_name(self):
         """Test get_clean_name in ansys_renderer.py"""
         self.assertEqual(ansys_renderer.get_clean_name('name12'), 'name12')
@@ -363,6 +446,12 @@ class TestRenderers(unittest.TestCase):
         design = designs.DesignPlanar()
         renderer = QGmshRenderer(design, initiate=False)
         self.assertEqual(renderer.name, 'gmsh')
+
+    def test_renderer_qelmer_renderer_name(self):
+        """Test name in QElmerRenderer."""
+        design = designs.MultiPlanar()
+        renderer = QElmerRenderer(design, initiate=False)
+        self.assertEqual(renderer.name, 'elmer')
 
     def test_renderer_gdsrenderer_inclusive_bound(self):
         """Test functionality of inclusive_bound in gds_renderer.py."""

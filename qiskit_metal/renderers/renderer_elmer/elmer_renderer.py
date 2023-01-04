@@ -89,6 +89,9 @@ class QElmerRenderer(QRendererAnalysis):
         ),
     )
 
+    name = "elmer"
+    """Name"""
+
     def __init__(self,
                  design: 'MultiPlanar',
                  layer_types: Union[dict, None] = None,
