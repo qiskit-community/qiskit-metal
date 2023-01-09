@@ -32,6 +32,29 @@ class QElmerRenderer(QRendererAnalysis):
         * postprocessing_file -- Name of ElmerFEM postprocessing output file ending in '.msh'.
         * output_file -- Name of ElmerFEM results output file ending in '.result'.
 
+    QElmerRenderer Default Setup:
+        * capacitance -- Default setup for capacitance simulation:
+            * Calculate_Electric_Field -- Defaults to True.
+            * Calculate_Electric_Energy -- Defaults to True.
+            * Calculate_Capacitance_Matrix -- Defaults to True.
+            * Capacitance_Matrix_Filename -- Defaults to "cap_matrix.txt".
+            * Linear_System_Solver -- Defaults to "Iterative".
+            * Steady_State_Convergence_Tolerance -- Defaults to 1.0e-5.
+            * Nonlinear_System_Convergence_Tolerance -- Defaults to 1.0e-7.
+            * Nonlinear_System_Max_Iterations -- Defaults to 20.
+            * Linear_System_Convergence_Tolerance -- Defaults to 1.0e-10.
+            * Linear_System_Max_Iterations -- Defaults to 500.
+            * Linear_System_Iterative_Method -- Defaults to "BiCGStab".
+            * BiCGstabl_polynomial_degree -- Defaults to 2.
+
+        * eigenmode -- Default setup for Eigenmode simulation (to be added in future).
+
+        * materials -- Materials used in the simulation. Defaults to `["vacuum", "silicon"]`.
+
+        * constants -- Default constants to be included in the simulation:
+            * Permittivity_of_Vacuum -- Defaults to 8.8542e-12 F/m.
+            * Unit_Charge -- Defaults to 1.602e-19 C.
+
     QGmshRenderer Default Options:
         # Buffer between max/min x and edge of ground plane, in mm
         * x_buffer_width_mm -- Buffer between max/min x and edge of ground plane, in mm
