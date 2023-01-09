@@ -1,4 +1,4 @@
-from typing import Union, List, Tuple, Dict as Dict_
+from typing import Union
 import os
 import pandas as pd
 
@@ -245,7 +245,7 @@ class QElmerRenderer(QRendererAnalysis):
     def assign_nets(
         self,
         open_pins: Union[list,
-                         None] = None) -> Dict_[Union[str, int], List[int]]:
+                         None] = None) -> dict[Union[str, int], list[int]]:
         """Assigns a netlist number to each galvanically connected metal region,
         and returns a dictionary with each net as a key, and the corresponding list of
         geometries associated with that net as values.
@@ -255,7 +255,7 @@ class QElmerRenderer(QRendererAnalysis):
                                                         Defaults to None.
 
         Returns:
-            Dict_[Union[str, int], List[int]]: dictionary with keys for each net, and list of
+            dict[Union[str, int], list[int]]: dictionary with keys for each net, and list of
                     values with the corresponding geometries associated with that net as values.
         """
 
@@ -330,7 +330,7 @@ class QElmerRenderer(QRendererAnalysis):
 
         return netlists
 
-    def get_gnd_qgeoms(self, open_pins: Union[list, None] = None) -> List[str]:
+    def get_gnd_qgeoms(self, open_pins: Union[list, None] = None) -> list[str]:
         """ Obtain a list of qgeometry names associated with pins shorted to ground.
 
         Args:
@@ -338,7 +338,7 @@ class QElmerRenderer(QRendererAnalysis):
                                                         Defaults to None.
 
         Returns:
-            List[str]: Names of qgeometry components with pins connected to ground plane.
+            list[str]: Names of qgeometry components with pins connected to ground plane.
         """
 
         open_pins = open_pins if open_pins is not None else []
@@ -463,7 +463,7 @@ class QElmerRenderer(QRendererAnalysis):
     def add_solution_setup(
         self,
         sim_name: str = "capacitance",
-        solver_names: List[str] = ["capacitance", "postprocessing_gmsh"],
+        solver_names: list[str] = ["capacitance", "postprocessing_gmsh"],
         equation_name: str = "poisson",
     ):
         """Initializes ElmerFEM analysis to run.
@@ -472,7 +472,7 @@ class QElmerRenderer(QRendererAnalysis):
         Args:
             sim_name (str, optional): Type of ElmerFEM analysis to initialize.
                                         Defaults to "capacitance".
-            solver_names (List[str], optional): ElmerFEM solver to use. Defaults
+            solver_names (list[str], optional): ElmerFEM solver to use. Defaults
                                                     to ["capacitance", "postprocessing_gmsh"].
             equation_name (str, optional): Type of equation for solver. Defaults to "poisson".
         """
@@ -521,16 +521,16 @@ class QElmerRenderer(QRendererAnalysis):
         self.write_sif()
 
     def define_bodies(self, setup: dict, equation: int,
-                      materials: List[int]) -> List[List]:
+                      materials: list[int]) -> list[list]:
         """Assigns bodies to simulation model.
 
         Args:
             setup (dict): Setup parameters to be used in simulation.
             equation (int): Type of equation for solver.
-            materials (List[int]): Materials used by bodies in the design.
+            materials (list[int]): Materials used by bodies in the design.
 
         Returns:
-            List[List]: Information about the bodies in the design.
+            list[list]: Information about the bodies in the design.
         """
         bodies = []
         for i, material in enumerate(setup["materials"]):
@@ -562,11 +562,11 @@ class QElmerRenderer(QRendererAnalysis):
 
         return bodies
 
-    def define_boundaries(self) -> Tuple[List[List], int]:
+    def define_boundaries(self) -> tuple[list[list], int]:
         """Assigns boundaries to simulation model.
 
         Returns:
-            Tuple[List[List], int]: Information about the bodies in the design,
+            tuple[list[list], int]: Information about the bodies in the design,
                                         and total number of capacitance bodies.
         """
 
@@ -620,7 +620,7 @@ class QElmerRenderer(QRendererAnalysis):
                                                    sim_dir=sim_dir)
 
     def render_chips(self,
-                     chips: Union[str, List[str]] = [],
+                     chips: Union[str, list[str]] = [],
                      draw_sample_holder: bool = True,
                      box_plus_buffer: bool = True):
         """Abstract method. Must be implemented by the subclass.
@@ -640,7 +640,7 @@ class QElmerRenderer(QRendererAnalysis):
 
     def render_layers(self,
                       draw_sample_holder: bool = True,
-                      layers: Union[List[int], None] = None,
+                      layers: Union[list[int], None] = None,
                       box_plus_buffer: bool = True):
         """Abstract method. Must be implemented by the subclass.
         Render all layers of the design.
