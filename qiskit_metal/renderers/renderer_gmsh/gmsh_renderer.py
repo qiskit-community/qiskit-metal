@@ -96,11 +96,9 @@ class QGmshRenderer(QRenderer):
 
     @property
     def initialized(self):
-        """Abstract method. Must be implemented by the subclass.
-        Is renderer ready to be used?
-        Implementation must return boolean True if successful. False otherwise.
-        """
-        if self.model == self._model_name:
+        """Returns boolean True if initialized successfully.
+        False otherwise."""
+        if gmsh.isInitialized():
             return True
         return False
 
@@ -234,6 +232,11 @@ class QGmshRenderer(QRenderer):
                                                         it with a list of surfaces instead.
                                                         Defaults to False.
         """
+
+        # For handling the case when the user wants to use
+        # QGmshRenderer from design.renderers.gmsh instance.
+        if not self.initialized:
+            self._initiate_renderer()
 
         # defaultdict: chip -- geom_tag
         self.layers_dict = defaultdict(list)

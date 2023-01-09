@@ -117,12 +117,34 @@ class QElmerRenderer(QRendererAnalysis):
             Is renderer ready to be used?
             Implementation must return boolean True if successful. False otherwise.
         """
-        return self.gmsh.initialized
+        return (hasattr(self, "_elmer_runner") and self.gmsh.initialized)
 
-    def _initiate_renderer(self):
-        """Initializes the Gmsh and Elmer renderer"""
+    def initialize_renderer(self):
+        """Initializes the Gmsh and Elmer renderer.
+        NOTE TO USER: this should be used when using
+        the QElmerRenderer through design.renderers.elmer instance.
+        
+        Example: To change one of the options exposed by QGmshRenderer,
+        one has to first initiate the QElmerRenderer using this method
+        and then change the property like so,
+
+        ```
+        design.renderers.elmer.initialize_renderer()
+        design.renderers.elmer.gmsh.options.mesh.num_threads = 1
+        ...
+        ```
+        """
         self.gmsh = QGmshRenderer(self.design, self.layer_types)
         self._elmer_runner = ElmerRunner()
+
+    def _initiate_renderer(self):
+        """Initializes the Gmsh and Elmer renderer.
+        NOTE: This is automatically called when the USER
+        specifically imports QElmerRenderer in a jupyter notebook
+        and instantiates it."""
+        self.gmsh = QGmshRenderer(self.design, self.layer_types)
+        self._elmer_runner = ElmerRunner()
+        return True
 
     def _close_renderer(self):
         """Finalizes the Gmsh renderer"""
@@ -161,6 +183,12 @@ class QElmerRenderer(QRendererAnalysis):
                                                         it with a list of surfaces instead.
                                                         Defaults to False.
         """
+
+        # For handling the case when the user wants to use
+        # QElmerRenderer from design.renderers.elmer instance.
+        if not self.initialized:
+            self._initiate_renderer()
+
         self.gmsh.render_design(selection=selection,
                                 open_pins=open_pins,
                                 box_plus_buffer=box_plus_buffer,
