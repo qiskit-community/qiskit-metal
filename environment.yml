@@ -15,9 +15,10 @@ dependencies:
   - pyepr-quantum>=0.8.5.7
   - pygments
   - pyside2
+  - qdarkstyle
   - qutip
   - scipy
-  - shapely==1.8.2
+  - shapely
   - jupyter
   - scqubits
   - pip
