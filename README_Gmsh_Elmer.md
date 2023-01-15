@@ -4,7 +4,7 @@
 - This will be automatically installed when you make a new `venv` environment and install qiskit metal using the instructions given above (except in Apple Silicon Macs, see the Note below).
 
 ### Test if Gmsh is properly installed
-- Run the following in your terminal. A blank Gmsh window should open up. If it does, then hurray, you did it! :smiley
+- Run the following in your terminal. A blank Gmsh window should open up. If it does, then hurray, you did it! 😄
 ```bash
 $ gmsh
 ```
@@ -80,6 +80,6 @@ Note: The following floating-point exceptions are signalling: IEEE_OVERFLOW_FLAG
 STOP 1
 ```
 
-If you see the above lines in the text in your terminal, then CONGRATULATIONS!!! You've successfully installed everything needed for using Gmsh and ElmerFEM with Qiskit Metal! :smiley
+If you see the above lines in the text in your terminal, then CONGRATULATIONS!!! You've successfully installed everything needed for using Gmsh and ElmerFEM with Qiskit Metal! 😄
 
 **NOTE:** If you face issues at any of the steps above, feel free to contact us on #metal channel on Qiskit slack!!
