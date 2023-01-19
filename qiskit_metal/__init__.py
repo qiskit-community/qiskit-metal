@@ -27,7 +27,8 @@ __status__ = "Development"
 import os
 if os.name == 'nt':
     try:
-        import geopandas
+        #import geopandas
+        continue
     except ImportError:
         print(" \
             QISKIT METAL INFORMATION: >>>>>>>>>> One last installation step. <<<<<<<<<<<\n \
