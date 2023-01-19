@@ -2,7 +2,6 @@ addict
 descartes
 gdspy>=1.5.2
 geopandas
-pwd
 ipython
 matplotlib
 numpy
