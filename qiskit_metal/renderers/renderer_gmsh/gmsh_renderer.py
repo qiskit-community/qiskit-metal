@@ -212,6 +212,7 @@ class QGmshRenderer(QRenderer):
         skip_junctions: bool = False,
         mesh_geoms: bool = True,
         ignore_metal_volume: bool = False,
+        omit_ground_for_layers: Optional[list[int]] = None,
     ):
         """Render the design in Gmsh and apply changes to modify the geometries
         according to the type of simulation. Simulation parameters provided by the user.
@@ -231,6 +232,8 @@ class QGmshRenderer(QRenderer):
             ignore_metal_volume (bool, optional): ignore the volume of metals and replace
                                                         it with a list of surfaces instead.
                                                         Defaults to False.
+            omit_ground_for_layers (Optional[list[int]]): omit rendering the ground plane for
+                                                         specified layers. Defaults to None.
         """
 
         # For handling the case when the user wants to use
@@ -256,7 +259,8 @@ class QGmshRenderer(QRenderer):
                              open_pins=open_pins,
                              box_plus_buffer=box_plus_buffer,
                              draw_sample_holder=draw_sample_holder,
-                             skip_junctions=skip_junctions)
+                             skip_junctions=skip_junctions,
+                             omit_ground_for_layers=omit_ground_for_layers)
 
         self.apply_changes_for_simulation(
             ignore_metal_volume=ignore_metal_volume,
@@ -273,7 +277,8 @@ class QGmshRenderer(QRenderer):
                         selection: Union[list, None] = None,
                         open_pins: Union[list, None] = None,
                         box_plus_buffer: bool = True,
-                        skip_junctions: bool = False):
+                        skip_junctions: bool = False,
+                        omit_ground_for_layers: Optional[list[int]] = None):
         """This function draws the raw geometries in Gmsh as taken from the
         QGeometry tables and applies thickness depending on the layer-stack.
 
@@ -287,6 +292,8 @@ class QGmshRenderer(QRenderer):
             draw_sample_holder (bool): To draw the sample holder box.
             skip_junctions (bool, optional): Set to True to sip rendering the
                                                         junctions. Defaults to False.
+            omit_ground_for_layers (Optional[list[int]]): omit rendering the ground plane for
+                                                         specified layers. Defaults to None.
         """
 
         self.qcomp_ids, self.case = self.get_unique_component_ids(selection)
@@ -299,8 +306,9 @@ class QGmshRenderer(QRenderer):
         self.render_tables(skip_junction=skip_junctions)
         self.add_endcaps(open_pins=open_pins)
         self.render_layers(box_plus_buffer=box_plus_buffer,
+                           omit_layers=omit_ground_for_layers,
                            draw_sample_holder=draw_sample_holder)
-        self.subtract_from_layers()
+        self.subtract_from_layers(omit_layers=omit_ground_for_layers)
         self.gmsh_occ_synchronize()
 
     def apply_changes_for_simulation(self, ignore_metal_volume: bool,
@@ -659,18 +667,22 @@ class QGmshRenderer(QRenderer):
 
     def render_layers(self,
                       draw_sample_holder: bool,
-                      layers: Optional[List[int]] = None,
+                      omit_layers: Optional[List[int]] = None,
                       box_plus_buffer: bool = True):
         """Render all chips of the design. calls `render_chip` to render the actual geometries
 
         Args:
-            layers (Optional[List[int]]): List of layers to render.
-                                Renders all if [] or None is given. Defaults to None.
+            omit_layers (Optional[List[int]]): List of layers to omit render.
+                                               Renders all if [] or None is given.
+                                               Defaults to None.
             draw_sample_holder (bool): To draw the sample holder box.
-            box_plus_buffer (bool, optional): For adding buffer to chip dimensions. Defaults to True.
+            box_plus_buffer (bool, optional): For adding buffer to chip dimensions.
+                                              Defaults to True.
         """
-        layer_list = list(set(l for l in self.design.ls.ls_df["layer"])
-                         ) if layers is None else layers
+        layer_list = list(set(l for l in self.design.ls.ls_df["layer"]))
+
+        if omit_layers is not None:
+            layer_list = list(l for l in layer_list if l not in omit_layers)
 
         for layer in layer_list:
             # Add the buffer, using options for renderer.
@@ -743,9 +755,12 @@ class QGmshRenderer(QRenderer):
 
         self.layers_dict[layer_number] = [layer_tag]
 
-    def subtract_from_layers(self):
+    def subtract_from_layers(self, omit_layers: Optional[list[int]] = None):
         """Subtract the QGeometries in tables from the chip ground plane"""
         for layer_num, shapes in self.layer_subtract_dict.items():
+            if omit_layers is not None and layer_num in omit_layers:
+                continue
+
             thickness = self.get_thickness_for_layer_datatype(
                 layer_num=layer_num)
 
@@ -869,7 +884,7 @@ class QGmshRenderer(QRenderer):
             ValueError: if self.layer_types is not a dict
             ValueError: if layer number is not in self.layer_types
         """
-        layer_numbers = list(self.layers_dict.keys())
+        layer_numbers = list(set(l for l in self.design.ls.ls_df["layer"]))
         for layer in layer_numbers:
             # TODO: check if thickness == 0, then fragment differently
             layer_thickness = self.get_thickness_for_layer_datatype(

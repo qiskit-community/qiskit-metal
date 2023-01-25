@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, Optional
 import os
 import pandas as pd
 
@@ -186,6 +186,7 @@ class QElmerRenderer(QRendererAnalysis):
         skip_junctions: bool = False,
         mesh_geoms: bool = True,
         ignore_metal_volume: bool = False,
+        omit_ground_for_layers: Optional[list[int]] = None,
     ):
         """Render the design in Gmsh and apply changes to modify the geometries
         according to the type of simulation. Simulation parameters provided by the user.
@@ -205,6 +206,8 @@ class QElmerRenderer(QRendererAnalysis):
             ignore_metal_volume (bool, optional): ignore the volume of metals and replace
                                                         it with a list of surfaces instead.
                                                         Defaults to False.
+            omit_ground_for_layers (Optional[list[int]]): omit rendering the ground plane for
+                                                         specified layers. Defaults to None.
         """
 
         # For handling the case when the user wants to use
@@ -218,7 +221,8 @@ class QElmerRenderer(QRendererAnalysis):
                                 draw_sample_holder=draw_sample_holder,
                                 skip_junctions=skip_junctions,
                                 mesh_geoms=mesh_geoms,
-                                ignore_metal_volume=ignore_metal_volume)
+                                ignore_metal_volume=ignore_metal_volume,
+                                omit_ground_for_layers=omit_ground_for_layers)
 
         self.qcomp_geom_table = self.get_qgeometry_table()
         self.nets = self.assign_nets(open_pins=open_pins)
