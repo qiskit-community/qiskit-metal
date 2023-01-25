@@ -756,7 +756,13 @@ class QGmshRenderer(QRenderer):
         self.layers_dict[layer_number] = [layer_tag]
 
     def subtract_from_layers(self, omit_layers: Optional[list[int]] = None):
-        """Subtract the QGeometries in tables from the chip ground plane"""
+        """Subtract the QGeometries in tables from the chip ground plane
+
+        Args:
+            omit_layers (Optional[List[int]]): List of layers to omit render.
+                                               Renders all if [] or None is given.
+                                               Defaults to None.
+        """
         for layer_num, shapes in self.layer_subtract_dict.items():
             if omit_layers is not None and layer_num in omit_layers:
                 continue
