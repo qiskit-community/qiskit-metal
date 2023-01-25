@@ -45,7 +45,7 @@ Qubit Couplers
 
 
 ####################
-Input-Ouput Coupling
+Input-Output Coupling
 ####################
 
 

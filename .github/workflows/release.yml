@@ -8,11 +8,11 @@ jobs:
     name: Build and Publish Release Artifacts
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
         name: Install Python
         with:
-          python-version: "3.9"
+          python-version: "3.10"
       - name: Install Deps
         run: pip install -U twine wheel
       - name: Build Artifacts

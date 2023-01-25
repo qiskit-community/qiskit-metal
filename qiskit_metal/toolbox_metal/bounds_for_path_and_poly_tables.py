@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from re import sub
 from typing import List, Tuple, Union
 from copy import deepcopy
 
@@ -51,8 +52,8 @@ class BoundsForPathAndPolyTables():
     def get_bounds_of_path_and_poly_tables(
         self, box_plus_buffer: bool, qcomp_ids: List, case: int, x_buff: float,
         y_buff: float
-    ) -> tuple[tuple[float, float, float, float], pd.DataFrame, bool, Union[
-            None, set]]:
+    ) -> tuple[tuple[float, float, float, float], pd.DataFrame, pd.DataFrame,
+               bool, Union[None, set]]:
         """If box_plus_buffer is True, returns a tuple containing minx, miny, maxx, maxy values for the
         bounds of what was selected to be rendered.
         Else, use the chip size for Tuple.
@@ -69,13 +70,14 @@ class BoundsForPathAndPolyTables():
             y_buff (float): If box_plus_buffer, need the buffer value in y coordinate.
 
         Returns:
-            tuple[tuple[float, float, float, float], pd.DataFrame, bool, Union[None,set]]:
+            tuple[tuple[float, float, float, float], pd.DataFrame, pd.DataFrame, bool, Union[None,set]]:
                                     tuple: minx, miny, maxx, maxy values based
                                                     on either total chip size or box_plus_buffer.
                                                     In xy plane, the box_for_xy_bounds will be limited
                                                     by the chip_bounds_xy if box_for_xy_bounds is larger
                                                     than chip_bounds_xy.
                                     pd.DataFrame: The path and poly dataframes concatenated for qcomp_ids
+                                    pd.DataFrame: The path, poly, junction dataframes concatenated for qcomp_ids
                                     bool: If there is a key in design with same chip_name as in layer_stack
                                     Union[None,set]: Either None if the names don't match,
                                                     or the set of chip_names that can be used.
@@ -86,6 +88,7 @@ class BoundsForPathAndPolyTables():
 
         path_dataframe = self.design.qgeometry.tables['path']
         poly_dataframe = self.design.qgeometry.tables['poly']
+        junction_dataframe = self.design.qgeometry.tables['junction']
 
         # NOTE:get_box_for_xy_bounds populates self.chip_names_matched and self.valid_chip_names
         chip_minx, chip_miny, chip_maxx, chip_maxy = self.get_box_for_xy_bounds(
@@ -96,23 +99,34 @@ class BoundsForPathAndPolyTables():
         if box_plus_buffer:
             # Based on component selection, determine the bounds for box_plus_buffer.
             frames = None
+            frames_with_jj = None
             path_and_poly_with_valid_comps = None
 
             if case == 2:  # One or more components not in QDesign.
                 self.design.logger.warning("One or more components not found.")
             elif case == 1:  # Render all components
                 frames = [path_dataframe, poly_dataframe]
+                frames_with_jj = [
+                    path_dataframe, poly_dataframe, junction_dataframe
+                ]
             else:  # Strict subset rendered.
                 mask_path = path_dataframe['component'].isin(qcomp_ids)
                 mask_poly = poly_dataframe['component'].isin(qcomp_ids)
+                mask_junction = junction_dataframe['component'].isin(qcomp_ids)
                 subset_path_df = path_dataframe[mask_path]
                 subset_poly_df = poly_dataframe[mask_poly]
+                subset_junction_df = junction_dataframe[mask_junction]
                 frames = [subset_path_df, subset_poly_df]
+                frames_with_jj = [
+                    subset_path_df, subset_poly_df, subset_junction_df
+                ]
 
             #Concat the frames and then determine the total bounds of all the geometries.
             # maybe, change name to package_cavity
             path_and_poly_with_valid_comps = pd.concat(frames,
                                                        ignore_index=True)
+            path_poly_and_junction_valid_comps = pd.concat(frames_with_jj,
+                                                           ignore_index=True)
             minx, miny, maxx, maxy = list(
                 path_and_poly_with_valid_comps['geometry'].total_bounds)
             # minx, miny, maxx, maxy = list(
@@ -130,13 +144,18 @@ class BoundsForPathAndPolyTables():
             safe_xy_bounds = self.ensure_component_box_smaller_than_chip_box_(
                 box_for_xy_bounds, chip_bounds_xy)
 
-            return safe_xy_bounds, path_and_poly_with_valid_comps, self.chip_names_matched, self.valid_chip_names
+            return safe_xy_bounds, path_and_poly_with_valid_comps, path_poly_and_junction_valid_comps, self.chip_names_matched, self.valid_chip_names
         else:  # Incorporate all the chip sizes.
 
             frames = [path_dataframe, poly_dataframe]
+            frames_with_jj = [
+                path_dataframe, poly_dataframe, junction_dataframe
+            ]
             path_and_poly_with_valid_comps = pd.concat(frames,
                                                        ignore_index=True)
-            return chip_bounds_xy, path_and_poly_with_valid_comps, self.chip_names_matched, self.valid_chip_names
+            path_poly_and_junction_valid_comps = pd.concat(frames_with_jj,
+                                                           ignore_index=True)
+            return chip_bounds_xy, path_and_poly_with_valid_comps, path_poly_and_junction_valid_comps, self.chip_names_matched, self.valid_chip_names
 
     @classmethod
     def ensure_component_box_smaller_than_chip_box_(

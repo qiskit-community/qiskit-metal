@@ -1,0 +1,2 @@
+chip_name,layer,datatype,material,thickness,z_coord,fill
+'main',3,0,'silicon','-500um','0um','True'

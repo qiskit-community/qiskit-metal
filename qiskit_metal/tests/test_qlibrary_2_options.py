@@ -288,7 +288,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
             design, 'my_name')
         options = my_transmon_concentric.default_options
 
-        self.assertEqual(len(options), 16)
+        self.assertEqual(len(options), 17)
         self.assertEqual(options['width'], '1000um')
         self.assertEqual(options['height'], '1000um')
         self.assertEqual(options['rad_o'], '170um')
