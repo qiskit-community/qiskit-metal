@@ -221,6 +221,8 @@ class Components:
     #     pass
     #     #self.__setitem__(name, value)
 
+    def __getstate__(self): return self.__dict__
+
     def __contains__(self, item: str) -> int:
         """Look for item in design._components in the value.
 
