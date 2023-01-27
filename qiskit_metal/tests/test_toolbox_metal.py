@@ -19,6 +19,7 @@
 """Qiskit Metal unit tests analyses functionality."""
 
 import unittest
+import tempfile
 import numpy as np
 from typing import Union
 
@@ -45,10 +46,12 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def setUp(self):
         """Setup unit test."""
-        pass
+        self.temp_file = tempfile.NamedTemporaryFile()
+        self.temp_file_name = self.temp_file.name
 
     def tearDown(self):
         """Tie any loose ends."""
+        self.temp_file.close()
         math_and_overrides.set_decimal_precision(10)
 
     def test_toolbox_metal_instantiation_qiskit_metal_exceptions(self):
@@ -856,6 +859,28 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
                 multiplanar_design,
                 (ls_file_path, None)).layer_stack_handler_pilot_error(), None)
 
+    def test_saving_of_metal_design(self):
+        """Test functionality of saving designs in toolbox_metal.py"""
+        ls_file_path = ("./qiskit_metal/tests/test_data/planar_chip.txt")
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True,
+                                         layer_stack_filename=ls_file_path)
+        conn_pads = dict(connection_pads=dict(coup1=dict(loc_W=-1, loc_H=1),
+                                              coup2=dict(loc_W=1, loc_H=1)))
+        q1 = TransmonPocket6(multiplanar_design,
+                             "Q1",
+                             options=dict(**conn_pads, chip="c_chip", layer=1))
+
+        # Write design to the temporary file
+        self.assertTrue(multiplanar_design.save_design(self.temp_file_name))
+
+    def test_loading_of_metal_design(self):
+        #Save design to temporary file first
+        self.test_saving_of_metal_design()
+
+        multiplanar_design = MultiPlanar(metadata={},
+                                         overwrite_enabled=True)
+        self.assertIsInstance(multiplanar_design.load_design(self.temp_file_name), MultiPlanar)
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
