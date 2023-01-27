@@ -878,9 +878,10 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
         #Save design to temporary file first
         self.test_saving_of_metal_design()
 
-        multiplanar_design = MultiPlanar(metadata={},
-                                         overwrite_enabled=True)
-        self.assertIsInstance(multiplanar_design.load_design(self.temp_file_name), MultiPlanar)
+        multiplanar_design = MultiPlanar(metadata={}, overwrite_enabled=True)
+        self.assertIsInstance(
+            multiplanar_design.load_design(self.temp_file_name), MultiPlanar)
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
