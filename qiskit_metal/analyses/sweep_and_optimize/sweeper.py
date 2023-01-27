@@ -164,8 +164,9 @@ class Sweeper():
                 template = "An exception of type {0} occurred. Arguments:\n{1!r}"
                 message = template.format(type(ex).__name__, ex.args)
                 self.design.logger.warning(
-                    f'For class {self.parent.__class__.__name__}, run() did not execute as expected: {message}'
-                )
+                    f'For class {self.parent.__class__.__name__}, ',
+                    f'option_name={".".join(option_path)}, key={item}, ',
+                    f'run() did not execute as expected: {message}')
 
             self.populate_all_sweep(all_sweep, item, args[1])
 
