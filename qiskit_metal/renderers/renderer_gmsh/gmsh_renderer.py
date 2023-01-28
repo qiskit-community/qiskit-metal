@@ -22,7 +22,6 @@ class QGmshRenderer(QRenderer):
     """Extends QRendererAnalysis class to export designs to Gmsh using the Gmsh python API.
 
     Default Options:
-        # Buffer between max/min x and edge of ground plane, in mm
         * x_buffer_width_mm -- Buffer between max/min x and edge of ground plane, in mm
         * y_buffer_width_mm -- Buffer between max/min y and edge of ground plane, in mm
         * mesh -- to define meshing parameters
