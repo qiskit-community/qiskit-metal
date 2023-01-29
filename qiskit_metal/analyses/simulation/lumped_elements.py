@@ -59,7 +59,7 @@ class LumpedElementsSim(QSimulation):
     """Default setup."""
 
     # supported labels for data generated from the simulation
-    data_labels = ['cap_matrix', 'cap_all_passes', 'units']
+    data_labels = ['cap_matrix', 'cap_all_passes', 'units', 'is_converged']
     """Default data labels."""
 
     def __init__(self, design: 'QDesign' = None, renderer_name: str = 'q3d'):
