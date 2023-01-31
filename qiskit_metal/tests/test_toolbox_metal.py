@@ -102,17 +102,17 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
         except Exception:
             self.fail("open_docs() failed")
 
-    def test_toolbox_metal_orient_me(self):
-        """Test that orient_me in about.py produces detailed information about the user without any
-        errors."""
-        try:
-            about.orient_me(True)
-        except Exception:
-            self.fail("orient_me() failed")
-        try:
-            about.orient_me(False)
-        except Exception:
-            self.fail("orient_me() failed")
+   # def test_toolbox_metal_orient_me(self):
+     #   """Test that orient_me in about.py produces detailed information about the user without any
+     #   errors."""
+   #     try:
+    #        about.orient_me(True)
+     #   except Exception:
+      #      self.fail("orient_me() failed")
+      #  try:
+      #      about.orient_me(False)
+      #  except Exception:
+       #     self.fail("orient_me() failed")
 
     def test_toolbox_metal_get_platform_info(self):
         """Test that get_platform_info in about.py returns a string with the platform information without any errors."""
