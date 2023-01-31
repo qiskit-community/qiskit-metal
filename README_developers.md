@@ -142,3 +142,11 @@ If are planning on committing, code and get a linting error. Sometimes the log d
 yapf --diff --recursive --style .style.yapf qiskit_metal
 ```
 Go to directory with qiskit-metal/.style.yapf  file and run the above command to lint locally. This may give more meaningful feedback for linting failure.
+
+## Uninstall precommit hook
+
+```
+rm /hooks/pre-commit
+```
+
+If you need to uninstall the precommit hook, go to the root of the project and run the above command.

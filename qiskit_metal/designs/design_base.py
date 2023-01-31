@@ -51,7 +51,7 @@ class QDesign():
     """
     # pylint: disable=too-many-instance-attributes, too-many-public-methods
 
-    # Dummy private attribute used to check if an instanciated object is
+    # Dummy private attribute used to check if an instantiated object is
     # indeed a QDesign class. The problem is that the `isinstance`
     # built-in method fails when this module is reloaded.
     # Used by `is_design` to check.
