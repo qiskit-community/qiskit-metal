@@ -23,8 +23,8 @@ from typing import TYPE_CHECKING, List
 
 from PySide6.QtCore import Qt, QTimer
 from PySide6.QtGui import QIcon, QPixmap, QAction
-from PySide6.QtWidgets import (QDialog, QDockWidget, QFileDialog,
-                               QLabel, QMainWindow, QMessageBox, QVBoxLayout)
+from PySide6.QtWidgets import (QDialog, QDockWidget, QFileDialog, QLabel,
+                               QMainWindow, QMessageBox, QVBoxLayout)
 from PySide6.QtCore import QSortFilterProxyModel
 from qiskit_metal._gui.widgets.qlibrary_display.delegate_qlibrary import \
     LibraryDelegate
@@ -336,7 +336,7 @@ class MetalGUI(QMainWindowBaseHandler):
 
         # Show and raise
         self.main_window.show()
-        
+
         # self.qApp.processEvents(QEventLoop.AllEvents, 1)
         # - don't think I need this here, it doesn't help to show and raise
         # - need to call from different thread.
