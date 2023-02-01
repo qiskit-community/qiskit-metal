@@ -16,7 +16,6 @@
 
 import logging
 import os
-from time import sleep
 import webbrowser
 from pathlib import Path
 from typing import TYPE_CHECKING, List
@@ -327,12 +326,8 @@ class MetalGUI(QMainWindowBaseHandler):
         self.main_window.show()
         self._setup_variables_widget()
         self._ui_adjustments_final()
-        print('Sleeping')
-        sleep(10)
         self._setup_library_widget()
         self._setup_net_list_widget()
-
-        sleep(10)
 
         # Show and raise
         self.main_window.show()
