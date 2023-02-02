@@ -1,0 +1,13 @@
+{
+  "runtimeOptions": {
+    "tfm": "net3.1",
+    "framework": {
+      "name": "Microsoft.NETCore.App",
+      "version": "3.1.23"
+    },
+    "rollForward": "LatestPatch",
+    "configProperties": {
+      "System.Reflection.Metadata.MetadataUpdater.IsSupported": false
+    }
+  }
+}

@@ -1,0 +1,48 @@
+
+/* Variables that must be defined when including this file:
+   th,D1,H,R1,R2,Lc */
+
+XC1 = (D1 - R1) * Cos(th) ;             // Sup. circle center
+YC1 = (D1 - R1) * Sin(th) ;
+XC2 = (D1 - H + R2) * Cos(th) ;		// Inf. circle center
+YC2 = (D1 - H + R2) * Sin(th) ;
+
+XS1 = (D1) * Cos(th) ;		        // Sup. circle top
+YS1 = (D1) * Sin(th) ;
+
+dth = Pi - ArcCos((R1 - R2) / (H - R1 - R2)) ;
+
+XA1 = XC1 + R1 * Cos(th - dth) ;	// Sup. right tangency point
+YA1 = YC1 + R1 * Sin(th - dth) ;
+XA2 = XC2 + R2 * Cos(th - dth) ;	// Inf. right tangency point
+YA2 = YC2 + R2 * Sin(th - dth) ;
+XB1 = XC1 + R1 * Cos(th + dth) ; 	// Sup. left tangency point
+YB1 = YC1 + R1 * Sin(th + dth) ;
+XB2 = XC2 + R2 * Cos(th + dth) ;	// Inf. left tangency point
+YB2 = YC2 + R2 * Sin(th + dth) ;
+
+// Pole
+
+/* 'newp' is a meta variable defining a new point number for
+   you.  This is mostly useful with included files. There is also
+   'newreg' which defines a new region number (that is, everything
+   that is not a point). */
+
+p1 = newp ; Point(p1) = { XA2 , YA2, 0., 3*Lc} ;
+p2 = newp ; Point(p2) = { XA1 , YA1, 0., Lc} ;
+p3 = newp ; Point(p3) = { XC1 , YC1, 0., Lc} ;
+p4 = newp ; Point(p4) = { XB1 , YB1, 0., Lc} ;
+p5 = newp ; Point(p5) = { XB2 , YB2, 0., 3*Lc} ;
+p6 = newp ; Point(p6) = { XC2 , YC2, 0., 3*Lc} ;
+
+p7 = newp ; Point(p7) = { XS1 , YS1, 0., Lc} ;
+
+lin1 = newreg ; Line(lin1)    = {p1,p2} ;
+arc1 = newreg ; Circle (arc1) = {p2,p3,p7} ;
+arc2 = newreg ; Circle (arc2) = {p7,p3,p4} ;
+lin2 = newreg ; Line(lin2)    = {p4,p5} ;
+arc3 = newreg ; Circle(arc3)  = {p5,p6,p1} ;
+
+reg1 = newreg ; Curve Loop(reg1) = {lin1,arc1,arc2,lin2,arc3};
+reg2 = newreg ; Plane Surface(reg2) = {reg1};
+

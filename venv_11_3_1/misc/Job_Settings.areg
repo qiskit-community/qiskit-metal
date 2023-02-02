@@ -1,0 +1,76 @@
+$begin 'AddEntries'
+	'Desktop/Settings/ProjectOptions/GSDefaults'='$begin \'\'\
+\	$begin \'ClusterName\'\
+\	\	Monitor=true\
+\	\	WaitForLicense=true\
+\	\	UsePPELicensing=false\
+\	\	BatchExtract=false\
+\	\	BatchOptions()\
+\	\	ProductPath=\'product_full_path\'\
+\	\	BatchExtractPath=\'\'\
+\	\	UseMultiStep=false\
+\	\	UseLSDSO=false\
+\	\	$begin \'\'\
+\	\	\	Method=3\
+\	\	\	$begin \'TasksAndCoresBlock\'\
+\	\	\	\	IsExclusive=false\
+\	\	\	\	RAMLimit=90\
+\	\	\	\	NumTasks=0\
+\	\	\	\	NumCoresPerDistributedTask=0\
+\	\	\	\	LimitTasksPerNodeEnabled=false\
+\	\	\	\	NumMaxTasksPerNode=0\
+\	\	\	\	NumGpus=0\
+\	\	\	$end \'TasksAndCoresBlock\'\
+\	\	\	$begin \'RAMConstrainedBlock\'\
+\	\	\	\	IsExclusive=false\
+\	\	\	\	RAMLimit=90\
+\	\	\	\	NumCores=0\
+\	\	\	\	RAMPerCoreCheckbox=false\
+\	\	\	\	RAMPerCoreInGB=\'2.0\'\
+\	\	\	$end \'RAMConstrainedBlock\'\
+\	\	\	$begin \'NodesAndCoresBlock\'\
+\	\	\	\	IsExclusive=true\
+\	\	\	\	RAMLimit=90\
+\	\	\	\	NumNodes=1\
+\	\	\	\	NumCores=32\
+\	\	\	\	NumGpus=0\
+\	\	\	$end \'NodesAndCoresBlock\'\
+\	\	\	$begin \'NodeListBlock\'\
+\	\	\	\	$begin \'MachineListVec\'\
+\	\	\	\	$end \'MachineListVec\'\
+\	\	\	$end \'NodeListBlock\'\
+\	\	$end \'\'\
+\	\	$begin \'JobAttributes\'\
+\	\	\	JobName=\'\'\
+\	\	\	JobPriority=\'\'\
+\	\	\	SubmissionOptions=\'\'\
+\	\	\	SubmissionOptionsReplace=false\
+\	\	\	FixJobName=false\
+\	\	$end \'JobAttributes\'\
+\	\	$begin \'UniformComputeResources\'\
+\	\	$end \'UniformComputeResources\'\
+\	\	$begin \'DSOJobDistributionInfo\'\
+\	\	\	AllowedDistributionTypes[0:]\
+\	\	\	Enable2LevelDistribution=false\
+\	\	\	NumL1Engines=2\
+\	\	\	UseDefaultsForDistributionTypes=true\
+\	\	\	Context()\
+\	\	$end \'DSOJobDistributionInfo\'\
+\	\	EnvVarNames[1: \'ANSOFT_PASS_DEBUG_ENV_TO_REMOTE_ENGINES\']\
+\	\	EnvVarValues[1: \'1\']\
+\	\	$begin \'ArchiveOptions\'\
+\	\	\	OverwriteFiles=false\
+\	\	$end \'ArchiveOptions\'\
+\	\	$begin \'SharedDirectories\'\
+\	\	\	WindowsPaths[0:]\
+\	\	\	LinuxPaths[0:]\
+\	\	$end \'SharedDirectories\'\
+\	\	$begin \'MultiStepJobSettings\'\
+\	\	\	SelectedOption=\'\'\
+\	\	$end \'MultiStepJobSettings\'\
+\	\	NumVariationsToDistributeInAuto=1\
+\	$end \'ClusterName\'\
+$end \'\'\
+'
+
+$end 'AddEntries'

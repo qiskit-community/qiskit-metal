@@ -1,0 +1,7 @@
+Type: Jupyter Notebook Extension
+Main: environment.js
+Name: NBGallery Environment Registration
+Section: common
+Description: Registers this Jupyter instance as an environment with nbgallery.
+Link: README.md
+Compatibility: 4.x, 5.x, 6.x

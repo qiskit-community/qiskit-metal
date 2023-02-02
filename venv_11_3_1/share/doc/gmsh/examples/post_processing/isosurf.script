@@ -1,0 +1,30 @@
+
+minIso = View[0].Min;
+maxIso = View[0].Max;
+nbIso = GetValue("Number of isosurfaces?", 7);
+
+Plugin(Isosurface).View = 0;
+
+For i In {0:nbIso-1}
+  Plugin(Isosurface).Value = minIso + i * (maxIso-minIso)/(nbIso > 1 ? nbIso-1 : 1);
+  Plugin(Isosurface).Run;
+EndFor
+
+Delete View[0];
+Delete Empty Views;
+
+Combine Views;
+
+Plugin(MakeSimplex).View = 0;
+Plugin(MakeSimplex).Run;
+
+View[0].ColormapAlpha = 0.6;
+View[0].SmoothNormals = 1;
+
+General.FastRedraw = 0;
+General.Color.Background = White;
+General.Color.Foreground = Black;
+General.Color.Text = Black;
+General.Color.SmallAxes = Black;
+
+//Save View[0] "iso.pos";

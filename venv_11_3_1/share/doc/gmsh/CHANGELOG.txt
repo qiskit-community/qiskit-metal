@@ -1,0 +1,1082 @@
+4.10.5 (July 1, 2022): small bug fixes.
+
+4.10.4 (June 19, 2022): improved graphical window tooltips; small bug fixes.
+
+* New API function: mesh/removeDuplicateElements
+
+4.10.3 (May 26, 2022): small bug fixes.
+
+* New API function: fltk/finalize
+
+4.10.2 (May 13, 2022): fixed regression introduced in 4.9 for recombined meshes
+with boundary layers; new Geometry.OCCSafeUnbind option to disable boolean
+optimization introduced in 4.10.0 (for backward compatibility); new HealShapes
+command in .geo files; simplified calculation of OCC STL bounding boxes;
+generalized Crack plugin; small bug fixes.
+
+4.10.1 (May 1, 2022): small bug fixes.
+
+4.10.0 (April 25, 2022): more flexible homology/cohomology workflow in the API;
+"Attractor" field is now just a synonym for the newer (and more efficient)
+"Distance" field; periodic bsplines now use the same default multiplicities in
+OCC as in the built-in kernel; model/isInside now also handles discrete
+entities; speed-up repeated simple boolean operations; C++ api now throws
+std::runtime_error on errors; small bug fixes.
+
+* New API functions: geo/addGeometry, geo/addPointOnGeometry,
+  mesh/addHomologyRequest, mesh/clearHomologyRequests, mesh/setVisibility,
+  mesh/getElementQualities
+
+* Incompatible API changes: additional const qualifiers in C API; removed
+  mesh/computeCohomology; new arguments to occ/getCurveLoops and
+  occ/getSurfaceLoops; changed arguments of mesh/computeHomology; new optional
+  arguments to occ/addCircle, occ/addEllipse, occ/addDisk, occ/addTorus,
+  occ/addWedge, model/addPhysicalGroup, model/geo/addPhysicalGroup,
+  mesh/removeDuplicateNodes and mesh/setRecombine.
+
+4.9.5 (February 21, 2022): dynamic Gmsh library now also only exports public
+symbols on macOS and Linux, like it does on Windows; better handling of
+max. thread settings; small bug fixes.
+
+* New API function: mesh/getDuplicateNodes
+
+4.9.4 (February 3, 2022): improved BSpline filling; new options
+Mesh.MinimumLineNodes, Mesh.RecombineNodeRepositioning,
+Mesh.RecombineMinimumQuality and Mesh.StlLinearDeflectionRelative; updated
+bundled Eigen; small bug fixes.
+
+* New API functions: gmsh/isInitialized, occ/convertToNURBS, occ/getCurveLoops,
+  occ/getSurfaceLoops, mesh/importStl, parser/getNames, parser/setNumber,
+  parser/setString, parser/getNumber, parser/getString, parser/clear,
+  parser/parse, onelab/getChanged, onelab/setChanged
+
+4.9.3 (January 4, 2022): improved handling of degenerate curves in periodic
+surfaces and boundary layer extrusion; extended Mesh.SaveGroupsOfElements
+capabilities for INP export; extended Mesh.MeshSizeExtendFromBoundary + new
+"Extend" mesh size field to enable alternative mesh size extensions from
+boundary; enhanced X3D output; moved all kernel sources to src/ subdirectory;
+renamed demos/ as examples/ and tutorial/ as tutorials/; small bug fixes.
+
+4.9.2 (December 23, 2021): faster projection on OCC entities; extended
+Mesh.SaveGroupsOfNodes capabilities for INP export; improved transfinite meshing
+of surfaces with boundary on periodic seam.
+
+4.9.1 (December 18, 2021): relax tolerance on curve parametrization match for
+periodic meshing; enable extruded boundary layers on generic model entities;
+activate IncludeBoundary by default in Restrict field; downgraded compiler for
+official Linux releases to gcc 6 to improve compatibility with older systems;
+small bug fixes (view tag generation with zero tag, model/setTag).
+
+4.9.0 (December 3, 2021): new initial 2D meshing algorithm; new quasi-structured
+quad algorithm; improved handling of imperfect curve reparametrization on
+surfaces in 2D periodic meshing algorithm; mesh renumbering now also renumbers
+dependent post-processing views; the mesh size callback is now per-model and its
+returned value is not gathered with the other size constraints in a global min
+reduction anymore: instead the callback takes as additional argument the mesh
+size lc that would be prescribed in the absence of the callback, which allows to
+perform any desired modification (the old behavior can be achieved by returning
+min(lc, value)); OCC STL representation is now generated using relative
+deflection tolerance; new TransformMesh command in .geo files; new behavior of
+Mesh.SaveGroupsOf{Nodes,Elements} in UNV and INP exports; partitioned MSH4 files
+now contain the full partition topology (i.e. all partition entities); fixed
+metric calculation with Eigen (for anisotropic mesh generation); official binary
+builds now support OpenMP parallelization and are 64 bit only (build OS upgraded
+to Windows 10, macOS 10.15 and Linux glibc 2.24); new experimental Fortran API;
+new API functions to handle view options by tag instead of by index; color
+options in the API can now be specified as in .geo files, in the form
+"Category.Color.Option"; small bug fixes.
+
+* New API functions: model/setTag, mesh/reverse, mesh/affineTransform,
+  mesh/getMaxNodeTag, mesh/getMaxElementTag, mesh/getSizes, mesh/getPeriodic,
+  mesh/getAllEdges, mesh/getAllFaces, mesh/addEdge, mesh/addFace,
+  mesh/getNumberOfPartitions, field/list, field/getType, field/getNumber,
+  field/getNumbers, field/getString, view/option/setNumber,
+  view/option/getNumber, view/option/setString, view/option/getString,
+  view/option/setColor, view/option/getColor, view/option/copy.
+
+* Incompatible API changes: new arguments to mesh/getNode, mesh/getElement and
+  view/probe; additional argument to the mesh size callback function provided to
+  mesh/setSizeCallback; new optional arguments to gmsh/initialize,
+  model/isInside, mesh/partition and occ/addSurfaceFilling; renamed
+  mesh/preallocateBasisFunctionsOrientationForElements as
+  mesh/preallocateBasisFunctionsOrientation, mesh/getNumberOfKeysForElements as
+  mesh/getNumberOfKeys, and mesh/getBasisFunctionsOrientationForElements as
+  mesh/getBasisFunctionsOrientation; renamed mesh/getKeysForElements as
+  mesh/getKeys and mesh/getInformationForElements as mesh/getKeysInformation,
+  and modified their arguments; modified arguments to mesh/getKeysForElement;
+  removed mesh/getLocalMultipliersForHcurl0; renamed view/copyOptions as
+  view/option/copy.
+
+4.8.4 (April 28, 2021): set current model in gmsh/model/add; small bug fixes.
+
+4.8.3 (April 6, 2021): better handling of errors in inverse surface mapping;
+fixed Mesh.MedFileMinorVersion for MED 4; small bug fixes.
+
+4.8.2 (March 27, 2021): fixed regression in OCC transforms; fixed cwrap API.
+
+4.8.1 (March 21, 2021): improved performance when transforming many OCC
+entities; fixed regression in high-order meshing of surfaces with singular
+parametrizations; small bug fixes.
+
+4.8.0 (March 2, 2021): new interactive and fully parametrizable definition of
+boundary conditions, materials, etc. through ONELAB variables; new API functions
+for creating trimmed BSpline/Bezier patches, perform raw triangulations and
+tetrehedralizations, get upward adjacencies, and create extruded boundary layers
+and automatic curve loops in built-in kernel; improved performance of high-order
+meshing of OCC models; improved handling of high resolution displays; new
+structured CGNS exporter; new transfinite Beta law; added support for embedded
+curves in HXT; added automatic conversion from partitioned MSH2 files to new
+partitioned entities; element groups can now be imported from UNV files; fixed
+order of Gauss quadrature for quads and hexas; code modernization (C++11);
+further uniformization of option names to match the documented terminology
+(Mesh.Point -> Mesh.Node, ...; old names are still accepted, but deprecated);
+deprecated Mesh.MinimumElementsPerTwoPi: set value directly to
+Mesh.MeshSizeFromCurvature instead; Python and Julia APIs now also define "snake
+case" aliases for all camelCase function names; small bug fixes and
+improvements.
+
+* New API functions: model/getFileName, model/setFileName, model/getAdjacencies,
+  model/getSecondDerivative, mesh/getEdges, mesh/getFaces, mesh/createEdges,
+  mesh/createFaces, mesh/removeConstraints, mesh/getEmbedded, mesh/triangulate,
+  mesh/tetrahedralize, geo/addCurveLoops, fltk/setStatusMessage,
+  fltk/showContextWindow, fltk/openTreeItem, fltk/closeTreeItem,
+  onelab/getNames.
+
+* Incompatible API changes: new optional arguments to mesh/classifySurfaces,
+  occ/addBSplineSurface, occ/addBezierSurface, occ/addPipe and view/probe;
+  renamed mesh/getEdgeNumber as mesh/getEdges.
+
+4.7.1 (November 16, 2020): small bug fixes and improvements.
+
+4.7.0 (November 5, 2020): API errors now throw exceptions with the last error
+message (instead of an integer error code); API functions now print messages on
+the terminal by default, and throw exceptions on all errors unless in
+interactive mode; new API functions to retrieve "homogeneous" model-based data
+(for improved Python performance), to set interpolation matrices for high-order
+datasets, to assign "automatic" transfinite meshing constraints and to pass
+native (C++, C, Python or Julia) mesh size callback; added option to save
+high-order periodic nodes info; added support for scripted window splitting;
+improved VTK reader; new MatrixOfInertia command; added support for Unicode
+command line arguments on Windows; uniformized commands, options and field
+option names to match the documented terminology (CharacteristicLength ->
+MeshSize, geometry Line -> Curve, ...; old names are still accepted, but
+deprecated); improved handling of complex periodic cases; removed bundled Mmg3D
+and added support for stock Mmg 5; Gmsh now requires C++11 and CMake 3.1, and
+uses Eigen by default instead of Blas/Lapack for dense linear algebra; small bug
+fixes.
+
+* New API functions: model/setVisibilityPerWindow, mesh/setSizeCallback,
+  mesh/removeSizeCallback, mesh/setTransfiniteAutomatic, geo/addPhysicalGroup,
+  geo/removePhysicalGroups, view/setInterpolationMatrices,
+  view/setVisibilityPerWindow, fltk/splitCurrentWindow, fltk/setCurrentWindow,
+  logger/getLastError.
+
+* Incompatible API changes: new optional argument to geo/addCurveLoop.
+
+4.6.0 (June 22, 2020): new options to only generate initial 2D or 3D meshes
+(without node insertion), and to only mesh non-meshed entities; added ability to
+only remesh parts of discrete models; added support for mesh size fields and
+embedded points and surfaces in HXT; improved reparametrization and partitioning
+code; new OCC API functions to reduce the number of synchronizations for complex
+models; new OCC spline surface interfaces; new functions and options to control
+the first tag of entities, nodes and elements; fixed duplicated entities in STEP
+output; improved mesh subdivision and high-order pipeline; MED output now
+preserves node and element tags; small bug fixes.
+
+* New API functions: model/getParametrizationBounds, model/isInside,
+  model/getClosestPoint, model/reparametrizeOnSurface, mesh/rebuildElementCache,
+  mesh/getBasisFunctionsOrientationForElements,
+  mesh/getBasisFunctionsOrientationForElement, mesh/getNumberOfOrientations,
+  mesh/preallocateBasisFunctionsOrientationForElements,
+  mesh/setSizeAtParametricPoints, geo/setMaxTag, geo/getMaxTag,
+  occ/addBSplineFilling, occ/addBezierFilling, occ/addBSplineSurface,
+  occ/addBezierSurface, occ/setMaxTag, occ/getMaxTag, occ/getEntities,
+  occ/getEntitiesInBoundingBox, occ/getBoundingBox,
+  view/addHomogeneousModelData.
+
+* Incompatible API changes: new optional arguments to mesh/clear,
+  mesh/createTopology, mesh/createGeometry, occ/addThruSections,
+  mesh/getPeriodicNodes; new arguments to mesh/getBasisFunctions; removed
+  mesh/preallocateBasisFunctions, mesh/precomputeBasisFunctions and
+  mesh/getBasisFunctionsForElements; renamed occ/setMeshSize as
+  occ/mesh/setSize.
+
+4.5.6 (March 30, 2020): better calculation of OCC bounding boxes using STL; API
+tutorials; small bug fixes.
+
+* New API functions: view/addListDataString, view/getListDataStrings.
+
+4.5.5 (March 21, 2020): tooltips in GUI to help discovery of scripting options;
+fixed MED IO of high-order elements; fixed OCC attribute search by bounding box;
+fix parsing of mac-encoded scripts; new RecombineMesh command; added support for
+extrusion of mixed-dimension entities with OCC; small bug fixes.
+
+4.5.4 (February 29, 2020): periodic mesh optimization now ensures that the
+master mesh is not modified; code cleanup; small bug fixes.
+
+4.5.3 (February 22, 2020): improved positioning of corresponding nodes on
+periodic entities; improved LaTeX output; improved curve splitting in
+reparametrization; new binary PLY reader; small compilation fixes.
+
+* New API functions: mesh/getEdgeNumber, mesh/getLocalMultipliersForHcurl0.
+
+4.5.2 (January 30, 2020): periodic meshes now obey reorientation constraints;
+physical group definitions now follow compound meshing constraints; small bug
+fixes and improvements.
+
+* New API function: geo/splitCurve.
+
+4.5.1 (December 28, 2019): new Min and Max commands in .geo files;
+Mesh.MinimumCirclePoints now behaves the same with all geometry kernels; fixed
+issue with UTF16-encoded home directories on Windows.
+
+4.5.0 (December 21, 2019): changed default 2D meshing algorithm to
+Frontal-Delaunay; new compound Spline/BSpline commands; new MeshSizeFromBoundary
+command; new CGNS importer/exporter; new X3D exporter for geometries and meshes;
+improved surface mesh reclassification; new separate option to govern curvature
+adapted meshes (Mesh.MinimumElementsPerTwoPi and "-clcurv val"); improved
+handling of anisotropic surface meshes in 3D Delaunay; improved high-order
+periodic meshing; improved 2D boolean unions; file chooser type is now
+changeable at runtime; FLTK GUI can now be created and destroyed at will through
+the API; fixed regression in MeshAdapt for non-periodic surfaces with
+singularities; combining views now copies options; added API support for mesh
+compounds, per-surface mesh algorithm and mesh size from boundary; renamed
+plugin AnalyseCurvedMesh to AnalyseMeshQuality; fixed regression for built-in
+kernel BSplines on non-flat geometries (Sphere, PolarSphere); small fixes and
+improvements.
+
+* New API functions: model/getCurrent, model/getParametrization,
+  mesh/computeCrossField, mesh/setNode, mesh/getElementsByCoordinates,
+  mesh/getLocalCoordinatesInElement, mesh/getNumberOfKeysForElements,
+  mesh/setAlgorithm, mesh.setSizeFromBoundary, mesh/setComound,
+  geo/addCompoundSpline, geo/addCompoundBSpline, fltk/isAvailable.
+
+* Incompatible API changes: removed mesh/smooth (now handled by mesh/optimize
+  like all other mesh optimizers); renamed logger/time to logger/getWallTime and
+  logger/cputime to logger/getCpuTime; new arguments to mesh/optimize,
+  mesh/getElementProperties and occ/healShapes; added optional argument to
+  mesh/classifySurfaces and view/combine.
+
+4.4.1 (July 25, 2019): small improvements (transfinite with degenerate curves,
+renumbering for some mesh formats, empty MSH file sections, tunable accuracy of
+compound meshes) and bug fixes (ellipse < pi, orientation and reclassification
+of compound parts, serendip pyramids, periodic MeshAdapt robustness, invalidate
+cache after mesh/addNodes).
+
+4.4.0 (July 1, 2019): new STL remeshing workflow (with new ClassifySurfaces
+command in .geo files); added API support for color options, mesh optimization,
+recombination, smoothing and shape healing; exposed additional METIS options;
+improved support for periodic entities (multiple curves with the same start/end
+points, legacy MSH2 format, periodic surfaces with embedded entities); added
+mesh renumbering also after interactive mesh modifications; improved support for
+OpenCASCADE ellipse arcs; new interactive filter in visibility window; flatter
+GUI; small bug fixes.
+
+* New API functions: option/setColor, option/getColor, mesh/optimize,
+  mesh/recombine, mesh/smooth, mesh/clear, mesh/getNodesByElementType,
+  occ/healShapes.
+
+* Incompatible API changes: mesh/getJacobians and mesh/getBasisFunctions now
+  take integration points explicitly; mesh/setNodes and mesh/setElements have
+  been replaced by mesh/addNodes and mesh/addElements; added optional arguments
+  to mesh/classifySurfaces and occ/addSurfaceLoop; changed arguments of
+  occ/addEllipseArc to follow geo/addEllipseArc.
+
+4.3.0 (April 19, 2019): improved meshing of surfaces with singular
+parametrizations; added API support for aliasing and combining views, copying
+view options, setting point coordinates, extruding built-in CAD entities along
+normals and retrieving mass, center of mass and inertia from OpenCASCADE CAD
+entities; fixed regression introduced in 4.1.4 that could lead to
+non-deterministic 2D meshes; small bug fixes.
+
+* New API functions: model/setCoordinates, occ/getMass, occ/getCenterOfMass,
+  occ/getMatrixOfInertia, view/addAlias, view/copyOptions, view/combine
+
+* Incompatible API changes: added optional arguments to mesh/getNodes and
+  mesh/getElementByCoordinates.
+
+4.2.3 (April 3, 2019): added STL export by physical surface; added ability to
+remove embedded entities; added handling of boundary entities in
+addDiscreteEntity; small bug fixes.
+
+* New API functions: mesh/getKeysForElements, mesh/getInformationForElements,
+  mesh/removeEmbedded.
+
+4.2.2 (March 13, 2019): fixed regression in reading of extruded meshes; added
+ability to export one solid per surface in STL format.
+
+4.2.1 (March 7, 2019): fixed regression for STEP files without global compound
+shape; added support for reading IGES labels and colors; improved search for
+shared library in Python and Julia modules; improved Plugin(MeshVolume); updates
+to the reference manual.
+
+4.2.0 (March 5, 2019): new MSH4.1 revision of the MSH file format, with support
+for size_t node and element tags (see the reference manual for detailed
+changes); added support for reading STEP labels and colors with OCC CAF; changed
+default "Geometry.OCCTargetUnit" value to none (i.e. use STEP file coordinates
+as-is, without conversion); improved high-order mesh optimization; added ability
+to import groups of nodes from MED files; enhanced Plugin(Distance) and
+Plugin(SimplePartition); removed unmaintained plugins; removed default
+dependency on PETSc; small improvements and bug fixes.
+
+* New API functions: model/setEntityName, model/getEntityName,
+  model/removeEntityName.
+
+* Incompatible API changes: changed type of node and element tags from int to
+  size_t to support (very) large meshes; changed logger/start,
+  mesh/getPeriodicNodes and mesh/setElementsByType.
+
+4.1.5 (February 14, 2019): improved OpenMP parallelization, STL remeshing, mesh
+partitioning and high-order mesh optimization; bug fixes.
+
+* New API function: mesh/classifySurfces.
+
+4.1.4 (February 3, 2019): improved ghost cell I/O; small improvements and bug
+fixes.
+
+* New API functions: mesh/relocateNodes, mesh/getElementType,
+  mesh/setElementsByType, mesh/getElementEdgeNodes, mesh/getElementFaceNodes,
+  mesh/getGhostElements, mesh/splitQuadrangles.
+
+4.1.3 (January 23, 2019): improved quad meshing; new options for automatic
+full-quad meshes; save nodesets also for physical points (Abaqus, Tochnog);
+small bug fixes.
+
+* New API functions: model/removePhysicalName, model/getPartitions,
+  mesh/unpartition.
+
+4.1.2 (January 21, 2019): fixed full-quad subdivision if Mesh.SecondOrderLinear
+is set; fixed packing of parallelograms regression in 4.1.1.
+
+4.1.1 (January 20, 2019): added support for general affine transformations with
+OpenCASCADE kernel; improved handling of boolean tolerance (snap vertices);
+faster crossfield calculation by default (e.g. for Frontal-Delauany for quads
+algorithm); fixed face vertices for PyramidN; renamed ONELAB "Action" and
+"Button" parameters "ONELAB/Action" and "ONELAB/Button"; added support for
+actions on any ONELAB button; added API functions for selections in user
+interface.
+
+* New API functions: occ/affineTransform, fltk/selectEntities,
+  fltk/selectElements, fltk/selectViews.
+
+4.1.0 (January 13, 2019): improved ONELAB and Fltk support in API; improved
+renumbering of mesh nodes/elements; major code refactoring.
+
+* New API functions: fltk/update, fltk/awake, fltk/lock, fltk/unlock,
+  onelab/setNumber, onelab/getNumber, onelab/setString, onelab/getString,
+  onelab/clear, onelab/write, logger/time, logger/cputime.
+
+* Incompatible API changes: changed onelab/get.
+
+4.0.7 (December 9, 2018): fixed small memory leaks; removed unused code.
+
+4.0.6 (November 25, 2018): moved private API wrappers to utils/wrappers;
+improved Gmsh 3 compatibility for high-order periodic meshes; fixed '-v 0' not
+being completely silent; fixed rendering of image textures on some OSes; small
+compilation fixes.
+
+4.0.5 (November 17, 2018): new automatic hybrid mesh generation (pyramid layer)
+when 3D Delaunay algorithm is applied to a volume with quadrangles on boundary;
+improved robustness of 2D MeshAdapt algorithm; bug fixes.
+
+4.0.4 (October 19, 2018): fixed physical names regression in 4.0.3.
+
+4.0.3 (October 18, 2018): bug fixes.
+
+* New API function: model/removePhysicalGroups.
+
+4.0.2 (September 26, 2018): added support for creating MED files with specific
+MED (minor) version; small bug fixes.
+
+4.0.1 (September 7, 2018): renumber mesh nodes/elements by default; new
+SendToServer command for nodal views; small bug fixes.
+
+* New API functions: model/setVisibility, model/getVisibility, model/setColor,
+  model/getColor.
+
+4.0.0 (August 22, 2018): new C++, C, Python and Julia API; new MSH4 format; new
+mesh partitioning code based on Metis 5; new 3D tetrahedralization algorithm as
+default; new workflow for remeshing (compound entities as meshing constraints,
+CreateGeometry for mesh reparametrization); added support for general BSplines,
+fillets and chamfers with OpenCASCADE kernel and changed default BSpline
+parameters with the built-in kernel to match OpenCASCADE's; STEP files are now
+be default interpreted in MKS units (see Geometry.OCCTargetUnit); improved
+meshing of surfaces with singular parametrizations (spheres, etc.); uniformized
+entity naming conventions (line/curve, vertex/node, etc.); generalized handling
+of "all" entities in geo file (using {:} notation); added support for creating
+LSDYNA mesh files; removed old CAD creation factory (GModelFactory), old
+reparametrization code (G{Edge, Face, Region}Compound) and old partitioning
+code (Metis 4 and Chaco); various cleanups, bug fixes and enhancements.
+
+3.0.6 (November 5, 2017): improved meshing of spheres; improved handling of mesh
+size constraints with OpenCASCADE kernel; implemented "Coherence" for
+OpenCASCADE kernel (shortcut for BooleanFragments); added GAMBIT Neutral File
+export; small improvements and bug fixes.
+
+3.0.5 (September 6, 2017): bug fixes.
+
+3.0.4 (July 28, 2017): moved vorometal code to plugin; OpenMP improvements; bug
+fixes.
+
+3.0.3 (June 27, 2017): new element quality measures; Block->Box; minor fixes.
+
+3.0.2 (May 13, 2017): improved handling of meshing constraints and entity
+numbering after boolean operations; improved handling of fast coarseness
+transitions in MeshAdapt; new TIKZ export; small bug fixes.
+
+3.0.1 (April 14, 2017): fixed OpenCASCADE plane surfaces with holes.
+
+3.0.0 (April 13, 2017): new constructive solid geometry features and boolean
+operations using OpenCASCADE; improved graphical user interface for interactive,
+parametric geometry construction; new or modified commands in .geo files:
+SetFactory, Circle, Ellipse, Wire, Surface, Sphere, Block, Torus, Rectangle,
+Disk, Cylinder, Cone, Wedge, ThickSolid, ThruSections, Ruled ThruSections,
+Fillet, Extrude, BooleanUnion, BooleanIntersection, BooleanDifference,
+BooleanFragments, ShapeFromFile, Recursive Delete, Unique; "Surface" replaces
+the deprecated "Ruled Surface" command; faster 3D tetrahedral mesh optimization
+enabled by default; major code refactoring and numerous bug fixes.
+
+2.16.0 (January 3, 2017): small improvements (list functions, second order hexes
+for MED, GUI) and bug fixes.
+
+2.15.0 (December 4, 2016): fixed several regressions (multi-file partitioned
+grid export, mesh subdivision, old compound mesher); improved 2D boundary layer
+field & removed non-functional 3D boundary layer field; faster rendering of
+large meshes.
+
+2.14.1 (October 30, 2016): fixed regression in periodic meshes; small bug fixes
+and code cleanups.
+
+2.14.0 (October 9, 2016): new Tochnog file format export; added ability to
+remove last command in scripts generated interactively; ONELAB 1.3 with
+usability and performance improvements; faster "Coherence Mesh".
+
+2.13.2 (August 18, 2016)): small improvements (scale labels, periodic and
+high-order meshes) and bug fixes.
+
+2.13.1 (July 15, 2016): small bug fixes.
+
+2.13.0 (July 11, 2016): new ONELAB 1.2 protocol with native support for lists;
+new experimental 3D boundary recovery code and 3D refinement algorithm; better
+adaptive visualization of quads and hexahedra; fixed several regressions
+introduced in 2.12.
+
+2.12.0 (March 5, 2016): improved interactive definition of physical groups and
+handling of ONELAB clients; improved full quad algorithm; added support for list
+of strings, trihedra elements and X3D format; improved message console; new
+colormaps; various bugs fixes and small improvements all over.
+
+2.11.0 (November 7, 2015): new Else/ElseIf commands; new OptimizeMesh command;
+Plugin(ModifyComponents) replaces Plugin(ModifyComponent); new VTK and X3D
+outputs; separate 0/Ctrl+0 shortcuts for geometry/full model reload; small bug
+fixes in homology solver, handling of embedded entities, and Plugin(Crack).
+
+2.10.1 (July 30, 2015): minor fixes.
+
+2.10.0 (July 21, 2015): improved periodic meshing constraints; new Physical
+specification with both label and numeric id; images can now be used as glyphs
+in post-processing views, using text annotations with the `file://' prefix;
+Views can be grouped and organized in subtrees; improved visibility browser
+navigation; geometrical entities and post-processing views can now react to
+double-clicks, via new generic DoubleClicked options; new Get/SetNumber and
+Get/SetString for direct access to ONELAB variables; small bug fixes and code
+cleanups.
+
+2.9.3 (April 18, 2015): updated versions of PETSc/SLEPc and OpenCASCADE/OCE
+libraries used in official binary builds; new Find() command; miscellaneous code
+cleanups and small fixes.
+
+2.9.2 (March 31, 2015): added support for extrusion of embedded points/curves;
+improved hex-dominant algorithm; fixed crashes in quad algorithm; fix regression
+in MED reader introduced in 2.9.0; new dark interface mode.
+
+2.9.1 (March 18, 2015): minor bug fixes.
+
+2.9.0 (March 12, 2015): improved robustness of spatial searches (extruded meshes,
+geometry coherence); improved reproductibility of 2D and 3D meshes; added
+support for high resolution ("retina") graphics; interactive graph point
+commands; on-the-fly creation of onelab clients in scripts; general periodic
+meshes using afine transforms; scripted selection of entities in bounding boxes;
+extended string and list handling functions; many small improvements and bug
+fixes.
+
+2.8.5 (Jul 9, 2014): improved stability and error handling, better Coherence
+function, updated onelab API version and inline parameter definitions, new
+background image modes, more robust Triangulate/Tetrahedralize plugins, new PGF
+output, improved support for string~index variable names in parser, small
+improvements and bug fixes all over the place.
+
+2.8.4 (Feb 7, 2014): better reproductibility of 2D meshes; new mandatory 'Name'
+attribute to define onelab variables in DefineConstant[] & co; new
+-setnumber/-setstring command line arguments; small improvements and bug fixes.
+
+2.8.3 (Sep 27, 2013): new quick access menu and multiple view selection in GUI;
+enhanced animation creation; many small enhancements and bug fixes.
+
+2.8.2 (Jul 16, 2013): improved high order tools interface; minor bug fixes.
+
+2.8.1 (Jul 11, 2013): improved compound surfaces and transfinite arrangements.
+
+2.8.0 (Jul 8, 2013): improved Delaunay point insertion; fixed mesh orientation
+of plane surfaces; fixed mesh size prescribed at embedded points; improved
+display of vectors at COG; new experimental text string display engines;
+improved fullscreen mode; access time/step in transformations; new experimental
+features: AdaptMesh and Surface In Volume; accept unicode file paths on Windows;
+compilation and bug fixes.
+
+2.7.1 (May 11, 2013): improved Delaunay point insertion; updated onelab; better
+Abaqus and UNV export; small bug and compilation fixes.
+
+2.7.0 (Mar 9, 2013): new single-window GUI, with dynamically customizable
+widget tree; faster STEP/BRep import; arbitrary size image export; faster 2D
+Delaunay/Frontal algorithms; full option viewer/editor; many bug fixes.
+
+2.6.1 (Jul 15, 2012): minor improvements and bug fixes.
+
+2.6.0 (Jun 19, 2012): new quadrilateral meshing algorithms (Blossom and
+Delaunay-Frontal for quads); new solver module based on ONELAB project (requires
+FLTK 1.3); new tensor field visualization modes (eigenvectors, ellipsoid, etc.);
+added support for interpolation schemes in .msh file; added support for MED3
+format; rescale viewport around visible entities (shift+1:1 in GUI); unified
+post-processing field export; new experimental stereo+camera visualization mode;
+added experimental BAMG & Mmg3D support for anisotropic mesh generation; new OCC
+cut & merge algorithm imported from Salome; new ability to connect extruded
+meshes to tetrahedral grids using pyramids; new homology solver; Abaqus (INP)
+mesh export; new Python and Java wrappers; bug fixes and small improvements all
+over the place.
+
+2.5.0 (Oct 15, 2010): new compound geometrical entities (for remeshing and/or
+trans-patch meshing); improved mesh reclassification tool; new client/server
+visualization mode; new ability to watch a pattern of files to merge; new
+integrated MPEG export; new option to force the type of views dynamically;
+bumped mesh version format to 2.2 (small change in the meaning of the partition
+tags; this only affects partitioned (i.e. parallel) meshes); renamed several
+post-processing plugins (as well as plugin options) to make them easier to
+understand; many bug fixes and usability improvements all over the place.
+
+2.4.2 (Sep 21, 2009): solver code refactoring + better IDE integration.
+
+2.4.1 (Sep 1, 2009): fixed surface mesh orientation bug introduced in 2.4.0;
+mesh and graphics code refactoring, small usability enhancements and bug fixes.
+
+2.4.0 (Aug 22, 2009): switched build system to CMake; optionally copy
+transfinite mesh constraints during geometry transformations; bumped mesh
+version format to 2.1 (small change in the $PhysicalNames section, where the
+group dimension is now required); ported most plugins to the new
+post-processing API; switched from MathEval to MathEx and Flu_Tree_Browser to
+Fl_Tree; small bug fixes and improvements all over the place.
+
+2.3.1 (Mar 18, 2009): removed GSL dependency (Gmsh now simply uses Blas and
+Lapack); new per-window visibility; added support for composite window printing
+and background images; fixed string option affectation in parser; fixed surface
+mesh orientation for OpenCASCADE models; fixed random triangle orientations in
+Delaunay and Frontal algorithms.
+
+2.3.0 (Jan 23, 2009): major graphics and GUI code refactoring; new
+full-quad/hexa subdivision algorithm; improved automatic transfinite corner
+selection (now also for volumes); improved visibility browser; new automatic
+adaptive visualization for high-order simplices; modified arrow size, clipping
+planes and transform options; many improvements and bug fixes all over the
+place.
+
+2.2.6 (Nov 21, 2008): better transfinite smoothing and automatic corner
+selection; fixed high order meshing crashes on Windows and Linux; new uniform
+mesh refinement (thanks Brian!); fixed various other small bugs.
+
+2.2.5 (Oct 25, 2008): Gmsh now requires FLTK 1.1.7 or above; various small
+improvements (STL and VTK mesh I/O, Netgen upgrade, Visual C++ support, Fields,
+Mesh.{Msh,Stl,...}Binary changed to Mesh.Binary) and bug fixes (pyramid
+interpolation, Chaco crashes).
+
+2.2.4 (Aug 14, 2008): integrated Metis and Chaco mesh partitioners; variables
+can now be deleted in geo files; added support for point datasets in model-based
+postprocessing views; small bug fixes.
+
+2.2.3 (Jul 14, 2008): enhanced clipping interface; API cleanup; fixed various
+bugs (Plugin(Integrate), high order meshes, surface info crash).
+
+2.2.2 (Jun 20, 2008): added geometrical transformations on volumes; fixed bug in
+high order mesh generation.
+
+2.2.1 (Jun 15, 2008): various small improvements (adaptive views, GUI, code
+cleanup) and bug fixes (high order meshes, Netgen interface).
+
+2.2.0 (Apr 19, 2008): new model-based post-processing backend; added MED I/O for
+mesh and post-processing; fixed BDF vertex ordering for 2nd order elements;
+replaced Mesh.ConstrainedBackgroundMesh with
+Mesh.CharacteristicLength{FromPoints,ExtendFromBoundary}; new Fields interface;
+control windows are now non-modal by default; new experimental 2D frontal
+algorithm; fixed various bugs.
+
+2.1.1 (Mar 1, 2008): small bug fixes (second order meshes, combine views, divide
+and conquer crash, ...).
+
+2.1.0 (Feb 23, 2008): new post-processing database; complete rewrite of
+post-processing drawing code; improved surface mesh algorithms; improved
+STEP/IGES/BREP support; new 3D mesh optimization algorithm; new default native
+file choosers; fixed 'could not find extruded vertex' in extrusions; many
+improvements and bug fixes all over the place.
+
+2.0.8 (Jul 13, 2007): unused vertices are not saved in mesh files anymore; new
+plugin GUI; automatic GUI font size selection; renamed
+Plugin(DecomposeInSimplex) into Plugin(MakeSimplex); reintroduced enhanced
+Plugin(SphericalRaise); clarified meshing algo names; new option to save groups
+of nodes in UNV meshes; new background mesh infrastructure; many small
+improvements and small bug fixes.
+
+2.0.7 (Apr 3, 2007): volumes can now be defined from external CAD surfaces;
+Delaunay/Tetgen algorithm is now used by default when available; re-added
+support for Plot3D structured mesh format; added ability to export external CAD
+models as GEO files (this only works for the limited set of geometrical
+primitives available in the GEO language, of course--so trying to convert e.g. a
+trimmed NURBS from a STEP file into a GEO file will fail); "lateral" entities
+are now added at the end of the list returned by extrusion commands; fixed
+various bugs.
+
+2.0.0 (Feb 5, 2007): new geometry and mesh databases, with support for STEP and
+IGES import via OpenCASCADE; complete rewrite of geometry and mesh drawing
+code; complete rewrite of mesh I/O layer (with new native binary MSH format and
+support for import/export of I-deas UNV, Nastran BDF, STL, Medit MESH and VRML
+1.0 files); added support for incomplete second order elements; new 2D and 3D
+meshing algorithms; improved integration of Netgen and TetGen algorithms;
+removed anisotropic meshing algorithm (as well as attractors); removed explicit
+region number specification in extrusions; option changes in the graphical
+interface are now applied instantaneously; added support for offscreen rendering
+using OSMesa; added support for SVG output; added string labels for Physical
+entities; lots of other improvements all over the place.
+
+1.65 (May 15, 2006): new Plugin(ExtractEdges); fixed compilation errors with
+gcc4.1; replaced Plugin(DisplacementRaise) and Plugin(SphericalRaise) with the
+more flexible Plugin(Warp); better handling of discrete curves; new Status
+command in parser; added option to renumber nodes in .msh files (to avoid holes
+in the numbering sequence); fixed 2 special cases in quad->prism extrusion;
+fixed saving of 2nd order hexas with negative volume; small bug fixes and
+cleanups.
+
+1.64 (Mar 18, 2006): Windows versions do no depend on Cygwin anymore; various
+bug fixes and cleanups.
+
+1.63 (Feb 01, 2006): post-processing views can now be exported as meshes;
+improved background mesh handling (a lot faster, and more accurate); improved
+support for input images; new Plugin(ExtractElements); small bug fixes and
+enhancements.
+
+1.62 (Jan 15, 2006): new option to draw color gradients in the background;
+enhanced perspective projection mode; new "lasso" selection mode (same as
+"lasso" zoom, but in selection mode); new "invert selection" button in the
+visibility browser; new snapping grid when adding points in the GUI; nicer
+normal smoothing; new extrude syntax (old syntax still available, but
+deprecated); various small bug fixes and enhancements.
+
+1.61 (Nov 29, 2005): added support for second order (curved) elements in
+post-processor; new version (1.4) of post-processing file formats; new stippling
+options for 2D plots; removed limit on allowed number of files on command line;
+all "Combine" operations are now available in the parser; changed
+View.ArrowLocation into View.GlyphLocation; optimized memory usage when loading
+many (>1000) views; optimized loading and drawing of line meshes and 2D iso
+views; optimized handling of meshes with large number of physical entities;
+optimized vertex array creation for large post-processing views on
+Windows/Cygwin; removed Discrete Line and Discrete Surface commands (the same
+functionality can now be obtained by simply loading a mesh in .msh format);
+fixed coloring by mesh partition; added option to light wireframe meshes and
+views; new "mesh statistics" export format; new full-quad recombine option; new
+Plugin(ModulusPhase); hexas and prisms are now always saved with positive
+volume; improved interactive entity selection; new experimental Tetgen
+integration; new experimental STL remeshing algorithm; various small bug fixes
+and improvements.
+
+1.60 (Mar 15, 2005): added support for discrete curves; new Window menu on Mac
+OS X; generalized all octree-based plugins (CutGrid, StreamLines, Probe, etc.)
+to handle all element types (and not only scalar and vector
+triangles+tetrahedra); generalized Plugin(Evaluate), Plugin(Extract) and
+Plugin(Annotate); enhanced clipping plane interface; new grid/axes/rulers for 3D
+post-processing views (renamed the AbscissaName, NbAbscissa and AbscissaFormat
+options to more general names in the process); better automatic positioning of
+2D graphs; new manipulator dialog to specify rotations, translations and
+scalings "by hand"; various small enhancements and bug fixes.
+
+1.59 (Feb 06, 2005): added support for discrete (triangulated) surfaces, either
+in STL format or with the new "Discrete Surface" command; added STL and Text
+output format for post-processing views and STL output format for surface
+meshes; all levelset-based plugins can now also compute isovolumes; generalized
+Plugin(Evaluate) to handle external view data (based on the same or on a
+different mesh); generalized Plugin(CutGrid); new plugins (Eigenvalues,
+Gradient, Curl, Divergence); changed default colormap to match Matlab's "Jet"
+colormap; new transformation matrix option for views (for non-destructive
+rotations, symmetries, etc.); improved solver interface to keep the GUI
+responsive during solver calls; new C++ and Python solver examples; simplified
+Tools->Visibility GUI; transfinite lines with "Progression" now allow negative
+line numbers to reverse the progression; added ability to retrieve Gmsh's
+version number in the parser (to help write backward compatible scripts); fixed
+white space in unv mesh output; fixed various small bugs.
+
+1.58 (Jan 01, 2005): fixed UNIX socket interface on Windows (broken by the TCP
+solver patch in 1.57); bumped version number of default post-processing file
+formats to 1.3 (the only small modification is the handling of the end-of-string
+character for text2d and text3d objects in the ASCII format); new File->Rename
+menu; new colormaps+improved colormap handling; new color+min/max options in
+views; new GetValue() function to ask for values interactively in scripts;
+generalized For/EndFor loops in parser; new plugins (Annotate, Remove, Probe);
+new text attributes in views; renamed some shortcuts; fixed TeX output for large
+scenes; new option dialogs for various output formats; fixed many small memory
+leaks in parser; many small enhancements to polish the graphics and the user
+interface.
+
+1.57 (Dec 23, 2004): generalized displacement maps to display arbitrary view
+types; the arrows representing a vector field can now also be colored by the
+values from other scalar, vector or tensor fields; new adaptive high order
+visualization mode; new options (Solver.SocketCommand, Solver.NameCommand,
+View.ArrowSizeProportional, View.Normals, View.Tangents and General.ClipFactor);
+fixed display of undesired solver plugin popups; enhanced interactive plugin
+behavior; new plugins (HarmonicToTime, Integrate, Eigenvectors); tetrahedral
+mesh file reading speedup (50% faster on large meshes); large memory footprint
+reduction (up to 50%) for the visualization of triangular/tetrahedral meshes;
+the solver interface now supports TCP/IP connections; new generalized raise mode
+(allows one to use complex expressions to offset post-processing maps); upgraded
+Netgen kernel to version 4.4; new optional TIME list in parsed views to specify
+the values of the time steps; several bug fixes in the Elliptic mesh algorithm;
+various other small bug fixes and enhancements.
+
+1.56 (Oct 17, 2004): new post-processing option to draw a scalar view raised by
+a displacement view without using Plugin(DisplacementRaise) (makes drawing
+arbitrary scalar fields on deformed meshes much easier); better post-processing
+menu (arbitrary number of views+scrollable+show view number); improved
+view->combine; new horizontal post-processing scales; new option to draw the
+mesh nodes per element; views can now also be saved in "parsed" format; fixed
+various path problems on Windows; small bug fixes.
+
+1.55 (Aug 21, 2004): added background mesh support for Triangle; meshes can now
+be displayed using "smoothed" normals (like post-processing views); added GUI
+for clipping planes; new interactive clipping/cutting plane definition;
+reorganized the Options GUI; enhanced 3D iso computation; enhanced lighting;
+many small bug fixes.
+
+1.54 (Jul 03, 2004): integrated Netgen (3D mesh quality optimization +
+alternative 3D algorithm); Extrude Surface now always automatically creates a
+new volume (in the same way Extrude Point or Extrude Line create new lines and
+surfaces, respectively); fixed UNV output; made the "Layers" region numbering
+consistent between lines, surfaces and volumes; fixed home directory problem on
+Win98; new Plugin(CutParametric); the default project file is now created in the
+home directory if no current directory is defined (e.g., when double-clicking on
+the icon on Windows/Mac); fixed the discrepancy between the orientation of
+geometrical surfaces and the associated surface meshes; added automatic
+orientation of surfaces in surface loops; generalized Plugin(Triangulate) to
+handle vector and tensor views; much nicer display of discrete iso-surfaces and
+custom ranges using smooth normals; small bug fixes and cleanups.
+
+1.53 (Jun 04, 2004): completed support for second order elements in the mesh
+module (line, triangles, quadrangles, tetrahedra, hexahedra, prisms and
+pyramids); various background mesh fixes and enhancements; major performance
+improvements in mesh and post-processing drawing routines (OpenGL vertex arrays
+for tri/quads); new Plugin(Evaluate) to evaluate arbitrary expressions on
+post-processing views; generalized Plugin(Extract) to handle any combination of
+components; generalized "Coherence" to handle transfinite surface/volume
+attributes; plugin options can now be set in the option file (like all other
+options); added "undo" capability during geometry creation; rewrote the contour
+guessing routines so that entities can be selected in an arbitrary order; Mac
+users can now double click on geo/msh/pos files in the Finder to launch Gmsh;
+removed support for FLTK 1.0; rewrote most of the code related to quadrangles;
+fixed 2d elliptic algorithm; removed all OpenGL display list code and options;
+fixed light positioning; new BoundingBox command to set the bounding box
+explicitly; added support for inexpensive "fake" transparency mode; many code
+cleanups.
+
+1.52 (May 06, 2004): new raster ("bitmap") PostScript/EPS/PDF output formats;
+new Plugin(Extract) to extract a given component from a post-processing view;
+new Plugin(CutGrid) and Plugin(StreamLines); improved mesh projection on
+non-planar surfaces; added support for second order tetrahedral elements; added
+interactive control of element order; refined mesh entity drawing selection (and
+renamed most of the corresponding options); enhanced log scale in
+post-processing; better font selection; simplified View.Raise{X,Y,Z} by removing
+the scaling; various bug fixes (default postscript printing mode, drawing of 3D
+arrows/cylinders on Linux, default home directory on Windows, default initial
+file browser directory, extrusion of points with non-normalized axes of
+rotation, computation of the scene bounding box in scripts, + the usual
+documentation updates).
+
+1.51 (Feb 29, 2004): initial support for visualizing mesh partitions; integrated
+version 2.0 of the MSH mesh file format; new option to compute post-processing
+ranges (min/max) per time step; Multiple views can now be combined into multi
+time step ones (e.g. for programs that generate data one time step at a time);
+new syntax: #var[] returns the size of the list var[]; enhanced "gmsh -convert";
+temporary and error files are now created in the home directory to avoid file
+permission issues; new 3D arrows; better lighting support; STL facets can now be
+converted into individual geometrical surfaces; many other small improvements
+and bug fixes (multi timestep tensors, color by physical entity, parser cleanup,
+etc.).
+
+1.50 (Dec 06, 2003): small changes to the visibility browser + made visibility
+scriptable (new Show/Hide commands); fixed (rare) crash when deleting views;
+split File->Open into File->Open and File->New to behave like most other
+programs; Mac versions now use the system menu bar by default (if possible);
+fixed bug leading to degenerate and/or duplicate tetrahedra in extruded meshes;
+fixed crash when reloading sms meshes.
+
+1.49 (Nov 30, 2003): made Merge, Save and Print behave like Include (i.e., open
+files in the same directory as the main project file if the path is relative);
+new Plugin(DecomposeInSimplex); new option View.AlphaChannel to set the
+transparency factor globally for a post-processing view; new "Combine Views"
+command; various bug fixes and cleanups.
+
+1.48 (Nov 23, 2003): new DisplacementRaise plugin to plot arbitrary fields on
+deformed meshes; generalized CutMap, CutPlane, CutSphere and Skin plugins to
+handle all kinds of elements and fields; new "Save View[n]" command to save
+views from a script; many small bug fixes (configure tests for libpng, handling
+of erroneous options, multi time step scalar prism drawings, copy of surface
+mesh attributes, etc.).
+
+1.47 (Nov 12, 2003): fixed extrusion of surfaces defined by only two curves; new
+syntax to retrieve point coordinates and indices of entities created through
+geometrical transformations; new PDF and compressed PostScript output formats;
+fixed numbering of elements created with "Extrude Point/Line"; use $GMSH_HOME as
+home directory if defined.
+
+1.46 (Aug 23, 2003): fixed crash for very long command lines; new options for
+setting the displacement factor and Triangle's parameters + renamed a couple of
+options to more sensible names (View.VectorType, View.ArrowSize); various small
+bug fixes; documentation update.
+
+1.45 (Jun 14, 2003): small bug fixes (min/max computation for tensor views,
+missing physical points in read mesh, "jumping" geometry during interactive
+manipulation of large models, etc.); variable definition speedup; restored
+support for second order elements in one- and two-dimensional meshes;
+documentation updates.
+
+1.44 (Apr 21, 2003): new reference manual; added support for PNG output; fixed
+small configure script bugs.
+
+1.43 (Mar 28, 2003): fixed solver interface problem on Mac OS X; new option to
+specify the interactive rotation center (default is now the pseudo "center of
+gravity" of the object, instead of (0,0,0)).
+
+1.42 (Mar 19, 2003): suppressed the automatic addition of a ".geo" extension if
+the file given on the command line is not recognized; added missing Layer option
+for Extrude Point; fixed various small bugs.
+
+1.41 (Mar 04, 2003): Gmsh is now licensed under the GNU General Public License;
+general code cleanup (indent).
+
+1.40 (Feb 26, 2003): various small bug fixes (mainly GSL-related).
+
+1.39 (Feb 23, 2003): removed all non-free routines; more build system work;
+implemented Von-Mises tensor display for all element types; fixed small GUI
+bugs.
+
+1.38 (Feb 17, 2003): fixed custom range selection for 3D iso graphs; new build
+system based on autoconf; new image reading code to import bitmaps as
+post-processing views.
+
+1.37 (Jan 25, 2003): generalized smoothing and cuts of post-processing views;
+better Windows integration (solvers, external editors, etc.); small bug fixes.
+
+1.36 (Nov 20, 2002): enhanced view duplication (one can now use "Duplicata
+View[num]" in the input file); merged all option dialogs in a new general option
+window; enhanced discoverability of the view option menus; new 3D point and line
+display; many small bug fixes and enhancements ("Print" format in parser,
+post-processing statistics, smooth normals, save window positions, restore
+default options, etc.).
+
+1.35 (Sep 11, 2002): graphical user interface upgraded to FLTK 1.1 (tooltips,
+new file chooser with multiple selection, full keyboard navigation, cut/paste of
+messages, etc.); colors can be now be directly assigned to mesh entities;
+initial tensor visualization; new keyboard animation (right/left arrow for time
+steps; up/down arrow for view cycling); new VRML output format for surface
+meshes; new plugin for spherical elevation plots; new post-processing file
+format (version 1.2) supporting quadrangles, hexahedra, prisms and pyramids;
+transparency is now enabled by default for post-processing plots; many small bug
+fixes (read mesh, ...).
+
+1.34 (Feb 18, 2002): improved surface mesh of non-plane surfaces; fixed
+orientation of elements in 2D anisotropic algorithm; minor user interface polish
+and additions (mostly in post-processing options); various small bug fixes.
+
+1.33 (Jan 24, 2002): new parameterizable solver interface (allowing up to 5
+user-defined solvers); enhanced 2D aniso algorithm; 3D initial mesh speedup.
+
+1.32 (Oct 04, 2001): new visibility browser; better floating point exception
+checks; fixed infinite looping when merging meshes in project files; various
+small clean ups (degenerate 2D extrusion, view->reload, ...).
+
+1.31 (Nov 30, 2001): corrected ellipses; PostScript output update (better
+shading, new combined PS/LaTeX output format); more interface polish; fixed
+extra memory allocation in 2D meshes; Physical Volume handling in unv format;
+various small fixes.
+
+1.30 (Nov 16, 2001): interface polish; fix crash when extruding quadrangles.
+
+1.29 (Nov 12, 2001): translations and rotations can now be combined in
+extrusions; fixed coherence bug in Extrude Line; various small bug fixes and
+additions.
+
+1.28 (Oct 30, 2001): corrected the 'Using Progression' attribute for tranfinite
+meshes to actually match a real geometric progression; new Triangulate plugin;
+new 2D graphs (space+time charts); better performance of geometrical
+transformations (warning: the numbering of some automatically created entities
+has changed); new text primitives in post-processing views (file format updated
+to version 1.1); more robust mean plane computation and error checks; various
+other small additions and clean-ups.
+
+1.27 (Oct 05, 2001): added ability to extrude curves with Layers/Recombine
+attributes; new PointSize/LineWidth options; fixed For/EndFor loops in included
+files; fixed error messages (line numbers+file names) in loops and functions;
+made the automatic removal of duplicate geometrical entities optional
+(Geometry.AutoCoherence=0); various other small bug fixes and clean-ups.
+
+1.26 (Sep 06, 2001): enhanced 2D anisotropic mesh generator (metric
+intersections); fixed small bug in 3D initial mesh; added alternative syntax for
+built-in functions (for GetDP compatibility); added line element display; Gmsh
+now saves all the elements in the mesh if no physical groups are defined (or if
+Mesh.SaveAll=1).
+
+1.25 (Sep 01, 2001): fixed bug with mixed recombined/non-recombined extruded
+meshes; Linux versions are now build with no optimization, due to bugs in gcc
+2.95.X.
+
+1.24 (Aug 30, 2001): fixed characteristic length interpolation for Splines;
+fixed edge swapping bug in 3D initial mesh; fixed degenerated case in
+geometrical extrusion (ruled surface with 3 borders); fixed generation of
+degenerated hexahedra and prisms for recombined+extruded meshes; added BSplines
+creation in the GUI; integrated Jonathan Shewchuk's Triangle as an alternative
+isotropic 2D mesh generator; added AngleSmoothNormals to control sharp edge
+display with smoothed normals; fixed random crash for lighted 3D iso surfaces.
+
+1.23 (Aug, 2001): fixed duplicate elements generation + non-matching tetrahedra
+faces in 3D extruded meshes; better display of displacement maps; fixed
+interactive ellipsis construction; generalized boundary operator; added new
+explode option for post-processing views; enhanced link view behavior (to update
+only the changed items); added new default plugins: Skin, Transform, Smooth;
+fixed various other small bugs (mostly in the post-processing module and for
+extruded meshes).
+
+1.22 (Aug 03, 2001): fixed (yet another) bug for 2D mesh in the mean plane;
+fixed surface coherence bug in extruded meshes; new double logarithmic scale,
+saturate value and smoothed normals option for post-processing views; plugins
+are now enabled by default; three new experimental statically linked plugins:
+CutMap (extracts a given iso surface from a 3D scalar map), CutPlane (cuts a 3D
+scalar map with a plane section), CutSphere (cuts a 3D scalar map with a
+sphere); various other bug fixes, additions and clean-ups.
+
+1.21 (Jul 25, 2001): fixed more memory leaks; added -opt command line option to
+parse definitions directly from the command line; fixed missing screen refreshes
+during contour/surface/volume selection; enhanced string manipulation functions
+(Sprintf, StrCat, StrPrefix); many other small fixes and clean-ups.
+
+1.20 (Jun 14, 2001): fixed various bugs (memory leaks, functions in included
+files, solver command selection, ColorTable option, duplicate nodes in extruded
+meshes (not finished yet), infinite loop on empty views, orientation of
+recombined quadrangles, ...); reorganized the interface menus; added constrained
+background mesh and mesh visibility options; added mesh quality histograms;
+changed default mesh colors; reintegrated the old command-line extrusion mesh
+generator.
+
+1.19 (May 07, 2001): fixed seg. fault for scalar simplex post-processing; new
+Solver menu; interface for GetDP solver through sockets; fixed multiple scale
+alignment; added some options + full option descriptions.
+
+1.18 (Apr 26, 2001): fixed many small bugs and incoherences in post-processing;
+fixed broken background mesh in 1D mesh generation.
+
+1.17 (Apr 17, 2001): corrected physical points saving; fixed parsing of DOS
+files (carriage return problems); easier geometrical selections (cursor change);
+plugin manager; enhanced variable arrays (sublist selection and affectation);
+line loop check; New arrow display; reduced number of 'fatal' errors + better
+handling in interactive mode; fixed bug when opening meshes; enhanced File->Open
+behavior for meshes and post-processing views.
+
+1.16 (Feb 26, 2001): added single/double buffer selection (only useful for Unix
+versions of Gmsh run from remote hosts without GLX); fixed a bug for recent
+versions of the opengl32.dll on Windows, which caused OpenGL fonts not to show
+up.
+
+1.15 (Feb 23, 2001): added automatic visibility setting during entity selection;
+corrected geometrical extrusion bug.
+
+1.14 (Feb 17, 2001): corrected a few bugs in the GUI (most of them were
+introduced in 1.13); added interactive color selection; made the option database
+bidirectional (i.e. scripts now correctly update the GUI); default options can
+now be saved and automatically reloaded at startup; made some changes to the
+scripting syntax (PostProcessing.View[n] becomes View[n]; Offset0 becomes
+OffsetX, etc.); corrected the handling of simple triangular surfaces with large
+characteristic lengths in the 2D isotropic algorithm; added an ASCII to binary
+post-processing view converter.
+
+1.13 (Feb 09, 2001): added support for JPEG output on Windows.
+
+1.12: corrected vector lines in the post-processing parsed format; corrected
+animation on Windows; corrected file creation in scripts on Windows; direct
+affectation of variable arrays.
+
+1.11 (Feb 07, 2001): corrected included file loading problem.
+
+1.10 (Feb 04, 2001): switched from Motif to FLTK for the GUI. Many small tweaks.
+
+1.00 (Jan 15, 2001): added PPM and YUV output; corrected nested If/Endif;
+Corrected several bugs for pixel output and enhanced GIF output (dithering,
+transparency); slightly changed the post-processing file format to allow both
+single and double precision numbers.
+
+0.999 (Dec 20, 2000): added JPEG output and easy MPEG generation (see t8.geo in
+the tutorial); clean up of export functions; small fixes; Linux versions are now
+compiled with gcc 2.95.2, which should fix the problems encountered with
+Mandrake 7.2.
+
+0.998 (Dec 19, 2000): corrected bug introduced in 0.997 in the generation of the
+initial 3D mesh.
+
+0.997 (Dec 14, 2000): corrected bug in interactive surface/volume selection;
+Added interactive symmetry; corrected geometrical extrusion with rotation in
+degenerated or partially degenerated cases; corrected bug in 2D mesh when
+meshing in the mean plane.
+
+0.996: arrays of variables; enhanced Printf and Sprintf; Simplified options
+(suppression of option arrays).
+
+0.995 (Dec 11, 2000): totally rewritten geometrical database (performance has
+been drastically improved for all geometrical transformations, and most notably
+for extrusion). As a consequence, the internal numbering of geometrical entities
+has changed: this will cause incompatibilities with old .geo files, and will
+require a partial rewrite of your old .geo files if these files made use of
+geometrical transformations. The syntax of the .geo file has also been
+clarified. Many additions for scripting purposes. New extrusion mesh
+generator. Preliminary version of the coupling between extruded and Delaunay
+meshes. New option and procedural database. All interactive operations can be
+scripted in the input files. See the last example in the tutorial for an
+example. Many stability enhancements in the 2D and 3D mesh
+algorithms. Performance boost of the 3D algorithm. Gmsh is still slow, but the
+performance becomes acceptable. An average 1000 tetrahedra/second is obtained on
+a 600Mhz computer for a mesh of one million tetrahedra. New anisotropic 2D mesh
+algorithm. New (ASCII and binary) post-processing file format and clarified mesh
+file format. New handling for interactive rotations (trackball mode). New
+didactic interactive mesh construction (watch the Delaunay algorithm in real
+time on complex geometries: that's exciting ;-). And many, many bug fixes and
+cleanups.
+
+0.992 (Nov 13, 2000): corrected recombined extrusion; corrected ellipses; added
+simple automatic animation of post-processing maps; fixed various bugs.
+
+0.991 (Oct 24, 2000): fixed a serious allocation bug in 2D algorithm, which
+caused random crashes. All users should upgrade to 0.991.
+
+0.990: bug fix in non-recombined 3D transfinite meshes.
+
+0.989 (Sep 01, 2000): added ability to reload previously saved meshes; some new
+command line options; reorganization of the scale menu; GIF output.
+
+0.987: fixed bug with smoothing (leading to the possible generation of erroneous
+3d meshes); corrected bug for mixed 3D meshes; moved the 'toggle view link'
+option to Opt->Postprocessing_Options.
+
+0.986: fixed overlay problems; SGI version should now also run on 32 bits
+machines; fixed small 3d mesh bug.
+
+0.985: corrected colormap bug on HP, SUN, SGI and IBM versions; corrected small
+initialization bug in postscript output.
+
+0.984: corrected bug in display lists; added some options in Opt->General.
+
+0.983: corrected some seg. faults in interactive mode; corrected bug in
+rotations; changed default window sizes for better match with 1024x768 screens
+(default X resources can be changed: see ex03.geo).
+
+0.982: lighting for mesh and post-processing; corrected 2nd order mesh on non
+plane surfaces; added example 13.

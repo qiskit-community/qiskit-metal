@@ -1,0 +1,7 @@
+Type: Jupyter Notebook Extension
+Main: gallery_menu.js
+Name: NBGallery Menu
+Section: notebook
+Description: Adds the Gallery and Preference menus to the Notebook UI.
+Link: README.md
+Compatibility: 4.x, 5.x, 6.x

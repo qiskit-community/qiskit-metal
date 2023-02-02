@@ -1,0 +1,7 @@
+Type: Jupyter Notebook Extension
+Main: autodownload.js
+Name: NBGallery Auto-download
+Section: tree
+Description: Automatically downloads Starred and Recently Executed notebooks from nbgallery.
+Link: README.md
+Compatibility: 4.x, 5.x, 6.x

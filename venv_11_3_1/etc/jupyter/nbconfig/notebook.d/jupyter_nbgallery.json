@@ -1,0 +1,5 @@
+{
+  "load_extensions": {
+    "jupyter_nbgallery/gallery_menu/gallery_menu": true
+  }
+}

@@ -1,0 +1,172 @@
+.TH Gmsh 1 "25 April 2022" "4.10" "Gmsh Manual Pages"
+.UC 4
+.\" ********************************************************************
+.SH NAME
+Gmsh \- 3D finite element mesh generator with built-in CAD engine and
+post-processor
+.\" ********************************************************************
+.SH SYNOPSIS
+.B gmsh [file(s)] [option(s)]
+.\" ********************************************************************
+.SH DESCRIPTION
+\fIGmsh\fR is a 3D finite element grid generator with a build-in CAD
+engine and post-processor. Its design goal is to provide a fast, light
+and user-friendly meshing tool with parametric input and advanced
+visualization capabilities.
+.PP
+\fIGmsh\fR is built around four modules: geometry, mesh, solver and
+post-processing. The specification of any input to these modules is
+done either interactively using the graphical user interface, in
+ASCII text files using \fIGmsh\fR's own scripting language (\fI.geo\fR
+files), or using the C++, C, Python or Julia Application Programming
+Interface (API).
+.\" ********************************************************************
+.SH GEOMETRY OPTIONS
+.TP 4
+.B \-0
+Output model, then exit.
+.TP 4
+.B \-tol float
+set geometrical tolerance.
+.\" ********************************************************************
+.SH MESH OPTIONS
+.TP 4
+.B \-1, \-2, \-3
+perform 1D, 2D or 3D mesh generation, then exit.
+.TP 4
+.B \-o file
+specify output file name.
+.TP 4
+.B \-format string
+set output mesh format (auto, msh, msh1, msh2, msh4, unv, vrml, stl, mesh, bdf, med, ...).
+.TP 4
+.B \-bin
+use binary format when available.
+.TP 4
+.B \-saveall
+save all elements (discard physical group definitions)
+.TP 4
+.B \-algo string
+select mesh algorithm (meshadapt, del2d, front2d, del3d, front3d, hxt, ...).
+.TP 4
+.B \-parametric
+save nodes with their parametric coordinates.
+.TP 4
+.B \-part int
+partition the mesh after batch mesh generation.
+.TP 4
+.B \-smooth int
+set number of mesh smoothing steps.
+.TP 4
+.B \-order int
+set mesh order.
+.TP 4
+.B \-clscale float
+set global mesh element size scaling factor.
+.TP 4
+.B \-clmin float
+set minimum mesh element size.
+.TP 4
+.B \-clmax float
+set maximum mesh element size.
+.TP 4
+.B \-rand float
+set random perturbation factor.
+.TP 4
+.B \-bgm file
+load the post-processing view in file as the current background mesh.
+.TP 4
+.B \-check
+perform various consistency checks on mesh.
+.\" ********************************************************************
+.SH POST-PROCESSING OPTIONS
+.TP 4
+.B \-combine
+combine input views into multi-time-step ones.
+.\" ********************************************************************
+.SH DISPLAY OPTIONS
+.TP 4
+.B \-n
+hide all meshes and post-processing views on startup.
+.TP 4
+.B \-fontsize int
+specify the font size for the GUI.
+.TP 4
+.B \-display string
+specify display.
+.\" ********************************************************************
+.SH OTHER OPTIONS
+.TP 4
+.B \-
+parse input files, then exit.
+.TP 4
+.B \-new
+create new model before merge next file.
+.TP 4
+.B \-merge
+merge next files.
+.TP 4
+.B \-open
+ppen next files.
+.TP 4
+.B \-a, \-g, \-m, \-s, \-p
+start in automatic, geometry, mesh, solver or post-processing mode.
+.TP 4
+.B \-pid
+print pid on stdout.
+.TP 4
+.B \-listen string
+always listen to incoming connection requests on the given socket
+(a default socket is used if not specified).
+.TP 4
+.B \-v int
+set verbosity level.
+.TP 4
+.B \-nopopup
+don't popup dialog windows in scripts.
+.TP 4
+.B \-setnumber "name" value
+set constant number name=value
+.TP 4
+.B \-setstring "name" "value"
+set constant string name=value
+.TP 4
+.B \-string "string"
+parse option string at startup.
+.TP 4
+.B \-option file
+parse option file at startup.
+.TP 4
+.B \-convert files
+Convert files into latest binary formats, then exit.
+.TP 4
+.B \-version
+show version number.
+.TP 4
+.B \-info
+show detailed version information.
+.TP 4
+.B \-help
+show help message.
+.\" ********************************************************************
+.SH AUTHORS
+Christophe Geuzaine (cgeuzaine@uliege.be) and Jean-Francois Remacle
+(jean-francois.remacle@uclouvain.be).
+.\" ********************************************************************
+.SH SEE ALSO
+.BR getdp (1),
+.br
+Gmsh examples (\fI/usr/share/doc/gmsh\fR),
+.br
+Gmsh homepage (\fIhttps://gmsh.info\fR).
+.PP
+The full documentation for Gmsh is maintained as a Texinfo manual.  If
+the
+.B info
+and
+.B gmsh
+programs are properly installed at your site, the command
+.IP
+.B info gmsh
+.PP
+should give you access to the complete manual.

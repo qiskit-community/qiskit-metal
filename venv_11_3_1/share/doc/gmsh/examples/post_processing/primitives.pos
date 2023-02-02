@@ -1,0 +1,80 @@
+
+// Post-processing primitives in parsed format
+
+x = 0;
+y = 15;
+z = 0;
+
+View "Primitives"{
+  T3(x,y--,z,0){"Scalar, vector and tensor points"};
+  SP(x,y--,z){1};
+  VP(x,y--,z){1,0,0};
+  TP(x,y--,z){1,0,0,0,2,0,0,0,1};
+
+  T3(x,y--,z,0){"Scalar, vector and tensor lines"};
+  SL(x,y--,z, x+.5,y,z){1,2};
+  VL(x,y--,z, x+.5,y,z){1,0,0, 2,0,0};
+  TL(x,y--,z, x+.5,y,z){1,0,0,0,0,0,0,0,0, 2,0,0,0,0,0,0,0,0};
+
+  T3(x,y--,z,0){"Scalar, vector and tensor triangles"};
+  ST(x,y--,z, x+.5,y,z, x,y+.5,z){1,2,3};
+  VT(x,y--,z, x+.5,y,z, x,y+.5,z){1,0,0, 2,0,0, 3,0,0};
+  TT(x,y--,z, x+.5,y,z, x,y+.5,z)
+    {1,0,0,0,0,0,0,0,0, 2,0,0,0,0,0,0,0,0, 3,0,0,0,0,0,0,0,0};
+
+  T3(x,y--,z,0){"Scalar, vector and tensor quadrangles"};
+  SQ(x,y--,z, x+.5,y,z, x+.5,y+.5,z, x,y+.5,z){1,2,3,4};
+  VQ(x,y--,z, x+.5,y,z, x+.5,y+.5,z, x,y+.5,z){1,0,0, 2,0,0, 3,0,0, 4,0,0};
+  TQ(x,y--,z, x+.5,y,z, x+.5,y+.5,z, x,y+.5,z)
+    {1,0,0,0,0,0,0,0,0, 2,0,0,0,0,0,0,0,0, 3,0,0,0,0,0,0,0,0, 4,0,0,0,0,0,0,0,0};
+
+  T3(x,y--,z,0){"Scalar, vector and tensor tetrahedra"};
+  SS(x,y--,z, x+.5,y,z, x,y+.5,z, x,y,z+.5){1,2,3,4};
+  VS(x,y--,z, x+.5,y,z, x,y+.5,z, x,y,z+.5){1,0,0, 2,0,0, 3,0,0, 4,0,0};
+  TS(x,y--,z, x+.5,y,z, x,y+.5,z, x,y,z+.5)
+    {1,0,0,0,0,0,0,0,0, 2,0,0,0,0,0,0,0,0, 3,0,0,0,0,0,0,0,0, 4,0,0,0,0,0,0,0,0};
+
+  T3(x,y--,z,0){"Scalar, vector and tensor hexahedra"};
+  SH(x,y--,z,  x+.5,y,z,    x+.5,y+.5,z,    x,y+.5,z,
+     x,y,z+.5, x+.5,y,z+.5, x+.5,y+.5,z+.5, x,y+.5,z+.5){1,2,3,4,4,3,2,1};
+  VH(x,y--,z,  x+.5,y,z,    x+.5,y+.5,z,    x,y+.5,z,
+     x,y,z+.5, x+.5,y,z+.5, x+.5,y+.5,z+.5, x,y+.5,z+.5)
+    {1,0,0, 2,0,0, 3,0,0, 4,0,0, 4,0,0, 3,0,0, 2,0,0, 1,0,0};
+  TH(x,y--,z,  x+.5,y,z,    x+.5,y+.5,z,    x,y+.5,z,
+     x,y,z+.5, x+.5,y,z+.5, x+.5,y+.5,z+.5, x,y+.5,z+.5)
+    {1,0,0,0,0,0,0,0,0, 2,0,0,0,0,0,0,0,0, 3,0,0,0,0,0,0,0,0, 4,0,0,0,0,0,0,0,0,
+     4,0,0,0,0,0,0,0,0, 3,0,0,0,0,0,0,0,0, 2,0,0,0,0,0,0,0,0, 1,0,0,0,0,0,0,0,0};
+
+  T3(x,y--,z,0){"Scalar, vector and tensor prisms"};
+  SI(x,y--,z,  x+.5,y,z,    x,y+.5,z,
+     x,y,z+.5, x+.5,y,z+.5, x,y+.5,z+.5){1,2,3,3,2,1};
+  VI(x,y--,z,  x+.5,y,z,    x,y+.5,z,
+     x,y,z+.5, x+.5,y,z+.5, x,y+.5,z+.5)
+    {1,0,0, 2,0,0, 3,0,0, 3,0,0, 2,0,0, 1,0,0};
+  TI(x,y--,z,  x+.5,y,z,    x,y+.5,z,
+     x,y,z+.5, x+.5,y,z+.5, x,y+.5,z+.5)
+    {1,0,0,0,0,0,0,0,0, 2,0,0,0,0,0,0,0,0, 3,0,0,0,0,0,0,0,0,
+     3,0,0,0,0,0,0,0,0, 2,0,0,0,0,0,0,0,0, 1,0,0,0,0,0,0,0,0};
+
+  T3(x,y--,z,0){"Scalar, vector and tensor pyramids"};
+  SY(x,y--,z,  x+.5,y,z,    x+.5,y+.5,z,    x,y+.5,z,    x+.25,y+.25,z+.5)
+    {1,2,3,4,2};
+  VY(x,y--,z,  x+.5,y,z,    x+.5,y+.5,z,    x,y+.5,z,    x+.25,y+.25,z+.5)
+    {1,0,0, 2,0,0, 3,0,0, 4,0,0, 2,0,0};
+  TY(x,y--,z,  x+.5,y,z,    x+.5,y+.5,z,    x,y+.5,z,    x+.25,y+.25,z+.5)
+    {1,0,0,0,0,0,0,0,0, 2,0,0,0,0,0,0,0,0, 3,0,0,0,0,0,0,0,0, 
+     4,0,0,0,0,0,0,0,0, 2,0,0,0,0,0,0,0,0};
+};
+
+Alias View[0];
+View[1].OffsetX = 3 ;
+View[1].IntervalsType = 2 ;
+View[1].ShowElement = 1 ;
+View[1].GlyphLocation = 2 ;
+View[1].ColorTable = {Red,Green,Magenta,Cyan,Brown,Pink} ;
+
+Alias View[0];
+View[2].OffsetX = 6 ;
+View[2].IntervalsType = 4 ;
+View[2].ShowElement = 1 ;
+View[2].Format = "%.1f" ;

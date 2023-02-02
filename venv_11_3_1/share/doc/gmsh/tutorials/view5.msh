@@ -1,0 +1,87 @@
+$MeshFormat
+2.0 0 8
+$EndMeshFormat
+$Nodes
+6
+1 0.0 0.0 0.0
+2 0.1 0.0 0.0
+3 0.1 0.3 0.0
+4 0.0 0.3 0.0
+5 0.0 0.15 0.0
+6 0.1 0.15 0.0
+$EndNodes
+$Elements
+2
+1000 3  2 6 100  1 2 6 5
+1001 3  2 6 100  5 6 3 4
+$EndElements
+$NodeData
+1
+"Nodal scalar map"
+1
+1000.0
+3
+0
+1
+6
+1 0
+2 0
+3 0.1
+4 0.1
+5 0.5
+6 0.5
+$EndNodeData
+$NodeData
+1
+"Nodal scalar map"
+1
+2000.0
+3
+1
+1
+6
+1 0
+2 0
+3 0.3
+4 0.3
+5 0.5
+6 0.5
+$EndNodeData
+$NodeData
+1
+"Nodal scalar map"
+1
+3000.0
+3
+2
+1
+6
+1 0
+2 0
+3 0.3
+4 0.3
+5 0
+6 0
+$EndNodeData
+$ElementData
+1
+"Element 1 vector"
+1
+0.0001
+3
+0
+3
+1
+1000 0.4 0.4 0.0
+$EndElememtData
+$ElementData
+1
+"Element 1 vector"
+1
+0.0002
+3
+1
+3
+1
+1000 -0.4 0.4 0.0
+$EndElementData

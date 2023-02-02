@@ -1,0 +1,62 @@
+// This script encodes the image files 
+//
+//    PATH/tmp[001-NUM_FRAMES].{gif,jpg,png} 
+//
+// into an mpeg or gif animation, using the encoder ENCODER
+// (set to WHIRLGIF, MENCODER or MPEG_ENCODE)
+
+If(ENCODER == WHIRLGIF)
+  // call whirlgif
+  System StrCat(StrCat(StrCat(StrCat("whirlgif -minimize -loop -o ", PATH),
+                "/animation.gif "), PATH), "/tmp*.gif");
+EndIf
+
+If(ENCODER == MENCODER)
+  // call mencoder
+  cmd = StrCat(StrCat(StrCat(StrCat("mencoder 'mf://", PATH), 
+               "/tmp*.png' -mf type=png:fps=5 -o "), PATH), "/animation.mpg ");
+  System StrCat(cmd, "-ovc lavc -lavcopts vcodec=mpeg1video:vhq:mbd=2:trell");
+  //System StrCat(cmd, "-ovc lavc -lavcopts vcodec=mpeg4:vhq:mbd=2:trell");
+EndIf
+
+If(ENCODER == MPEG_ENCODE)
+  // create the parameter file for mpeg_encode
+  par = StrCat(PATH, "/tmp.par");
+  System StrCat('echo "PATTERN          I"         > ', par);
+  System StrCat('echo "BASE_FILE_FORMAT JPEG"     >> ', par);
+  System StrCat('echo "GOP_SIZE         30"       >> ', par);
+  System StrCat('echo "SLICES_PER_FRAME 1"        >> ', par);
+  System StrCat('echo "PIXEL            HALF"     >> ', par);
+  System StrCat('echo "RANGE            10"       >> ', par);
+  System StrCat('echo "PSEARCH_ALG      TWOLEVEL" >> ', par);
+  System StrCat('echo "BSEARCH_ALG      CROSS2"   >> ', par);
+  System StrCat('echo "IQSCALE          1"        >> ', par);
+  System StrCat('echo "PQSCALE          10"       >> ', par);
+  System StrCat('echo "BQSCALE          25"       >> ', par);
+  System StrCat('echo "REFERENCE_FRAME  DECODED"  >> ', par);
+  System StrCat(StrCat(StrCat('echo "OUTPUT ', PATH), '/animation.mpg" >> '), par);
+  System StrCat('echo "INPUT_CONVERT    *"        >> ', par);
+  System StrCat(StrCat(StrCat('echo "INPUT_DIR ', PATH), '" >> '), par);
+  System StrCat('echo "INPUT"                     >> ', par);
+  System StrCat(Sprintf('echo "tmp*.jpg [001-%03g]" >> ', NUM_FRAMES), par);
+  System StrCat('echo "END_INPUT"                 >> ', par);
+  // call mpeg_encode
+  System "mpeg_encode /tmp/tmp.par" ;
+EndIf
+
+// Clean-up temp files?
+CLEANUP = GetValue(StrCat(StrCat("Remove temporary files?
+
+(The final animation has been saved in ", PATH), "/animation.{gif,mpg})"), 0);
+
+If(CLEANUP)
+  If(ENCODER == WHIRLGIF)
+    System StrCat(StrCat("rm -f ", PATH), "/tmp*.gif");
+  EndIf
+  If(ENCODER == MPEG_ENCODE)
+    System StrCat(StrCat("rm -f ", PATH), "/tmp*.{jpg,par}");
+  EndIf
+  If(ENCODER == MENCODER)
+    System StrCat(StrCat("rm -f ", PATH), "/tmp*.png");
+  EndIf
+EndIf

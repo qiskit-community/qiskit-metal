@@ -1,0 +1,55 @@
+// This script creates an mpeg or gif animation by applying
+// incremental rotations around the 3 coordinate axes
+
+PATH = "/tmp";
+
+neww = GetValue("Width of animation? (enter 0 to keep current width)", 640); 
+newh = GetValue("Height of animation? (enter 0 to keep current height)", 640);
+steps = GetValue("Number of steps", 360);
+xinc = GetValue("X-axis rotation increment (in degrees)", 0);
+yinc = GetValue("Y-axis rotation increment (in degrees)", 1);
+zinc = GetValue("Z-axis rotation increment (in degrees)", 0);
+method = GetValue("Animation encoder?
+
+0: mpeg_encode (MPEG1), 1: mencoder (MPEG4), 2: whirlgif (GIF89)", 0);
+MPEG_ENCODE = 0;
+MENCODER = 1;
+WHIRLGIF = 2;
+
+oldr = General.Trackball;
+oldw = General.GraphicsWidth;
+oldh = General.GraphicsHeight;
+
+General.Trackball = 0;
+If(neww)
+  General.GraphicsWidth = neww;
+EndIf
+If(newh)
+  General.GraphicsHeight = newh;
+EndIf
+
+index = 0;
+For (1:steps)
+  General.RotationX += xinc;
+  General.RotationY += yinc;
+  General.RotationZ += zinc;
+  index++;
+  Draw;
+  If(method == WHIRLGIF)
+    Print Sprintf("/tmp/tmp%03g.gif", index);
+  EndIf
+  If(method == MPEG_ENCODE)
+    Print Sprintf("/tmp/tmp%03g.jpg", index);
+  EndIf
+  If(method == MENCODER)
+    Print Sprintf("/tmp/tmp%03g.png", index);
+  EndIf
+EndFor
+
+NUM_FRAMES = index;
+ENCODER = method;
+Include "encode.script";
+
+General.Trackball = oldr;
+General.GraphicsWidth = oldw;
+General.GraphicsHeight = oldh;

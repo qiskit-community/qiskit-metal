@@ -1,0 +1,39 @@
+
+/* Variables that must be defined when including this file:
+   th,D2,H,R1,E1 */
+
+dtH = ArcSin(E1/2./D2) ;
+XH6 = D2 * Cos(th + dtH ) ;            // Slab opening
+YH6 = D2 * Sin(th + dtH ) ;
+XH7 = D2 * Cos(th - dtH ) ;
+YH7 = D2 * Sin(th - dtH ) ;
+
+D1  = D2 + H ;
+XH2 = (D1 - R1) * Cos(th) ;	       // Circle center
+YH2 = (D1 - R1) * Sin(th) ;
+
+XS1 = (D1) * Cos(th) ;		       // Circle top
+YS1 = (D1) * Sin(th) ;
+
+XT1 = XH2 + R1 * Cos(th + Pi / 2.) ;
+YT1 = YH2 + R1 * Sin(th + Pi / 2.) ;
+XT2 = XH2 + R1 * Cos(th - Pi / 2.) ;
+YT2 = YH2 + R1 * Sin(th - Pi / 2.) ;
+
+p1 = newp ; Point(p1) = { XH7 , YH7, 0., Lc} ;
+p4 = newp ; Point(p4) = { XT2 , YT2, 0., 3*Lc} ;
+p5 = newp ; Point(p5) = { XH2 , YH2, 0., 3*Lc} ;
+p6 = newp ; Point(p6) = { XT1 , YT1, 0., 3*Lc} ;
+p9 = newp ; Point(p9) = { XH6 , YH6, 0., Lc} ;
+
+p10 = newp ; Point(p10) = { XS1 , YS1, 0., 3*Lc} ;
+
+lin1 = newreg ; Line(lin1) = {p1, p4} ;
+arc1 = newreg ; Circle(arc1) = {p4, p5, p10} ;
+arc2 = newreg ; Circle(arc2) = {p10, p5, p6} ;
+lin6 = newreg ; Line(lin6) = {p6, p9} ;
+
+lin7 = newreg ; Line(lin7) = {p9, p1} ;
+
+reg1 = newreg ; Curve Loop(reg1) = {lin1,arc1,arc2,lin6,lin7} ;
+reg2 = newreg ; Plane Surface(reg2) = {reg1} ; 

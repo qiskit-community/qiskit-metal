@@ -1,0 +1,33 @@
+$begin 'Configs'
+	$begin 'Configs'
+		$begin 'DSOConfig'
+			ConfigName='localhost'
+			DesignType='HFSS'
+			$begin 'DSOMachineList'
+				$begin 'DSOMachineInfo'
+					MachineName='localhost'
+					NumEngines=1
+					NumCores=32
+					IsEnabled=true
+					RAMPercent=90
+					NumJobCores=0
+				$end 'DSOMachineInfo'
+			$end 'DSOMachineList'
+			UseAutoSettings=true
+			NumVariationsToDistribute=2
+			$begin 'DSOJobDistributionInfo'
+				AllowedDistributionTypes[4: 'Variations', 'Frequencies', 'Transient Excitations', 'Domain Solver']
+				Enable2LevelDistribution=false
+				NumL1Engines=1
+				UseDefaultsForDistributionTypes=false
+				Context()
+			$end 'DSOJobDistributionInfo'
+			$begin 'DSOMachineOptionsInfo'
+				MenuValues()
+				IntValues()
+				BoolValues(AllowOffCore=true)
+				DoubleValues()
+			$end 'DSOMachineOptionsInfo'
+		$end 'DSOConfig'
+	$end 'Configs'
+$end 'Configs'

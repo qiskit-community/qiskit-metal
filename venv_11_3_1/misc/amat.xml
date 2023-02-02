@@ -1,0 +1,589 @@
+<?xml version='1.0' encoding='utf-8'?>
+<c:Control Editedby="Massimo Capodiferro, Alberto Di Maria" schemaVersion="2.0" xmlns:c="http://www.ansys.com/control">
+  <Materials>
+    <Material name="Aluminum">
+      <Property name="Conductivity">
+        <Data name="Conductivity" unit="[siemens m^-1]">
+          <Double>38000000.0</Double>
+          <DataSets XName="Temperature" type="Relative" unit="[C]">
+            <DataSet X="200.0" Y="0.6" />
+            <DataSet X="22.0" Y="1" />
+            <DataSet X="400.0" Y="0.39" />
+          </DataSets>
+          <DataSets XName="Frequency" type="Absolute" unit="[Hz]">
+            <DataSet X="2000000000.0" Y="38000000" />
+            <DataSet X="1000000000.0" Y="38000000" />
+            <DataSet X="3000000000.0" Y="38000000" />
+          </DataSets>
+        </Data>
+      </Property>
+      <Property name="Permittivity" Behavior="Orthotropic">
+        <Data name="Permittivity X direction">
+          <Double>1.0</Double>
+        </Data>
+        <Data name="Permittivity Y direction">
+          <Double>0.9</Double>
+          <DataSets XName="Temperature" type="Relative" unit="[C]">
+            <DataSet X="200.0" Y="0.6" />
+            <DataSet X="22.0" Y="1" />
+            <DataSet X="400.0" Y="0.39" />
+          </DataSets>
+        </Data>
+        <Data name="Permittivity Z direction">
+          <Double>1.1</Double>
+        </Data>
+      </Property>
+      <Property name="Permeability">
+        <Data name="Permeability">
+          <Double>1.000021</Double>
+        </Data>
+      </Property>
+      <Property name="Thermal Conductivity">
+        <Data name="Thermal Conductivity" unit="[W m^-1 C^-1]">
+          <Double>237.5</Double>
+        </Data>
+      </Property>
+      <Property name="Mass Density">
+        <Data name="Mass Density" unit="[Kg m^-3]">
+          <Double>2689.0</Double>
+        </Data>
+      </Property>
+      <Property name="Specific Heat">
+        <Data name="Specific Heat" unit="[J Kg^-1 C^-1]">
+          <Double>951.0</Double>
+        </Data>
+      </Property>
+      <Property name="Thermal Expansion Coefficient">
+        <Data name="Thermal Expansion Coefficient" unit="[C^-1]">
+          <Double>2.33e-05</Double>
+        </Data>
+      </Property>
+      <Property name="Elasticity">
+        <Data name="Young's Modulus" unit="[Pa]">
+          <Double>69000000001.0</Double>
+        </Data>
+        <Data name="Poisson's Ratio">
+          <Double>0.31</Double>
+        </Data>
+      </Property>
+      <Property name="Emissivity">
+        <Data name="Emissivity">
+          <Double>0.8</Double>
+        </Data>
+      </Property>
+      <Property name="Dielectric Loss Tangent">
+        <Data name="Dielectric Loss Tangent">
+          <Double>0.0</Double>
+        </Data>
+      </Property>
+    </Material>
+    <Material name="Brass">
+      <Property name="Conductivity">
+        <Data name="Conductivity" unit="[siemens m^-1]">
+          <Double>15000000.0</Double>
+          <DataSets XName="Temperature" type="Relative" unit="[C]">
+            <DataSet X="200.0" Y="0.79" />
+            <DataSet X="22.0" Y="1" />
+            <DataSet X="400.0" Y="0.49" />
+          </DataSets>
+        </Data>
+      </Property>
+      <Property name="Permittivity">
+        <Data name="Permittivity">
+          <Double>1.0</Double>
+        </Data>
+      </Property>
+      <Property name="Permeability">
+        <Data name="Permeability">
+          <Double>1.0</Double>
+        </Data>
+      </Property>
+      <Property name="Thermal Conductivity">
+        <Data name="Thermal Conductivity" unit="[W m^-1 C^-1]">
+          <Double>111.0</Double>
+        </Data>
+      </Property>
+      <Property name="Mass Density">
+        <Data name="Mass Density" unit="[Kg m^-3]">
+          <Double>8600.0</Double>
+        </Data>
+      </Property>
+      <Property name="Specific Heat">
+        <Data name="Specific Heat" unit="[J Kg^-1 C^-1]">
+          <Double>162.0</Double>
+        </Data>
+      </Property>
+      <Property name="Thermal Expansion Coefficient">
+        <Data name="Thermal Expansion Coefficient" unit="[C^-1]">
+          <Double>0.0</Double>
+        </Data>
+      </Property>
+      <Property name="Elasticity">
+        <Data name="Young's Modulus" unit="[Pa]">
+          <Double>100000000000.0</Double>
+        </Data>
+        <Data name="Poisson's Ratio">
+          <Double>0.34</Double>
+        </Data>
+      </Property>
+      <Property name="Emissivity">
+        <Data name="Emissivity">
+          <Double>0.7</Double>
+        </Data>
+      </Property>
+    </Material>
+    <Material name="Copper">
+      <Property name="Conductivity">
+        <Data name="Conductivity" unit="[siemens m^-1]">
+          <Double>58000000.0</Double>
+          <DataSets XName="Temperature" type="Relative" unit="[C]">
+            <DataSet X="400" Y="0.49" />
+            <DataSet X="22" Y="1" />
+            <DataSet X="200" Y="0.759" />
+          </DataSets>
+        </Data>
+      </Property>
+      <Property name="Permittivity">
+        <Data name="Permittivity">
+          <Double>1.0</Double>
+        </Data>
+      </Property>
+      <Property name="Permeability">
+        <Data name="Permeability">
+          <Double>0.999991</Double>
+        </Data>
+      </Property>
+      <Property name="Thermal Conductivity">
+        <Data name="Thermal Conductivity" unit="[W m^-1 C^-1]">
+          <Double>400.0</Double>
+        </Data>
+      </Property>
+      <Property name="Mass Density">
+        <Data name="Mass Density" unit="[Kg m^-3]">
+          <Double>8933.0</Double>
+        </Data>
+      </Property>
+      <Property name="Specific Heat">
+        <Data name="Specific Heat" unit="[J Kg^-1 C^-1]">
+          <Double>385.0</Double>
+        </Data>
+      </Property>
+      <Property name="Thermal Expansion Coefficient">
+        <Data name="Thermal Expansion Coefficient" unit="[C^-1]">
+          <Double>1.77e-05</Double>
+        </Data>
+      </Property>
+      <Property name="Elasticity">
+        <Data name="Young's Modulus" unit="[Pa]">
+          <Double>120000000000</Double>
+        </Data>
+        <Data name="Poisson's Ratio">
+          <Double>0.38</Double>
+        </Data>
+      </Property>
+      <Property name="Emissivity">
+        <Data name="Emissivity">
+          <Double>0.79</Double>
+        </Data>
+      </Property>
+    </Material>
+    <Material name="Steel">
+      <Property name="Conductivity">
+        <Data name="Conductivity" unit="[siemens m^-1]">
+          <Double>1100000.0</Double>
+          <DataSets XName="Temperature" type="Relative" unit="[C]">
+            <DataSet X="400" Y="0.29" />
+            <DataSet X="22" Y="1" />
+            <DataSet X="200" Y="0.5" />
+          </DataSets>
+        </Data>
+      </Property>
+      <Property name="Permittivity">
+        <Data name="Permittivity">
+          <Double>1.0</Double>
+        </Data>
+      </Property>
+      <Property name="Permeability">
+        <Data name="Permeability">
+          <Double>1.0</Double>
+        </Data>
+      </Property>
+      <Property name="Thermal Conductivity">
+        <Data name="Thermal Conductivity" unit="[W m^-1 C^-1]">
+          <Double>13.8</Double>
+        </Data>
+      </Property>
+      <Property name="Mass Density">
+        <Data name="Mass Density" unit="[Kg m^-3]">
+          <Double>8055.0</Double>
+        </Data>
+      </Property>
+      <Property name="Specific Heat">
+        <Data name="Specific Heat" unit="[J Kg^-1 C^-1]">
+          <Double>480.0</Double>
+        </Data>
+      </Property>
+      <Property name="Thermal Expansion Coefficient">
+        <Data name="Thermal Expansion Coefficient" unit="[C^-1]">
+          <Double>1.08e-05</Double>
+        </Data>
+      </Property>
+      <Property name="Elasticity">
+        <Data name="Young's Modulus" unit="[Pa]">
+          <Double>195000000000</Double>
+        </Data>
+        <Data name="Poisson's Ratio">
+          <Double>0.3</Double>
+        </Data>
+      </Property>
+      <Property name="Emissivity">
+        <Data name="Emissivity">
+          <Double>0.8</Double>
+        </Data>
+      </Property>
+    </Material>
+    <Material name="Silver">
+      <Property name="Conductivity">
+        <Data name="Conductivity" unit="[siemens m^-1]">
+          <Double>61000000.0</Double>
+          <DataSets XName="Temperature" type="Relative" unit="[C]">
+            <DataSet X="400" Y="0.29" />
+            <DataSet X="22" Y="1" />
+            <DataSet X="200" Y="0.49" />
+          </DataSets>
+        </Data>
+      </Property>
+      <Property name="Permittivity">
+        <Data name="Permittivity">
+          <Double>1.0</Double>
+        </Data>
+      </Property>
+      <Property name="Permeability">
+        <Data name="Permeability">
+          <Double>0.99998</Double>
+        </Data>
+      </Property>
+      <Property name="Thermal Conductivity">
+        <Data name="Thermal Conductivity" unit="[W m^-1 C^-1]">
+          <Double>429.0</Double>
+        </Data>
+      </Property>
+      <Property name="Mass Density">
+        <Data name="Mass Density" unit="[Kg m^-3]">
+          <Double>10500.0</Double>
+        </Data>
+      </Property>
+      <Property name="Specific Heat">
+        <Data name="Specific Heat" unit="[J Kg^-1 C^-1]">
+          <Double>235.0</Double>
+        </Data>
+      </Property>
+      <Property name="Thermal Expansion Coefficient">
+        <Data name="Thermal Expansion Coefficient" unit="[C^-1]">
+          <Double>1.89e-05</Double>
+        </Data>
+      </Property>
+      <Property name="Elasticity">
+        <Data name="Young's Modulus" unit="[Pa]">
+          <Double>77000000000</Double>
+        </Data>
+        <Data name="Poisson's Ratio">
+          <Double>0.37</Double>
+        </Data>
+      </Property>
+      <Property name="Emissivity">
+        <Data name="Emissivity">
+          <Double>0.06</Double>
+        </Data>
+      </Property>
+    </Material>
+    <Material name="Silver_Poor">
+      <Property name="Conductivity">
+        <Data name="Conductivity" unit="[siemens m^-1]">
+          <Double>45000000.0</Double>
+          <DataSets XName="Temperature" type="Relative" unit="[C]">
+            <DataSet X="400" Y="0.29" />
+            <DataSet X="22" Y="1" />
+            <DataSet X="200" Y="0.49" />
+          </DataSets>
+        </Data>
+      </Property>
+      <Property name="Permittivity">
+        <Data name="Permittivity">
+          <Double>1.0</Double>
+        </Data>
+      </Property>
+      <Property name="Permeability">
+        <Data name="Permeability">
+          <Double>0.99998</Double>
+        </Data>
+      </Property>
+      <Property name="Thermal Conductivity">
+        <Data name="Thermal Conductivity" unit="[W m^-1 C^-1]">
+          <Double>429.0</Double>
+        </Data>
+      </Property>
+      <Property name="Mass Density">
+        <Data name="Mass Density" unit="[Kg m^-3]">
+          <Double>10500.0</Double>
+        </Data>
+      </Property>
+      <Property name="Specific Heat">
+        <Data name="Specific Heat" unit="[J Kg^-1 C^-1]">
+          <Double>235.0</Double>
+        </Data>
+      </Property>
+      <Property name="Thermal Expansion Coefficient">
+        <Data name="Thermal Expansion Coefficient" unit="[C^-1]">
+          <Double>1.89e-05</Double>
+        </Data>
+      </Property>
+      <Property name="Elasticity">
+        <Data name="Young's Modulus" unit="[Pa]">
+          <Double>77000000000</Double>
+        </Data>
+        <Data name="Poisson's Ratio">
+          <Double>0.37</Double>
+        </Data>
+      </Property>
+      <Property name="Emissivity">
+        <Data name="Emissivity">
+          <Double>0.06</Double>
+        </Data>
+      </Property>
+    </Material>
+    <Material name="Ceramic 4300">
+      <Property name="Permittivity">
+        <Data name="Permittivity">
+          <Double>43.0</Double>
+        </Data>
+      </Property>
+      <Property name="Dielectric Loss Tangent">
+        <Data name="Dielectric Loss Tangent">
+          <Double>0.008</Double>
+          <DataSets XName="Temperature" type="Relative" unit="[C]">
+            <DataSet X="22" Y="1" />
+            <DataSet X="200" Y="3" />
+          </DataSets>
+        </Data>
+      </Property>
+      <Property name="Permeability">
+        <Data name="Permeability">
+          <Double>1.0</Double>
+        </Data>
+      </Property>
+      <Property name="Thermal Conductivity">
+        <Data name="Thermal Conductivity" unit="[W m^-1 C^-1]">
+          <Double>2.092</Double>
+        </Data>
+      </Property>
+      <Property name="Mass Density">
+        <Data name="Mass Density" unit="[Kg m^-3]">
+          <Double>5000.0</Double>
+        </Data>
+      </Property>
+      <Property name="Thermal Expansion Coefficient">
+        <Data name="Thermal Expansion Coefficient" unit="[C^-1]">
+          <Double>1.89e-05</Double>
+        </Data>
+      </Property>
+      <Property name="Elasticity">
+        <Data name="Young's Modulus" unit="[Pa]">
+          <Double>370000000000</Double>
+        </Data>
+        <Data name="Poisson's Ratio">
+          <Double>0.22</Double>
+        </Data>
+      </Property>
+      <Property name="Emissivity">
+        <Data name="Emissivity">
+          <Double>0.8</Double>
+        </Data>
+      </Property>
+    </Material>
+    <Material name="alumina_92pct">
+      <Property name="Permittivity">
+        <Data name="Permittivity">
+          <Double>9.2</Double>
+        </Data>
+      </Property>
+      <Property name="Dielectric Loss Tangent">
+        <Data name="Dielectric Loss Tangent">
+          <Double>0.008</Double>
+          <DataSets XName="Temperature" type="Relative" unit="[C]">
+            <DataSet X="22" Y="1" />
+            <DataSet X="200" Y="5" />
+          </DataSets>
+        </Data>
+      </Property>
+      <Property name="Permeability">
+        <Data name="Permeability">
+          <Double>26.0</Double>
+        </Data>
+      </Property>
+      <Property name="Thermal Conductivity">
+        <Data name="Thermal Conductivity" unit="[W m^-1 C^-1]">
+          <Double>26.0</Double>
+        </Data>
+      </Property>
+      <Property name="Mass Density">
+        <Data name="Mass Density" unit="[Kg m^-3]">
+          <Double>3720.0</Double>
+        </Data>
+      </Property>
+      <Property name="Specific Heat">
+        <Data name="Specific Heat" unit="[J Kg^-1 C^-1]">
+          <Double>790.0</Double>
+        </Data>
+      </Property>
+      <Property name="Thermal Expansion Coefficient">
+        <Data name="Thermal Expansion Coefficient" unit="[C^-1]">
+          <Double>7.2e-06</Double>
+        </Data>
+      </Property>
+      <Property name="Elasticity">
+        <Data name="Young's Modulus" unit="[Pa]">
+          <Double>267000000000</Double>
+        </Data>
+        <Data name="Poisson's Ratio">
+          <Double>0.26</Double>
+        </Data>
+      </Property>
+      <Property name="Emissivity">
+        <Data name="Emissivity">
+          <Double>0.8</Double>
+        </Data>
+      </Property>
+    </Material>
+    <Material name="Teflon">
+      <Property name="Conductivity">
+        <Data name="Conductivity" unit="[siemens m^-1]">
+          <Double>0.1</Double>
+          <DataSets XName="Temperature" type="Relative" unit="[C]">
+            <DataSet X="400" Y="0.6" />
+            <DataSet X="22" Y="1" />
+            <DataSet X="200" Y="0.7" />
+          </DataSets>
+        </Data>
+      </Property>
+      <Property name="Permittivity">
+        <Data name="Permittivity">
+          <Double>0.35</Double>
+        </Data>
+      </Property>
+      <Property name="Permeability">
+        <Data name="Permeability">
+          <Double>1.0</Double>
+        </Data>
+      </Property>
+      <Property name="Dielectric Loss Tangent">
+        <Data name="Dielectric Loss Tangent">
+          <Double>0.0002</Double>
+          <DataSets XName="Temperature" type="Relative" unit="[C]">
+            <DataSet X="400" Y="0.8" />
+            <DataSet X="22" Y="1" />
+            <DataSet X="200" Y="0.9" />
+          </DataSets>
+        </Data>
+      </Property>
+      <Property name="Thermal Conductivity">
+        <Data name="Thermal Conductivity" unit="[W m^-1 C^-1]">
+          <Double>2.0</Double>
+        </Data>
+      </Property>
+      <Property name="Mass Density">
+        <Data name="Mass Density" unit="[Kg m^-3]">
+          <Double>30000.0</Double>
+        </Data>
+      </Property>
+      <Property name="Thermal Expansion Coefficient">
+        <Data name="Thermal Expansion Coefficient" unit="[C^-1]">
+          <Double>1e-06</Double>
+        </Data>
+      </Property>
+      <Property name="Elasticity">
+        <Data name="Young's Modulus" unit="[Pa]">
+          <Double>496000000.0</Double>
+        </Data>
+        <Data name="Poisson's Ratio">
+          <Double>0.3</Double>
+        </Data>
+      </Property>
+      <Property name="Emissivity">
+        <Data name="Emissivity">
+          <Double>0.92</Double>
+        </Data>
+      </Property>
+    </Material>
+    <Material name="TEST">
+      <Property name="Conductivity">
+        <Data name="Conductivity" unit="[siemens m^-1]">
+          <Double>1000000.0</Double>
+          <DataSets XName="Frequency" type="Absolute" unit="[Hz]">
+            <DataSet X="2000000000.0" Y="120.0" />
+            <DataSet X="1000000000.0" Y="110.0" />
+            <DataSet X="100000000.0" Y="10.0" />
+          </DataSets>
+          <DataSets XName="Temperature" type="Relative" unit="[C]">
+            <DataSet X="100.0" Y="10.0" />
+            <DataSet X="200.0" Y="20.0" />
+            <DataSet X="300.0" Y="30.0" />
+          </DataSets>
+        </Data>
+      </Property>
+      <Property name="Permittivity">
+        <Data name="Permittivity">
+          <Double>23.0</Double>
+        </Data>
+      </Property>
+      <Property name="Permeability">
+        <Data name="Permeability">
+          <Double>1.0</Double>
+        </Data>
+      </Property>
+      <Property name="Dielectric Loss Tangent">
+        <Data name="Dielectric Loss Tangent">
+          <Double>4.0</Double>
+          <DataSets XName="Temperature" type="Relative" unit="[C]">
+            <DataSet X="200.0" Y="3.0" />
+            <DataSet X="22.0" Y="2.0" />
+            <DataSet X="400.0" Y="4.0" />
+          </DataSets>
+        </Data>
+      </Property>
+      <Property name="Thermal Conductivity">
+        <Data name="Thermal Conductivity" unit="[W m^-1 C^-1]">
+          <Double>7.0</Double>
+          <DataSets XName="Frequency" type="Absolute" unit="[Hz]">
+            <DataSet X="2000000000.0" Y="5.0" />
+            <DataSet X="1000000000.0" Y="4.0" />
+            <DataSet X="100000000.0" Y="3.0" />
+          </DataSets>
+        </Data>
+      </Property>
+      <Property name="Mass Density">
+        <Data name="Mass Density" unit="[Kg m^-3]">
+          <Double>9.0</Double>
+        </Data>
+      </Property>
+      <Property name="Thermal Expansion Coefficient">
+        <Data name="Thermal Expansion Coefficient" unit="[C^-1]">
+          <Double>8.0</Double>
+        </Data>
+      </Property>
+      <Property name="Elasticity">
+        <Data name="Young's Modulus" unit="[Pa]">
+          <Double>55.0</Double>
+        </Data>
+        <Data name="Poisson's Ratio">
+          <Double>6.0</Double>
+        </Data>
+      </Property>
+      <Property name="Emissivity">
+        <Data name="Emissivity">
+          <Double>10.0</Double>
+        </Data>
+      </Property>
+    </Material>
+  </Materials>
+</c:Control>

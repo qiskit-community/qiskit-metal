@@ -1,0 +1,15 @@
+{
+  "title": "JupyterLab Shell",
+  "description": "JupyterLab Shell layout settings.",
+  "properties": {
+    "hiddenMode": {
+      "type": "string",
+      "title": "Hidden mode of main panel widgets",
+      "description": "The method for hiding widgets in the main dock panel. Using `scale` will increase performance on Firefox but don't use it with Chrome, Chromium or Edge.",
+      "enum": ["display", "scale"],
+      "default": "display"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+}

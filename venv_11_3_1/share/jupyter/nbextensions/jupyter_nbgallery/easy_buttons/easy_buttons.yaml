@@ -1,0 +1,7 @@
+Type: Jupyter Notebook Extension
+Main: easy_buttons.js
+Name: NBGallery Easy Buttons
+Section: notebook
+Description: Adds convenience buttons (Run, New Cell, Delete, etc.) to the active cell.
+Link: README.md
+Compatibility: 4.x, 5.x, 6.x

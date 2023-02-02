@@ -1,0 +1,35 @@
+
+Point(x+01) = {dx,    -e,    -ll/2,    sx};  Point(x+11) = {dx,     e,     ll/2,    sx}; 
+Point(x+02) = {dx+rx, -e,    -ll/2,    sx};  Point(x+12) = {dx+rx,  e,     ll/2,    sx}; 
+Point(x+03) = {dx,    -e+rx, -ll/2,    sx};  Point(x+13) = {dx,     e+rx,  ll/2,    sx}; 
+Point(x+04) = {dx-rx, -e,    -ll/2,    sx};  Point(x+14) = {dx-rx,  e,     ll/2,    sx}; 
+Point(x+05) = {dx,    -e-rx, -ll/2,    sx};  Point(x+15) = {dx,     e-rx,  ll/2,    sx}; 
+Point(x+06) = {dx,    -e,    -ll/2-lx, sx};  Point(x+16) = {dx,     e,     ll/2+lx, sx}; 
+Point(x+07) = {dx+rx, -e,    -ll/2-lx, sx};  Point(x+17) = {dx+rx,  e,     ll/2+lx, sx}; 
+Point(x+08) = {dx,    -e+rx, -ll/2-lx, sx};  Point(x+18) = {dx,     e+rx,  ll/2+lx, sx}; 
+Point(x+09) = {dx-rx, -e,    -ll/2-lx, sx};  Point(x+19) = {dx-rx,  e,     ll/2+lx, sx}; 
+Point(x+10) = {dx,    -e-rx, -ll/2-lx, sx};  Point(x+20) = {dx,     e-rx,  ll/2+lx, sx}; 
+
+Circle(x+01) = {x+02,x+01,x+03}; Circle(x+05) = {x+07,x+06,x+08}; Line(x+09) = {x+02,x+07};
+Circle(x+02) = {x+03,x+01,x+04}; Circle(x+06) = {x+08,x+06,x+09}; Line(x+10) = {x+03,x+08};
+Circle(x+03) = {x+04,x+01,x+05}; Circle(x+07) = {x+09,x+06,x+10}; Line(x+11) = {x+04,x+09};
+Circle(x+04) = {x+05,x+01,x+02}; Circle(x+08) = {x+10,x+06,x+07}; Line(x+12) = {x+05,x+10};
+       	       	     		    	    	    	       	       	   
+Circle(x+13) = {x+12,x+11,x+13}; Circle(x+17) = {x+17,x+16,x+18}; Line(x+21) = {x+12,x+17};
+Circle(x+14) = {x+13,x+11,x+14}; Circle(x+18) = {x+18,x+16,x+19}; Line(x+22) = {x+13,x+18};
+Circle(x+15) = {x+14,x+11,x+15}; Circle(x+19) = {x+19,x+16,x+20}; Line(x+23) = {x+14,x+19};
+Circle(x+16) = {x+15,x+11,x+12}; Circle(x+20) = {x+20,x+16,x+17}; Line(x+24) = {x+15,x+20};
+
+Curve Loop(x+01) = {x+02,x+03,x+04,x+01};       Plane Surface(x+21) = {x+01};
+Curve Loop(x+02) = {x+07,x+08,x+05,x+06};       Plane Surface(x+22) = {x+02};
+Curve Loop(x+03) = {x+16,x+13,x+14,x+15};       Plane Surface(x+23) = {x+03};
+Curve Loop(x+04) = {x+20,x+17,x+18,x+19};       Plane Surface(x+24) = {x+04};
+Curve Loop(x+05) = {x+08,-(x+09),-(x+04),x+12}; Surface(x+25) = {x+05};
+Curve Loop(x+06) = {x+12,-(x+07),-(x+11),x+03}; Surface(x+26) = {x+06};
+Curve Loop(x+07) = {-(x+11),-(x+02),x+10,x+06}; Surface(x+27) = {x+07};
+Curve Loop(x+08) = {-(x+10),-(x+01),x+09,x+05}; Surface(x+28) = {x+08};
+Curve Loop(x+09) = {x+21,-(x+20),-(x+24),x+16}; Surface(x+29) = {x+09};
+Curve Loop(x+10) = {-(x+24),-(x+15),x+23,x+19}; Surface(x+30) = {x+10};
+Curve Loop(x+11) = {x+23,-(x+18),-(x+22),x+14}; Surface(x+31) = {x+11};
+Curve Loop(x+12) = {x+22,-(x+17),-(x+21),x+13}; Surface(x+32) = {x+12};
+

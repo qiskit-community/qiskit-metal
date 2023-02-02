@@ -1,0 +1,89 @@
+// This script creates an mpeg or gif animation by looping over all
+// the time steps and/or all the post-processing views
+
+MPEG_ENCODE = 0;
+MENCODER = 1;
+WHIRLGIF = 2;
+
+ENCODER = GetValue("Which animation encoder do you want to use?
+
+0: mpeg_encode, 1: mencoder, 2: whirlgif", 0);
+PATH = GetString("Where do you want to save the animation?", "/tmp");
+neww = GetValue("Width of animation? (enter 0 to keep current width)", 0); 
+newh = GetValue("Height of animation? (enter 0 to keep current height)", 0) ;
+all = GetValue("Animate one view at a time, or all views together?
+
+0: one at a time, 1: all together", 1) ;
+
+
+oldw = General.GraphicsWidth;
+oldh = General.GraphicsHeight;
+
+If(neww)
+  General.GraphicsWidth = neww;
+EndIf
+If(newh)
+  General.GraphicsHeight = newh;
+EndIf
+
+If(all)
+  NUM_FRAMES = 1;
+  For i In {1:PostProcessing.NbViews}
+    View[i-1].TimeStep = 0;
+    // compute max num of steps
+    If(View[i-1].Visible)
+      If(View[i-1].NbTimeStep > NUM_FRAMES)
+        NUM_FRAMES = View[i-1].NbTimeStep;
+      EndIf
+    EndIf
+  EndFor
+  For index In {1:NUM_FRAMES}
+    Draw;
+    If(ENCODER == WHIRLGIF)
+      Print StrCat(PATH, Sprintf("/tmp%03g.gif", index));
+    EndIf
+    If(ENCODER == MPEG_ENCODE)
+      Print StrCat(PATH, Sprintf("/tmp%03g.jpg", index));
+    EndIf
+    If(ENCODER == MENCODER)
+      Print StrCat(PATH, Sprintf("/tmp%03g.png", index));
+    EndIf
+    For i In {1:PostProcessing.NbViews}
+      View[i-1].TimeStep++;
+    EndFor
+  EndFor
+EndIf
+
+If(!all)
+  // Hide all views
+  For i In {1:PostProcessing.NbViews}
+    View[i-1].Visible = 0;
+    View[i-1].TimeStep = 0;
+  EndFor
+  NUM_FRAMES = 0;
+  For i In {1:PostProcessing.NbViews}
+    // Display view i-1
+    View[i-1].Visible = 1;
+    // Loop on all solutions in view i-1
+    For j In {1:View[i-1].NbTimeStep}
+      NUM_FRAMES++;
+      Draw;
+      If(ENCODER == WHIRLGIF)
+        Print Sprintf("/tmp/tmp%03g.gif", NUM_FRAMES);
+      EndIf
+      If(ENCODER == MPEG_ENCODE)
+        Print Sprintf("/tmp/tmp%03g.jpg", NUM_FRAMES);
+      EndIf
+      If(ENCODER == MENCODER)
+        Print Sprintf("/tmp/tmp%03g.png", NUM_FRAMES);
+      EndIf
+      View[i-1].TimeStep++;
+    EndFor
+    View[i-1].Visible = 0;
+  EndFor
+EndIf
+
+Include "encode.script";
+
+General.GraphicsWidth = oldw;
+General.GraphicsHeight = oldh;

@@ -1,0 +1,7 @@
+Type: Jupyter Notebook Extension
+Main: instrumentation.js
+Name: NBGallery Instrumentation
+Section: notebook
+Description: Reports cell executions to nbgallery for notebook health evaluation.
+Link: README.md
+Compatibility: 4.x, 5.x, 6.x

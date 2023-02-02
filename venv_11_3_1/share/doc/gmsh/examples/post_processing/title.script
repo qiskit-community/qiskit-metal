@@ -1,0 +1,54 @@
+// This scripts adds a title using Plugin(Annotate)
+
+// create an empty view
+View "Title" {};
+
+num = PostProcessing.NbViews-1;
+
+// add the main project name
+x = -25;
+y = 40;
+Plugin(Annotate).View = num; 
+Plugin(Annotate).Text = StrCat("Project: ", StrPrefix(StrRelative(Sprintf(General.FileName))));
+Plugin(Annotate).Font = "Helvetica-Bold"; 
+Plugin(Annotate).FontSize = 20; 
+Plugin(Annotate).Align = "Right";
+Plugin(Annotate).X = x;
+Plugin(Annotate).Y = y; 
+Plugin(Annotate).Run; 
+
+// add data and gmsh version info
+y += 25;
+Plugin(Annotate).Text = StrCat(Today, Sprintf(" (Gmsh %g.%g.%g)", GMSH_MAJOR_VERSION,
+                                                                  GMSH_MINOR_VERSION,
+                                                                  GMSH_PATCH_VERSION));
+Plugin(Annotate).Font = "Helvetica" ; 
+Plugin(Annotate).FontSize = 14 ; 
+Plugin(Annotate).Y = y ; 
+Plugin(Annotate).Run ; 
+
+// if we have a mesh, print some statistics
+nbelm = Mesh.NbTriangles + Mesh.NbQuadrangles + Mesh.NbTetrahedra + 
+        Mesh.NbHexahedra + Mesh.NbPrisms + Mesh.NbPyramids  + Mesh.NbTrihedra;
+nbnod = Mesh.NbNodes;
+If(nbelm && nbnod)
+  y += 20;
+  Plugin(Annotate).Text = Sprintf("Mesh: %g nodes/%g elements", nbelm, nbnod);
+  Plugin(Annotate).Font = "Helvetica-Oblique" ; 
+  Plugin(Annotate).FontSize = 12 ; 
+  Plugin(Annotate).Y = y;
+  Plugin(Annotate).Run ; 
+EndIf
+
+// if we have some post-processing views, add the variable names
+If(num > 0)
+  y += 20;
+  For i In {0:num-1}
+    Plugin(Annotate).Text = StrCat(Sprintf("Variable %g: ", i), Sprintf(View[i].Name));
+    Plugin(Annotate).Font = "Helvetica-Oblique";
+    Plugin(Annotate).FontSize = 12; 
+    Plugin(Annotate).Y = y; 
+    Plugin(Annotate).Run;
+    y += 16;
+  EndFor
+EndIf

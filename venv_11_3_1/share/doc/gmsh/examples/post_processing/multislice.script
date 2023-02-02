@@ -1,0 +1,71 @@
+Plugin(CutGrid).View = 0;
+Plugin(CutPlane).View = 0;
+
+xslices = GetValue("Number of slices along X-axis?", 10);
+yslices = GetValue("Number of slices along Y-axis?", 0);
+zslices = GetValue("Number of slices along Z-axis?", 0);
+regular = GetValue("Use regular grid?", 0);
+If(regular)
+  npts = GetValue("Number of points in regular grid?", 20);
+  Plugin(CutGrid).NumPointsU = npts;
+  Plugin(CutGrid).NumPointsV = npts;
+EndIf
+
+xmin = View[0].MinX; xmax = View[0].MaxX;
+ymin = View[0].MinY; ymax = View[0].MaxY;
+zmin = View[0].MinZ; zmax = View[0].MaxZ;
+
+If(xslices && xmin != xmax)
+  For x In {xmin : xmax : (xmax-xmin) / (xslices > 1 ? (xslices-1) : 0.1)}
+    If(!regular)
+      Plugin(CutPlane).A = -1 ; Plugin(CutPlane).B = 0 ; Plugin(CutPlane).C = 0 ; 
+      Plugin(CutPlane).D = x ; Plugin(CutPlane).Run ; 
+    EndIf
+    If(regular)
+      Plugin(CutGrid).X0 = x ; Plugin(CutGrid).Y0 = ymin ; Plugin(CutGrid).Z0 = zmin ; 
+      Plugin(CutGrid).X1 = x ; Plugin(CutGrid).Y1 = ymax ; Plugin(CutGrid).Z1 = zmin ; 
+      Plugin(CutGrid).X2 = x ; Plugin(CutGrid).Y2 = ymin ; Plugin(CutGrid).Z2 = zmax ; 
+      Plugin(CutGrid).Run ; 
+    EndIf
+  EndFor
+EndIf
+
+If(yslices && ymin != ymax)
+  For y In {ymin : ymax : (ymax-ymin) / (yslices > 1 ? (yslices-1) : 0.1)}
+    If(!regular)
+      Plugin(CutPlane).A = 0 ; Plugin(CutPlane).B = -1 ; Plugin(CutPlane).C = 0 ; 
+      Plugin(CutPlane).D = y ; Plugin(CutPlane).Run ; 
+    EndIf
+    If(regular)
+      Plugin(CutGrid).X0 = xmin ; Plugin(CutGrid).Y0 = y ; Plugin(CutGrid).Z0 = zmin ; 
+      Plugin(CutGrid).X1 = xmax ; Plugin(CutGrid).Y1 = y ; Plugin(CutGrid).Z1 = zmin ; 
+      Plugin(CutGrid).X2 = xmin ; Plugin(CutGrid).Y2 = y ; Plugin(CutGrid).Z2 = zmax ; 
+      Plugin(CutGrid).Run ; 
+    EndIf
+  EndFor
+EndIf
+
+If(zslices && zmin != zmax)
+  For z In {zmin : zmax : (zmax-zmin) / (zslices > 1 ? (zslices-1) : 0.1)}
+    If(!regular)
+      Plugin(CutPlane).A = 0 ; Plugin(CutPlane).B = 0 ; Plugin(CutPlane).C = -1 ; 
+      Plugin(CutPlane).D = z ; Plugin(CutPlane).Run ; 
+    EndIf
+    If(regular)
+      Plugin(CutGrid).X0 = xmin ; Plugin(CutGrid).Y0 = ymin ; Plugin(CutGrid).Z0 = z ; 
+      Plugin(CutGrid).X1 = xmax ; Plugin(CutGrid).Y1 = ymin ; Plugin(CutGrid).Z1 = z ; 
+      Plugin(CutGrid).X2 = xmin ; Plugin(CutGrid).Y2 = ymax ; Plugin(CutGrid).Z2 = z ; 
+      Plugin(CutGrid).Run ; 
+    EndIf
+  EndFor
+EndIf
+
+Delete Empty Views;
+
+If(GetValue("Remove original view?", 1))
+  Delete View[0];
+EndIf
+
+If(GetValue("Combine all slices in a single view?", 1))
+  Combine Views;
+EndIf
