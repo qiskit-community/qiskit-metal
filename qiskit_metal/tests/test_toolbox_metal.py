@@ -102,6 +102,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
         except Exception:
             self.fail("open_docs() failed")
 
+
 #    def test_toolbox_metal_orient_me(self):
 #        """Test that orient_me in about.py produces detailed information about the user without any
 #        errors."""
@@ -855,7 +856,6 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
             LayerStackHandler(
                 multiplanar_design,
                 (ls_file_path, None)).layer_stack_handler_pilot_error(), None)
-
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
