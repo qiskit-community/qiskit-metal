@@ -1,3 +1,9 @@
+"""Configuration settings used by ElemerFEM. For details, please refer
+to the ElmerFEM documentation http://www.elmerfem.org/blog/documentation/
+"""
+
+# Dictionary containing a database of materials and their properties to be
+# assigned to an ElmerFEM model.
 materials = dict(
     vacuum={
         "Electric Conductivity": 0.0,
@@ -8,6 +14,8 @@ materials = dict(
     },
 )
 
+# Dictionary containing valid ElmerFEM simulation types and dimensions with
+# their correspoding settings (e.g. steady state 3D, transient 2D, etc.).
 simulations = dict(
     steady_3D={
         "Max Output Level": 5,
@@ -23,6 +31,8 @@ simulations = dict(
         "Output File": "case.result",
     })
 
+# Dictionary containing valid ElmerFEM solvers and their correspoding
+# settings (e.g. StatElecSolver, ResultOutputSolve, etc.).
 solvers = dict(
     capacitance={
         "Equation": "Electrostatics",
