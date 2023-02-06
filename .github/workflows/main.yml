@@ -37,7 +37,8 @@ jobs:
       - name: Install Deps
         run: |
           python -m pip install -U tox setuptools virtualenv wheel
-          sudo apt install libglu1-mesa libglu1-mesa-dev libegl-mesa0=22.0.1-1ubuntu2 libegl1-mesa=22.0.1-1ubuntu2 libegl1=1.4.0-1
+          sudo apt update
+          sudo apt install libglu1-mesa libglu1-mesa-dev libegl1-mesa
       - name: Install and Run Tests
         run: tox -e py
   macos-tests:
