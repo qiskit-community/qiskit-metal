@@ -116,13 +116,13 @@ def open_docs(page='https://qiskit.org/documentation/metal/'):
     webbrowser.open(page, new=1)
 
 
-######################################################################################
-# More detailed information to orient a user.
-# For debug purposes.
-# Main function: ``orient_me```
+    ######################################################################################
+    # More detailed information to orient a user.
+    # For debug purposes.
+    # Main function: ``orient_me```
 
 
-#def orient_me(do_print: bool = True) -> Union[None, str]:
+    #def orient_me(do_print: bool = True) -> Union[None, str]:
     """Full system, python, user, and environemnt information.
 
     Args:
