@@ -618,7 +618,7 @@ def kick_start_qApp():
                 try:
                     from IPython import get_ipython
                     ipython = get_ipython()
-                    ipython.magic('gui qt5')
+                    ipython.magic('gui qt6')
 
                 except Exception as e:
                     print("exception")

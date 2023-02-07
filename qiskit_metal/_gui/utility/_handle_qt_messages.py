@@ -56,13 +56,13 @@ def _qt_message_handler(mode, context, message):
             'QSocketNotifier: Multiple socket notifiers for same socket'):
         pass  # Caused by running %gui qt multiple times
     else:
-        if mode == QtCore.QtInfoMsg:
+        if mode == QtCore.QtMsgType.QtInfoMsg:
             mode = 'INFO'
-        elif mode == QtCore.QtWarningMsg:
+        elif mode == QtCore.QtMsgType.QtWarningMsg:
             mode = 'WARNING'
-        elif mode == QtCore.QtCriticalMsg:
+        elif mode == QtCore.QtMsgType.QtCriticalMsg:
             mode = 'CRITICAL'
-        elif mode == QtCore.QtFatalMsg:
+        elif mode == QtCore.QtMsgType.QtFatalMsg:
             mode = 'FATAL'
         else:
             mode = 'DEBUG'
