@@ -115,12 +115,10 @@ def open_docs(page='https://qiskit.org/documentation/metal/'):
     """
     webbrowser.open(page, new=1)
 
-
     ######################################################################################
     # More detailed information to orient a user.
     # For debug purposes.
     # Main function: ``orient_me```
-
 
     #def orient_me(do_print: bool = True) -> Union[None, str]:
     """Full system, python, user, and environemnt information.
@@ -128,6 +126,8 @@ def open_docs(page='https://qiskit.org/documentation/metal/'):
     Args:
         do_print(bool): Return the string if True, else format and print.
     """
+
+
 #    text = get_platform_info()
 #    text += \
 #        f" User and directories:\n\n"\
