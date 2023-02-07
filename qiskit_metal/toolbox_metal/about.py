@@ -129,6 +129,7 @@ def open_docs(page='https://qiskit.org/documentation/metal/'):
         do_print(bool): Return the string if True, else format and print.
     """
 
+    
 #    text = get_platform_info()
 #    text += \
 #        f" User and directories:\n\n"\
