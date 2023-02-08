@@ -115,36 +115,35 @@ def open_docs(page='https://qiskit.org/documentation/metal/'):
     """
     webbrowser.open(page, new=1)
 
+    ######################################################################################
+    # More detailed information to orient a user.
+    # For debug purposes.
+    # Main function: ``orient_me```
 
-######################################################################################
-# More detailed information to orient a user.
-# For debug purposes.
-# Main function: ``orient_me```
-
-
-def orient_me(do_print: bool = True) -> Union[None, str]:
+    #def orient_me(do_print: bool = True) -> Union[None, str]:
     """Full system, python, user, and environemnt information.
 
     Args:
         do_print(bool): Return the string if True, else format and print.
     """
 
-    text = get_platform_info()
-    text += \
-        f" User and directories:\n\n"\
-        f"    User              : {getpass.getuser()}\n"\
-        f"    User home dirctry : {Path.home()}\n"\
-        f"    Current directory : {Path.cwd()}\n\n"\
-        f"    Conda default env : {os.environ.get('CONDA_DEFAULT_ENV', 'N/A')}\n"\
-        f"    Conda current env : {os.environ.get('CONDA_PREFIX', 'N/A')}\n"\
-        f"    Python executable : {sys.executable}\n"\
 
-    if do_print:
-        text = style_colon_list(text, Color.BOLD, Color.END)
-        print(text)
-        return None
+#    text = get_platform_info()
+#    text += \
+#        f" User and directories:\n\n"\
+#        f"    User              : {getpass.getuser()}\n"\
+#        f"    User home dirctry : {Path.home()}\n"\
+#        f"    Current directory : {Path.cwd()}\n\n"\
+#        f"    Conda default env : {os.environ.get('CONDA_DEFAULT_ENV', 'N/A')}\n"\
+#        f"    Conda current env : {os.environ.get('CONDA_PREFIX', 'N/A')}\n"\
+#       f"    Python executable : {sys.executable}\n"\
 
-    return text
+#    if do_print:
+#        text = style_colon_list(text, Color.BOLD, Color.END)
+#        print(text)
+#        return None
+
+#    return text
 
 
 def get_platform_info() -> str:
