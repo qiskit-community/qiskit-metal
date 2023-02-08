@@ -20,6 +20,7 @@
 """Qiskit Metal unit tests analyses functionality."""
 
 import unittest
+from unittest.mock import MagicMock
 import matplotlib.pyplot as _plt
 
 from qiskit_metal import designs
@@ -524,6 +525,73 @@ class TestRenderers(unittest.TestCase):
         self.assertEqual(renderer._check_either_cheese('main', 0), 6)
         self.assertEqual(renderer._check_either_cheese('main', 1), 1)
         self.assertEqual(renderer._check_either_cheese('fake', 0), 5)
+
+    def test_successful_get_convergence(self):
+        """Test get_convergence returns the correct Boolean when converged"""
+
+        convergence_txt = '''Setup : Setup
+        \nProblem Type : CG\n
+        \n==================\n
+        Number of Passes\n
+        Completed : 15\n
+        Maximum   : 20\n
+        Minimum   : 2\n
+        ==================\n
+        Criterion : Delta %\n
+        Target    : 0.1\n
+        Current   : 0.042998\n
+        ==================\n
+        Pass|# Triangle| Delta %|\n
+        1|       108|     N/A|\n
+        2|       326|   1.739|\n
+        3|       966|  1.3044|\n
+        4|      2358|  1.2871|\n
+        5|      3040|  1.0324|\n
+        6|      4038| 0.53456|\n
+        7|      5470| 0.50188|\n
+        8|      7440| 0.28342|\n
+        9|     10122| 0.33775|\n
+        10|     13768| 0.10967|\n
+        11|     18498| 0.11437|\n
+        12|     25044| 0.13151|\n
+        13|     33562| 0.13472|\n
+        14|     44028| 0.07696|\n
+        15|     57390|0.042998|\n\n'''
+        design = designs.DesignPlanar()
+        renderer = QQ3DRenderer(design, initiate=False)
+        renderer._pinfo = MagicMock()
+        renderer._pinfo.setup = MagicMock()
+        renderer._pinfo.setup.get_convergence = MagicMock()
+        renderer._pinfo.setup.get_convergence.return_value = (None,
+                                                              convergence_txt)
+        self.assertTrue(renderer.get_convergence())
+
+    def test_unsuccessful_get_convergence(self):
+        """Test get_convergence returns the correct Boolean when not converged"""
+
+        convergence_txt = ''''Setup : Setup\n
+            Problem Type : CG\n\n
+            ==================\n
+            Number of Passes\n
+            Completed : 2\n
+            Maximum   : 2\n
+            Minimum   : 2\n
+            ==================\n
+            Criterion : Delta %\n
+            Target    : 0.1\n
+            Current   : 1.739\n
+            ==================\n
+            Pass|# Triangle|Delta %|\n
+            1|       108|    N/A|\n
+            2|       326|  1.739|\n\n'''
+        design = designs.DesignPlanar()
+        renderer = QQ3DRenderer(design, initiate=False)
+        renderer._pinfo = MagicMock()
+        renderer._pinfo.setup = MagicMock()
+        renderer._pinfo.setup.get_convergence = MagicMock()
+        renderer._pinfo.setup.get_convergence.return_value = (None,
+                                                              convergence_txt)
+        self.assertFalse(renderer.get_convergence())
 
 
 if __name__ == '__main__':
