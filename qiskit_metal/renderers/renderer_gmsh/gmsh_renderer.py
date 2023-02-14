@@ -1314,12 +1314,9 @@ class QGmshRenderer(QRenderer):
             raise ValueError(
                 "Only .msh files supported for post processing views.")
 
-        if self.initialized:
-            self.model = str(self.model) + "_post_processing"
-        else:
-            self.model = "post_processing"
+        self.model = "post_processing"
 
-        gmsh.merge(filename)
+        gmsh.open(filename)
         if launch_gui:
             self.launch_gui()
 
