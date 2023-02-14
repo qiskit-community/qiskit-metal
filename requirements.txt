@@ -1,7 +1,7 @@
 addict
 descartes
 gdspy>=1.5.2
-geopandas; platform_system != "Windows"  #pip install geopandas causes fiona errors. Therefore, if you use `conda env`, you must first run `conda install fiona`, while if you use `python venv` you must first download the gdal and fiona wheels from https://www.lfd.uci.edu/~gohlke/pythonlibs/ and manually pip install them in that order.
+geopandas
 ipython
 matplotlib
 numpy
