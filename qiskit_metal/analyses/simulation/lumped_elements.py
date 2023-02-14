@@ -59,7 +59,7 @@ class LumpedElementsSim(QSimulation):
     """Default setup."""
 
     # supported labels for data generated from the simulation
-    data_labels = ['cap_matrix', 'cap_all_passes', 'units']
+    data_labels = ['cap_matrix', 'cap_all_passes', 'units', 'is_converged']
     """Default data labels."""
 
     def __init__(self, design: 'QDesign' = None, renderer_name: str = 'q3d'):
@@ -94,6 +94,8 @@ class LumpedElementsSim(QSimulation):
             # extract the capacitance matrices for all passes
             self.capacitance_all_passes, _ = self.renderer.get_capacitance_all_passes(
             )
+            # extract convergence
+            self.is_converged = self.renderer.get_convergence()
         else:
             self.logger.error(
                 "Please initialize renderer before trying to load the simulation results."
@@ -216,3 +218,26 @@ class LumpedElementsSim(QSimulation):
                 {type(data)})
             return
         self.set_data('units', data)
+
+    @property
+    def is_converged(self) -> bool:
+        """Getter
+
+        Returns:
+            bool: Boolean indicating whether simulation has converged
+        """
+        return self.get_data('is_converged')
+
+    @is_converged.setter
+    def is_converged(self, data: bool):
+        """Setter
+
+        Args:
+            data (bool): Sets convergence of simulation for
+        """
+        if not isinstance(data, bool):
+            self.logger.warning(
+                'Unsupported type %s. Only accepts boolean. Please try again.',
+                {type(data)})
+            return
+        self.set_data('is_converged', data)
