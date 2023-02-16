@@ -14,7 +14,7 @@ jobs:
         with:
           python-version: "3.10"
       - name: Install Deps
-        run: pip install -U twine wheel
+        run: pip install -U twine==4.0.2 wheel==0.38.4
       - name: Build Artifacts
         run: |
           python setup.py sdist
