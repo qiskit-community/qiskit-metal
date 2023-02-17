@@ -272,7 +272,7 @@ class QElmerRenderer(QRendererAnalysis):
     def assign_nets(
         self,
         open_pins: Union[list,
-                         None] = None) -> dict[Union[str, int], list[int]]:
+                         None] = None) -> dict[Union[str, int], list[str]]:
         """Assigns a netlist number to each galvanically connected metal region,
         and returns a dictionary with each net as a key, and the corresponding list of
         geometries associated with that net as values.
@@ -282,7 +282,7 @@ class QElmerRenderer(QRendererAnalysis):
                                                         Defaults to None.
 
         Returns:
-            dict[Union[str, int], list[int]]: dictionary with keys for each net, and list of
+            dict[Union[str, int], list[str]]: dictionary with keys for each net, and list of
                     values with the corresponding geometries associated with that net as values.
         """
 
