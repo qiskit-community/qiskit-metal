@@ -6,7 +6,7 @@ Qiskit Metal | Quantum Device Design & Analysis (Q-EDA) |version|
 
     This is an alpha version of Qiskit Metal, the code is still under development.
     Please let us know about anything you might want us to add or elaborate upon in the
-    Slack channel `#metal <https://qiskit.slack.com/archives/C01R8KP5WP7>`_ in the `qiskit workspace <https://ibm.co/joinqiskitslack>`_.
+    Slack channel `#metal <https://qiskit.slack.com/archives/C01R8KP5WP7>`_ in the `qiskit workspace <https://qisk.it/join-slack>`_.
 
 .. hint::
     You can open this documentation using
@@ -34,7 +34,7 @@ Call it quantum EDA (Q-EDA) and analysis. Qiskit Metal is:
 * Community-oriented and tutorial-driven, join the `#metal <https://qiskit.slack.com/archives/C01R8KP5WP7>`_ Slack.
 
 
-Use the slack channel.  Join `qiskit slack <https://ibm.co/joinqiskitslack>`_ and
+Use the slack channel.  Join `qiskit slack <https://qisk.it/join-slack>`_ and
 then join the `#metal <https://qiskit.slack.com/archives/C01R8KP5WP7>`_ channel to communicate with the developers and other participants.
 You may also use this channel to learn about upcoming weekly tutorials and to inquire about potential collaborations.
 

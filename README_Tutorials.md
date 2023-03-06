@@ -6,7 +6,7 @@ Through June 2021 we are offering live tutorials and Q&A.
 
 The streaming will also be recorded and made available [here](https://www.youtube.com/playlist?list=PLOFEBzvs-VvqHl5ZqVmhB_FcSqmLufsjb) for offline review.
 
-Join the [Qiskit](https://ibm.co/joinqiskitslack) `#metal` slack channel to request topics of interest, to give us feedback and to participate to all qiskit metal discussions.
+Join the [Qiskit](https://qisk.it/join-slack) `#metal` slack channel to request topics of interest, to give us feedback and to participate to all qiskit metal discussions.
 
 ## Current Schedule
 | Date | Type | Topic |
