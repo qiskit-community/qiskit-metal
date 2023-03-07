@@ -876,6 +876,33 @@ class QGmshRenderer(QRenderer):
         # junc_dimtags = [(2, junc) for junc in all_juncs]
         # gmsh.model.occ.fragment([(3, self.vacuum_box)], junc_dimtags)
 
+    def get_all_metal_surfaces(self):
+        metal_geoms = list()
+        surf_tags = list()
+        for layer in self.layer_types["metal"]:
+            thickness = self.get_thickness_for_layer_datatype(layer_num=layer)
+
+            for _, tag in self.juncs_dict[layer].items():
+                surf_tags += tag
+
+            if thickness > 0.0:
+                for _, tag in self.polys_dict[layer].items():
+                    metal_geoms += tag
+                for _, tag in self.paths_dict[layer].items():
+                    metal_geoms += tag
+                metal_geoms += self.layers_dict[layer]
+            else:
+                for _, tag in self.polys_dict[layer].items():
+                    surf_tags += tag
+                for _, tag in self.paths_dict[layer].items():
+                    surf_tags += tag
+                surf_tags += self.layers_dict[layer]
+
+        for geom in metal_geoms:
+            surf_tags += list(gmsh.model.occ.getSurfaceLoops(geom)[1][0])
+
+        return surf_tags
+
     def assign_physical_groups(self, ignore_metal_volume: bool,
                                draw_sample_holder: bool):
         """Assign physical groups to classify different geometries physically.
@@ -950,12 +977,21 @@ class QGmshRenderer(QRenderer):
 
                 layer_name = layer_type + f'_(layer {layer})'
                 layer_tag = self.layers_dict[layer]
+                all_metal_surfs = self.get_all_metal_surfaces()
                 if len(layer_tag) > 0:
                     if layer_dim == 3:
                         layer_sfs_tags = []
                         for vol in layer_tag:
-                            layer_sfs_tags += list(
+                            layer_sfs = list(
                                 gmsh.model.occ.getSurfaceLoops(vol)[1][0])
+
+                            if layer_type == "ground_plane":
+                                layer_sfs_tags += layer_sfs
+                            else:
+                                layer_sfs_tags += [
+                                    sf for sf in layer_sfs
+                                    if sf not in all_metal_surfs
+                                ]
 
                         if layer_type != "ground_plane" or (
                                 layer_type == "ground_plane" and
