@@ -14,7 +14,7 @@ dependencies:
   - pint==0.20.1
   - pyepr-quantum==0.8.5.7
   - pygments==2.14.0
-  - pyside2==5.15.2.1
+  - pyside2==5.15.8
   - qdarkstyle==3.1
   - qutip==4.7.1
   - scipy==1.10.0
