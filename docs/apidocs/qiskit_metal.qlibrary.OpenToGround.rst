@@ -29,6 +29,9 @@ OpenToGround
       OpenToGround.options
       OpenToGround.pin_names
       OpenToGround.qgeometry_types
+      OpenToGround.pins
+      OpenToGround.metadata
+      OpenToGround.status
    
    
 

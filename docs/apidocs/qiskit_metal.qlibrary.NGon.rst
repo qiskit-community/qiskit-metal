@@ -29,6 +29,9 @@ NGon
       NGon.options
       NGon.pin_names
       NGon.qgeometry_types
+      NGon.pins
+      NGon.metadata
+      NGon.status
    
    
 

@@ -29,6 +29,9 @@ TunableCoupler01
       TunableCoupler01.options
       TunableCoupler01.pin_names
       TunableCoupler01.qgeometry_types
+      TunableCoupler01.pins
+      TunableCoupler01.metadata
+      TunableCoupler01.status
    
    
 

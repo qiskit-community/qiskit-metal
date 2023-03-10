@@ -29,6 +29,9 @@ CircleCaterpillar
       CircleCaterpillar.options
       CircleCaterpillar.pin_names
       CircleCaterpillar.qgeometry_types
+      CircleCaterpillar.pins
+      CircleCaterpillar.metadata
+      CircleCaterpillar.status
    
    
 

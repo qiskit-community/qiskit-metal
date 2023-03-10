@@ -39,6 +39,7 @@ LOManalysis
       LOManalysis.clear_data
       LOManalysis.get_data
       LOManalysis.get_data_labels
+      LOManalysis.load_simulation_data
       LOManalysis.plot_convergence
       LOManalysis.plot_convergence_chi
       LOManalysis.print_run_args

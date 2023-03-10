@@ -29,6 +29,9 @@ SQUID_LOOP
       SQUID_LOOP.options
       SQUID_LOOP.pin_names
       SQUID_LOOP.qgeometry_types
+      SQUID_LOOP.pins
+      SQUID_LOOP.metadata
+      SQUID_LOOP.status
    
    
 

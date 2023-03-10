@@ -29,6 +29,9 @@ CoupledLineTee
       CoupledLineTee.options
       CoupledLineTee.pin_names
       CoupledLineTee.qgeometry_types
+      CoupledLineTee.pins
+      CoupledLineTee.metadata
+      CoupledLineTee.status
    
    
 

@@ -29,6 +29,9 @@ jj_manhattan
       jj_manhattan.options
       jj_manhattan.pin_names
       jj_manhattan.qgeometry_types
+      jj_manhattan.pins
+      jj_manhattan.metadata
+      jj_manhattan.status
    
    
 

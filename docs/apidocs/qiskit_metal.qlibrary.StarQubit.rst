@@ -29,6 +29,9 @@ StarQubit
       StarQubit.options
       StarQubit.pin_names
       StarQubit.qgeometry_types
+      StarQubit.pins
+      StarQubit.metadata
+      StarQubit.status
    
    
 
@@ -48,6 +51,17 @@ StarQubit
       StarQubit.get_pin
       StarQubit.get_template_options
       StarQubit.make
+      StarQubit.make_circle
+      StarQubit.make_coordinates_trap
+      StarQubit.make_coupling_resonators
+      StarQubit.make_inner_star
+      StarQubit.make_outer_circle
+      StarQubit.make_pin_coordinates
+      StarQubit.make_pockets
+      StarQubit.make_readout_coordinates
+      StarQubit.make_readout_resonator
+      StarQubit.make_resonator_coordinates
+      StarQubit.make_rotation
       StarQubit.parse_options
       StarQubit.parse_value
       StarQubit.populate_to_track_table_usage

@@ -29,6 +29,9 @@ LineTee
       LineTee.options
       LineTee.pin_names
       LineTee.qgeometry_types
+      LineTee.pins
+      LineTee.metadata
+      LineTee.status
    
    
 

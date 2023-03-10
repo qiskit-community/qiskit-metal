@@ -30,6 +30,9 @@ RouteMixed
       RouteMixed.options
       RouteMixed.pin_names
       RouteMixed.qgeometry_types
+      RouteMixed.pins
+      RouteMixed.metadata
+      RouteMixed.status
    
    
 
@@ -46,7 +49,6 @@ RouteMixed
       RouteMixed.add_qgeometry
       RouteMixed.adjust_length
       RouteMixed.assign_direction_to_anchor
-      RouteMixed.cascaded_union
       RouteMixed.connect_astar_or_simple
       RouteMixed.connect_components_already_in_design
       RouteMixed.connect_meandered
@@ -79,6 +81,7 @@ RouteMixed
       RouteMixed.set_pin
       RouteMixed.to_script
       RouteMixed.trim_pts
+      RouteMixed.unary_union
       RouteMixed.unobstructed
       RouteMixed.unobstructed_close_up
    

@@ -30,6 +30,9 @@ RouteMeander
       RouteMeander.options
       RouteMeander.pin_names
       RouteMeander.qgeometry_types
+      RouteMeander.pins
+      RouteMeander.metadata
+      RouteMeander.status
    
    
 

@@ -29,6 +29,9 @@ RectangleHollow
       RectangleHollow.options
       RectangleHollow.pin_names
       RectangleHollow.qgeometry_types
+      RectangleHollow.pins
+      RectangleHollow.metadata
+      RectangleHollow.status
    
    
 

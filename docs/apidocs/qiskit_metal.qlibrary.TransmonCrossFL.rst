@@ -29,6 +29,9 @@ TransmonCrossFL
       TransmonCrossFL.options
       TransmonCrossFL.pin_names
       TransmonCrossFL.qgeometry_types
+      TransmonCrossFL.pins
+      TransmonCrossFL.metadata
+      TransmonCrossFL.status
    
    
 

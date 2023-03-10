@@ -29,6 +29,9 @@ CircleRaster
       CircleRaster.options
       CircleRaster.pin_names
       CircleRaster.qgeometry_types
+      CircleRaster.pins
+      CircleRaster.metadata
+      CircleRaster.status
    
    
 

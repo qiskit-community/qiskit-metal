@@ -29,6 +29,9 @@ TransmonPocket6
       TransmonPocket6.options
       TransmonPocket6.pin_names
       TransmonPocket6.qgeometry_types
+      TransmonPocket6.pins
+      TransmonPocket6.metadata
+      TransmonPocket6.status
    
    
 

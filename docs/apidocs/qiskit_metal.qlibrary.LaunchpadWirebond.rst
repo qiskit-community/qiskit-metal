@@ -29,6 +29,9 @@ LaunchpadWirebond
       LaunchpadWirebond.options
       LaunchpadWirebond.pin_names
       LaunchpadWirebond.qgeometry_types
+      LaunchpadWirebond.pins
+      LaunchpadWirebond.metadata
+      LaunchpadWirebond.status
    
    
 

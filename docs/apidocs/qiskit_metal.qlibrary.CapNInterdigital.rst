@@ -29,6 +29,9 @@ CapNInterdigital
       CapNInterdigital.options
       CapNInterdigital.pin_names
       CapNInterdigital.qgeometry_types
+      CapNInterdigital.pins
+      CapNInterdigital.metadata
+      CapNInterdigital.status
    
    
 

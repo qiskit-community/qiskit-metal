@@ -22,6 +22,7 @@ LumpedElementsSim
       LumpedElementsSim.capacitance_matrix
       LumpedElementsSim.data_labels
       LumpedElementsSim.default_setup
+      LumpedElementsSim.is_converged
       LumpedElementsSim.logger
       LumpedElementsSim.renderer_initialized
       LumpedElementsSim.setup

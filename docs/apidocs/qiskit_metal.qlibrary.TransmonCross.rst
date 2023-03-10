@@ -29,6 +29,9 @@ TransmonCross
       TransmonCross.options
       TransmonCross.pin_names
       TransmonCross.qgeometry_types
+      TransmonCross.pins
+      TransmonCross.metadata
+      TransmonCross.status
    
    
 

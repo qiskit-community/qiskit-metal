@@ -30,6 +30,9 @@ RouteFramed
       RouteFramed.options
       RouteFramed.pin_names
       RouteFramed.qgeometry_types
+      RouteFramed.pins
+      RouteFramed.metadata
+      RouteFramed.status
    
    
 

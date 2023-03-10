@@ -29,6 +29,9 @@ CapNInterdigitalTee
       CapNInterdigitalTee.options
       CapNInterdigitalTee.pin_names
       CapNInterdigitalTee.qgeometry_types
+      CapNInterdigitalTee.pins
+      CapNInterdigitalTee.metadata
+      CapNInterdigitalTee.status
    
    
 

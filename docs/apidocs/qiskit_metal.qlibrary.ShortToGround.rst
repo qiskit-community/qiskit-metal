@@ -29,6 +29,9 @@ ShortToGround
       ShortToGround.options
       ShortToGround.pin_names
       ShortToGround.qgeometry_types
+      ShortToGround.pins
+      ShortToGround.metadata
+      ShortToGround.status
    
    
 

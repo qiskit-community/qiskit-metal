@@ -29,6 +29,9 @@ TransmonPocketTeeth
       TransmonPocketTeeth.options
       TransmonPocketTeeth.pin_names
       TransmonPocketTeeth.qgeometry_types
+      TransmonPocketTeeth.pins
+      TransmonPocketTeeth.metadata
+      TransmonPocketTeeth.status
    
    
 

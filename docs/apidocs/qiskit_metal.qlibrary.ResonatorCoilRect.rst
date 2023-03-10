@@ -29,6 +29,9 @@ ResonatorCoilRect
       ResonatorCoilRect.options
       ResonatorCoilRect.pin_names
       ResonatorCoilRect.qgeometry_types
+      ResonatorCoilRect.pins
+      ResonatorCoilRect.metadata
+      ResonatorCoilRect.status
    
    
 

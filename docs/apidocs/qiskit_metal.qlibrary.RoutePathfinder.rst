@@ -30,6 +30,9 @@ RoutePathfinder
       RoutePathfinder.options
       RoutePathfinder.pin_names
       RoutePathfinder.qgeometry_types
+      RoutePathfinder.pins
+      RoutePathfinder.metadata
+      RoutePathfinder.status
    
    
 
@@ -45,7 +48,6 @@ RoutePathfinder
       RoutePathfinder.add_pin
       RoutePathfinder.add_qgeometry
       RoutePathfinder.assign_direction_to_anchor
-      RoutePathfinder.cascaded_union
       RoutePathfinder.connect_astar_or_simple
       RoutePathfinder.connect_components_already_in_design
       RoutePathfinder.connect_simple
@@ -74,6 +76,7 @@ RoutePathfinder
       RoutePathfinder.set_pin
       RoutePathfinder.to_script
       RoutePathfinder.trim_pts
+      RoutePathfinder.unary_union
       RoutePathfinder.unobstructed
       RoutePathfinder.unobstructed_close_up
    

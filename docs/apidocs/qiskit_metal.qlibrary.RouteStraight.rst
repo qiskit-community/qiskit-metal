@@ -30,6 +30,9 @@ RouteStraight
       RouteStraight.options
       RouteStraight.pin_names
       RouteStraight.qgeometry_types
+      RouteStraight.pins
+      RouteStraight.metadata
+      RouteStraight.status
    
    
 

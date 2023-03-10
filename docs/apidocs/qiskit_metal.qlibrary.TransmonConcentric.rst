@@ -29,6 +29,9 @@ TransmonConcentric
       TransmonConcentric.options
       TransmonConcentric.pin_names
       TransmonConcentric.qgeometry_types
+      TransmonConcentric.pins
+      TransmonConcentric.metadata
+      TransmonConcentric.status
    
    
 

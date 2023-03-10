@@ -29,6 +29,9 @@ jj_dolan
       jj_dolan.options
       jj_dolan.pin_names
       jj_dolan.qgeometry_types
+      jj_dolan.pins
+      jj_dolan.metadata
+      jj_dolan.status
    
    
 

@@ -29,6 +29,9 @@ Rectangle
       Rectangle.options
       Rectangle.pin_names
       Rectangle.qgeometry_types
+      Rectangle.pins
+      Rectangle.metadata
+      Rectangle.status
    
    
 

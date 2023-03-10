@@ -29,6 +29,9 @@ TransmonInterdigitated
       TransmonInterdigitated.options
       TransmonInterdigitated.pin_names
       TransmonInterdigitated.qgeometry_types
+      TransmonInterdigitated.pins
+      TransmonInterdigitated.metadata
+      TransmonInterdigitated.status
    
    
 

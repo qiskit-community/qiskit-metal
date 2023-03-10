@@ -29,6 +29,9 @@ NSquareSpiral
       NSquareSpiral.options
       NSquareSpiral.pin_names
       NSquareSpiral.qgeometry_types
+      NSquareSpiral.pins
+      NSquareSpiral.metadata
+      NSquareSpiral.status
    
    
 

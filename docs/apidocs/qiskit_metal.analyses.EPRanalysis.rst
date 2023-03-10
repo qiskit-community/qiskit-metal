@@ -45,6 +45,7 @@ EPRanalysis
       EPRanalysis.get_data_labels
       EPRanalysis.get_frequencies
       EPRanalysis.get_stored_energy
+      EPRanalysis.load_simulation_data
       EPRanalysis.print_run_args
       EPRanalysis.report_hamiltonian
       EPRanalysis.run
