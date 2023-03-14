@@ -22,7 +22,6 @@ class QGmshRenderer(QRenderer):
     """Extends QRendererAnalysis class to export designs to Gmsh using the Gmsh python API.
 
     Default Options:
-        # Buffer between max/min x and edge of ground plane, in mm
         * x_buffer_width_mm -- Buffer between max/min x and edge of ground plane, in mm
         * y_buffer_width_mm -- Buffer between max/min y and edge of ground plane, in mm
         * mesh -- to define meshing parameters
@@ -96,11 +95,9 @@ class QGmshRenderer(QRenderer):
 
     @property
     def initialized(self):
-        """Abstract method. Must be implemented by the subclass.
-        Is renderer ready to be used?
-        Implementation must return boolean True if successful. False otherwise.
-        """
-        if self.model == self._model_name:
+        """Returns boolean True if initialized successfully.
+        False otherwise."""
+        if gmsh.isInitialized():
             return True
         return False
 
@@ -214,6 +211,7 @@ class QGmshRenderer(QRenderer):
         skip_junctions: bool = False,
         mesh_geoms: bool = True,
         ignore_metal_volume: bool = False,
+        omit_ground_for_layers: Optional[list[int]] = None,
     ):
         """Render the design in Gmsh and apply changes to modify the geometries
         according to the type of simulation. Simulation parameters provided by the user.
@@ -233,7 +231,14 @@ class QGmshRenderer(QRenderer):
             ignore_metal_volume (bool, optional): ignore the volume of metals and replace
                                                         it with a list of surfaces instead.
                                                         Defaults to False.
+            omit_ground_for_layers (Optional[list[int]]): omit rendering the ground plane for
+                                                         specified layers. Defaults to None.
         """
+
+        # For handling the case when the user wants to use
+        # QGmshRenderer from design.renderers.gmsh instance.
+        if not self.initialized:
+            self._initiate_renderer()
 
         # defaultdict: chip -- geom_tag
         self.layers_dict = defaultdict(list)
@@ -253,7 +258,8 @@ class QGmshRenderer(QRenderer):
                              open_pins=open_pins,
                              box_plus_buffer=box_plus_buffer,
                              draw_sample_holder=draw_sample_holder,
-                             skip_junctions=skip_junctions)
+                             skip_junctions=skip_junctions,
+                             omit_ground_for_layers=omit_ground_for_layers)
 
         self.apply_changes_for_simulation(
             ignore_metal_volume=ignore_metal_volume,
@@ -270,7 +276,8 @@ class QGmshRenderer(QRenderer):
                         selection: Union[list, None] = None,
                         open_pins: Union[list, None] = None,
                         box_plus_buffer: bool = True,
-                        skip_junctions: bool = False):
+                        skip_junctions: bool = False,
+                        omit_ground_for_layers: Optional[list[int]] = None):
         """This function draws the raw geometries in Gmsh as taken from the
         QGeometry tables and applies thickness depending on the layer-stack.
 
@@ -284,6 +291,8 @@ class QGmshRenderer(QRenderer):
             draw_sample_holder (bool): To draw the sample holder box.
             skip_junctions (bool, optional): Set to True to sip rendering the
                                                         junctions. Defaults to False.
+            omit_ground_for_layers (Optional[list[int]]): omit rendering the ground plane for
+                                                         specified layers. Defaults to None.
         """
 
         self.qcomp_ids, self.case = self.get_unique_component_ids(selection)
@@ -296,8 +305,9 @@ class QGmshRenderer(QRenderer):
         self.render_tables(skip_junction=skip_junctions)
         self.add_endcaps(open_pins=open_pins)
         self.render_layers(box_plus_buffer=box_plus_buffer,
+                           omit_layers=omit_ground_for_layers,
                            draw_sample_holder=draw_sample_holder)
-        self.subtract_from_layers()
+        self.subtract_from_layers(omit_layers=omit_ground_for_layers)
         self.gmsh_occ_synchronize()
 
     def apply_changes_for_simulation(self, ignore_metal_volume: bool,
@@ -602,8 +612,17 @@ class QGmshRenderer(QRenderer):
         open_pins = open_pins if open_pins is not None else []
 
         for comp, pin in open_pins:
+            if comp not in self.design.components:
+                raise ValueError(
+                    f"Component '{comp}' not present in current design.")
+
             qcomp = self.design.components[comp]
             qc_layer = int(qcomp.options.layer)
+
+            if pin not in qcomp.pins:
+                raise ValueError(
+                    f"Pin '{pin}' not present in component '{comp}'.")
+
             pin_dict = qcomp.pins[pin]
             width, gap = self.parse_units_gmsh(
                 [pin_dict["width"], pin_dict["gap"]])
@@ -647,18 +666,22 @@ class QGmshRenderer(QRenderer):
 
     def render_layers(self,
                       draw_sample_holder: bool,
-                      layers: Optional[List[int]] = None,
+                      omit_layers: Optional[List[int]] = None,
                       box_plus_buffer: bool = True):
         """Render all chips of the design. calls `render_chip` to render the actual geometries
 
         Args:
-            layers (Optional[List[int]]): List of layers to render.
-                                Renders all if [] or None is given. Defaults to None.
+            omit_layers (Optional[List[int]]): List of layers to omit render.
+                                               Renders all if [] or None is given.
+                                               Defaults to None.
             draw_sample_holder (bool): To draw the sample holder box.
-            box_plus_buffer (bool, optional): For adding buffer to chip dimensions. Defaults to True.
+            box_plus_buffer (bool, optional): For adding buffer to chip dimensions.
+                                              Defaults to True.
         """
-        layer_list = list(set(l for l in self.design.ls.ls_df["layer"])
-                         ) if layers is None else layers
+        layer_list = list(set(l for l in self.design.ls.ls_df["layer"]))
+
+        if omit_layers is not None:
+            layer_list = list(l for l in layer_list if l not in omit_layers)
 
         for layer in layer_list:
             # Add the buffer, using options for renderer.
@@ -731,9 +754,18 @@ class QGmshRenderer(QRenderer):
 
         self.layers_dict[layer_number] = [layer_tag]
 
-    def subtract_from_layers(self):
-        """Subtract the QGeometries in tables from the chip ground plane"""
+    def subtract_from_layers(self, omit_layers: Optional[list[int]] = None):
+        """Subtract the QGeometries in tables from the chip ground plane
+
+        Args:
+            omit_layers (Optional[List[int]]): List of layers to omit render.
+                                               Renders all if [] or None is given.
+                                               Defaults to None.
+        """
         for layer_num, shapes in self.layer_subtract_dict.items():
+            if omit_layers is not None and layer_num in omit_layers:
+                continue
+
             thickness = self.get_thickness_for_layer_datatype(
                 layer_num=layer_num)
 
@@ -742,16 +774,18 @@ class QGmshRenderer(QRenderer):
             shape_dim_tags = [(dim, s) for s in shapes]
             layer_dim_tag = (dim, self.layers_dict[layer_num][0])
             tool_dimtags = [layer_dim_tag]
-            subtract_layer = gmsh.model.occ.cut(tool_dimtags, shape_dim_tags)
+            if len(shape_dim_tags) > 0:
+                subtract_layer = gmsh.model.occ.cut(tool_dimtags,
+                                                    shape_dim_tags)
 
-            updated_layer_geoms = []
-            for i in range(len(tool_dimtags)):
-                if len(subtract_layer[1][i]) > 0:
-                    updated_layer_geoms += [
-                        tag for _, tag in subtract_layer[1][i]
-                    ]
+                updated_layer_geoms = []
+                for i in range(len(tool_dimtags)):
+                    if len(subtract_layer[1][i]) > 0:
+                        updated_layer_geoms += [
+                            tag for _, tag in subtract_layer[1][i]
+                        ]
 
-            self.layers_dict[layer_num] = updated_layer_geoms
+                self.layers_dict[layer_num] = updated_layer_geoms
 
     def fragment_interfaces(self, draw_sample_holder: bool):
         """Fragment Gmsh surfaces to ensure consistent tetrahedral meshing
@@ -797,6 +831,7 @@ class QGmshRenderer(QRenderer):
                                                        all_geom_dimtags)
             # Extract the new vacuum_box volume
             self.vacuum_box = fragmented_geoms[1][0][0][1]
+            object_dimtag = (3, self.vacuum_box)
         else:
             # Get one of the dim=3 objects
             dim3_dimtag = [
@@ -841,6 +876,33 @@ class QGmshRenderer(QRenderer):
         # junc_dimtags = [(2, junc) for junc in all_juncs]
         # gmsh.model.occ.fragment([(3, self.vacuum_box)], junc_dimtags)
 
+    def get_all_metal_surfaces(self):
+        metal_geoms = list()
+        surf_tags = list()
+        for layer in self.layer_types["metal"]:
+            thickness = self.get_thickness_for_layer_datatype(layer_num=layer)
+
+            for _, tag in self.juncs_dict[layer].items():
+                surf_tags += tag
+
+            if thickness > 0.0:
+                for _, tag in self.polys_dict[layer].items():
+                    metal_geoms += tag
+                for _, tag in self.paths_dict[layer].items():
+                    metal_geoms += tag
+                metal_geoms += self.layers_dict[layer]
+            else:
+                for _, tag in self.polys_dict[layer].items():
+                    surf_tags += tag
+                for _, tag in self.paths_dict[layer].items():
+                    surf_tags += tag
+                surf_tags += self.layers_dict[layer]
+
+        for geom in metal_geoms:
+            surf_tags += list(gmsh.model.occ.getSurfaceLoops(geom)[1][0])
+
+        return surf_tags
+
     def assign_physical_groups(self, ignore_metal_volume: bool,
                                draw_sample_holder: bool):
         """Assign physical groups to classify different geometries physically.
@@ -854,7 +916,7 @@ class QGmshRenderer(QRenderer):
             ValueError: if self.layer_types is not a dict
             ValueError: if layer number is not in self.layer_types
         """
-        layer_numbers = list(self.layers_dict.keys())
+        layer_numbers = list(set(l for l in self.design.ls.ls_df["layer"]))
         for layer in layer_numbers:
             # TODO: check if thickness == 0, then fragment differently
             layer_thickness = self.get_thickness_for_layer_datatype(
@@ -915,12 +977,21 @@ class QGmshRenderer(QRenderer):
 
                 layer_name = layer_type + f'_(layer {layer})'
                 layer_tag = self.layers_dict[layer]
+                all_metal_surfs = self.get_all_metal_surfaces()
                 if len(layer_tag) > 0:
                     if layer_dim == 3:
                         layer_sfs_tags = []
                         for vol in layer_tag:
-                            layer_sfs_tags += list(
+                            layer_sfs = list(
                                 gmsh.model.occ.getSurfaceLoops(vol)[1][0])
+
+                            if layer_type == "ground_plane":
+                                layer_sfs_tags += layer_sfs
+                            else:
+                                layer_sfs_tags += [
+                                    sf for sf in layer_sfs
+                                    if sf not in all_metal_surfs
+                                ]
 
                         if layer_type != "ground_plane" or (
                                 layer_type == "ground_plane" and
@@ -1279,12 +1350,9 @@ class QGmshRenderer(QRenderer):
             raise ValueError(
                 "Only .msh files supported for post processing views.")
 
-        if self.initialized:
-            self.model = str(self.model) + "_post_processing"
-        else:
-            self.model = "post_processing"
+        self.model = "post_processing"
 
-        gmsh.merge(filename)
+        gmsh.open(filename)
         if launch_gui:
             self.launch_gui()
 
