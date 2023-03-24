@@ -126,13 +126,6 @@ copyright = '2019, Qiskit Development Team'  # pylint: disable=redefined-builtin
 author = 'Qiskit Metal Development Team'
 # -- General configuration ---------------------------------------------------
 
-# If your documentation needs a minimal Sphinx version, state it here.
-#
-# needs_sphinx = '1.0'
-
-# Add any Sphinx extension module names here, as strings. They can be
-# extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
-# ones.
 extensions = [
     'sphinx.ext.napoleon', 'sphinx.ext.autodoc', 'sphinx.ext.autosummary',
     'sphinx.ext.mathjax', 'sphinx.ext.viewcode', 'sphinx.ext.extlinks',
@@ -221,11 +214,7 @@ modindex_common_prefix = ['qiskit_metal.']
 
 # -- Options for HTML output -------------------------------------------------
 
-# The theme to use for HTML and HTML Help pages.  See the documentation for
-# a list of builtin themes.
-#
 html_theme = "qiskit_sphinx_theme"
-html_theme_path = ['.', qiskit_sphinx_theme.get_html_theme_path()]
 
 html_logo = 'images/logo.png'
 #html_sidebars = {'**': ['globaltoc.html']}
