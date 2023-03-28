@@ -115,6 +115,12 @@ Here are some things to consider when setting up a development environment:
 * Library errors when activating conda environments, or initializing jupyter notebook/lab, might indicate a conflict between python libraries in the base and sub environments. Go ahead and manually delete the library from the base environment `site-packages` folder, shown in the error message. You might need to reinstall them in the sub environment, or create a new one.
 * If Jupyter notebook has trouble finding a dll for a package that works in the new environment outside of Jupyter, then try opening Jupyter notebook from the new environment instead of from `base`
 
+### Installing other dependencies for Open-source Renderers (Gmsh and ElmerFEM)
+
+If you want to use the recently added open-source renderers for [Gmsh](./qiskit_metal/renderers/renderer_gmsh) and [ElmerFEM](./qiskit_metal/renderers/renderer_elmer) for simulation of your design, please make sure that both of them have been installed successfully in your system before running Qiskit Metal. On Windows, Linux, and MacOS (with x86_64 architecture CPUs), Gmsh will be installed automatically using the `environment.yml` file during the conda installation step above. For more detailed steps to install ElmerFEM, please refer to [this](./README_Gmsh_Elmer.md) document.
+
+**NOTE:** We would like to give a disclaimer for users on Apple silicon Macs (M1 and M2-series). Currently, Qiskit Metal uses PySide2 which is not natively supported on the ARM architecture. This will lead to error in instantiating the `MetalGUI` as of now. However, if you still want to use Qiskit Metal without the GUI, the process for installing Gmsh software is a bit different and can be found in [this](./README_Gmsh_Elmer.md) document.
+
 # Other Common Issues
 
 For other common installation issues, please refer to the [FAQ](https://qiskit.org/documentation/metal/faq.html)
