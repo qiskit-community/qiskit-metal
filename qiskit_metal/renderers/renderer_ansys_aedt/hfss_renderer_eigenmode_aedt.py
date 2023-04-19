@@ -1,6 +1,6 @@
 #
 from ast import parse
-from qiskit_metal_INR.renderers_internal.render_pyaedt.hfss_renderer_aedt import QHFSSPyaedt
+from qiskit_metal.renderers.renderer_ansys_aedt.hfss_renderer_aedt import QHFSSPyaedt
 from qiskit_metal import Dict
 from typing import List, Tuple, Union
 import pandas as pd

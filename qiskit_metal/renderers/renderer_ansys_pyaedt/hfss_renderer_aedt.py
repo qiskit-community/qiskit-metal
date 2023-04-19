@@ -19,7 +19,7 @@ with Hfss as hfss:
 
 """
 
-from qiskit_metal_INR.renderers_internal.render_pyaedt.pyaedt_base import QPyaedt
+from qiskit_metal.renderers.renderer_ansys_pyaedt.pyaedt_base import QPyaedt
 from qiskit_metal.renderers.renderer_ansys.ansys_renderer import QAnsysRenderer
 from qiskit_metal.draw.utility import to_vec3D, to_vec3D_list
 from qiskit_metal.toolbox_metal.parsing import parse_entry, parse_units

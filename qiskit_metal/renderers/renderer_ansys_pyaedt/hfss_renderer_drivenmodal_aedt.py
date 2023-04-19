@@ -1,8 +1,6 @@
 #
-from qiskit_metal_INR.renderers_internal.render_pyaedt.hfss_renderer_aedt import QHFSSPyaedt
-#from qiskit_metal.renderers.renderer_ansys.ansys_renderer import QAnsysRenderer
+from qiskit_metal.renderers.renderer_ansys_pyaedt.hfss_renderer_aedt import QHFSSPyaedt
 from qiskit_metal.toolbox_metal.parsing import parse_entry, parse_units
-#from qiskit_metal.toolbox_python.utility_functions import get_clean_name
 from qiskit_metal import Dict
 from typing import List, Tuple, Union
 import pandas as pd

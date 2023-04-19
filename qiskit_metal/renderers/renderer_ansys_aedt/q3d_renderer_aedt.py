@@ -1,7 +1,7 @@
 #-*- coding: utf-8 -*-
 
 from typing import Union, Tuple
-from qiskit_metal_INR.renderers_internal.render_pyaedt.pyaedt_base import QPyaedt
+from qiskit_metal.renderers.renderer_ansys_pyaedt.pyaedt_base import QPyaedt
 from qiskit_metal.toolbox_metal.parsing import is_true
 
 from qiskit_metal import Dict
