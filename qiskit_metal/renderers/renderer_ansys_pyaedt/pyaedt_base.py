@@ -15,8 +15,6 @@ import pyaedt
 from pyaedt import Desktop
 from pyaedt import Hfss, Q3d
 from pyaedt import constants
-from pyaedt.modeler import Primitives
-from pyaedt.modeler.Primitives import Polyline
 
 #from qiskit_metal.renderers.renderer_base import QRenderer
 from qiskit_metal.renderers.renderer_base import QRendererAnalysis
@@ -649,8 +647,8 @@ class QPyaedt(QRendererAnalysis):
 
     def add_linestring_width(
             self, qc_width: float,
-            a_polyline: pyaedt.modeler.Primitives.Polyline, points_3d: list,
-            material: str) -> pyaedt.modeler.Primitives.Polyline:
+            a_polyline: "pyaedt.modeler.Primitives.Polyline", points_3d: list,
+            material: str) -> "pyaedt.modeler.Primitives.Polyline":
         """Determine the orthogonal vector.  Then sweep along a_polyline using qc_width.
         Then return the reference to new polyline with sweep in Ansys.
 
@@ -761,7 +759,7 @@ class QPyaedt(QRendererAnalysis):
 
     def add_fillet_linestring(self, qgeom: pd.Series, points_3d: list,
                               qc_fillet: float,
-                              a_polyline: pyaedt.modeler.Primitives.Polyline):
+                              a_polyline: "pyaedt.modeler.Primitives.Polyline"):
         """Determine the idx of Polyline vertices to fillet and fillet them.
 
         Args:
