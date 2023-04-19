@@ -647,7 +647,8 @@ class QPyaedt(QRendererAnalysis):
         pass
 
     def add_linestring_width(
-            self, qc_width: float, a_polyline: Polyline, points_3d: list,
+            self, qc_width: float,
+            a_polyline: pyaedt.modeler.Primitives.Polyline, points_3d: list,
             material: str) -> pyaedt.modeler.Primitives.Polyline:
         """Determine the orthogonal vector.  Then sweep along a_polyline using qc_width.
         Then return the reference to new polyline with sweep in Ansys.
