@@ -6,6 +6,7 @@ from typing import List, Tuple, Union
 import pandas as pd
 import pyaedt
 from pyaedt import settings
+from pyaedt.modules.solutions import SolutionData
 
 
 class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
