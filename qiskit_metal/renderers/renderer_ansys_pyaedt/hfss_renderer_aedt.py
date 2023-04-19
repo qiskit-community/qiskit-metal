@@ -23,13 +23,14 @@ from qiskit_metal.renderers.renderer_ansys_pyaedt.pyaedt_base import QPyaedt
 from qiskit_metal.renderers.renderer_ansys.ansys_renderer import QAnsysRenderer
 from qiskit_metal.draw.utility import to_vec3D, to_vec3D_list
 from qiskit_metal.toolbox_metal.parsing import parse_entry, parse_units
-from qiskit_metal.toolbox_python.utility_functions import get_clean_name
+
 from qiskit_metal import Dict
 from typing import List, Tuple, Union
 import pandas as pd
 import shapely
 
-
+if not config.is_building_docs():
+    from qiskit_metal.toolbox_python.utility_functions import get_clean_name
 class QHFSSPyaedt(QPyaedt):
     """Subclass of pyaedt renderer for running HFSS simulations.
 
