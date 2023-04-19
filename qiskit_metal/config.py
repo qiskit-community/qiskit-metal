@@ -34,15 +34,15 @@ renderers_to_load = Dict(
               class_name='QGmshRenderer'),
     elmer=Dict(path_name='qiskit_metal.renderers.renderer_elmer.elmer_renderer',
                class_name='QElmerRenderer'),
-    pyaedt_q3d=Dict(
+    aedt_q3d=Dict(
         path_name=
-        'qiskit_metal.renderers.renderer_ansys_pyaedt.q3d_renderer_aedt import',
-        class_name='`QQ3DPyaedt'),
-    pyaedt_dm=Dict(
+        'qiskit_metal.renderers.renderer_ansys_pyaedt.q3d_renderer_aedt',
+        class_name='QQ3DPyaedt'),
+    aedt_hfss_drivenmodal=Dict(
         path_name=
         'qiskit_metal.renderers.renderer_ansys_pyaedt.hfss_renderer_drivenmodal_aedt',
         class_name='QHFSSDrivenmodalPyaedt'),
-    pyaedt_em=Dict(
+    aedt_hfss_eigenmode=Dict(
         path_name=
         'qiskit_metal.renderers.renderer_ansys_pyaedt.hfss_renderer_eigenmode_aedt',
         class_name='QHFSSEigenmodePyaedt'))
