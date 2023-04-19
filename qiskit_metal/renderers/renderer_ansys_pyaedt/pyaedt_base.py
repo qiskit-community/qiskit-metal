@@ -15,6 +15,7 @@ import pyaedt
 from pyaedt import Desktop
 from pyaedt import Hfss, Q3d
 from pyaedt import constants
+from pyaedt.modeler import Primitives
 from pyaedt.modeler.Primitives import Polyline
 
 #from qiskit_metal.renderers.renderer_base import QRenderer
