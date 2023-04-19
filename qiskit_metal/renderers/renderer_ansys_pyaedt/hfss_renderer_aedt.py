@@ -29,8 +29,11 @@ from typing import List, Tuple, Union
 import pandas as pd
 import shapely
 
+from qiskit_metal import config
 if not config.is_building_docs():
     from qiskit_metal.toolbox_python.utility_functions import get_clean_name
+
+
 class QHFSSPyaedt(QPyaedt):
     """Subclass of pyaedt renderer for running HFSS simulations.
 
