@@ -183,6 +183,10 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
             box_plus_buffer (bool, optional): Either calculate a bounding box based on the location of rendered geometries
                                      or use chip size from design class.
         """
+        # # self.fill_info will hold the name of newly generated box,
+        # # along with information from layer stack
+        # self.fill_info = self.design.ls.get_layer_datatype_when_fill_is_true()
+
         # Draw in fill = True pieces. based on either full chip or box_plus
 
         # They are reset for each time render_design happens.
