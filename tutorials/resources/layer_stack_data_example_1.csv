@@ -1,0 +1,5 @@
+chip_name,layer,datatype,material,thickness,z_coord,fill
+'main',1,0,'pec','10um','0um','True'
+'main',3,0,'silicon','-750um','0um','True'
+'qubit_chip',2,0,'pec','15um','60um','True'
+'qubit_chip',4,0,'silicon','750um','75um','True'
