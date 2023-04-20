@@ -115,8 +115,8 @@ class QPyaedt(QRendererAnalysis):
     element_table_data = dict(
         path=dict(wire_bonds=False),
         junction=dict(inductance=default_options["Lj"],
-                      capacitance=default_options["Cj"],
-                      resistance=default_options["_Rj"]),
+                      capacitance=default_options["Cj"]),
+        #resistance=default_options["_Rj"]),
     )
     """Element table data."""
 
