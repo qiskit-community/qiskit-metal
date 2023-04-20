@@ -104,7 +104,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
 
     def test_analyses_instantiate_ScatteringImpedanceSim(self):
         """Test instantiation of ScatteringImpedanceSim."""
-        design = designs.MultiPlanar()
+        design = designs.DesignPlanar()
 
         try:
             ScatteringImpedanceSim(design)
@@ -119,7 +119,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
     def test_analyses_instantiate_lomanalysis(self):
         """Test instantiation of LOManalysis."""
         try:
-            design = designs.MultiPlanar()
+            design = designs.DesignPlanar()
             LOManalysis(design)
         except Exception:
             self.fail("LOManalysis failed.")
@@ -127,7 +127,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
     def test_analyses_instantiate_epranalysis(self):
         """Test instantiation of EPRanalysis."""
         try:
-            design = designs.MultiPlanar()
+            design = designs.DesignPlanar()
             EPRanalysis(design)
         except Exception:
             self.fail("EPRanalysis failed.")
