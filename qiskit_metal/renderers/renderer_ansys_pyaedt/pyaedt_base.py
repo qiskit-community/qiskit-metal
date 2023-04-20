@@ -188,7 +188,8 @@ class QPyaedt(QRendererAnalysis):
         self.fill_info = dict()
         # self.fill_info will hold the name of newly generated box,
         # along with information from layer stack
-        self.fill_info = self.design.ls.get_layer_datatype_when_fill_is_true()
+        # Moved to each render_design since this method was causing error when trying to make columns of qgeomtry tables.
+        #self.fill_info = self.design.ls.get_layer_datatype_when_fill_is_true()
 
         self.open_pins_is_valid = None
 

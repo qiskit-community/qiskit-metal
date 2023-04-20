@@ -438,9 +438,9 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
             box_plus_buffer (bool, optional): Either calculate a bounding box based on the location of rendered geometries
                                      or use chip size from design class.
         """
-        # # self.fill_info will hold the name of newly generated box,
-        # # along with information from layer stack
-        # self.fill_info = self.design.ls.get_layer_datatype_when_fill_is_true()
+        # self.fill_info will hold the name of newly generated box,
+        # along with information from layer stack
+        self.fill_info = self.design.ls.get_layer_datatype_when_fill_is_true()
 
         super().render_design(selection, open_pins, port_list, jj_to_port,
                               ignored_jjs, box_plus_buffer)
