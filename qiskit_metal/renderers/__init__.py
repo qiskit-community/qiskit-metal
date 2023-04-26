@@ -64,7 +64,11 @@ Ansys Renderer
     QAnsysRenderer
     QHFSSRenderer
     QQ3DRenderer
-
+    QPyaedt
+    QQ3DPyaedt
+    QHFSSPyaedt
+    QHFSSDrivenmodalPyaedt
+    QHFSSEigenmodePyaedt
 
 
 
@@ -108,3 +112,9 @@ if config.is_building_docs():
 
     from .renderer_gmsh.gmsh_utils import Vec3DArray
     from .renderer_gmsh.gmsh_renderer import QGmshRenderer
+
+    from .renderer_ansys_pyaedt.pyaedt_base import QPyaedt
+    from .renderer_ansys_pyaedt.q3d_renderer_aedt import QQ3DPyaedt
+    from .renderer_ansys_pyaedt.hfss_renderer_aedt import QHFSSPyaedt
+    from .renderer_ansys_pyaedt.hfss_renderer_drivenmodal_aedt import QHFSSDrivenmodalPyaedt
+    from .renderer_ansys_pyaedt.hfss_renderer_eigenmode_aedt import QHFSSEigenmodePyaedt

@@ -605,8 +605,8 @@ class QGeometryTables(object):
         for table_name in self.tables:
             df_table_name = self.tables[table_name]
             # self.tables[table_name] = df_table_name.drop(df_table_name[df_table_name['component'] == component_id].index)
-            self.tables[table_name] = df_table_name[
-                df_table_name['component'] != component_id]
+            self.tables[table_name] = df_table_name[df_table_name['component']
+                                                    != component_id]
 
     def get_component(
         self,

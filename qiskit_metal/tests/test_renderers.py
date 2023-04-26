@@ -34,6 +34,9 @@ from qiskit_metal.renderers.renderer_gds.gds_renderer import QGDSRenderer
 from qiskit_metal.renderers.renderer_mpl.mpl_interaction import MplInteraction
 from qiskit_metal.renderers.renderer_gmsh.gmsh_renderer import QGmshRenderer
 from qiskit_metal.renderers.renderer_elmer.elmer_renderer import QElmerRenderer
+from qiskit_metal.renderers.renderer_ansys_pyaedt.hfss_renderer_eigenmode_aedt import QHFSSEigenmodePyaedt
+from qiskit_metal.renderers.renderer_ansys_pyaedt.hfss_renderer_drivenmodal_aedt import QHFSSDrivenmodalPyaedt
+from qiskit_metal.renderers.renderer_ansys_pyaedt.q3d_renderer_aedt import QQ3DPyaedt
 
 from qiskit_metal.renderers.renderer_ansys import ansys_renderer
 

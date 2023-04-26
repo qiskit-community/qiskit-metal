@@ -503,7 +503,7 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
 
         result = q1._get_table_values_from_renderers(design)
 
-        self.assertEqual(len(result), 11)
+        self.assertEqual(len(result), 20)
         self.assertEqual(result['hfss_inductance'], '10nH')
         self.assertEqual(result['hfss_capacitance'], 0)
         self.assertEqual(result['hfss_resistance'], 0)
