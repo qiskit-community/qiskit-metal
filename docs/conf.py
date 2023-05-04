@@ -129,7 +129,8 @@ author = 'Qiskit Metal Development Team'
 extensions = [
     'sphinx.ext.napoleon', 'sphinx.ext.autodoc', 'sphinx.ext.autosummary',
     'sphinx.ext.mathjax', 'sphinx.ext.viewcode', 'sphinx.ext.extlinks',
-    'jupyter_sphinx', 'nbsphinx'
+    'jupyter_sphinx', 'nbsphinx',
+    "sphinxcontrib.jquery",  # Remove when changing html_theme to qiskit_ecosystem.
 ]
 
 html_static_path = ['_static']
@@ -217,7 +218,6 @@ modindex_common_prefix = ['qiskit_metal.']
 html_theme = "qiskit_sphinx_theme"
 
 html_logo = 'images/logo.png'
-#html_sidebars = {'**': ['globaltoc.html']}
 html_last_updated_fmt = '%Y/%m/%d'
 
 html_theme_options = {
