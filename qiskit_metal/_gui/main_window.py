@@ -593,8 +593,25 @@ class MetalGUI(QMainWindowBaseHandler):
         model = QTableModel_AllComponents(self,
                                           logger=self.logger,
                                           tableView=self.ui.tableComponents)
-        self.ui.tableComponents.setModel(model)
-
+        # Add Sort/Filter logic to the components table
+        self.ui.proxyModel = QSortFilterProxyModel()                                
+        self.ui.proxyModel.setSourceModel(model)
+        
+        # search all columns
+        self.ui.proxyModel.setFilterKeyColumn(-1)
+        self.ui.tableComponents.setSortingEnabled(True)
+        self.ui.tableComponents.setModel(self.ui.proxyModel)
+        
+        # Add a text changed event to the filter text box
+        self.ui.filter_text_design.textChanged.connect(self.filter_text_design_onChanged)
+    
+    def filter_text_design_onChanged (self, text):
+        """ Text changed event for filter_text_design
+        Args:
+            text: Text typed in the filter box.
+        """
+        self.ui.proxyModel.setFilterWildcard(text)
+        
     def _create_new_component_object_from_qlibrary(self, full_path: str):
         """
         Must be defined outside of _setup_library_widget to ensure self == MetalGUI and will retain opened ScrollArea
@@ -743,7 +760,7 @@ class MetalGUI(QMainWindowBaseHandler):
         self.refresh_design()
 
         # Table models
-        self.ui.tableComponents.model().refresh()
+        self.ui.tableComponents.model().sourceModel().refresh()
 
         # Redraw plots
         self.refresh_plot()
