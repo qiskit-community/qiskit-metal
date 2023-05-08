@@ -14,110 +14,71 @@
    <string>Q3D Renderer</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="instructionsLabel">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>10</y>
-      <width>201</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Check off components to export:</string>
-    </property>
-   </widget>
-   <widget class="QWidget" name="horizontalLayoutWidget_2">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>470</y>
-      <width>301</width>
-      <height>32</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_4">
-     <item>
-      <widget class="QPushButton" name="refreshButton">
-       <property name="text">
-        <string>Refresh List</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="selectAllButton">
-       <property name="text">
-        <string>Select All</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="deselectAllButton">
-       <property name="text">
-        <string>Deselect All</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QListView" name="listView">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>31</y>
-      <width>301</width>
-      <height>431</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QTreeView_Base" name="treeView">
-    <property name="geometry">
-     <rect>
-      <x>325</x>
-      <y>30</y>
-      <width>311</width>
-      <height>431</height>
-     </rect>
-    </property>
-    <property name="rootIsDecorated">
-     <bool>false</bool>
-    </property>
-   </widget>
-   <widget class="QLabel" name="instructionsLabel_2">
-    <property name="geometry">
-     <rect>
-      <x>380</x>
-      <y>10</y>
-      <width>201</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Renderer options</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QWidget" name="horizontalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>370</x>
-      <y>470</y>
-      <width>231</width>
-      <height>32</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0">
-     <item>
-      <widget class="QPushButton" name="confirmButton">
-       <property name="text">
-        <string>Confirm Selection</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QLabel" name="instructionsLabel">
+      <property name="text">
+       <string>Check off components to export:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="instructionsLabel_2">
+      <property name="text">
+       <string>Renderer options</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QListView" name="listView"/>
+    </item>
+    <item row="1" column="1">
+     <widget class="QTreeView_Base" name="treeView">
+      <property name="rootIsDecorated">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <item>
+       <widget class="QPushButton" name="refreshButton">
+        <property name="text">
+         <string>Refresh List</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="selectAllButton">
+        <property name="text">
+         <string>Select All</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="deselectAllButton">
+        <property name="text">
+         <string>Deselect All</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="2" column="1">
+     <layout class="QHBoxLayout" name="horizontalLayout" stretch="0">
+      <item>
+       <widget class="QPushButton" name="confirmButton">
+        <property name="text">
+         <string>Confirm Selection</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -125,7 +86,7 @@
      <x>0</x>
      <y>0</y>
      <width>651</width>
-     <height>22</height>
+     <height>18</height>
     </rect>
    </property>
   </widget>
@@ -139,7 +100,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../../qiskit-metal/qiskit_metal/_gui/main_window_rc.qrc"/>
+  <include location="main_window_rc.qrc"/>
  </resources>
  <connections>
   <connection>
