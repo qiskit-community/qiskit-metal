@@ -75,17 +75,17 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
     @property
     def design(self):
         """Returns the design."""
-        return self.model().design
+        return self.model().sourceModel().design
 
     @property
     def logger(self):
         """Returns the logger."""
-        return self.model().logger
+        return self.model().sourceModel().logger
 
     @property
     def gui(self) -> 'MetalGUI':
         """Returns the GUI."""
-        return self.model().gui
+        return self.model().sourceModel().gui
 
     # @slot_catch_error
     def contextMenuEvent(self, event: QContextMenuEvent):
