@@ -34,7 +34,18 @@ renderers_to_load = Dict(
               class_name='QGmshRenderer'),
     elmer=Dict(path_name='qiskit_metal.renderers.renderer_elmer.elmer_renderer',
                class_name='QElmerRenderer'),
-)
+    aedt_q3d=Dict(
+        path_name=
+        'qiskit_metal.renderers.renderer_ansys_pyaedt.q3d_renderer_aedt',
+        class_name='QQ3DPyaedt'),
+    aedt_hfss_drivenmodal=Dict(
+        path_name=
+        'qiskit_metal.renderers.renderer_ansys_pyaedt.hfss_renderer_drivenmodal_aedt',
+        class_name='QHFSSDrivenmodalPyaedt'),
+    aedt_hfss_eigenmode=Dict(
+        path_name=
+        'qiskit_metal.renderers.renderer_ansys_pyaedt.hfss_renderer_eigenmode_aedt',
+        class_name='QHFSSEigenmodePyaedt'))
 """
 Define the renderes to load. Just provide the module names here.
 """
