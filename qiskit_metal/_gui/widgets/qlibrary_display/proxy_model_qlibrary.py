@@ -18,7 +18,7 @@ Proxy Model to clean display of QComponents in Library tab
 import typing
 
 from PySide2.QtCore import QModelIndex, QSortFilterProxyModel, Qt, QSize
-from PySide2.QtWidgets import QWidget
+from PySide2.QtWidgets import QWidget, QFileSystemModel
 
 
 class LibraryFileProxyModel(QSortFilterProxyModel):
@@ -39,6 +39,7 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
         # (QComponent files) OR (Directories)
         self.accepted_files__regex = r"(^((?!\.))(?!base)(?!__init__)(?!_template)(?!_parsed)(?!__pycache__).*\.py)|(?!__pycache__)(^([^.]+)$)"  # pylint: disable=line-too-long
         self.setFilterRegExp(self.accepted_files__regex)
+        self.filter_text = ""
 
     def filterAcceptsColumn(
             self, source_column: int, source_parent: QModelIndex) -> bool:  #pylint: disable=unused-argument
@@ -56,6 +57,24 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
         if source_column > 0:
             return False
         return True
+
+    def filterAcceptsRow(
+            self, source_row: int, source_parent: QModelIndex) -> bool:  #pylint: disable=unused-argument
+        """
+        Filters out unwanted file information in display
+        Args:
+            source_column(int): Display column in question
+            source_parent(QModelIndex): Parent index
+        Returns:
+            bool: Whether to display column
+
+        """
+        source_model = self.sourceModel()
+        index = source_model.index(source_row, 0, source_parent)
+        name = index.data(QFileSystemModel.FileNameRole)
+        #file_info = source_model.fileInfo(index)
+        reject = name.startswith("_") or (self.filter_text not in name)
+        return not reject
 
     def data(self,
              index: QModelIndex,
