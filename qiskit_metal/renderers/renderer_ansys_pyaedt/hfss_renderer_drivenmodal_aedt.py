@@ -174,7 +174,7 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
         if setup_name in self.current_app.setup_names:
 
             try:
-                self.current_app.create_linear_count_sweep(
+                sweep = self.current_app.create_linear_count_sweep(
                     setupname=setup_name,
                     unit=unit,
                     freqstart=start_ghz,
@@ -185,6 +185,7 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
                     sweep_type=type,
                     interpolation_tol=interpolation_tol,
                     interpolation_max_solutions=interpolation_max_solutions)
+                return sweep
             except Exception as ex:
                 self.design.logger.error(f' The exception is {ex}')
         else:
@@ -194,7 +195,7 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
             )
             self.add_hfss_dm_setup(setup_name)
             try:
-                self.current_app.create_linear_count_sweep(
+                sweep = self.current_app.create_linear_count_sweep(
                     setupname=setup_name,
                     unit=unit,
                     freqstart=start_ghz,
@@ -205,6 +206,7 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
                     sweep_type=type,
                     interpolation_tol=interpolation_tol,
                     interpolation_max_solutions=interpolation_max_solutions)
+                return sweep
             except Exception as ex:
                 self.design.logger.error(f' The exception is {ex}')
 
