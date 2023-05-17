@@ -142,7 +142,9 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
                   step_ghz=None,
                   name="QHFSSDrivenmodalPyaedt_sweep",
                   type="Fast",
-                  save_fields=False):
+                  save_fields=False,
+                  interpolation_tol=0.5,
+                  interpolation_max_solutions=250):
         """Add a frequency sweep to a driven modal setup.
 
         Args:
@@ -162,6 +164,11 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
                                 and "Discrete". Defaults to "Fast".
             save_fields (bool, optional): Whether or not to save fields.
                                 Defaults to False.
+            interpolation_tol (float, optional): Error tolerance threshold 
+                                     for the interpolation type sweep. Defaults to 0.5.
+            interpolation_max_solutions (int, optional): Maximum number of solutions
+                                     evaluted for the interpolation process. 
+                                     Defaults to 250.
         """
 
         if setup_name in self.current_app.setup_names:
@@ -175,7 +182,9 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
                     num_of_freq_points=count,
                     sweepname=name,
                     save_fields=save_fields,
-                    sweep_type=type)
+                    sweep_type=type,
+                    interpolation_tol=interpolation_tol,
+                    interpolation_max_solutions=interpolation_max_solutions)
             except Exception as ex:
                 self.design.logger.error(f' The exception is {ex}')
         else:
@@ -193,7 +202,9 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
                     num_of_freq_points=count,
                     sweepname=name,
                     save_fields=save_fields,
-                    sweep_type=type)
+                    sweep_type=type,
+                    interpolation_tol=interpolation_tol,
+                    interpolation_max_solutions=interpolation_max_solutions)
             except Exception as ex:
                 self.design.logger.error(f' The exception is {ex}')
 
