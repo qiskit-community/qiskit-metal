@@ -109,6 +109,9 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
                                     Defaults to self.default_setup.
             BroadbandHighFreq (float, optional): Maximum frequency for Broadband SolveType in GHz. 
                                     Defaults to self.default_setup.
+
+        Returns:
+            new_setup (pyaedt.modules.SolveSetup.SetupHFSS): pyAEDT simulation setup object.
         """
 
         self.activate_user_project_design()
@@ -217,6 +220,9 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
             interpolation_max_solutions (int, optional): Maximum number of solutions
                                      evaluted for the interpolation process. 
                                      Defaults to 250.
+
+        Returns:
+            sweep (pyaedt.modules.SolveSweeps.SweepHFSS): pyAEDT frequency sweep object.
         """
 
         if setup_name in self.current_app.setup_names:
