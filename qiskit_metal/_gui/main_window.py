@@ -560,15 +560,39 @@ class MetalGUI(QMainWindowBaseHandler):
         """Create main Window Elements Widget."""
         self.elements_win = ElementsWindow(self, self.main_window)
 
+        # Component filter
         self.ui.tabQGeometry.sort_model = QSortFilterProxyModel()
         self.ui.tabQGeometry.sort_model.setSourceModel(self.elements_win.model)
+        self.ui.tabQGeometry.sort_model.setFilterKeyColumn(1)
 
         self.elements_win.ui.tableElements.setModel(
             self.ui.tabQGeometry.sort_model)
         self.elements_win.ui.tableElements.setSortingEnabled(True)
 
+        # Add a text changed event to the QGeometry/Component/Layer text boxes
+        self.elements_win.ui.lineEdit.textChanged.connect(
+            self.elements_lineEdit_onChanged)
+        self.elements_win.ui.lineEdit_2.textChanged.connect(
+            self.elements_lineEdit_2_onChanged)
+
         # Add to the tabbed main view
         self.ui.tabQGeometry.layout().addWidget(self.elements_win)
+
+    def elements_lineEdit_onChanged(self, text):
+        """ Text changed event for QGeometry/Component text box
+        Args:
+            text: Text typed in the filter box.
+        """
+        self.ui.tabQGeometry.sort_model.setFilterKeyColumn(1)
+        self.ui.tabQGeometry.sort_model.setFilterWildcard(text)
+
+    def elements_lineEdit_2_onChanged(self, text):
+        """ Text changed event for QGeometry/Layer text box
+        Args:
+            text: Text typed in the filter box.
+        """
+        self.ui.tabQGeometry.sort_model.setFilterKeyColumn(3)
+        self.ui.tabQGeometry.sort_model.setFilterWildcard(text)
 
     def _setup_net_list_widget(self):
         """Create main Window Elements Widget."""
