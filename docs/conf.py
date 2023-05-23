@@ -130,7 +130,7 @@ extensions = [
     'sphinx.ext.napoleon', 'sphinx.ext.autodoc', 'sphinx.ext.autosummary',
     'sphinx.ext.mathjax', 'sphinx.ext.viewcode', 'sphinx.ext.extlinks',
     'jupyter_sphinx', 'nbsphinx',
-    "sphinxcontrib.jquery",  # Remove when changing html_theme to qiskit_ecosystem.
+    "qiskit_sphinx_theme",
 ]
 
 html_static_path = ['_static']
