@@ -65,8 +65,6 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
             * ground_spacing: '5um' -- Amount of ground plane between the connector and Crossmon arm (minimum should be based on fabrication capabilities)
             * claw_width: '10um' -- The width of the CPW center trace making up the claw/gap connector
             * claw_gap: '6um' -- The gap of the CPW center trace making up the claw/gap connector
-            * claw_cpw_length: '40um' -- The length of the CPW leading out of the claw
-            * claw_cpw_width: '10um' -- The width of the CPW leading out of the claw
             * connector_location: '0' -- 0 => 'west' arm, 90 => 'north' arm, 180 => 'east' arm
     """
 
@@ -206,7 +204,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         # Done here so as to have the same translations and rotations as the connector. Could
         # extract from the connector later, but since allowing different connector types,
         # this seems more straightforward.
-        port_line = draw.LineString([(-4 * c_w, -c_w / 2), (-4 * c_w, c_w / 2)])
+        port_line = draw.LineString([(-c_c_l, -c_c_w / 2), (-c_c_l, c_w / 2)])
 
         claw_rotate = 0
         if con_loc > 135:
