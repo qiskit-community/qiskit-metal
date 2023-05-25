@@ -79,6 +79,8 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
             ground_spacing='5um',
             claw_width='10um',
             claw_gap='6um',
+            claw_cpw_length='40um',
+            claw_cpw_width='10um',
             connector_location=
             '0'  # 0 => 'west' arm, 90 => 'north' arm, 180 => 'east' arm
         ))
@@ -175,10 +177,12 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         c_g = pc.claw_gap
         c_l = pc.claw_length
         c_w = pc.claw_width
+        c_c_w = pc.claw_cpw_width
+        c_c_l = pc.claw_cpw_length
         g_s = pc.ground_spacing
         con_loc = pc.connector_location
 
-        claw_cpw = draw.box(0, -c_w / 2, -4 * c_w, c_w / 2)
+        claw_cpw = draw.box(0, -c_c_w / 2, -c_c_l, c_c_w / 2)
 
         if pc.connector_type == 0:  # Claw connector
             t_claw_height = 2*c_g + 2 * c_w + 2*g_s + \
