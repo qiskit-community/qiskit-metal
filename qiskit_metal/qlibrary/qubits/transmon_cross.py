@@ -182,7 +182,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         g_s = pc.ground_spacing
         con_loc = pc.connector_location
 
-        claw_cpw = draw.box(0, -c_c_w / 2, -c_c_l, c_c_w / 2)
+        claw_cpw = draw.box(-c_w, -c_c_w / 2, -c_c_l-c_w, c_c_w / 2)
 
         if pc.connector_type == 0:  # Claw connector
             t_claw_height = 2*c_g + 2 * c_w + 2*g_s + \
@@ -197,14 +197,14 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
             connector_arm = draw.shapely.ops.unary_union([claw_base, claw_cpw])
             connector_etcher = draw.buffer(connector_arm, c_g)
         else:
-            connector_arm = claw_cpw
+            connector_arm = draw.box(0, -c_w / 2, -4 * c_w, c_w / 2)
             connector_etcher = draw.buffer(connector_arm, c_g)
 
         # Making the pin for  tracking (for easy connect functions).
         # Done here so as to have the same translations and rotations as the connector. Could
         # extract from the connector later, but since allowing different connector types,
         # this seems more straightforward.
-        port_line = draw.LineString([(-c_c_l, -c_c_w / 2), (-c_c_l, c_w / 2)])
+        port_line = draw.LineString([(-c_c_l-c_w, -c_c_w / 2), (-c_c_l-c_w, c_w / 2)])
 
         claw_rotate = 0
         if con_loc > 135:
