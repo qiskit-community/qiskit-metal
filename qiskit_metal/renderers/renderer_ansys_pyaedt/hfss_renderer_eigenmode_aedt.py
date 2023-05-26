@@ -405,16 +405,21 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
         if (dielectric_layers == None):
             dielectric_layers = self.default_pyepr_options.ansys.dielectric_layers
         
+        # Check if layerstack (self.design.ls) is uniquely specified
+        if (ls_unique != True):
+            raise ValueError('Layer data in `MultiPlanar` design is not unique')
+        
         dielectric_names = []
-
         ls_df = self.design.ls.ls_df
         for layer in dielectric_layers:
-            # Find layer name
+            # Find layer names
             selected_ls_df = ls_df[ls_df['layer'] == layer]
-            dielectric_name = f'layer_{selected_ls_df["layer"]}_datatype_{selected_ls_df["datatype"]}_plane'
+            datatype = selected_ls_df['datatype'].values[0]
+            dielectric_name = f'layer_{layer}_datatype_{datatype}_plane'
+
             dielectric_names.append(dielectric_name)
 
-        # Define them as dielectrics
+        # Define them as dielectrics in pyEPR.ProjectInfo object
         self.pinfo.dissipative['dielectric_surfaces'] = dielectric_names
 
     def epr_report_hamiltonian(self, numeric=None):
