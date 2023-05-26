@@ -275,3 +275,111 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
                 return False
 
         return True
+
+    def setup_jjs_for_epr(self, pinfo):
+        """
+        Finds all names, inductances, and capacitances of 
+        Sheet and Lines representing Josephson Junctions rendered into ANSYS.
+
+        Args:
+            pinfo (pyAEDT.ProjectInfo): pyAEDT method to connect to ANSYS
+
+        Returns:
+            rect_list (List(str)): ANSYS > Model > Sheets names containg 'rect_JJ'
+            line_list (List(str)): ANSYS > Model > Lines names containg 'rect_JJ'
+            Lj_list (List(float)):
+            Cj_sit (List(float)):
+        """
+        geom_table = self.path_poly_and_junction_with_valid_comps
+        all_jjs = geom_table.loc[geom_table['name'].str.contains('rect_jj')]
+
+        junction_setups = []
+        for i, row in all_jjs.iterrows():
+            ### Parsing Data
+            component = str(row['component'])
+            name = str(row['name'])
+            inductance =row['aedt_hfss_eigenmode_inductance'] # Lj in Henries
+            capacitance = row['aedt_hfss_eigenmode_capacitance'] # Cj in Farads
+
+            # Get ANSYS > Model > Sheet corresponding to JJs
+            rect_name = 'JJ_rect_Lj_' + component + '_' +  name
+
+            # Get ANSYS > Model > Lines corresponding to JJs
+            line_name = 'JJ_Lj_' + component + '_' + name + '_'
+
+            ### Appending data
+            # Add global Lj and Cj variables to ANSYS (for EPR analysis)
+            ansys_Lj_name = f'Lj_{i}'
+            ansys_Cj_name = f'Cj_{i}'
+
+            variable_manager = hfss_aedt._variable_manager
+            variable_manager[ansys_Lj_name] = inductance
+            variable_manager[ansys_Cj_name] = capacitance
+
+            # Append data in pyEPR.ProjectInfo.junctions data format
+            junction_dict = {'Lj_variable' : ansys_Lj_name, 
+                            'rect'        : rect_name, 
+                            'line'        : line_name, 
+                            'length'      : epr.parse_units('100um'),
+                            'Cj_variable' : ansys_Cj_name}
+            
+            pinfo.junctions[f'j{component}'] = junction_dict
+        
+        return pinfo
+
+    def run_epr(self, 
+                cos_trunc: int = 8,
+                fock_trunc: int = 8,
+                print_results: bool = True,
+                numeric: bool = True):
+        '''
+        Runs EPR analysis
+
+        Format of results:
+        f_0 [MHz]    : Eigenmode frequencies computed by HFSS; i.e., linear freq returned in GHz
+        f_1 [MHz]    : Dressed mode frequencies (by the non-linearity; e.g., Lamb shift, etc. ).
+                        If numerical diagonalizaiton is run, then we return the numerically diagonalizaed
+                        frequencies, otherwise, use 1st order pertuirbation theory on the 4th order
+                        expansion of the cosine.
+        f_ND [MHz]   : Numerical diagonalizaiton
+        chi_O1 [MHz] : Analytic expression for the chis based on a cos trunc to 4th order, and using 1st
+                        order perturbation theory. Diag is anharmonicity, off diag is full cross-Kerr.
+        chi_ND [MHz] : Numerically diagonalized chi matrix. Diag is anharmonicity, off diag is full
+                        cross-Kerr.
+
+        Args:
+            cos_trunc (int, optional): Truncation of the cosine. Defaults to 8.
+            fock_trunc (int, optional): Truncation of the fock. Defaults to 7. 
+            print_results (bool, optional): Print results of EPR analysis. Defaults to True.
+            numeric (bool, optional): Use numerical diagonalization. Defaults to True.
+
+        Returns:
+            self.epr_quantum_analysis.data (dict): all results of EPR analysis
+        '''
+        # Connect EPR to ANSYS
+        self.pinfo = epr.ProjectInfo()
+
+        # Tells pyEPR where Johsephson Junctions are located in ANSYS
+        self.pinfo = self.setup_jjs_for_epr(self.pinfo)
+        
+        # Executes the EPR analysis
+        self.epr_distributed_analysis = epr.DistributedAnalysis(self.pinfo) # 
+        self.epr_distributed_analysis.do_EPR_analysis()
+
+        # Find observable quantities from energy-partipation ratios
+        self.epr_quantum_analysis = epr.QuantumAnalysis(self.epr_distributed_analysis.data_filename)
+        self.epr_quantum_analysis.analyze_all_variations(cos_trunc=cos_trunc, 
+                                                        fock_trunc=fock_trunc,
+                                                        print_result=print_results)
+
+        # Print results?
+        if print_results:
+            self.epr_quantum_analysis.report_results(numeric=numeric)
+
+        # Release ANSYS from pyEPR script
+        self.pinfo.disconnect()
+        
+        return self.epr_quantum_analysis.data
+
+
+
