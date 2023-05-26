@@ -415,7 +415,7 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
             dielectric_names.append(dielectric_name)
 
         # Define them as dielectrics
-        self.pinfo.dissipative['dielectric_surfaces'] = dielectric_layer_names
+        self.pinfo.dissipative['dielectric_surfaces'] = dielectric_names
 
     def epr_report_hamiltonian(self, numeric=None):
         """Reports in a markdown friendly table the hamiltonian results.
