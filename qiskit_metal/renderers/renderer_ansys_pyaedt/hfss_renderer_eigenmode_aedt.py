@@ -278,20 +278,17 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
 
     def setup_jjs_for_epr(self, pinfo):
         """
-        Finds all names, inductances, and capacitances of 
-        Sheet and Lines representing Josephson Junctions rendered into ANSYS.
+        Finds all names, inductances, and capacitances of Josephson Junctions rendered into ANSYS.
 
         Args:
-            pinfo (pyAEDT.ProjectInfo): pyAEDT method to connect to ANSYS
+            pinfo (pyAEDT.ProjectInfo): pyAEDT method to connect to ANSYS.
 
         Returns:
-            rect_list (List(str)): ANSYS > Model > Sheets names containg 'rect_JJ'
-            line_list (List(str)): ANSYS > Model > Lines names containg 'rect_JJ'
-            Lj_list (List(float)):
-            Cj_sit (List(float)):
+            pinfo (pyAEDT.ProjectInfo): pyAEDT project w/ junctions setup.
         """
         geom_table = self.path_poly_and_junction_with_valid_comps
         all_jjs = geom_table.loc[geom_table['name'].str.contains('rect_jj')]
+        all_jjs = all_jjs.reset_index(drop=True)
 
         junction_setups = []
         for i, row in all_jjs.iterrows():
@@ -313,8 +310,8 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
             ansys_Cj_name = f'Cj_{i}'
 
             variable_manager = self.current_app._variable_manager
-            variable_manager[ansys_Lj_name] = str(inductance/1E9) + 'nH'
-            variable_manager[ansys_Cj_name] = str(capacitance/1E9) + 'nH'
+            variable_manager[ansys_Lj_name] = str(inductance * 1E9) + 'nH'
+            variable_manager[ansys_Cj_name] = str(capacitance * 1E15) + 'fF'
 
             # Append data in pyEPR.ProjectInfo.junctions data format
             junction_dict = {'Lj_variable' : ansys_Lj_name, 
@@ -323,12 +320,12 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
                             'length'      : epr.parse_units('100um'),
                             'Cj_variable' : ansys_Cj_name}
             
-            pinfo.junctions[f'j{component}'] = junction_dict
+            pinfo.junctions[f'j{i}'] = junction_dict
         
         return pinfo
 
     def run_epr(self, 
-                cos_trunc: int = 8,
+                cos_trunc: int = 7,
                 fock_trunc: int = 8,
                 print_results: bool = True,
                 numeric: bool = True):
@@ -363,7 +360,7 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
         self.pinfo = self.setup_jjs_for_epr(self.pinfo)
         
         # Executes the EPR analysis
-        self.epr_distributed_analysis = epr.DistributedAnalysis(self.pinfo) # 
+        self.epr_distributed_analysis = epr.DistributedAnalysis(self.pinfo) 
         self.epr_distributed_analysis.do_EPR_analysis()
 
         # Find observable quantities from energy-partipation ratios
@@ -380,6 +377,3 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
         self.pinfo.disconnect()
         
         return self.epr_quantum_analysis.data
-
-
-
