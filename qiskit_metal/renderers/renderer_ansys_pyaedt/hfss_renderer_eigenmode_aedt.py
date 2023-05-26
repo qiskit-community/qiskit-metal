@@ -25,7 +25,11 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
         PercentRefinement="30",
         BasisOrder="1")
     """aedt HFSS Options"""
-    aedt_hfss_drivenmodal_options = Dict()
+
+    default_epr_options = Dict(
+        dielectric_layers = [3],
+    )
+    """default pyEPR options"""
 
     def __init__(self,
                  multilayer_design: 'MultiPlanar',
@@ -281,7 +285,7 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
         Finds all names, inductances, and capacitances of Josephson Junctions rendered into ANSYS.
 
         Args:
-            pinfo (pyAEDT.ProjectInfo): pyAEDT method to connect to ANSYS.
+            pinfo (pyAEDT.ProjectInfo): pyAEDT object to connect to ANSYS.
 
         Returns:
             pinfo (pyAEDT.ProjectInfo): pyAEDT project w/ junctions setup.
@@ -323,6 +327,37 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
             pinfo.junctions[f'j{i}'] = junction_dict
         
         return pinfo
+    
+    def setup_dielectric_for_epr(self, pinfo, dielectric_layers=None):
+        """
+        Find name of dielectric layer rendered in ANSYS, then 
+        define it as a dissipative dielectric surface for pyEPR.
+
+        Args:
+            pinfo (pyEPR.ProjectInfo): pyAEDT object to connect to ANSYS.
+            dielectric_layers (list, optional): Specify which layers are dielectrics.
+                Layer specified in `LayerStackHandler.ls_df['layer']`.
+                Defaults to self.default_epr_options, which is the default silicon layer.
+        Returns:
+            pinfo (pyAEDT.ProjectInfo): pyAEDT project w/ dielectric setup.
+
+        """
+        eepr = self.default_epr_options
+        if (dielectric_layers == None):
+            pinfo.dissipative['dielectric_surfaces'] = eepr['dielectric_layers']
+
+            return pinfo
+        else:
+            ls_df = self.design.ls.ls_df
+            for layer in layers:
+                # Find layer name
+                selected_ls_df = ls_df[ls_df['layer'] == layer]
+                dielectric_name = f'layer_{selected_ls_df["layer"]}_datatype_{selected_ls_df["datatype"]}_plane'
+
+                # Define it as a dissipative layer
+                pinfo.dissipative['dielectric_surfaces'] = dielectric_name
+            
+            return pinfo
 
     def run_epr(self, 
                 cos_trunc: int = 7,
@@ -353,6 +388,8 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
         Returns:
             self.epr_quantum_analysis.data (dict): all results of EPR analysis
         '''
+        self.activate_user_project_design()
+
         # Connect EPR to ANSYS
         self.pinfo = epr.ProjectInfo()
 
