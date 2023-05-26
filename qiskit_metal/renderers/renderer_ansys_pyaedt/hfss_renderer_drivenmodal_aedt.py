@@ -164,6 +164,7 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
             new_setup.props['SolveType'] = 'MultiFrequency'
             new_setup.props[
                 'MultipleAdaptiveFreqsSetup'] = MultipleAdaptiveFreqsSetup
+            new_setup.props['MaximumPasses'] = MaximumPasses
         elif (SolveType == 'Broadband'):
             new_setup.enable_adaptive_setup_broadband(
                 low_frequency=f'{BroadbandLowFreq}GHz',
