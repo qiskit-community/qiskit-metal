@@ -312,7 +312,7 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
             ansys_Lj_name = f'Lj_{i}'
             ansys_Cj_name = f'Cj_{i}'
 
-            variable_manager = hfss_aedt._variable_manager
+            variable_manager = self.current_app._variable_manager
             variable_manager[ansys_Lj_name] = inductance
             variable_manager[ansys_Cj_name] = capacitance
 
