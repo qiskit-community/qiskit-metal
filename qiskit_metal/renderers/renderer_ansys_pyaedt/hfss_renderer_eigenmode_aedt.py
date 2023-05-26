@@ -406,7 +406,7 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
             dielectric_layers = self.default_pyepr_options.ansys.dielectric_layers
         
         # Check if layerstack (self.design.ls) is uniquely specified
-        ls_unique = design.ls.is_layer_data_unique()
+        ls_unique = self.design.ls.is_layer_data_unique()
         if (ls_unique != True):
             raise ValueError('Layer data in `MultiPlanar` design is not unique')
         
