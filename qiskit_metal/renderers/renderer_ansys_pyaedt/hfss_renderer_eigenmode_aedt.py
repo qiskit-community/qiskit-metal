@@ -26,10 +26,15 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
         BasisOrder="1")
     """aedt HFSS Options"""
 
-    default_epr_options = Dict(
-        dielectric_layers = [3],
+    default_pyepr_options = Dict(
+        ansys = Dict(dielectric_layers=[3],),
+        hamiltonian = Dict(
+            cos_trunc=7,
+            fock_trunc=8,
+            numeric=True),
+        print_result=True, 
     )
-    """default pyEPR options"""
+    """pyEPR options"""
 
     def __init__(self,
                  multilayer_design: 'MultiPlanar',
@@ -280,94 +285,16 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
 
         return True
 
-    def setup_jjs_for_epr(self, pinfo):
-        """
-        Finds all names, inductances, and capacitances of Josephson Junctions rendered into ANSYS.
-
-        Args:
-            pinfo (pyAEDT.ProjectInfo): pyAEDT object to connect to ANSYS.
-
-        Returns:
-            pinfo (pyAEDT.ProjectInfo): pyAEDT project w/ junctions setup.
-        """
-        geom_table = self.path_poly_and_junction_with_valid_comps
-        all_jjs = geom_table.loc[geom_table['name'].str.contains('rect_jj')]
-        all_jjs = all_jjs.reset_index(drop=True)
-
-        junction_setups = []
-        for i, row in all_jjs.iterrows():
-            ### Parsing Data
-            component = str(row['component'])
-            name = str(row['name'])
-            inductance =row['aedt_hfss_eigenmode_inductance'] # Lj in Henries
-            capacitance = row['aedt_hfss_eigenmode_capacitance'] # Cj in Farads
-
-            # Get ANSYS > Model > Sheet corresponding to JJs
-            rect_name = 'JJ_rect_Lj_' + component + '_' +  name
-
-            # Get ANSYS > Model > Lines corresponding to JJs
-            line_name = 'JJ_Lj_' + component + '_' + name + '_'
-
-            ### Appending data
-            # Add global Lj and Cj variables to ANSYS (for EPR analysis)
-            ansys_Lj_name = f'Lj_{i}'
-            ansys_Cj_name = f'Cj_{i}'
-
-            variable_manager = self.current_app._variable_manager
-            variable_manager[ansys_Lj_name] = str(inductance * 1E9) + 'nH'
-            variable_manager[ansys_Cj_name] = str(capacitance * 1E15) + 'fF'
-
-            # Append data in pyEPR.ProjectInfo.junctions data format
-            junction_dict = {'Lj_variable' : ansys_Lj_name, 
-                            'rect'        : rect_name, 
-                            'line'        : line_name, 
-                            'length'      : epr.parse_units('100um'),
-                            'Cj_variable' : ansys_Cj_name}
-            
-            pinfo.junctions[f'j{i}'] = junction_dict
-        
-        return pinfo
-    
-    def setup_dielectric_for_epr(self, pinfo, dielectric_layers=None):
-        """
-        Find name of dielectric layer rendered in ANSYS, then 
-        define it as a dissipative dielectric surface for pyEPR.
-
-        Args:
-            pinfo (pyEPR.ProjectInfo): pyAEDT object to connect to ANSYS.
-            dielectric_layers (list, optional): Specify which layers are dielectrics.
-                Layer specified in `LayerStackHandler.ls_df['layer']`.
-                Defaults to self.default_epr_options, which is the default silicon layer.
-        Returns:
-            pinfo (pyAEDT.ProjectInfo): pyAEDT project w/ dielectric setup.
-
-        """
-        eepr = self.default_epr_options
-        if (dielectric_layers == None):
-            pinfo.dissipative['dielectric_surfaces'] = eepr['dielectric_layers']
-
-            return pinfo
-        else:
-            ls_df = self.design.ls.ls_df
-            for layer in layers:
-                # Find layer name
-                selected_ls_df = ls_df[ls_df['layer'] == layer]
-                dielectric_name = f'layer_{selected_ls_df["layer"]}_datatype_{selected_ls_df["datatype"]}_plane'
-
-                # Define it as a dissipative layer
-                pinfo.dissipative['dielectric_surfaces'] = dielectric_name
-            
-            return pinfo
-
     def run_epr(self, 
-                cos_trunc: int = 7,
-                fock_trunc: int = 8,
-                print_results: bool = True,
-                numeric: bool = True):
+                dielectric_layers = None,
+                cos_trunc: int = None,
+                fock_trunc: int = None,
+                numeric: bool = None,
+                print_result: bool = None):
         '''
         Runs EPR analysis
 
-        Format of results:
+        Interpreting Results:
         f_0 [MHz]    : Eigenmode frequencies computed by HFSS; i.e., linear freq returned in GHz
         f_1 [MHz]    : Dressed mode frequencies (by the non-linearity; e.g., Lamb shift, etc. ).
                         If numerical diagonalizaiton is run, then we return the numerically diagonalizaed
@@ -380,37 +307,149 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
                         cross-Kerr.
 
         Args:
-            cos_trunc (int, optional): Truncation of the cosine. Defaults to 8.
-            fock_trunc (int, optional): Truncation of the fock. Defaults to 7. 
-            print_results (bool, optional): Print results of EPR analysis. Defaults to True.
-            numeric (bool, optional): Use numerical diagonalization. Defaults to True.
+            dielectric_layers (list, optional): Specify which layers are dielectrics.
+                Layers are specified in `LayerStackHandler.ls_df['layer']`.
+                Defaults to self.default_pyepr_options
+            cos_trunc (int, optional): Truncation of the cosine. Defaults to self.default_pyepr_options.
+            fock_trunc (int, optional): Truncation of the fock. Defaults to self.default_pyepr_options. 
+            numeric (bool, optional): Use numerical diagonalization. Defaults to self.default_pyepr_options.
+            print_result (bool, optional): Print results of EPR analysis. Defaults to self.default_pyepr_options.
 
         Returns:
             self.epr_quantum_analysis.data (dict): all results of EPR analysis
+
         '''
+        if (print_result == None):
+            print_result = self.default_pyepr_options.print_result
+
         self.activate_user_project_design()
 
         # Connect EPR to ANSYS
         self.pinfo = epr.ProjectInfo()
 
         # Tells pyEPR where Johsephson Junctions are located in ANSYS
-        self.pinfo = self.setup_jjs_for_epr(self.pinfo)
+        self.setup_jjs_for_epr()
+
+        # Tells pyEPR which components have dissipative elements
+        self.setup_dielectric_for_epr(dielectric_layers)
         
         # Executes the EPR analysis
         self.epr_distributed_analysis = epr.DistributedAnalysis(self.pinfo) 
         self.epr_distributed_analysis.do_EPR_analysis()
 
         # Find observable quantities from energy-partipation ratios
-        self.epr_quantum_analysis = epr.QuantumAnalysis(self.epr_distributed_analysis.data_filename)
-        self.epr_quantum_analysis.analyze_all_variations(cos_trunc=cos_trunc, 
-                                                        fock_trunc=fock_trunc,
-                                                        print_result=print_results)
+        self.epr_spectrum_analysis(cos_trunc=cos_trunc,
+                                   fock_trunc=fock_trunc,
+                                   print_result=print_result)
 
         # Print results?
-        if print_results:
+        if print_result:
             self.epr_quantum_analysis.report_results(numeric=numeric)
 
         # Release ANSYS from pyEPR script
         self.pinfo.disconnect()
         
         return self.epr_quantum_analysis.data
+
+    def setup_jjs_for_epr(self):
+        """
+        Finds all names, inductances, and capacitances of Josephson Junctions rendered into ANSYS.
+        """
+        # Get all josephson junctions from rendered components table
+        geom_table = self.path_poly_and_junction_with_valid_comps
+        all_jjs = geom_table.loc[geom_table['name'].str.contains('rect_jj')]
+        all_jjs = all_jjs.reset_index(drop=True)
+
+        for i, row in all_jjs.iterrows():
+            ### Parsing Data ###
+            component = str(row['component'])
+            name = str(row['name'])
+            inductance =row['aedt_hfss_eigenmode_inductance'] # Lj in Henries
+            capacitance = row['aedt_hfss_eigenmode_capacitance'] # Cj in Farads
+
+            # Get ANSYS > Model > Sheet corresponding to JJs
+            rect_name = 'JJ_rect_Lj_' + component + '_' +  name
+
+            # Get ANSYS > Model > Lines corresponding to JJs
+            line_name = 'JJ_Lj_' + component + '_' + name + '_'
+
+            ### Appending data ###
+            # Add global Lj and Cj variables to ANSYS (for EPR analysis)
+            ansys_Lj_name = f'Lj_{i}'
+            ansys_Cj_name = f'Cj_{i}'
+
+            self.set_variable(ansys_Lj_name, str(inductance * 1E9) + 'nH')
+            self.set_variable(ansys_Cj_name, str(capacitance * 1E15) + 'fF')
+
+            # Append data in pyEPR.ProjectInfo.junctions data format
+            junction_dict = {'Lj_variable' : ansys_Lj_name, 
+                            'rect'        : rect_name, 
+                            'line'        : line_name, 
+                            'length'      : epr.parse_units('100um'),
+                            'Cj_variable' : ansys_Cj_name}
+            
+            self.pinfo.junctions[f'j{i}'] = junction_dict
+    
+    def setup_dielectric_for_epr(self, dielectric_layers=None):
+        """
+        Find name of dielectric layer rendered in ANSYS, then 
+        define it as a dissipative dielectric surface for pyEPR.
+
+        Args:
+            dielectric_layers (list, optional): Specify which layers are dielectrics.
+                Layer specified in `LayerStackHandler.ls_df['layer']`.
+                Defaults to self.default_pyepr_options, which is the default silicon layer.
+
+        """
+        # Check for default values
+        if (dielectric_layers == None):
+            dielectric_layers = self.default_pyepr_options.ansys.dielectric_layers
+        
+        # Begin specifying dielectric layers
+        ls_df = self.design.ls.ls_df
+        for layer in dielectric_layers:
+            # Find layer name
+            selected_ls_df = ls_df[ls_df['layer'] == layer]
+            dielectric_name = f'layer_{selected_ls_df["layer"]}_datatype_{selected_ls_df["datatype"]}_plane'
+
+            # Define it as a dissipative layer
+            self.pinfo.dissipative['dielectric_surfaces'] = dielectric_name
+
+    def epr_report_hamiltonian(self, numeric=None):
+        """Reports in a markdown friendly table the hamiltonian results.
+
+        Args:
+            numeric (bool, optional): Use numerical diagonalization. Defaults to self.default_pyepr_options.
+        """
+        if (numeric == None):
+            numeric = self.default_pyepr_options.hamiltonian.numeric
+        
+        self.epr_quantum_analysis.plot_hamiltonian_results()
+        self.epr_quantum_analysis.report_results(numeric=numeric)
+
+    def epr_spectrum_analysis(self, 
+                              cos_trunc: int = None, 
+                              fock_trunc: int = None, 
+                              print_result: bool = None):
+        """Core EPR analysis method.
+
+        Args:
+            cos_trunc (int, optional): Truncation of the cosine. Defaults to self.default_pyepr_options.
+            fock_trunc (int, optional): Truncation of the fock. Defaults to self.default_pyepr_options.
+            print (boo, optional): Print results of EPR analysis. Defaults to self.default_pyepr_options.
+        """
+        if (cos_trunc == None):
+            cos_trunc = self.default_pyepr_options.hamiltonian.cos_trunc
+        if (fock_trunc == None):
+            fock_trunc = self.default_pyepr_options.hamiltonian.fock_trunc
+        if (print_result == None):
+            print_result = self.default_pyepr_options.print_result
+
+        self.epr_quantum_analysis = epr.QuantumAnalysis(
+            self.epr_distributed_analysis.data_filename)
+        self.epr_quantum_analysis.analyze_all_variations(cos_trunc=cos_trunc, 
+                                                        fock_trunc=fock_trunc,
+                                                        print_result=print_result)
+
+
+
