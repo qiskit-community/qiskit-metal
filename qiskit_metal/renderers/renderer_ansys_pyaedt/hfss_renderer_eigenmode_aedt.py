@@ -405,15 +405,17 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
         if (dielectric_layers == None):
             dielectric_layers = self.default_pyepr_options.ansys.dielectric_layers
         
-        # Begin specifying dielectric layers
+        dielectric_names = []
+
         ls_df = self.design.ls.ls_df
         for layer in dielectric_layers:
             # Find layer name
             selected_ls_df = ls_df[ls_df['layer'] == layer]
             dielectric_name = f'layer_{selected_ls_df["layer"]}_datatype_{selected_ls_df["datatype"]}_plane'
+            dielectric_names.append(dielectric_name)
 
-            # Define it as a dissipative layer
-            self.pinfo.dissipative['dielectric_surfaces'] = dielectric_name
+        # Define them as dielectrics
+        self.pinfo.dissipative['dielectric_surfaces'] = dielectric_layer_names
 
     def epr_report_hamiltonian(self, numeric=None):
         """Reports in a markdown friendly table the hamiltonian results.
