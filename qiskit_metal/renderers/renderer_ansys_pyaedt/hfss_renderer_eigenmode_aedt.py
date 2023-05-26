@@ -313,8 +313,8 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
             ansys_Cj_name = f'Cj_{i}'
 
             variable_manager = self.current_app._variable_manager
-            variable_manager[ansys_Lj_name] = inductance
-            variable_manager[ansys_Cj_name] = capacitance
+            variable_manager[ansys_Lj_name] = str(inductance/1E9) + 'nH'
+            variable_manager[ansys_Cj_name] = str(capacitance/1E9) + 'nH'
 
             # Append data in pyEPR.ProjectInfo.junctions data format
             junction_dict = {'Lj_variable' : ansys_Lj_name, 
