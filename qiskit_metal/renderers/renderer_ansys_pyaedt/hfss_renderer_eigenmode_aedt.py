@@ -4,6 +4,7 @@ from qiskit_metal.renderers.renderer_ansys_pyaedt.hfss_renderer_aedt import QHFS
 from qiskit_metal import Dict
 from typing import List, Tuple, Union
 import pandas as pd
+import pyEPR as epr
 
 
 class QHFSSEigenmodePyaedt(QHFSSPyaedt):
@@ -86,6 +87,9 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
             PercentRefinement (int, optional): Percent refinement. Defaults to self.default_setup.
             BasisOrder (int, optional): Basis order. Defaults to self.default_setup.
 
+        Returns:
+            new_setup (pyaedt.modules.SolveSetup.SetupHFSS): pyAEDT simulation setup object.
+
         """
 
         self.activate_user_project_design()
@@ -132,6 +136,31 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
         new_setup.props['BasisOrder'] = BasisOrder
 
         new_setup.update()
+
+        return new_setup
+    
+    def analyze_setup(self, setup_name: str) -> bool:
+        """Run a specific solution setup in Ansys HFSS DrivenModal.
+
+        Args:
+            setup_name (str): Name of setup.
+
+        Returns:
+            bool: Value returned from pyaedt.analyze_setup().
+
+        """
+        # Activate project_name and design_name before anything else
+        self.activate_user_project_design()
+
+        if setup_name not in self.current_app.setup_names:
+            self.logger.warning(
+                f'Since the setup_name is not in the project/design which was used to start HFSS DrivenModal, '
+                f'a new setup will be added to design with default settings for HFSS DrivenModal.'
+            )
+            self.add_hfss_dm_setup(setup_name)
+
+        return self.current_app.analyze_setup(setup_name)
+        
 
     def render_design(self,
                       selection: Union[list, None] = None,
