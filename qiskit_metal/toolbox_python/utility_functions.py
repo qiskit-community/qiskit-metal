@@ -392,9 +392,9 @@ def bad_fillet_idxs(coords: list,
         if min(get_dist(coords[i - 1], coords[i], precision),
                get_dist(coords[i], coords[i + 1], precision)) < 2 * fradius:
             badlist.append(i)
-    if (get_dist(coords[length - 3], coords[length - 2], precision)
-            < 2 * fradius) or (get_dist(coords[length - 2], coords[length - 1],
-                                        precision) < fradius):
+    if (get_dist(coords[length - 3], coords[length - 2], precision) <
+            2 * fradius) or (get_dist(coords[length - 2], coords[length - 1],
+                                      precision) < fradius):
         badlist.append(length - 2)
     return badlist
 

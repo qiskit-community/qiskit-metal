@@ -249,8 +249,8 @@ class QComponent():
                 short_name = prefix['short_name'][:name_trunc]
             name_id = self.design._get_new_qcomponent_name_id(short_name)
             # rename loop to make sure that no components manually named by the user conflicts
-            while self.design.rename_component(self._id, short_name + "_" +
-                                               str(name_id)) != 1:
+            while self.design.rename_component(
+                    self._id, short_name + "_" + str(name_id)) != 1:
                 name_id = self.design._get_new_qcomponent_name_id(short_name)
 
         # Add keys for each type of table.  add_qgeometry() will update bool if the table is used.

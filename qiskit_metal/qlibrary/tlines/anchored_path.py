@@ -314,13 +314,13 @@ class RouteAnchors(QRoute):
                 if (end_direction is None) or (mao.dot(end_direction,
                                                        corner2 - end) >= 0):
                     return np.expand_dims(corner2, axis=0)
-            if (mao.dot(start_direction, corner3 - start)
-                    >= 0) and startc3c4end:
+            if (mao.dot(start_direction, corner3 - start) >=
+                    0) and startc3c4end:
                 if (end_direction is None) or (mao.dot(end_direction,
                                                        corner4 - end) >= 0):
                     return np.vstack((corner3, corner4))
-            if (mao.dot(start_direction, corner5 - start)
-                    >= 0) and startc5c6end:
+            if (mao.dot(start_direction, corner5 - start) >=
+                    0) and startc5c6end:
                 if (end_direction is None) or (mao.dot(end_direction,
                                                        corner6 - end) >= 0):
                     return np.vstack((corner5, corner6))

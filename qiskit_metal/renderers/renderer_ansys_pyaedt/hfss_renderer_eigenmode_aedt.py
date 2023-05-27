@@ -27,12 +27,9 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
     """aedt HFSS Options"""
 
     default_pyepr_options = Dict(
-        ansys = Dict(dielectric_layers=[3],),
-        hamiltonian = Dict(
-            cos_trunc=7,
-            fock_trunc=8,
-            numeric=True),
-        print_result=True, 
+        ansys=Dict(dielectric_layers=[3],),
+        hamiltonian=Dict(cos_trunc=7, fock_trunc=8, numeric=True),
+        print_result=True,
     )
     """pyEPR options"""
 
@@ -147,7 +144,7 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
         new_setup.update()
 
         return new_setup
-    
+
     def analyze_setup(self, setup_name: str) -> bool:
         """Run a specific solution setup in Ansys HFSS DrivenModal.
 
@@ -169,7 +166,6 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
             self.add_hfss_dm_setup(setup_name)
 
         return self.current_app.analyze_setup(setup_name)
-        
 
     def render_design(self,
                       selection: Union[list, None] = None,
@@ -285,8 +281,8 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
 
         return True
 
-    def run_epr(self, 
-                dielectric_layers = None,
+    def run_epr(self,
+                dielectric_layers=None,
                 cos_trunc: int = None,
                 fock_trunc: int = None,
                 numeric: bool = None,
@@ -322,6 +318,7 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
         if (print_result == None):
             print_result = self.default_pyepr_options.print_result
 
+        # Sets ANSYS to project associated with self.design
         self.activate_user_project_design()
 
         # Connect EPR to ANSYS
@@ -332,9 +329,9 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
 
         # Tells pyEPR which components have dissipative elements
         self.setup_dielectric_for_epr(dielectric_layers)
-        
+
         # Executes the EPR analysis
-        self.epr_distributed_analysis = epr.DistributedAnalysis(self.pinfo) 
+        self.epr_distributed_analysis = epr.DistributedAnalysis(self.pinfo)
         self.epr_distributed_analysis.do_EPR_analysis()
 
         # Find observable quantities from energy-partipation ratios
@@ -348,7 +345,7 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
 
         # Release ANSYS from pyEPR script
         self.pinfo.disconnect()
-        
+
         return self.epr_quantum_analysis.data
 
     def setup_jjs_for_epr(self):
@@ -364,11 +361,11 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
             ### Parsing Data ###
             component = str(row['component'])
             name = str(row['name'])
-            inductance =row['aedt_hfss_eigenmode_inductance'] # Lj in Henries
-            capacitance = row['aedt_hfss_eigenmode_capacitance'] # Cj in Farads
+            inductance = row['aedt_hfss_eigenmode_inductance']  # Lj in Henries
+            capacitance = row['aedt_hfss_eigenmode_capacitance']  # Cj in Farads
 
             # Get ANSYS > Model > Sheet corresponding to JJs
-            rect_name = 'JJ_rect_Lj_' + component + '_' +  name
+            rect_name = 'JJ_rect_Lj_' + component + '_' + name
 
             # Get ANSYS > Model > Lines corresponding to JJs
             line_name = 'JJ_Lj_' + component + '_' + name + '_'
@@ -382,14 +379,16 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
             self.set_variable(ansys_Cj_name, str(capacitance * 1E15) + 'fF')
 
             # Append data in pyEPR.ProjectInfo.junctions data format
-            junction_dict = {'Lj_variable' : ansys_Lj_name, 
-                            'rect'        : rect_name, 
-                            'line'        : line_name, 
-                            'length'      : epr.parse_units('100um'),
-                            'Cj_variable' : ansys_Cj_name}
-            
+            junction_dict = {
+                'Lj_variable': ansys_Lj_name,
+                'rect': rect_name,
+                'line': line_name,
+                'length': epr.parse_units('100um'),
+                'Cj_variable': ansys_Cj_name
+            }
+
             self.pinfo.junctions[f'j{i}'] = junction_dict
-    
+
     def setup_dielectric_for_epr(self, dielectric_layers=None):
         """
         Find name of dielectric layer rendered in ANSYS, then 
@@ -404,12 +403,12 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
         # Check for default values
         if (dielectric_layers == None):
             dielectric_layers = self.default_pyepr_options.ansys.dielectric_layers
-        
+
         # Check if layerstack (self.design.ls) is uniquely specified
         ls_unique = self.design.ls.is_layer_data_unique()
         if (ls_unique != True):
             raise ValueError('Layer data in `MultiPlanar` design is not unique')
-        
+
         dielectric_names = []
         ls_df = self.design.ls.ls_df
         for layer in dielectric_layers:
@@ -431,13 +430,13 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
         """
         if (numeric == None):
             numeric = self.default_pyepr_options.hamiltonian.numeric
-        
+
         self.epr_quantum_analysis.plot_hamiltonian_results()
         self.epr_quantum_analysis.report_results(numeric=numeric)
 
-    def epr_spectrum_analysis(self, 
-                              cos_trunc: int = None, 
-                              fock_trunc: int = None, 
+    def epr_spectrum_analysis(self,
+                              cos_trunc: int = None,
+                              fock_trunc: int = None,
                               print_result: bool = None):
         """Core EPR analysis method.
 
@@ -455,9 +454,7 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
 
         self.epr_quantum_analysis = epr.QuantumAnalysis(
             self.epr_distributed_analysis.data_filename)
-        self.epr_quantum_analysis.analyze_all_variations(cos_trunc=cos_trunc, 
-                                                        fock_trunc=fock_trunc,
-                                                        print_result=print_result)
-
-
-
+        self.epr_quantum_analysis.analyze_all_variations(
+            cos_trunc=cos_trunc,
+            fock_trunc=fock_trunc,
+            print_result=print_result)

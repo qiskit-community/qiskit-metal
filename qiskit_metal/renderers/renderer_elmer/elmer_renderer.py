@@ -352,10 +352,8 @@ class QElmerRenderer(QRendererAnalysis):
                     netlists[v] = list()
                 netlists[v].append(k)
 
-        netlists = {
-            (i - 1 if (k != 'gnd') else k): v
-            for i, (k, v) in enumerate(netlists.items())
-        }
+        netlists = {(i - 1 if (k != 'gnd') else k): v
+                    for i, (k, v) in enumerate(netlists.items())}
 
         return netlists
 
