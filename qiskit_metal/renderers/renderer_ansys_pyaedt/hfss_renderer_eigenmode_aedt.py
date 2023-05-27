@@ -460,5 +460,3 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
 
         self.epr_quantum_analysis.plot_hamiltonian_results()
         self.epr_quantum_analysis.report_results(numeric=numeric)
-
-    
