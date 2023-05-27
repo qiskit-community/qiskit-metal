@@ -389,6 +389,8 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
 
             self.pinfo.junctions[f'j{i}'] = junction_dict
 
+        self.pinfo.validate_junction_info()
+
     def setup_dielectric_for_epr(self, dielectric_layers=None):
         """
         Find name of dielectric layer rendered in ANSYS, then 
