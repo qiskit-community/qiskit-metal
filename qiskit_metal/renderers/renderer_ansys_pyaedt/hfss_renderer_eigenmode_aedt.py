@@ -424,18 +424,6 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
         # Define them as dielectrics in pyEPR.ProjectInfo object
         self.pinfo.dissipative['dielectric_surfaces'] = dielectric_names
 
-    def epr_report_hamiltonian(self, numeric=None):
-        """Reports in a markdown friendly table the hamiltonian results.
-
-        Args:
-            numeric (bool, optional): Use numerical diagonalization. Defaults to self.default_pyepr_options.
-        """
-        if (numeric == None):
-            numeric = self.default_pyepr_options.hamiltonian.numeric
-
-        self.epr_quantum_analysis.plot_hamiltonian_results()
-        self.epr_quantum_analysis.report_results(numeric=numeric)
-
     def epr_spectrum_analysis(self,
                               cos_trunc: int = None,
                               fock_trunc: int = None,
@@ -460,3 +448,17 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
             cos_trunc=cos_trunc,
             fock_trunc=fock_trunc,
             print_result=print_result)
+
+    def epr_report_hamiltonian(self, numeric=None):
+        """Reports in a markdown friendly table the hamiltonian results.
+
+        Args:
+            numeric (bool, optional): Use numerical diagonalization. Defaults to self.default_pyepr_options.
+        """
+        if (numeric == None):
+            numeric = self.default_pyepr_options.hamiltonian.numeric
+
+        self.epr_quantum_analysis.plot_hamiltonian_results()
+        self.epr_quantum_analysis.report_results(numeric=numeric)
+
+    
