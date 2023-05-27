@@ -208,8 +208,8 @@ class ZoomOnWheel(MplInteraction):
             old_min, old_max = min_, max_
         elif scale == 'log':
             old_min = numpy.log10(min_ if min_ > 0. else numpy.nextafter(0, 1))
-            center = numpy.log10(
-                center if center > 0. else numpy.nextafter(0, 1))
+            center = numpy.log10(center if center >
+                                 0. else numpy.nextafter(0, 1))
             old_max = numpy.log10(max_) if max_ > 0. else 0.
         else:
             logging.warning('Zoom on wheel not implemented for scale "%s"' %
