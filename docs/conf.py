@@ -129,12 +129,12 @@ author = 'Qiskit Metal Development Team'
 extensions = [
     'sphinx.ext.napoleon', 'sphinx.ext.autodoc', 'sphinx.ext.autosummary',
     'sphinx.ext.mathjax', 'sphinx.ext.viewcode', 'sphinx.ext.extlinks',
-    'jupyter_sphinx', 'nbsphinx'
+    'jupyter_sphinx', 'nbsphinx',
+    "qiskit_sphinx_theme",
 ]
 
 html_static_path = ['_static']
 templates_path = ['_templates']
-html_css_files = ['style.css', 'custom.css', 'gallery.css']
 
 exclude_patterns = [
     '_build', 'build', '*.ipynb', '**.ipynb_checkpoints', '_utility'
@@ -217,7 +217,6 @@ modindex_common_prefix = ['qiskit_metal.']
 html_theme = "qiskit_sphinx_theme"
 
 html_logo = 'images/logo.png'
-#html_sidebars = {'**': ['globaltoc.html']}
 html_last_updated_fmt = '%Y/%m/%d'
 
 html_theme_options = {
