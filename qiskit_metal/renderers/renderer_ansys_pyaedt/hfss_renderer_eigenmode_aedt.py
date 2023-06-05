@@ -4,6 +4,7 @@ from qiskit_metal.renderers.renderer_ansys_pyaedt.hfss_renderer_aedt import QHFS
 from qiskit_metal import Dict
 from typing import List, Tuple, Union
 import pandas as pd
+import pyEPR as epr
 
 
 class QHFSSEigenmodePyaedt(QHFSSPyaedt):
@@ -24,7 +25,13 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
         PercentRefinement="30",
         BasisOrder="1")
     """aedt HFSS Options"""
-    aedt_hfss_drivenmodal_options = Dict()
+
+    default_pyepr_options = Dict(
+        ansys=Dict(dielectric_layers=[3],),
+        hamiltonian=Dict(cos_trunc=7, fock_trunc=8, numeric=True),
+        print_result=True,
+    )
+    """pyEPR options"""
 
     def __init__(self,
                  multilayer_design: 'MultiPlanar',
@@ -86,6 +93,9 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
             PercentRefinement (int, optional): Percent refinement. Defaults to self.default_setup.
             BasisOrder (int, optional): Basis order. Defaults to self.default_setup.
 
+        Returns:
+            new_setup (pyaedt.modules.SolveSetup.SetupHFSS): pyAEDT simulation setup object.
+
         """
 
         self.activate_user_project_design()
@@ -132,6 +142,30 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
         new_setup.props['BasisOrder'] = BasisOrder
 
         new_setup.update()
+
+        return new_setup
+
+    def analyze_setup(self, setup_name: str) -> bool:
+        """Run a specific solution setup in Ansys HFSS DrivenModal.
+
+        Args:
+            setup_name (str): Name of setup.
+
+        Returns:
+            bool: Value returned from pyaedt.analyze_setup().
+
+        """
+        # Activate project_name and design_name before anything else
+        self.activate_user_project_design()
+
+        if setup_name not in self.current_app.setup_names:
+            self.logger.warning(
+                f'Since the setup_name is not in the project/design which was used to start HFSS DrivenModal, '
+                f'a new setup will be added to design with default settings for HFSS DrivenModal.'
+            )
+            self.add_hfss_dm_setup(setup_name)
+
+        return self.current_app.analyze_setup(setup_name)
 
     def render_design(self,
                       selection: Union[list, None] = None,
@@ -246,3 +280,183 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
                 return False
 
         return True
+
+    def run_epr(self,
+                dielectric_layers=None,
+                cos_trunc: int = None,
+                fock_trunc: int = None,
+                numeric: bool = None,
+                print_result: bool = None):
+        '''
+        Runs EPR analysis
+
+        Interpreting Results:
+        f_0 [MHz]    : Eigenmode frequencies computed by HFSS; i.e., linear freq returned in GHz
+        f_1 [MHz]    : Dressed mode frequencies (by the non-linearity; e.g., Lamb shift, etc. ).
+                        If numerical diagonalizaiton is run, then we return the numerically diagonalizaed
+                        frequencies, otherwise, use 1st order pertuirbation theory on the 4th order
+                        expansion of the cosine.
+        f_ND [MHz]   : Numerical diagonalizaiton
+        chi_O1 [MHz] : Analytic expression for the chis based on a cos trunc to 4th order, and using 1st
+                        order perturbation theory. Diag is anharmonicity, off diag is full cross-Kerr.
+        chi_ND [MHz] : Numerically diagonalized chi matrix. Diag is anharmonicity, off diag is full
+                        cross-Kerr.
+
+        Args:
+            dielectric_layers (list, optional): Specify which layers are dielectrics.
+                Layers are specified in `LayerStackHandler.ls_df['layer']`.
+                Defaults to self.default_pyepr_options
+            cos_trunc (int, optional): Truncation of the cosine. Defaults to self.default_pyepr_options.
+            fock_trunc (int, optional): Truncation of the fock. Defaults to self.default_pyepr_options. 
+            numeric (bool, optional): Use numerical diagonalization. Defaults to self.default_pyepr_options.
+            print_result (bool, optional): Print results of EPR analysis. Defaults to self.default_pyepr_options.
+
+        Returns:
+            self.epr_quantum_analysis.data (dict): all results of EPR analysis
+
+        '''
+        if (print_result == None):
+            print_result = self.default_pyepr_options.print_result
+
+        # Sets ANSYS to project associated with self.design
+        self.activate_user_project_design()
+
+        # Connect EPR to ANSYS
+        self.pinfo = epr.ProjectInfo()
+
+        # Tells pyEPR where Johsephson Junctions are located in ANSYS
+        self.setup_jjs_for_epr()
+
+        # Tells pyEPR which components have dissipative elements
+        self.setup_dielectric_for_epr(dielectric_layers)
+
+        # Executes the EPR analysis
+        self.epr_distributed_analysis = epr.DistributedAnalysis(self.pinfo)
+        self.epr_distributed_analysis.do_EPR_analysis()
+
+        # Find observable quantities from energy-partipation ratios
+        self.epr_spectrum_analysis(cos_trunc=cos_trunc,
+                                   fock_trunc=fock_trunc,
+                                   print_result=print_result)
+
+        # Print results?
+        if print_result:
+            self.epr_quantum_analysis.report_results(numeric=numeric)
+
+        # Release ANSYS from pyEPR script
+        self.pinfo.disconnect()
+
+        return self.epr_quantum_analysis.data
+
+    def setup_jjs_for_epr(self):
+        """
+        Finds all names, inductances, and capacitances of Josephson Junctions rendered into ANSYS.
+        """
+        # Get all josephson junctions from rendered components table
+        geom_table = self.path_poly_and_junction_with_valid_comps
+        all_jjs = geom_table.loc[geom_table['name'].str.contains('rect_jj')]
+        all_jjs = all_jjs.reset_index(drop=True)
+
+        for i, row in all_jjs.iterrows():
+            ### Parsing Data ###
+            component = str(row['component'])
+            name = str(row['name'])
+            inductance = row['aedt_hfss_eigenmode_inductance']  # Lj in Henries
+            capacitance = row['aedt_hfss_eigenmode_capacitance']  # Cj in Farads
+
+            # Get ANSYS > Model > Sheet corresponding to JJs
+            rect_name = 'JJ_rect_Lj_' + component + '_' + name
+
+            # Get ANSYS > Model > Lines corresponding to JJs
+            line_name = 'JJ_Lj_' + component + '_' + name + '_'
+
+            ### Appending data ###
+            # Add global Lj and Cj variables to ANSYS (for EPR analysis)
+            ansys_Lj_name = f'Lj_{i}'
+            ansys_Cj_name = f'Cj_{i}'
+
+            self.set_variable(ansys_Lj_name, str(inductance * 1E9) + 'nH')
+            self.set_variable(ansys_Cj_name, str(capacitance * 1E15) + 'fF')
+
+            # Append data in pyEPR.ProjectInfo.junctions data format
+            junction_dict = {
+                'Lj_variable': ansys_Lj_name,
+                'rect': rect_name,
+                'line': line_name,
+                'length': epr.parse_units('100um'),
+                'Cj_variable': ansys_Cj_name
+            }
+
+            self.pinfo.junctions[f'j{i}'] = junction_dict
+
+        self.pinfo.validate_junction_info()
+
+    def setup_dielectric_for_epr(self, dielectric_layers=None):
+        """
+        Find name of dielectric layer rendered in ANSYS, then 
+        define it as a dissipative dielectric surface for pyEPR.
+
+        Args:
+            dielectric_layers (list, optional): Specify which layers are dielectrics.
+                Layer specified in `LayerStackHandler.ls_df['layer']`.
+                Defaults to self.default_pyepr_options, which is the default silicon layer.
+
+        """
+        # Check for default values
+        if (dielectric_layers == None):
+            dielectric_layers = self.default_pyepr_options.ansys.dielectric_layers
+
+        # Check if layerstack (self.design.ls) is uniquely specified
+        ls_unique = self.design.ls.is_layer_data_unique()
+        if (ls_unique != True):
+            raise ValueError('Layer data in `MultiPlanar` design is not unique')
+
+        dielectric_names = []
+        ls_df = self.design.ls.ls_df
+        for layer in dielectric_layers:
+            # Find layer names
+            selected_ls_df = ls_df[ls_df['layer'] == layer]
+            datatype = selected_ls_df['datatype'].values[0]
+            dielectric_name = f'layer_{layer}_datatype_{datatype}_plane'
+
+            dielectric_names.append(dielectric_name)
+
+        # Define them as dielectrics in pyEPR.ProjectInfo object
+        self.pinfo.dissipative['dielectric_surfaces'] = dielectric_names
+
+    def epr_spectrum_analysis(self,
+                              cos_trunc: int = None,
+                              fock_trunc: int = None,
+                              print_result: bool = None):
+        """Core EPR analysis method.
+
+        Args:
+            cos_trunc (int, optional): Truncation of the cosine. Defaults to self.default_pyepr_options.
+            fock_trunc (int, optional): Truncation of the fock. Defaults to self.default_pyepr_options.
+            print (boo, optional): Print results of EPR analysis. Defaults to self.default_pyepr_options.
+        """
+        if (cos_trunc == None):
+            cos_trunc = self.default_pyepr_options.hamiltonian.cos_trunc
+        if (fock_trunc == None):
+            fock_trunc = self.default_pyepr_options.hamiltonian.fock_trunc
+        if (print_result == None):
+            print_result = self.default_pyepr_options.print_result
+
+        self.epr_quantum_analysis = epr.QuantumAnalysis(
+            self.epr_distributed_analysis.data_filename)
+        self.epr_quantum_analysis.analyze_all_variations(
+            cos_trunc=cos_trunc,
+            fock_trunc=fock_trunc,
+            print_result=print_result)
+
+    def epr_report_hamiltonian(self, numeric=None):
+        """Reports in a markdown friendly table the hamiltonian results.
+
+        Args:
+            numeric (bool, optional): Use numerical diagonalization. Defaults to self.default_pyepr_options.
+        """
+        if (numeric == None):
+            numeric = self.default_pyepr_options.hamiltonian.numeric
+
+        self.epr_quantum_analysis.plot_hamiltonian_results()
+        self.epr_quantum_analysis.report_results(numeric=numeric)

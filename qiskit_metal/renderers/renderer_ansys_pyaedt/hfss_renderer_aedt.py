@@ -887,6 +887,23 @@ class QHFSSPyaedt(QPyaedt):
         # This should be overwritten by drivenmodal class.
         pass
 
+    def set_variable(self, name: str, value: str):
+        """
+        Sets project-level variable in ANSYS.
+
+        Example usage:
+                self.set_variable('Lj_1', '10nH')
+                self.set_variable('Cj', '0fF')
+                self.set_variable('dimensionless', 1/137)
+
+        Args:
+            name (str): Name of variable.
+            value (str): Amount and unit associated w/ variable.
+                
+        """
+        variable_manager = self.current_app._variable_manager
+        variable_manager[name] = value
+
     ######### Warnings and Errors##################################################
 
     def port_list_names_not_valid(self, comp_name: str, pin_name: str):
