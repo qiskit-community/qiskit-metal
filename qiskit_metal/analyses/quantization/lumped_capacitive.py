@@ -101,7 +101,7 @@ def transmon_props(Ic: float, Cq: float):
     wq = 1 / np.sqrt(LJ * Cq) - EC
 
     # charge dispersion
-    eps1 = EC * 2**9 * (2/np.sqrt(np.pi)) * \
+    eps1 = EC * 2**9 * (np.sqrt(2/np.pi)) * \
         (EJ/2/EC)**(1.25) * np.exp(-np.sqrt(8*EJ/EC))
 
     return LJ, EJ, Zqp, EC, wq, wq0, eps1
