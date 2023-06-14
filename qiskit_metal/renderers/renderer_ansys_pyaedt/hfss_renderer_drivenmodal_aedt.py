@@ -3,6 +3,7 @@ from qiskit_metal.renderers.renderer_ansys_pyaedt.hfss_renderer_aedt import QHFS
 from qiskit_metal.toolbox_metal.parsing import parse_entry, parse_units
 from qiskit_metal import Dict
 from typing import List, Tuple, Union
+from collections import OrderedDict
 import pandas as pd
 import pyaedt
 from pyaedt import settings
@@ -18,6 +19,7 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
 
     default_setup = Dict(
         name="QHFSSDrivenmodalPyaedt_setup",
+        SolveType='Single',
         Frequency="5.0",  # GHz
         MaxDeltaE="0.01",
         MaximumPasses="10",
@@ -25,9 +27,17 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
         MinimumConvergedPasses="1",
         PercentRefinement="30",
         BasisOrder="1",
+        MultipleAdaptiveFreqsSetup=OrderedDict([('1GHz', [0.02]),
+                                                ('2GHz', [0.02]),
+                                                ('5GHz', [0.02])]),
+        BroadbandLowFreq="2",  # GHz
+        BroadbandHighFreq="8",  # GHz
     )
     """aedt HFSS Options"""
     aedt_hfss_drivenmodal_options = Dict()
+
+    __supported_SolveType__ = ['Single', 'MultiFrequency', 'Broadband']
+    """Supported DrivenModal Solution Types"""
 
     def __init__(self,
                  multilayer_design: 'MultiPlanar',
@@ -65,18 +75,25 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
     def add_hfss_dm_setup(
             self,
             name: str = None,
+            SolveType: str = None,
             Frequency: float = None,  # GHz
             MaxDeltaE: float = None,
             MaximumPasses: int = None,
             MinimumPasses: int = None,
             MinimumConvergedPasses: int = None,
             PercentRefinement: int = None,
-            BasisOrder: int = None):
+            BasisOrder: int = None,
+            MultipleAdaptiveFreqsSetup: dict = None,
+            BroadbandLowFreq: float = None,  # GHz
+            BroadbandHighFreq: float = None  # GHz
+    ):
         """Create a solution setup in Ansys HFSS Driven-Modal solution type. If user does not provide
         arguments, they will be obtained from QHFSSDrivenmodalPyaedt.default_setup dict.
 
         Args:
             name (str, optional): _description_. Defaults to None.
+            SolveType (str, optional): Solution frequency type. Accepted values are in self.__supported_SolveType__.
+                                    Defaults to self.default_setup.
             Frequency (float, optional):  Minimum frequency in GHz. Defaults to self.default_setup.
             MaxDeltaE (float, optional):  This is correlated to MaxDeltaS. The definition
                                     of MaxDeltaS is, absolute value of maximum difference in
@@ -86,7 +103,15 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
             MinimumConvergedPasses (int, optional): Minimum number of converged passes. Defaults to self.default_setup.
             PercentRefinement (int, optional): Percent refinement. Defaults to self.default_setup.
             BasisOrder (int, optional): Basis order. Defaults to self.default_setup.
+            MultipleAdaptiveFreqsSetup (dict, optional): Frequencies and their associated MaxDeltaS.
+                                    Defaults to self.default_setup.
+            BroadbandLowFreq (float, optional): Minimum frequency for Broadband SolveType in GHz. 
+                                    Defaults to self.default_setup.
+            BroadbandHighFreq (float, optional): Maximum frequency for Broadband SolveType in GHz. 
+                                    Defaults to self.default_setup.
 
+        Returns:
+            new_setup (pyaedt.modules.SolveSetup.SetupHFSS): pyAEDT simulation setup object.
         """
 
         self.activate_user_project_design()
@@ -105,6 +130,8 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
 
         if not Frequency:
             Frequency = float(self.parse_value(dsu['Frequency']))
+        if not SolveType:
+            SolveType = str(self.parse_value(dsu['SolveType']))
         if not MaxDeltaE:
             MaxDeltaE = float(self.parse_value(dsu['MaxDeltaE']))
         if not MaximumPasses:
@@ -118,12 +145,37 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
             PercentRefinement = int(self.parse_value(dsu['PercentRefinement']))
         if not BasisOrder:
             BasisOrder = int(self.parse_value(dsu['BasisOrder']))
+        if not MultipleAdaptiveFreqsSetup:
+            MultipleAdaptiveFreqsSetup = dsu['MultipleAdaptiveFreqsSetup']
+        if not BroadbandLowFreq:
+            BroadbandLowFreq = float(self.parse_value(dsu['BroadbandLowFreq']))
+        if not BroadbandHighFreq:
+            BroadbandHighFreq = float(self.parse_value(
+                dsu['BroadbandHighFreq']))
 
         new_setup = self.current_app.create_setup(name)
 
-        new_setup.props['Frequency'] = f'{Frequency}GHz'
-        new_setup.props['MaxDeltaE'] = MaxDeltaE
-        new_setup.props['MaximumPasses'] = MaximumPasses
+        if (SolveType == 'Single'):
+            new_setup.props['SolveType'] = 'Single'
+            new_setup.props['Frequency'] = f'{Frequency}GHz'
+            new_setup.props['MaximumPasses'] = MaximumPasses
+            new_setup.props['MaxDeltaE'] = MaxDeltaE
+        elif (SolveType == 'MultiFrequency'):
+            new_setup.props['SolveType'] = 'MultiFrequency'
+            new_setup.props[
+                'MultipleAdaptiveFreqsSetup'] = MultipleAdaptiveFreqsSetup
+            new_setup.props['MaximumPasses'] = MaximumPasses
+        elif (SolveType == 'Broadband'):
+            new_setup.enable_adaptive_setup_broadband(
+                low_frequency=f'{BroadbandLowFreq}GHz',
+                high_frquency=f'{BroadbandHighFreq}GHz',
+                max_passes=MaximumPasses,
+                max_delta_s=MaxDeltaE)
+        else:
+            raise ValueError(
+                f'SolveType must be one of the following:{self.__supported_SolveType__}'
+            )
+
         new_setup.props['MinimumPasses'] = MinimumPasses
         new_setup.props['MinimumConvergedPasses'] = MinimumConvergedPasses
         new_setup.props['PercentRefinement'] = PercentRefinement
@@ -131,7 +183,7 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
 
         new_setup.update()
 
-        a = 5
+        return new_setup
 
     def add_sweep(self,
                   setup_name="QHFSSDrivenmodalPyaedt_setup",
@@ -142,7 +194,9 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
                   step_ghz=None,
                   name="QHFSSDrivenmodalPyaedt_sweep",
                   type="Fast",
-                  save_fields=False):
+                  save_fields=False,
+                  interpolation_tol=0.5,
+                  interpolation_max_solutions=250):
         """Add a frequency sweep to a driven modal setup.
 
         Args:
@@ -162,12 +216,20 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
                                 and "Discrete". Defaults to "Fast".
             save_fields (bool, optional): Whether or not to save fields.
                                 Defaults to False.
+            interpolation_tol (float, optional): Error tolerance threshold 
+                                     for the interpolation type sweep. Defaults to 0.5.
+            interpolation_max_solutions (int, optional): Maximum number of solutions
+                                     evaluted for the interpolation process. 
+                                     Defaults to 250.
+
+        Returns:
+            sweep (pyaedt.modules.SolveSweeps.SweepHFSS): pyAEDT frequency sweep object.
         """
 
         if setup_name in self.current_app.setup_names:
 
             try:
-                self.current_app.create_linear_count_sweep(
+                sweep = self.current_app.create_linear_count_sweep(
                     setupname=setup_name,
                     unit=unit,
                     freqstart=start_ghz,
@@ -175,7 +237,10 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
                     num_of_freq_points=count,
                     sweepname=name,
                     save_fields=save_fields,
-                    sweep_type=type)
+                    sweep_type=type,
+                    interpolation_tol=interpolation_tol,
+                    interpolation_max_solutions=interpolation_max_solutions)
+                return sweep
             except Exception as ex:
                 self.design.logger.error(f' The exception is {ex}')
         else:
@@ -185,7 +250,7 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
             )
             self.add_hfss_dm_setup(setup_name)
             try:
-                self.current_app.create_linear_count_sweep(
+                sweep = self.current_app.create_linear_count_sweep(
                     setupname=setup_name,
                     unit=unit,
                     freqstart=start_ghz,
@@ -193,7 +258,10 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
                     num_of_freq_points=count,
                     sweepname=name,
                     save_fields=save_fields,
-                    sweep_type=type)
+                    sweep_type=type,
+                    interpolation_tol=interpolation_tol,
+                    interpolation_max_solutions=interpolation_max_solutions)
+                return sweep
             except Exception as ex:
                 self.design.logger.error(f' The exception is {ex}')
 
