@@ -589,7 +589,7 @@ class QHFSSPyaedt(QPyaedt):
             jj_geom_table = self.design.qgeometry.tables['junction']
             jj_of_interest = jj_geom_table[jj_geom_table['name'] == qc_elt]
             Lvalue = parse_entry(jj_of_interest['aedt_hfss_inductance'][0])
-            Cvalue = parse_entry(jj_of_interest['aedt_hfss_capacitance'][0])  
+            Cvalue = parse_entry(jj_of_interest['aedt_hfss_capacitance'][0])
 
             lumped_rlc_boundary = self.current_app.assign_lumped_rlc_to_sheet(
                 sheet_name=poly_sheet.name,
