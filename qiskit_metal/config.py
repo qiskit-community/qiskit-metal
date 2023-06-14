@@ -38,14 +38,11 @@ renderers_to_load = Dict(
         path_name=
         'qiskit_metal.renderers.renderer_ansys_pyaedt.q3d_renderer_aedt',
         class_name='QQ3DPyaedt'),
-    aedt_hfss_drivenmodal=Dict(
+    aedt_hfss=Dict(
         path_name=
-        'qiskit_metal.renderers.renderer_ansys_pyaedt.hfss_renderer_drivenmodal_aedt',
-        class_name='QHFSSDrivenmodalPyaedt'),
-    aedt_hfss_eigenmode=Dict(
-        path_name=
-        'qiskit_metal.renderers.renderer_ansys_pyaedt.hfss_renderer_eigenmode_aedt',
-        class_name='QHFSSEigenmodePyaedt'))
+        'qiskit_metal.renderers.renderer_ansys_pyaedt.hfss_renderer_aedt',
+        class_name='QHFSSPyaedt'
+    ))
 """
 Define the renderes to load. Just provide the module names here.
 """
