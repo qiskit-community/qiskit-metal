@@ -501,11 +501,11 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(
             _options['_default_connection_pads']['claw_width_back'], None)
         self.assertEqual(_options['_default_connection_pads']['claw_gap'],
-                         '6um')
+                         'cpw_gap')
         self.assertEqual(
             _options['_default_connection_pads']['claw_cpw_length'], '40um')
         self.assertEqual(_options['_default_connection_pads']['claw_cpw_width'],
-                         '10um')
+                         'cpw_width')
         self.assertEqual(
             _options['_default_connection_pads']['connector_location'], '0')
 
