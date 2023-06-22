@@ -496,8 +496,8 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
                          '5um')
         self.assertEqual(
             _options['_default_connection_pads']['ground_spacing_back'], None)
-         self.assertEqual(_options['_default_connection_pads']['claw_width'],
-                          '10um')
+        self.assertEqual(_options['_default_connection_pads']['claw_width'],
+                         '10um')
         self.assertEqual(
             _options['_default_connection_pads']['claw_width_back'], None)
         self.assertEqual(_options['_default_connection_pads']['claw_gap'],
