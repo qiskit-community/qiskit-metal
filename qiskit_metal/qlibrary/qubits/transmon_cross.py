@@ -81,9 +81,9 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
             connector_type='0',  # 0 = Claw type, 1 = gap type
             claw_length='30um',
             ground_spacing='5um',
-            ground_spacing_back=None, # Defaults to value in `ground_spacing`
+            ground_spacing_back=None,  # Defaults to value in `ground_spacing`
             claw_width='10um',
-            claw_width_back=None, # Defaults to value in `claw_width`
+            claw_width_back=None,  # Defaults to value in `claw_width`
             claw_gap='cpw_gap',
             claw_cpw_length='40um',
             claw_cpw_width='cpw_width',
