@@ -17,6 +17,25 @@ from qiskit_metal import draw, Dict
 from qiskit_metal.qlibrary.core import BaseQubit
 
 
+# -*- coding: utf-8 -*-
+
+# This code is part of Qiskit.
+#
+# (C) Copyright IBM 2017, 2021.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+
+import numpy as np
+from qiskit_metal import draw, Dict
+from qiskit_metal.qlibrary.core import BaseQubit
+
+
 class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
     """The base `TransmonCross` class.
 
@@ -62,9 +81,13 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         * _default_connection_pads: Dict
             * connector_type: '0' -- 0 = Claw type, 1 = gap type
             * claw_length: '30um' -- Length of the claw 'arms', measured from the connector center trace
-            * ground_spacing: '5um' -- Amount of ground plane between the connector and Crossmon arm (minimum should be based on fabrication capabilities)
-            * claw_width: '10um' -- The width of the CPW center trace making up the claw/gap connector
-            * claw_gap: '6um' -- The gap of the CPW center trace making up the claw/gap connector
+            * ground_spacing_side: '5um' -- Amount of ground plane between the side of the connector and Crossmon arm (minimum should be based on fabrication capabilities)
+            * ground_spacing_back: '5um' -- Amount of ground plane between the cpw-side (back) of the connector and Crossmon arm (minimum should be based on fabrication capabilities)
+            * claw_width: '10um' -- The width of sides of the claw/gap connector
+            * claw_width_back: None -- The width of the back (area towards the incoming CPW path) of the claw/gap connector. Defaults to claw_width. 
+            * claw_gap: 'cpw_gap' -- The gap of the CPW center trace making up the claw/gap connector
+            * claw_cpw_lenght: '40um' -- Length of rectangular cpw trace
+            * claw_cpw_width: 'cpw_width' -- Width of rectangular cpw trace
             * connector_location: '0' -- 0 => 'west' arm, 90 => 'north' arm, 180 => 'east' arm
     """
 
@@ -77,10 +100,12 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
             connector_type='0',  # 0 = Claw type, 1 = gap type
             claw_length='30um',
             ground_spacing='5um',
+            ground_spacing_back=None,
             claw_width='10um',
-            claw_gap='6um',
+            claw_width_back = None, # Defaults to value in `claw_width`
+            claw_gap='cpw_gap',
             claw_cpw_length='40um',
-            claw_cpw_width='10um',
+            claw_cpw_width='cpw_width',
             connector_location=
             '0'  # 0 => 'west' arm, 90 => 'north' arm, 180 => 'east' arm
         ))
@@ -177,18 +202,33 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         c_g = pc.claw_gap
         c_l = pc.claw_length
         c_w = pc.claw_width
+        c_w_b = pc.claw_width_back
         c_c_w = pc.claw_cpw_width
         c_c_l = pc.claw_cpw_length
         g_s = pc.ground_spacing
+        g_s_b = pc.ground_spacing_back
         con_loc = pc.connector_location
-
-        claw_cpw = draw.box(-c_w, -c_c_w / 2, -c_c_l - c_w, c_c_w / 2)
-
-        if pc.connector_type == 0:  # Claw connector
+        
+        # Default option if `claw_width_back` is unspecified
+        # Ensures backwards compatability (pre June 2023)
+        if (pc.claw_width_back == None):
+            c_w_b = c_w
+        
+        # Default option if `ground_spacing_back` is unspecified
+        # Ensures backwards compatability (pre June 2023)
+        if (pc.claw_spacing_back == None):
+            g_s_b = g_s
+            
+        # `connector_type` logic
+        if pc.connector_type == 0:  # Claw-style connector
+            # CPW box geometry 
+            claw_cpw = draw.box(-c_w_b, -c_c_w / 2, -c_c_l - c_w_b, c_c_w / 2)
+        
+            # Claw geometry
             t_claw_height = 2*c_g + 2 * c_w + 2*g_s + \
                 2*cross_gap + cross_width  # temp value
 
-            claw_base = draw.box(-c_w, -(t_claw_height) / 2, c_l,
+            claw_base = draw.box(-c_w_b, -(t_claw_height) / 2, c_l,
                                  t_claw_height / 2)
             claw_subtract = draw.box(0, -t_claw_height / 2 + c_w, c_l,
                                      t_claw_height / 2 - c_w)
@@ -196,17 +236,22 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
 
             connector_arm = draw.shapely.ops.unary_union([claw_base, claw_cpw])
             connector_etcher = draw.buffer(connector_arm, c_g)
-        else:
-            connector_arm = draw.box(0, -c_w / 2, -4 * c_w, c_w / 2)
+            
+            # Port line for claw-style
+            port_line = draw.LineString([(-c_c_l - c_w_b, -c_c_w / 2),
+                                     (-c_c_l - c_w_b, c_c_w / 2)])
+        else: # Rectangle style connector
+            # Rectangle geometry
+            connector_arm = draw.box(0, 
+                                     -c_w / 2, 
+                                     -4 * c_w, 
+                                     c_w / 2)
             connector_etcher = draw.buffer(connector_arm, c_g)
-
-        # Making the pin for  tracking (for easy connect functions).
-        # Done here so as to have the same translations and rotations as the connector. Could
-        # extract from the connector later, but since allowing different connector types,
-        # this seems more straightforward.
-        port_line = draw.LineString([(-c_c_l - c_w, -c_c_w / 2),
-                                     (-c_c_l - c_w, c_w / 2)])
-
+            
+            # Port line for rectangle-style
+            port_line = draw.LineString([(-4 * c_w, -c_w / 2),
+                                         (-4 * c_w, c_w / 2)])
+        
         claw_rotate = 0
         if con_loc > 135:
             claw_rotate = 180
@@ -215,7 +260,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
 
         # Rotates and translates the connector polygons (and temporary port_line)
         polys = [connector_arm, connector_etcher, port_line]
-        polys = draw.translate(polys, -(cross_length + cross_gap + g_s + c_g),
+        polys = draw.translate(polys, -(cross_length + cross_gap + g_s_b + c_g),
                                0)
         polys = draw.rotate(polys, claw_rotate, origin=(0, 0))
         polys = draw.rotate(polys, p.orientation, origin=(0, 0))
