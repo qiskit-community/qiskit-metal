@@ -73,7 +73,7 @@ To do so, first navigate to the folder created by the clone. For example:
 
     cd qiskit-metal
 
-Once you are in the folder that contains the `environemnt.yml` file, execute the following installation commands:
+Once you are in the folder that contains the `environment.yml` file, execute the following installation commands:
 
 ::
 

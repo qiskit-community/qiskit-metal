@@ -89,6 +89,7 @@ nbsphinx_thumbnails = {
         '_static/4-15-kappa-calc.png',
     'tut/1-Overview/1.3-Saving-Your-Chip-Design':
         '_static/1-3-save.png',
+    "**": "_static/images/logo.png",  # The default.
 }
 
 # -----------------------------------------------------------------------------

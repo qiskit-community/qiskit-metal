@@ -73,7 +73,7 @@ class QHFSSPyaedt(QPyaedt):
 
     def __init__(self,
                  multilayer_design: 'MultiPlanar',
-                 renderer_type: str,
+                 renderer_type: str = 'HFSS',
                  project_name: Union[str, None] = None,
                  design_name: Union[str, None] = None,
                  initiate=False,
@@ -585,16 +585,18 @@ class QHFSSPyaedt(QPyaedt):
                     axisdir=endpoints_3d,
                     impedance=impedance)
         else:
-            ####### MUST CHANGE Lvalue should come from qgeometry table.
-            lj_value = parse_entry(qgeom['hfss_inductance'])
-            #### Need to register the renderer to Qiskit Metal.
+            # Looks QGeometry table to pull Lj and Cj
+            jj_geom_table = self.design.qgeometry.tables['junction']
+            jj_of_interest = jj_geom_table[jj_geom_table['name'] == qc_elt]
+            Lvalue = parse_entry(jj_of_interest['aedt_hfss_inductance'][0])
+            Cvalue = parse_entry(jj_of_interest['aedt_hfss_capacitance'][0])
 
             lumped_rlc_boundary = self.current_app.assign_lumped_rlc_to_sheet(
                 sheet_name=poly_sheet.name,
                 sourcename=f'rlc_{poly_sheet.name}',
                 axisdir=endpoints_3d,
-                Lvalue=10e-9)
-        a = 5
+                Lvalue=Lvalue,
+                Cvalue=Cvalue)
 
     def draw_sample_holder(self):
         """Adds a vacuum box to HFSS design.  The xy coordinates are determined by
