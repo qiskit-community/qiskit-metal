@@ -361,8 +361,8 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
             ### Parsing Data ###
             component = str(row['component'])
             name = str(row['name'])
-            inductance = row['aedt_hfss_eigenmode_inductance']  # Lj in Henries
-            capacitance = row['aedt_hfss_eigenmode_capacitance']  # Cj in Farads
+            inductance = row['aedt_hfss_inductance']  # Lj in Henries
+            capacitance = row['aedt_hfss_capacitance']  # Cj in Farads
 
             # Get ANSYS > Model > Sheet corresponding to JJs
             rect_name = 'JJ_rect_Lj_' + component + '_' + name
