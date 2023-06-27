@@ -163,7 +163,7 @@ class Airbridging:
             dy = dl[1]
             
             
-            theta = np.arctan2(dy,dx) + 45
+            theta = np.arctan2(dy,dx)
             mag_dl = np.sqrt(dx**2 + dy**2)
             lprime = mag_dl - 2 * bridge_minimum_spacing 
                         
@@ -220,7 +220,7 @@ class Airbridging:
                 dx = np.cos(theta_i) - np.cos(theta_f)
                 dy = np.sin(theta_i) - np.sin(theta_f)
                 
-                theta = np.arctan2(dy, dx) + 45
+                theta = np.arctan2(dy, dx)
                                 
                 distance_circle_box_x = fillet * (1-np.abs(np.cos(theta)))
                 distance_circle_box_y = fillet * (1-np.abs(np.sin(theta)))
@@ -247,7 +247,7 @@ class Airbridging:
             shapley_data = component['geometry']
             for x, y, theta in ab_placement:
                 # Extract shapely data, and move to proper spot
-                shapely_copy = draw.rotate(shapley_data, theta, origin=(0,0))
+                shapely_copy = draw.rotate(shapley_data, theta + 45, origin=(0,0))
                 shapely_copy = draw.translate(shapely_copy, x, y)
                 shapely_copy = shapely.geometry.MultiPolygon([shapely_copy])
 
