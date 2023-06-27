@@ -67,8 +67,7 @@ class Airbridging:
                                   custom_qcomponent: 'QComponent', 
                                   qcomponent_options: dict,
                                   bridge_pitch: str,
-                                  bridge_minimum_spacing: str,
-                                  ) -> pd.DataFrame:
+                                  bridge_minimum_spacing: str) -> pd.DataFrame:
         """
         Makes the uniform airbridging dataframe
 
@@ -228,8 +227,7 @@ class Airbridging:
         
         return ab_placements
     
-    def ab_placement_to_df(ab_placement: list[float],
-                            qgeom_table: 'geopandas.geodataframe.GeoDataFrame') -> pd.DataFrame:
+    def ab_placement_to_df(ab_placement: list[float], qgeom_table: 'pd.DataFrame') -> pd.DataFrame:
         '''
         With a base airbridge shape, find the shapely data for placing all airbridges.
 
