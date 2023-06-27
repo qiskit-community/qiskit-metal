@@ -23,13 +23,7 @@ from qiskit_metal import draw
 from qiskit_metal.qlibrary.core import QComponent
 
 class Airbridging:
-    """
-    Airbridge for GDS logic
-
-    Args:
-        precision: (float) -- Rounds values to the closest integer multiple of `precision`
-                                  This parameter is meant to take care of floating point errors.
-    """
+    """Logic for placing airbridges for QGDSRenderer."""
 
     def __init__(self,
                  design: 'QDesign',
@@ -40,6 +34,19 @@ class Airbridging:
                  maxy: float,
                  chip_name: str,
                  precision: float):
+        """
+        Initializes the Airbridging object.
+        
+        Args:
+            design (QDesign): The QDesign object associated with the design.
+            lib (gdspy.GdsLibrary): The GdsLibrary object to store GDS data.
+            minx (float): The minimum x-coordinate of the layout bounding box.
+            miny (float): The minimum y-coordinate of the layout bounding box.
+            maxx (float): The maximum x-coordinate of the layout bounding box.
+            maxy (float): The maximum y-coordinate of the layout bounding box.
+            chip_name (str): The name of the chip.
+            precision (float): Round position values to the closest integer multiple of this value.
+        """
         # Design variables
         self.design = design
         self.lib = lib
@@ -58,7 +65,7 @@ class Airbridging:
         QGeometry of CPWs w/ airbridges
 
         Returns:
-            cpw_names (DataFrame): QGeometry of CPWs w/ airbridges
+            cpw_names (list[str]): QGeometry of CPWs w/ airbridges
         '''
         cpw_names = []
 
@@ -81,14 +88,15 @@ class Airbridging:
         Makes the uniform airbridging dataframe
 
         Args:
-            custom_qcomponent (QComponent)
-            qcomponent_options (dict)
-            bridge_pitch (str)
-            bridge_minimum_spacing (str): 
-            precision (str)
+            custom_qcomponent (QComponent): Airbridge class, child of QComponent.
+            qcomponent_options (dict): Options when calling airbridge. 
+                                       These go in `custom_qcomponent(design, name, options=qcomponent_options)`
+            bridge_pitch (str): Length between airbridges. Measured from the center of the bridge structure.
+            bridge_minimum_spacing (str): Spacing between corner and first airbridge.
 
         Returns:
-            airbridge_df (pd.DataFrame)
+            airbridge_df (pd.DataFrame): Has two columns: 'MultiPoly' and 'layer'. 
+                Used in QGDSRenderer._make_uniform_airbridging_df
         """
         bridge_pitch = self.design.parse_value(bridge_pitch)
         bridge_minimum_spacing = self.design.parse_value(bridge_minimum_spacing)
@@ -104,7 +112,7 @@ class Airbridging:
                                                            bridge_pitch=bridge_pitch,
                                                            bridge_minimum_spacing=bridge_minimum_spacing)
             airbridge_df_for_cpw = self.ab_placement_to_df(ab_placement=ab_placement, 
-                                                           qgeom_table=ab_qgeom)
+                                                           ab_qgeom=ab_qgeom)
             ab_df_list.append(airbridge_df_for_cpw)
 
         airbridge_df = pd.concat(ab_df_list)
@@ -120,8 +128,8 @@ class Airbridging:
         
         Inputs:
             cpw_name (str): Name of cpw to find airbridge placements.
+            bridge_pitch: (float) -- Spacing between the centers of each bridge. Units in mm.
             bridge_minimum_spacing: (float) -- Minimum spacing from corners. Units in mm.
-            bridge_pitch: (float, in units mm) -- Spacing between the centers of each bridge. Units in mm.
 
         Returns:
             ab_placements (list[tuple[float, float, float]]): Where the airbridges should be placed for given `cpw_name`.
@@ -132,10 +140,9 @@ class Airbridging:
              ...,
              (xn, yn, thetan))]
             
-            Units: 
-            - x (float): Units mm
-            - y (float): Units mm
-            - theta (float): Units degrees
+            - x (float): x position of airbridge. Units mm.
+            - y (float): y position of airbridge. Units mm.
+            - theta (float): Rotation of airbridge. Units degrees.
         '''
         precision = self.design.parse_value(self.precision)
 
@@ -232,18 +239,27 @@ class Airbridging:
                 
                 ab_placements.append((x, y, np.degrees(theta_avg)))
         
+        # Removes airbridge at the start pin
+        ab_placements = ab_placements[1:]
+
         return ab_placements
     
     def ab_placement_to_df(self,
-                           ab_placement: list[float], 
-                           qgeom_table: 'pd.DataFrame') -> pd.DataFrame:
+                           ab_placement: list[tuple[float, float, float]], 
+                           ab_qgeom: pd.DataFrame) -> pd.DataFrame:
         '''
         With a base airbridge shape, find the shapely data for placing all airbridges.
 
+        Args:
+            ab_placement (list[tuple[float, float, float]]): Output from self.find_uniform_ab_placement
+            ab_qgeom (pd.DataFrame): QGeometry table of single airbridge.
+
+        Return:
+            airbridge_df (pd.DataFrame): All airbridges placed. Has two columns: 'MultiPoly' and 'layer'.
         '''
         shapley_data_all = []
         layer_data_all = []
-        for _, component in qgeom_table.iterrows():
+        for _, component in ab_qgeom.iterrows():
             shapley_data = component['geometry']
             for x, y, theta in ab_placement:
                 # Extract shapely data, and move to proper spot
@@ -264,11 +280,10 @@ class Airbridging:
         return airbridge_df
         
     def extract_qgeom_from_unrendered_qcomp(self, 
-                                                   custom_qcomponent: 'QComponent',
-                                                   qcomponent_options: dict) -> 'pd.DataFrame':
+                                            custom_qcomponent: 'QComponent',
+                                            qcomponent_options: dict) -> 'pd.DataFrame':
         '''
         Extracts the qgeometry table from a child of QComponent.
-        Must have QComponent.make() 
 
         Args:
             custom_qcomponent (QComponent): Class of QComponent, not called / instantiated.

@@ -96,6 +96,13 @@ class QGDSRenderer(QRenderer):
         * junction_pad_overlap: '5um'
         * max_points: '199'
         * fabricate: 'False'
+        * airbridge: Dict
+            * geometry: Dict
+                qcomponent_base: Airbridge_forGDS
+                options: Dict
+            * bridge_pitch: '100um'
+            * bridge_minimum_spacing: '5um'
+            * datatype: '0'
         * cheese: Dict
             * datatype: '100'
             * shape: '0'
@@ -219,15 +226,21 @@ class QGDSRenderer(QRenderer):
             # Setup geometrical style of airbridge
             geometry=Dict(
                 # Skeleton of airbridge in QComponent form,
+                # meaning this is a child of QComponents.
                 qcomponent_base=Airbridge_forGDS,
-                # 
+                # These options are plugged into the qcomponent_base.
+                # Think of it as calling qcomponent_base(design, name, options=options).
                 options=dict(crossover_length='22um')
             ),
             # Spacing between centers of each airbridge.
             bridge_pitch='100um',
+            
             # Minimum spacing between each airbridge, 
-            # this number of fabrication guideline based
+            # this number usually comes from fabrication guidelines.
             bridge_minimum_spacing='5um',
+
+            # GDS datatype of airbridges.
+            datatype = '0'
         ),
 
         # Cheesing is denoted by each chip and layer.
@@ -1160,12 +1173,14 @@ class QGDSRenderer(QRenderer):
             maxy (float): chip maximum y location.
             chip_name (str): User defined chip name.
         """
+        # Warning / limitations
         if (self.options.corners != 'circular bend'):
             logging.warning('Uniform airbridging is designed for `self.options.corners = "circular bend"`. You might experience unexpected behavior.')
 
         # gdspy objects
         top_cell = self.lib.cells[f'TOP_{chip_name}']
         lib_cell = self.lib.new_cell(f'TOP_{chip_name}_ab')
+        no_cheese_buffer = float(self.parse_value(self.options.no_cheese.buffer))
 
         # Airbridge Options
         self.options.airbridge.qcomponent_base
@@ -1183,14 +1198,14 @@ class QGDSRenderer(QRenderer):
                                                                 bridge_pitch=self.options.airbridge.bridge_pitch,
                                                                 bridge_minimum_spacing=self.options.airbridge.bridge_minimum_spacing)
 
-        # Run 
+        # Get all MultiPolygons and render to gds file
         for _, row in airbridges_df.iterrows():
             ab_component_multi_poly = row['MultiPoly']
             ab_component_layer = row['layer']
             airbridge_gds = self._multipolygon_to_gds(multi_poly=ab_component_multi_poly,
                                             layer=ab_component_layer,
-                                            data_type=0,
-                                            no_cheese_buffer=0)
+                                            data_type=int(self.options.airbridge.datatype),
+                                            no_cheese_buffer=no_cheese_buffer)
 
             lib_cell.add(airbridge_gds)
             top_cell.add(gdspy.CellReference(lib_cell))
