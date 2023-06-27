@@ -95,9 +95,10 @@ class Airbridging:
                                                            bridge_pitch=bridge_pitch,
                                                            bridge_minimum_spacing=bridge_minimum_spacing,
                                                            precision=self.precision)
-            airbridge_df_for_cpw = self.ab_placement_to_df(ab_placement, ab_qgeom)
-            ab_df_list.append(airbridge_df_for_cpw)
-        
+            airbridge_df_for_cpw = self.ab_placement_to_df(ab_placement=ab_placement, 
+                                                           ab_qgeom=ab_qgeom)
+            ab_df_list.append(airbridge_df_for_cpw.copy())
+
         airbridge_df = pd.concat(ab_df_list)
 
         return airbridge_df
@@ -245,6 +246,10 @@ class Airbridging:
 
                 # Extract layer info
                 layer = component['layer']
+
+                # Add data to DataFrame
+                shapley_data_all.append(shapley_data)
+                layer_data_all.append(layer)
 
         airbridge_df = pd.DataFrame({'geometry': shapley_data_all, 
                                      'layer' : layer_data_all})
