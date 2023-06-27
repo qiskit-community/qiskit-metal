@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
+
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2017, 2023.
+# (C) Copyright IBM 2017, 2021.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -47,6 +49,77 @@ rst_prolog = """
 .. |version| replace:: {0}
 """.format(release)
 
+nbsphinx_prolog = """
+{% set docname = env.doc2path(env.docname, base=None)|replace("circuit-examples", "circuit-examples/") %}
+{% set docname = docname|replace("A.Qubits", "A.Qubits/") %}
+{% set docname = docname|replace("B.Resonators", "B.Resonators/") %}
+{% set docname = docname|replace("C.Composite-bi-partite", "C.Composite-bi-partite/") %}
+{% set docname = docname|replace("D.Qubit-couplers", "D.Qubit-couplers/") %}
+{% set docname = docname|replace("E.Input-output-coupling", "E.Input-output-coupling/") %}
+{% set docname = docname|replace("F.Small-quantum-chips", "F.Small-quantum-chips/") %}
+{% set docname = docname|replace("full-design-flow-examples", "full-design-flow-examples/") %}
+{% set docname = docname|replace("tut", "tut/") %}
+{% set docname = docname|replace("1-Overview", "1-Overview/") %}
+{% set docname = docname|replace("2-From-components-to-chip", "2-From-components-to-chip/") %}
+{% set docname = docname|replace("3-Renderers", "3-Renderers/") %}
+{% set docname = docname|replace("4-Analysis", "4-Analysis/") %}
+{% set docname = docname|replace("quick-topics", "quick-topics/") %}
+
+.. only:: html
+
+    .. role:: raw-html(raw)
+        :format: html
+
+    .. raw:: html
+
+        <br><br><br>
+
+    .. note::
+        This page was generated from `{{ docname }}`__.
+
+    __ https://github.com/Qiskit/qiskit-metal/blob/main/docs/{{ docname }}
+"""
+
+nbsphinx_epilog = """
+{% set docname = env.doc2path(env.docname, base=None) %}
+.. only:: html
+
+    .. role:: raw-html(raw)
+        :format: html
+
+    .. raw:: html
+
+        <h3>For more information, review the <b>Introduction to Quantum Computing and Quantum Hardware</b> lectures below</h3>
+        <div style="border:solid 1 px #990000;">
+        <table>
+        <tr><td><ul><li>Superconducting Qubits I: Quantizing a Harmonic Oscillator, Josephson Junctions Part 1</ul></td>
+        <td width="15%"><a href="https://www.youtube.com/watch?v=eZJjQGu85Ps&list=PLOFEBzvs-VvrXTMy5Y2IqmSaUjfnhvBHR">Lecture Video</a></td>
+        <td width="15%"><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/lectures/introqcqh-lecture-notes-6.pdf?raw=true">Lecture Notes</a></td>
+        <td width="5%"><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/labs/introqcqh-lab-6.zip?raw=true">Lab</a></td></tr>
+        <tr><td><ul><li>Superconducting Qubits I: Quantizing a Harmonic Oscillator, Josephson Junctions Part 2</ul></td>
+        <td><a href="https://www.youtube.com/watch?v=SDiiFOham6Y&list=PLOFEBzvs-VvrXTMy5Y2IqmSaUjfnhvBHR">Lecture Video</a></td>
+        <td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/lectures/introqcqh-lecture-notes-6.pdf?raw=true">Lecture Notes</a></td>
+        <td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/labs/introqcqh-lab-6.zip?raw=true">Lab</a></td></tr>
+        <tr><td><ul><li>Superconducting Qubits I: Quantizing a Harmonic Oscillator, Josephson Junctions Part 3</ul></td>
+        <td><a href="https://www.youtube.com/watch?v=hGBAz63NIH8&list=PLOFEBzvs-VvrXTMy5Y2IqmSaUjfnhvBHR">Lecture Video</a></td>
+        <td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/lectures/introqcqh-lecture-notes-6.pdf?raw=true">Lecture Notes</a></td>
+        <td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/labs/introqcqh-lab-6.zip?raw=true">Lab</a></td></tr>
+        <tr><td><ul><li>Superconducting Qubits II: Circuit Quantum Electrodynamics, Readout and Calibration Methods Part 1</ul></td>
+        <td><a href="https://www.youtube.com/watch?v=dmYnfGo-8eM&list=PLOFEBzvs-VvrXTMy5Y2IqmSaUjfnhvBHR">Lecture Video</a></td>
+        <td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/lectures/introqcqh-lecture-notes-7.pdf?raw=true">Lecture Notes</a></td>
+        <td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/labs/introqcqh-lab-7.zip?raw=true">Lab</a></td></tr>
+        <tr><td><ul><li>Superconducting Qubits II: Circuit Quantum Electrodynamics, Readout and Calibration Methods Part 2</ul></td>
+        <td><a href="https://www.youtube.com/watch?v=jUPAeOoZpEU&list=PLOFEBzvs-VvrXTMy5Y2IqmSaUjfnhvBHR">Lecture Video</a></td>
+        <td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/lectures/introqcqh-lecture-notes-7.pdf?raw=true">Lecture Notes</a></td>
+        <td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/labs/introqcqh-lab-7.zip?raw=true">Lab</a></td></tr>
+        <tr><td><ul><li>Superconducting Qubits II: Circuit Quantum Electrodynamics, Readout and Calibration Methods Part 3</ul></td>
+        <td><a href="https://www.youtube.com/watch?v=_IpCwMvc0dA&list=PLOFEBzvs-VvrXTMy5Y2IqmSaUjfnhvBHR">Lecture Video</a></td>
+        <td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/lectures/introqcqh-lecture-notes-7.pdf?raw=true">Lecture Notes</a></td>
+        <td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/labs/introqcqh-lab-7.zip?raw=true">Lab</a></td></tr></table>
+        </div>
+
+"""
+
 # -- Project information -----------------------------------------------------
 project = 'Qiskit Metal {}'.format(version)
 copyright = '2019, Qiskit Development Team'  # pylint: disable=redefined-builtin
@@ -67,6 +140,10 @@ exclude_patterns = [
     '_build', 'build', '*.ipynb', '**.ipynb_checkpoints', '_utility'
 ]
 
+nbsphinx_execute_arguments = [
+    "--InlineBackend.figure_formats={'svg', 'pdf'}",
+    "--InlineBackend.rc={'figure.dpi': 96}",
+]
 
 nbsphinx_execute = os.getenv('QISKIT_DOCS_BUILD_TUTORIALS', 'never')
 
