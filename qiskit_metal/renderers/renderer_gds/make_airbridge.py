@@ -89,13 +89,17 @@ class Airbridging:
                                                                        qcomponent_options=qcomponent_options)
 
         # Place the airbridges
+        ab_df_list = []
         for cpw_name in self.cpws_with_ab:
             ab_placement = self.find_uniform_ab_placement(cpw_name=cpw_name,
                                                            bridge_pitch=bridge_pitch,
                                                            bridge_minimum_spacing=bridge_minimum_spacing,
                                                            precision=self.precision)
-            airbridge_df = self.ab_placement_to_df(ab_placement, ab_qgeom)
+            airbridge_df_for_cpw = self.ab_placement_to_df(ab_placement, ab_qgeom)
+            ab_df_list.append(airbridge_df_for_cpw)
         
+        airbridge_df = pd.concat(ab_df_list)
+
         return airbridge_df
 
     def find_uniform_ab_placement(self, 
