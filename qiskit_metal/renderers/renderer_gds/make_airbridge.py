@@ -251,7 +251,7 @@ class Airbridging:
 
         # Make a name which won't interfer w/ other components
         test_name = 'initial_name'
-        all_component_names = self.design.component.keys()
+        all_component_names = self.design.components.keys()
         while test_name in all_component_names:
             test_name += '1'
         
