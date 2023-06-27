@@ -18,6 +18,8 @@ import shapely
 import numpy as np
 import pandas as pd
 
+from qiskit_metal import draw
+
 from qiskit_metal.qlibrary.core import QComponent
 
 class Airbridging:
@@ -96,7 +98,7 @@ class Airbridging:
                                                            precision=self.precision)
             airbridge_df_for_cpw = self.ab_placement_to_df(ab_placement=ab_placement, 
                                                            qgeom_table=ab_qgeom)
-            ab_df_list.append(airbridge_df_for_cpw.copy())
+            ab_df_list.append(airbridge_df_for_cpw)
 
         airbridge_df = pd.concat(ab_df_list)
 
