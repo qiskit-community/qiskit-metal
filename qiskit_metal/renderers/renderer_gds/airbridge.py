@@ -10,20 +10,20 @@ class Airbridge_forGDS(QComponent):
     This QComponent should NOT be rendered for EM simulation.
     
     Default Options:
-        * crossover_length: '22um' -- Distance between the two outter squares (aka bridge length).
+        * crossover_length: '22um' -- Distance between the two outer squares (aka bridge length).
                                       Usually, this should be the same length as (cpw_width + 2 * cpw_gap)
         * bridge_width: '7.5um' -- Width of bridge element
         * inner_length: '8um' -- Length of inner square.
-        * outter_length: '11um' -- Length of outter square.
+        * outer_length: '11um' -- Length of outer square.
         * square_layer: 30 -- GDS layer of inner squares.
-        * bridge_layer: 31 -- GDS layer of bridge + outter squares.
+        * bridge_layer: 31 -- GDS layer of bridge + outer squares.
     """
 
     # Default drawing options
     default_options = Dict(crossover_length='22um',
                            bridge_width='7.5um',
                            inner_length='8um',
-                           outter_length='11um',
+                           outer_length='11um',
                            square_layer=30,
                            bridge_layer=31)
     """Default drawing options"""
@@ -39,7 +39,7 @@ class Airbridge_forGDS(QComponent):
         crossover_length = p.crossover_length
         bridge_width = p.bridge_width
         inner_length = p.inner_length
-        outter_length = p.outter_length
+        outer_length = p.outer_length
 
         # Make the inner square structure
         left_inside = draw.rectangle(inner_length, inner_length, 0, 0)
@@ -52,13 +52,13 @@ class Airbridge_forGDS(QComponent):
 
         inside_struct = draw.union(left_inside, right_inside)
 
-        # Make the outter square structure
-        left_outside = draw.rectangle(outter_length, outter_length, 0, 0)
+        # Make the outer square structure
+        left_outside = draw.rectangle(outer_length, outer_length, 0, 0)
         right_outside = draw.translate(left_outside,
-                                       crossover_length / 2 + outter_length / 2,
+                                       crossover_length / 2 + outer_length / 2,
                                        0)
         left_outside = draw.translate(
-            left_outside, -(crossover_length / 2 + outter_length / 2), 0)
+            left_outside, -(crossover_length / 2 + outer_length / 2), 0)
 
         # Make the bridge structure
         bridge = draw.rectangle(crossover_length, bridge_width, 0, 0)
