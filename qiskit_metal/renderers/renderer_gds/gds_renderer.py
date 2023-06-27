@@ -1178,7 +1178,7 @@ class QGDSRenderer(QRenderer):
             ab_component_layer = row['layer']
             self._multipolygon_to_gds(multi_poly=ab_component_multi_poly,
                                       layer=ab_component_layer,
-                                      datatype=0,
+                                      data_type=0,
                                       no_cheese_buffer=0)
 
     ### End of Airbridging
