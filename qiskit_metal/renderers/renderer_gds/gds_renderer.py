@@ -1165,7 +1165,7 @@ class QGDSRenderer(QRenderer):
         """
         # Warning / limitations
         if (self.options.corners != 'circular bend'):
-            logging.warning(
+            self.logger.warning(
                 'Uniform airbridging is designed for `self.options.corners = "circular bend"`. You might experience unexpected behavior.'
             )
 
