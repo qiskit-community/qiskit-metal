@@ -108,7 +108,7 @@ class Airbridging:
                                   cpw_name: str, 
                                   bridge_pitch: float,
                                   bridge_minimum_spacing: float,
-                                  precision: int) -> list[tuple[float, float, float]]:
+                                  precision: float) -> list[tuple[float, float, float]]:
         '''
         Determines where to place the wirebonds given a CPW. 
         
@@ -116,9 +116,9 @@ class Airbridging:
             cpw_name (str): Name of cpw to find airbridge placements.
             bridge_minimum_spacing: (float) -- Minimum spacing from corners. Units in mm.
             bridge_pitch: (float, in units mm) -- Spacing between the centers of each bridge. Units in mm.
-            precision: (int, optional) -- How precise did you define your CPWs?
-                                This parameter is meant to take care of floating point errors.
-                                References number of decimal points relative to millimeters.
+            precision: (float) -- How precise did you define your CPWs?
+                                  This parameter is meant to take care of floating point errors.
+                                  References number of decimal points relative to millimeters.
         
         Returns:
             ab_placements (list[tuple[float, float, float]]): Where the airbridges should be placed for given `cpw_name`.
@@ -145,8 +145,8 @@ class Airbridging:
         ### Handles all the straight sections ###
         for i in range(len(points)-1):
             # Set up parameters for this calculation
-            pos_i = points[i]
-            pos_f = points[i + 1]
+            pos_i = float(points[i])
+            pos_f = float(points[i + 1])
             
             x0 = round(pos_i[0] / precision) * precision
             y0 = round(pos_i[1] / precision) * precision
