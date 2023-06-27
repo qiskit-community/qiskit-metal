@@ -1136,21 +1136,19 @@ class QGDSRenderer(QRenderer):
             layers_in_chip = self.design.qgeometry.get_all_unique_layers(
                 chip_name)
 
-            for chip_layer in layers_in_chip:
-                chip_box, status = self.design.get_x_y_for_chip(chip_name)
-                if status == 0:
-                    minx, miny, maxx, maxy = chip_box
+            chip_box, status = self.design.get_x_y_for_chip(chip_name)
+            if status == 0:
+                minx, miny, maxx, maxy = chip_box
 
-                    # Right now this code assumes airbridges will look
-                    # the same across all CPWs. If you want to change that,
-                    # add an if/else statement here to check for custom behavior.
-                    # You will also have to update the self.default_options.
-                    self._make_uniform_airbridging_df(minx, miny, maxx, maxy,
-                                                      chip_name, chip_layer)
+                # Right now this code assumes airbridges will look
+                # the same across all CPWs. If you want to change that,
+                # add an if/else statement here to check for custom behavior.
+                # You will also have to update the self.default_options.
+                self._make_uniform_airbridging_df(minx, miny, maxx, maxy,
+                                                  chip_name)
 
     def _make_uniform_airbridging_df(self, minx: float, miny: float,
-                                     maxx: float, maxy: float, chip_name: str,
-                                     chip_layer):
+                                     maxx: float, maxy: float, chip_name: str):
         """
         Apply airbridges to all `path` elements which have 
         options.gds_make_airbridge = True. This is a 
