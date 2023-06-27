@@ -33,7 +33,7 @@ import pandas as pd
 import numpy as np
 
 from qiskit_metal.renderers.renderer_base import QRenderer
-from airbridge import Airbridge_forGDS
+from qiskit_metal.renderers.renderer_gds.airbridge import Airbridge_forGDS
 from qiskit_metal.renderers.renderer_gds.make_cheese import Cheesing
 from qiskit_metal.toolbox_metal.parsing import is_true
 from qiskit_metal import draw
