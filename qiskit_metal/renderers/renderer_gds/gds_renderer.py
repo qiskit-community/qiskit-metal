@@ -230,18 +230,16 @@ class QGDSRenderer(QRenderer):
                 qcomponent_base=Airbridge_forGDS,
                 # These options are plugged into the qcomponent_base.
                 # Think of it as calling qcomponent_base(design, name, options=options).
-                options=Dict(crossover_length='22um')
-            ),
+                options=Dict(crossover_length='22um')),
             # Spacing between centers of each airbridge.
             bridge_pitch='100um',
-            
-            # Minimum spacing between each airbridge, 
+
+            # Minimum spacing between each airbridge,
             # this number usually comes from fabrication guidelines.
             bridge_minimum_spacing='5um',
 
             # GDS datatype of airbridges.
-            datatype = '0'
-        ),
+            datatype='0'),
 
         # Cheesing is denoted by each chip and layer.
         cheese=Dict(
@@ -1143,24 +1141,16 @@ class QGDSRenderer(QRenderer):
                 if status == 0:
                     minx, miny, maxx, maxy = chip_box
 
-                    # Right now this code assumes airbridges will look 
-                    # the same across all CPWs. If you want to change that, 
+                    # Right now this code assumes airbridges will look
+                    # the same across all CPWs. If you want to change that,
                     # add an if/else statement here to check for custom behavior.
                     # You will also have to update the self.default_options.
-                    self._make_uniform_airbridging_df(minx, 
-                                                    miny, 
-                                                    maxx, 
-                                                    maxy,
-                                                    chip_name,
-                                                    chip_layer)
+                    self._make_uniform_airbridging_df(minx, miny, maxx, maxy,
+                                                      chip_name, chip_layer)
 
-    def _make_uniform_airbridging_df(self, 
-                                   minx: float, 
-                                   miny: float, 
-                                   maxx: float, 
-                                   maxy: float, 
-                                   chip_name: str,
-                                   chip_layer):
+    def _make_uniform_airbridging_df(self, minx: float, miny: float,
+                                     maxx: float, maxy: float, chip_name: str,
+                                     chip_layer):
         """
         Apply airbridges to all `path` elements which have 
         options.gds_make_airbridge = True. This is a 
@@ -1175,12 +1165,15 @@ class QGDSRenderer(QRenderer):
         """
         # Warning / limitations
         if (self.options.corners != 'circular bend'):
-            logging.warning('Uniform airbridging is designed for `self.options.corners = "circular bend"`. You might experience unexpected behavior.')
+            logging.warning(
+                'Uniform airbridging is designed for `self.options.corners = "circular bend"`. You might experience unexpected behavior.'
+            )
 
         # gdspy objects
         top_cell = self.lib.cells[f'TOP_{chip_name}']
         lib_cell = self.lib.new_cell(f'TOP_{chip_name}_ab')
-        no_cheese_buffer = float(self.parse_value(self.options.no_cheese.buffer))
+        no_cheese_buffer = float(self.parse_value(
+            self.options.no_cheese.buffer))
 
         # Airbridge Options
         self.options.airbridge.qcomponent_base
@@ -1193,19 +1186,22 @@ class QGDSRenderer(QRenderer):
                                   maxy=maxy,
                                   chip_name=chip_name,
                                   precision=self.options.precision)
-        airbridges_df = airbridging.make_uniform_airbridging_df(custom_qcomponent=self.options.airbridge.geometry.qcomponent_base,
-                                                                qcomponent_options=self.options.airbridge.geometry.options,
-                                                                bridge_pitch=self.options.airbridge.bridge_pitch,
-                                                                bridge_minimum_spacing=self.options.airbridge.bridge_minimum_spacing)
+        airbridges_df = airbridging.make_uniform_airbridging_df(
+            custom_qcomponent=self.options.airbridge.geometry.qcomponent_base,
+            qcomponent_options=self.options.airbridge.geometry.options,
+            bridge_pitch=self.options.airbridge.bridge_pitch,
+            bridge_minimum_spacing=self.options.airbridge.bridge_minimum_spacing
+        )
 
         # Get all MultiPolygons and render to gds file
         for _, row in airbridges_df.iterrows():
             ab_component_multi_poly = row['MultiPoly']
             ab_component_layer = row['layer']
-            airbridge_gds = self._multipolygon_to_gds(multi_poly=ab_component_multi_poly,
-                                            layer=ab_component_layer,
-                                            data_type=int(self.options.airbridge.datatype),
-                                            no_cheese_buffer=no_cheese_buffer)
+            airbridge_gds = self._multipolygon_to_gds(
+                multi_poly=ab_component_multi_poly,
+                layer=ab_component_layer,
+                data_type=int(self.options.airbridge.datatype),
+                no_cheese_buffer=no_cheese_buffer)
 
             lib_cell.add(airbridge_gds)
             top_cell.add(gdspy.CellReference(lib_cell))

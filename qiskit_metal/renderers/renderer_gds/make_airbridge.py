@@ -22,17 +22,12 @@ from qiskit_metal import draw
 
 from qiskit_metal.qlibrary.core import QComponent
 
+
 class Airbridging:
     """Logic for placing airbridges for QGDSRenderer."""
 
-    def __init__(self,
-                 design: 'QDesign',
-                 lib: gdspy.GdsLibrary,
-                 minx: float,
-                 miny: float,
-                 maxx: float,
-                 maxy: float,
-                 chip_name: str,
+    def __init__(self, design: 'QDesign', lib: gdspy.GdsLibrary, minx: float,
+                 miny: float, maxx: float, maxy: float, chip_name: str,
                  precision: float):
         """
         Initializes the Airbridging object.
@@ -79,11 +74,9 @@ class Airbridging:
 
         return cpw_names
 
-    def make_uniform_airbridging_df(self, 
-                                  custom_qcomponent: 'QComponent', 
-                                  qcomponent_options: dict,
-                                  bridge_pitch: str,
-                                  bridge_minimum_spacing: str) -> pd.DataFrame:
+    def make_uniform_airbridging_df(
+            self, custom_qcomponent: 'QComponent', qcomponent_options: dict,
+            bridge_pitch: str, bridge_minimum_spacing: str) -> pd.DataFrame:
         """
         Makes the uniform airbridging dataframe
 
@@ -102,27 +95,28 @@ class Airbridging:
         bridge_minimum_spacing = self.design.parse_value(bridge_minimum_spacing)
 
         # Get shapley cutout of airbridges
-        ab_qgeom = self.extract_qgeom_from_unrendered_qcomp(custom_qcomponent=custom_qcomponent, 
-                                                                       qcomponent_options=qcomponent_options)
+        ab_qgeom = self.extract_qgeom_from_unrendered_qcomp(
+            custom_qcomponent=custom_qcomponent,
+            qcomponent_options=qcomponent_options)
 
         # Place the airbridges
         ab_df_list = []
         for cpw_name in self.cpws_with_ab:
-            ab_placement = self.find_uniform_ab_placement(cpw_name=cpw_name,
-                                                           bridge_pitch=bridge_pitch,
-                                                           bridge_minimum_spacing=bridge_minimum_spacing)
-            airbridge_df_for_cpw = self.ab_placement_to_df(ab_placement=ab_placement, 
-                                                           ab_qgeom=ab_qgeom)
+            ab_placement = self.find_uniform_ab_placement(
+                cpw_name=cpw_name,
+                bridge_pitch=bridge_pitch,
+                bridge_minimum_spacing=bridge_minimum_spacing)
+            airbridge_df_for_cpw = self.ab_placement_to_df(
+                ab_placement=ab_placement, ab_qgeom=ab_qgeom)
             ab_df_list.append(airbridge_df_for_cpw)
 
         airbridge_df = pd.concat(ab_df_list)
 
         return airbridge_df
 
-    def find_uniform_ab_placement(self, 
-                                  cpw_name: str, 
-                                  bridge_pitch: float,
-                                  bridge_minimum_spacing: float) -> list[tuple[float, float, float]]:
+    def find_uniform_ab_placement(
+            self, cpw_name: str, bridge_pitch: float,
+            bridge_minimum_spacing: float) -> list[tuple[float, float, float]]:
         '''
         Determines where to place the wirebonds given a CPW. 
         
@@ -151,101 +145,101 @@ class Airbridging:
         points = target_cpw.get_points()
         ab_placements = []
         points_theta = []
-        
+
         fillet = self.design.parse_value(target_cpw.options.fillet)
-        
+
         ### Handles all the straight sections ###
-        for i in range(len(points)-1):
+        for i in range(len(points) - 1):
             # Set up parameters for this calculation
             pos_i = points[i]
             pos_f = points[i + 1]
-            
+
             x0 = round(float(pos_i[0]) / precision) * precision
             y0 = round(float(pos_i[1]) / precision) * precision
             xf = round(float(pos_f[0]) / precision) * precision
             yf = round(float(pos_f[1]) / precision) * precision
-            
+
             dl = (xf - x0, yf - y0)
             dx = dl[0]
             dy = dl[1]
-            
-            
-            theta = np.arctan2(dy,dx)
+
+            theta = np.arctan2(dy, dx)
             mag_dl = np.sqrt(dx**2 + dy**2)
-            lprime = mag_dl - 2 * bridge_minimum_spacing 
-                        
+            lprime = mag_dl - 2 * bridge_minimum_spacing
+
             if fillet > bridge_minimum_spacing:
                 lprime = mag_dl - 2 * fillet
             else:
-                lprime = mag_dl - 2 * bridge_minimum_spacing 
-            n = 1 #refers to the number of bridges you've already placed
+                lprime = mag_dl - 2 * bridge_minimum_spacing
+            n = 1  #refers to the number of bridges you've already placed
             #Asking should I place another? If true place another one.
             while (lprime) >= (n * bridge_pitch):
                 n += 1
-            
-            mu_x = (xf + x0)/2
-            mu_y = (yf + y0)/2
-            
+
+            mu_x = (xf + x0) / 2
+            mu_y = (yf + y0) / 2
+
             x = np.array([i * bridge_pitch * np.cos(theta) for i in range(n)])
             y = np.array([i * bridge_pitch * np.sin(theta) for i in range(n)])
 
             x = (x - np.average(x)) + mu_x
             y = (y - np.average(y)) + mu_y
-            
+
             for i in range(n):
-                ab_placements.append((x[i],y[i], np.degrees(theta)))
-            
+                ab_placements.append((x[i], y[i], np.degrees(theta)))
+
             #This is for the corner points
             points_theta.append(theta)
-            
+
         ### This handles all the corner / turning sections ###
         # First check to see if any turns exists
         if (len(points) > 2):
             corner_points = points_theta[1:-1]
-            for i in range(len(corner_points)+1):
-                
-                # First check to see if we should 
+            for i in range(len(corner_points) + 1):
+
+                # First check to see if we should
                 # even make an airbridge at this corner
                 pos_i = points[i]
                 pos_f = points[i + 1]
-                
+
                 x0 = round(float(pos_i[0]) / precision) * precision
                 y0 = round(float(pos_i[1]) / precision) * precision
                 xf = round(float(pos_f[0]) / precision) * precision
                 yf = round(float(pos_f[1]) / precision) * precision
-                
-                mag_dl = np.sqrt((xf-x0)**2 + (yf-y0)**2)
-                
+
+                mag_dl = np.sqrt((xf - x0)**2 + (yf - y0)**2)
+
                 if mag_dl < fillet or mag_dl < bridge_minimum_spacing:
                     continue
-                
+
                 # Now that we only have real turns
                 # let's find the center trace of to align the wirebonds
                 theta_f = points_theta[i + 1]
                 theta_i = points_theta[i]
-                
+
                 dx = np.cos(theta_i) - np.cos(theta_f)
                 dy = np.sin(theta_i) - np.sin(theta_f)
-                
+
                 theta = np.arctan2(dy, dx)
-                                
-                distance_circle_box_x = fillet * (1-np.abs(np.cos(theta)))
-                distance_circle_box_y = fillet * (1-np.abs(np.sin(theta)))
-                
-                theta_avg = (theta_f + theta_i)/2
-                
-                x = points[i + 1][0] - distance_circle_box_x * np.sign(np.cos(theta))
-                y = points[i + 1][1] - distance_circle_box_y * np.sign(np.sin(theta))
-                
+
+                distance_circle_box_x = fillet * (1 - np.abs(np.cos(theta)))
+                distance_circle_box_y = fillet * (1 - np.abs(np.sin(theta)))
+
+                theta_avg = (theta_f + theta_i) / 2
+
+                x = points[i + 1][0] - distance_circle_box_x * np.sign(
+                    np.cos(theta))
+                y = points[i + 1][1] - distance_circle_box_y * np.sign(
+                    np.sin(theta))
+
                 ab_placements.append((x, y, np.degrees(theta_avg)))
-        
+
         # Removes airbridge at the start pin
         ab_placements = ab_placements[1:]
 
         return ab_placements
-    
-    def ab_placement_to_df(self,
-                           ab_placement: list[tuple[float, float, float]], 
+
+    def ab_placement_to_df(self, ab_placement: list[tuple[float, float, float]],
                            ab_qgeom: pd.DataFrame) -> pd.DataFrame:
         '''
         With a base airbridge shape, find the shapely data for placing all airbridges.
@@ -263,7 +257,9 @@ class Airbridging:
             shapley_data = component['geometry']
             for x, y, theta in ab_placement:
                 # Extract shapely data, and move to proper spot
-                shapely_copy = draw.rotate(shapley_data, theta + 90, origin=(0,0))
+                shapely_copy = draw.rotate(shapley_data,
+                                           theta + 90,
+                                           origin=(0, 0))
                 shapely_copy = draw.translate(shapely_copy, x, y)
                 shapely_copy = shapely.geometry.MultiPolygon([shapely_copy])
 
@@ -274,14 +270,16 @@ class Airbridging:
                 shapley_data_all.append(shapely_copy)
                 layer_data_all.append(layer)
 
-        airbridge_df = pd.DataFrame({'MultiPoly': shapley_data_all, 
-                                     'layer' : layer_data_all})
+        airbridge_df = pd.DataFrame({
+            'MultiPoly': shapley_data_all,
+            'layer': layer_data_all
+        })
 
         return airbridge_df
-        
-    def extract_qgeom_from_unrendered_qcomp(self, 
-                                            custom_qcomponent: 'QComponent',
-                                            qcomponent_options: dict) -> 'pd.DataFrame':
+
+    def extract_qgeom_from_unrendered_qcomp(
+            self, custom_qcomponent: 'QComponent',
+            qcomponent_options: dict) -> 'pd.DataFrame':
         '''
         Extracts the qgeometry table from a child of QComponent.
 
@@ -294,22 +292,25 @@ class Airbridging:
         '''
         # Chck you put in a QComponent w/ self.make() functionality
         if not issubclass(custom_qcomponent, QComponent):
-            raise ValueError('`custom_qcomponent` must be a child of `QComponent`.')
+            raise ValueError(
+                '`custom_qcomponent` must be a child of `QComponent`.')
         if not hasattr(custom_qcomponent, 'make'):
-            raise AttributeError('`custom_qcomponent` must have `make()` method')
+            raise AttributeError(
+                '`custom_qcomponent` must have `make()` method')
 
         # Make a name which won't interfer w/ other components
         test_name = 'initial_name'
         all_component_names = self.design.components.keys()
         while test_name in all_component_names:
             test_name += '1'
-        
+
         # Temporarily render in QComponent
-        qcomponent_obj = custom_qcomponent(self.design, test_name, options=qcomponent_options)
+        qcomponent_obj = custom_qcomponent(self.design,
+                                           test_name,
+                                           options=qcomponent_options)
         # Extract shapley data
         qgeom_table = qcomponent_obj.qgeometry_table('poly')
         # Delete it
         qcomponent_obj.delete()
 
         return qgeom_table
-
