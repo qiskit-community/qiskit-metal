@@ -44,6 +44,8 @@ from qiskit_metal.qgeometries.qgeometries_handler import QGeometryTables
 from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 from qiskit_metal.qlibrary.terminations.open_to_ground import OpenToGround
 from qiskit_metal.qlibrary.tlines.mixed_path import RouteMixed
+from qiskit_metal.renderers.renderer_gds.airbridge import Airbridge_forGDS
+
 from qiskit_metal.renderers.renderer_gds.make_airbridge import Airbridging
 
 
@@ -557,7 +559,7 @@ class TestRenderers(unittest.TestCase):
         self.assertEqual(len(element_table_data['junction']), 1)
         self.assertEqual(element_table_data['junction']['cell_name'],
                          'my_other_junction')
-        
+
         self.assertEqual(len(element_table_data['path'], 1))
         self.assertEqual(element_table_data['path']['make_airbridge'], False)
 
