@@ -255,7 +255,7 @@ class Airbridging:
                 layer = component['layer']
 
                 # Add data to DataFrame
-                shapley_data_all.append(shapley_data)
+                shapley_data_all.append(shapely_copy)
                 layer_data_all.append(layer)
 
         airbridge_df = pd.DataFrame({'MultiPoly': shapley_data_all, 
