@@ -165,9 +165,7 @@ The actual docstring for the elements listed in the module docstring
 
 
     >  You can use any Sphinx directive or rst formatting in a docstring as it
-    >  makes sense. For example, one common extension used is the ``jupyter-execute``
-    >  directive, which is used to execute a code block in Jupyter and display both
-    >  the code and output. This is particularly useful for visualizations.
+    >  makes sense.
 
 ### Rebuilding Documentation
 
