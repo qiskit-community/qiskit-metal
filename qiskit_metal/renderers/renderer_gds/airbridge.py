@@ -29,7 +29,7 @@ class Airbridge_forGDS(QComponent):
     """Default drawing options"""
 
     # Name prefix of component, if user doesn't provide name
-    component_metadata = Dict(short_name='component')
+    component_metadata = Dict(short_name='airbridge')
     """Component metadata"""
 
     def make(self):
@@ -44,10 +44,10 @@ class Airbridge_forGDS(QComponent):
         # Make the inner square structure
         left_inside = draw.rectangle(inner_length, inner_length, 0, 0)
         right_inside = draw.translate(left_inside,
-                                      crossover_length / 2 + inner_length / 2,
+                                      crossover_length / 2 + outer_length / 2,
                                       0)
         left_inside = draw.translate(left_inside,
-                                     -(crossover_length / 2 + inner_length / 2),
+                                     -(crossover_length / 2 + outer_length / 2),
                                      0)
 
         inside_struct = draw.union(left_inside, right_inside)
