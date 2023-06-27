@@ -244,13 +244,12 @@ class Airbridging:
         shapley_data_all = []
         layer_data_all = []
         for _, component in qgeom_table.iterrows():
-
+            shapley_data = component['geometry']
             for x, y, theta in ab_placement:
                 # Extract shapely data, and move to proper spot
-                shapley_data = component['geometry']
-                shapley_data = draw.rotate(shapley_data, theta, origin=(0,0))
-                shapley_data = draw.translate(shapley_data, x, y)
-                shapley_data = shapely.geometry.MultiPolygon([shapley_data])
+                shapely_copy = draw.rotate(shapley_data, theta, origin=(0,0))
+                shapely_copy = draw.translate(shapely_copy, x, y)
+                shapely_copy = shapely.geometry.MultiPolygon([shapely_copy])
 
                 # Extract layer info
                 layer = component['layer']
@@ -266,7 +265,7 @@ class Airbridging:
         
     def extract_qgeom_from_unrendered_qcomp(self, 
                                                    custom_qcomponent: 'QComponent',
-                                                   qcomponent_options: dict) -> shapely.geometry.MultiPolygon:
+                                                   qcomponent_options: dict) -> 'pd.DataFrame':
         '''
         Extracts the qgeometry table from a child of QComponent.
         Must have QComponent.make() 
@@ -276,7 +275,7 @@ class Airbridging:
             qcomponent_options (dict): Geometrical options for cusotm_qcomponent. In structure of cusotm_qcomponent.default_options.
         
         Returns:
-            custom_qcomponent_multipolygon (shapely.geometry.MultiPolygon)
+            qgeom_table (pd.DataFrame)
         '''
         # Chck you put in a QComponent w/ self.make() functionality
         if not issubclass(custom_qcomponent, QComponent):
@@ -296,8 +295,6 @@ class Airbridging:
         qgeom_table = qcomponent_obj.qgeometry_table('poly')
         # Delete it
         qcomponent_obj.delete()
-
-        
 
         return qgeom_table
 
