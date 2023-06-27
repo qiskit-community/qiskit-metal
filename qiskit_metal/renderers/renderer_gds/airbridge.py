@@ -60,7 +60,7 @@ class Airbridge_forGDS(QComponent):
         final_design = [bridge_struct, inside_struct]
         final_design = draw.rotate(final_design, p.orientation, origin=(0,0))
         final_design = draw.translate(final_design, p.pos_x, p.pos_y)
-        bridge_struct, left_inside, right_inside = final_design
+        bridge_struct, inside_struct = final_design
 
         ### Add everything as a QGeometry
         self.add_qgeometry('poly', {'bridge_struct':bridge_struct}, layer=p.bridge_layer, subtract=False)
