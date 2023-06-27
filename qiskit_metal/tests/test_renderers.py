@@ -42,6 +42,7 @@ from qiskit_metal.renderers.renderer_ansys import ansys_renderer
 
 from qiskit_metal.qgeometries.qgeometries_handler import QGeometryTables
 from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
+from qiskit_metal.renderers.renderer_gds.airbridge import Airbridge_forGDS
 from qiskit_metal import draw
 
 
@@ -343,6 +344,15 @@ class TestRenderers(unittest.TestCase):
 
         self.assertEqual(options['fabricate'], 'False')
 
+        self.assertEqual(len(options['airbridge']), 4)
+        self.assertEqual(len(options['airbridge']['geometry']), 2)
+        
+        self.assertEqual(options['airbridge']['geometry']['qcomponent_base'], Airbridge_forGDS)
+        self.assertEqual(options['airbridge']['geometry']['options']['crossover_length'], '22um')
+        self.assertEqual(options['airbridge']['bridge_pitch'], '100um')
+        self.assertEqual(options['airbridge']['bridge_minimum_spacing'], '5um')
+        self.assertEqual(options['airbridge']['datatype'], '0')
+
         self.assertEqual(len(options['cheese']), 9)
         self.assertEqual(len(options['no_cheese']), 5)
 
@@ -588,7 +598,7 @@ class TestRenderers(unittest.TestCase):
     def test_renderer_mpl_interaction_disconnect(self):
         """Test disconnect in MplInteraction in mpl_interaction.py."""
         mpl = MplInteraction(_plt)
-        mpl.disconnect()
+        mpl.didsconnect()
         self.assertEqual(mpl.figure, None)
 
     def test_renderer_gds_check_cheese(self):

@@ -99,7 +99,7 @@ class QGDSRenderer(QRenderer):
         * airbridge: Dict
             * geometry: Dict
                 qcomponent_base: Airbridge_forGDS
-                options: Dict
+                options: Dict(crossover_length='22um')
             * bridge_pitch: '100um'
             * bridge_minimum_spacing: '5um'
             * datatype: '0'
@@ -230,7 +230,7 @@ class QGDSRenderer(QRenderer):
                 qcomponent_base=Airbridge_forGDS,
                 # These options are plugged into the qcomponent_base.
                 # Think of it as calling qcomponent_base(design, name, options=options).
-                options=dict(crossover_length='22um')
+                options=Dict(crossover_length='22um')
             ),
             # Spacing between centers of each airbridge.
             bridge_pitch='100um',
