@@ -503,7 +503,7 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
 
         result = q1._get_table_values_from_renderers(design)
 
-        self.assertEqual(len(result), 17)
+        self.assertEqual(len(result), 18)
         self.assertEqual(result['hfss_inductance'], '10nH')
         self.assertEqual(result['hfss_capacitance'], 0)
         self.assertEqual(result['hfss_resistance'], 0)
@@ -517,6 +517,7 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
         self.assertEqual(result['q3d_wire_bonds'], False)
         self.assertEqual(result['aedt_hfss_inductance'], 10e-9)
         self.assertEqual(result['aedt_hfss_capacitance'], 0)
+        self.assertEqual(result['gds_make_airbridge'], False)
 
 
 if __name__ == '__main__':

@@ -23,7 +23,7 @@ import unittest
 from unittest.mock import MagicMock
 import matplotlib.pyplot as _plt
 
-from qiskit_metal import designs
+from qiskit_metal import designs, Dict, draw
 from qiskit_metal.renderers import setup_default
 from qiskit_metal.renderers.renderer_ansys.ansys_renderer import QAnsysRenderer
 from qiskit_metal.renderers.renderer_ansys.q3d_renderer import QQ3DRenderer
@@ -45,7 +45,6 @@ from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 from qiskit_metal.qlibrary.terminations.open_to_ground import OpenToGround
 from qiskit_metal.qlibrary.tlines.mixed_path import RouteMixed
 from qiskit_metal.renderers.renderer_gds.make_airbridge import Airbridging
-from qiskit_metal import draw
 
 
 class TestRenderers(unittest.TestCase):
@@ -326,7 +325,7 @@ class TestRenderers(unittest.TestCase):
         renderer = QGDSRenderer(design)
         options = renderer.default_options
 
-        self.assertEqual(len(options), 17)
+        self.assertEqual(len(options), 18)
         self.assertEqual(options['short_segments_to_not_fillet'], 'True')
         self.assertEqual(options['check_short_segments_by_scaling_fillet'],
                          '2.0')
@@ -553,10 +552,14 @@ class TestRenderers(unittest.TestCase):
 
         self.assertEqual(renderer.name, 'gds')
         element_table_data = renderer.element_table_data
-        self.assertEqual(len(element_table_data), 1)
+        self.assertEqual(len(element_table_data), 2)
+
         self.assertEqual(len(element_table_data['junction']), 1)
         self.assertEqual(element_table_data['junction']['cell_name'],
                          'my_other_junction')
+        
+        self.assertEqual(len(element_table_data['path'], 1))
+        self.assertEqual(element_table_data['path']['make_airbridge'], False)
 
     def test_renderer_gdsrenderer_update_units(self):
         """Test update_units in gds_renderer.py."""
