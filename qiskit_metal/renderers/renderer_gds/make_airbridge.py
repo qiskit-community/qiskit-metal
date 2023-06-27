@@ -16,6 +16,7 @@
 import gdspy
 import shapely
 import numpy as np
+import pandas as pd
 
 from qiskit_metal.qlibrary.core import QComponent
 from airbridge import Airbridge
@@ -56,18 +57,18 @@ class Airbridging:
         cpws_df = path_qgeom[path_qgeom['gds_make_airbridge'] == True]
         return cpws_df
 
-    def apply_uniform_airbridging(self, 
+    def make_uniform_airbridging_df(self, 
                                   custom_qcomponent: 'QComponent', 
                                   qcomponent_options: dict,
                                   bridge_pitch: str,
                                   bridge_minimum_spacing: str,
-                                  ) -> gdspy.GdsLibrary:
+                                  ) -> 'pd.DataFrame':
         
         bridge_pitch = self.design.parse_value(bridge_pitch)
         bridge_minimum_spacing = self.design.parse_value(bridge_minimum_spacing)
 
         # Get shapley cutout of airbridges
-        ab_shapely = self.extract_shapely_from_unrendered_qcomponent(custom_qcomponent=custom_qcomponent, 
+        ab_qgeom = self.extract_qgeom_from_unrendered_qcomp(custom_qcomponent=custom_qcomponent, 
                                                                        qcomponent_options=qcomponent_options)
 
         # Place the airbridges
@@ -77,9 +78,9 @@ class Airbridging:
                                                            bridge_pitch=bridge_pitch,
                                                            bridge_minimum_spacing=bridge_minimum_spacing,
                                                            precision=self.precision)
-            self.ab_placement_to_gds(ab_placement, ab_shapely)
+            airbridge_df = self.ab_placement_to_df(ab_placement, ab_qgeom)
         
-        return self.lib
+        return airbridge_df
 
     def find_uniform_ab_placement(self, 
                                   cpw_name: str, 
@@ -206,16 +207,35 @@ class Airbridging:
         
         return ab_placements
     
-    def ab_placement_to_gds(ab_placement: list[float],
-                            ab_shapely: 'Shapely'):
-        for x, y, theta in ab_placement:
-            pass
-
-    def extract_shapely_from_unrendered_qcomponent(self, 
-                                                   custom_qcomponent: 'QComponent',
-                                                   qcomponent_options: dict):
+    def ab_placement_to_df(ab_placement: list[float],
+                            qgeom_table: 'geopandas.geodataframe.GeoDataFrame') -> pd.DataFrame:
         '''
-        Extracts the shapely data from a child of QComponent.
+        With a base airbridge shape, find the shapely data for placing all airbridges.
+
+        '''
+        shapley_data_all = []
+        layer_data_all = []
+        for _, component in qgeom_table.iterrows():
+
+            for x, y, theta in ab_placement:
+                # Extract shapely data, and move to proper spot
+                shapley_data = component['geometry']
+                shapley_data = draw.rotate(shapley_data, theta, origin=(0,0))
+                shapley_data = draw.translate(shapley_data, x, y)
+
+                # Extract layer info
+                layer = component['layer']
+
+        airbridge_df = pd.DataFrame({'geometry': shapley_data_all, 
+                                     'layer' : layer_data_all})
+
+        return airbridge_df
+        
+    def extract_qgeom_from_unrendered_qcomp(self, 
+                                                   custom_qcomponent: 'QComponent',
+                                                   qcomponent_options: dict) -> shapely.geometry.MultiPolygon:
+        '''
+        Extracts the qgeometry table from a child of QComponent.
         Must have QComponent.make() 
 
         Args:
@@ -223,7 +243,7 @@ class Airbridging:
             qcomponent_options (dict): Geometrical options for cusotm_qcomponent. In structure of cusotm_qcomponent.default_options.
         
         Returns:
-            shapely_geometries (list[shapley])
+            custom_qcomponent_multipolygon (shapely.geometry.MultiPolygon)
         '''
         # Chck you put in a QComponent w/ self.make() functionality
         if not issubclass(custom_qcomponent, QComponent):
@@ -240,9 +260,11 @@ class Airbridging:
         # Temporarily render in QComponent
         qcomponent_obj = custom_qcomponent(self.design, test_name, options=qcomponent_options)
         # Extract shapley data
-        shapely_geometries = qcomponent_obj.qgeometry_table('poly')
+        qgeom_table = qcomponent_obj.qgeometry_table('poly')
         # Delete it
         qcomponent_obj.delete()
 
-        return shapely_geometries
+        
+
+        return qgeom_table
 

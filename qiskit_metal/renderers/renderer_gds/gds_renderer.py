@@ -1130,13 +1130,13 @@ class QGDSRenderer(QRenderer):
                     # the same across all CPWs. If you want to change that, 
                     # add an if/else statement here to check for custom behavior.
                     # You will also have to update the self.default_options.
-                    self._apply_uniform_airbridging(minx, 
+                    self._make_uniform_airbridging_df(minx, 
                                                     miny, 
                                                     maxx, 
                                                     maxy,
                                                     chip_name)
 
-    def _apply_uniform_airbridging(self, 
+    def _make_uniform_airbridging_df(self, 
                                    minx: float, 
                                    miny: float, 
                                    maxx: float, 
@@ -1145,7 +1145,7 @@ class QGDSRenderer(QRenderer):
         """
         Apply airbridges to all `path` elements which have 
         options.gds_make_airbridge = True. This is a 
-        wrapper for Airbridging.apply_uniform_airbridging(...).
+        wrapper for Airbridging.make_uniform_airbridging_df(...).
 
         Args:
             minx (float): Chip minimum x location.
@@ -1164,10 +1164,18 @@ class QGDSRenderer(QRenderer):
                                   maxy=maxy,
                                   chip_name=chip_name,
                                   precision=self.options.precision)
-        airbridging.apply_uniform_airbridging(custom_qcomponent=self.options.airbridge.geometry.qcomponent_base,
-                                              qcomponent_options=self.options.airbridge.geometry.options,
-                                              bridge_pitch=self.options.airbridge.bridge_pitch)
-    
+        airbridges_df = airbridging.make_uniform_airbridging_df(custom_qcomponent=self.options.airbridge.geometry.qcomponent_base,
+                                                                qcomponent_options=self.options.airbridge.geometry.options,
+                                                                bridge_pitch=self.options.airbridge.bridge_pitch)
+
+        for _, row in airbridges_df.iterrows():
+            ab_component_multi_poly = row['MultiPoly']
+            ab_component_layer = row['layer']
+            self._multipolygon_to_gds(multi_poly=ab_component_multi_poly,
+                                      layer=ab_component_layer,
+                                      datatype=0,
+                                      no_cheese_buffer=0)
+
     ### End of Airbridging
 
     ### Start of Cheesing
