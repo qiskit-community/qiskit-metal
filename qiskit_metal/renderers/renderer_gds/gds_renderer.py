@@ -1157,7 +1157,7 @@ class QGDSRenderer(QRenderer):
         """
         self.options.airbridge.qcomponent_base
         self.options.airbridge.options
-        airbridging = Airbridging(deisgn=self.design,
+        airbridging = Airbridging(design=self.design,
                                   lib=self.lib,
                                   minx=minx,
                                   miny=miny,
