@@ -234,7 +234,9 @@ class Airbridging:
         
         return ab_placements
     
-    def ab_placement_to_df(ab_placement: list[float], qgeom_table: 'pd.DataFrame') -> pd.DataFrame:
+    def ab_placement_to_df(self,
+                           ab_placement: list[float], 
+                           qgeom_table: 'pd.DataFrame') -> pd.DataFrame:
         '''
         With a base airbridge shape, find the shapely data for placing all airbridges.
 
