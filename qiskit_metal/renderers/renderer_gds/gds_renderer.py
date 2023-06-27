@@ -1172,6 +1172,7 @@ class QGDSRenderer(QRenderer):
         # gdspy objects
         top_cell = self.lib.cells[f'TOP_{chip_name}']
         lib_cell = self.lib.new_cell(f'TOP_{chip_name}_ab')
+        datatype = int(self.parse_value(self.options.airbridge.datatype))
         no_cheese_buffer = float(self.parse_value(
             self.options.no_cheese.buffer))
 
@@ -1200,7 +1201,7 @@ class QGDSRenderer(QRenderer):
             airbridge_gds = self._multipolygon_to_gds(
                 multi_poly=ab_component_multi_poly,
                 layer=ab_component_layer,
-                data_type=int(self.options.airbridge.datatype),
+                data_type=datatype,
                 no_cheese_buffer=no_cheese_buffer)
 
             lib_cell.add(airbridge_gds)
