@@ -22,6 +22,7 @@
 import unittest
 from unittest.mock import MagicMock
 import matplotlib.pyplot as _plt
+import pandas as pd
 
 from qiskit_metal import designs, Dict, draw
 from qiskit_metal.renderers import setup_default
@@ -560,7 +561,7 @@ class TestRenderers(unittest.TestCase):
         self.assertEqual(element_table_data['junction']['cell_name'],
                          'my_other_junction')
 
-        self.assertEqual(len(element_table_data['path'], 1))
+        self.assertEqual(len(element_table_data['path']), 1)
         self.assertEqual(element_table_data['path']['make_airbridge'], False)
 
     def test_renderer_gdsrenderer_update_units(self):
