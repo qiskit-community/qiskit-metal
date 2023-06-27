@@ -49,8 +49,8 @@ class Airbridge_forGDS(QComponent):
 
         # Make the outter square structure
         left_outside = draw.rectangle(outter_length, outter_length, 0, 0)
-        right_outside = draw.translate(left_outside, crossover_length/2 + inner_length/2, 0)
-        left_outside = draw.translate(left_outside, -(crossover_length/2 + inner_length/2),0)
+        right_outside = draw.translate(left_outside, crossover_length/2 + outter_length/2, 0)
+        left_outside = draw.translate(left_outside, -(crossover_length/2 + outter_length/2),0)
 
         # Make the bridge structure
         bridge = draw.rectangle(crossover_length, bridge_width, 0,0)

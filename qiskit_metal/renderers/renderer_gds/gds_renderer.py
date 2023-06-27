@@ -784,6 +784,7 @@ class QGDSRenderer(QRenderer):
 
             df_copy = self.chip_info[chip_name][chip_layer][
                 all_sub_true_or_false].copy(deep=True)
+            dfs_to_concat = []
             for del_key, the_shapes in edit_index.items():
                 # copy row "index" into a new data-frame "status" times.
                 # Then replace the LONG shapely with all_shapelys.
@@ -796,8 +797,8 @@ class QGDSRenderer(QRenderer):
                     orig_row['fillet'] = short_shape['fillet']
                     # Keep ignore_index=False, otherwise,
                     # the other del_key will not be found.
-                    df_copy = df_copy.append(orig_row, ignore_index=False)
-
+                    dfs_to_concat.append(orig_row)
+            df_copy = pd.concat([df_copy] + dfs_to_concat, ignore_index=True)
             self.chip_info[chip_name][chip_layer][
                 all_sub_true_or_false] = df_copy.copy(deep=True)
 
@@ -1160,6 +1161,14 @@ class QGDSRenderer(QRenderer):
             maxy (float): chip maximum y location.
             chip_name (str): User defined chip name.
         """
+        if (self.options.corners != 'circular bend'):
+            logging.warning('Uniform airbridging is designed for `self.options.corners = "circular bend"`. You might experience unexpected behavior.')
+
+        # gdspy objects
+        top_cell = self.lib.cells[f'TOP_{chip_name}']
+        lib_cell = self.lib.new_cell(f'TOP_{chip_name}_ab')
+
+        # Airbridge Options
         self.options.airbridge.qcomponent_base
         self.options.airbridge.options
         airbridging = Airbridging(design=self.design,
@@ -1175,11 +1184,7 @@ class QGDSRenderer(QRenderer):
                                                                 bridge_pitch=self.options.airbridge.bridge_pitch,
                                                                 bridge_minimum_spacing=self.options.airbridge.bridge_minimum_spacing)
 
-
-        top_cell = self.lib.cells[f'TOP_{chip_name}']
-        lib_cell = self.lib.new_cell(f'TOP_{chip_name}_ab')
-
-
+        # Run 
         for _, row in airbridges_df.iterrows():
             ab_component_multi_poly = row['MultiPoly']
             ab_component_layer = row['layer']
