@@ -224,7 +224,10 @@ class QGDSRenderer(QRenderer):
                 options=dict(crossover_length='22um')
             ),
             # Spacing between centers of each airbridge.
-            bridge_pitch='100um' 
+            bridge_pitch='100um',
+            # Minimum spacing between each airbridge, 
+            # this number of fabrication guideline based
+            bridge_minimum_spacing='5um',
         ),
 
         # Cheesing is denoted by each chip and layer.
@@ -1167,7 +1170,8 @@ class QGDSRenderer(QRenderer):
                                   precision=self.options.precision)
         airbridges_df = airbridging.make_uniform_airbridging_df(custom_qcomponent=self.options.airbridge.geometry.qcomponent_base,
                                                                 qcomponent_options=self.options.airbridge.geometry.options,
-                                                                bridge_pitch=self.options.airbridge.bridge_pitch)
+                                                                bridge_pitch=self.options.airbridge.bridge_pitch,
+                                                                bridge_minimum_spacing=self.options.airbridge.bridge_minimum_spacing)
 
         for _, row in airbridges_df.iterrows():
             ab_component_multi_poly = row['MultiPoly']
