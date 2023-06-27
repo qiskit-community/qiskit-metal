@@ -69,7 +69,8 @@ class Airbridging:
                                   custom_qcomponent: 'QComponent', 
                                   qcomponent_options: dict,
                                   bridge_pitch: str,
-                                  bridge_minimum_spacing: str) -> pd.DataFrame:
+                                  bridge_minimum_spacing: str,
+                                  precision: str) -> pd.DataFrame:
         """
         Makes the uniform airbridging dataframe
 
@@ -78,12 +79,14 @@ class Airbridging:
             qcomponent_options (dict)
             bridge_pitch (str)
             bridge_minimum_spacing (str): 
+            precision (str)
 
         Returns:
             airbridge_df (pd.DataFrame)
         """
         bridge_pitch = self.design.parse_value(bridge_pitch)
         bridge_minimum_spacing = self.design.parse_value(bridge_minimum_spacing)
+        precision = self.design.parse_value(precision)
 
         # Get shapley cutout of airbridges
         ab_qgeom = self.extract_qgeom_from_unrendered_qcomp(custom_qcomponent=custom_qcomponent, 
@@ -95,7 +98,7 @@ class Airbridging:
             ab_placement = self.find_uniform_ab_placement(cpw_name=cpw_name,
                                                            bridge_pitch=bridge_pitch,
                                                            bridge_minimum_spacing=bridge_minimum_spacing,
-                                                           precision=self.precision)
+                                                           precision=precision)
             airbridge_df_for_cpw = self.ab_placement_to_df(ab_placement=ab_placement, 
                                                            qgeom_table=ab_qgeom)
             ab_df_list.append(airbridge_df_for_cpw)
@@ -116,9 +119,9 @@ class Airbridging:
             cpw_name (str): Name of cpw to find airbridge placements.
             bridge_minimum_spacing: (float) -- Minimum spacing from corners. Units in mm.
             bridge_pitch: (float, in units mm) -- Spacing between the centers of each bridge. Units in mm.
-            precision: (float) -- How precise did you define your CPWs?
+            precision: (float) -- Rounds values to the closest integer multiple of `precision`
                                   This parameter is meant to take care of floating point errors.
-                                  References number of decimal points relative to millimeters.
+                                  
         
         Returns:
             ab_placements (list[tuple[float, float, float]]): Where the airbridges should be placed for given `cpw_name`.
