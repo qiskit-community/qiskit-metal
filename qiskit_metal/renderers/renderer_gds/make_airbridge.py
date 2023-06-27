@@ -250,6 +250,7 @@ class Airbridging:
                 shapley_data = component['geometry']
                 shapley_data = draw.rotate(shapley_data, theta, origin=(0,0))
                 shapley_data = draw.translate(shapley_data, x, y)
+                shapley_data = shapely.geometry.MultiPolygon([shapley_data])
 
                 # Extract layer info
                 layer = component['layer']
