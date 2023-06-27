@@ -44,7 +44,6 @@ class Airbridging:
         self.chip_name = chip_name
         self.precision = precision
 
-
     @property
     def cpws_with_ab(self) -> 'DataFrame':
         '''
@@ -57,33 +56,36 @@ class Airbridging:
         cpws_df = path_qgeom[path_qgeom['gds_make_airbridge'] == True]
         return cpws_df
 
-    #### TODO: still working on this ####
     def apply_uniform_airbridging(self, 
                                   custom_qcomponent: 'QComponent', 
                                   qcomponent_options: dict,
-                                  bridge_pitch: float,
+                                  bridge_pitch: str,
+                                  bridge_minimum_spacing: str,
                                   ) -> gdspy.GdsLibrary:
+        
+        bridge_pitch = self.design.parse_value(bridge_pitch)
+        bridge_minimum_spacing = self.design.parse_value(bridge_minimum_spacing)
+
         # Get shapley cutout of airbridges
-        shapely_geom = self.extract_shapely_from_unrendered_qcomponent(custom_qcomponent=custom_qcomponent, 
+        ab_shapely = self.extract_shapely_from_unrendered_qcomponent(custom_qcomponent=custom_qcomponent, 
                                                                        qcomponent_options=qcomponent_options)
 
         # Place the airbridges
         for cpw_qgeom in self.cpws_with_ab:
             cpw_name = cpw_qgeom['name']
-            self.find_ab_placement(cpw_name=cpw_name,
-                                   bridge_minimum_spacing=,
-                                   bridge_pitch=,
-                                   precision=self.precision)
-
-        pass
+            ab_placement = self.find_uniform_ab_placement(cpw_name=cpw_name,
+                                                           bridge_pitch=bridge_pitch,
+                                                           bridge_minimum_spacing=bridge_minimum_spacing,
+                                                           precision=self.precision)
+            self.ab_placement_to_gds(ab_placement, ab_shapely)
+        
         return self.lib
-
 
     def find_uniform_ab_placement(self, 
                                   cpw_name: str, 
-                                  bridge_minimum_spacing: float,
                                   bridge_pitch: float,
-                                  precision: int = 12) -> list[tuple[float, float, float]]:
+                                  bridge_minimum_spacing: float,
+                                  precision: int) -> list[tuple[float, float, float]]:
         '''
         Determines where to place the wirebonds given a CPW. 
         
@@ -96,7 +98,7 @@ class Airbridging:
                                 References number of decimal points relative to millimeters.
         
         Returns:
-            ab_placements (list[tuple]): Where the airbridges should be placed given `cpw_name`.
+            ab_placements (list[tuple[float, float, float]]): Where the airbridges should be placed for given `cpw_name`.
         
             Data structure is in the form of list of tuples
             [(x0, y0, theta0),
@@ -105,8 +107,9 @@ class Airbridging:
              (xn, yn, thetan))]
             
             Units: 
-            - x, y, new_crossover_length are in mm
-            - theta is in degrees
+            - x (float): Units mm
+            - y (float): Units mm
+            - theta (float): Units degrees
         '''
         target_cpw = self.design.components[cpw_name]
 
@@ -122,10 +125,10 @@ class Airbridging:
             pos_i = points[i]
             pos_f = points[i + 1]
             
-            x0 = round(pos_i[0],precision)
-            y0 = round(pos_i[1],precision)
-            xf = round(pos_f[0],precision)
-            yf = round(pos_f[1],precision)
+            x0 = round(pos_i[0] / precision) * precision
+            y0 = round(pos_i[1] / precision) * precision
+            xf = round(pos_f[0] / precision) * precision
+            yf = round(pos_f[1] / precision) * precision
             
             dl = (xf - x0, yf - y0)
             dx = dl[0]
@@ -134,15 +137,12 @@ class Airbridging:
             
             theta = np.arctan2(dy,dx)
             mag_dl = np.sqrt(dx**2 + dy**2)
-            lprime = mag_dl - 2 * self.BRS1 
-            
-            # Now implement logic to uphold the LL design rules
-            ## Determine what BRS1 should be. It must be >= 0.005 (5um)
-            
-            if fillet > self.BRS1:
+            lprime = mag_dl - 2 * bridge_minimum_spacing 
+                        
+            if fillet > bridge_minimum_spacing:
                 lprime = mag_dl - 2 * fillet
             else:
-                lprime = mag_dl - 2 * self.BRS1 
+                lprime = mag_dl - 2 * bridge_minimum_spacing 
             n = 1 #refers to the number of bridges you've already placed
             #Asking should I place another? If true place another one.
             while (lprime) >= (n * bridge_pitch):
@@ -174,14 +174,14 @@ class Airbridging:
                 pos_i = points[i]
                 pos_f = points[i + 1]
                 
-                x0 = round(pos_i[0],precision)
-                y0 = round(pos_i[1],precision)
-                xf = round(pos_f[0],precision)
-                yf = round(pos_f[1],precision)
+                x0 = round(pos_i[0] / precision) * precision
+                y0 = round(pos_i[1] / precision) * precision
+                xf = round(pos_f[0] / precision) * precision
+                yf = round(pos_f[1] / precision) * precision
                 
                 mag_dl = np.sqrt((xf-x0)**2 + (yf-y0)**2)
                 
-                if mag_dl < fillet or mag_dl < self.BRS1:
+                if mag_dl < fillet or mag_dl < bridge_minimum_spacing:
                     continue
                 
                 # Now that we only have real turns
@@ -206,19 +206,30 @@ class Airbridging:
         
         return ab_placements
     
+    def ab_placement_to_gds(ab_placement: list[float],
+                            ab_shapely: 'Shapely'):
+        for x, y, theta in ab_placement:
+            pass
+
     def extract_shapely_from_unrendered_qcomponent(self, 
                                                    custom_qcomponent: 'QComponent',
                                                    qcomponent_options: dict):
         '''
+        Extracts the shapely data from a child of QComponent.
+        Must have QComponent.make() 
 
         Args:
             custom_qcomponent (QComponent): Class of QComponent, not called / instantiated.
             qcomponent_options (dict): Geometrical options for cusotm_qcomponent. In structure of cusotm_qcomponent.default_options.
+        
+        Returns:
             shapely_geometries (list[shapley])
         '''
-        # Chck you put in a QComponent
+        # Chck you put in a QComponent w/ self.make() functionality
         if not issubclass(custom_qcomponent, QComponent):
             raise ValueError('`custom_qcomponent` must be a child of `QComponent`.')
+        if not hasattr(custom_qcomponent, 'make'):
+            raise AttributeError('`custom_qcomponent` must have `make()` method')
 
         # Make a name which won't interfer w/ other components
         test_name = 'initial_name'

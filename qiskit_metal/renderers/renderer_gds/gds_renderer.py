@@ -1111,8 +1111,8 @@ class QGDSRenderer(QRenderer):
 
         return self.lib
 
-    # Airbriding
-    
+    ### Start of Airbridging
+
     def _populate_airbridge(self):
         """
         Main function to make airbridges. This is called in `self.export_to_gds()`.
@@ -1128,7 +1128,7 @@ class QGDSRenderer(QRenderer):
 
                     # Right now this code assumes airbridges will look 
                     # the same across all CPWs. If you want to change that, 
-                    # add an if/else statement here to check custom behavior.
+                    # add an if/else statement here to check for custom behavior.
                     # You will also have to update the self.default_options.
                     self._apply_uniform_airbridging(minx, 
                                                     miny, 
@@ -1144,7 +1144,7 @@ class QGDSRenderer(QRenderer):
                                    chip_name: str):
         """
         Apply airbridges to all `path` elements which have 
-        options.gds_make_airbridge = True. This is also a 
+        options.gds_make_airbridge = True. This is a 
         wrapper for Airbridging.apply_uniform_airbridging(...).
 
         Args:
@@ -1153,9 +1153,6 @@ class QGDSRenderer(QRenderer):
             maxx (float): Chip maximum x location.
             maxy (float): chip maximum y location.
             chip_name (str): User defined chip name.
-
-        Returns:
-            lib (gdspy.GdsLibrary): Holds all of the cells for export.
         """
         self.options.airbridge.qcomponent_base
         self.options.airbridge.options
@@ -1167,12 +1164,13 @@ class QGDSRenderer(QRenderer):
                                   maxy=maxy,
                                   chip_name=chip_name,
                                   precision=self.options.precision)
-        lib = airbridging.apply_uniform_airbridging(custom_qcomponent=self.options.airbridge.geometry.qcomponent_base,
-                                                            qcomponent_options=self.options.airbridge.geometry.options,
-                                                            bridge_pitch=self.options.airbridge.bridge_pitch)
-        return lib
+        airbridging.apply_uniform_airbridging(custom_qcomponent=self.options.airbridge.geometry.qcomponent_base,
+                                              qcomponent_options=self.options.airbridge.geometry.options,
+                                              bridge_pitch=self.options.airbridge.bridge_pitch)
     
-    # Cheesing
+    ### End of Airbridging
+
+    ### Start of Cheesing
 
     def _check_cheese(self, chip: str, layer: int) -> int:
         """Examine the option for cheese_view_in_file.
@@ -1558,6 +1556,8 @@ class QGDSRenderer(QRenderer):
             # <class 'shapely.geometry.multipolygon.MultiPolygon'>
             return combo_shapely
         return None  # Need explicitly to avoid lint warnings.
+
+    ### End of Cheesing
 
     def _get_rectangle_points(self, chip_name: str) -> Tuple[list, list]:
         """There can be more than one chip in QGeometry. All chips export to
@@ -2240,6 +2240,8 @@ class QGDSRenderer(QRenderer):
             # Create self.lib and populate path and poly.
             self._populate_poly_path_for_export()
 
+            # Adds airbridges to CPWs w/ options.gds_make_airbridge = True
+            # Options for these airbridges are in self.options.airbridge
             self._populate_airbridge()
 
             # Add no-cheese MultiPolygon to
