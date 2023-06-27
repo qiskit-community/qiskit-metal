@@ -1177,6 +1177,8 @@ class QGDSRenderer(QRenderer):
 
 
         top_cell = self.lib.cells[f'TOP_{chip_name}']
+        lib_cell = self.lib.new_cell(f'TOP_{chip_name}_ab')
+
 
         for _, row in airbridges_df.iterrows():
             ab_component_multi_poly = row['MultiPoly']
@@ -1186,11 +1188,7 @@ class QGDSRenderer(QRenderer):
                                             data_type=0,
                                             no_cheese_buffer=0)
 
-        
-            lib_cell = self.lib.new_cell(f'TOP_{chip_name}_ab')
-            
             lib_cell.add(airbridge_gds)
-            
             top_cell.add(gdspy.CellReference(lib_cell))
 
     ### End of Airbridging
