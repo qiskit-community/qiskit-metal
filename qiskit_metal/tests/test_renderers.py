@@ -601,7 +601,7 @@ class TestRenderers(unittest.TestCase):
     def test_renderer_mpl_interaction_disconnect(self):
         """Test disconnect in MplInteraction in mpl_interaction.py."""
         mpl = MplInteraction(_plt)
-        mpl.didsconnect()
+        mpl.disconnect()
         self.assertEqual(mpl.figure, None)
 
     def test_renderer_gds_check_cheese(self):
