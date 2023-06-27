@@ -186,7 +186,7 @@ class Airbridging:
             y = (y - np.average(y)) + mu_y
             
             for i in range(n):
-                ab_placements.append((x[i],y[i], np.degrees(theta), None))
+                ab_placements.append((x[i],y[i], np.degrees(theta)))
             
             #This is for the corner points
             points_theta.append(theta)
