@@ -74,7 +74,7 @@ class Airbridging:
                                                                        qcomponent_options=qcomponent_options)
 
         # Place the airbridges
-        for _, cpw_qgeom in self.cpws_with_ab.itter.iterrows():
+        for _, cpw_qgeom in self.cpws_with_ab.iterrows():
             cpw_name = cpw_qgeom['name']
             ab_placement = self.find_uniform_ab_placement(cpw_name=cpw_name,
                                                            bridge_pitch=bridge_pitch,
