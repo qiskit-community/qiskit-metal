@@ -61,7 +61,7 @@ class Airbridging:
 
         for cpw_name, cpw_id in self.design.all_component_names_id():
             if cpw_id in unique_id:
-                cpw_names.append(cpw_id)
+                cpw_names.append(cpw_name)
 
         return cpw_names
 
