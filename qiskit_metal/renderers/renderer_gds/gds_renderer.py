@@ -223,6 +223,9 @@ class QGDSRenderer(QRenderer):
 
         # Airbriding
         airbridge=Dict(
+            # GDS datatype of airbridges.
+            datatype='0',
+
             # Setup geometrical style of airbridge
             geometry=Dict(
                 # Skeleton of airbridge in QComponent form,
@@ -236,10 +239,7 @@ class QGDSRenderer(QRenderer):
 
             # Minimum spacing between each airbridge,
             # this number usually comes from fabrication guidelines.
-            bridge_minimum_spacing='5um',
-
-            # GDS datatype of airbridges.
-            datatype='0'),
+            bridge_minimum_spacing='5um'),
 
         # Cheesing is denoted by each chip and layer.
         cheese=Dict(
