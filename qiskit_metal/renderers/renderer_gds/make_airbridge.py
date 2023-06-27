@@ -145,13 +145,13 @@ class Airbridging:
         ### Handles all the straight sections ###
         for i in range(len(points)-1):
             # Set up parameters for this calculation
-            pos_i = float(points[i])
-            pos_f = float(points[i + 1])
+            pos_i = points[i]
+            pos_f = points[i + 1]
             
-            x0 = round(pos_i[0] / precision) * precision
-            y0 = round(pos_i[1] / precision) * precision
-            xf = round(pos_f[0] / precision) * precision
-            yf = round(pos_f[1] / precision) * precision
+            x0 = round(float(pos_i[0]) / precision) * precision
+            y0 = round(float(pos_i[1]) / precision) * precision
+            xf = round(float(pos_f[0]) / precision) * precision
+            yf = round(float(pos_f[1]) / precision) * precision
             
             dl = (xf - x0, yf - y0)
             dx = dl[0]
@@ -197,10 +197,10 @@ class Airbridging:
                 pos_i = points[i]
                 pos_f = points[i + 1]
                 
-                x0 = round(pos_i[0] / precision) * precision
-                y0 = round(pos_i[1] / precision) * precision
-                xf = round(pos_f[0] / precision) * precision
-                yf = round(pos_f[1] / precision) * precision
+                x0 = round(float(pos_i[0]) / precision) * precision
+                y0 = round(float(pos_i[1]) / precision) * precision
+                xf = round(float(pos_f[0]) / precision) * precision
+                yf = round(float(pos_f[1]) / precision) * precision
                 
                 mag_dl = np.sqrt((xf-x0)**2 + (yf-y0)**2)
                 
