@@ -52,10 +52,9 @@ class Airbridge_forGDS(QComponent):
         right_outside = draw.translate(left_outside, crossover_length/2 + inner_length/2, 0)
         left_outside = draw.translate(left_outside, -(crossover_length/2 + inner_length/2),0)
 
-        bridge_struct = draw.union(bridge, left_outside, right_outside)
-
         # Make the bridge structure
         bridge = draw.rectangle(crossover_length, bridge_width, 0,0)
+        bridge_struct = draw.union(bridge, left_outside, right_outside)
 
         ### Final adjustments to allow repositioning
         final_design = [bridge_struct, inside_struct]
