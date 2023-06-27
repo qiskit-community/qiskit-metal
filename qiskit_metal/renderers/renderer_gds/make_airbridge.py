@@ -19,8 +19,6 @@ import numpy as np
 import pandas as pd
 
 from qiskit_metal.qlibrary.core import QComponent
-from airbridge import Airbridge
-
 
 class Airbridging:
 
@@ -62,7 +60,7 @@ class Airbridging:
                                   qcomponent_options: dict,
                                   bridge_pitch: str,
                                   bridge_minimum_spacing: str,
-                                  ) -> 'pd.DataFrame':
+                                  ) -> pd.DataFrame:
         
         bridge_pitch = self.design.parse_value(bridge_pitch)
         bridge_minimum_spacing = self.design.parse_value(bridge_minimum_spacing)
