@@ -655,7 +655,8 @@ class TestRenderers(unittest.TestCase):
             'geometry': [draw.Polygon([(0, 0), (1, 0), (0, 1)])],
             'layer': [1]
         })
-        df_result = ab_placement_to_df(ab_placement_result, test_ab_qgeom)
+        df_result = airbridging.ab_placement_to_df(
+            ab_placement=ab_placement_result, ab_qgeom=test_ab_qgeom)
 
         self.assertIn('MultiPoly', df_result)
         self.assertIn('layer', df_result)
