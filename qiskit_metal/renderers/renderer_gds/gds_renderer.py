@@ -784,7 +784,6 @@ class QGDSRenderer(QRenderer):
 
             df_copy = self.chip_info[chip_name][chip_layer][
                 all_sub_true_or_false].copy(deep=True)
-            dfs_to_concat = []
             for del_key, the_shapes in edit_index.items():
                 # copy row "index" into a new data-frame "status" times.
                 # Then replace the LONG shapely with all_shapelys.
@@ -797,8 +796,8 @@ class QGDSRenderer(QRenderer):
                     orig_row['fillet'] = short_shape['fillet']
                     # Keep ignore_index=False, otherwise,
                     # the other del_key will not be found.
-                    dfs_to_concat.append(orig_row)
-            df_copy = pd.concat([df_copy] + dfs_to_concat, ignore_index=True)
+                    df_copy = df_copy.append(orig_row, ignore_index=False)
+
             self.chip_info[chip_name][chip_layer][
                 all_sub_true_or_false] = df_copy.copy(deep=True)
 
