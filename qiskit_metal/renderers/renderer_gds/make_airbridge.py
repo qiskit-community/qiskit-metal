@@ -44,16 +44,24 @@ class Airbridging:
         self.precision = precision
 
     @property
-    def cpws_with_ab(self) -> 'DataFrame':
+    def cpws_with_ab(self) -> list[str]:
         '''
         QGeometry of CPWs w/ airbridges
 
         Returns:
-            cpws_df (DataFrame): QGeometry of CPWs w/ airbridges
+            cpw_names (DataFrame): QGeometry of CPWs w/ airbridges
         '''
+        cpw_names = []
+
         path_qgeom = self.design.qgeometry.tables['path']
         cpws_df = path_qgeom[path_qgeom['gds_make_airbridge'] == True]
-        return cpws_df
+        unique_id = set(list(cpws_df))
+
+        for cpw_name, cpw_id in self.design.all_component_names_id():
+            if cpw_id in unique_id:
+                cpw_names.append(cpw_id)
+
+        return cpw_names
 
     def make_uniform_airbridging_df(self, 
                                   custom_qcomponent: 'QComponent', 
@@ -64,7 +72,14 @@ class Airbridging:
         """
         Makes the uniform airbridging dataframe
 
+        Args:
+            custom_qcomponent (QComponent)
+            qcomponent_options (dict)
+            bridge_pitch (str)
+            bridge_minimum_spacing (str): 
 
+        Returns:
+            airbridge_df (pd.DataFrame)
         """
         bridge_pitch = self.design.parse_value(bridge_pitch)
         bridge_minimum_spacing = self.design.parse_value(bridge_minimum_spacing)
@@ -74,8 +89,7 @@ class Airbridging:
                                                                        qcomponent_options=qcomponent_options)
 
         # Place the airbridges
-        for _, cpw_qgeom in self.cpws_with_ab.iterrows():
-            cpw_name = cpw_qgeom['name']
+        for cpw_name in self.cpws_with_ab:
             ab_placement = self.find_uniform_ab_placement(cpw_name=cpw_name,
                                                            bridge_pitch=bridge_pitch,
                                                            bridge_minimum_spacing=bridge_minimum_spacing,
