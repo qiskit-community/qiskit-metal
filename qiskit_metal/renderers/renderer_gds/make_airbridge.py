@@ -247,7 +247,7 @@ class Airbridging:
             shapley_data = component['geometry']
             for x, y, theta in ab_placement:
                 # Extract shapely data, and move to proper spot
-                shapely_copy = draw.rotate(shapley_data, theta + 45, origin=(0,0))
+                shapely_copy = draw.rotate(shapley_data, theta + 90, origin=(0,0))
                 shapely_copy = draw.translate(shapely_copy, x, y)
                 shapely_copy = shapely.geometry.MultiPolygon([shapely_copy])
 
