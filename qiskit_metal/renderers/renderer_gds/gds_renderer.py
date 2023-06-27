@@ -1175,6 +1175,9 @@ class QGDSRenderer(QRenderer):
                                                                 bridge_pitch=self.options.airbridge.bridge_pitch,
                                                                 bridge_minimum_spacing=self.options.airbridge.bridge_minimum_spacing)
 
+
+        top_cell = self.lib.cells[f'TOP_{chip_name}']
+
         for _, row in airbridges_df.iterrows():
             ab_component_multi_poly = row['MultiPoly']
             ab_component_layer = row['layer']
@@ -1182,7 +1185,13 @@ class QGDSRenderer(QRenderer):
                                             layer=ab_component_layer,
                                             data_type=0,
                                             no_cheese_buffer=0)
-            self.chip_info[chip_name][chip_layer]['no_cheese_gds'] = airbridge_gds
+
+        
+            lib_cell = self.lib.new_cell(f'TOP_{chip_name}_ab')
+            
+            lib_cell.add(airbridge_gds)
+            
+            top_cell.add(gdspy.CellReference(lib_cell))
 
     ### End of Airbridging
 
