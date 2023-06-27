@@ -42,7 +42,9 @@ from qiskit_metal.renderers.renderer_ansys import ansys_renderer
 
 from qiskit_metal.qgeometries.qgeometries_handler import QGeometryTables
 from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
-from qiskit_metal.renderers.renderer_gds.airbridge import Airbridge_forGDS
+from qiskit_metal.qlibrary.terminations.open_to_ground import OpenToGround
+from qiskit_metal.qlibrary.tlines.mixed_path import RouteMixed
+from qiskit_metal.renderers.renderer_gds.make_airbridge import Airbridging
 from qiskit_metal import draw
 
 
@@ -603,6 +605,54 @@ class TestRenderers(unittest.TestCase):
         mpl = MplInteraction(_plt)
         mpl.disconnect()
         self.assertEqual(mpl.figure, None)
+
+    def test_renderer_gds_check_uniform_airbridge(self):
+        """Tests uniform airbridge placement via Airbridging"""
+        design = designs.DesignPlanar()
+        open_start_options = Dict(pos_x='1000um',
+                                  pos_y='0um',
+                                  orientation='-90')
+        open_start_meander = OpenToGround(design,
+                                          'Open_meander_start',
+                                          options=open_start_options)
+        open_end_options = Dict(pos_x='1200um',
+                                pos_y='500um',
+                                orientation='0',
+                                termination_gap='10um')
+        open_end_meander = OpenToGround(design,
+                                        'Open_meander_end',
+                                        options=open_end_options)
+        meander_options = Dict(pin_inputs=Dict(
+            start_pin=Dict(component='Open_meander_start', pin='open'),
+            end_pin=Dict(component='Open_meander_end', pin='open')),
+                               fillet='49.99um',
+                               gds_make_airbridge=True)
+        testMeander = RouteMixed(design, 'meanderTest', options=meander_options)
+
+        airbridging = Airbridging(design=design,
+                                  lib=None,
+                                  minx=None,
+                                  miny=None,
+                                  maxx=None,
+                                  maxy=None,
+                                  chip_name=None,
+                                  precision=0.000001)
+        ab_placement_result = airbridging.find_uniform_ab_placement(
+            cpw_name='meanderTest',
+            bridge_pitch=0.3,  # in mm
+            bridge_minimum_spacing=0.005)  # in mm
+        ab_placement_check = [(1.0, 0.4, 90.0), (1.1, 0.5, 0.0),
+                              (1.0146417320084844, 0.4853582679915155, 45.0)]
+        self.assertEqual(ab_placement_result, ab_placement_check)
+
+        test_ab_qgeom = pd.DataFrame({
+            'geometry': [draw.Polygon([(0, 0), (1, 0), (0, 1)])],
+            'layer': [1]
+        })
+        df_result = ab_placement_to_df(ab_placement_result, test_ab_qgeom)
+
+        self.assertIn('MultiPoly', df_result)
+        self.assertIn('layer', df_result)
 
     def test_renderer_gds_check_cheese(self):
         """Test check_cheese in gds_renderer.py."""
