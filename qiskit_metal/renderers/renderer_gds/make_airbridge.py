@@ -57,7 +57,7 @@ class Airbridging:
 
         path_qgeom = self.design.qgeometry.tables['path']
         cpws_df = path_qgeom[path_qgeom['gds_make_airbridge'] == True]
-        unique_id = set(list(cpws_df))
+        unique_id = set(list(cpws_df['component']))
 
         for cpw_name, cpw_id in self.design.all_component_names_id():
             if cpw_id in unique_id:
