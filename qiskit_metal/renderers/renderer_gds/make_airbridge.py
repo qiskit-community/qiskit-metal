@@ -96,7 +96,7 @@ class Airbridging:
                                                            bridge_minimum_spacing=bridge_minimum_spacing,
                                                            precision=self.precision)
             airbridge_df_for_cpw = self.ab_placement_to_df(ab_placement=ab_placement, 
-                                                           ab_qgeom=ab_qgeom)
+                                                           qgeom_table=ab_qgeom)
             ab_df_list.append(airbridge_df_for_cpw.copy())
 
         airbridge_df = pd.concat(ab_df_list)
