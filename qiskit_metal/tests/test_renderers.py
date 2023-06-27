@@ -346,9 +346,12 @@ class TestRenderers(unittest.TestCase):
 
         self.assertEqual(len(options['airbridge']), 4)
         self.assertEqual(len(options['airbridge']['geometry']), 2)
-        
-        self.assertEqual(options['airbridge']['geometry']['qcomponent_base'], Airbridge_forGDS)
-        self.assertEqual(options['airbridge']['geometry']['options']['crossover_length'], '22um')
+
+        self.assertEqual(options['airbridge']['geometry']['qcomponent_base'],
+                         Airbridge_forGDS)
+        self.assertEqual(
+            options['airbridge']['geometry']['options']['crossover_length'],
+            '22um')
         self.assertEqual(options['airbridge']['bridge_pitch'], '100um')
         self.assertEqual(options['airbridge']['bridge_minimum_spacing'], '5um')
         self.assertEqual(options['airbridge']['datatype'], '0')
