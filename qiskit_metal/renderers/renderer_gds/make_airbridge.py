@@ -61,7 +61,11 @@ class Airbridging:
                                   bridge_pitch: str,
                                   bridge_minimum_spacing: str,
                                   ) -> pd.DataFrame:
-        
+        """
+        Makes the uniform airbridging dataframe
+
+
+        """
         bridge_pitch = self.design.parse_value(bridge_pitch)
         bridge_minimum_spacing = self.design.parse_value(bridge_minimum_spacing)
 
@@ -70,7 +74,7 @@ class Airbridging:
                                                                        qcomponent_options=qcomponent_options)
 
         # Place the airbridges
-        for cpw_qgeom in self.cpws_with_ab:
+        for _, cpw_qgeom in self.cpws_with_ab.itter.iterrows():
             cpw_name = cpw_qgeom['name']
             ab_placement = self.find_uniform_ab_placement(cpw_name=cpw_name,
                                                            bridge_pitch=bridge_pitch,

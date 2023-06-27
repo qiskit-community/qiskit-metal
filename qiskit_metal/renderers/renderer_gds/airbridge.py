@@ -9,7 +9,7 @@ class Airbridge_forGDS(QComponent):
     This QComponent should NOT be rendered for EM simulation.
     
     Default Options:
-        * crossover_length: '20um' -- Distance between the two outter squares (aka bridge length).
+        * crossover_length: '22um' -- Distance between the two outter squares (aka bridge length).
                                       Usually, this should be the same length as (cpw_width + 2 * cpw_gap)
         * bridge_width: '7.5um' -- Width of bridge element
         * inner_length: '8um' -- Length of inner square.
