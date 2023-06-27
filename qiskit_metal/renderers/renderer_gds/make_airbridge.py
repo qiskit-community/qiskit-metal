@@ -163,7 +163,7 @@ class Airbridging:
             dy = dl[1]
             
             
-            theta = np.arctan2(dy,dx)
+            theta = np.arctan2(dy,dx) + 45
             mag_dl = np.sqrt(dx**2 + dy**2)
             lprime = mag_dl - 2 * bridge_minimum_spacing 
                         
@@ -220,7 +220,7 @@ class Airbridging:
                 dx = np.cos(theta_i) - np.cos(theta_f)
                 dy = np.sin(theta_i) - np.sin(theta_f)
                 
-                theta = np.arctan2(dy, dx)
+                theta = np.arctan2(dy, dx) + 45
                                 
                 distance_circle_box_x = fillet * (1-np.abs(np.cos(theta)))
                 distance_circle_box_y = fillet * (1-np.abs(np.sin(theta)))
