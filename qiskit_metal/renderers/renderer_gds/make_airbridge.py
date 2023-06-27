@@ -23,6 +23,13 @@ from qiskit_metal import draw
 from qiskit_metal.qlibrary.core import QComponent
 
 class Airbridging:
+    """
+    Airbridge for GDS logic
+
+    Args:
+        precision: (float) -- Rounds values to the closest integer multiple of `precision`
+                                  This parameter is meant to take care of floating point errors.
+    """
 
     def __init__(self,
                  design: 'QDesign',
@@ -69,8 +76,7 @@ class Airbridging:
                                   custom_qcomponent: 'QComponent', 
                                   qcomponent_options: dict,
                                   bridge_pitch: str,
-                                  bridge_minimum_spacing: str,
-                                  precision: str) -> pd.DataFrame:
+                                  bridge_minimum_spacing: str) -> pd.DataFrame:
         """
         Makes the uniform airbridging dataframe
 
@@ -86,7 +92,6 @@ class Airbridging:
         """
         bridge_pitch = self.design.parse_value(bridge_pitch)
         bridge_minimum_spacing = self.design.parse_value(bridge_minimum_spacing)
-        precision = self.design.parse_value(precision)
 
         # Get shapley cutout of airbridges
         ab_qgeom = self.extract_qgeom_from_unrendered_qcomp(custom_qcomponent=custom_qcomponent, 
@@ -97,8 +102,7 @@ class Airbridging:
         for cpw_name in self.cpws_with_ab:
             ab_placement = self.find_uniform_ab_placement(cpw_name=cpw_name,
                                                            bridge_pitch=bridge_pitch,
-                                                           bridge_minimum_spacing=bridge_minimum_spacing,
-                                                           precision=precision)
+                                                           bridge_minimum_spacing=bridge_minimum_spacing)
             airbridge_df_for_cpw = self.ab_placement_to_df(ab_placement=ab_placement, 
                                                            qgeom_table=ab_qgeom)
             ab_df_list.append(airbridge_df_for_cpw)
@@ -110,8 +114,7 @@ class Airbridging:
     def find_uniform_ab_placement(self, 
                                   cpw_name: str, 
                                   bridge_pitch: float,
-                                  bridge_minimum_spacing: float,
-                                  precision: float) -> list[tuple[float, float, float]]:
+                                  bridge_minimum_spacing: float) -> list[tuple[float, float, float]]:
         '''
         Determines where to place the wirebonds given a CPW. 
         
@@ -119,10 +122,7 @@ class Airbridging:
             cpw_name (str): Name of cpw to find airbridge placements.
             bridge_minimum_spacing: (float) -- Minimum spacing from corners. Units in mm.
             bridge_pitch: (float, in units mm) -- Spacing between the centers of each bridge. Units in mm.
-            precision: (float) -- Rounds values to the closest integer multiple of `precision`
-                                  This parameter is meant to take care of floating point errors.
-                                  
-        
+
         Returns:
             ab_placements (list[tuple[float, float, float]]): Where the airbridges should be placed for given `cpw_name`.
         
@@ -137,6 +137,8 @@ class Airbridging:
             - y (float): Units mm
             - theta (float): Units degrees
         '''
+        precision = self.design.parse_value(self.precision)
+
         target_cpw = self.design.components[cpw_name]
 
         points = target_cpw.get_points()
