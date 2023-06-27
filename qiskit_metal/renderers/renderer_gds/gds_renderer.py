@@ -1138,14 +1138,16 @@ class QGDSRenderer(QRenderer):
                                                     miny, 
                                                     maxx, 
                                                     maxy,
-                                                    chip_name)
+                                                    chip_name,
+                                                    chip_layer)
 
     def _make_uniform_airbridging_df(self, 
                                    minx: float, 
                                    miny: float, 
                                    maxx: float, 
                                    maxy: float, 
-                                   chip_name: str):
+                                   chip_name: str,
+                                   chip_layer):
         """
         Apply airbridges to all `path` elements which have 
         options.gds_make_airbridge = True. This is a 
@@ -1176,10 +1178,11 @@ class QGDSRenderer(QRenderer):
         for _, row in airbridges_df.iterrows():
             ab_component_multi_poly = row['MultiPoly']
             ab_component_layer = row['layer']
-            self._multipolygon_to_gds(multi_poly=ab_component_multi_poly,
-                                      layer=ab_component_layer,
-                                      data_type=0,
-                                      no_cheese_buffer=0)
+            airbridge_gds = self._multipolygon_to_gds(multi_poly=ab_component_multi_poly,
+                                            layer=ab_component_layer,
+                                            data_type=0,
+                                            no_cheese_buffer=0)
+            self.chip_info[chip_name][chip_layer]['no_cheese_gds'] = airbridge_gds
 
     ### End of Airbridging
 
