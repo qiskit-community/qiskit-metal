@@ -129,7 +129,7 @@ author = 'Qiskit Metal Development Team'
 extensions = [
     'sphinx.ext.napoleon', 'sphinx.ext.autodoc', 'sphinx.ext.autosummary',
     'sphinx.ext.mathjax', 'sphinx.ext.viewcode', 'sphinx.ext.extlinks',
-    'jupyter_sphinx', 'nbsphinx',
+    "nbsphinx",
     "qiskit_sphinx_theme",
 ]
 

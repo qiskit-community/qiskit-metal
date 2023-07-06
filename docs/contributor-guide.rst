@@ -476,12 +476,6 @@ The actual docstring for the elements listed in the module docstring
    The `napoleon documentation <https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html>`__
    contains a good example of how docstrings should be formatted.
 
-   .. note::metal
-      You can use any Sphinx directive or rst formatting in a docstring as it
-      makes sense. For example, one common extension used is the ``jupyter-execute``
-      directive, which is used to execute a code block in Jupyter and display both
-      the code and output. This is particularly useful for visualizations.
-
 Rebuilding Documentation
 ------------------------
 
