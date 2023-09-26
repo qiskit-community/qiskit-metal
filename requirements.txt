@@ -18,4 +18,5 @@ scqubits==3.1.0
 gmsh==4.11.1
 pyaedt==0.6.46
 pyyaml==6.0
+cython<3.0.0
 # jupyter (if you need a fresh install) or ipykernel (if you prefer to make of this a new kernel to use from an existing jupyter install)
