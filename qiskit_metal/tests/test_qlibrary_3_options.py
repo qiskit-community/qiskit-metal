@@ -786,20 +786,29 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         def test_qlibrary_BridgeFreeJunction_options(self):
             """Test the default options of JJ_Manhattan were not accidentially changed."""
             design = designs.DesignPlanar()
-            my_jj_BridgeFree = BridgeFreeJunction(design,
-                                           name='test_BridgeFreeJunction',
-                                           options={})
+            my_jj_BridgeFree = BridgeFreeJunction(
+                design, name='test_BridgeFreeJunction', options={})
             options = my_jj_BridgeFree.default_options
 
             self.assertEqual(len(options), 7)
-            self.assertEqual(options['The width of lower JJ metal region'], '4um')
-            self.assertEqual(options['The height of lower JJ metal region'], '4um')
-            self.assertEqual(options['Evaporation angle of the first evaporation (˚)'], '30')
-            self.assertEqual(options['Evaporation angle of the second evaporation (˚)'], '30')
-            self.assertEqual(options['The length of the connecting wires'], '30um')
-            self.assertEqual(options['The width of the connecting wires.'], '0.5um')
-            self.assertEqual(options['Thickness of the first (bottom) resist layer.'], '0.3um')
-            self.assertEqual(options['Thickness of the second (top) resist layer.'], '0.2um')
+            self.assertEqual(options['The width of lower JJ metal region'],
+                             '4um')
+            self.assertEqual(options['The height of lower JJ metal region'],
+                             '4um')
+            self.assertEqual(
+                options['Evaporation angle of the first evaporation (˚)'], '30')
+            self.assertEqual(
+                options['Evaporation angle of the second evaporation (˚)'],
+                '30')
+            self.assertEqual(options['The length of the connecting wires'],
+                             '30um')
+            self.assertEqual(options['The width of the connecting wires.'],
+                             '0.5um')
+            self.assertEqual(
+                options['Thickness of the first (bottom) resist layer.'],
+                '0.3um')
+            self.assertEqual(
+                options['Thickness of the second (top) resist layer.'], '0.2um')
 
 
 if __name__ == '__main__':
