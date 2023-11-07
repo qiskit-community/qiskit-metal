@@ -18,7 +18,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip==23.0
-          pip install -U tox==4.4.5 setuptools==67.3.1 virtualenv==20.19.0 wheel==0.38.4
+          pip install -U tox setuptools==67.3.1 virtualenv wheel==0.38.4
           sudo apt update
           sudo apt install graphviz=2.42.2-6 pandoc=2.9.2.1-3ubuntu2 qtbase5-dev=5.15.3+dfsg-2ubuntu0.2 qt5-qmake=5.15.3+dfsg-2ubuntu0.2
       - name: Build and publish
