@@ -288,7 +288,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
             design, 'my_name')
         options = my_transmon_concentric.default_options
 
-        self.assertEqual(len(options), 16)
+        self.assertEqual(len(options), 17)
         self.assertEqual(options['width'], '1000um')
         self.assertEqual(options['height'], '1000um')
         self.assertEqual(options['rad_o'], '170um')
@@ -487,7 +487,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(_options['cross_length'], '200um')
         self.assertEqual(_options['cross_gap'], '20um')
 
-        self.assertEqual(len(_options['_default_connection_pads']), 6)
+        self.assertEqual(len(_options['_default_connection_pads']), 8)
         self.assertEqual(_options['_default_connection_pads']['connector_type'],
                          '0')
         self.assertEqual(_options['_default_connection_pads']['claw_length'],
@@ -495,6 +495,10 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(_options['_default_connection_pads']['ground_spacing'],
                          '5um')
         self.assertEqual(_options['_default_connection_pads']['claw_width'],
+                         '10um')
+        self.assertEqual(
+            _options['_default_connection_pads']['claw_cpw_length'], '40um')
+        self.assertEqual(_options['_default_connection_pads']['claw_cpw_width'],
                          '10um')
         self.assertEqual(_options['_default_connection_pads']['claw_gap'],
                          '6um')
@@ -786,20 +790,29 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         def test_qlibrary_BridgeFreeJunction_options(self):
             """Test the default options of JJ_Manhattan were not accidentially changed."""
             design = designs.DesignPlanar()
-            my_jj_BridgeFree = BridgeFreeJunction(design,
-                                           name='test_BridgeFreeJunction',
-                                           options={})
+            my_jj_BridgeFree = BridgeFreeJunction(
+                design, name='test_BridgeFreeJunction', options={})
             options = my_jj_BridgeFree.default_options
 
             self.assertEqual(len(options), 7)
-            self.assertEqual(options['The width of lower JJ metal region'], '4um')
-            self.assertEqual(options['The height of lower JJ metal region'], '4um')
-            self.assertEqual(options['Evaporation angle of the first evaporation (˚)'], '30')
-            self.assertEqual(options['Evaporation angle of the second evaporation (˚)'], '30')
-            self.assertEqual(options['The length of the connecting wires'], '30um')
-            self.assertEqual(options['The width of the connecting wires.'], '0.5um')
-            self.assertEqual(options['Thickness of the first (bottom) resist layer.'], '0.3um')
-            self.assertEqual(options['Thickness of the second (top) resist layer.'], '0.2um')
+            self.assertEqual(options['The width of lower JJ metal region'],
+                             '4um')
+            self.assertEqual(options['The height of lower JJ metal region'],
+                             '4um')
+            self.assertEqual(
+                options['Evaporation angle of the first evaporation (˚)'], '30')
+            self.assertEqual(
+                options['Evaporation angle of the second evaporation (˚)'],
+                '30')
+            self.assertEqual(options['The length of the connecting wires'],
+                             '30um')
+            self.assertEqual(options['The width of the connecting wires.'],
+                             '0.5um')
+            self.assertEqual(
+                options['Thickness of the first (bottom) resist layer.'],
+                '0.3um')
+            self.assertEqual(
+                options['Thickness of the second (top) resist layer.'], '0.2um')
 
 
 if __name__ == '__main__':
