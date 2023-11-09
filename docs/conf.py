@@ -214,16 +214,7 @@ modindex_common_prefix = ['qiskit_metal.']
 
 # -- Options for HTML output -------------------------------------------------
 
-html_theme = "qiskit_sphinx_theme"
+html_theme = "qiskit-ecosystem"
+html_title = f"{project} {release}"
 
-html_logo = 'images/logo.png'
 html_last_updated_fmt = '%Y/%m/%d'
-
-html_theme_options = {
-    'logo_only': False,
-    'display_version': True,
-    'prev_next_buttons_location': 'bottom',
-    'style_external_links': True,
-    'collapse_navigation': True,
-    'sticky_navigation': True,
-}

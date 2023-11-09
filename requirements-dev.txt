@@ -10,10 +10,10 @@ pylint==2.16.2
 yapf==0.32.0
 
 # Doc Build
-sphinx~=7.0.1
+sphinx>=6.0.0
 numpydoc==1.5.0
 nbsphinx==0.8.6
-qiskit-sphinx-theme~=1.12.0
+qiskit-sphinx-theme~=1.16.0
 sphinx-intl~=2.1.0
 
 # Unit tests
