@@ -77,7 +77,7 @@ Once you are in the folder that contains the `environment.yml` file, execute the
 
 ::
 
-    conda env create -n <env_name> environment.yml
+    conda env create -n <env_name> -f environment.yml
     conda activate <env_name>
     python -m pip install --no-deps -e .
 
