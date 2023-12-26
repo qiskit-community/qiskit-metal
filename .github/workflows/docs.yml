@@ -22,7 +22,7 @@ jobs:
           sudo apt update
           sudo apt install graphviz=2.42.2-6 pandoc=2.9.2.1-3ubuntu2 qtbase5-dev=5.15.3+dfsg-2ubuntu0.2 qt5-qmake=5.15.3+dfsg-2ubuntu0.2
       - name: Build docs
-        run: tox -edocs
+        run: tox -edocs -- -j auto
       - name: Bypass Jekyll Processing # Necessary for setting the correct css path
         run: touch docs/_build/html/.nojekyll
       - name: Deploy
