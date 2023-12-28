@@ -1,0 +1,8 @@
+﻿
+
+ResonatorCoilRect.options
+===============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: ResonatorCoilRect.options

@@ -1,0 +1,8 @@
+﻿
+
+RouteMixed.get_index_for_side1_meander
+============================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteMixed.get_index_for_side1_meander

@@ -1,0 +1,8 @@
+﻿
+
+RoutePathfinder.add_dependency
+====================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RoutePathfinder.add_dependency

@@ -1,0 +1,8 @@
+﻿
+
+RectangleHollow.name
+==========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: RectangleHollow.name

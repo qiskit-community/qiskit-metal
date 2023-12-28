@@ -1,0 +1,8 @@
+﻿
+
+RouteFramed.connect_frame
+===============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteFramed.connect_frame

@@ -1,0 +1,8 @@
+﻿
+
+LaunchpadWirebondCoupled.get_pin
+======================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: LaunchpadWirebondCoupled.get_pin

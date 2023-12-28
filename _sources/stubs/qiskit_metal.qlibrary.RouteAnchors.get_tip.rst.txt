@@ -1,0 +1,8 @@
+﻿
+
+RouteAnchors.get_tip
+==========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteAnchors.get_tip

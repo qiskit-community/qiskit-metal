@@ -1,0 +1,8 @@
+﻿
+
+LineTee.TOOLTIP
+=====================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: LineTee.TOOLTIP

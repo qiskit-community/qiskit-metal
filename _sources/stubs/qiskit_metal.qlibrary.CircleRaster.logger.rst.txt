@@ -1,0 +1,8 @@
+﻿
+
+CircleRaster.logger
+=========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: CircleRaster.logger

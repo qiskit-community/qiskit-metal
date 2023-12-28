@@ -1,0 +1,8 @@
+﻿
+
+Cap3Interdigital.logger
+=============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: Cap3Interdigital.logger

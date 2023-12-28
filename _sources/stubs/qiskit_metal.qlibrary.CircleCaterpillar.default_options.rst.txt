@@ -1,0 +1,8 @@
+﻿
+
+CircleCaterpillar.default_options
+=======================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: CircleCaterpillar.default_options

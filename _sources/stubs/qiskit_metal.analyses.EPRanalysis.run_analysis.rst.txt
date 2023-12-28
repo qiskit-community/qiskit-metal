@@ -1,0 +1,8 @@
+﻿
+
+EPRanalysis.run_analysis
+==============================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: EPRanalysis.run_analysis

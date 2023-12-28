@@ -1,0 +1,8 @@
+﻿
+
+ShortToGround.add_dependency
+==================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: ShortToGround.add_dependency

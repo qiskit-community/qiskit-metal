@@ -1,0 +1,8 @@
+﻿
+
+EigenmodeSim.sim_setup_name
+=================================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. autoproperty:: EigenmodeSim.sim_setup_name

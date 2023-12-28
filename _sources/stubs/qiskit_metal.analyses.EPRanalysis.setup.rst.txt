@@ -1,0 +1,8 @@
+﻿
+
+EPRanalysis.setup
+=======================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. autoproperty:: EPRanalysis.setup

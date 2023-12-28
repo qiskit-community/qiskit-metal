@@ -1,0 +1,8 @@
+﻿
+
+SQUID_LOOP.get_pin
+========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: SQUID_LOOP.get_pin

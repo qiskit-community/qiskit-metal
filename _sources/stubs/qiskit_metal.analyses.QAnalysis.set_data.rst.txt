@@ -1,0 +1,8 @@
+﻿
+
+QAnalysis.set_data
+========================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: QAnalysis.set_data

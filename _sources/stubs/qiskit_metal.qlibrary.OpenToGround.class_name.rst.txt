@@ -1,0 +1,8 @@
+﻿
+
+OpenToGround.class_name
+=============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: OpenToGround.class_name

@@ -1,0 +1,8 @@
+﻿
+
+CircleCaterpillar.component_metadata
+==========================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: CircleCaterpillar.component_metadata

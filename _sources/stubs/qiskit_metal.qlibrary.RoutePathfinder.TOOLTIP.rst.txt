@@ -1,0 +1,8 @@
+﻿
+
+RoutePathfinder.TOOLTIP
+=============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: RoutePathfinder.TOOLTIP

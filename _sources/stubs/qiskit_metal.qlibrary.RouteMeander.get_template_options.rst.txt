@@ -1,0 +1,8 @@
+﻿
+
+RouteMeander.get_template_options
+=======================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteMeander.get_template_options

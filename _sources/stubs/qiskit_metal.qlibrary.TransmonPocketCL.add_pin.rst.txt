@@ -1,0 +1,8 @@
+﻿
+
+TransmonPocketCL.add_pin
+==============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonPocketCL.add_pin

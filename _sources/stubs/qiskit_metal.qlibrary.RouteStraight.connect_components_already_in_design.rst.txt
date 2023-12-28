@@ -1,0 +1,8 @@
+﻿
+
+RouteStraight.connect_components_already_in_design
+========================================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteStraight.connect_components_already_in_design

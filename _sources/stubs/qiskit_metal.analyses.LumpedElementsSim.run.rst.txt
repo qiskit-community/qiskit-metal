@@ -1,0 +1,8 @@
+﻿
+
+LumpedElementsSim.run
+===========================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: LumpedElementsSim.run

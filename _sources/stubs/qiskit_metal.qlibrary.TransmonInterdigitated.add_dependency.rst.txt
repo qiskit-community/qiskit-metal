@@ -1,0 +1,8 @@
+﻿
+
+TransmonInterdigitated.add_dependency
+===========================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonInterdigitated.add_dependency

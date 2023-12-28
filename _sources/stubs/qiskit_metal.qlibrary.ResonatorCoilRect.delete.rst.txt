@@ -1,0 +1,8 @@
+﻿
+
+ResonatorCoilRect.delete
+==============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: ResonatorCoilRect.delete

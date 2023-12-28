@@ -1,0 +1,8 @@
+﻿
+
+RouteMixed.connect_meandered
+==================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteMixed.connect_meandered

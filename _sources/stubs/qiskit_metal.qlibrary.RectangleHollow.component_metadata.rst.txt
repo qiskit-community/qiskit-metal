@@ -1,0 +1,8 @@
+﻿
+
+RectangleHollow.component_metadata
+========================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: RectangleHollow.component_metadata

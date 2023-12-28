@@ -1,0 +1,8 @@
+﻿
+
+LaunchpadWirebondCoupled.rebuild
+======================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: LaunchpadWirebondCoupled.rebuild

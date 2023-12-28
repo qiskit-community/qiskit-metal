@@ -1,0 +1,8 @@
+﻿
+
+RouteFramed.TOOLTIP
+=========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: RouteFramed.TOOLTIP

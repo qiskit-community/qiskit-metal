@@ -1,0 +1,8 @@
+﻿
+
+EPRanalysis.del_junction
+==============================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: EPRanalysis.del_junction

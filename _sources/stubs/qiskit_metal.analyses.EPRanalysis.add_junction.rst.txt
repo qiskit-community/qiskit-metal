@@ -1,0 +1,8 @@
+﻿
+
+EPRanalysis.add_junction
+==============================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: EPRanalysis.add_junction

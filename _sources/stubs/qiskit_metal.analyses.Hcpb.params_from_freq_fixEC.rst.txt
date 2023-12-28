@@ -1,0 +1,8 @@
+﻿
+
+Hcpb.params_from_freq_fixEC
+=================================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: Hcpb.params_from_freq_fixEC

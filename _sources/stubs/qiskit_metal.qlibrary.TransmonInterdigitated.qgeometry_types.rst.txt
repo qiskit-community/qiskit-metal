@@ -1,0 +1,8 @@
+﻿
+
+TransmonInterdigitated.qgeometry_types
+============================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: TransmonInterdigitated.qgeometry_types

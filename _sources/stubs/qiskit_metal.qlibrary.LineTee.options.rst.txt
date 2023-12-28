@@ -1,0 +1,8 @@
+﻿
+
+LineTee.options
+=====================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: LineTee.options

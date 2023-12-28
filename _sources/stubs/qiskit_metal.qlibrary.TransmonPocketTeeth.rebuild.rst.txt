@@ -1,0 +1,8 @@
+﻿
+
+TransmonPocketTeeth.rebuild
+=================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonPocketTeeth.rebuild

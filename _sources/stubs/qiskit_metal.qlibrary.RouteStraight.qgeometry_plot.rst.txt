@@ -1,0 +1,8 @@
+﻿
+
+RouteStraight.qgeometry_plot
+==================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteStraight.qgeometry_plot

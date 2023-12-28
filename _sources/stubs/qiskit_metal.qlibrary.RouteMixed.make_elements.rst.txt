@@ -1,0 +1,8 @@
+﻿
+
+RouteMixed.make_elements
+==============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteMixed.make_elements

@@ -1,0 +1,8 @@
+﻿
+
+RoutePathfinder.free_manhattan_length_anchors
+===================================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RoutePathfinder.free_manhattan_length_anchors

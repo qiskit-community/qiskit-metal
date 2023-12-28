@@ -1,0 +1,8 @@
+﻿
+
+CoupledLineTee.make
+=========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: CoupledLineTee.make

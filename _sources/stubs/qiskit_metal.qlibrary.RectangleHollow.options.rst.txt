@@ -1,0 +1,8 @@
+﻿
+
+RectangleHollow.options
+=============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: RectangleHollow.options

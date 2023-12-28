@@ -1,0 +1,8 @@
+﻿
+
+RouteAnchors.set_pin
+==========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteAnchors.set_pin

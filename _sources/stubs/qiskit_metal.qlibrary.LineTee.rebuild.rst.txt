@@ -1,0 +1,8 @@
+﻿
+
+LineTee.rebuild
+=====================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: LineTee.rebuild

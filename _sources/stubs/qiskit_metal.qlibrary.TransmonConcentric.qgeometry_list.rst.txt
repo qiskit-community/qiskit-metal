@@ -1,0 +1,8 @@
+﻿
+
+TransmonConcentric.qgeometry_list
+=======================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonConcentric.qgeometry_list

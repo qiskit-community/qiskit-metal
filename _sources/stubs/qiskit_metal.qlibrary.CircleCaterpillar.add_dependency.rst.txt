@@ -1,0 +1,8 @@
+﻿
+
+CircleCaterpillar.add_dependency
+======================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: CircleCaterpillar.add_dependency

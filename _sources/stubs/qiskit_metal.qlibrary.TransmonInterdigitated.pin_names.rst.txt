@@ -1,0 +1,8 @@
+﻿
+
+TransmonInterdigitated.pin_names
+======================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: TransmonInterdigitated.pin_names

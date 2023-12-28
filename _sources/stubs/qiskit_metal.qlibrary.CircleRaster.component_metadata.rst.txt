@@ -1,0 +1,8 @@
+﻿
+
+CircleRaster.component_metadata
+=====================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: CircleRaster.component_metadata

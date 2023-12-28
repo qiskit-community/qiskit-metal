@@ -1,0 +1,8 @@
+﻿
+
+LineTee.qgeometry_list
+============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: LineTee.qgeometry_list

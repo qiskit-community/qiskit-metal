@@ -1,0 +1,8 @@
+﻿
+
+ScatteringImpedanceSim.start
+==================================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: ScatteringImpedanceSim.start

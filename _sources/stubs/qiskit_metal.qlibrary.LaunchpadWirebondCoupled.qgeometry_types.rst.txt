@@ -1,0 +1,8 @@
+﻿
+
+LaunchpadWirebondCoupled.qgeometry_types
+==============================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: LaunchpadWirebondCoupled.qgeometry_types

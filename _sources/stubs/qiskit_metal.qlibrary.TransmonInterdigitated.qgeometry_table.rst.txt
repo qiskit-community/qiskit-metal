@@ -1,0 +1,8 @@
+﻿
+
+TransmonInterdigitated.qgeometry_table
+============================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonInterdigitated.qgeometry_table

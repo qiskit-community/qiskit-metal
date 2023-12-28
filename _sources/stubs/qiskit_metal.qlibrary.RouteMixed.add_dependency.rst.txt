@@ -1,0 +1,8 @@
+﻿
+
+RouteMixed.add_dependency
+===============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteMixed.add_dependency

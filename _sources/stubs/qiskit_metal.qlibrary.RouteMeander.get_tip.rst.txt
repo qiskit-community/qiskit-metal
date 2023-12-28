@@ -1,0 +1,8 @@
+﻿
+
+RouteMeander.get_tip
+==========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteMeander.get_tip

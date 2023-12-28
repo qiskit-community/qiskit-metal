@@ -1,0 +1,1726 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Josephson Junction QComponent Demo Notebook" href="../quick-topics/JJ-Demo-Notebook.html" /><link rel="prev" title="Transmon Analytics" href="4.33-Transmon-analytics.html" />
+
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19 -->
+        <title>Modeling transmon qubit Cooper-pair box Hamiltonian in the charge basis - Qiskit Metal 0.1.5 0.1.5</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=362ab14a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/qiskit-sphinx-theme.css?v=fe84956c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/qiskit-ecosystem.css?v=745c5aa7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+<script src="../../_static/js/web-components/top-nav-bar.js"></script></head>
+  <body>
+    
+    <script>document.body.dataset.theme = "light";</script>
+    
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg id="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+      <defs><style>.cls-1{fill:none;}</style></defs>
+      <path d="M28,4H4A2,2,0,0,0,2,6V26a2,2,0,0,0,2,2H28a2,2,0,0,0,2-2V6A2,2,0,0,0,28,4ZM4,6H20V26H4ZM28,26H22V6h6Z"/>
+      <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg id="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+      <defs><style>.cls-1{fill:none;}</style></defs>
+      <rect x="4" y="6" width="24" height="2"/>
+      <rect x="4" y="24" width="24" height="2"/>
+      <rect x="4" y="12" width="24" height="2"/>
+      <rect x="4" y="18" width="24" height="2"/>
+      <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg version="1.1" id="icon" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+         viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve"><polygon points="22,16 12,26 10.6,24.6 19.2,16 10.6,7.4 12,6 " stroke="currentColor"/>
+      <rect id="_x3C_Transparent_Rectangle_x3E_" fill="none" width="32" height="32"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-new-tab" viewBox="0 0 32 32">
+    <svg id="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+      <defs>
+        <style>
+          .cls-1 {
+            fill: none;
+          }
+        </style>
+      </defs>
+      <path fill="#6929C4" d="M26,28H6a2.0027,2.0027,0,0,1-2-2V6A2.0027,2.0027,0,0,1,6,4H16V6H6V26H26V16h2V26A2.0027,2.0027,0,0,1,26,28Z"/>
+      <polygon fill="#6929C4" points="20 2 20 4 26.586 4 18 12.586 19.414 14 28 5.414 28 12 30 12 30 2 20 2"/>
+      <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">Qiskit Metal 0.1.5 0.1.5</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><div class="sidebar-brand">
+  <a href="https://www.qiskit.org/ecosystem">
+    <div class="sidebar-logo-container">
+      <img class="sidebar-logo" src="../../_static/images/ecosystem-logo.svg" alt="Qiskit Ecosystem logo"/>
+    </div>
+  </a>
+  
+  <span class="sidebar-brand-text">Qiskit Metal 0.1.5 0.1.5</span>
+</div><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installing Qiskit Metal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../workflow.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../workflow.html#qiskit-metal-workflow">Qiskit Metal Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../workflow.html#quantization-methods-overview">Quantization Methods Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contributor Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contributor-guide.html">Contributing to Qiskit Metal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributor-guide.html#where-things-are">Where Things Are</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributor-guide.html#reporting-bugs-and-requesting-enhancements">Reporting Bugs and Requesting Enhancements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributor-guide.html#contributing-code">Contributing Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributor-guide.html#contributing-to-documentation">Contributing to Documentation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../index.html">Overview</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Overview</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1-Overview/1.1-Bird%27s-eye-view-of-Qiskit-Metal.html">Bird’s eye view of Qiskit Metal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1-Overview/1.1-Bird%27s-eye-view-of-Qiskit-Metal.html#Coding-Time!">Coding Time!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1-Overview/1.2-Quick-start.html">Quick start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1-Overview/1.3-Saving-Your-Chip-Design.html">Save your chip design</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../index.html#components">Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.01-How-to-use-a-QComponent.html">How to use a QComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.01-How-to-use-a-QComponent.html#QComponent-Default-Options">QComponent Default Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.01-How-to-use-a-QComponent.html#Modifying-the-Options">Modifying the Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.01-How-to-use-a-QComponent.html#Copying-a-QComponent">Copying a QComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.01-How-to-use-a-QComponent.html#Deleting-a-QComponent">Deleting a QComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.01-How-to-use-a-QComponent.html#Renaming-a-QComponent">Renaming a QComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.01-How-to-use-a-QComponent.html#Overwriting-a-QComponent">Overwriting a QComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.01-How-to-use-a-QComponent.html#Closing-the-Qiskit-Metal-GUI">Closing the Qiskit Metal GUI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.02-How-to-copy-a-QComponent.html">How to copy a QComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.11-Routing-101.html">Routing 101</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.12-Simple-Meander.html">Simple Meander</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.12-Simple-Meander.html#Using-CPW-meanders-to-connect-the-3-Qbits">Using CPW meanders to connect the 3 Qbits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.13-Hybrid-Auto-and-AStar.html">Hybrid Auto and AStar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.14-Get-them-all-with-MixedRoute.html">Get them all with MixedRoute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.21-Design-a-4-qubit-full-chip.html">Design a 4 qubit full chip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.22-Design-100-qubits-programmatically.html">Design 100 qubits programmatically</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.23-Modify-chip-options.html">Modify chip options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.31-Create-a-QComponent-Basic.html">Create a QComponent - Basic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.32-Create-a-QComponent-Advanced.html">Create a QComponent - Advanced</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.33-Add-my-QComponent-to-a-reusable-python-file.html">Add my QComponent to a reusable python file</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../index.html#renderers">Renderers</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Renderers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../3-Renderers/3.1-Introduction-to-QRenderers.html">Introduction to QRenderers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3-Renderers/3.1-Introduction-to-QRenderers.html#Note:">Note:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3-Renderers/3.2-Export-your-design-to-GDS.html">Export your design to GDS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3-Renderers/3.3-Render-your-design-to-Ansys.html">Render your design to Ansys</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3-Renderers/3.4-How-do-I-make-my-custom-QRenderer.html">How do I make my custom QRenderer</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html#analysis">Analysis</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Analysis</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="4.01-Capacitance-and-LOM.html">Capacitance matrix and LOM analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.02-Eigenmode-and-EPR.html">Eigenmode and EPR analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.02-Eigenmode-and-EPR.html#1.-Analyze-the-transmon-qubit-by-itself">1. Analyze the transmon qubit by itself</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.02-Eigenmode-and-EPR.html#2.-Analyze-the-CPW-resonator-by-itself">2. Analyze the CPW resonator by itself</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.02-Eigenmode-and-EPR.html#3.-Analyze-the-combined-transmon-+-CPW-resonator-system">3. Analyze the combined transmon + CPW resonator system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.02-Eigenmode-and-EPR.html#4.-Analyze-a-coupled-2-transmon-system">4. Analyze a coupled 2-transmon system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.03-Impedance.html">Impedance, admittance and scattering analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.11-Analyze-and-tune-a-transmon.html">Analyzing and tuning a transmon qubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.11-Analyze-and-tune-a-transmon.html#1.-Create-the-Qbit-design">1. Create the Qbit design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.11-Analyze-and-tune-a-transmon.html#2.-Analyze-the-transmon-using-the-Eigenmode-EPR-method">2. Analyze the transmon using the Eigenmode-EPR method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.11-Analyze-and-tune-a-transmon.html#3.-Analyze-the-transmon-using-the-LOM-method">3. Analyze the transmon using the LOM method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.12-Analyze-a-resonator.html">Analyzing and tuning a resonator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.12-Analyze-a-resonator.html#1.-Create-the-Resonator-design">1. Create the Resonator design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.12-Analyze-a-resonator.html#2.-Analyze-the-resonator-using-the-Eigenmode-EPR-method">2. Analyze the resonator using the Eigenmode-EPR method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.13-Analyze-transmon-and-resonator.html">Analyzing and tuning a transmon qubit with a resonator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.13-Analyze-transmon-and-resonator.html#1.-Create-the-Qbit-design">1. Create the Qbit design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.13-Analyze-transmon-and-resonator.html#2.-Analyze-the-transmon-&amp;-resonator-using-the-Eigenmode-EPR-method">2. Analyze the transmon &amp; resonator using the Eigenmode-EPR method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.13-Analyze-transmon-and-resonator.html#3.-Analyze-the-transmon-using-the-LOM-method">3. Analyze the transmon using the LOM method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.14-Analyze-a-double-hanger-resonator.html">Analyzing a double hanger resonator (S Param)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.15-CPW-kappa-calculation.html">CPW Kappa Calculation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.21-Capacitance-matrix.html">Sweeps - Capacitance matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.21-Capacitance-matrix.html#READ-THIS-BEFORE-running-the-cell.">READ THIS BEFORE running the cell.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.22-Eigenmode-matrix.html">Sweeps - Eigenmode matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.23-Impedance-and-scattering-Z-S-Y-matrices.html">Sweeps - Impedance, scattering and admittance (Z S Y) matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.31-Plot-quantum-oscillator-wavefunction.html">Plotting Wavefunctions of the Quantum Harmonic Oscillator (LC Circuit)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.32-Transmon-analytics-HCPB.html">Transmon Analytics: Plotting Eigenvalues as a Function of Offset Charge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.33-Transmon-analytics.html">Transmon Analytics</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Modeling transmon qubit Cooper-pair box Hamiltonian in the charge basis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Additional-Analysis:-Charge-Dispersion,-Energy-Level-Differences,-Anharmonicity-and-Dephasing-Time-(T2)">Additional Analysis: Charge Dispersion, Energy Level Differences, Anharmonicity and Dephasing Time (T2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Qutip-simulation">Qutip simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Experimental">Experimental</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#New-section-on-integrating-sc_qubits.">New section on integrating sc_qubits.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Transmon-and-the-Oscillator">Transmon and the Oscillator</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../index.html#quick-topics">Quick Topics</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Quick Topics</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../quick-topics/JJ-Demo-Notebook.html">Josephson Junction QComponent Demo Notebook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quick-topics/Managing-pins.html">Managing pins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quick-topics/Managing-variables.html">Managing variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quick-topics/Opening-documentation.html">Opening the documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quick-topics/QComponent-3-fingers-capacitor.html">QComponent - 3-fingers capacitor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quick-topics/QComponent-Interdigitated-transmon.html">QComponent - Interdigitated transmon qubit</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/playlist?list=PLOFEBzvs-VvqHl5ZqVmhB_FcSqmLufsjb">Video Recordings</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Circuit Example Library</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../circuit-examples/index.html">Qubits</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Qubits</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/01-Transmon_cross.html">Single Transmon - Grounded (xmon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/02-Transmon_floating.html">Single Transmon - Floating</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/03-concentric_transmon.html">Concentric Transmon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/04-Interdigitated_Transmon.html">Interdigitated Transmon Qubits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/05-Transmon_cross_fl.html">Single Transmon - Grounded (xmon) flux lines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/06-Transmon_floating_6.html">Single Transmon - Floating with 6 connection pads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/07-Transmon_floating_cl.html">Single Transmon - Floating with charge lines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/08-JJ-Dolan.html">Josephson Junction (Dolan)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/09-JJ-Manhattan.html">Josephson Junction (Manhattan)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/10-Transmon_floating_teeth.html">Single Transmon - Floating with teeth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/11-Star_shaped_qubit.html">Star shaped qubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/11-Star_shaped_qubit.html#A-Star-Qubit">A Star Qubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/11-Star_shaped_qubit.html#Closing-the-Qiskit-Metal-GUI">Closing the Qiskit Metal GUI</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../circuit-examples/index.html#resonators">Resonators</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Resonators</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/B.Resonators/11-Resonator_Meander.html">Simple CPW Meander</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../circuit-examples/index.html#composite-bi-partite-systems">Composite Bi-Partite Systems</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Composite Bi-Partite Systems</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/C.Composite-bi-partite/21-OneTransmonsWithMeanderAndOTG.html">Transmon coupled to CPW resonator</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../circuit-examples/index.html#qubit-couplers">Qubit Couplers</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Qubit Couplers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/D.Qubit-couplers/31-TwoCrossmonsTunableCoupler.html">Tunable Coupler (MIT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/D.Qubit-couplers/32-TwoTransmonsDirectCoupling.html">Direct Coupler (transmon-transmon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/D.Qubit-couplers/33-TwoTransmonsWithMeander.html">Bus Resonator Coupler (transmon-transmon)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../circuit-examples/index.html#input-output-coupling">Input-Output Coupling</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of Input-Output Coupling</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/E.Input-output-coupling/41-LaunchPad.html">CPW Launch Pad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/E.Input-output-coupling/42-ResonatorAndLaunchPad.html">Readout line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/E.Input-output-coupling/43-TransmonPocketCL.html">Charge Line</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../circuit-examples/index.html#small-quantum-chips">Small Quantum Chips</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of Small Quantum Chips</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/F.Small-quantum-chips/51-Four_qubit_chip.html">Four Qubit Chip Design</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../circuit-examples/index.html#design-flow">Design Flow</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of Design Flow</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/full-design-flow-examples/Example-full-chip-design.html">Example full chip design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/full-design-flow-examples/Example-full-chip-design.html#Layout">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/full-design-flow-examples/Example-full-chip-design.html#Analyze">Analyze</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/full-design-flow-examples/Example-used-in-the-launch-video.html">Launch Videos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/full-design-flow-examples/Exercise-for-the-South-Korea-Hackathon%2720.html">South Korea Qiskit Hackathon’20 - Qiskit Metal exercise</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/qlibrary.html">All Quantum Devices</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of All Quantum Devices</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.qlibrary.QComponent.html">QComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.qlibrary.ParsedDynamicAttributes_Component.html">ParsedDynamicAttributes_Component</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.qlibrary.BaseQubit.html">BaseQubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.qlibrary.QRoute.html">QRoute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.qlibrary.QRouteLead.html">QRouteLead</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.qlibrary.QRoutePoint.html">QRoutePoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.CircleCaterpillar.html">CircleCaterpillar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.CircleRaster.html">CircleRaster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.NGon.html">NGon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.NSquareSpiral.html">NSquareSpiral</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.Rectangle.html">Rectangle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.RectangleHollow.html">RectangleHollow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.Cap3Interdigital.html">Cap3Interdigital</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.CapNInterdigital.html">CapNInterdigital</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.ResonatorCoilRect.html">ResonatorCoilRect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.CoupledLineTee.html">CoupledLineTee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.LineTee.html">LineTee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.CapNInterdigitalTee.html">CapNInterdigitalTee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TunableCoupler01.html">TunableCoupler01</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TunableCoupler02.html">TunableCoupler02</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.ReadoutResFC.html">ReadoutResFC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.ResonatorLumped.html">ResonatorLumped</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.LaunchpadWirebond.html">LaunchpadWirebond</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.LaunchpadWirebondCoupled.html">LaunchpadWirebondCoupled</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.LaunchpadWirebondDriven.html">LaunchpadWirebondDriven</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.OpenToGround.html">OpenToGround</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.ShortToGround.html">ShortToGround</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.RouteStraight.html">RouteStraight</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.RouteFramed.html">RouteFramed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.RouteMeander.html">RouteMeander</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.RouteAnchors.html">RouteAnchors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.RouteMixed.html">RouteMixed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.RoutePathfinder.html">RoutePathfinder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.jj_dolan.html">jj_dolan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.jj_manhattan.html">jj_manhattan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TransmonConcentric.html">TransmonConcentric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TransmonConcentricType2.html">TransmonConcentricType2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TransmonCross.html">TransmonCross</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TransmonCrossFL.html">TransmonCrossFL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TransmonInterdigitated.html">TransmonInterdigitated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TransmonPocket.html">TransmonPocket</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TransmonPocketCL.html">TransmonPocketCL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TransmonPocket6.html">TransmonPocket6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TransmonPocketTeeth.html">TransmonPocketTeeth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TunableCoupler01.html">TunableCoupler01</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.SQUID_LOOP.html">SQUID_LOOP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.StarQubit.html">StarQubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.anchored_path.html">anchored_path</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/designs.html">QDesigns</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of QDesigns</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.designs.QDesign.html">QDesign</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.designs.DesignPlanar.html">DesignPlanar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.designs.MultiPlanar.html">MultiPlanar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.designs.DesignFlipChip.html">DesignFlipChip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.designs.QNet.html">QNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.designs.Components.html">Components</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/qlibrary.html">QComponents</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of QComponents</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.qlibrary.QComponent.html">QComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.qlibrary.ParsedDynamicAttributes_Component.html">ParsedDynamicAttributes_Component</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.qlibrary.BaseQubit.html">BaseQubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.qlibrary.QRoute.html">QRoute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.qlibrary.QRouteLead.html">QRouteLead</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.qlibrary.QRoutePoint.html">QRoutePoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.CircleCaterpillar.html">CircleCaterpillar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.CircleRaster.html">CircleRaster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.NGon.html">NGon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.NSquareSpiral.html">NSquareSpiral</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.Rectangle.html">Rectangle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.RectangleHollow.html">RectangleHollow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.Cap3Interdigital.html">Cap3Interdigital</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.CapNInterdigital.html">CapNInterdigital</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.ResonatorCoilRect.html">ResonatorCoilRect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.CoupledLineTee.html">CoupledLineTee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.LineTee.html">LineTee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.CapNInterdigitalTee.html">CapNInterdigitalTee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TunableCoupler01.html">TunableCoupler01</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TunableCoupler02.html">TunableCoupler02</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.ReadoutResFC.html">ReadoutResFC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.ResonatorLumped.html">ResonatorLumped</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.LaunchpadWirebond.html">LaunchpadWirebond</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.LaunchpadWirebondCoupled.html">LaunchpadWirebondCoupled</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.LaunchpadWirebondDriven.html">LaunchpadWirebondDriven</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.OpenToGround.html">OpenToGround</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.ShortToGround.html">ShortToGround</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.RouteStraight.html">RouteStraight</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.RouteFramed.html">RouteFramed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.RouteMeander.html">RouteMeander</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.RouteAnchors.html">RouteAnchors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.RouteMixed.html">RouteMixed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.RoutePathfinder.html">RoutePathfinder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.jj_dolan.html">jj_dolan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.jj_manhattan.html">jj_manhattan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TransmonConcentric.html">TransmonConcentric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TransmonConcentricType2.html">TransmonConcentricType2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TransmonCross.html">TransmonCross</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TransmonCrossFL.html">TransmonCrossFL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TransmonInterdigitated.html">TransmonInterdigitated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TransmonPocket.html">TransmonPocket</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TransmonPocketCL.html">TransmonPocketCL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TransmonPocket6.html">TransmonPocket6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TransmonPocketTeeth.html">TransmonPocketTeeth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TunableCoupler01.html">TunableCoupler01</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.SQUID_LOOP.html">SQUID_LOOP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.StarQubit.html">StarQubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.anchored_path.html">anchored_path</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/analyses.html">Analyses</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of Analyses</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.QAnalysis.html">QAnalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.QSimulation.html">QSimulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.Hcpb.html">Hcpb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.Hcpb_analytic.html">Hcpb_analytic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.HO_wavefunctions.html">HO_wavefunctions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.transmon_analytics.html">transmon_analytics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.cpw_calculations.html">cpw_calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.kappa_calculation.html">kappa_calculation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.Sweeper.html">Sweeper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.LOManalysis.html">LOManalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.EPRanalysis.html">EPRanalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.lumped_capacitive.html">lumped_capacitive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.LumpedElementsSim.html">LumpedElementsSim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.EigenmodeSim.html">EigenmodeSim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.ScatteringImpedanceSim.html">ScatteringImpedanceSim</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/renderers.html">QRenderes</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of QRenderes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.renderers.QRenderer.html">QRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.renderers.QRendererGui.html">QRendererGui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.renderers.QRendererAnalysis.html">QRendererAnalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.renderers.PlotCanvas.html">PlotCanvas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.renderers.MplInteraction.html">MplInteraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.renderers.ZoomOnWheel.html">ZoomOnWheel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.renderers.PanAndZoom.html">PanAndZoom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.renderers.QMplRenderer.html">QMplRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.renderers.AnimatedText.html">AnimatedText</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.renderers.QGDSRenderer.html">QGDSRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.renderers.Cheesing.html">Cheesing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.renderers.QAnsysRenderer.html">QAnsysRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.renderers.QHFSSRenderer.html">QHFSSRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.renderers.QQ3DRenderer.html">QQ3DRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.renderers.QPyaedt.html">QPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.renderers.QQ3DPyaedt.html">QQ3DPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.renderers.QHFSSPyaedt.html">QHFSSPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.html">QHFSSDrivenmodalPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.renderers.QHFSSEigenmodePyaedt.html">QHFSSEigenmodePyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.renderers.QGmshRenderer.html">QGmshRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.renderers.Vec3DArray.html">Vec3DArray</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/toolbox_metal.html">Toolbox</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of Toolbox</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.toolbox_metal.QiskitMetalExceptions.html">QiskitMetalExceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.toolbox_metal.QiskitMetalDesignError.html">QiskitMetalDesignError</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.toolbox_metal.about.html">about</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.toolbox_metal.import_export.html">import_export</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.toolbox_metal.math_and_overrides.html">math_and_overrides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.toolbox_metal.parsing.html">parsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.toolbox_metal.layer_stack_handler.html">layer_stack_handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables.html">bounds_for_path_and_poly_tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.toolbox_metal.determine_larger_box.html">determine_larger_box</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/qgeometries.html">QGeometry</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of QGeometry</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal.qgeometries.QGeometryTables.html">QGeometryTables</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/gui.html">GUI</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../stubs/qiskit_metal._gui.MetalGUI.html">MetalGUI</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/Qiskit/qiskit/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
+</ul>
+
+</div></div>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+</style>
+<br><br><br><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This page was generated from <a class="reference external" href="https://github.com/Qiskit/qiskit-metal/blob/main/docs/tut//4-Analysis//4.34-Transmon-qubit-CPB-hamiltonian-charge-basis.ipynb">tut//4-Analysis//4.34-Transmon-qubit-CPB-hamiltonian-charge-basis.ipynb</a>.</p>
+</div>
+<section id="Modeling-transmon-qubit-Cooper-pair-box-Hamiltonian-in-the-charge-basis">
+<h1>Modeling transmon qubit Cooper-pair box Hamiltonian in the charge basis<a class="headerlink" href="#Modeling-transmon-qubit-Cooper-pair-box-Hamiltonian-in-the-charge-basis" title="Link to this heading">#</a></h1>
+<p>(Zlatko Minev, Christopher Warren, Nick Lanzillo 2021)</p>
+<p>This module models the transmon qubit in the cooper-pair charge basis, assuming wrapped junction phase variable. The Hamiltonian is given by:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\hat{H}=4E_{C}\left(\hat{n}-n_{g}\right)-E_{J}\cos\left(\hat{\phi}\right)\,,\]</div>
+</div>
+<p>where <span class="math notranslate nohighlight">\(E_{C}\)</span> is the charging energy, <span class="math notranslate nohighlight">\(E_{J}\)</span> is the Josephson energy, <span class="math notranslate nohighlight">\(\hat n\)</span> is the number of Cooper pairs transferred between charge islands, <span class="math notranslate nohighlight">\(\hat{\phi}\)</span> is the gauge-invariant phase difference between charge islands, and <span class="math notranslate nohighlight">\(n_{g}\)</span> is effective offset charge of the device. Expressions for the charging energy, Josephson energy and offset charge can be written as:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[E_{C}=\frac{e^{2}}{2C_{\Sigma}}\,,\qquad n_{g}=-\frac{C_{d}\dot{\Phi}_{s}\left(t\right)}{2e}\:,\qquad E_{J}=\frac{\phi_{0}^{2}}{L_{J}}\,,\]</div>
+</div>
+<p>where <span class="math notranslate nohighlight">\(C_{\Sigma} = C_{J}+C_{B}+C_{g}\)</span> (the sum of the Josephson capacitance, shunting capacitance and gate capacitance), <span class="math notranslate nohighlight">\(L_{J}\)</span> is the inductance of the Josephson junction, and <span class="math notranslate nohighlight">\(\phi\)</span> is the magnetic flux.</p>
+<p>The variables are</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\hat{\phi}\equiv\frac{\hat{\Phi}}{\phi_{0}},\qquad\hat{n}\equiv\frac{\hat{Q}}{2e}\,,\]</div>
+</div>
+<p>Observe that <span class="math notranslate nohighlight">\(\hat \phi\)</span> and <span class="math notranslate nohighlight">\(\hat n\)</span> are both dimensiuonless, and they obey the commutation relationship:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[[\hat{\phi}, \hat{n}] = i\]</div>
+</div>
+<p>The Hamiltonian can be written in the charge (<span class="math notranslate nohighlight">\(\hat n\)</span>) basis as:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[H=4E_\text{C}(\hat{n}-n_g)^2-\frac{1}{2}E_\text{J}\sum_n(|n\rangle\langle n+1|+\text{h.c.}),\]</div>
+</div>
+<p>Where <span class="math notranslate nohighlight">\(\hat{n} = \sum_{n=-\inf}^{\inf} |n\rangle\langle n|\)</span></p>
+<section id="Hcpb-class">
+<h2>Hcpb class<a class="headerlink" href="#Hcpb-class" title="Link to this heading">#</a></h2>
+<p>Hamiltonian-model Cooper pair box (Hcpb) class.</p>
+<p>Used to model analytically the CPB Hamiltonian quickly and efficiently. Solves in charge basis tridiagonal eigenvalue problem for arbitrary Ej, Ec, ng values.</p>
+<p>As long as nlevels remains fixed the number of charge states considered does not change and it does not recreate the arrays, just recomputes the properties</p>
+<p>Returns all properties of interest for the CPB.</p>
+<p>This model is closer to the analytic solution than the Duffing oscillator model. Can work backwards from target qubit parameters to get the Ej, Ec or use input Ej, Ec to find the spectrum of the Cooper Pair Box.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>@author: Christopher Warren (Chalmers University of Technology), updated by Zlatko K. Minev (IBM Quantum)
+@date: 2020, 2021
+</pre></div>
+</div>
+<p>Let’s start by importing the key modules for this demo:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+<span class="o">%</span><span class="k">config</span> IPCompleter.greedy = True
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="o">%</span><span class="k">config</span> Completer.use_jedi = False
+<span class="o">%</span><span class="k">config</span> InlineBackend.figure_format = &#39;svg&#39;
+
+<span class="kn">from</span> <span class="nn">qiskit_metal.analyses.hamiltonian.transmon_charge_basis</span> <span class="kn">import</span> <span class="n">Hcpb</span>
+<span class="kn">from</span> <span class="nn">qiskit_metal.analyses.hamiltonian.transmon_CPB_analytic</span> <span class="kn">import</span> <span class="n">Hcpb_analytic</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+The autoreload extension is already loaded. To reload it, use:
+  %reload_ext autoreload
+</pre></div></div>
+</div>
+<section id="Let’s-model-a-transmon">
+<h3>Let’s model a transmon<a class="headerlink" href="#Let’s-model-a-transmon" title="Link to this heading">#</a></h3>
+</section>
+</section>
+<section id="Energy-levels">
+<h2>Energy levels<a class="headerlink" href="#Energy-levels" title="Link to this heading">#</a></h2>
+<p>We can get a feel for how to use the Hcpb class by plotting the first few eigenvalues as a function of offset charge, similar to the plots reported in Phys. Rev. A 76, 042319 (2007.) Let’s start by defining the range of offset charge from -2.0 to +2.0 and also by defining a normalization for the eigenvalues, which will be the transition energy between the first two states evaluated at the degenercy point where ng=0.5. For this exercise, we’ll take Josephson Energy to be equal to the charging
+energy:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span><span class="mf">2.0</span><span class="p">,</span><span class="mi">101</span><span class="p">)</span> <span class="c1"># this represents the charging energy (ng)</span>
+<span class="n">H_norm</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span> <span class="c1"># Hamiltonian definition</span>
+<span class="n">norm</span> <span class="o">=</span> <span class="n">H_norm</span><span class="o">.</span><span class="n">fij</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># normalization constant</span>
+</pre></div>
+</div>
+</div>
+<p>Next, we’ll sweep over the offset charge and calculate the first three eigenvalues for a given value of ng. We’ll need to define a new Hamiltonian for this.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">E0</span><span class="p">,</span> <span class="n">E1</span><span class="p">,</span> <span class="n">E2</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+
+<span class="c1"># For a given value of offset charge (ng, represented by x) we will calculate the CPB Hamiltonian using the previously assigned values of E_J and E_C. Then we calculate the eigenvalue for a given value of m.</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
+    <span class="n">H</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">E0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">/</span><span class="n">norm</span><span class="p">)</span>
+    <span class="n">E1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">norm</span><span class="p">)</span>
+    <span class="n">E2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">norm</span><span class="p">)</span>
+
+<span class="c1"># define the minimum of E0 and set this to E=0</span>
+<span class="n">floor</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">E0</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">E0</span> <span class="o">-</span> <span class="n">floor</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;m=0&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">E1</span> <span class="o">-</span> <span class="n">floor</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;m=1&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">E2</span> <span class="o">-</span> <span class="n">floor</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;m=2&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;ng&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Em/E01&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Energy Level:&quot;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.legend.Legend at 0x1c1fdccfbc8&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_10_1.svg" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_10_1.svg" /></div>
+</div>
+</section>
+<section id="Comparing-with-the-Analytic-Expressions-for-Energy">
+<h2>Comparing with the Analytic Expressions for Energy<a class="headerlink" href="#Comparing-with-the-Analytic-Expressions-for-Energy" title="Link to this heading">#</a></h2>
+<p>We can compare calculated eigenvalues with the analytic solutions by using the “Hcpb_analytic” class, which calculates the transmon eigenvalues analytically using Mathieu characteristic values instead of a matrix-based approach. Let’s compare the calculated values of the lowest energy at zero offset charge in both cases:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># this is using the Hcpb approach as above, solving the charge basis tridiagonal eigenvalue problem:</span>
+<span class="n">H_CPB</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="mf">13971.3</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="mf">295.2</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+
+<span class="c1"># this using the Hcpb_analytic class, which solves using the exact (analytic) solutions in terms of Mathieu characteristic values:</span>
+<span class="n">H_CPB_analytic</span> <span class="o">=</span> <span class="n">Hcpb_analytic</span><span class="p">(</span><span class="n">Ej</span><span class="o">=</span><span class="mf">13971.3</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="mf">295.2</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+
+<span class="c1"># print and compare energies</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;E0 (HCPB):&quot;</span><span class="p">,</span> <span class="n">H_CPB</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;E0 (HCPB analytic):&quot;</span><span class="p">,</span> <span class="n">H_CPB_analytic</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error:&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="o">*</span><span class="p">(</span><span class="n">H_CPB_analytic</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">H_CPB</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="n">H_CPB_analytic</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+E0 (HCPB): -11175.114908534233
+E0 (HCPB analytic): -11175.114908534231
+Error: -1.6277142726798518e-14
+</pre></div></div>
+</div>
+<p>As we can see above, the calculated eigenvalues using the Hcbp class match the analytic values extremely well.</p>
+</section>
+<section id="Wavefunctions">
+<h2>Wavefunctions<a class="headerlink" href="#Wavefunctions" title="Link to this heading">#</a></h2>
+<p>Let’s define a new Hamiltonian, this time with <span class="math notranslate nohighlight">\(E_{J} &gt;&gt; E_{C}\)</span> and an offset charge of <span class="math notranslate nohighlight">\(ng=0.001\)</span>. We can calculate the transition energy between the lowest two states as well as the anharmonicity with the following:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">H</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="mf">13971.3</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="mf">295.2</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Transmon frequencies</span>
+
+<span class="s2"> ω01/2π = </span><span class="si">{</span><span class="n">H</span><span class="o">.</span><span class="n">fij</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="si">:</span><span class="s2"> 6.0f</span><span class="si">}</span><span class="s2"> MHz</span>
+<span class="s2">   α/2π = </span><span class="si">{</span><span class="n">H</span><span class="o">.</span><span class="n">anharm</span><span class="p">()</span><span class="si">:</span><span class="s2"> 6.0f</span><span class="si">}</span><span class="s2"> MHz</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+Transmon frequencies
+
+ ω01/2π =   5604 MHz
+   α/2π =     11 MHz
+
+</pre></div></div>
+</div>
+<p>Note that both the transition energy and the anharmonicity are read out in units of Megahertz (MHz.)</p>
+<p>We can plot the eigenstates (wavefunctions) of the transmon qubit using the commands below:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">ψ</span><span class="p">,</span> <span class="n">θ</span> <span class="o">=</span> <span class="n">H</span><span class="o">.</span><span class="n">psi_k</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="mi">101</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">ψ</span><span class="o">.</span><span class="n">real</span><span class="o">+</span><span class="n">ψ</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;|</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&gt;&quot;</span><span class="p">)</span> <span class="c1"># it&#39;s in either quadrature, but not both</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Junction phase θ (wrapped in the interval [-π, π])&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Re(ψ(θ))&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Level&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.legend.Legend at 0x1c1fdd969c8&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_20_1.svg" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_20_1.svg" /></div>
+</div>
+</section>
+<section id="Verifying-Orthonormality-of-the-Wavefunctions">
+<h2>Verifying Orthonormality of the Wavefunctions<a class="headerlink" href="#Verifying-Orthonormality-of-the-Wavefunctions" title="Link to this heading">#</a></h2>
+<p>Here, we can verify the orthonormality of the wavefunctions. Let’s first take the first two eigenstates and verify that their inner product is zero, thereby confirming orthogonality. Note that since the wavefunctions can be complex, we need to take the complex conjugate of <span class="math notranslate nohighlight">\(\Psi1\)</span>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">Psi0</span><span class="p">,</span> <span class="n">theta0</span> <span class="o">=</span> <span class="n">H</span><span class="o">.</span><span class="n">psi_k</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">Psi1</span><span class="p">,</span> <span class="n">theta1</span> <span class="o">=</span> <span class="n">H</span><span class="o">.</span><span class="n">psi_k</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Psi0</span><span class="p">,</span><span class="n">Psi1</span><span class="o">.</span><span class="n">conj</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(-2.2354805733859444e-09-3.4875983780408155e-17j)
+</pre></div></div>
+</div>
+<p>Indeed, we see that the dot product is essentially zero (within numerical precision.) Next, let’s take the inner product of the first eigenstate with itself, checking that we get an output of unity:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Psi0</span><span class="p">,</span> <span class="n">Psi0</span><span class="o">.</span><span class="n">conj</span><span class="p">()))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Psi1</span><span class="p">,</span> <span class="n">Psi1</span><span class="o">.</span><span class="n">conj</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(1+0j)
+(1+0j)
+</pre></div></div>
+</div>
+<p>Indeed we see that the dot products are essentially equal to unity, confirming that the states are appropriately normalized.</p>
+</section>
+</section>
+<section id="Additional-Analysis:-Charge-Dispersion,-Energy-Level-Differences,-Anharmonicity-and-Dephasing-Time-(T2)">
+<h1>Additional Analysis: Charge Dispersion, Energy Level Differences, Anharmonicity and Dephasing Time (T2)<a class="headerlink" href="#Additional-Analysis:-Charge-Dispersion,-Energy-Level-Differences,-Anharmonicity-and-Dephasing-Time-(T2)" title="Link to this heading">#</a></h1>
+<section id="Charge-Dispersion">
+<h2>Charge Dispersion<a class="headerlink" href="#Charge-Dispersion" title="Link to this heading">#</a></h2>
+<p>The peak-to-peak value of the charge dispersion for the mth energy level is given by the expression: <span class="math notranslate nohighlight">\(\epsilon_{m} = E_{m}(n_{g}=0.5) - E_{m}(n_{g}=0.0)\)</span>. We can plot <span class="math notranslate nohighlight">\(\epsilon_{m}/E_{01}\)</span> as a function of <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span> for the first few energy levels and reproduce the figure published in Phys. Rev. A 76, 042319 (2007) (Figure 4(a)).</p>
+<p>We can start by defining a value of charging energy and creating empty lists for <span class="math notranslate nohighlight">\(\epsilon_{0}\)</span> through <span class="math notranslate nohighlight">\(\epsilon_{4}\)</span>:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">E_c</span><span class="o">=</span><span class="mf">100.0</span> <span class="c1"># charging energy</span>
+<span class="n">epsilon0</span><span class="p">,</span> <span class="n">epsilon1</span><span class="p">,</span> <span class="n">epsilon2</span><span class="p">,</span> <span class="n">epsilon3</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>    <span class="c1"># charge dispersion for m=0 through m=4</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">140</span><span class="p">,</span><span class="mi">101</span><span class="p">)</span>           <span class="c1"># this this ratio of Ej/Ec which will go on the x-axis.</span>
+</pre></div>
+</div>
+</div>
+<p>Next, we simply evaluate the expression given above for <span class="math notranslate nohighlight">\(\epsilon_{m}\)</span> based on <span class="math notranslate nohighlight">\(E_{m}\)</span> and <span class="math notranslate nohighlight">\(E_{0}\)</span>. We use two separate Hamiltonians to do this; one evaluated at <span class="math notranslate nohighlight">\(n_{g}=0.5\)</span> and one evaluated at <span class="math notranslate nohighlight">\(n_{g}=0.0\)</span>. We also normalize by the transition energy between the lowest two states evaluated at the degeneracy point (<span class="math notranslate nohighlight">\(E_{01}\)</span>.) Finally, we populate the lists each <span class="math notranslate nohighlight">\(\epsilon_{m}\)</span>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
+    <span class="n">E_j</span> <span class="o">=</span> <span class="n">i</span><span class="o">*</span><span class="n">E_c</span>
+    <span class="n">H_zero</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="n">i</span><span class="o">*</span><span class="n">E_c</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="n">E_c</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">H_half</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="n">i</span><span class="o">*</span><span class="n">E_c</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="n">E_c</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+    <span class="n">H_norm</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="n">i</span><span class="o">*</span><span class="n">E_c</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="n">E_c</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">norm</span> <span class="o">=</span> <span class="n">H_norm</span><span class="o">.</span><span class="n">fij</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>                         <span class="c1"># normalization constant</span>
+
+    <span class="n">epsilon0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">H_half</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">H_zero</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span><span class="o">/</span><span class="n">norm</span><span class="p">)</span>
+    <span class="n">epsilon1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">H_half</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">H_zero</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="o">/</span><span class="n">norm</span><span class="p">)</span>
+    <span class="n">epsilon2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">H_half</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">H_zero</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">/</span><span class="n">norm</span><span class="p">)</span>
+    <span class="n">epsilon3</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">H_half</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">-</span> <span class="n">H_zero</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span><span class="o">/</span><span class="n">norm</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>We can plot these values to see the exponential decrease in the charge dispersion with increasing <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">epsilon0</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;m=0&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">epsilon1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;m=1&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">epsilon2</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;m=2&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">epsilon3</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;m=3&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;EJ/Ec&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Epsilon/E01&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Energy Level&quot;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.legend.Legend at 0x1c1fde55f48&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_34_1.svg" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_34_1.svg" /></div>
+</div>
+</section>
+<section id="Energy-Level-Differences">
+<h2>Energy Level Differences<a class="headerlink" href="#Energy-Level-Differences" title="Link to this heading">#</a></h2>
+<p>We can also evaluate the energy level difference (<span class="math notranslate nohighlight">\(E_{m0} = E_{m} - E_{0}\)</span>) evaluated at the degeneracy point (<span class="math notranslate nohighlight">\(n_{g}=0.5\)</span>) and compare to Fig. 4(b) of Phys. Rev. A 76, 042319 (2007). To do this, we just need to create empty lists for the energy levels (<span class="math notranslate nohighlight">\(E_{0}\)</span> through <span class="math notranslate nohighlight">\(E_{3}\)</span>) as well as the energy level differences (<span class="math notranslate nohighlight">\(E_{00}\)</span> through <span class="math notranslate nohighlight">\(E_{30}\)</span>.)</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">E00</span><span class="p">,</span> <span class="n">E10</span><span class="p">,</span> <span class="n">E20</span><span class="p">,</span> <span class="n">E30</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+<span class="n">E0</span><span class="p">,</span> <span class="n">E1</span><span class="p">,</span> <span class="n">E2</span><span class="p">,</span> <span class="n">E3</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+</pre></div>
+</div>
+</div>
+<p>Next, we’ll sweep over <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span> from 0 to 140 (using the variable x defined above) and at each point, we’ll construct the Hamiltonian and take the difference in eigenvalues evaluated at the degeneracy point <span class="math notranslate nohighlight">\(n_{g}=0.5\)</span>. We’ll also normalize the energy level differences by the charging energy to be consistent with Fig. 4(b) in the above reference:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
+    <span class="n">H</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="n">i</span><span class="o">*</span><span class="n">E_c</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="n">E_c</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">E0</span> <span class="o">=</span> <span class="n">H</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">E1</span> <span class="o">=</span> <span class="n">H</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">E2</span> <span class="o">=</span> <span class="n">H</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">E3</span> <span class="o">=</span> <span class="n">H</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">E00</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">E0</span> <span class="o">-</span> <span class="n">E0</span><span class="p">)</span><span class="o">/</span><span class="n">E_c</span><span class="p">)</span>
+    <span class="n">E10</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">E1</span> <span class="o">-</span> <span class="n">E0</span><span class="p">)</span><span class="o">/</span><span class="n">E_c</span><span class="p">)</span>
+    <span class="n">E20</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">E2</span> <span class="o">-</span> <span class="n">E0</span><span class="p">)</span><span class="o">/</span><span class="n">E_c</span><span class="p">)</span>
+    <span class="n">E30</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">E3</span> <span class="o">-</span> <span class="n">E0</span><span class="p">)</span><span class="o">/</span><span class="n">E_c</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>We can plot these results and see how the energy level differences increase with increasing <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span> ratio:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">E00</span><span class="p">,</span><span class="s1">&#39;k&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;m0&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">E10</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;m=1&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">E20</span><span class="p">,</span><span class="s1">&#39;g&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;m=2&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">E30</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;m=3&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Ej/Ec&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Em0/Ec&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Energy Levels&quot;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.legend.Legend at 0x1c1fdf815c8&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_41_1.svg" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_41_1.svg" /></div>
+</div>
+</section>
+<section id="Anharmonicity">
+<h2>Anharmonicity<a class="headerlink" href="#Anharmonicity" title="Link to this heading">#</a></h2>
+<p>We know that for the transmon qubit, having the Josephson Energy much larger than the charging energy (<span class="math notranslate nohighlight">\(E_{J} &gt;&gt; E_{C}\)</span>) results in a decrease in anharmonicity. The latter is critical for a functional qubit in which the energy difference between the lowest two states (<span class="math notranslate nohighlight">\(E_{01}\)</span>) is sufficiently different than the energy difference between the second and third states, <span class="math notranslate nohighlight">\(E_{12}\)</span>. The absolute anharmonicity is defined as <span class="math notranslate nohighlight">\(\alpha = E_{12} - E_{01}\)</span>, while the relative
+anharmonicity is defined as <span class="math notranslate nohighlight">\(\alpha_{r} = \alpha/E_{01}\)</span>.</p>
+<p>We can easily make a plot of the anharmonicity as a function of <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span> using the Hcpb class. Let’s have the ratio of <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span> (which we’ll call x) vary from 0 to 80, and then we’ll create empty lists for <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\alpha_r\)</span>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">80</span><span class="p">,</span><span class="mi">101</span><span class="p">)</span>   <span class="c1">#EJ/EC</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">alpha_r</span> <span class="o">=</span> <span class="p">[]</span>
+</pre></div>
+</div>
+</div>
+<p>Next, we’ll just sweep over x and at each value we’ll calculate both the absolute and relative anharmonicity.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
+    <span class="n">H_anharm</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="n">i</span><span class="o">*</span><span class="n">E_c</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="n">E_c</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">alpha</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">H_anharm</span><span class="o">.</span><span class="n">anharm</span><span class="p">())</span>
+    <span class="n">alpha_r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">H_anharm</span><span class="o">.</span><span class="n">anharm</span><span class="p">()</span><span class="o">/</span><span class="n">H_anharm</span><span class="o">.</span><span class="n">fij</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+WARNING:py.warnings:C:\Users\NICKLANZILLO\Anaconda3\envs\metal2\lib\site-packages\ipykernel_launcher.py:4: RuntimeWarning: divide by zero encountered in double_scalars
+  after removing the cwd from sys.path.
+
+</pre></div></div>
+</div>
+<p>Note we get a warning here because the relative anharmonicity blows up as Ej/Ec goes to zero. Then we can plot the results:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">131</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">alpha</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Ej/Ec&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;alpha&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">133</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">alpha_r</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Ej/Ec&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;alpha_r&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0, 0.5, &#39;alpha_r&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_48_1.svg" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_48_1.svg" /></div>
+</div>
+<p>Indeed we see that the anharmonicity decays with the inverse of <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span> for small values of <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span> before reaching a minimum just before <span class="math notranslate nohighlight">\(E_{J}/E_{C} \approx 20.0\)</span>, then changing sign and approaching zero as <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span> approaches infinity. This matches very closely to the results found in Figure 5 of Phys. Rev. A 76, 042319 (2007).</p>
+</section>
+<section id="Dephasing-Time-(T2)">
+<h2>Dephasing Time (T2)<a class="headerlink" href="#Dephasing-Time-(T2)" title="Link to this heading">#</a></h2>
+<p>We can estimate the qubit dephasing time (T2) due to charge noise by the following expression: <span class="math notranslate nohighlight">\(T_{2} = \frac{\hbar}{A\pi |\epsilon_{1}|}\)</span> where <span class="math notranslate nohighlight">\(A\)</span> is on the order of <span class="math notranslate nohighlight">\(1E-4\)</span> according to Phys. Rev. A 76, 042319 (2007). Since this is essentially just the inverse of the charge dispersion for <span class="math notranslate nohighlight">\(\epsilon_{1}\)</span>, we can easily calculate T2 as a function of <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span> with the following:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">80</span><span class="p">,</span><span class="mi">101</span><span class="p">)</span>     <span class="c1"># ratio of Ej/Ec, varying from 0 to 80</span>
+<span class="n">T2</span> <span class="o">=</span> <span class="p">[]</span>                       <span class="c1"># empty list for T2</span>
+</pre></div>
+</div>
+</div>
+<p>Next, we’ll just calculate the T2 time as a function of <span class="math notranslate nohighlight">\(E_{J}/E_C{}\)</span>, noting that the output of the Hcpb eigenvalue caluclation is in units of E/h ~ MHz (1E6 Hz). So our calculation simplifies to: <span class="math notranslate nohighlight">\(T_{2} = \frac{1.0}{2*(1E-4)*(1E6) |\epsilon_{1}|}\)</span> where <span class="math notranslate nohighlight">\(\epsilon_{1}\)</span> is the direct output of the Hcpb eigenvalue calculation:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">E_c</span> <span class="o">=</span> <span class="mf">1000.0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
+    <span class="n">H_half</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="n">i</span><span class="o">*</span><span class="n">E_c</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="n">E_c</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">H_zero</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="n">i</span><span class="o">*</span><span class="n">E_c</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="n">E_c</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">H_half</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">H_zero</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">T2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="p">(</span><span class="mf">2.0</span><span class="o">*</span><span class="p">(</span><span class="mf">1E-4</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mf">1E6</span><span class="p">)</span><span class="o">*</span><span class="n">eps</span><span class="p">)</span> <span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">T2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Ej/Ec&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;T2 (sec)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0, 0.5, &#39;T2 (sec)&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_54_1.svg" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_54_1.svg" /></div>
+</div>
+<p>Indeed, we see that the dephasing time increases exponentially with increasing <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span>, which is one of the critical features of the transmon qubit. By increasing the <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span> ratio, we reduce sensitivity to charge noise without sacrificing too much anharmonicity, resulting in greatly improved dephasing time. This plot matches very closely to Fig. 5(c) in Phys. Rev. A 76, 042319 (2007).</p>
+</section>
+</section>
+<section id="Qutip-simulation">
+<h1>Qutip simulation<a class="headerlink" href="#Qutip-simulation" title="Link to this heading">#</a></h1>
+<p>Wrapper around Qutip to output the diagonalized Hamiltonian truncated up to n levels of the transmon for modeling</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">H</span><span class="o">.</span><span class="n">h0_to_qutip</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+Quantum object: dims = [[6], [6]], shape = (6, 6), type = oper, isherm = True\begin{equation*}\left(\begin{array}{*{11}c}0.0 &amp; 0.0 &amp; 0.0 &amp; 0.0 &amp; 0.0 &amp; 0.0\\0.0 &amp; 3.243\times10^{+03} &amp; 0.0 &amp; 0.0 &amp; 0.0 &amp; 0.0\\0.0 &amp; 0.0 &amp; 6.379\times10^{+03} &amp; 0.0 &amp; 0.0 &amp; 0.0\\0.0 &amp; 0.0 &amp; 0.0 &amp; 9.400\times10^{+03} &amp; 0.0 &amp; 0.0\\0.0 &amp; 0.0 &amp; 0.0 &amp; 0.0 &amp; 1.230\times10^{+04} &amp; 0.0\\0.0 &amp; 0.0 &amp; 0.0 &amp; 0.0 &amp; 0.0 &amp; 1.507\times10^{+04}\\\end{array}\right)\end{equation*}</div></div>
+</div>
+</div>
+<p>Wrapper around Qutip to output the number operator (charge) for the Transmon Hamiltonian in the energy eigen-basis. Used for computing the coupling between other elements in the system.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">H</span><span class="o">.</span><span class="n">n_to_qutip</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+Quantum object: dims = [[6], [6]], shape = (6, 6), type = oper, isherm = True\begin{equation*}\left(\begin{array}{*{11}c}0.0 &amp; 1.424 &amp; 1.060\times10^{-15} &amp; 0.029 &amp; 4.509\times10^{-16} &amp; 0.001\\1.424 &amp; 0.0 &amp; 1.979 &amp; 1.296\times10^{-15} &amp; 0.060 &amp; 6.908\times10^{-16}\\1.004\times10^{-15} &amp; 1.979 &amp; 0.0 &amp; 2.379 &amp; 4.129\times10^{-15} &amp; 0.100\\0.029 &amp; 1.268\times10^{-15} &amp; 2.379 &amp; 0.0 &amp; 2.690 &amp; 3.835\times10^{-15}\\4.509\times10^{-16} &amp; 0.060 &amp; 4.129\times10^{-15} &amp; 2.690 &amp; 0.0 &amp; 2.936\\0.001 &amp; 6.908\times10^{-16} &amp; 0.100 &amp; 3.835\times10^{-15} &amp; 2.936 &amp; 0.0\\\end{array}\right)\end{equation*}</div></div>
+</div>
+</div>
+<p>We can use these matrices to perform some additional analysis. As an example, we can plot the fluctuation in the number of Cooper pairs as a function of <span class="math notranslate nohighlight">\(E_{J} / E_{C}\)</span> for the first three energy levels. This requires calculating the variance in the number of Cooper pairs, defined as: <span class="math notranslate nohighlight">\(\sqrt{&lt;n^2&gt; - &lt;n&gt;^2 }\)</span> where <span class="math notranslate nohighlight">\(n\)</span> is calculated for a given energy level m.</p>
+<p>So let’s first set our x-axis (representing <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span>) to run from 1 to 120 and we’ll create empty lists to represent the variances for the m=0, m=1, and m=2 states. We’ll also define a value of <span class="math notranslate nohighlight">\(E_{C}\)</span>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">120</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
+<span class="n">E_c</span><span class="o">=</span><span class="mf">350.0</span>
+<span class="n">var0</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">var1</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">var2</span> <span class="o">=</span> <span class="p">[]</span>
+</pre></div>
+</div>
+</div>
+<p>Next, we’ll define the Hamiltonian matrix and calculate both <span class="math notranslate nohighlight">\(&lt;n&gt;\)</span> and <span class="math notranslate nohighlight">\(&lt;n^2&gt;\)</span>. Then we’ll take the square root of the difference between the two for each value of <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span>. Lastly, these values get appended to the empty lists that we defined above:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
+    <span class="n">H</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="n">i</span><span class="o">*</span><span class="n">E_c</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="n">E_c</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">n_squared</span> <span class="o">=</span> <span class="n">H</span><span class="o">.</span><span class="n">n_to_qutip</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="o">*</span><span class="n">H</span><span class="o">.</span><span class="n">n_to_qutip</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">H</span><span class="o">.</span><span class="n">n_to_qutip</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+    <span class="n">fluc0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">n_squared</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])))</span>
+    <span class="n">fluc1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">n_squared</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])))</span>
+    <span class="n">fluc2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">n_squared</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">])))</span>
+    <span class="n">var0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fluc0</span><span class="p">)</span>
+    <span class="n">var1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fluc1</span><span class="p">)</span>
+    <span class="n">var2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fluc2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>We can plot these and check that the resulting curves match quite closely to those found in Fig. 6 of Koch et al. (2007) PRA:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">var0</span><span class="p">,</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;m=0&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">var1</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;m=1&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">var2</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;m=2&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Ej/Ec&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Variance&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Energy Levels&quot;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.legend.Legend at 0x1c1fe01f8c8&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_66_1.svg" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_66_1.svg" /></div>
+</div>
+<p>Physically, the above plot demonstrates that the variations in the number of Cooper pairs is on the order of 1-2 for gorund and first excited states of the CPB operated in the transmon regime.</p>
+<p>We can also investigate how the off-diagonal matrix elements of the CPB Hamiltonian evolve as a function of the <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span> ratio. Let’s create four empty lists (<span class="math notranslate nohighlight">\(m_{10}\)</span>, <span class="math notranslate nohighlight">\(m_{20}\)</span>, <span class="math notranslate nohighlight">\(m_{30}\)</span> and <span class="math notranslate nohighlight">\(m_{21}\)</span>) where <span class="math notranslate nohighlight">\(m_{ij} = &lt;i | n | j&gt;\)</span>. Then we can loop over the ratio of <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span> and at each value, we calculate the off-diagonal matrix element:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">m10</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">m20</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">m30</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">m21</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># For a given value of offset charge (ng, represented by x) we will calculate the CPB Hamiltonian using the previously assigned values of E_J and E_C. Then we calculate the eigenvalue for a given value of m.</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
+    <span class="n">H</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="n">i</span><span class="o">*</span><span class="n">E_c</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="n">E_c</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">m10</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">n_to_qutip</span><span class="p">(</span><span class="mi">6</span><span class="p">)[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">m20</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">n_to_qutip</span><span class="p">(</span><span class="mi">6</span><span class="p">)[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">m30</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">n_to_qutip</span><span class="p">(</span><span class="mi">6</span><span class="p">)[</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">m21</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">n_to_qutip</span><span class="p">(</span><span class="mi">6</span><span class="p">)[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<p>Plotting these off-diagonal matrix elements is then straightforward:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">m10</span><span class="p">,</span><span class="s1">&#39;k&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;&lt;1|n|0&gt;&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">m20</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;&lt;2|n|0&gt;&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">m30</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;&lt;3|n|0&gt;&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">m21</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;&lt;2|n|1&gt;&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Ej/Ec&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;&lt;i|n|j&gt;&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Energy Levels&quot;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.legend.Legend at 0x1c1fe351ec8&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_71_1.svg" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_71_1.svg" /></div>
+</div>
+<p>We see that the above plot closely matches Fig. 7 of Koch et al. (2007) PRA. Physically, we see that the coupling between adjacent transmon states (<span class="math notranslate nohighlight">\(&lt;1|n|0&gt;\)</span> and <span class="math notranslate nohighlight">\(&lt;2|n|1&gt;\)</span>) is the only significant coupling in the <span class="math notranslate nohighlight">\(E_{J} &gt;&gt; E_{C}\)</span> regime. The coupling between non-adjacent states (like m=0 and m=2) is essentially zero at all values of <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span>.</p>
+</section>
+<section id="Experimental">
+<h1>Experimental<a class="headerlink" href="#Experimental" title="Link to this heading">#</a></h1>
+<p>Let’s use the “params_from_spectrum” function to calculate the target Ej and Ec values for a desired transmon frequency and anharmonicity. We’ll use values of Ej=13971.3 MHz and Ec=295.2 MHz.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># 13971.3, Ec=295.2</span>
+<span class="n">ω</span><span class="p">,</span> <span class="n">α</span> <span class="o">=</span> <span class="mi">5431</span><span class="p">,</span> <span class="o">-</span><span class="mi">341</span>
+<span class="n">EjEc</span> <span class="o">=</span> <span class="n">H</span><span class="o">.</span><span class="n">params_from_spectrum</span><span class="p">(</span><span class="n">ω</span><span class="p">,</span> <span class="n">α</span><span class="p">)</span> <span class="c1"># set self.Ej, Cj</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">EjEc</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;transmon frequency:&quot;</span><span class="p">,</span> <span class="n">H</span><span class="o">.</span><span class="n">fij</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;anharmonicity:&quot;</span><span class="p">,</span> <span class="n">H</span><span class="o">.</span><span class="n">anharm</span><span class="p">())</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[13952.97584426   295.61920264]
+transmon frequency: 5431.003285965414 anharmonicity: -340.9980226844036
+</pre></div></div>
+</div>
+<p>We can also calculate the value of Ej given the value of Ec and the transmon frequency:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">Ej</span> <span class="o">=</span> <span class="n">H</span><span class="o">.</span><span class="n">params_from_freq_fixEC</span><span class="p">(</span><span class="n">ω</span><span class="p">,</span> <span class="mf">295.17</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Ej:&quot;</span><span class="p">,</span> <span class="n">Ej</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Ej: 14424.680512350775
+</pre></div></div>
+</div>
+<p>We see that this is close to the starting vaue of 13971.3 MHz that we began with.</p>
+</section>
+<section id="New-section-on-integrating-sc_qubits.">
+<h1>New section on integrating sc_qubits.<a class="headerlink" href="#New-section-on-integrating-sc_qubits." title="Link to this heading">#</a></h1>
+<p>This section is in development.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">scqubits</span> <span class="k">as</span> <span class="nn">scq</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">qubit</span> <span class="o">=</span> <span class="n">scq</span><span class="o">.</span><span class="n">Transmon</span><span class="p">(</span>
+    <span class="n">EJ</span><span class="o">=</span><span class="mf">13.97124102543</span><span class="p">,</span>
+    <span class="n">EC</span><span class="o">=</span><span class="mf">0.295179</span><span class="p">,</span>
+    <span class="n">ng</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
+    <span class="n">ncut</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+    <span class="n">truncated_dim</span><span class="o">=</span><span class="mi">4</span>     <span class="c1"># after diagonalization, we will keep 3 levels</span>
+<span class="p">)</span>
+<span class="n">evals</span> <span class="o">=</span> <span class="n">qubit</span><span class="o">.</span><span class="n">eigenvals</span><span class="p">(</span><span class="n">evals_count</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;freq = </span><span class="si">{</span><span class="p">(</span><span class="n">evals</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">evals</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="w"> </span><span class="mi">1000</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> MHz&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;alpha = </span><span class="si">{</span><span class="p">((</span><span class="n">evals</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">evals</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="n">evals</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">evals</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span><span class="o">*</span><span class="w"> </span><span class="mi">1000</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> MHz&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">qubit</span><span class="o">.</span><span class="n">plot_n_wavefunction</span><span class="p">()</span>
+<span class="n">qubit</span><span class="o">.</span><span class="n">plot_phi_wavefunction</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;real&#39;</span><span class="p">)</span>
+<span class="n">qubit</span><span class="o">.</span><span class="n">hamiltonian</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">ng_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">220</span><span class="p">)</span>
+<span class="n">qubit</span><span class="o">.</span><span class="n">plot_evals_vs_paramvals</span><span class="p">(</span><span class="s1">&#39;ng&#39;</span><span class="p">,</span> <span class="n">ng_list</span><span class="p">,</span> <span class="n">evals_count</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">subtract_ground</span><span class="o">=</span><span class="kc">False</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Transmon-and-the-Oscillator">
+<h1>Transmon and the Oscillator<a class="headerlink" href="#Transmon-and-the-Oscillator" title="Link to this heading">#</a></h1>
+<p>This section is currently in development.</p>
+</section>
+<h3>For more information, review the <b>Introduction to Quantum Computing and Quantum Hardware</b> lectures below</h3>
+<div style="border:solid 1 px #990000;">
+<table>
+<tr><td><ul><li>Superconducting Qubits I: Quantizing a Harmonic Oscillator, Josephson Junctions Part 1</ul></td>
+<td width="15%"><a href="https://www.youtube.com/watch?v=eZJjQGu85Ps&list=PLOFEBzvs-VvrXTMy5Y2IqmSaUjfnhvBHR">Lecture Video</a></td>
+<td width="15%"><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/lectures/introqcqh-lecture-notes-6.pdf?raw=true">Lecture Notes</a></td>
+<td width="5%"><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/labs/introqcqh-lab-6.zip?raw=true">Lab</a></td></tr>
+<tr><td><ul><li>Superconducting Qubits I: Quantizing a Harmonic Oscillator, Josephson Junctions Part 2</ul></td>
+<td><a href="https://www.youtube.com/watch?v=SDiiFOham6Y&list=PLOFEBzvs-VvrXTMy5Y2IqmSaUjfnhvBHR">Lecture Video</a></td>
+<td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/lectures/introqcqh-lecture-notes-6.pdf?raw=true">Lecture Notes</a></td>
+<td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/labs/introqcqh-lab-6.zip?raw=true">Lab</a></td></tr>
+<tr><td><ul><li>Superconducting Qubits I: Quantizing a Harmonic Oscillator, Josephson Junctions Part 3</ul></td>
+<td><a href="https://www.youtube.com/watch?v=hGBAz63NIH8&list=PLOFEBzvs-VvrXTMy5Y2IqmSaUjfnhvBHR">Lecture Video</a></td>
+<td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/lectures/introqcqh-lecture-notes-6.pdf?raw=true">Lecture Notes</a></td>
+<td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/labs/introqcqh-lab-6.zip?raw=true">Lab</a></td></tr>
+<tr><td><ul><li>Superconducting Qubits II: Circuit Quantum Electrodynamics, Readout and Calibration Methods Part 1</ul></td>
+<td><a href="https://www.youtube.com/watch?v=dmYnfGo-8eM&list=PLOFEBzvs-VvrXTMy5Y2IqmSaUjfnhvBHR">Lecture Video</a></td>
+<td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/lectures/introqcqh-lecture-notes-7.pdf?raw=true">Lecture Notes</a></td>
+<td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/labs/introqcqh-lab-7.zip?raw=true">Lab</a></td></tr>
+<tr><td><ul><li>Superconducting Qubits II: Circuit Quantum Electrodynamics, Readout and Calibration Methods Part 2</ul></td>
+<td><a href="https://www.youtube.com/watch?v=jUPAeOoZpEU&list=PLOFEBzvs-VvrXTMy5Y2IqmSaUjfnhvBHR">Lecture Video</a></td>
+<td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/lectures/introqcqh-lecture-notes-7.pdf?raw=true">Lecture Notes</a></td>
+<td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/labs/introqcqh-lab-7.zip?raw=true">Lab</a></td></tr>
+<tr><td><ul><li>Superconducting Qubits II: Circuit Quantum Electrodynamics, Readout and Calibration Methods Part 3</ul></td>
+<td><a href="https://www.youtube.com/watch?v=_IpCwMvc0dA&list=PLOFEBzvs-VvrXTMy5Y2IqmSaUjfnhvBHR">Lecture Video</a></td>
+<td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/lectures/introqcqh-lecture-notes-7.pdf?raw=true">Lecture Notes</a></td>
+<td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/labs/introqcqh-lab-7.zip?raw=true">Lab</a></td></tr></table>
+</div>
+        </article>
+      </div>
+      <footer>
+        <div class="related-pages">
+          <a class="next-page" href="../quick-topics/JJ-Demo-Notebook.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Josephson Junction QComponent Demo Notebook</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="4.33-Transmon-analytics.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Transmon Analytics</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2019, Qiskit Development Team
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on 2023/12/28</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Modeling transmon qubit Cooper-pair box Hamiltonian in the charge basis</a><ul>
+<li><a class="reference internal" href="#Hcpb-class">Hcpb class</a><ul>
+<li><a class="reference internal" href="#Let’s-model-a-transmon">Let’s model a transmon</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Energy-levels">Energy levels</a></li>
+<li><a class="reference internal" href="#Comparing-with-the-Analytic-Expressions-for-Energy">Comparing with the Analytic Expressions for Energy</a></li>
+<li><a class="reference internal" href="#Wavefunctions">Wavefunctions</a></li>
+<li><a class="reference internal" href="#Verifying-Orthonormality-of-the-Wavefunctions">Verifying Orthonormality of the Wavefunctions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Additional-Analysis:-Charge-Dispersion,-Energy-Level-Differences,-Anharmonicity-and-Dephasing-Time-(T2)">Additional Analysis: Charge Dispersion, Energy Level Differences, Anharmonicity and Dephasing Time (T2)</a><ul>
+<li><a class="reference internal" href="#Charge-Dispersion">Charge Dispersion</a></li>
+<li><a class="reference internal" href="#Energy-Level-Differences">Energy Level Differences</a></li>
+<li><a class="reference internal" href="#Anharmonicity">Anharmonicity</a></li>
+<li><a class="reference internal" href="#Dephasing-Time-(T2)">Dephasing Time (T2)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Qutip-simulation">Qutip simulation</a></li>
+<li><a class="reference internal" href="#Experimental">Experimental</a></li>
+<li><a class="reference internal" href="#New-section-on-integrating-sc_qubits.">New section on integrating sc_qubits.</a></li>
+<li><a class="reference internal" href="#Transmon-and-the-Oscillator">Transmon and the Oscillator</a></li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../../_static/documentation_options.js?v=59fadc99"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "document", "processHtmlClass": "math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </body>
+</html>

@@ -1,0 +1,8 @@
+﻿
+
+OpenToGround.parse_options
+================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: OpenToGround.parse_options

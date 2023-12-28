@@ -1,0 +1,8 @@
+﻿
+
+RouteAnchors.assign_direction_to_anchor
+=============================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteAnchors.assign_direction_to_anchor

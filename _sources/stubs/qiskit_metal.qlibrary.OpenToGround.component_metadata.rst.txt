@@ -1,0 +1,8 @@
+﻿
+
+OpenToGround.component_metadata
+=====================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: OpenToGround.component_metadata

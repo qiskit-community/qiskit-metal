@@ -1,0 +1,8 @@
+﻿
+
+Cap3Interdigital.to_script
+================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: Cap3Interdigital.to_script

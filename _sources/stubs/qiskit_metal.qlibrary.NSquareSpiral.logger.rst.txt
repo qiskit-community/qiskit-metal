@@ -1,0 +1,8 @@
+﻿
+
+NSquareSpiral.logger
+==========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: NSquareSpiral.logger

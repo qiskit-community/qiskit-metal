@@ -1,0 +1,8 @@
+﻿
+
+TransmonCrossFL.get_template_options
+==========================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonCrossFL.get_template_options

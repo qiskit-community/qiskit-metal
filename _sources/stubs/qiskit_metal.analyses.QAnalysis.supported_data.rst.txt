@@ -1,0 +1,8 @@
+﻿
+
+QAnalysis.supported_data
+==============================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. autoproperty:: QAnalysis.supported_data

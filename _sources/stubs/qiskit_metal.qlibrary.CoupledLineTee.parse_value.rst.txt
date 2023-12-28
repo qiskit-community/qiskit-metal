@@ -1,0 +1,8 @@
+﻿
+
+CoupledLineTee.parse_value
+================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: CoupledLineTee.parse_value

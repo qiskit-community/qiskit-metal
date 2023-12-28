@@ -1,0 +1,8 @@
+﻿
+
+Cap3Interdigital.pin_names
+================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: Cap3Interdigital.pin_names

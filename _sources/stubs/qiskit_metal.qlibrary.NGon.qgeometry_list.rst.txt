@@ -1,0 +1,8 @@
+﻿
+
+NGon.qgeometry_list
+=========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: NGon.qgeometry_list

@@ -1,0 +1,8 @@
+﻿
+
+RectangleHollow.qgeometry_plot
+====================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RectangleHollow.qgeometry_plot

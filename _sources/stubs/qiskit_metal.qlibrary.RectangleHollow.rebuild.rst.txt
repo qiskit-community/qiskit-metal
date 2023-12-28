@@ -1,0 +1,8 @@
+﻿
+
+RectangleHollow.rebuild
+=============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RectangleHollow.rebuild

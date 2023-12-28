@@ -1,0 +1,8 @@
+﻿
+
+RouteAnchors.delete
+=========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteAnchors.delete

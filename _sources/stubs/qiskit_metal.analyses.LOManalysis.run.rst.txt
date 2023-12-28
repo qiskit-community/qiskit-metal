@@ -1,0 +1,8 @@
+﻿
+
+LOManalysis.run
+=====================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: LOManalysis.run

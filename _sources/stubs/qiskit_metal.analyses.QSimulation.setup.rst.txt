@@ -1,0 +1,8 @@
+﻿
+
+QSimulation.setup
+=======================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. autoproperty:: QSimulation.setup

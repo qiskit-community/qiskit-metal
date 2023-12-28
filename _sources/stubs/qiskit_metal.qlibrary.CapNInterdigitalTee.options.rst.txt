@@ -1,0 +1,8 @@
+﻿
+
+CapNInterdigitalTee.options
+=================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: CapNInterdigitalTee.options

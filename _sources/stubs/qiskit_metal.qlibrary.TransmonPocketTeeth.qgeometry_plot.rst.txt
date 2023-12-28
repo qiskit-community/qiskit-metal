@@ -1,0 +1,8 @@
+﻿
+
+TransmonPocketTeeth.qgeometry_plot
+========================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonPocketTeeth.qgeometry_plot

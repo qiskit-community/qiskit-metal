@@ -1,0 +1,8 @@
+﻿
+
+QSimulation.select_renderer
+=================================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: QSimulation.select_renderer

@@ -1,0 +1,8 @@
+﻿
+
+NSquareSpiral.class_name
+==============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: NSquareSpiral.class_name

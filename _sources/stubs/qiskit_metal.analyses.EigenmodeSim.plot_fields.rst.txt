@@ -1,0 +1,8 @@
+﻿
+
+EigenmodeSim.plot_fields
+==============================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: EigenmodeSim.plot_fields

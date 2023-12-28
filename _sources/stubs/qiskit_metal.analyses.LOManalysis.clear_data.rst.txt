@@ -1,0 +1,8 @@
+﻿
+
+LOManalysis.clear_data
+============================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: LOManalysis.clear_data

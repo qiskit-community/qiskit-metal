@@ -1,0 +1,8 @@
+﻿
+
+ShortToGround.to_script
+=============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: ShortToGround.to_script

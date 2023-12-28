@@ -1,0 +1,8 @@
+﻿
+
+TransmonPocketTeeth.get_pin
+=================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonPocketTeeth.get_pin

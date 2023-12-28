@@ -1,0 +1,8 @@
+﻿
+
+CircleRaster.pin_names
+============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: CircleRaster.pin_names

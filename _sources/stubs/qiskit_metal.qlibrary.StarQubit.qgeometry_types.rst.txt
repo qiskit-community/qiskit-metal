@@ -1,0 +1,8 @@
+﻿
+
+StarQubit.qgeometry_types
+===============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: StarQubit.qgeometry_types

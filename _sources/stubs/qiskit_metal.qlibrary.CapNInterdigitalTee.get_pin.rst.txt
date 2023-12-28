@@ -1,0 +1,8 @@
+﻿
+
+CapNInterdigitalTee.get_pin
+=================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: CapNInterdigitalTee.get_pin

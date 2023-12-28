@@ -1,0 +1,8 @@
+﻿
+
+CoupledLineTee.add_dependency
+===================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: CoupledLineTee.add_dependency

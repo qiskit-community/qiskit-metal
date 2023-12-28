@@ -1,0 +1,8 @@
+﻿
+
+TransmonPocketTeeth.to_script
+===================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonPocketTeeth.to_script

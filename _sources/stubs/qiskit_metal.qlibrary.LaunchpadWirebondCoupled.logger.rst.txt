@@ -1,0 +1,8 @@
+﻿
+
+LaunchpadWirebondCoupled.logger
+=====================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: LaunchpadWirebondCoupled.logger

@@ -1,0 +1,8 @@
+﻿
+
+RectangleHollow.get_template_options
+==========================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RectangleHollow.get_template_options

@@ -1,0 +1,8 @@
+﻿
+
+RouteMixed.del_colinear_points
+====================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteMixed.del_colinear_points

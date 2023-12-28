@@ -1,0 +1,8 @@
+﻿
+
+jj_manhattan.options
+==========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: jj_manhattan.options

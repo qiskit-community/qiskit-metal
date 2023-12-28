@@ -1,0 +1,8 @@
+﻿
+
+StarQubit.to_script
+=========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: StarQubit.to_script

@@ -1,0 +1,8 @@
+﻿
+
+TransmonInterdigitated.make
+=================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonInterdigitated.make

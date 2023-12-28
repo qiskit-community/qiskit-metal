@@ -1,0 +1,8 @@
+﻿
+
+Hcpb.n_to_qutip
+=====================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: Hcpb.n_to_qutip

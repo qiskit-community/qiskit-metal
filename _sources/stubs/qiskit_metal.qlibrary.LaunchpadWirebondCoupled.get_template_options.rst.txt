@@ -1,0 +1,8 @@
+﻿
+
+LaunchpadWirebondCoupled.get_template_options
+===================================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: LaunchpadWirebondCoupled.get_template_options

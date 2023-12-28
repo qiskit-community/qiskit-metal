@@ -1,0 +1,8 @@
+﻿
+
+StarQubit.add_dependency
+==============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: StarQubit.add_dependency

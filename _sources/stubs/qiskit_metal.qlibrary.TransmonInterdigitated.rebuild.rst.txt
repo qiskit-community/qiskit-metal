@@ -1,0 +1,8 @@
+﻿
+
+TransmonInterdigitated.rebuild
+====================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonInterdigitated.rebuild

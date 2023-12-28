@@ -1,0 +1,8 @@
+﻿
+
+RouteAnchors.get_unit_vectors
+===================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteAnchors.get_unit_vectors

@@ -1,0 +1,8 @@
+﻿
+
+TunableCoupler01.class_name
+=================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: TunableCoupler01.class_name

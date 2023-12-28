@@ -1,0 +1,8 @@
+﻿
+
+RouteMeander.connect_meandered
+====================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteMeander.connect_meandered

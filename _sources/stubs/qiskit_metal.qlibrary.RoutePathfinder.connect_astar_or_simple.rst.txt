@@ -1,0 +1,8 @@
+﻿
+
+RoutePathfinder.connect_astar_or_simple
+=============================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RoutePathfinder.connect_astar_or_simple

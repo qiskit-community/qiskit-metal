@@ -1,0 +1,8 @@
+﻿
+
+RouteMeander.length
+=========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: RouteMeander.length

@@ -1,0 +1,8 @@
+﻿
+
+NSquareSpiral.component_metadata
+======================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: NSquareSpiral.component_metadata

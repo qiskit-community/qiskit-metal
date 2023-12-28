@@ -1,0 +1,8 @@
+﻿
+
+LOManalysis.data_labels
+=============================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. autoattribute:: LOManalysis.data_labels

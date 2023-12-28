@@ -1,0 +1,8 @@
+﻿
+
+TransmonPocketCL.add_qgeometry
+====================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonPocketCL.add_qgeometry

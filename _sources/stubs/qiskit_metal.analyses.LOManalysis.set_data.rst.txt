@@ -1,0 +1,8 @@
+﻿
+
+LOManalysis.set_data
+==========================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: LOManalysis.set_data

@@ -1,0 +1,8 @@
+﻿
+
+TransmonPocket6.make_connection_pads
+==========================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonPocket6.make_connection_pads

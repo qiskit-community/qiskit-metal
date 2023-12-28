@@ -1,0 +1,8 @@
+﻿
+
+RoutePathfinder.rebuild
+=============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RoutePathfinder.rebuild

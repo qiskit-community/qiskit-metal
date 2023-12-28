@@ -1,0 +1,8 @@
+﻿
+
+TransmonPocketCL.get_pin
+==============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonPocketCL.get_pin

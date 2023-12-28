@@ -1,0 +1,8 @@
+﻿
+
+RouteMixed.set_lead_extension
+===================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteMixed.set_lead_extension

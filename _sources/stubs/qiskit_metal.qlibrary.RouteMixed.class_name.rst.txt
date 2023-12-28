@@ -1,0 +1,8 @@
+﻿
+
+RouteMixed.class_name
+===========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: RouteMixed.class_name

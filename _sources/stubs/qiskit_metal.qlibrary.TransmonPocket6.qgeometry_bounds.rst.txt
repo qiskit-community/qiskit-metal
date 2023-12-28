@@ -1,0 +1,8 @@
+﻿
+
+TransmonPocket6.qgeometry_bounds
+======================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonPocket6.qgeometry_bounds

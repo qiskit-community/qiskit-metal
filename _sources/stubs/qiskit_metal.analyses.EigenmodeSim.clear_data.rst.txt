@@ -1,0 +1,8 @@
+﻿
+
+EigenmodeSim.clear_data
+=============================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: EigenmodeSim.clear_data

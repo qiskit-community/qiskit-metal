@@ -1,0 +1,8 @@
+﻿
+
+CoupledLineTee.get_template_options
+=========================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: CoupledLineTee.get_template_options

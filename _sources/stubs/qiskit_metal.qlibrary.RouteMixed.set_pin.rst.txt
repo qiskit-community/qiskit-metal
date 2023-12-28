@@ -1,0 +1,8 @@
+﻿
+
+RouteMixed.set_pin
+========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteMixed.set_pin

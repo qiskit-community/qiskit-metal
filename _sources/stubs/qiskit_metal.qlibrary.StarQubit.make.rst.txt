@@ -1,0 +1,8 @@
+﻿
+
+StarQubit.make
+====================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: StarQubit.make

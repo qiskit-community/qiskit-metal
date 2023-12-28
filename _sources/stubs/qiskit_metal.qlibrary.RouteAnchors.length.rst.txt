@@ -1,0 +1,8 @@
+﻿
+
+RouteAnchors.length
+=========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: RouteAnchors.length

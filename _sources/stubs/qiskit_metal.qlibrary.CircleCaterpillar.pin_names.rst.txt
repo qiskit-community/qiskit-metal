@@ -1,0 +1,8 @@
+﻿
+
+CircleCaterpillar.pin_names
+=================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: CircleCaterpillar.pin_names

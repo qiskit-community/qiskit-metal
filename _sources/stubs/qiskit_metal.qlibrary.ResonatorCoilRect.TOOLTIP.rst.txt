@@ -1,0 +1,8 @@
+﻿
+
+ResonatorCoilRect.TOOLTIP
+===============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: ResonatorCoilRect.TOOLTIP

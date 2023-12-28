@@ -1,0 +1,8 @@
+﻿
+
+CapNInterdigitalTee.add_pin
+=================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: CapNInterdigitalTee.add_pin

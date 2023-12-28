@@ -1,0 +1,8 @@
+﻿
+
+ShortToGround.component_metadata
+======================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: ShortToGround.component_metadata

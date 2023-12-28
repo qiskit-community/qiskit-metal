@@ -1,0 +1,8 @@
+﻿
+
+NSquareSpiral.make
+========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: NSquareSpiral.make

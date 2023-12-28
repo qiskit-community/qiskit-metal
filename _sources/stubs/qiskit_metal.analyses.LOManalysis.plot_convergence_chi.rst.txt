@@ -1,0 +1,8 @@
+﻿
+
+LOManalysis.plot_convergence_chi
+======================================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: LOManalysis.plot_convergence_chi

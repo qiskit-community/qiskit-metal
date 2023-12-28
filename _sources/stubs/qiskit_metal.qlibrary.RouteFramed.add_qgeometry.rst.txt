@@ -1,0 +1,8 @@
+﻿
+
+RouteFramed.add_qgeometry
+===============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteFramed.add_qgeometry

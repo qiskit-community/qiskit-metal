@@ -1,0 +1,8 @@
+﻿
+
+RouteFramed.class_name
+============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: RouteFramed.class_name

@@ -1,0 +1,8 @@
+﻿
+
+TransmonConcentric.component_metadata
+===========================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: TransmonConcentric.component_metadata

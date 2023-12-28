@@ -1,0 +1,8 @@
+﻿
+
+TransmonCrossFL.add_dependency
+====================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonCrossFL.add_dependency

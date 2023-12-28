@@ -1,0 +1,8 @@
+﻿
+
+RouteFramed.make
+======================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteFramed.make

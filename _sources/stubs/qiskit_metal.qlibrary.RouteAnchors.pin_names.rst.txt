@@ -1,0 +1,8 @@
+﻿
+
+RouteAnchors.pin_names
+============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: RouteAnchors.pin_names

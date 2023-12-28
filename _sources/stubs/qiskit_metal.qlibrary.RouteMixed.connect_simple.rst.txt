@@ -1,0 +1,8 @@
+﻿
+
+RouteMixed.connect_simple
+===============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteMixed.connect_simple

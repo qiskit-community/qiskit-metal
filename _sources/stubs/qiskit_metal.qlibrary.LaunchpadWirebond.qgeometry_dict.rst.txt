@@ -1,0 +1,8 @@
+﻿
+
+LaunchpadWirebond.qgeometry_dict
+======================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: LaunchpadWirebond.qgeometry_dict

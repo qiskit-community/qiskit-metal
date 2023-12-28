@@ -1,0 +1,8 @@
+﻿
+
+CoupledLineTee.pin_names
+==============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: CoupledLineTee.pin_names

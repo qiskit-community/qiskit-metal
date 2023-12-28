@@ -1,0 +1,8 @@
+﻿
+
+SQUID_LOOP.pin_names
+==========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: SQUID_LOOP.pin_names

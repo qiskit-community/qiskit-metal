@@ -1,0 +1,45 @@
+﻿
+
+QGDSRenderer
+===================================
+
+.. currentmodule:: qiskit_metal.renderers
+
+.. autoclass:: QGDSRenderer
+   :no-members:
+   :no-inherited-members:
+   :no-special-members:
+
+
+   
+   .. rubric:: Attributes
+      
+   .. autoattribute:: QGDSRenderer.default_options
+   .. autoattribute:: QGDSRenderer.design
+   .. autoattribute:: QGDSRenderer.element_extensions
+   .. autoattribute:: QGDSRenderer.element_table_data
+   .. autoattribute:: QGDSRenderer.logger
+   .. autoattribute:: QGDSRenderer.name
+   .. autoattribute:: QGDSRenderer.options
+   
+
+
+
+   
+   .. rubric:: Methods
+   
+   .. automethod:: QGDSRenderer.add_table_data_to_QDesign
+   .. automethod:: QGDSRenderer.export_to_gds
+   .. automethod:: QGDSRenderer.get_renderer
+   .. automethod:: QGDSRenderer.get_template_options
+   .. automethod:: QGDSRenderer.get_unique_component_ids
+   .. automethod:: QGDSRenderer.load
+   .. automethod:: QGDSRenderer.new_gds_library
+   .. automethod:: QGDSRenderer.parse_value
+   .. automethod:: QGDSRenderer.populate_element_extensions
+   .. automethod:: QGDSRenderer.render_design
+   .. automethod:: QGDSRenderer.start
+   .. automethod:: QGDSRenderer.stop
+   .. automethod:: QGDSRenderer.update_options
+
+   

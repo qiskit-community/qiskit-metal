@@ -1,0 +1,8 @@
+﻿
+
+ResonatorCoilRect.make
+============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: ResonatorCoilRect.make

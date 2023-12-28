@@ -1,0 +1,8 @@
+﻿
+
+QSimulation.supported_data
+================================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. autoproperty:: QSimulation.supported_data

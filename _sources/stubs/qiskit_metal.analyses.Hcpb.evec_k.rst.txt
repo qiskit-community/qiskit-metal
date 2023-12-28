@@ -1,0 +1,8 @@
+﻿
+
+Hcpb.evec_k
+=================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: Hcpb.evec_k

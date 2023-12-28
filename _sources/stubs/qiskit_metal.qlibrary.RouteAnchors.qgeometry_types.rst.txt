@@ -1,0 +1,8 @@
+﻿
+
+RouteAnchors.qgeometry_types
+==================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: RouteAnchors.qgeometry_types

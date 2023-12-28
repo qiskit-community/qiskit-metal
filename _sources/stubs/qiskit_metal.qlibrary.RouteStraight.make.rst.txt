@@ -1,0 +1,8 @@
+﻿
+
+RouteStraight.make
+========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteStraight.make

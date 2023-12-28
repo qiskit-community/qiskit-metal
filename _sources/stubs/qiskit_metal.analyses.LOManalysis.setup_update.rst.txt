@@ -1,0 +1,8 @@
+﻿
+
+LOManalysis.setup_update
+==============================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: LOManalysis.setup_update

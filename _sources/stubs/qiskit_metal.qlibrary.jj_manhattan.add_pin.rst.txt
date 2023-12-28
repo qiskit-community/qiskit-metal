@@ -1,0 +1,8 @@
+﻿
+
+jj_manhattan.add_pin
+==========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: jj_manhattan.add_pin

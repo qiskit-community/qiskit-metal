@@ -1,0 +1,8 @@
+﻿
+
+RoutePathfinder.del_colinear_points
+=========================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RoutePathfinder.del_colinear_points

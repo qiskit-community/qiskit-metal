@@ -1,0 +1,8 @@
+﻿
+
+RouteStraight.get_template_options
+========================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteStraight.get_template_options

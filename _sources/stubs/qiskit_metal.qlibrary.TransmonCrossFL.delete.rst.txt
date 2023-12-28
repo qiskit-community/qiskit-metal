@@ -1,0 +1,8 @@
+﻿
+
+TransmonCrossFL.delete
+============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonCrossFL.delete

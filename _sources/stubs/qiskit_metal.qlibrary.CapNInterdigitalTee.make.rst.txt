@@ -1,0 +1,8 @@
+﻿
+
+CapNInterdigitalTee.make
+==============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: CapNInterdigitalTee.make

@@ -1,0 +1,8 @@
+﻿
+
+RectangleHollow.add_pin
+=============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RectangleHollow.add_pin

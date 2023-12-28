@@ -1,0 +1,8 @@
+﻿
+
+LineTee.name
+==================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: LineTee.name

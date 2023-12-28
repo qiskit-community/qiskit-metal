@@ -1,0 +1,8 @@
+﻿
+
+RouteStraight.parse_options
+=================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteStraight.parse_options

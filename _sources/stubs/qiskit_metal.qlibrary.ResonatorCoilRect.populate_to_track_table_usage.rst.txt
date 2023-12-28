@@ -1,0 +1,8 @@
+﻿
+
+ResonatorCoilRect.populate_to_track_table_usage
+=====================================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: ResonatorCoilRect.populate_to_track_table_usage

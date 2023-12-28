@@ -1,0 +1,8 @@
+﻿
+
+RouteAnchors.component_metadata
+=====================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: RouteAnchors.component_metadata

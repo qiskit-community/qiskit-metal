@@ -1,0 +1,8 @@
+﻿
+
+ShortToGround.make
+========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: ShortToGround.make

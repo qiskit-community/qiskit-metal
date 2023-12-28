@@ -1,0 +1,8 @@
+﻿
+
+TransmonPocket.get_template_options
+=========================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonPocket.get_template_options

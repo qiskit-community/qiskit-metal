@@ -1,0 +1,8 @@
+﻿
+
+RoutePathfinder.pin_names
+===============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: RoutePathfinder.pin_names

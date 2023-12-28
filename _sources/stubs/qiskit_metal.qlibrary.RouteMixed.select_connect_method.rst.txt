@@ -1,0 +1,8 @@
+﻿
+
+RouteMixed.select_connect_method
+======================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteMixed.select_connect_method

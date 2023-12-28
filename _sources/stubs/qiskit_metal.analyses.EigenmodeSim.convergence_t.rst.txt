@@ -1,0 +1,8 @@
+﻿
+
+EigenmodeSim.convergence_t
+================================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. autoproperty:: EigenmodeSim.convergence_t

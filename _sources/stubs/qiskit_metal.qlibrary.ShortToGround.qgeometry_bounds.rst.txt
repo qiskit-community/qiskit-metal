@@ -1,0 +1,8 @@
+﻿
+
+ShortToGround.qgeometry_bounds
+====================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: ShortToGround.qgeometry_bounds

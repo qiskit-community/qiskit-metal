@@ -1,0 +1,8 @@
+﻿
+
+CircleRaster.make
+=======================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: CircleRaster.make

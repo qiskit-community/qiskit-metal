@@ -1,0 +1,8 @@
+﻿
+
+ShortToGround.get_pin
+===========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: ShortToGround.get_pin

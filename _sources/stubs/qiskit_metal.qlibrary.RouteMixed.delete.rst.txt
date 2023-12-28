@@ -1,0 +1,8 @@
+﻿
+
+RouteMixed.delete
+=======================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteMixed.delete

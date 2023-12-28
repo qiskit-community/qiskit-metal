@@ -1,0 +1,8 @@
+﻿
+
+CoupledLineTee.populate_to_track_table_usage
+==================================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: CoupledLineTee.populate_to_track_table_usage

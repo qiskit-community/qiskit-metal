@@ -1,0 +1,8 @@
+﻿
+
+Cap3Interdigital.make
+===========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: Cap3Interdigital.make

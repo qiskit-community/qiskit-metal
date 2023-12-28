@@ -1,0 +1,8 @@
+﻿
+
+TunableCoupler01.component_metadata
+=========================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: TunableCoupler01.component_metadata

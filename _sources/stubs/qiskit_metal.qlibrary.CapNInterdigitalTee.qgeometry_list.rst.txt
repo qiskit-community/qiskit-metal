@@ -1,0 +1,8 @@
+﻿
+
+CapNInterdigitalTee.qgeometry_list
+========================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: CapNInterdigitalTee.qgeometry_list

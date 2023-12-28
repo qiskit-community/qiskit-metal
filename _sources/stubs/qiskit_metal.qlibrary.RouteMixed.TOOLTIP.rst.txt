@@ -1,0 +1,8 @@
+﻿
+
+RouteMixed.TOOLTIP
+========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: RouteMixed.TOOLTIP

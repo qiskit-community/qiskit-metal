@@ -1,0 +1,8 @@
+﻿
+
+jj_manhattan.component_metadata
+=====================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: jj_manhattan.component_metadata

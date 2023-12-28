@@ -1,0 +1,8 @@
+﻿
+
+QSimulation.default_setup
+===============================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. autoattribute:: QSimulation.default_setup

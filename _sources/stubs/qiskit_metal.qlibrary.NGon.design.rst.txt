@@ -1,0 +1,8 @@
+﻿
+
+NGon.design
+=================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: NGon.design

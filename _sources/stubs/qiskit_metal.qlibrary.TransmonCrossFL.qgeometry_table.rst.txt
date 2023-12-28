@@ -1,0 +1,8 @@
+﻿
+
+TransmonCrossFL.qgeometry_table
+=====================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonCrossFL.qgeometry_table

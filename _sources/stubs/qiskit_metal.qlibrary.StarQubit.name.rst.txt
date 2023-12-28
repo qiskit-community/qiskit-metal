@@ -1,0 +1,8 @@
+﻿
+
+StarQubit.name
+====================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: StarQubit.name

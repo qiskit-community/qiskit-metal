@@ -1,0 +1,8 @@
+﻿
+
+TransmonInterdigitated.name
+=================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: TransmonInterdigitated.name

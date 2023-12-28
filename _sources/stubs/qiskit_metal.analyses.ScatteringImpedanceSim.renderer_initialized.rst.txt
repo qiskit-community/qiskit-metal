@@ -1,0 +1,8 @@
+﻿
+
+ScatteringImpedanceSim.renderer_initialized
+=================================================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. autoproperty:: ScatteringImpedanceSim.renderer_initialized

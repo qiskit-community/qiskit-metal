@@ -1,0 +1,8 @@
+﻿
+
+CircleRaster.qgeometry_types
+==================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: CircleRaster.qgeometry_types

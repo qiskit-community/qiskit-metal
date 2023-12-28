@@ -1,0 +1,8 @@
+﻿
+
+TransmonCross.qgeometry_list
+==================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonCross.qgeometry_list

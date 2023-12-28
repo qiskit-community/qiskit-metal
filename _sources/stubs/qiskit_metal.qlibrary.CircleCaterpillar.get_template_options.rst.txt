@@ -1,0 +1,8 @@
+﻿
+
+CircleCaterpillar.get_template_options
+============================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: CircleCaterpillar.get_template_options

@@ -1,0 +1,8 @@
+﻿
+
+ResonatorCoilRect.component_metadata
+==========================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: ResonatorCoilRect.component_metadata

@@ -1,0 +1,8 @@
+﻿
+
+RouteMeander.delete
+=========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteMeander.delete

@@ -1,0 +1,8 @@
+﻿
+
+TransmonConcentric.get_pin
+================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonConcentric.get_pin

@@ -1,0 +1,8 @@
+﻿
+
+EPRanalysis.supported_data
+================================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. autoproperty:: EPRanalysis.supported_data

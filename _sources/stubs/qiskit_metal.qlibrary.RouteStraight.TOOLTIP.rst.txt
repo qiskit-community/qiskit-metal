@@ -1,0 +1,8 @@
+﻿
+
+RouteStraight.TOOLTIP
+===========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: RouteStraight.TOOLTIP

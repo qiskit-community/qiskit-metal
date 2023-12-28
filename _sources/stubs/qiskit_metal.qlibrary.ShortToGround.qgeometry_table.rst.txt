@@ -1,0 +1,8 @@
+﻿
+
+ShortToGround.qgeometry_table
+===================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: ShortToGround.qgeometry_table

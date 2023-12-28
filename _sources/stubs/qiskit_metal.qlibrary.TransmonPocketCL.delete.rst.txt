@@ -1,0 +1,8 @@
+﻿
+
+TransmonPocketCL.delete
+=============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonPocketCL.delete

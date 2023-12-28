@@ -1,0 +1,8 @@
+﻿
+
+NGon.logger
+=================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: NGon.logger

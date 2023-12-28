@@ -1,0 +1,8 @@
+﻿
+
+TunableCoupler01.populate_to_track_table_usage
+====================================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TunableCoupler01.populate_to_track_table_usage

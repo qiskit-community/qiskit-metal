@@ -1,0 +1,8 @@
+﻿
+
+LaunchpadWirebondCoupled.default_options
+==============================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: LaunchpadWirebondCoupled.default_options

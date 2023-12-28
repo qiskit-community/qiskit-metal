@@ -1,0 +1,8 @@
+﻿
+
+NSquareSpiral.parse_options
+=================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: NSquareSpiral.parse_options

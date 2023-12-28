@@ -1,0 +1,8 @@
+﻿
+
+LaunchpadWirebond.qgeometry_bounds
+========================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: LaunchpadWirebond.qgeometry_bounds

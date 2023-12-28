@@ -1,0 +1,8 @@
+﻿
+
+RouteStraight.rebuild
+===========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteStraight.rebuild

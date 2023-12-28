@@ -1,0 +1,8 @@
+﻿
+
+NGon.parse_value
+======================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: NGon.parse_value

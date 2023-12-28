@@ -1,0 +1,8 @@
+﻿
+
+RoutePathfinder.make_elements
+===================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RoutePathfinder.make_elements

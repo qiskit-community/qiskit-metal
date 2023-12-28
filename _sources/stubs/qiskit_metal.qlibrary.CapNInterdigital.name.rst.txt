@@ -1,0 +1,8 @@
+﻿
+
+CapNInterdigital.name
+===========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: CapNInterdigital.name

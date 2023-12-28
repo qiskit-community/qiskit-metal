@@ -1,0 +1,8 @@
+﻿
+
+OpenToGround.TOOLTIP
+==========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: OpenToGround.TOOLTIP

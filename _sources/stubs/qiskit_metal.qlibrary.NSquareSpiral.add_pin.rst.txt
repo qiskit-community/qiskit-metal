@@ -1,0 +1,8 @@
+﻿
+
+NSquareSpiral.add_pin
+===========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: NSquareSpiral.add_pin

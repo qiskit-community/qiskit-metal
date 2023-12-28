@@ -1,0 +1,8 @@
+﻿
+
+jj_dolan.pin_names
+========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: jj_dolan.pin_names

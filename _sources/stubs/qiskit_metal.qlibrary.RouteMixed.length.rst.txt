@@ -1,0 +1,8 @@
+﻿
+
+RouteMixed.length
+=======================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: RouteMixed.length

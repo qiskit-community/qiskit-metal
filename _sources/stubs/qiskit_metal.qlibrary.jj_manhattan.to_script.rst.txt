@@ -1,0 +1,8 @@
+﻿
+
+jj_manhattan.to_script
+============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: jj_manhattan.to_script

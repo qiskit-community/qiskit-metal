@@ -1,0 +1,8 @@
+﻿
+
+RouteStraight.get_unit_vectors
+====================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteStraight.get_unit_vectors

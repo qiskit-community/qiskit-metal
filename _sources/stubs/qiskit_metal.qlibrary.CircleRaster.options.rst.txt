@@ -1,0 +1,8 @@
+﻿
+
+CircleRaster.options
+==========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: CircleRaster.options

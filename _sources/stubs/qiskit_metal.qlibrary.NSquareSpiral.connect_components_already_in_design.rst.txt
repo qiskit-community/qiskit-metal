@@ -1,0 +1,8 @@
+﻿
+
+NSquareSpiral.connect_components_already_in_design
+========================================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: NSquareSpiral.connect_components_already_in_design

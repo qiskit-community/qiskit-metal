@@ -1,0 +1,8 @@
+﻿
+
+StarQubit.qgeometry_list
+==============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: StarQubit.qgeometry_list

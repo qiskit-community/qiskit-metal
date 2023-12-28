@@ -1,0 +1,8 @@
+﻿
+
+LineTee.get_template_options
+==================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: LineTee.get_template_options

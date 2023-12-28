@@ -1,0 +1,8 @@
+﻿
+
+ScatteringImpedanceSim.setup_update
+=========================================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: ScatteringImpedanceSim.setup_update

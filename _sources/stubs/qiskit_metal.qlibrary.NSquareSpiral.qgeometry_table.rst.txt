@@ -1,0 +1,8 @@
+﻿
+
+NSquareSpiral.qgeometry_table
+===================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: NSquareSpiral.qgeometry_table

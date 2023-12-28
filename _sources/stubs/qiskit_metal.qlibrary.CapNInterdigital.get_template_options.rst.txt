@@ -1,0 +1,8 @@
+﻿
+
+CapNInterdigital.get_template_options
+===========================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: CapNInterdigital.get_template_options

@@ -1,0 +1,8 @@
+﻿
+
+EPRanalysis.spectrum_analysis
+===================================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: EPRanalysis.spectrum_analysis

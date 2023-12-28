@@ -1,0 +1,8 @@
+﻿
+
+TransmonConcentric.connect_components_already_in_design
+=============================================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonConcentric.connect_components_already_in_design

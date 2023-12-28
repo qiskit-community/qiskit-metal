@@ -1,0 +1,8 @@
+﻿
+
+ResonatorCoilRect.qgeometry_bounds
+========================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: ResonatorCoilRect.qgeometry_bounds

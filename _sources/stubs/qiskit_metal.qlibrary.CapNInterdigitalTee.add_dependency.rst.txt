@@ -1,0 +1,8 @@
+﻿
+
+CapNInterdigitalTee.add_dependency
+========================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: CapNInterdigitalTee.add_dependency

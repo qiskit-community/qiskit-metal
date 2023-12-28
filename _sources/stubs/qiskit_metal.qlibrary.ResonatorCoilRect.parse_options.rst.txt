@@ -1,0 +1,8 @@
+﻿
+
+ResonatorCoilRect.parse_options
+=====================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: ResonatorCoilRect.parse_options

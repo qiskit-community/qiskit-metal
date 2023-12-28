@@ -1,0 +1,8 @@
+﻿
+
+LaunchpadWirebond.make
+============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: LaunchpadWirebond.make

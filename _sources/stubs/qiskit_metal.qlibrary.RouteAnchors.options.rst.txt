@@ -1,0 +1,8 @@
+﻿
+
+RouteAnchors.options
+==========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: RouteAnchors.options

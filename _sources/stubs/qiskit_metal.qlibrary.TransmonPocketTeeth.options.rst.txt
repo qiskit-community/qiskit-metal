@@ -1,0 +1,8 @@
+﻿
+
+TransmonPocketTeeth.options
+=================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: TransmonPocketTeeth.options

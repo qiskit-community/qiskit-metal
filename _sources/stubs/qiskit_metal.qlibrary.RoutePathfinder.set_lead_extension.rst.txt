@@ -1,0 +1,8 @@
+﻿
+
+RoutePathfinder.set_lead_extension
+========================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RoutePathfinder.set_lead_extension

@@ -1,0 +1,8 @@
+﻿
+
+NSquareSpiral.delete
+==========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: NSquareSpiral.delete

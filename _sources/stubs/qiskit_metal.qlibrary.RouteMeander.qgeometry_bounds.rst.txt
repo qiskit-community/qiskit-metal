@@ -1,0 +1,8 @@
+﻿
+
+RouteMeander.qgeometry_bounds
+===================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteMeander.qgeometry_bounds

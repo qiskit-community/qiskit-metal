@@ -1,0 +1,8 @@
+﻿
+
+TransmonPocket.make
+=========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonPocket.make

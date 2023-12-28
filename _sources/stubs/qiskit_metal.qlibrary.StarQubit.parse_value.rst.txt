@@ -1,0 +1,8 @@
+﻿
+
+StarQubit.parse_value
+===========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: StarQubit.parse_value

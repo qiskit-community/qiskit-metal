@@ -1,0 +1,8 @@
+﻿
+
+LumpedElementsSim.set_data
+================================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: LumpedElementsSim.set_data

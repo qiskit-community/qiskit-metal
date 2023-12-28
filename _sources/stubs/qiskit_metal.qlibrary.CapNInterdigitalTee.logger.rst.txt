@@ -1,0 +1,8 @@
+﻿
+
+CapNInterdigitalTee.logger
+================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: CapNInterdigitalTee.logger

@@ -1,0 +1,8 @@
+﻿
+
+ResonatorCoilRect.get_pin
+===============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: ResonatorCoilRect.get_pin

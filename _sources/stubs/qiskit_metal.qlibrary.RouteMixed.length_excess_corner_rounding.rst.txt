@@ -1,0 +1,8 @@
+﻿
+
+RouteMixed.length_excess_corner_rounding
+==============================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteMixed.length_excess_corner_rounding

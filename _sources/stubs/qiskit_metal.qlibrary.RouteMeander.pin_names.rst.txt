@@ -1,0 +1,8 @@
+﻿
+
+RouteMeander.pin_names
+============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: RouteMeander.pin_names

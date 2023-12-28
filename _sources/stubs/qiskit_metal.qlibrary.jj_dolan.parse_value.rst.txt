@@ -1,0 +1,8 @@
+﻿
+
+jj_dolan.parse_value
+==========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: jj_dolan.parse_value

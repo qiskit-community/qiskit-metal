@@ -1,0 +1,8 @@
+﻿
+
+LaunchpadWirebondCoupled.component_metadata
+=================================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: LaunchpadWirebondCoupled.component_metadata

@@ -1,0 +1,8 @@
+﻿
+
+ShortToGround.default_options
+===================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: ShortToGround.default_options

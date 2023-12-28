@@ -1,0 +1,8 @@
+﻿
+
+ResonatorCoilRect.logger
+==============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: ResonatorCoilRect.logger

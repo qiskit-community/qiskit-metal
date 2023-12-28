@@ -1,0 +1,8 @@
+﻿
+
+CoupledLineTee.add_pin
+============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: CoupledLineTee.add_pin

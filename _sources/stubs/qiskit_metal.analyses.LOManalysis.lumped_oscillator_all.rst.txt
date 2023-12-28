@@ -1,0 +1,8 @@
+﻿
+
+LOManalysis.lumped_oscillator_all
+=======================================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. autoproperty:: LOManalysis.lumped_oscillator_all

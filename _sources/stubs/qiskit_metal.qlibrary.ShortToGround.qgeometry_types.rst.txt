@@ -1,0 +1,8 @@
+﻿
+
+ShortToGround.qgeometry_types
+===================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: ShortToGround.qgeometry_types

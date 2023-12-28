@@ -1,0 +1,8 @@
+﻿
+
+LineTee.qgeometry_types
+=============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: LineTee.qgeometry_types

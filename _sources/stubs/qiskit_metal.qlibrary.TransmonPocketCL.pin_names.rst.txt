@@ -1,0 +1,8 @@
+﻿
+
+TransmonPocketCL.pin_names
+================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: TransmonPocketCL.pin_names

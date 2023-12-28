@@ -1,0 +1,8 @@
+﻿
+
+QSimulation.set_data
+==========================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: QSimulation.set_data

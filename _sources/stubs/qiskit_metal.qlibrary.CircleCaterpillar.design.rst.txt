@@ -1,0 +1,8 @@
+﻿
+
+CircleCaterpillar.design
+==============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: CircleCaterpillar.design

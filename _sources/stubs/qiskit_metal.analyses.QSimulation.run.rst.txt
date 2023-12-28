@@ -1,0 +1,8 @@
+﻿
+
+QSimulation.run
+=====================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: QSimulation.run

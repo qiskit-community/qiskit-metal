@@ -1,0 +1,8 @@
+﻿
+
+RouteStraight.populate_to_track_table_usage
+=================================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteStraight.populate_to_track_table_usage

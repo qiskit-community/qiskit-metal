@@ -1,0 +1,8 @@
+﻿
+
+TransmonInterdigitated.logger
+===================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: TransmonInterdigitated.logger

@@ -1,0 +1,8 @@
+﻿
+
+RouteFramed.rebuild
+=========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteFramed.rebuild

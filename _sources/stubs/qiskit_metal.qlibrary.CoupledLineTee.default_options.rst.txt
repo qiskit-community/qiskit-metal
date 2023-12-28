@@ -1,0 +1,8 @@
+﻿
+
+CoupledLineTee.default_options
+====================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: CoupledLineTee.default_options

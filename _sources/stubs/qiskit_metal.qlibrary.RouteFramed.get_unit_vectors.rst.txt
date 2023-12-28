@@ -1,0 +1,8 @@
+﻿
+
+RouteFramed.get_unit_vectors
+==================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteFramed.get_unit_vectors

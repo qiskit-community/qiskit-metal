@@ -1,0 +1,8 @@
+﻿
+
+OpenToGround.to_script
+============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: OpenToGround.to_script

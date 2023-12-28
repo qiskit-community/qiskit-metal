@@ -1,0 +1,8 @@
+﻿
+
+CircleCaterpillar.parse_options
+=====================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: CircleCaterpillar.parse_options

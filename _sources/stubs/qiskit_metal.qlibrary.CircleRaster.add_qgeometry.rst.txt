@@ -1,0 +1,8 @@
+﻿
+
+CircleRaster.add_qgeometry
+================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: CircleRaster.add_qgeometry

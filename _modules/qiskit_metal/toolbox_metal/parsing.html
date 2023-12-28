@@ -1,0 +1,1140 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
+
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19 -->
+        <title>qiskit_metal.toolbox_metal.parsing - Qiskit Metal 0.1.5 0.1.5</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=362ab14a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/qiskit-sphinx-theme.css?v=fe84956c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/qiskit-ecosystem.css?v=745c5aa7" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+<script src="../../../_static/js/web-components/top-nav-bar.js"></script></head>
+  <body>
+    
+    <script>document.body.dataset.theme = "light";</script>
+    
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg id="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+      <defs><style>.cls-1{fill:none;}</style></defs>
+      <path d="M28,4H4A2,2,0,0,0,2,6V26a2,2,0,0,0,2,2H28a2,2,0,0,0,2-2V6A2,2,0,0,0,28,4ZM4,6H20V26H4ZM28,26H22V6h6Z"/>
+      <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg id="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+      <defs><style>.cls-1{fill:none;}</style></defs>
+      <rect x="4" y="6" width="24" height="2"/>
+      <rect x="4" y="24" width="24" height="2"/>
+      <rect x="4" y="12" width="24" height="2"/>
+      <rect x="4" y="18" width="24" height="2"/>
+      <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg version="1.1" id="icon" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+         viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve"><polygon points="22,16 12,26 10.6,24.6 19.2,16 10.6,7.4 12,6 " stroke="currentColor"/>
+      <rect id="_x3C_Transparent_Rectangle_x3E_" fill="none" width="32" height="32"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-new-tab" viewBox="0 0 32 32">
+    <svg id="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+      <defs>
+        <style>
+          .cls-1 {
+            fill: none;
+          }
+        </style>
+      </defs>
+      <path fill="#6929C4" d="M26,28H6a2.0027,2.0027,0,0,1-2-2V6A2.0027,2.0027,0,0,1,6,4H16V6H6V26H26V16h2V26A2.0027,2.0027,0,0,1,26,28Z"/>
+      <polygon fill="#6929C4" points="20 2 20 4 26.586 4 18 12.586 19.414 14 28 5.414 28 12 30 12 30 2 20 2"/>
+      <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">Qiskit Metal 0.1.5 0.1.5</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><div class="sidebar-brand">
+  <a href="https://www.qiskit.org/ecosystem">
+    <div class="sidebar-logo-container">
+      <img class="sidebar-logo" src="../../../_static/images/ecosystem-logo.svg" alt="Qiskit Ecosystem logo"/>
+    </div>
+  </a>
+  
+  <span class="sidebar-brand-text">Qiskit Metal 0.1.5 0.1.5</span>
+</div><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installing Qiskit Metal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../workflow.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../workflow.html#qiskit-metal-workflow">Qiskit Metal Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../workflow.html#quantization-methods-overview">Quantization Methods Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contributor Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributor-guide.html">Contributing to Qiskit Metal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributor-guide.html#where-things-are">Where Things Are</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributor-guide.html#reporting-bugs-and-requesting-enhancements">Reporting Bugs and Requesting Enhancements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributor-guide.html#contributing-code">Contributing Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributor-guide.html#contributing-to-documentation">Contributing to Documentation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../tut/index.html">Overview</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Overview</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/1-Overview/1.1-Bird%27s-eye-view-of-Qiskit-Metal.html">Bird’s eye view of Qiskit Metal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/1-Overview/1.1-Bird%27s-eye-view-of-Qiskit-Metal.html#Coding-Time!">Coding Time!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/1-Overview/1.2-Quick-start.html">Quick start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/1-Overview/1.3-Saving-Your-Chip-Design.html">Save your chip design</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../tut/index.html#components">Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html">How to use a QComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html#QComponent-Default-Options">QComponent Default Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html#Modifying-the-Options">Modifying the Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html#Copying-a-QComponent">Copying a QComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html#Deleting-a-QComponent">Deleting a QComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html#Renaming-a-QComponent">Renaming a QComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html#Overwriting-a-QComponent">Overwriting a QComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html#Closing-the-Qiskit-Metal-GUI">Closing the Qiskit Metal GUI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/2-From-components-to-chip/2.02-How-to-copy-a-QComponent.html">How to copy a QComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/2-From-components-to-chip/2.11-Routing-101.html">Routing 101</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/2-From-components-to-chip/2.12-Simple-Meander.html">Simple Meander</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/2-From-components-to-chip/2.12-Simple-Meander.html#Using-CPW-meanders-to-connect-the-3-Qbits">Using CPW meanders to connect the 3 Qbits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/2-From-components-to-chip/2.13-Hybrid-Auto-and-AStar.html">Hybrid Auto and AStar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/2-From-components-to-chip/2.14-Get-them-all-with-MixedRoute.html">Get them all with MixedRoute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/2-From-components-to-chip/2.21-Design-a-4-qubit-full-chip.html">Design a 4 qubit full chip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/2-From-components-to-chip/2.22-Design-100-qubits-programmatically.html">Design 100 qubits programmatically</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/2-From-components-to-chip/2.23-Modify-chip-options.html">Modify chip options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/2-From-components-to-chip/2.31-Create-a-QComponent-Basic.html">Create a QComponent - Basic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/2-From-components-to-chip/2.32-Create-a-QComponent-Advanced.html">Create a QComponent - Advanced</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/2-From-components-to-chip/2.33-Add-my-QComponent-to-a-reusable-python-file.html">Add my QComponent to a reusable python file</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../tut/index.html#renderers">Renderers</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Renderers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/3-Renderers/3.1-Introduction-to-QRenderers.html">Introduction to QRenderers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/3-Renderers/3.1-Introduction-to-QRenderers.html#Note:">Note:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/3-Renderers/3.2-Export-your-design-to-GDS.html">Export your design to GDS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/3-Renderers/3.3-Render-your-design-to-Ansys.html">Render your design to Ansys</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/3-Renderers/3.4-How-do-I-make-my-custom-QRenderer.html">How do I make my custom QRenderer</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../tut/index.html#analysis">Analysis</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Analysis</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.01-Capacitance-and-LOM.html">Capacitance matrix and LOM analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.02-Eigenmode-and-EPR.html">Eigenmode and EPR analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.02-Eigenmode-and-EPR.html#1.-Analyze-the-transmon-qubit-by-itself">1. Analyze the transmon qubit by itself</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.02-Eigenmode-and-EPR.html#2.-Analyze-the-CPW-resonator-by-itself">2. Analyze the CPW resonator by itself</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.02-Eigenmode-and-EPR.html#3.-Analyze-the-combined-transmon-+-CPW-resonator-system">3. Analyze the combined transmon + CPW resonator system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.02-Eigenmode-and-EPR.html#4.-Analyze-a-coupled-2-transmon-system">4. Analyze a coupled 2-transmon system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.03-Impedance.html">Impedance, admittance and scattering analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.11-Analyze-and-tune-a-transmon.html">Analyzing and tuning a transmon qubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.11-Analyze-and-tune-a-transmon.html#1.-Create-the-Qbit-design">1. Create the Qbit design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.11-Analyze-and-tune-a-transmon.html#2.-Analyze-the-transmon-using-the-Eigenmode-EPR-method">2. Analyze the transmon using the Eigenmode-EPR method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.11-Analyze-and-tune-a-transmon.html#3.-Analyze-the-transmon-using-the-LOM-method">3. Analyze the transmon using the LOM method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.12-Analyze-a-resonator.html">Analyzing and tuning a resonator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.12-Analyze-a-resonator.html#1.-Create-the-Resonator-design">1. Create the Resonator design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.12-Analyze-a-resonator.html#2.-Analyze-the-resonator-using-the-Eigenmode-EPR-method">2. Analyze the resonator using the Eigenmode-EPR method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.13-Analyze-transmon-and-resonator.html">Analyzing and tuning a transmon qubit with a resonator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.13-Analyze-transmon-and-resonator.html#1.-Create-the-Qbit-design">1. Create the Qbit design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.13-Analyze-transmon-and-resonator.html#2.-Analyze-the-transmon-&amp;-resonator-using-the-Eigenmode-EPR-method">2. Analyze the transmon &amp; resonator using the Eigenmode-EPR method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.13-Analyze-transmon-and-resonator.html#3.-Analyze-the-transmon-using-the-LOM-method">3. Analyze the transmon using the LOM method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.14-Analyze-a-double-hanger-resonator.html">Analyzing a double hanger resonator (S Param)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.15-CPW-kappa-calculation.html">CPW Kappa Calculation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.21-Capacitance-matrix.html">Sweeps - Capacitance matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.21-Capacitance-matrix.html#READ-THIS-BEFORE-running-the-cell.">READ THIS BEFORE running the cell.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.22-Eigenmode-matrix.html">Sweeps - Eigenmode matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.23-Impedance-and-scattering-Z-S-Y-matrices.html">Sweeps - Impedance, scattering and admittance (Z S Y) matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.31-Plot-quantum-oscillator-wavefunction.html">Plotting Wavefunctions of the Quantum Harmonic Oscillator (LC Circuit)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.32-Transmon-analytics-HCPB.html">Transmon Analytics: Plotting Eigenvalues as a Function of Offset Charge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.33-Transmon-analytics.html">Transmon Analytics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.34-Transmon-qubit-CPB-hamiltonian-charge-basis.html">Modeling transmon qubit Cooper-pair box Hamiltonian in the charge basis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.34-Transmon-qubit-CPB-hamiltonian-charge-basis.html#Additional-Analysis:-Charge-Dispersion,-Energy-Level-Differences,-Anharmonicity-and-Dephasing-Time-(T2)">Additional Analysis: Charge Dispersion, Energy Level Differences, Anharmonicity and Dephasing Time (T2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.34-Transmon-qubit-CPB-hamiltonian-charge-basis.html#Qutip-simulation">Qutip simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.34-Transmon-qubit-CPB-hamiltonian-charge-basis.html#Experimental">Experimental</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.34-Transmon-qubit-CPB-hamiltonian-charge-basis.html#New-section-on-integrating-sc_qubits.">New section on integrating sc_qubits.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/4-Analysis/4.34-Transmon-qubit-CPB-hamiltonian-charge-basis.html#Transmon-and-the-Oscillator">Transmon and the Oscillator</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../tut/index.html#quick-topics">Quick Topics</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Quick Topics</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/quick-topics/JJ-Demo-Notebook.html">Josephson Junction QComponent Demo Notebook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/quick-topics/Managing-pins.html">Managing pins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/quick-topics/Managing-variables.html">Managing variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/quick-topics/Opening-documentation.html">Opening the documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/quick-topics/QComponent-3-fingers-capacitor.html">QComponent - 3-fingers capacitor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tut/quick-topics/QComponent-Interdigitated-transmon.html">QComponent - Interdigitated transmon qubit</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/playlist?list=PLOFEBzvs-VvqHl5ZqVmhB_FcSqmLufsjb">Video Recordings</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Circuit Example Library</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../circuit-examples/index.html">Qubits</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Qubits</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../circuit-examples/A.Qubits/01-Transmon_cross.html">Single Transmon - Grounded (xmon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../circuit-examples/A.Qubits/02-Transmon_floating.html">Single Transmon - Floating</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../circuit-examples/A.Qubits/03-concentric_transmon.html">Concentric Transmon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../circuit-examples/A.Qubits/04-Interdigitated_Transmon.html">Interdigitated Transmon Qubits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../circuit-examples/A.Qubits/05-Transmon_cross_fl.html">Single Transmon - Grounded (xmon) flux lines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../circuit-examples/A.Qubits/06-Transmon_floating_6.html">Single Transmon - Floating with 6 connection pads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../circuit-examples/A.Qubits/07-Transmon_floating_cl.html">Single Transmon - Floating with charge lines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../circuit-examples/A.Qubits/08-JJ-Dolan.html">Josephson Junction (Dolan)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../circuit-examples/A.Qubits/09-JJ-Manhattan.html">Josephson Junction (Manhattan)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../circuit-examples/A.Qubits/10-Transmon_floating_teeth.html">Single Transmon - Floating with teeth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../circuit-examples/A.Qubits/11-Star_shaped_qubit.html">Star shaped qubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../circuit-examples/A.Qubits/11-Star_shaped_qubit.html#A-Star-Qubit">A Star Qubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../circuit-examples/A.Qubits/11-Star_shaped_qubit.html#Closing-the-Qiskit-Metal-GUI">Closing the Qiskit Metal GUI</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../circuit-examples/index.html#resonators">Resonators</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Resonators</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../circuit-examples/B.Resonators/11-Resonator_Meander.html">Simple CPW Meander</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../circuit-examples/index.html#composite-bi-partite-systems">Composite Bi-Partite Systems</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Composite Bi-Partite Systems</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../circuit-examples/C.Composite-bi-partite/21-OneTransmonsWithMeanderAndOTG.html">Transmon coupled to CPW resonator</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../circuit-examples/index.html#qubit-couplers">Qubit Couplers</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Qubit Couplers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../circuit-examples/D.Qubit-couplers/31-TwoCrossmonsTunableCoupler.html">Tunable Coupler (MIT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../circuit-examples/D.Qubit-couplers/32-TwoTransmonsDirectCoupling.html">Direct Coupler (transmon-transmon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../circuit-examples/D.Qubit-couplers/33-TwoTransmonsWithMeander.html">Bus Resonator Coupler (transmon-transmon)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../circuit-examples/index.html#input-output-coupling">Input-Output Coupling</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of Input-Output Coupling</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../circuit-examples/E.Input-output-coupling/41-LaunchPad.html">CPW Launch Pad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../circuit-examples/E.Input-output-coupling/42-ResonatorAndLaunchPad.html">Readout line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../circuit-examples/E.Input-output-coupling/43-TransmonPocketCL.html">Charge Line</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../circuit-examples/index.html#small-quantum-chips">Small Quantum Chips</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of Small Quantum Chips</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../circuit-examples/F.Small-quantum-chips/51-Four_qubit_chip.html">Four Qubit Chip Design</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../circuit-examples/index.html#design-flow">Design Flow</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of Design Flow</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../circuit-examples/full-design-flow-examples/Example-full-chip-design.html">Example full chip design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../circuit-examples/full-design-flow-examples/Example-full-chip-design.html#Layout">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../circuit-examples/full-design-flow-examples/Example-full-chip-design.html#Analyze">Analyze</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../circuit-examples/full-design-flow-examples/Example-used-in-the-launch-video.html">Launch Videos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../circuit-examples/full-design-flow-examples/Exercise-for-the-South-Korea-Hackathon%2720.html">South Korea Qiskit Hackathon’20 - Qiskit Metal exercise</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../apidocs/qlibrary.html">All Quantum Devices</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of All Quantum Devices</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.qlibrary.QComponent.html">QComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.qlibrary.ParsedDynamicAttributes_Component.html">ParsedDynamicAttributes_Component</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.qlibrary.BaseQubit.html">BaseQubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.qlibrary.QRoute.html">QRoute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.qlibrary.QRouteLead.html">QRouteLead</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.qlibrary.QRoutePoint.html">QRoutePoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.CircleCaterpillar.html">CircleCaterpillar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.CircleRaster.html">CircleRaster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.NGon.html">NGon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.NSquareSpiral.html">NSquareSpiral</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.Rectangle.html">Rectangle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.RectangleHollow.html">RectangleHollow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.Cap3Interdigital.html">Cap3Interdigital</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.CapNInterdigital.html">CapNInterdigital</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.ResonatorCoilRect.html">ResonatorCoilRect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.CoupledLineTee.html">CoupledLineTee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.LineTee.html">LineTee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.CapNInterdigitalTee.html">CapNInterdigitalTee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.TunableCoupler01.html">TunableCoupler01</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.TunableCoupler02.html">TunableCoupler02</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.ReadoutResFC.html">ReadoutResFC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.ResonatorLumped.html">ResonatorLumped</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.LaunchpadWirebond.html">LaunchpadWirebond</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.LaunchpadWirebondCoupled.html">LaunchpadWirebondCoupled</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.LaunchpadWirebondDriven.html">LaunchpadWirebondDriven</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.OpenToGround.html">OpenToGround</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.ShortToGround.html">ShortToGround</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.RouteStraight.html">RouteStraight</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.RouteFramed.html">RouteFramed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.RouteMeander.html">RouteMeander</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.RouteAnchors.html">RouteAnchors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.RouteMixed.html">RouteMixed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.RoutePathfinder.html">RoutePathfinder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.jj_dolan.html">jj_dolan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.jj_manhattan.html">jj_manhattan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.TransmonConcentric.html">TransmonConcentric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.TransmonConcentricType2.html">TransmonConcentricType2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.TransmonCross.html">TransmonCross</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.TransmonCrossFL.html">TransmonCrossFL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.TransmonInterdigitated.html">TransmonInterdigitated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.TransmonPocket.html">TransmonPocket</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.TransmonPocketCL.html">TransmonPocketCL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.TransmonPocket6.html">TransmonPocket6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.TransmonPocketTeeth.html">TransmonPocketTeeth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.TunableCoupler01.html">TunableCoupler01</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.SQUID_LOOP.html">SQUID_LOOP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.StarQubit.html">StarQubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.anchored_path.html">anchored_path</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Overview</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../apidocs/designs.html">QDesigns</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of QDesigns</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.designs.QDesign.html">QDesign</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.designs.DesignPlanar.html">DesignPlanar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.designs.MultiPlanar.html">MultiPlanar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.designs.DesignFlipChip.html">DesignFlipChip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.designs.QNet.html">QNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.designs.Components.html">Components</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../apidocs/qlibrary.html">QComponents</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of QComponents</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.qlibrary.QComponent.html">QComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.qlibrary.ParsedDynamicAttributes_Component.html">ParsedDynamicAttributes_Component</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.qlibrary.BaseQubit.html">BaseQubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.qlibrary.QRoute.html">QRoute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.qlibrary.QRouteLead.html">QRouteLead</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.qlibrary.QRoutePoint.html">QRoutePoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.CircleCaterpillar.html">CircleCaterpillar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.CircleRaster.html">CircleRaster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.NGon.html">NGon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.NSquareSpiral.html">NSquareSpiral</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.Rectangle.html">Rectangle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.RectangleHollow.html">RectangleHollow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.Cap3Interdigital.html">Cap3Interdigital</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.CapNInterdigital.html">CapNInterdigital</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.ResonatorCoilRect.html">ResonatorCoilRect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.CoupledLineTee.html">CoupledLineTee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.LineTee.html">LineTee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.CapNInterdigitalTee.html">CapNInterdigitalTee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.TunableCoupler01.html">TunableCoupler01</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.TunableCoupler02.html">TunableCoupler02</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.ReadoutResFC.html">ReadoutResFC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.ResonatorLumped.html">ResonatorLumped</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.LaunchpadWirebond.html">LaunchpadWirebond</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.LaunchpadWirebondCoupled.html">LaunchpadWirebondCoupled</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.LaunchpadWirebondDriven.html">LaunchpadWirebondDriven</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.OpenToGround.html">OpenToGround</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.ShortToGround.html">ShortToGround</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.RouteStraight.html">RouteStraight</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.RouteFramed.html">RouteFramed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.RouteMeander.html">RouteMeander</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.RouteAnchors.html">RouteAnchors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.RouteMixed.html">RouteMixed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.RoutePathfinder.html">RoutePathfinder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.jj_dolan.html">jj_dolan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.jj_manhattan.html">jj_manhattan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.TransmonConcentric.html">TransmonConcentric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.TransmonConcentricType2.html">TransmonConcentricType2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.TransmonCross.html">TransmonCross</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.TransmonCrossFL.html">TransmonCrossFL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.TransmonInterdigitated.html">TransmonInterdigitated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.TransmonPocket.html">TransmonPocket</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.TransmonPocketCL.html">TransmonPocketCL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.TransmonPocket6.html">TransmonPocket6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.TransmonPocketTeeth.html">TransmonPocketTeeth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.TunableCoupler01.html">TunableCoupler01</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.SQUID_LOOP.html">SQUID_LOOP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.StarQubit.html">StarQubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.qlibrary.anchored_path.html">anchored_path</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../apidocs/analyses.html">Analyses</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of Analyses</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.analyses.QAnalysis.html">QAnalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.analyses.QSimulation.html">QSimulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.analyses.Hcpb.html">Hcpb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.analyses.Hcpb_analytic.html">Hcpb_analytic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.analyses.HO_wavefunctions.html">HO_wavefunctions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.analyses.transmon_analytics.html">transmon_analytics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.analyses.cpw_calculations.html">cpw_calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.analyses.kappa_calculation.html">kappa_calculation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.analyses.Sweeper.html">Sweeper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.analyses.LOManalysis.html">LOManalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.analyses.EPRanalysis.html">EPRanalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.analyses.lumped_capacitive.html">lumped_capacitive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.analyses.LumpedElementsSim.html">LumpedElementsSim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.analyses.EigenmodeSim.html">EigenmodeSim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../apidocs/qiskit_metal.analyses.ScatteringImpedanceSim.html">ScatteringImpedanceSim</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../apidocs/renderers.html">QRenderes</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of QRenderes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.renderers.QRenderer.html">QRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.renderers.QRendererGui.html">QRendererGui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.renderers.QRendererAnalysis.html">QRendererAnalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.renderers.PlotCanvas.html">PlotCanvas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.renderers.MplInteraction.html">MplInteraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.renderers.ZoomOnWheel.html">ZoomOnWheel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.renderers.PanAndZoom.html">PanAndZoom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.renderers.QMplRenderer.html">QMplRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.renderers.AnimatedText.html">AnimatedText</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.renderers.QGDSRenderer.html">QGDSRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.renderers.Cheesing.html">Cheesing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.renderers.QAnsysRenderer.html">QAnsysRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.renderers.QHFSSRenderer.html">QHFSSRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.renderers.QQ3DRenderer.html">QQ3DRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.renderers.QPyaedt.html">QPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.renderers.QQ3DPyaedt.html">QQ3DPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.renderers.QHFSSPyaedt.html">QHFSSPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.html">QHFSSDrivenmodalPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.renderers.QHFSSEigenmodePyaedt.html">QHFSSEigenmodePyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.renderers.QGmshRenderer.html">QGmshRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.renderers.Vec3DArray.html">Vec3DArray</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../apidocs/toolbox_metal.html">Toolbox</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of Toolbox</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.toolbox_metal.QiskitMetalExceptions.html">QiskitMetalExceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.toolbox_metal.QiskitMetalDesignError.html">QiskitMetalDesignError</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.toolbox_metal.about.html">about</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.toolbox_metal.import_export.html">import_export</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.toolbox_metal.math_and_overrides.html">math_and_overrides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.toolbox_metal.parsing.html">parsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.toolbox_metal.layer_stack_handler.html">layer_stack_handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables.html">bounds_for_path_and_poly_tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.toolbox_metal.determine_larger_box.html">determine_larger_box</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../apidocs/qgeometries.html">QGeometry</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of QGeometry</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal.qgeometries.QGeometryTables.html">QGeometryTables</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../apidocs/gui.html">GUI</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../stubs/qiskit_metal._gui.MetalGUI.html">MetalGUI</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/Qiskit/qiskit/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
+</ul>
+
+</div></div>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <h1>Source code for qiskit_metal.toolbox_metal.parsing</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="c1"># This code is part of Qiskit.</span>
+<span class="c1">#</span>
+<span class="c1"># (C) Copyright IBM 2017, 2021.</span>
+<span class="c1">#</span>
+<span class="c1"># This code is licensed under the Apache License, Version 2.0. You may</span>
+<span class="c1"># obtain a copy of this license in the LICENSE.txt file in the root directory</span>
+<span class="c1"># of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.</span>
+<span class="c1">#</span>
+<span class="c1"># Any modifications or derivative works of this code must retain this</span>
+<span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
+<span class="c1"># that they have been altered from the originals.</span>
+
+<span class="c1"># pylint: disable-msg=broad-except</span>
+<span class="c1"># pylint: disable-msg=relative-beyond-top-level</span>
+<span class="c1"># pylint: disable-msg=import-error</span>
+<span class="c1"># pylint: disable-msg=line-too-long</span>
+<span class="sd">&quot;&quot;&quot;Parsing module Qiskit Metal.</span>
+
+<span class="sd">The main function in this module is `parse_value`, and it explains what</span>
+<span class="sd">and how it is handled. Some basic arithmetic can be handled as well,</span>
+<span class="sd">such as `&#39;-2 * 1e5 nm&#39;` will yield float(-0.2) when the default units are set to `mm`.</span>
+
+<span class="sd">Example parsing values test:</span>
+<span class="sd">----------------------------</span>
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        from qiskit_metal.toolbox_metal.parsing import *</span>
+
+<span class="sd">        def test(val, _vars):</span>
+<span class="sd">            res = parse_value(val, _vars)</span>
+<span class="sd">            print( f&#39;{type(val).__name__:&lt;6} |{val:&gt;12} &gt;&gt; {str(res):&lt;20} | {type(res).__name__:&lt;6}&#39;)</span>
+
+<span class="sd">        def test2(val, _vars):</span>
+<span class="sd">            res = parse_value(val, _vars)</span>
+<span class="sd">            print( f&#39;{type(val).__name__:&lt;6} |{str(val):&gt;38} &gt;&gt; {str(res):&lt;47} | {type(res).__name__:&lt;6}&#39;)</span>
+
+<span class="sd">        vars_ = Dict({&#39;x&#39;:5.0, &#39;y&#39;:&#39;5um&#39;, &#39;cpw_width&#39;:&#39;10um&#39;})</span>
+
+<span class="sd">        print(&#39;------------------------------------------------&#39;)</span>
+<span class="sd">        print(&#39;String: Basics&#39;)</span>
+<span class="sd">        test(1, vars_)</span>
+<span class="sd">        test(1., vars_)</span>
+<span class="sd">        test(&#39;1&#39;, vars_)</span>
+<span class="sd">        test(&#39;1.&#39;, vars_)</span>
+<span class="sd">        test(&#39;+1.&#39;, vars_)</span>
+<span class="sd">        test(&#39;-1.&#39;, vars_)</span>
+<span class="sd">        test(&#39;1.0&#39;, vars_)</span>
+<span class="sd">        test(&#39;1mm&#39;, vars_)</span>
+<span class="sd">        test(&#39; 1  mm &#39;, vars_)</span>
+<span class="sd">        test(&#39;100mm&#39;, vars_)</span>
+<span class="sd">        test(&#39;1.mm&#39;, vars_)</span>
+<span class="sd">        test(&#39;1.0mm&#39;, vars_)</span>
+<span class="sd">        test(&#39;1um&#39;, vars_)</span>
+<span class="sd">        test(&#39;+1um&#39;, vars_)</span>
+<span class="sd">        test(&#39;-1um&#39;, vars_)</span>
+<span class="sd">        test(&#39;-0.1um&#39;, vars_)</span>
+<span class="sd">        test(&#39;.1um&#39;, vars_)</span>
+<span class="sd">        test(&#39;  0.1  m&#39;, vars_)</span>
+<span class="sd">        test(&#39;-1E6 nm&#39;, vars_)</span>
+<span class="sd">        test(&#39;-1e6 nm&#39;, vars_)</span>
+<span class="sd">        test(&#39;.1e6 nm&#39;, vars_)</span>
+<span class="sd">        test(&#39; - .1e6nm &#39;, vars_)</span>
+<span class="sd">        test(&#39; - .1e6 nm &#39;, vars_)</span>
+<span class="sd">        test(&#39; - 1e6 nm &#39;, vars_)</span>
+<span class="sd">        test(&#39;- 1e6 nm &#39;, vars_)</span>
+<span class="sd">        test(&#39; - 1. &#39;, vars_)</span>
+<span class="sd">        test(&#39; + 1. &#39;, vars_)</span>
+<span class="sd">        test(&#39;1 .&#39;, vars_)</span>
+
+<span class="sd">        print(&#39;------------------------------------------------&#39;)</span>
+<span class="sd">        print(&#39;String: Arithmetic&#39;)</span>
+<span class="sd">        test(&#39;2*1&#39;, vars_)</span>
+<span class="sd">        test(&#39;2*10mm&#39;, vars_)</span>
+<span class="sd">        test(&#39;-2 * 1e5 nm&#39;, vars_)</span>
+
+<span class="sd">        print(&#39;------------------------------------------------&#39;)</span>
+<span class="sd">        print(&#39;String: Variable&#39;)</span>
+<span class="sd">        test(&#39;x&#39;, vars_)</span>
+<span class="sd">        test(&#39;y&#39;, vars_)</span>
+<span class="sd">        test(&#39;z&#39;, vars_)</span>
+<span class="sd">        test(&#39;x1&#39;, vars_)</span>
+<span class="sd">        test(&#39;2*y&#39;, vars_)</span>
+
+<span class="sd">        print(&#39;------------------------------------------------&#39;)</span>
+<span class="sd">        print(&#39;String: convert list and dict&#39;)</span>
+<span class="sd">        test2(&#39; [1,2,3.,4., &quot;5um&quot;, &quot; -0.1e6 nm&quot;  ] &#39;, vars_)</span>
+<span class="sd">        test2(&#39; {3:2, 4: &quot; -0.1e6 nm&quot;  } &#39;, vars_)</span>
+
+<span class="sd">        print(&#39;&#39;)</span>
+<span class="sd">        print(&#39;------------------------------------------------&#39;)</span>
+<span class="sd">        print(&#39;Dict: convert list and dict&#39;)</span>
+<span class="sd">        my_dict = Dict(</span>
+<span class="sd">            string1 = &#39;1m&#39;,</span>
+<span class="sd">            string2 = &#39;1mm&#39;,</span>
+<span class="sd">            string3 = &#39;1um&#39;,</span>
+<span class="sd">            string4 = &#39;1nm&#39;,</span>
+<span class="sd">            variable1 = &#39;cpw_width&#39;,</span>
+<span class="sd">            list1 = &quot;[&#39;1m&#39;, &#39;5um&#39;, &#39;cpw_width&#39;, -1, False, &#39;a string&#39;]&quot;,</span>
+<span class="sd">            dict1 = &quot;{&#39;key1&#39;:&#39;4e-6mm&#39;, &#39;2mm&#39;:&#39;100um&#39;}&quot;</span>
+<span class="sd">        )</span>
+<span class="sd">        #test2(my_dict, vars_)</span>
+<span class="sd">        display(parse_value(my_dict, vars_))</span>
+
+
+<span class="sd">Returns:</span>
+<span class="sd">------------------</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        ------------------------------------------------</span>
+<span class="sd">        String: Basics</span>
+<span class="sd">        int    |           1 &gt;&gt; 1                    | int</span>
+<span class="sd">        float  |         1.0 &gt;&gt; 1.0                  | float</span>
+<span class="sd">        str    |           1 &gt;&gt; 1.0                  | float</span>
+<span class="sd">        str    |          1. &gt;&gt; 1.0                  | float</span>
+<span class="sd">        str    |         +1. &gt;&gt; 1.0                  | float</span>
+<span class="sd">        str    |         -1. &gt;&gt; -1.0                 | float</span>
+<span class="sd">        str    |         1.0 &gt;&gt; 1.0                  | float</span>
+<span class="sd">        str    |         1mm &gt;&gt; 1                    | int</span>
+<span class="sd">        str    |      1  mm  &gt;&gt; 1                    | int</span>
+<span class="sd">        str    |       100mm &gt;&gt; 100                  | int</span>
+<span class="sd">        str    |        1.mm &gt;&gt; 1.0                  | float</span>
+<span class="sd">        str    |       1.0mm &gt;&gt; 1.0                  | float</span>
+<span class="sd">        str    |         1um &gt;&gt; 0.001                | float</span>
+<span class="sd">        str    |        +1um &gt;&gt; 0.001                | float</span>
+<span class="sd">        str    |        -1um &gt;&gt; -0.001               | float</span>
+<span class="sd">        str    |      -0.1um &gt;&gt; -0.0001              | float</span>
+<span class="sd">        str    |        .1um &gt;&gt; 0.0001               | float</span>
+<span class="sd">        str    |      0.1  m &gt;&gt; 100.0                | float</span>
+<span class="sd">        str    |     -1E6 nm &gt;&gt; -1.0000000000000002  | float</span>
+<span class="sd">        str    |     -1e6 nm &gt;&gt; -1.0000000000000002  | float</span>
+<span class="sd">        str    |     .1e6 nm &gt;&gt; 0.10000000000000002  | float</span>
+<span class="sd">        str    |   - .1e6nm  &gt;&gt; -0.10000000000000002 | float</span>
+<span class="sd">        str    |  - .1e6 nm  &gt;&gt; -0.10000000000000002 | float</span>
+<span class="sd">        str    |   - 1e6 nm  &gt;&gt;  - 1e6 nm            | str</span>
+<span class="sd">        str    |   - 1e6 nm  &gt;&gt; - 1e6 nm             | str</span>
+<span class="sd">        str    |       - 1.  &gt;&gt;  - 1.                | str</span>
+<span class="sd">        str    |       + 1.  &gt;&gt;  + 1.                | str</span>
+<span class="sd">        str    |         1 . &gt;&gt; 1 .                  | str</span>
+<span class="sd">        ------------------------------------------------</span>
+<span class="sd">        String: Arithmetic</span>
+<span class="sd">        str    |         2*1 &gt;&gt; 2*1                  | str</span>
+<span class="sd">        str    |      2*10mm &gt;&gt; 20                   | int</span>
+<span class="sd">        str    | -2 * 1e5 nm &gt;&gt; -0.20000000000000004 | float</span>
+<span class="sd">        ------------------------------------------------</span>
+<span class="sd">        String: Variable</span>
+<span class="sd">        str    |           x &gt;&gt; 5.0                  | float</span>
+<span class="sd">        str    |           y &gt;&gt; 0.005                | float</span>
+<span class="sd">        str    |           z &gt;&gt; z                    | str</span>
+<span class="sd">        str    |          x1 &gt;&gt; x1                   | str</span>
+<span class="sd">        str    |         2*y &gt;&gt; 2*y                  | str</span>
+<span class="sd">        ------------------------------------------------</span>
+<span class="sd">        String: convert list and dict</span>
+<span class="sd">        str    |   [1,2,3.,4., &quot;5um&quot;, &quot; -0.1e6 nm&quot;  ]  &gt;&gt; [1, 2, 3.0, 4.0, 0.005, -0.10000000000000002]   | list</span>
+<span class="sd">        str    |             {3:2, 4: &quot; -0.1e6 nm&quot;  }  &gt;&gt; {3: 2, 4: -0.10000000000000002}                 | Dict</span>
+
+
+<span class="sd">        ------------------------------------------------</span>
+<span class="sd">        Dict: convert list and dict</span>
+
+<span class="sd">        {&#39;string1&#39;: 1000.0,</span>
+<span class="sd">        &#39;string2&#39;: 1,</span>
+<span class="sd">        &#39;string3&#39;: 0.001,</span>
+<span class="sd">        &#39;string4&#39;: 1.0000000000000002e-06,</span>
+<span class="sd">        &#39;variable1&#39;: 0.01,</span>
+<span class="sd">        &#39;list1&#39;: [1000.0, 0.005, 0.01, -1, False, &#39;a string&#39;],</span>
+<span class="sd">        &#39;dict1&#39;: {&#39;key1&#39;: 4e-06, &#39;2mm&#39;: 0.1}}</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Mapping</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Number</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">ast</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pint</span>
+<span class="kn">from</span> <span class="nn">pint</span> <span class="kn">import</span> <span class="n">UnitRegistry</span>
+
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">logger</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;parse_value&#39;</span><span class="p">,</span>  <span class="c1"># Main function</span>
+    <span class="s1">&#39;is_variable_name&#39;</span><span class="p">,</span>  <span class="c1"># extra helpers</span>
+    <span class="s1">&#39;is_numeric_possible&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_for_ast_eval&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_true&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;parse_options&#39;</span>
+<span class="p">]</span>
+
+<span class="c1">#########################################################################</span>
+<span class="c1"># Constants</span>
+
+<span class="c1"># Values that can represent True bool</span>
+<span class="n">TRUE_STR</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;true&#39;</span><span class="p">,</span> <span class="s1">&#39;True&#39;</span><span class="p">,</span> <span class="s1">&#39;TRUE&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">,</span> <span class="s1">&#39;YES&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;yeah&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="mf">1.0</span>
+<span class="p">]</span>
+<span class="n">FALSE_STR</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;false&#39;</span><span class="p">,</span> <span class="s1">&#39;False&#39;</span><span class="p">,</span> <span class="s1">&#39;FALSE&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;NO&#39;</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">,</span> <span class="s1">&#39;na&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="mf">0.0</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="is_true">
+<a class="viewcode-back" href="../../../stubs/qiskit_metal.toolbox_metal.parsing.html#qiskit_metal.toolbox_metal.parsing.is_true">[docs]</a>
+<span class="k">def</span> <span class="nf">is_true</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if a value is true or not.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        value (str): Value to check</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">       bool: Is the string a true</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">TRUE_STR</span>  <span class="c1"># membership test operator</span></div>
+
+
+
+<span class="c1"># The unit registry stores the definitions and relationships between units.</span>
+<span class="n">UREG</span> <span class="o">=</span> <span class="n">pint</span><span class="o">.</span><span class="n">UnitRegistry</span><span class="p">()</span>
+
+<span class="c1">#########################################################################</span>
+<span class="c1"># Basic string to number</span>
+
+<span class="n">units</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">DefaultMetalOptions</span><span class="o">.</span><span class="n">default_generic</span><span class="o">.</span><span class="n">units</span>
+
+
+<span class="k">def</span> <span class="nf">_parse_string_to_float</span><span class="p">(</span><span class="n">expr</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract the value of a string.</span>
+
+<span class="sd">    If the passed value is not convertable,</span>
+<span class="sd">    the input value `expr` will just ne returned.</span>
+
+<span class="sd">    Note that you can also pass in some arithmetic:</span>
+<span class="sd">        `UREG.Quantity(&#39;2*130um&#39;).to(&#39;mm&#39;).magnitude`</span>
+<span class="sd">        &gt;&gt; 0.26</span>
+
+<span class="sd">    Original code: pyEPR.hfss - see file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        expr (str): String expression such as &#39;1nm&#39;.</span>
+
+<span class="sd">    Internal:</span>
+<span class="sd">        to_units (str): Units to convert the value to, such as &#39;mm&#39;.</span>
+<span class="sd">                        Hardcoded to  config.DEFAULT.units</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: Converted value, such as float(1e-6)</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        Exception: Errors in parsing</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">UREG</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="c1"># DimensionalityError, UndefinedUnitError, TypeError</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">expr</span>
+
+
+<span class="c1">#########################################################################</span>
+<span class="c1"># UNIT and Conversion related</span>
+
+
+<div class="viewcode-block" id="is_variable_name">
+<a class="viewcode-back" href="../../../stubs/qiskit_metal.toolbox_metal.parsing.html#qiskit_metal.toolbox_metal.parsing.is_variable_name">[docs]</a>
+<span class="k">def</span> <span class="nf">is_variable_name</span><span class="p">(</span><span class="n">test_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Is the test string a valid name for a variable or not?</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        test_str (str): Test string</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: Is str a variable name</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">test_str</span><span class="o">.</span><span class="n">isidentifier</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="is_for_ast_eval">
+<a class="viewcode-back" href="../../../stubs/qiskit_metal.toolbox_metal.parsing.html#qiskit_metal.toolbox_metal.parsing.is_for_ast_eval">[docs]</a>
+<span class="k">def</span> <span class="nf">is_for_ast_eval</span><span class="p">(</span><span class="n">test_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Is the test string a valid list of dict string, such as &quot;[1, 2]&quot;, that</span>
+<span class="sd">    can be evaluated by ast eval.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        test_str (str): Test string</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: Is test_str a valid list of dict strings</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;[&#39;</span> <span class="ow">in</span> <span class="n">test_str</span> <span class="ow">and</span> <span class="s1">&#39;]&#39;</span> <span class="ow">in</span> <span class="n">test_str</span><span class="p">)</span> <span class="ow">or</span> \
+           <span class="p">(</span><span class="s1">&#39;{&#39;</span> <span class="ow">in</span> <span class="n">test_str</span> <span class="ow">and</span> <span class="s1">&#39;}&#39;</span> <span class="ow">in</span> <span class="n">test_str</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="is_numeric_possible">
+<a class="viewcode-back" href="../../../stubs/qiskit_metal.toolbox_metal.parsing.html#qiskit_metal.toolbox_metal.parsing.is_numeric_possible">[docs]</a>
+<span class="k">def</span> <span class="nf">is_numeric_possible</span><span class="p">(</span><span class="n">test_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Is the test string a valid possible numerical with /or w/o units.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        test_str (str): Test string</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: Is the test string a valid possible numerical</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">test_str</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="ow">or</span> <span class="n">test_str</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">]</span></div>
+
+    <span class="c1"># look into pyparsing</span>
+
+
+<span class="c1"># pylint: disable-msg=too-many-branches</span>
+<span class="c1"># pylint: disable-msg=too-many-return-statements</span>
+<div class="viewcode-block" id="parse_value">
+<a class="viewcode-back" href="../../../stubs/qiskit_metal.toolbox_metal.parsing.html#qiskit_metal.toolbox_metal.parsing.parse_value">[docs]</a>
+<span class="k">def</span> <span class="nf">parse_value</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">variable_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse a string, mappable (dict, Dict), iterable (list, tuple) to account</span>
+<span class="sd">    for units conversion, some basic arithmetic, and design variables. This is</span>
+<span class="sd">    the main parsing function of Qiskit Metal.</span>
+
+<span class="sd">    Handled Inputs:</span>
+
+<span class="sd">        Strings of numbers, numbers with units; e.g., &#39;1&#39;, &#39;1nm&#39;, &#39;1 um&#39;</span>
+<span class="sd">            Converts to int or float.</span>
+<span class="sd">            Some basic arithmetic is possible, see below.</span>
+<span class="sd">        Strings of variables &#39;variable1&#39;.</span>
+<span class="sd">            Variable interpretation will use string method</span>
+<span class="sd">            isidentifier &#39;variable1&#39;.isidentifier()</span>
+<span class="sd">        Strings of Dictionaries:</span>
+<span class="sd">            Returns ordered `Dict` with same key-value mappings, where the values have</span>
+<span class="sd">            been subjected to parse_value.</span>
+<span class="sd">        Strings of Iterables(list, tuple, ...):</span>
+<span class="sd">            Returns same kind and calls itself `parse_value` on each elemnt.</span>
+
+<span class="sd">        Numbers:</span>
+<span class="sd">            Returns the number as is. Int to int, etc.</span>
+
+<span class="sd">    Arithmetic:</span>
+<span class="sd">        Some basic arithmetic can be handled as well, such as `&#39;-2 * 1e5 nm&#39;`</span>
+<span class="sd">        will yield float(-0.2) when the default units are set to `mm`.</span>
+
+<span class="sd">    Default units:</span>
+<span class="sd">        User units can be set in the design. The design will set config.DEFAULT.units</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        See the docstring for this module.</span>
+<span class="sd">            &gt;&gt; ?qiskit_metal.toolbox_metal.parsing</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        value (str): String to parse</span>
+<span class="sd">        variable_dict (dict): dict pointer of variables</span>
+
+<span class="sd">    Return:</span>
+<span class="sd">        str, float, list, tuple, or ast eval: Parsed value</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+
+        <span class="c1"># remove trailing and leading white spaces in the name</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">val</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">is_variable_name</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+                <span class="c1"># we have a string that could be interpreted as a variable</span>
+                <span class="c1"># check if there is such a variable name, else return as string</span>
+                <span class="c1"># logger.warning(f&#39;Missing variable {opts[name]} from variable list.\n&#39;)</span>
+
+                <span class="k">if</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">variable_dict</span><span class="p">:</span>
+                    <span class="c1"># Parse the returned value</span>
+                    <span class="k">return</span> <span class="n">parse_value</span><span class="p">(</span><span class="n">variable_dict</span><span class="p">[</span><span class="n">val</span><span class="p">],</span> <span class="n">variable_dict</span><span class="p">)</span>
+
+                <span class="c1"># Assume it is a string and just return it</span>
+                <span class="c1"># CAUTION: This could cause issues for the user, if they meant to pass a variable</span>
+                <span class="c1"># but mistyped it or didn&#39;t define it. But they might also want to pass a string</span>
+                <span class="c1"># that is variable name compatible, such as pec.</span>
+                <span class="c1"># This is basically about type checking, which we can get back to later.</span>
+                <span class="k">return</span> <span class="n">val</span>
+
+            <span class="k">if</span> <span class="n">is_for_ast_eval</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+                <span class="c1"># If it is a list or dict, this will do a literal eval, so string have</span>
+                <span class="c1"># to be in &quot;&quot; else [5um , 4um ] wont work, but [&quot;5um&quot;, &quot;0.4 um&quot;] will</span>
+                <span class="n">evaluated</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">evaluated</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="c1"># check if list, parse each element of the list</span>
+                    <span class="k">return</span> <span class="p">[</span>
+                        <span class="n">parse_value</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">variable_dict</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">evaluated</span>
+                    <span class="p">]</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">evaluated</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="n">Dict</span><span class="p">({</span>
+                        <span class="n">key</span><span class="p">:</span> <span class="n">parse_value</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">variable_dict</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">evaluated</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                    <span class="p">})</span>
+
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;Unknown error in `is_for_ast_eval`</span><span class="se">\n</span><span class="s1">val=</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="se">\n</span><span class="s1">evaluated=</span><span class="si">{</span><span class="n">evaluated</span><span class="si">}</span><span class="s1">&#39;</span>
+                <span class="p">)</span>
+                <span class="k">return</span> <span class="n">evaluated</span>
+
+            <span class="k">if</span> <span class="n">is_numeric_possible</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">_parse_string_to_float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+        <span class="c1"># If the value is a dictionary (dict,Dict,...),</span>
+        <span class="c1"># then parse that dictionary. return Dict</span>
+        <span class="k">return</span> <span class="n">Dict</span><span class="p">(</span>
+            <span class="nb">map</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">item</span><span class="p">:</span>  <span class="c1"># item = [key, value]</span>
+                <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">parse_value</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">variable_dict</span><span class="p">)],</span>
+                <span class="n">value</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
+        <span class="c1"># list, tuple, ... Return the same type</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span>
+        <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">),</span>
+              <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">))([</span><span class="n">parse_value</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">variable_dict</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">value</span><span class="p">])</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Number</span><span class="p">):</span>
+        <span class="c1"># If it is an int it will return an int, not a float, etc.</span>
+        <span class="k">return</span> <span class="n">value</span>
+
+    <span class="c1"># else no parsing needed, it is not data that we can handle</span>
+    <span class="k">return</span> <span class="n">value</span></div>
+
+
+
+<div class="viewcode-block" id="parse_options">
+<a class="viewcode-back" href="../../../stubs/qiskit_metal.toolbox_metal.parsing.html#qiskit_metal.toolbox_metal.parsing.parse_options">[docs]</a>
+<span class="k">def</span> <span class="nf">parse_options</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">parse_names</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">variable_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calls parse_value to extract from a dictionary a small subset of values.</span>
+<span class="sd">    You can specify parse_names = &#39;x,y,z,cpw_width&#39;.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        params (dict): Dictionary of params</span>
+<span class="sd">        parse_names (str): Name to parse</span>
+<span class="sd">        variable_dict (dict): Dictionary of variables.  Defaults to None.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Prep args</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">variable_dict</span><span class="p">:</span>  <span class="c1"># If None, create an empty dict</span>
+        <span class="n">variable_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">parse_names</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">):</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span>
+        <span class="p">)</span>  <span class="c1"># remove trailing and leading white spaces in the name</span>
+
+        <span class="c1"># is the name in the options at all?</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Missing key </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> from params </span><span class="si">{</span><span class="n">params</span><span class="si">}</span><span class="s1">. Skipping ...</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">continue</span>
+
+        <span class="c1"># option_dict[name] should be a string</span>
+        <span class="n">res</span> <span class="o">+=</span> <span class="p">[</span><span class="n">parse_value</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="n">variable_dict</span><span class="p">)]</span>
+
+    <span class="k">return</span> <span class="n">res</span></div>
+
+
+
+<span class="c1">##############################################################################</span>
+<span class="c1"># From pyepr, being used by renderer using comm port.</span>
+<span class="c1">#</span>
+<span class="sd">&quot;&quot;&quot;The methods in this section were copied from Ansys renderer which used comm-ports.&quot;&quot;&quot;</span>
+
+<span class="c1"># UNITS</span>
+<span class="c1"># LENGTH_UNIT         --- HFSS UNITS</span>
+<span class="c1"># #Assumed default input units for ansys hfss</span>
+<span class="n">LENGTH_UNIT</span> <span class="o">=</span> <span class="s1">&#39;meter&#39;</span>
+<span class="c1"># LENGTH_UNIT_ASSUMED --- USER UNITS</span>
+<span class="c1"># if a user inputs a blank number with no units in `parse_fix`,</span>
+<span class="c1"># we can assume the following using</span>
+<span class="n">LENGTH_UNIT_ASSUMED</span> <span class="o">=</span> <span class="s1">&#39;mm&#39;</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">u_reg</span> <span class="o">=</span> <span class="n">UnitRegistry</span><span class="p">()</span>
+    <span class="n">Q</span> <span class="o">=</span> <span class="n">u_reg</span><span class="o">.</span><span class="n">Quantity</span>
+<span class="k">except</span> <span class="p">(</span><span class="ne">ImportError</span><span class="p">,</span> <span class="ne">ModuleNotFoundError</span><span class="p">):</span>
+    <span class="k">pass</span>  <span class="c1"># raise NameError (&quot;Pint module not installed. Please install.&quot;)</span>
+
+
+<span class="k">def</span> <span class="nf">extract_value_unit</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">units</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :type expr: str</span>
+<span class="sd">    :type units: str</span>
+<span class="sd">    :return: float</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># pylint: disable=broad-except</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Q</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">expr</span>
+
+
+<span class="k">def</span> <span class="nf">fix_units</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">unit_assumed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Convert all numbers to string and append the assumed units if needed.</span>
+<span class="sd">    For an iterable, returns a list</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">unit_assumed</span> <span class="o">=</span> <span class="n">LENGTH_UNIT_ASSUMED</span> <span class="k">if</span> <span class="n">unit_assumed</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">unit_assumed</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="c1"># Check if there are already units defined, assume of form 2.46mm  or 2.0 or 4.</span>
+        <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="ow">or</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;.&#39;</span><span class="p">:</span>  <span class="c1"># number</span>
+            <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">unit_assumed</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># units are already applied</span>
+            <span class="k">return</span> <span class="n">x</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Number</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">fix_units</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">unit_assumed</span><span class="p">,</span> <span class="n">unit_assumed</span><span class="o">=</span><span class="n">unit_assumed</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>  <span class="c1"># hasattr(x, &#39;__iter__&#39;):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">fix_units</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">unit_assumed</span><span class="o">=</span><span class="n">unit_assumed</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">x</span>
+
+
+<span class="k">def</span> <span class="nf">parse_entry</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">convert_to_unit</span><span class="o">=</span><span class="n">LENGTH_UNIT</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Should take a list of tuple of list... of int, float or str...</span>
+<span class="sd">    For iterables, returns lists</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">extract_value_unit</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">convert_to_unit</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">entries</span> <span class="o">=</span> <span class="n">entry</span>
+        <span class="n">_entry</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">:</span>
+            <span class="n">_entry</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parse_entry</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">convert_to_unit</span><span class="o">=</span><span class="n">convert_to_unit</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_entry</span>
+
+
+<span class="k">def</span> <span class="nf">parse_units</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Convert number, string, and lists/arrays/tuples to numbers scaled</span>
+<span class="sd">    in HFSS units.</span>
+
+<span class="sd">    Converts to                  LENGTH_UNIT = meters  [HFSS UNITS]</span>
+<span class="sd">    Assumes input units  LENGTH_UNIT_ASSUMED = mm      [USER UNITS]</span>
+
+<span class="sd">    [USER UNITS] ----&gt; [HFSS UNITS]</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">parse_entry</span><span class="p">(</span><span class="n">fix_units</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2019, Qiskit Development Team
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on 2023/12/28</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../../../_static/documentation_options.js?v=59fadc99"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    </body>
+</html>

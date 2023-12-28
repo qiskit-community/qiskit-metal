@@ -1,0 +1,8 @@
+﻿
+
+RouteAnchors.class_name
+=============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: RouteAnchors.class_name

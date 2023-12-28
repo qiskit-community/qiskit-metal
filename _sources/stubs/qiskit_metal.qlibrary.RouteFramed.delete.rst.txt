@@ -1,0 +1,8 @@
+﻿
+
+RouteFramed.delete
+========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteFramed.delete

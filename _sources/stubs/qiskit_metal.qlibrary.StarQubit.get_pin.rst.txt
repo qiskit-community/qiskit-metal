@@ -1,0 +1,8 @@
+﻿
+
+StarQubit.get_pin
+=======================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: StarQubit.get_pin

@@ -1,0 +1,8 @@
+﻿
+
+LineTee.add_dependency
+============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: LineTee.add_dependency

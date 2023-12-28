@@ -1,0 +1,8 @@
+﻿
+
+Rectangle.options
+=======================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: Rectangle.options

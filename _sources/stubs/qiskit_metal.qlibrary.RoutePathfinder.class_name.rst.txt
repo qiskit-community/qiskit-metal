@@ -1,0 +1,8 @@
+﻿
+
+RoutePathfinder.class_name
+================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: RoutePathfinder.class_name

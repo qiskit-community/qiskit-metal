@@ -1,0 +1,8 @@
+﻿
+
+ScatteringImpedanceSim.save_screenshot
+============================================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: ScatteringImpedanceSim.save_screenshot

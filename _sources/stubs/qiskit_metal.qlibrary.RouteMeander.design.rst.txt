@@ -1,0 +1,8 @@
+﻿
+
+RouteMeander.design
+=========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: RouteMeander.design

@@ -1,0 +1,8 @@
+﻿
+
+TransmonCross.options
+===========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: TransmonCross.options

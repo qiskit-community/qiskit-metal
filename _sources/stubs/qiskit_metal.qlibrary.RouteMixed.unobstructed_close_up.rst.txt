@@ -1,0 +1,8 @@
+﻿
+
+RouteMixed.unobstructed_close_up
+======================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteMixed.unobstructed_close_up

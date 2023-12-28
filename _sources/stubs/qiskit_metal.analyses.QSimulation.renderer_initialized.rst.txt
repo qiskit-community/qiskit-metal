@@ -1,0 +1,8 @@
+﻿
+
+QSimulation.renderer_initialized
+======================================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. autoproperty:: QSimulation.renderer_initialized

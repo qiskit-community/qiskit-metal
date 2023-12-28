@@ -1,0 +1,8 @@
+﻿
+
+ResonatorCoilRect.qgeometry_types
+=======================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: ResonatorCoilRect.qgeometry_types

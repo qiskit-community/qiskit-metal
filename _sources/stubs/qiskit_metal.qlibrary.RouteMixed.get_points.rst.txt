@@ -1,0 +1,8 @@
+﻿
+
+RouteMixed.get_points
+===========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteMixed.get_points

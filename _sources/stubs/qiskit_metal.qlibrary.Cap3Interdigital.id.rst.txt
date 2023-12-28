@@ -1,0 +1,8 @@
+﻿
+
+Cap3Interdigital.id
+=========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: Cap3Interdigital.id

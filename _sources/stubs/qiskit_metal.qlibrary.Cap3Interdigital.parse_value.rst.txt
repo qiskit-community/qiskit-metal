@@ -1,0 +1,8 @@
+﻿
+
+Cap3Interdigital.parse_value
+==================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: Cap3Interdigital.parse_value

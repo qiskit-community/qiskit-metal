@@ -1,0 +1,8 @@
+﻿
+
+CoupledLineTee.design
+===========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: CoupledLineTee.design

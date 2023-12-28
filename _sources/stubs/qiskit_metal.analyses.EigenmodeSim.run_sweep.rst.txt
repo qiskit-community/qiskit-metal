@@ -1,0 +1,8 @@
+﻿
+
+EigenmodeSim.run_sweep
+============================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: EigenmodeSim.run_sweep

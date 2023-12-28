@@ -1,0 +1,8 @@
+﻿
+
+CoupledLineTee.component_metadata
+=======================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: CoupledLineTee.component_metadata

@@ -1,0 +1,8 @@
+﻿
+
+TransmonInterdigitated.component_metadata
+===============================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: TransmonInterdigitated.component_metadata

@@ -1,0 +1,8 @@
+﻿
+
+CapNInterdigitalTee.design
+================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: CapNInterdigitalTee.design

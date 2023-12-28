@@ -1,0 +1,8 @@
+﻿
+
+NSquareSpiral.get_template_options
+========================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: NSquareSpiral.get_template_options

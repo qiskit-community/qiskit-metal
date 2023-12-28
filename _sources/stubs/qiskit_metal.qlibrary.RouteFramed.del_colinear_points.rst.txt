@@ -1,0 +1,8 @@
+﻿
+
+RouteFramed.del_colinear_points
+=====================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteFramed.del_colinear_points

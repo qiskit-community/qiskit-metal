@@ -1,0 +1,8 @@
+﻿
+
+CapNInterdigitalTee.rebuild
+=================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: CapNInterdigitalTee.rebuild

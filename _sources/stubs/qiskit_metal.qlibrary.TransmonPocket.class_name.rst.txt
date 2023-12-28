@@ -1,0 +1,8 @@
+﻿
+
+TransmonPocket.class_name
+===============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: TransmonPocket.class_name

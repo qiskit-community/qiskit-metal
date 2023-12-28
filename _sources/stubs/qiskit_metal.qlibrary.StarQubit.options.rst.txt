@@ -1,0 +1,8 @@
+﻿
+
+StarQubit.options
+=======================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: StarQubit.options

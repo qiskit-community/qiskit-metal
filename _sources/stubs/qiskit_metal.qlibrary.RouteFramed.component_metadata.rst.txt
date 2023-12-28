@@ -1,0 +1,8 @@
+﻿
+
+RouteFramed.component_metadata
+====================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: RouteFramed.component_metadata

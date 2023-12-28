@@ -1,0 +1,8 @@
+﻿
+
+Rectangle.add_pin
+=======================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: Rectangle.add_pin

@@ -1,0 +1,8 @@
+﻿
+
+EigenmodeSim.setup_update
+===============================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: EigenmodeSim.setup_update

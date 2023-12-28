@@ -1,0 +1,8 @@
+﻿
+
+EigenmodeSim.supported_data
+=================================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. autoproperty:: EigenmodeSim.supported_data

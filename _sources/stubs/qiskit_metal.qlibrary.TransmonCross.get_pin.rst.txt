@@ -1,0 +1,8 @@
+﻿
+
+TransmonCross.get_pin
+===========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonCross.get_pin

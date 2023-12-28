@@ -1,0 +1,8 @@
+﻿
+
+Rectangle.design
+======================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: Rectangle.design

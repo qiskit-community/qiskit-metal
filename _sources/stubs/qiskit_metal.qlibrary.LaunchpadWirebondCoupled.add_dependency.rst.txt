@@ -1,0 +1,8 @@
+﻿
+
+LaunchpadWirebondCoupled.add_dependency
+=============================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: LaunchpadWirebondCoupled.add_dependency

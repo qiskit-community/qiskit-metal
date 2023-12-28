@@ -1,0 +1,8 @@
+﻿
+
+RouteMixed.logger
+=======================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: RouteMixed.logger

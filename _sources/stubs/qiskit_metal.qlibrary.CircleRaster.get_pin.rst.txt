@@ -1,0 +1,8 @@
+﻿
+
+CircleRaster.get_pin
+==========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: CircleRaster.get_pin

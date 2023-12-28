@@ -1,0 +1,8 @@
+﻿
+
+RouteAnchors.unobstructed
+===============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteAnchors.unobstructed

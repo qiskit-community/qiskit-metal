@@ -1,0 +1,8 @@
+﻿
+
+RouteMeander.TOOLTIP
+==========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: RouteMeander.TOOLTIP

@@ -1,0 +1,8 @@
+﻿
+
+RouteStraight.id
+======================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: RouteStraight.id

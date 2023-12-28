@@ -1,0 +1,8 @@
+﻿
+
+LaunchpadWirebond.add_pin
+===============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: LaunchpadWirebond.add_pin

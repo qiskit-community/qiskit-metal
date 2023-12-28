@@ -1,0 +1,8 @@
+﻿
+
+ScatteringImpedanceSim.logger
+===================================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. autoproperty:: ScatteringImpedanceSim.logger

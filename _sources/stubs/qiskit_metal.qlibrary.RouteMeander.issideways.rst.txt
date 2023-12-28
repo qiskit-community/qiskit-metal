@@ -1,0 +1,8 @@
+﻿
+
+RouteMeander.issideways
+=============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteMeander.issideways

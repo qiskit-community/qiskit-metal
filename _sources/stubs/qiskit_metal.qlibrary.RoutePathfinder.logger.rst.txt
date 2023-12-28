@@ -1,0 +1,8 @@
+﻿
+
+RoutePathfinder.logger
+============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: RoutePathfinder.logger

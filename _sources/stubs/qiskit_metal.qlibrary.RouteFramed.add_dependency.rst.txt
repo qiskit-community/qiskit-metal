@@ -1,0 +1,8 @@
+﻿
+
+RouteFramed.add_dependency
+================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteFramed.add_dependency

@@ -1,0 +1,8 @@
+﻿
+
+RouteFramed.length_excess_corner_rounding
+===============================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteFramed.length_excess_corner_rounding

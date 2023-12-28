@@ -1,0 +1,8 @@
+﻿
+
+TransmonConcentric.logger
+===============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: TransmonConcentric.logger

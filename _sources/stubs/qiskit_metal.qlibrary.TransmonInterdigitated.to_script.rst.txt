@@ -1,0 +1,8 @@
+﻿
+
+TransmonInterdigitated.to_script
+======================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonInterdigitated.to_script

@@ -1,0 +1,8 @@
+﻿
+
+RouteAnchors.add_dependency
+=================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteAnchors.add_dependency

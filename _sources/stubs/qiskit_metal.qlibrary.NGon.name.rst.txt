@@ -1,0 +1,8 @@
+﻿
+
+NGon.name
+===============================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: NGon.name

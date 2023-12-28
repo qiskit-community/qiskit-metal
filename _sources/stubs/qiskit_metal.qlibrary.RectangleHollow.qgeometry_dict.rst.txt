@@ -1,0 +1,8 @@
+﻿
+
+RectangleHollow.qgeometry_dict
+====================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RectangleHollow.qgeometry_dict

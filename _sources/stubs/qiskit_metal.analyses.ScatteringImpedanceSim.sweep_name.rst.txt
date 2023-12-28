@@ -1,0 +1,8 @@
+﻿
+
+ScatteringImpedanceSim.sweep_name
+=======================================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. autoproperty:: ScatteringImpedanceSim.sweep_name

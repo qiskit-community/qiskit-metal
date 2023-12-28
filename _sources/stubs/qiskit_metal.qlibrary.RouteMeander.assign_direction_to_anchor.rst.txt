@@ -1,0 +1,8 @@
+﻿
+
+RouteMeander.assign_direction_to_anchor
+=============================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteMeander.assign_direction_to_anchor

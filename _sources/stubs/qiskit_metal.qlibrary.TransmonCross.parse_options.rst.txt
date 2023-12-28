@@ -1,0 +1,8 @@
+﻿
+
+TransmonCross.parse_options
+=================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonCross.parse_options

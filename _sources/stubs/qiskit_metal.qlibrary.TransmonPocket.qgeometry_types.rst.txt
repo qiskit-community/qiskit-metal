@@ -1,0 +1,8 @@
+﻿
+
+TransmonPocket.qgeometry_types
+====================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: TransmonPocket.qgeometry_types

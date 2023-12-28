@@ -1,0 +1,8 @@
+﻿
+
+QSimulation.close
+=======================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: QSimulation.close

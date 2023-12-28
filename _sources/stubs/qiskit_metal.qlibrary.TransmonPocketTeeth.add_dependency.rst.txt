@@ -1,0 +1,8 @@
+﻿
+
+TransmonPocketTeeth.add_dependency
+========================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonPocketTeeth.add_dependency

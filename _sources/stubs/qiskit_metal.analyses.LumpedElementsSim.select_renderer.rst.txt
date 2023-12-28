@@ -1,0 +1,8 @@
+﻿
+
+LumpedElementsSim.select_renderer
+=======================================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: LumpedElementsSim.select_renderer

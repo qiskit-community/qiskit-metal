@@ -1,0 +1,8 @@
+﻿
+
+LaunchpadWirebondCoupled.to_script
+========================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: LaunchpadWirebondCoupled.to_script

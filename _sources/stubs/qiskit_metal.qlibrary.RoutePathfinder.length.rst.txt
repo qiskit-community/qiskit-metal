@@ -1,0 +1,8 @@
+﻿
+
+RoutePathfinder.length
+============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: RoutePathfinder.length

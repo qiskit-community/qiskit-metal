@@ -1,0 +1,8 @@
+﻿
+
+TransmonPocketTeeth.qgeometry_bounds
+==========================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonPocketTeeth.qgeometry_bounds

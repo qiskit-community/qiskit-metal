@@ -1,0 +1,8 @@
+﻿
+
+ScatteringImpedanceSim.default_setup
+==========================================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. autoattribute:: ScatteringImpedanceSim.default_setup

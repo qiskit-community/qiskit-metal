@@ -1,0 +1,8 @@
+﻿
+
+LaunchpadWirebond.design
+==============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: LaunchpadWirebond.design

@@ -1,0 +1,8 @@
+﻿
+
+LaunchpadWirebondCoupled.TOOLTIP
+======================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: LaunchpadWirebondCoupled.TOOLTIP

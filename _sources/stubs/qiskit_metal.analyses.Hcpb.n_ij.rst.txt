@@ -1,0 +1,8 @@
+﻿
+
+Hcpb.n_ij
+===============================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: Hcpb.n_ij

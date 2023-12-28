@@ -1,0 +1,8 @@
+﻿
+
+CapNInterdigital.TOOLTIP
+==============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: CapNInterdigital.TOOLTIP

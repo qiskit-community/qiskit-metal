@@ -1,0 +1,8 @@
+﻿
+
+LaunchpadWirebondCoupled.parse_value
+==========================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: LaunchpadWirebondCoupled.parse_value

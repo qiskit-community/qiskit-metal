@@ -1,0 +1,8 @@
+﻿
+
+LumpedElementsSim.close
+=============================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: LumpedElementsSim.close

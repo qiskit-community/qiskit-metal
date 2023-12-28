@@ -1,0 +1,8 @@
+﻿
+
+RouteAnchors.get_template_options
+=======================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteAnchors.get_template_options

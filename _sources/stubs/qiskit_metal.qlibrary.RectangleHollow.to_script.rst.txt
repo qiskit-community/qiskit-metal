@@ -1,0 +1,8 @@
+﻿
+
+RectangleHollow.to_script
+===============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RectangleHollow.to_script

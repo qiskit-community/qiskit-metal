@@ -1,0 +1,8 @@
+﻿
+
+RouteFramed.qgeometry_list
+================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteFramed.qgeometry_list

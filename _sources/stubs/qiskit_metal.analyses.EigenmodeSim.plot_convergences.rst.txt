@@ -1,0 +1,8 @@
+﻿
+
+EigenmodeSim.plot_convergences
+====================================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: EigenmodeSim.plot_convergences

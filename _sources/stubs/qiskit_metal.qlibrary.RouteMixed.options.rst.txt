@@ -1,0 +1,8 @@
+﻿
+
+RouteMixed.options
+========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: RouteMixed.options

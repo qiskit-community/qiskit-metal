@@ -1,0 +1,8 @@
+﻿
+
+LineTee.populate_to_track_table_usage
+===========================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: LineTee.populate_to_track_table_usage

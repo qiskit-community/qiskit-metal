@@ -1,0 +1,8 @@
+﻿
+
+SQUID_LOOP.component_metadata
+===================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: SQUID_LOOP.component_metadata

@@ -1,0 +1,8 @@
+﻿
+
+RoutePathfinder.trim_pts
+==============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RoutePathfinder.trim_pts

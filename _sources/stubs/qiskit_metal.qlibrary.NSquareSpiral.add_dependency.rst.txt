@@ -1,0 +1,8 @@
+﻿
+
+NSquareSpiral.add_dependency
+==================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: NSquareSpiral.add_dependency

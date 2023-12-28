@@ -1,0 +1,8 @@
+﻿
+
+ResonatorCoilRect.to_script
+=================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: ResonatorCoilRect.to_script

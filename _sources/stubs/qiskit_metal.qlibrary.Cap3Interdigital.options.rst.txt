@@ -1,0 +1,8 @@
+﻿
+
+Cap3Interdigital.options
+==============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: Cap3Interdigital.options

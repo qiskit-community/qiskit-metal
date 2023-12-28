@@ -1,0 +1,8 @@
+﻿
+
+RectangleHollow.qgeometry_bounds
+======================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RectangleHollow.qgeometry_bounds

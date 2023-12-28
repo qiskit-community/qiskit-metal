@@ -1,0 +1,8 @@
+﻿
+
+RouteFramed.qgeometry_table
+=================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteFramed.qgeometry_table

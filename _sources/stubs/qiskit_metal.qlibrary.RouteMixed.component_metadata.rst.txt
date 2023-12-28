@@ -1,0 +1,8 @@
+﻿
+
+RouteMixed.component_metadata
+===================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: RouteMixed.component_metadata

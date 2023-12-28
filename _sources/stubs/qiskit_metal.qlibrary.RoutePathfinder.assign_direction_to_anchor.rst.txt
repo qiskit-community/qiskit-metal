@@ -1,0 +1,8 @@
+﻿
+
+RoutePathfinder.assign_direction_to_anchor
+================================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RoutePathfinder.assign_direction_to_anchor

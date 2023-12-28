@@ -1,0 +1,8 @@
+﻿
+
+OpenToGround.qgeometry_table
+==================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: OpenToGround.qgeometry_table

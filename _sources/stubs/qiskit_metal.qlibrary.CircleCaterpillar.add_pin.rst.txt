@@ -1,0 +1,8 @@
+﻿
+
+CircleCaterpillar.add_pin
+===============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: CircleCaterpillar.add_pin

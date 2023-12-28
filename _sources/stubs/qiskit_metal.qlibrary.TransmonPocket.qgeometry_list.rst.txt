@@ -1,0 +1,8 @@
+﻿
+
+TransmonPocket.qgeometry_list
+===================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonPocket.qgeometry_list

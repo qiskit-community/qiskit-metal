@@ -1,0 +1,8 @@
+﻿
+
+EPRanalysis.get_frequencies
+=================================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: EPRanalysis.get_frequencies

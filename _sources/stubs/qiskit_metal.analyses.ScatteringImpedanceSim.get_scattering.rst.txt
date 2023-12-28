@@ -1,0 +1,8 @@
+﻿
+
+ScatteringImpedanceSim.get_scattering
+===========================================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: ScatteringImpedanceSim.get_scattering

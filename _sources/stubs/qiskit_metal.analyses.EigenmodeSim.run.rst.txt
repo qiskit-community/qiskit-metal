@@ -1,0 +1,8 @@
+﻿
+
+EigenmodeSim.run
+======================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: EigenmodeSim.run

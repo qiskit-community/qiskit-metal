@@ -1,0 +1,8 @@
+﻿
+
+RouteStraight.add_dependency
+==================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteStraight.add_dependency

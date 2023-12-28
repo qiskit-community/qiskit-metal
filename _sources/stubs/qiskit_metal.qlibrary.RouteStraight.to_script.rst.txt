@@ -1,0 +1,8 @@
+﻿
+
+RouteStraight.to_script
+=============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteStraight.to_script

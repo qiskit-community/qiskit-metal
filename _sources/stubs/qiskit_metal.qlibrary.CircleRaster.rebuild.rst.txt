@@ -1,0 +1,8 @@
+﻿
+
+CircleRaster.rebuild
+==========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: CircleRaster.rebuild

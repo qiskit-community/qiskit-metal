@@ -1,0 +1,8 @@
+﻿
+
+ShortToGround.qgeometry_plot
+==================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: ShortToGround.qgeometry_plot

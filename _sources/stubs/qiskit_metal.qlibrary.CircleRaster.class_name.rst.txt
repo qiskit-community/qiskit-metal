@@ -1,0 +1,8 @@
+﻿
+
+CircleRaster.class_name
+=============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: CircleRaster.class_name

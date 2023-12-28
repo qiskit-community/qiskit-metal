@@ -1,0 +1,8 @@
+﻿
+
+TransmonPocketCL.default_options
+======================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: TransmonPocketCL.default_options

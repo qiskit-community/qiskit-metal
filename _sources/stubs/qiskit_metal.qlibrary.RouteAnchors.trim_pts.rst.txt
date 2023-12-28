@@ -1,0 +1,8 @@
+﻿
+
+RouteAnchors.trim_pts
+===========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteAnchors.trim_pts

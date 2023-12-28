@@ -1,0 +1,8 @@
+﻿
+
+RouteFramed.get_tip
+=========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteFramed.get_tip

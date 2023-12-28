@@ -1,0 +1,8 @@
+﻿
+
+CapNInterdigitalTee.component_metadata
+============================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: CapNInterdigitalTee.component_metadata

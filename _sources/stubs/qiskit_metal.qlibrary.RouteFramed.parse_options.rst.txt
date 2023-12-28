@@ -1,0 +1,8 @@
+﻿
+
+RouteFramed.parse_options
+===============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteFramed.parse_options

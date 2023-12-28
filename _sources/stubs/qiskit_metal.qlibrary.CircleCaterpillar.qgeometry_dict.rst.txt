@@ -1,0 +1,8 @@
+﻿
+
+CircleCaterpillar.qgeometry_dict
+======================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: CircleCaterpillar.qgeometry_dict

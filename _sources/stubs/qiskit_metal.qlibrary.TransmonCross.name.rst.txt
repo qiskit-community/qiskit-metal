@@ -1,0 +1,8 @@
+﻿
+
+TransmonCross.name
+========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: TransmonCross.name

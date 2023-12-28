@@ -1,0 +1,8 @@
+﻿
+
+TransmonCross.make_pocket
+===============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonCross.make_pocket

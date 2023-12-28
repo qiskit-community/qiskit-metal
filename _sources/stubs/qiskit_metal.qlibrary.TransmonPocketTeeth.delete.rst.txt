@@ -1,0 +1,8 @@
+﻿
+
+TransmonPocketTeeth.delete
+================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonPocketTeeth.delete

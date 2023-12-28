@@ -1,0 +1,8 @@
+﻿
+
+RouteFramed.qgeometry_types
+=================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: RouteFramed.qgeometry_types

@@ -1,0 +1,8 @@
+﻿
+
+TransmonPocketTeeth.component_metadata
+============================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: TransmonPocketTeeth.component_metadata

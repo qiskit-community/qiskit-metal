@@ -1,0 +1,8 @@
+﻿
+
+CapNInterdigital.component_metadata
+=========================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: CapNInterdigital.component_metadata

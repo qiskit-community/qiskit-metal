@@ -1,0 +1,8 @@
+﻿
+
+ShortToGround.TOOLTIP
+===========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: ShortToGround.TOOLTIP

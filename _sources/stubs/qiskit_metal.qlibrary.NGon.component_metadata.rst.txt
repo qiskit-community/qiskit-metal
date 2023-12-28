@@ -1,0 +1,8 @@
+﻿
+
+NGon.component_metadata
+=============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: NGon.component_metadata

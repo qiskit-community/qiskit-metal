@@ -1,0 +1,8 @@
+﻿
+
+Hcpb_analytic.evalue_k
+============================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: Hcpb_analytic.evalue_k

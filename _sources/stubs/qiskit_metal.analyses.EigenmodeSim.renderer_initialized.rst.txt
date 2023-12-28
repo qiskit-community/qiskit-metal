@@ -1,0 +1,8 @@
+﻿
+
+EigenmodeSim.renderer_initialized
+=======================================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. autoproperty:: EigenmodeSim.renderer_initialized

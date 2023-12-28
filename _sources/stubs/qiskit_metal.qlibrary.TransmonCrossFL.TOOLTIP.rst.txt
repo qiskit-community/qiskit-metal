@@ -1,0 +1,8 @@
+﻿
+
+TransmonCrossFL.TOOLTIP
+=============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: TransmonCrossFL.TOOLTIP

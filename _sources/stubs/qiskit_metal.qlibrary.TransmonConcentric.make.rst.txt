@@ -1,0 +1,8 @@
+﻿
+
+TransmonConcentric.make
+=============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonConcentric.make

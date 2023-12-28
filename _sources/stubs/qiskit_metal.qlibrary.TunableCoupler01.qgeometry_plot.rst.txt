@@ -1,0 +1,8 @@
+﻿
+
+TunableCoupler01.qgeometry_plot
+=====================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TunableCoupler01.qgeometry_plot

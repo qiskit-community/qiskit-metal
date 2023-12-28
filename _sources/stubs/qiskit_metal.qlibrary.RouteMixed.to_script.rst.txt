@@ -1,0 +1,8 @@
+﻿
+
+RouteMixed.to_script
+==========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteMixed.to_script

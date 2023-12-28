@@ -1,0 +1,8 @@
+﻿
+
+NSquareSpiral.pin_names
+=============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: NSquareSpiral.pin_names

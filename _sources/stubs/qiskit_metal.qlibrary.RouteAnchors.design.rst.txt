@@ -1,0 +1,8 @@
+﻿
+
+RouteAnchors.design
+=========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: RouteAnchors.design

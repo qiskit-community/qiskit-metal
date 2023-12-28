@@ -1,0 +1,8 @@
+﻿
+
+RoutePathfinder.qgeometry_dict
+====================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RoutePathfinder.qgeometry_dict

@@ -1,0 +1,104 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "reliable-developer",
+   "metadata": {},
+   "source": [
+    "# Plotting Wavefunctions of the Quantum Harmonic Oscillator (LC Circuit) "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "incident-serial",
+   "metadata": {},
+   "source": [
+    "Let's start by importing qiskit metal as well as some helpful libraries for math and plotting:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "scenic-motor",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import qiskit_metal as metal\n",
+    "import matplotlib.pyplot as plt\n",
+    "import numpy as np\n",
+    "import math "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "unnecessary-harvard",
+   "metadata": {},
+   "source": [
+    "Next, let's import the function \"wavefunction\" from the file \"HO_wavefunctions.py\" located in the analyses / hamiltonian folder. This function takes four arguments: the inductance (L), the capacitance (C), the energy level of the harmonic oscillator (n) and the values of charge (x=Q) for which the wavefunctions are calculated. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "wicked-commissioner",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from qiskit_metal.analyses.hamiltonian.HO_wavefunctions import wavefunction"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "fresh-spare",
+   "metadata": {},
+   "source": [
+    "We'll define the charge to be in the range (-5,5) with 100 points in between. For simplicity, we'll set L=C=1.0 in the examples below. We can plot the first five energy levels (N=0 through N=4) of the quantum oscillator by executing the code below: "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "obvious-arrival",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Let's define the range of x-axis values (representating charge) to be from (-5,5) \n",
+    "x = np.linspace(-5,5,100)\n",
+    " \n",
+    "# Let's plot the first five energy levels (N=0 through N=4) of the harmonic oscillator\n",
+    "# We'll just take L=C=1.0 for simplicity \n",
+    "plt.plot(x, wavefunction(1.0, 1.0, 0.0, x), 'k') # N=0; ground state (black)\n",
+    "plt.plot(x, wavefunction(1.0, 1.0, 1.0, x), 'b') # N=1; first excited state (blue)\n",
+    "plt.plot(x, wavefunction(1.0, 1.0, 2.0, x), 'r') # N=2; second excited state (red)\n",
+    "plt.plot(x, wavefunction(1.0, 1.0, 3.0, x), 'g') # N=3; third excited state (green)\n",
+    "plt.plot(x, wavefunction(1.0, 1.0, 4.0, x), 'y') # N=4; fourth excited state (yellow) \n",
+    "plt.xlabel(\"Charge [Q]\")\n",
+    "plt.ylabel(\"Wavefunction [Psi]\")\n",
+    "\n",
+    "# show the plot\n",
+    "plt.show()"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.8"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

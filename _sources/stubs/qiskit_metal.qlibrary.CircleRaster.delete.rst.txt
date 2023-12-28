@@ -1,0 +1,8 @@
+﻿
+
+CircleRaster.delete
+=========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: CircleRaster.delete

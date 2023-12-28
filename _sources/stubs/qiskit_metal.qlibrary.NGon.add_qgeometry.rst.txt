@@ -1,0 +1,8 @@
+﻿
+
+NGon.add_qgeometry
+========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: NGon.add_qgeometry

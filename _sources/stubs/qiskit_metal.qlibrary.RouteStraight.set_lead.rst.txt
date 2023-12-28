@@ -1,0 +1,8 @@
+﻿
+
+RouteStraight.set_lead
+============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteStraight.set_lead

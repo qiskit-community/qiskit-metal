@@ -1,0 +1,8 @@
+﻿
+
+LaunchpadWirebondCoupled.populate_to_track_table_usage
+============================================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: LaunchpadWirebondCoupled.populate_to_track_table_usage

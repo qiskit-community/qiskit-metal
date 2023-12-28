@@ -1,0 +1,8 @@
+﻿
+
+NGon.add_pin
+==================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: NGon.add_pin

@@ -1,0 +1,8 @@
+﻿
+
+LineTee.qgeometry_bounds
+==============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: LineTee.qgeometry_bounds

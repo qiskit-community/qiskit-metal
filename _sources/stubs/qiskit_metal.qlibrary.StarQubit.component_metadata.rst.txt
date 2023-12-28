@@ -1,0 +1,8 @@
+﻿
+
+StarQubit.component_metadata
+==================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: StarQubit.component_metadata

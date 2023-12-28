@@ -1,0 +1,8 @@
+﻿
+
+StarQubit.connect_components_already_in_design
+====================================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: StarQubit.connect_components_already_in_design

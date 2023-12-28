@@ -1,0 +1,8 @@
+﻿
+
+RoutePathfinder.unobstructed_close_up
+===========================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RoutePathfinder.unobstructed_close_up

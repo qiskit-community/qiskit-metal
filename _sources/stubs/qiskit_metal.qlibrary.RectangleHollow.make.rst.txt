@@ -1,0 +1,8 @@
+﻿
+
+RectangleHollow.make
+==========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RectangleHollow.make

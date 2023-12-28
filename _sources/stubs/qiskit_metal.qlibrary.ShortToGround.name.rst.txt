@@ -1,0 +1,8 @@
+﻿
+
+ShortToGround.name
+========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: ShortToGround.name

@@ -1,0 +1,8 @@
+﻿
+
+ResonatorCoilRect.get_template_options
+============================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: ResonatorCoilRect.get_template_options

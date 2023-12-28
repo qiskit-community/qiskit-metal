@@ -1,0 +1,8 @@
+﻿
+
+ShortToGround.parse_options
+=================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: ShortToGround.parse_options

@@ -1,0 +1,8 @@
+﻿
+
+LumpedElementsSim.units
+=============================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. autoproperty:: LumpedElementsSim.units

@@ -1,0 +1,8 @@
+﻿
+
+RoutePathfinder.component_metadata
+========================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: RoutePathfinder.component_metadata

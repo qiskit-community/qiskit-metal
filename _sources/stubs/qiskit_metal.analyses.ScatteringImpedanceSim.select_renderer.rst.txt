@@ -1,0 +1,8 @@
+﻿
+
+ScatteringImpedanceSim.select_renderer
+============================================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: ScatteringImpedanceSim.select_renderer

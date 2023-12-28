@@ -1,0 +1,8 @@
+﻿
+
+TransmonInterdigitated.options
+====================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: TransmonInterdigitated.options

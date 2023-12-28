@@ -1,0 +1,8 @@
+﻿
+
+CapNInterdigitalTee.parse_value
+=====================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: CapNInterdigitalTee.parse_value

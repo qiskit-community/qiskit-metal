@@ -1,0 +1,8 @@
+﻿
+
+SQUID_LOOP.default_options
+================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: SQUID_LOOP.default_options

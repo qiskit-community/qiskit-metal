@@ -1,0 +1,8 @@
+﻿
+
+QAnalysis.run
+===================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: QAnalysis.run

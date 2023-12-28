@@ -1,0 +1,8 @@
+﻿
+
+RouteMixed.qgeometry_list
+===============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteMixed.qgeometry_list

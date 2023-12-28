@@ -1,0 +1,8 @@
+﻿
+
+NSquareSpiral.to_script
+=============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: NSquareSpiral.to_script

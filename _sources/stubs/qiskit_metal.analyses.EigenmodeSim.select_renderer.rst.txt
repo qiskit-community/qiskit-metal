@@ -1,0 +1,8 @@
+﻿
+
+EigenmodeSim.select_renderer
+==================================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. automethod:: EigenmodeSim.select_renderer

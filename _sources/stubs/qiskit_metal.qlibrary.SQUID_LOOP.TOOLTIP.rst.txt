@@ -1,0 +1,8 @@
+﻿
+
+SQUID_LOOP.TOOLTIP
+========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: SQUID_LOOP.TOOLTIP

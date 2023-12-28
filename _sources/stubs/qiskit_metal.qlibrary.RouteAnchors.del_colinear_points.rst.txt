@@ -1,0 +1,8 @@
+﻿
+
+RouteAnchors.del_colinear_points
+======================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteAnchors.del_colinear_points

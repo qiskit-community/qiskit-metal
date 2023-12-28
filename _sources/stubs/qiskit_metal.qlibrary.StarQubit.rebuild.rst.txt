@@ -1,0 +1,8 @@
+﻿
+
+StarQubit.rebuild
+=======================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: StarQubit.rebuild

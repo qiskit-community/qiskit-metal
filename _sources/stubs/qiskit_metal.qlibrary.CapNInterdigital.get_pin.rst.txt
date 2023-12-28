@@ -1,0 +1,8 @@
+﻿
+
+CapNInterdigital.get_pin
+==============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: CapNInterdigital.get_pin

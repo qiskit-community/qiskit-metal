@@ -1,0 +1,8 @@
+﻿
+
+SQUID_LOOP.design
+=======================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: SQUID_LOOP.design

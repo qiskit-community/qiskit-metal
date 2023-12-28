@@ -1,0 +1,8 @@
+﻿
+
+StarQubit.pin_names
+=========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: StarQubit.pin_names

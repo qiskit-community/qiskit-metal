@@ -1,0 +1,8 @@
+﻿
+
+TransmonCrossFL.logger
+============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: TransmonCrossFL.logger

@@ -1,0 +1,8 @@
+﻿
+
+CircleRaster.parse_value
+==============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: CircleRaster.parse_value

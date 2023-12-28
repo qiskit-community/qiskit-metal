@@ -1,0 +1,8 @@
+﻿
+
+CoupledLineTee.delete
+===========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: CoupledLineTee.delete

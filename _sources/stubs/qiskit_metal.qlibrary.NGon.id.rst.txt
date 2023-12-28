@@ -1,0 +1,8 @@
+﻿
+
+NGon.id
+=============================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: NGon.id

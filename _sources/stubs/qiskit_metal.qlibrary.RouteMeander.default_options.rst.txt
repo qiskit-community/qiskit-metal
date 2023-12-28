@@ -1,0 +1,8 @@
+﻿
+
+RouteMeander.default_options
+==================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: RouteMeander.default_options

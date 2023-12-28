@@ -1,0 +1,8 @@
+﻿
+
+TransmonPocketTeeth.qgeometry_types
+=========================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: TransmonPocketTeeth.qgeometry_types

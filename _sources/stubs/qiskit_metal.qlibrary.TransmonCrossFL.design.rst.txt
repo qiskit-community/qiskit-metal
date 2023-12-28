@@ -1,0 +1,8 @@
+﻿
+
+TransmonCrossFL.design
+============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: TransmonCrossFL.design

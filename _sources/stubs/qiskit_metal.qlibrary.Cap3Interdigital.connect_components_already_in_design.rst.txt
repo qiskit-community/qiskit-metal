@@ -1,0 +1,8 @@
+﻿
+
+Cap3Interdigital.connect_components_already_in_design
+===========================================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: Cap3Interdigital.connect_components_already_in_design

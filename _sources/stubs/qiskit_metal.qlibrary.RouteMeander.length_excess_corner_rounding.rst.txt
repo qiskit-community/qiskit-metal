@@ -1,0 +1,8 @@
+﻿
+
+RouteMeander.length_excess_corner_rounding
+================================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteMeander.length_excess_corner_rounding

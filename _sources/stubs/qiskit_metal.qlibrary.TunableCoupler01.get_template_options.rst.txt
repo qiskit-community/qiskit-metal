@@ -1,0 +1,8 @@
+﻿
+
+TunableCoupler01.get_template_options
+===========================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TunableCoupler01.get_template_options

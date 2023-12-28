@@ -1,0 +1,8 @@
+﻿
+
+RouteFramed.id
+====================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: RouteFramed.id

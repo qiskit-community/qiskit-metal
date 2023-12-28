@@ -1,0 +1,8 @@
+﻿
+
+ScatteringImpedanceSim.data_labels
+========================================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. autoattribute:: ScatteringImpedanceSim.data_labels

@@ -1,0 +1,8 @@
+﻿
+
+RouteMeander.qgeometry_dict
+=================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteMeander.qgeometry_dict

@@ -1,0 +1,8 @@
+﻿
+
+RouteMixed.get_tip
+========================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteMixed.get_tip

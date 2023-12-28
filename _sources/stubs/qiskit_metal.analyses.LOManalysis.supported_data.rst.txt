@@ -1,0 +1,8 @@
+﻿
+
+LOManalysis.supported_data
+================================================
+
+.. currentmodule:: qiskit_metal.analyses
+
+.. autoproperty:: LOManalysis.supported_data

@@ -1,0 +1,8 @@
+﻿
+
+TransmonCrossFL.default_options
+=====================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoattribute:: TransmonCrossFL.default_options

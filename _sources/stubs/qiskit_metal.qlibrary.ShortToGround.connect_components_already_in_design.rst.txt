@@ -1,0 +1,8 @@
+﻿
+
+ShortToGround.connect_components_already_in_design
+========================================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: ShortToGround.connect_components_already_in_design

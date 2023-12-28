@@ -1,0 +1,8 @@
+﻿
+
+TransmonPocketCL.parse_options
+====================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonPocketCL.parse_options

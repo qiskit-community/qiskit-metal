@@ -1,0 +1,8 @@
+﻿
+
+RectangleHollow.logger
+============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: RectangleHollow.logger

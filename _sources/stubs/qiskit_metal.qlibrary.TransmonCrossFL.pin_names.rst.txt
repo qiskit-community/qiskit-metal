@@ -1,0 +1,8 @@
+﻿
+
+TransmonCrossFL.pin_names
+===============================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. autoproperty:: TransmonCrossFL.pin_names

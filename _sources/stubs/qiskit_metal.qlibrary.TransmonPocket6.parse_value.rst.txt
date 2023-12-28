@@ -1,0 +1,8 @@
+﻿
+
+TransmonPocket6.parse_value
+=================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: TransmonPocket6.parse_value

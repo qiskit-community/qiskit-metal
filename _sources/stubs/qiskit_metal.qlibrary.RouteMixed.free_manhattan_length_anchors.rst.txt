@@ -1,0 +1,8 @@
+﻿
+
+RouteMixed.free_manhattan_length_anchors
+==============================================================
+
+.. currentmodule:: qiskit_metal.qlibrary
+
+.. automethod:: RouteMixed.free_manhattan_length_anchors
