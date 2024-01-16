@@ -446,7 +446,7 @@ class QGeometryTables(object):
             helper: bool = False,
             layer: Union[int, str] = 1,  # chip will be here
             chip: str = 'main',
-            sublayer: Union[int, str] = 0,
+            sublayer: Union[int, str] = 10,
             **other_options):
         """Main interface to add qgeometries.
 
