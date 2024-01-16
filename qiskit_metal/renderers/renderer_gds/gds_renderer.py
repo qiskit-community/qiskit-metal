@@ -1532,7 +1532,7 @@ class QGDSRenderer(QRenderer):
 
                 for chip_layer in layers_in_chip:
                     self._handle_photo_resist(lib, chip_only_top, chip_name,
-                                              chip_layer, rectangle_points,
+                                              chip_layer, sublayer, rectangle_points,
                                               precision, max_points)
 
                 # If junction table, import the cell and cell to chip_only_top
@@ -1549,7 +1549,7 @@ class QGDSRenderer(QRenderer):
 
     def _handle_photo_resist(self, lib: gdspy.GdsLibrary,
                              chip_only_top: gdspy.library.Cell, chip_name: str,
-                             chip_layer: int, rectangle_points: list,
+                             chip_layer: int, sublayer: int, rectangle_points: list,
                              precision: float, max_points: int):
         """Handle the positive vs negative mask.
 
@@ -1565,19 +1565,19 @@ class QGDSRenderer(QRenderer):
         """
 
         self.chip_info[chip_name]['subtract_poly'] = gdspy.Polygon(
-            rectangle_points, chip_layer)
+            rectangle_points, chip_layer, datatype=sublayer)
 
         ground_cell_name = f'TOP_{chip_name}_{chip_layer}'
         ground_cell = lib.new_cell(ground_cell_name, overwrite_duplicate=True)
 
         if self._is_negative_mask(chip_name, chip_layer):
             self._negative_mask(lib, chip_only_top, ground_cell, chip_name,
-                                chip_layer, precision, max_points)
+                                chip_layer, sublayer, precision, max_points)
         else:
             self._positive_mask(lib, chip_only_top, ground_cell, chip_name,
-                                chip_layer, precision, max_points)
+                                chip_layer, sublayer, precision, max_points)
 
-    def _is_negative_mask(self, chip: str, layer: int) -> bool:
+    def _is_negative_mask(self, chip: str, layer: int, sublayer: int) -> bool:
         """Check options to see if negative mask is requested for the
         chip and layer.
 
@@ -1598,7 +1598,7 @@ class QGDSRenderer(QRenderer):
     def _negative_mask(self, lib: gdspy.GdsLibrary,
                        chip_only_top: gdspy.library.Cell,
                        ground_cell: gdspy.library.Cell, chip_name: str,
-                       chip_layer: int, precision: float, max_points: int):
+                       chip_layer: int, sublayer: int, precision: float, max_points: int):
         """Apply logic for negative_mask.
 
         Args:
@@ -1632,7 +1632,8 @@ class QGDSRenderer(QRenderer):
                                           'not',
                                           max_points=max_points,
                                           precision=precision,
-                                          layer=chip_layer)
+                                          layer=chip_layer,
+                                          datatype=sublayer)
 
             lib.remove(subtract_true_cell)
             lib.remove(subtract_false_cell)
@@ -1649,7 +1650,7 @@ class QGDSRenderer(QRenderer):
     def _positive_mask(self, lib: gdspy.GdsLibrary,
                        chip_only_top: gdspy.library.Cell,
                        ground_cell: gdspy.library.Cell, chip_name: str,
-                       chip_layer: int, precision: float, max_points: int):
+                       chip_layer: int, sublayer: int, precision: float, max_points: int):
         """Apply logic for positive mask.
 
         Args:
@@ -1680,7 +1681,8 @@ class QGDSRenderer(QRenderer):
                 'not',
                 max_points=max_points,
                 precision=precision,
-                layer=chip_layer)
+                layer=chip_layer, 
+                datatype=sublayer)
 
             lib.remove(subtract_cell)
 
@@ -2283,7 +2285,7 @@ class QGDSRenderer(QRenderer):
             exterior_poly = gdspy.Polygon(
                 list(geom.exterior.coords),
                 layer=qgeometry_element.layer,
-                datatype=10,
+                datatype=qgeometry_element.sublayer,
             )
 
             # If polygons have a holes, need to remove it for gdspy.
@@ -2294,7 +2296,7 @@ class QGDSRenderer(QRenderer):
                     all_interiors.append(interior_coords)
                 a_poly_set = gdspy.PolygonSet(all_interiors,
                                               layer=qgeometry_element.layer,
-                                              datatype=10)
+                                              datatype=qgeometry_element.sublayer)
                 # Since there is max_points in boolean, don't need to do this twice.
                 # a_poly_set = a_poly_set.fracture(max_points=max_points)
                 # exterior_poly = exterior_poly.fracture(max_points=max_points)
@@ -2304,7 +2306,7 @@ class QGDSRenderer(QRenderer):
                                        max_points=max_points,
                                        precision=precision,
                                        layer=qgeometry_element.layer,
-                                       datatype=10)
+                                       datatype=qgeometry_element.sublayer)
                 return a_poly
 
             exterior_poly = exterior_poly.fracture(max_points=max_points,
@@ -2343,13 +2345,13 @@ class QGDSRenderer(QRenderer):
                                                use_width,
                                                layer=qgeometry_element.layer,
                                                max_points=max_points,
-                                               datatype=11)
+                                               datatype=qgeometry_element.sublayer)
                 else:
                     to_return = gdspy.FlexPath(
                         list(geom.coords),
                         use_width,
                         layer=qgeometry_element.layer,
-                        datatype=11,
+                        datatype=qgeometry_element.sublayer,
                         max_points=max_points,
                         corners=corners,
                         bend_radius=qgeometry_element.fillet,

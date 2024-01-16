@@ -99,6 +99,7 @@ ELEMENT_COLUMNS = dict(
         subtract=bool,  # do we subtract from the ground place of the chip
         helper=bool,  # helper or not
         chip=str,  # chip name
+        sublayer=int,  # gds type of sublayer
         # type=str,  # metal, helper.   poly=10 or path=11
         __renderers__=dict(
             # ADD specific renderers here, all renderes must register here.
@@ -445,6 +446,7 @@ class QGeometryTables(object):
             helper: bool = False,
             layer: Union[int, str] = 1,  # chip will be here
             chip: str = 'main',
+            sublayer: Union[int, str] = 0,
             **other_options):
         """Main interface to add qgeometries.
 
@@ -456,6 +458,7 @@ class QGeometryTables(object):
             helper (bool): Helper - passed through.  Defaults to False.
             layer (Union[int, str]): Layer - passed through.  Defaults to 1.
             chip (str): Chip name - passed through.  Defaults to 'main'.
+            sublayer (Union[int, str]): Sublayer - passed through.  Defaults to 0.
             **other_options (object): Other_options - passed through.
         """
         # TODO: Add unit test
@@ -472,7 +475,7 @@ class QGeometryTables(object):
                 f'Kind must be in {self.get_element_types()}. This failed for component'
                 f'name = `{component_name}`.\n'
                 f' The call was with subtract={subtract} and helper={helper}'
-                f' and layer={layer}, and options={other_options}')
+                f' and layer={layer}, and sublayer={sublayer} and options={other_options}')
 
         #Checks if (any) of the geometry are MultiPolygons, and breaks them up into
         #individual polygons. Rounds the coordinate sequences of those values to avoid
@@ -503,6 +506,7 @@ class QGeometryTables(object):
                        helper=helper,
                        layer=int(layer),
                        chip=chip,
+                       sublayer=int(sublayer),
                        **other_options)
 
         #replaces line above to generate the options.
