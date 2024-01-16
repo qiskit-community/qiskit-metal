@@ -502,7 +502,7 @@ def levels_vs_ng_real_units(Cq, IC, N=301, do_disp=0, do_plots=0):
                      3,
                  ] / h / 1e9,
                  'g',
-                 LineWidth=2)
+                 linewidth=2)
         plt.xlabel('Gate charge, n_g [2e]')
         plt.ylabel('Energy, E_n [GHz]')
         plt.subplot(1, 2, 2)
