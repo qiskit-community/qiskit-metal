@@ -78,7 +78,7 @@ class QComponent():
           Expressed counter-clockwise orientation.
         * chip: 'main' -- Chip holding the QComponent.
         * layer: '1' -- Manufacturing layer used for the QComponent.
-        * sublayer: '0' -- Manufacturing sublayer used for the QComponent.
+        * sublayer: '10' -- Manufacturing sublayer used for the QComponent.
 
         Nested default options can be overwritten with the update function.
         The following code demonstrates how the update works.
@@ -122,7 +122,7 @@ class QComponent():
                            orientation='0.0',
                            chip='main',
                            layer='1',
-                           sublayer='0',)
+                           sublayer='10',)
     """Default drawing options"""
 
     component_metadata = Dict()
@@ -1098,6 +1098,7 @@ name='{strname}'{other_args}
                            Defaults to False.
             layer (int, str): The layer to which the set of QGeometry will belong
                               Defaults to None, which is converted to self.options.chip.
+            sublayer (int, str): The sublayer to which the set of QGeometry will belong
             chip (str): Chip name. Defaults to None, which is converted to 
             self.options.chip.
             kwargs (dict): Parameters dictionary

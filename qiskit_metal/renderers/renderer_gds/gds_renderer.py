@@ -1632,8 +1632,7 @@ class QGDSRenderer(QRenderer):
                                           'not',
                                           max_points=max_points,
                                           precision=precision,
-                                          layer=chip_layer,
-                                          )
+                                          layer=chip_layer)
 
             lib.remove(subtract_true_cell)
             lib.remove(subtract_false_cell)
@@ -1681,8 +1680,7 @@ class QGDSRenderer(QRenderer):
                 'not',
                 max_points=max_points,
                 precision=precision,
-                layer=chip_layer, 
-                )
+                layer=chip_layer)
 
             lib.remove(subtract_cell)
 
@@ -2345,13 +2343,13 @@ class QGDSRenderer(QRenderer):
                                                use_width,
                                                layer=qgeometry_element.layer,
                                                max_points=max_points,
-                                               datatype=qgeometry_element.sublayer)
+                                               datatype=qgeometry_element.sublayer+1)
                 else:
                     to_return = gdspy.FlexPath(
                         list(geom.coords),
                         use_width,
                         layer=qgeometry_element.layer,
-                        datatype=qgeometry_element.sublayer,
+                        datatype=qgeometry_element.sublayer+1,
                         max_points=max_points,
                         corners=corners,
                         bend_radius=qgeometry_element.fillet,
