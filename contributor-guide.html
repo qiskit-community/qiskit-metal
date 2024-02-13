@@ -712,9 +712,7 @@ documentation, run <code class="docutils literal notranslate"><span class="pre">
 documentation locally and save the output to <code class="docutils literal notranslate"><span class="pre">docs/_build/html</span></code>.
 Additionally, the Docs CI job on azure pipelines will run this and host a zip
 file of the output that you can download and view locally.</p>
-<p>If you have an issue with the <a class="reference external" href="https://qiskit.org/documentation/">combined documentation</a>
-that is maintained in the <a class="reference external" href="https://github.com/Qiskit/qiskit">Qiskit/qiskit repo</a>,
-you can open a <a class="reference external" href="https://github.com/Qiskit/qiskit/issues/new/choose">documentation issue</a>
+<p>You can open a <a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/issues/new/choose">documentation issue</a>
 if you see doc bugs, have a new feature that needs to be documented, or think
 that material could be added to the existing docs.</p>
 </section>
@@ -871,10 +869,10 @@ the qiskit metal application that the image for the qcomponent is named
 </section>
 <section id="contributing-to-documentation">
 <h1>Contributing to Documentation<a class="headerlink" href="#contributing-to-documentation" title="Link to this heading">#</a></h1>
-<p>Qiskit documentation is shaped by the <a class="reference external" href="https://www.writethedocs.org/guide/docs-as-code/">docs as code</a> philosophy, primarily
-drawn from Qiskit code comments in the <a class="reference external" href="https://alistapart.com/article/the-ten-essentials-for-good-api-documentation/">style of API documentation</a>.</p>
-<p>The documentation is built from the master branch of <a class="reference external" href="https://github.com/Qiskit/qiskit/tree/master/docs">Qiskit/qiskit/docs</a> using <a class="reference external" href="http://www.sphinx-doc.org/en/master/">Sphinx</a>. The majority of documentation, under
-<a class="reference external" href="https://qiskit.org/documentation/apidoc/qiskit.html">API Reference</a>, is
+<p>Qiskit Metal documentation is shaped by the <a class="reference external" href="https://www.writethedocs.org/guide/docs-as-code/">docs as code</a> philosophy, primarily
+drawn from Qiskit Metal code comments in the <a class="reference external" href="https://alistapart.com/article/the-ten-essentials-for-good-api-documentation/">style of API documentation</a>.</p>
+<p>The documentation is built using <a class="reference external" href="http://www.sphinx-doc.org/en/master/">Sphinx</a>. The majority of documentation, under
+<a class="reference external" href="https://qiskit-community.github.io/qiskit-metal/overview.html">API Reference</a>, is
 drawn from code comments in the repositories listed in <a class="reference internal" href="#where-things-are"><span class="std std-ref">Where Things Are</span></a>.</p>
 <section id="documentation-structure">
 <h2>Documentation Structure<a class="headerlink" href="#documentation-structure" title="Link to this heading">#</a></h2>
@@ -949,80 +947,6 @@ in the subdirectory <cite>/docs/_build/html/</cite>.</p>
 <p>Jupyter notebook tutorials showing off features of Qiskit Metal are located in the <cite>_tutorials_</cite>
 folder. If you add a new feature, please add a demonstration of its use to a notebook or start a new notebook.</p>
 </section>
-<section id="documentation-integration">
-<h3>Documentation Integration<a class="headerlink" href="#documentation-integration" title="Link to this heading">#</a></h3>
-<p>The hosted documentation at <a class="reference external" href="https://qiskit.org/documentation/">https://qiskit.org/documentation/</a> covers the entire
-Qiskit project; Metal is just one component of that. As such, the documentation
-builds for the hosted version are built by the Qiskit meta-package repository
-<a class="reference external" href="https://github.com/Qiskit/qiskit">https://github.com/Qiskit/qiskit</a>. When commits are merged to that repo, the
-output of Sphinx builds are uploaded to the qiskit.org website. Those Sphinx
-builds are configured to pull in the documentation from the version of the
-Qiskit elements installed by the meta-package at that point. For example, if
-the meta-package version is currently 0.13.0, then that will copy the
-documentation from Metal’s 0.10.0 release. When the meta-package’s requirements
-are bumped, then it will start pulling documentation from the new version. This
-means that fixes for incorrect API documentation will need to be
-included in a new release. Documentation fixes are valid backports for a stable
-patch release per the stable branch policy (see that section below).</p>
-<p>During the build process, the contents of each element’s <code class="docutils literal notranslate"><span class="pre">docs/apidocs/</span></code>
-are recursively copied into a shared copy of <code class="docutils literal notranslate"><span class="pre">doc/apidocs/</span></code> in the meta-package
-repository along with all the other elements. This means that what is in the root of
-docs/apidocs on each element at a release will end up on the root of
-<a class="reference external" href="https://qiskit.org/documentation/apidoc/">https://qiskit.org/documentation/apidoc/</a>.</p>
-</section>
-</section>
-<section id="translating-documentation">
-<h2>Translating Documentation<a class="headerlink" href="#translating-documentation" title="Link to this heading">#</a></h2>
-<p>Qiskit documentation is translated (localized) using Crowdin, a software and web
-localization platform that allows organizations to coordinate translation
-projects and collaborate with communities to translate materials. Crowdin allows
-our community of translators to amplify their impact by automatically reusing
-the work invested translating one sentence to translate other, similar
-sentences. Crowdin also makes translations resilient to many types of changes to
-the original material, such as moving sentences around, even across files.</p>
-<p>Qiskit localization requests are handled in <a class="reference external" href="https://github.com/Qiskit/qiskit-translations">Qiskit Translations</a>
-repository. To contribute to Qiskit localization, please follow these steps:</p>
-<ol class="arabic">
-<li><p>Add your name (or ID) to the <a class="reference external" href="https://github.com/qiskit-community/qiskit-translations/blob/master/LOCALIZATION_CONTRIBUTORS">LOCALIZATION_CONTRIBUTORS</a>
-file.</p></li>
-<li><p>Create a pull request (PR) to merge your change. Make sure to follow the template
-to open a Pull Request.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<ul class="simple">
-<li><p>Each contributor has to create their own PR and sign the CLA.</p></li>
-<li><p>Please mention the language that you’d like to contribute to in the PR
-summary.</p></li>
-<li><p>If you have an open issue for a language request, <strong>add the issue link
-to the PR</strong>.</p></li>
-</ul>
-</div>
-</li>
-<li><p>You will be asked to sign the Qiskit Contributors License Agreement (CLA);
-please do so.</p></li>
-<li><p>A minimum of <strong>three contributors</strong> per language are necessary for any new
-languages to be added, to receive official support from the administrators of
-the localization project.</p></li>
-<li><p>Among the group of contributors, a translation lead must be identified to serve
-as a liaison with the administrators of the localization project.
-The lead must contact: Yuri Kobayashi (<a class="reference external" href="mailto:yurik&#37;&#52;&#48;jp&#46;ibm&#46;com">yurik<span>&#64;</span>jp<span>&#46;</span>ibm<span>&#46;</span>com</a>) by email.</p></li>
-<li><p>In the <a class="reference external" href="https://crowdin.com/project/qiskit-docs">Qiskit-Docs</a>
-Crowdin project, choose the language that you want to contribute to.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>As mentioned in the blog post, <a class="reference external" href="https://medium.com/qiskit/qiskit-in-my-language-is-qiskit-73d4626a99d3">Qiskit in my language is Qiskit</a>,
-we want to make sure that translated languages have enough community support
-to build a translation team with translators, proofreaders, and translation leads.
-If you want to be a translation lead or would be willing to join a new
-translation project team, you can open a <a class="reference external" href="https://github.com/qiskit-community/qiskit-translations/issues/new/choose">GitHub issue</a>
-to start a discussion with the Qiskit team and recruit translation project members.</p>
-</div>
-</li>
-<li><p>Click the <strong>Join</strong> button and <strong>paste the URL of your PR</strong> in the dialog box where you
-are asked why you want to join the Crowdin project.</p></li>
-</ol>
-<p>The administrators of the Crowdin project will review your request and give you
-access as quickly as they can.</p>
 </section>
 </section>
 
@@ -1060,7 +984,7 @@ access as quickly as they can.</p>
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/02/07</div>
+              Last updated on 2024/02/13</div>
           </div>
           <div class="right-details">
             

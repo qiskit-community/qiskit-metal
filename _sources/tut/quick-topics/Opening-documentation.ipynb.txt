@@ -19,7 +19,7 @@
    "metadata": {},
    "source": [
     "The documentation can be found here\n",
-    "https://qiskit.org/documentation/metal/"
+    "https://qiskit-community.github.io/qiskit-metal/"
    ]
   },
   {

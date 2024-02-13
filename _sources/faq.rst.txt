@@ -190,7 +190,7 @@ Documentation
 
 **Q: I am seeing a lot of warnings when I build the docs.  How do I resolve them?**
 
-**A:** There is no need to build the docs locally unless you *really* want to.  The docs can be accessed without building them yourself by navigating to `<https://qiskit.org/documentation/metal/>`_.
+**A:** There is no need to build the docs locally unless you *really* want to.  The docs can be accessed without building them yourself by navigating to `<https://qiskit-community.github.io/qiskit-metal/>`_.
 
 If you chose to build the docs yourself, some users may see a list of warnings when building the docs.  Warnings about matplotlib text role can be safely ignored.
 
