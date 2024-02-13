@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -108,7 +106,7 @@ def get_module_doc_page(module,
     return Path(os.path.dirname(module.__file__)) / folder / page
 
 
-def open_docs(page='https://qiskit.org/documentation/metal/'):
+def open_docs(page='https://qiskit-community.github.io/qiskit-metal/'):
     """Open the qiskit_metal documentation in HTML.
 
     Open the URL in new window, raising the window if possible.

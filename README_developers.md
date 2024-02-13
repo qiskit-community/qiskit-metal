@@ -71,7 +71,7 @@ Similarly, `jupyter lab` will in general execute python code from the `base` env
 
 In the two above cases, you will need to setup a jupyter kernel that points to your `<env_name>` environment, to be able to find and execute successfully the qiskit-metal package.
 
-Check for the instructions to install a new kernel in the [FAQ](https://qiskit.org/documentation/metal/faq.html).
+Check for the instructions to install a new kernel in the [FAQ](https://qiskit-community.github.io/qiskit-metal/faq.html).
 
 #### Subsequent updates of the conda environment
 
@@ -123,7 +123,7 @@ If you want to use the recently added open-source renderers for [Gmsh](./qiskit_
 
 # Other Common Issues
 
-For other common installation issues, please refer to the [FAQ](https://qiskit.org/documentation/metal/faq.html)
+For other common installation issues, please refer to the [FAQ](https://qiskit-community.github.io/qiskit-metal/faq.html)
 
 ## Additional steps for developers
 
