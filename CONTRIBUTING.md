@@ -1,5 +1,5 @@
 # Contributing to Qiskit Metal
-Qiskit Metal follows the overall Qiskit project contributing guidelines. These are all included in the [Qiskit Documentation](https://qiskit.org/documentation/contributing_to_qiskit.html).
+Qiskit Metal follows the overall Qiskit project contributing guidelines. These are all included in the [Qiskit Documentation](https://github.com/Qiskit/qiskit/blob/main/CONTRIBUTING.md).
 
 Please read those general guidelines first, then the specific details for contributing to Metal below.
 

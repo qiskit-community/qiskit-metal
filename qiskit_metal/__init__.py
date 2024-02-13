@@ -37,7 +37,7 @@ if os.name == 'nt':
             >>>>>> from the list of qiskit-metal package dependencies in Windows. <<<<<<\n \
             >>>>>>>> Before you can use Qiskit Metal, please install geopandas. <<<<<<<<\n \
             >>>> For more information, you can follow the instructions on this FAQ <<<<<\n \
-            >>>>>>>>>>>>> https://qiskit.org/documentation/metal/faq.html <<<<<<<<<<<<<<\n"
+            >>>>>>>>>>>>> https://qiskit-community.github.io/qiskit-metal/faq.html <<<<<<<<<<<<<<\n"
              )
         raise
 
