@@ -219,7 +219,8 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     @slot_catch_error()
     def open_web_help(self, _=None):
         """"Handles click on Build History button."""
-        webbrowser.open('https://qiskit-community.github.io/qiskit-metal/', new=1)
+        webbrowser.open('https://qiskit-community.github.io/qiskit-metal/',
+                        new=1)
 
     @slot_catch_error()
     def set_force_close(self, ison: bool):
