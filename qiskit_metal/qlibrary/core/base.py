@@ -78,6 +78,7 @@ class QComponent():
           Expressed counter-clockwise orientation.
         * chip: 'main' -- Chip holding the QComponent.
         * layer: '1' -- Manufacturing layer used for the QComponent.
+        * sublayer: '10' -- Manufacturing sublayer used for the QComponent.
 
         Nested default options can be overwritten with the update function.
         The following code demonstrates how the update works.
@@ -120,7 +121,8 @@ class QComponent():
                            pos_y='0.0um',
                            orientation='0.0',
                            chip='main',
-                           layer='1')
+                           layer='1',
+                           sublayer='10',)
     """Default drawing options"""
 
     component_metadata = Dict()
@@ -1078,6 +1080,7 @@ name='{strname}'{other_args}
             helper: bool = False,
             layer: Union[int, str] = None,  # chip will be here
             chip: str = None,
+            sublayer: Union[int, str] = None,
             **kwargs):
         r"""Add QGeometry.
 
@@ -1095,6 +1098,7 @@ name='{strname}'{other_args}
                            Defaults to False.
             layer (int, str): The layer to which the set of QGeometry will belong
                               Defaults to None, which is converted to self.options.chip.
+            sublayer (int, str): The sublayer to which the set of QGeometry will belong
             chip (str): Chip name. Defaults to None, which is converted to 
             self.options.chip.
             kwargs (dict): Parameters dictionary
@@ -1108,6 +1112,8 @@ name='{strname}'{other_args}
 
         if layer is None:
             layer = self.options.layer
+        if sublayer is None:
+            sublayer = self.options.sublayer
         if chip is None:
             chip = self.options.chip
 
@@ -1137,6 +1143,7 @@ name='{strname}'{other_args}
                                             helper=helper,
                                             layer=layer,
                                             chip=chip,
+                                            sublayer=sublayer,
                                             **renderer_and_options)
 
     def _get_specific_table_values_from_renderers(self, kind: str) -> Dict:
