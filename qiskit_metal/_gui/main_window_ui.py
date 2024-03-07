@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file './main_window_ui.ui',
 # licensing of './main_window_ui.ui' applies.
 #
-# Created: Thu Jun 30 16:30:19 2022
+# Created: Fri Aug  5 16:01:16 2022
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -474,6 +474,8 @@ class Ui_MainWindow(object):
                          QtGui.QIcon.Off)
         self.actionWebHelp.setIcon(icon30)
         self.actionWebHelp.setObjectName("actionWebHelp")
+        self.actionMetal_Modern = QtWidgets.QAction(MainWindow)
+        self.actionMetal_Modern.setObjectName("actionMetal_Modern")
         self.menuDesign.addSeparator()
         self.menuDesign.addAction(self.actionLabelDesign)
         self.menuDesign.addAction(self.actionLoad)
@@ -485,6 +487,7 @@ class Ui_MainWindow(object):
         self.menuDesign.addAction(self.actionClose_window)
         self.menuStylesheet.addAction(self.actionMetal_Dark)
         self.menuStylesheet.addAction(self.actionStyleDark)
+        self.menuStylesheet.addAction(self.actionMetal_Modern)
         self.menuStylesheet.addSeparator()
         self.menuStylesheet.addAction(self.actionStyleDefault)
         self.menuStylesheet.addAction(self.actionStyleOpen)
@@ -625,6 +628,9 @@ class Ui_MainWindow(object):
                                MainWindow.show_renderer_q3d)
         QtCore.QObject.connect(self.actionWebHelp, QtCore.SIGNAL("triggered()"),
                                MainWindow.open_web_help)
+        QtCore.QObject.connect(self.actionMetal_Modern,
+                               QtCore.SIGNAL("triggered()"),
+                               MainWindow.load_stylesheet_metal_modern)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -1039,9 +1045,12 @@ class Ui_MainWindow(object):
         self.actionWebHelp.setToolTip(
             QtWidgets.QApplication.translate("MainWindow", "Open Web Help",
                                              None, -1))
+        self.actionMetal_Modern.setText(
+            QtWidgets.QApplication.translate("MainWindow", "Metal Modern", None,
+                                             -1))
 
 
+from .widgets.qlibrary_display.tree_view_qlibrary import TreeViewQLibrary
 from .widgets.all_components.table_view_all_components import QTableView_AllComponents
 from .widgets.log_widget.log_metal import QTextEditLogger
-from .widgets.qlibrary_display.tree_view_qlibrary import TreeViewQLibrary
 from . import main_window_rc_rc
