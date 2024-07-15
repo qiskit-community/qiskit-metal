@@ -33,7 +33,7 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/Qiskit/qiskit-metal",
     author="Qiskit Metal Development Team",
-    author_email="qiskit@qiskit.org",
+    author_email="qiskit@us.ibm.com",
     license="Apache 2.0",
     classifiers=[
         "License :: OSI Approved :: Apache Software License",
@@ -54,7 +54,7 @@ setup(
     install_requires=requirements,
     project_urls={
         "Bug Tracker": "https://github.com/Qiskit/qiskit-metal/issues",
-        "Documentation": "https://qiskit.org/documentation/metal",
+        "Documentation": "https://qiskit-community.github.io/qiskit-metal/",
         "Source Code": "https://github.com/Qiskit/qiskit-metal",
     },
 )
