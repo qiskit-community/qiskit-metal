@@ -19,27 +19,28 @@
 """Qiskit Metal unit tests analyses functionality."""
 
 import unittest
-import numpy as np
+from pathlib import Path
 from typing import Union
 
-from qiskit_metal.toolbox_metal import about
-from qiskit_metal.toolbox_metal import parsing
-from qiskit_metal.toolbox_metal import math_and_overrides
-from qiskit_metal.toolbox_metal import bounds_for_path_and_poly_tables
-from qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables import BoundsForPathAndPolyTables
-from qiskit_metal.toolbox_metal.layer_stack_handler import LayerStackHandler
-from qiskit_metal.toolbox_metal.exceptions import QiskitMetalExceptions
-from qiskit_metal.toolbox_metal.exceptions import QiskitMetalDesignError
-from qiskit_metal.toolbox_metal.exceptions import IncorrectQtException
-from qiskit_metal.toolbox_metal.exceptions import QLibraryGUIException
-from qiskit_metal.toolbox_metal.exceptions import InputError
-from qiskit_metal.tests.assertions import AssertionsMixin
-from qiskit_metal.qlibrary.qubits.transmon_concentric import TransmonConcentric
+import numpy as np
+
 from qiskit_metal.designs.design_multiplanar import MultiPlanar
+from qiskit_metal.qlibrary.qubits.transmon_concentric import TransmonConcentric
 from qiskit_metal.qlibrary.qubits.transmon_pocket_6 import TransmonPocket6
+from qiskit_metal.tests.assertions import AssertionsMixin
 from qiskit_metal.tests.test_data.quad_coupler import QuadCoupler
+from qiskit_metal.toolbox_metal import (about, bounds_for_path_and_poly_tables,
+                                        math_and_overrides, parsing)
+from qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables import \
+    BoundsForPathAndPolyTables
+from qiskit_metal.toolbox_metal.exceptions import (IncorrectQtException,
+                                                   InputError,
+                                                   QiskitMetalDesignError,
+                                                   QiskitMetalExceptions,
+                                                   QLibraryGUIException)
+from qiskit_metal.toolbox_metal.layer_stack_handler import LayerStackHandler
 
-
+TEST_DATA = Path(__file__).parent / "test_data"
 class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
     """Unit test class."""
 
@@ -363,7 +364,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_get_bounds_of_path_and_poly_tables(self):
         """Test functionality of get_bounds_of_path_and_poly_tables in toolbox_metal.py"""
-        ls_file_path = ("./test_data/planar_chip.txt")
+        ls_file_path = TEST_DATA / 'planar_chip.txt'
         multiplanar_design = MultiPlanar(metadata={},
                                          overwrite_enabled=True,
                                          layer_stack_filename=ls_file_path)
@@ -395,7 +396,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_ensure_component_box_smaller_than_chip_box_(self):
         """Test functionality of ensure_component_box_smaller_than_chip_box in toolbox_metal.py"""
-        ls_file_path = ("./test_data/planar_chip.txt")
+        ls_file_path = TEST_DATA / 'planar_chip.txt'
         multiplanar_design = MultiPlanar(metadata={},
                                          overwrite_enabled=True,
                                          layer_stack_filename=ls_file_path)
@@ -436,7 +437,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_get_box_for_xy_bounds(self):
         """Test functionality of get_box_for_xy_bounds in toolbox_metal.py."""
-        ls_file_path = ("./test_data/planar_chip.txt")
+        ls_file_path = TEST_DATA / 'planar_chip.txt'
         multiplanar_design = MultiPlanar(metadata={},
                                          overwrite_enabled=True,
                                          layer_stack_filename=ls_file_path)
@@ -469,7 +470,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_are_all_chipnames_in_design(self):
         """Test functionality of are_all_chipnames_in_design in toolbox_metal.py."""
-        ls_file_path = ("./test_data/planar_chip.txt")
+        ls_file_path = TEST_DATA / 'planar_chip.txt'
         multiplanar_design = MultiPlanar(metadata={},
                                          overwrite_enabled=True,
                                          layer_stack_filename=ls_file_path)
@@ -502,7 +503,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_get_x_y_for_chip(self):
         """Test functionality of get_x_y_for_chip in toolbox_metal.py."""
-        ls_file_path = ("./test_data/planar_chip.txt")
+        ls_file_path = TEST_DATA / 'planar_chip.txt'
         multiplanar_design = MultiPlanar(metadata={},
                                          overwrite_enabled=True,
                                          layer_stack_filename=ls_file_path)
@@ -537,7 +538,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_chip_names_not_in_design(self):
         """Test functionality of chip_names_not_in_design in toolbox_metal.py."""
-        ls_file_path = ("./test_data/planar_chip.txt")
+        ls_file_path = TEST_DATA / 'planar_chip.txt'
         multiplanar_design = MultiPlanar(metadata={},
                                          overwrite_enabled=True,
                                          layer_stack_filename=ls_file_path)
@@ -563,7 +564,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_chip_size_not_in_chipname_within_design(self):
         """Test functionality of chip_size_not_in_chipname_within_design in toolbox_metal.py."""
-        ls_file_path = ("./test_data/planar_chip.txt")
+        ls_file_path = TEST_DATA / 'planar_chip.txt'
         multiplanar_design = MultiPlanar(metadata={},
                                          overwrite_enabled=True,
                                          layer_stack_filename=ls_file_path)
@@ -587,7 +588,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_get_layer_datatype_when_fill_is_true(self):
         """Test functionality of get_layer_datatype_when_fill_is_true in toolbox_metal.py."""
-        ls_file_path = ("./test_data/planar_chip.txt")
+        ls_file_path = TEST_DATA / 'planar_chip.txt'
         multiplanar_design = MultiPlanar(metadata={},
                                          overwrite_enabled=True,
                                          layer_stack_filename=ls_file_path)
@@ -629,7 +630,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_get_properties_for_layer_datatype(self):
         """Test functionality of get_properties_for_layer_datatype in toolbox_metal.py."""
-        ls_file_path = ("./test_data/planar_chip.txt")
+        ls_file_path = TEST_DATA / 'planar_chip.txt'
         multiplanar_design = MultiPlanar(metadata={},
                                          overwrite_enabled=True,
                                          layer_stack_filename=ls_file_path)
@@ -660,7 +661,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_is_layer_data_unique(self):
         """Test functionality of is_layer_data_unique in toolbox_metal.py."""
-        ls_file_path = ("./test_data/planar_chip.txt")
+        ls_file_path = TEST_DATA / 'planar_chip.txt'
         multiplanar_design = MultiPlanar(metadata={},
                                          overwrite_enabled=True,
                                          layer_stack_filename=ls_file_path)
@@ -685,7 +686,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_read_csv_df(self):
         """Test functionality of read_csv_df in toolbox_metal.py."""
-        ls_file_path = ("./test_data/planar_chip.txt")
+        ls_file_path = TEST_DATA / 'planar_chip.txt'
         multiplanar_design = MultiPlanar(metadata={},
                                          overwrite_enabled=True,
                                          layer_stack_filename=ls_file_path)
@@ -710,7 +711,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_get_unique_chip_names(self):
         """Test functionality of get_unique_chip_names in toolbox_metal.py."""
-        ls_file_path = ("./test_data/planar_chip.txt")
+        ls_file_path = TEST_DATA / 'planar_chip.txt'
         multiplanar_design = MultiPlanar(metadata={},
                                          overwrite_enabled=True,
                                          layer_stack_filename=ls_file_path)
@@ -735,7 +736,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_get_unique_layer_ints(self):
         """Test functionality of get_unique_layer_ints in toolbox_metal.py."""
-        ls_file_path = ("./test_data/planar_chip.txt")
+        ls_file_path = TEST_DATA / 'planar_chip.txt'
         multiplanar_design = MultiPlanar(metadata={},
                                          overwrite_enabled=True,
                                          layer_stack_filename=ls_file_path)
@@ -760,7 +761,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_warning_properties(self):
         """Test functionality of _warning_properties in toolbox_metal.py."""
-        ls_file_path = ("./test_data/planar_chip.txt")
+        ls_file_path = TEST_DATA / 'planar_chip.txt'
         multiplanar_design = MultiPlanar(metadata={},
                                          overwrite_enabled=True,
                                          layer_stack_filename=ls_file_path)
@@ -785,7 +786,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_warning_search(self):
         """Test functionality of _warning_search in toolbox_metal.py."""
-        ls_file_path = ("./test_data/planar_chip.txt")
+        ls_file_path = TEST_DATA / 'planar_chip.txt'
         multiplanar_design = MultiPlanar(metadata={},
                                          overwrite_enabled=True,
                                          layer_stack_filename=ls_file_path)
@@ -810,7 +811,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_warning_search_minus_chip(self):
         """Test functionality of _warning_search_minus_chip in toolbox_metal.py."""
-        ls_file_path = ("./test_data/planar_chip.txt")
+        ls_file_path = TEST_DATA / 'planar_chip.txt'
         multiplanar_design = MultiPlanar(metadata={},
                                          overwrite_enabled=True,
                                          layer_stack_filename=ls_file_path)
@@ -835,7 +836,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def test_toolbox_metal_layer_stack_handler_pilot_error(self):
         """Test functionality of layer_stack_handler_pilot_error in toolbox_metal.py."""
-        ls_file_path = ("./test_data/planar_chip.txt")
+        ls_file_path = TEST_DATA / 'planar_chip.txt'
         multiplanar_design = MultiPlanar(metadata={},
                                          overwrite_enabled=True,
                                          layer_stack_filename=ls_file_path)
