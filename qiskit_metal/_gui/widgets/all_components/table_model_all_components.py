@@ -13,10 +13,10 @@
 # that they have been altered from the originals.
 
 import numpy as np
-from PySide2 import QtCore, QtWidgets
-from PySide2.QtCore import QAbstractTableModel, QModelIndex, Qt
-from PySide2.QtGui import QBrush, QColor, QFont, QIcon, QPixmap
-from PySide2.QtWidgets import QTableView
+from PySide6 import QtCore, QtWidgets
+from PySide6.QtCore import QAbstractTableModel, QModelIndex, Qt
+from PySide6.QtGui import QBrush, QColor, QFont, QIcon, QPixmap
+from PySide6.QtWidgets import QTableView
 
 from ...utility._handle_qt_messages import slot_catch_error
 from ...utility._toolbox_qt import blend_colors

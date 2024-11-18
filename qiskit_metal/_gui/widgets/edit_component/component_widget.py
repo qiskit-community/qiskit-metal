@@ -19,11 +19,11 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Union
 
 import numpy as np
-import PySide2
-from PySide2 import QtCore, QtGui, QtWidgets
-from PySide2.QtCore import QAbstractTableModel, QModelIndex, Qt
-from PySide2.QtGui import QFont, QColor
-from PySide2.QtWidgets import (QAbstractItemView, QApplication, QFileDialog,
+import PySide6
+from PySide6 import QtCore, QtGui, QtWidgets
+from PySide6.QtCore import QAbstractTableModel, QModelIndex, Qt
+from PySide6.QtGui import QFont, QColor
+from PySide6.QtWidgets import (QAbstractItemView, QApplication, QFileDialog,
                                QLabel, QMainWindow, QMessageBox, QTabWidget)
 
 from .... import logger
@@ -137,7 +137,6 @@ def create_QTextDocument(doc: QtWidgets.QTextEdit) -> QtGui.QTextDocument:
         font.setStyleHint(QFont.Arial)
     else:
         font.setStyleHint(QFont.Courier)
-    font.setFamily("Courier")
     document.setDefaultFont(font)
 
     return document

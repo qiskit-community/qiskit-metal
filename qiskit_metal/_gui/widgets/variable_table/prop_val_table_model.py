@@ -12,9 +12,9 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from PySide2 import QtCore
-from PySide2.QtCore import QAbstractTableModel, QModelIndex, Qt
-from PySide2.QtGui import QFont
+from PySide6 import QtCore
+from PySide6.QtCore import QAbstractTableModel, QModelIndex, Qt
+from PySide6.QtGui import QFont
 
 from .... import config
 

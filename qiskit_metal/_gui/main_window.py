@@ -18,11 +18,11 @@ import webbrowser
 from pathlib import Path
 from typing import TYPE_CHECKING, List
 
-from PySide2.QtCore import Qt, QTimer
-from PySide2.QtGui import QIcon, QPixmap
-from PySide2.QtWidgets import (QAction, QDialog, QDockWidget, QFileDialog,
-                               QLabel, QMainWindow, QMessageBox, QVBoxLayout)
-from PySide2.QtCore import QSortFilterProxyModel
+from PySide6.QtCore import Qt, QTimer
+from PySide6.QtGui import QIcon, QPixmap, QAction
+from PySide6.QtWidgets import (QDialog, QDockWidget, QFileDialog, QLabel,
+                               QMainWindow, QMessageBox, QVBoxLayout)
+from PySide6.QtCore import QSortFilterProxyModel
 from qiskit_metal._gui.widgets.qlibrary_display.delegate_qlibrary import \
     LibraryDelegate
 from qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary import \
@@ -322,6 +322,7 @@ class MetalGUI(QMainWindowBaseHandler):
         self._setup_plot_widget()
         self._setup_design_components_widget()
         self._setup_elements_widget()
+        self.main_window.show()
         self._setup_variables_widget()
         self._ui_adjustments_final()
         self._setup_library_widget()
@@ -329,6 +330,7 @@ class MetalGUI(QMainWindowBaseHandler):
 
         # Show and raise
         self.main_window.show()
+
         # self.qApp.processEvents(QEventLoop.AllEvents, 1)
         # - don't think I need this here, it doesn't help to show and raise
         # - need to call from different thread.

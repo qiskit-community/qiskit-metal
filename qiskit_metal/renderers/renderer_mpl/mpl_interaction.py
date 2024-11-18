@@ -84,9 +84,9 @@ import weakref
 import matplotlib.pyplot as _plt
 import numpy
 
-from PySide2.QtCore import Qt
-from PySide2.QtGui import QIcon
-from PySide2.QtWidgets import QAction, QLabel
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QIcon, QAction
+from PySide6.QtWidgets import QLabel
 
 from ... import Dict
 

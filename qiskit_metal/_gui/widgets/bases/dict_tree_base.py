@@ -18,11 +18,11 @@ from pathlib import Path
 from typing import Union, TYPE_CHECKING
 
 import numpy as np
-import PySide2
-from PySide2 import QtCore, QtGui, QtWidgets
-from PySide2.QtCore import QAbstractItemModel, QModelIndex, QTimer, Qt
-from PySide2.QtGui import QFont
-from PySide2.QtWidgets import (QAbstractItemView, QApplication, QFileDialog,
+import PySide6
+from PySide6 import QtCore, QtGui, QtWidgets
+from PySide6.QtCore import QAbstractItemModel, QModelIndex, QTimer, Qt
+from PySide6.QtGui import QFont
+from PySide6.QtWidgets import (QAbstractItemView, QApplication, QFileDialog,
                                QWidget, QTreeView, QLabel, QMainWindow,
                                QMessageBox, QTabWidget)
 from .... import logger

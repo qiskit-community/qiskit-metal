@@ -21,8 +21,8 @@ toolbars available.
 
 from typing import TYPE_CHECKING
 
-from PySide2 import QtWidgets
-from PySide2.QtWidgets import (QApplication, QFileDialog, QLabel, QMainWindow,
+from PySide6 import QtWidgets
+from PySide6.QtWidgets import (QApplication, QFileDialog, QLabel, QMainWindow,
                                QMessageBox)
 
 from ... import config

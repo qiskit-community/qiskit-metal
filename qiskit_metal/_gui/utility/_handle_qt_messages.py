@@ -20,8 +20,8 @@ import traceback
 import types
 from functools import wraps
 
-from PySide2 import QtCore
-from PySide2.QtCore import Slot
+from PySide6 import QtCore
+from PySide6.QtCore import Slot
 
 from ... import logger
 
@@ -56,13 +56,13 @@ def _qt_message_handler(mode, context, message):
             'QSocketNotifier: Multiple socket notifiers for same socket'):
         pass  # Caused by running %gui qt multiple times
     else:
-        if mode == QtCore.QtInfoMsg:
+        if mode == QtCore.QtMsgType.QtInfoMsg:
             mode = 'INFO'
-        elif mode == QtCore.QtWarningMsg:
+        elif mode == QtCore.QtMsgType.QtWarningMsg:
             mode = 'WARNING'
-        elif mode == QtCore.QtCriticalMsg:
+        elif mode == QtCore.QtMsgType.QtCriticalMsg:
             mode = 'CRITICAL'
-        elif mode == QtCore.QtFatalMsg:
+        elif mode == QtCore.QtMsgType.QtFatalMsg:
             mode = 'FATAL'
         else:
             mode = 'DEBUG'
@@ -77,7 +77,7 @@ def _qt_message_handler(mode, context, message):
 
 
 def do_debug(msg, name='info'):
-    """Utility function used to print debug statements from PySide2 Socket
+    """Utility function used to print debug statements from PySide6 Socket
     calls A bit of a cludge.
 
     Args:

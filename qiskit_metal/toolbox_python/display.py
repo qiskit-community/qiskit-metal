@@ -112,7 +112,7 @@ def get_screenshot(self: 'QMainWindow',
         do_display (bool): True to display the file.  Defaults to True.
         disp_ops (dict): Disctionary of options.  Defaults to None.
     """
-    from PySide2.QtWidgets import QApplication, QMainWindow
+    from PySide6.QtWidgets import QApplication, QMainWindow
 
     path = Path(name).resolve()
 
