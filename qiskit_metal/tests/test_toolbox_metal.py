@@ -41,6 +41,8 @@ from qiskit_metal.toolbox_metal.exceptions import (IncorrectQtException,
 from qiskit_metal.toolbox_metal.layer_stack_handler import LayerStackHandler
 
 TEST_DATA = Path(__file__).parent / "test_data"
+
+
 class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
     """Unit test class."""
 

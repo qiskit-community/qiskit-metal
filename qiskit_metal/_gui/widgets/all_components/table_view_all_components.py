@@ -47,7 +47,10 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
             parent (QWidget): Parent widget
         """
         QTableView.__init__(self, parent)
-        QWidget_PlaceholderText.__init__(self, "No QComponents to show.\n\nCreate components from the QLibrary.", self)
+        QWidget_PlaceholderText.__init__(
+            self,
+            "No QComponents to show.\n\nCreate components from the QLibrary.",
+            self)
 
         # Connect signals
         self.clicked.connect(self.viewClicked)
