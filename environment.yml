@@ -3,25 +3,26 @@ channels:
   - conda-forge
 dependencies:
   - python=3.10.*
-  - addict
-  - descartes
-  - gdspy>=1.5.2
-  - geopandas
-  - ipython
-  - matplotlib
-  - numpy
-  - pandas
-  - pint
-  - pyepr-quantum>=0.8.5.7
-  - pygments
-  - qdarkstyle
-  - qutip
-  - scipy
-  - shapely
+  - addict==2.4.0
+  - descartes==1.1.0
+  - geopandas==0.12.2
+  - ipython==8.10.0
+  - matplotlib==3.7.0
+  - numpy==1.24.2
+  - pandas==1.5.3
+  - pint==0.20.1
+  - pyEPR-quantum==0.8.5.7
+  - pygments==2.14.0
+  - qdarkstyle==3.1
+  - qutip==4.7.1
+  - scipy==1.10.0
+  - shapely==2.0.1
+  - scqubits==3.1.0
   - jupyter
-  - scqubits
+  - cython<3.0.0
   - pip
   - pip:
-      - pyaedt
-      - gmsh
+      - pyaedt==0.6.46
+      - gmsh==4.11.1
+      - gdspy==1.6.12
       - pyside6

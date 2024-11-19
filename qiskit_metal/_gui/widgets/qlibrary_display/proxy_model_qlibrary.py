@@ -18,7 +18,7 @@ Proxy Model to clean display of QComponents in Library tab
 import typing
 
 from PySide6.QtCore import QModelIndex, QSize, QSortFilterProxyModel, Qt
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QFileSystemModel, QWidget
 
 
 class LibraryFileProxyModel(QSortFilterProxyModel):
