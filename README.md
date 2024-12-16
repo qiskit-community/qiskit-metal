@@ -4,6 +4,10 @@
 >![Welcome to Qiskit Metal!](https://raw.githubusercontent.com/Qiskit/qiskit-metal/main/docs/images/zkm_banner.png 'Welcome to Qiskit Metal')
 > Qiskit Metal is an open-source framework for engineers and scientists to design superconducting quantum devices with ease.
 
+
+## Major Update: Upcoming Qiskit Metal Release 🚀
+We're excited to share that we're nearing the completion of porting Qiskit Metal from PySide2 to PySide6! This update enables native support for M* Macs (Apple Silicon) and includes several other enhancements for the upcoming release. Please take a moment to review and provide feedback on [Pull Request #1002](https://github.com/qiskit-community/qiskit-metal/pull/1002) before we proceed with merging and tagging. Your input is invaluable to ensure the release meets everyone's expectations. Thank you for your continued contributions!
+
 ## Installation
 If you are interested in customizing your experience, or if you are unable to install qiskit-metal using the `pip install` instructions below, consider installing directly the source code, following the instructions in the [documentation](https://qiskit-community.github.io/qiskit-metal/installation.html) and/or the [installation instructions for developers](https://github.com/Qiskit/qiskit-metal/blob/main/README_developers.md).
 
