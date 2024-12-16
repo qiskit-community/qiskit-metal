@@ -19,9 +19,9 @@ import importlib
 import inspect
 import os
 
-from PySide2.QtCore import QAbstractItemModel, QAbstractProxyModel, QModelIndex, Signal
-from PySide2.QtGui import QPainter
-from PySide2.QtWidgets import QItemDelegate, QStyle, QStyleOptionViewItem, QWidget
+from PySide6.QtCore import QAbstractItemModel, QAbstractProxyModel, QModelIndex, Signal
+from PySide6.QtGui import QPainter
+from PySide6.QtWidgets import QItemDelegate, QStyle, QStyleOptionViewItem, QWidget
 
 from qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary import QFileSystemLibraryModel
 from qiskit_metal.toolbox_metal.exceptions import QLibraryGUIException

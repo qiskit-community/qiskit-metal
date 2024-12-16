@@ -15,9 +15,9 @@
 Tree view for Param Entry Window
 """
 
-from PySide2 import QtGui, QtWidgets
-from PySide2.QtCore import QModelIndex
-from PySide2.QtWidgets import QTreeView
+from PySide6 import QtGui, QtWidgets
+from PySide6.QtCore import QModelIndex
+from PySide6.QtWidgets import QTreeView
 
 
 class TreeViewParamEntry(QTreeView):

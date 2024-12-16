@@ -12,7 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from PySide2.QtWidgets import (QAbstractItemView, QFileDialog, QMainWindow,
+from PySide6.QtWidgets import (QAbstractItemView, QFileDialog, QMainWindow,
                                QMessageBox)
 
 from .list_model_base import DynamicList
