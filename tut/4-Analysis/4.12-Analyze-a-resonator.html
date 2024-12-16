@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Analyzing and tuning a transmon qubit with a resonator" href="4.13-Analyze-transmon-and-resonator.html" /><link rel="prev" title="Analyzing and tuning a transmon qubit" href="4.11-Analyze-and-tune-a-transmon.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19 -->
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
         <title>Analyzing and tuning a resonator - Qiskit Metal 0.1.5 0.1.5</title>
       <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=362ab14a" />
@@ -797,23 +797,23 @@ div.rendered_html tbody tr:hover {
 <p>This page was generated from <a class="reference external" href="https://github.com/Qiskit/qiskit-metal/blob/main/docs/tut//4-Analysis//4.12-Analyze-a-resonator.ipynb">tut//4-Analysis//4.12-Analyze-a-resonator.ipynb</a>.</p>
 </div>
 <section id="Analyzing-and-tuning-a-resonator">
-<h1>Analyzing and tuning a resonator<a class="headerlink" href="#Analyzing-and-tuning-a-resonator" title="Link to this heading">#</a></h1>
+<h1>Analyzing and tuning a resonator<a class="headerlink" href="#Analyzing-and-tuning-a-resonator" title="Link to this heading">¶</a></h1>
 <p>We will use here the <code class="docutils literal notranslate"><span class="pre">advanced</span></code> EPR method to run the simulation and analysi, which directly controls renderers and external packages. Please refer to the tutorial notebook 4.2 to follow the <code class="docutils literal notranslate"><span class="pre">suggested</span></code> flow to run the analysis.</p>
 <section id="Resonator-design">
-<h2>Resonator design<a class="headerlink" href="#Resonator-design" title="Link to this heading">#</a></h2>
+<h2>Resonator design<a class="headerlink" href="#Resonator-design" title="Link to this heading">¶</a></h2>
 <ol class="arabic simple">
 <li><p>Prepare the single transmon qubit layout in qiskit-metal.</p></li>
 </ol>
 </section>
 <section id="Resonator-analysis-using-EPR-method">
-<h2>Resonator analysis using EPR method<a class="headerlink" href="#Resonator-analysis-using-EPR-method" title="Link to this heading">#</a></h2>
+<h2>Resonator analysis using EPR method<a class="headerlink" href="#Resonator-analysis-using-EPR-method" title="Link to this heading">¶</a></h2>
 <ol class="arabic simple">
 <li><p>Set-up and run a finite element simulate to extract the eigenmode.</p></li>
 <li><p>Display EM fields to inspect quality of the setup.</p></li>
 <li><p>Calculate EPR of substrate.</p></li>
 </ol>
 <section id="Prerequisite">
-<h3>Prerequisite<a class="headerlink" href="#Prerequisite" title="Link to this heading">#</a></h3>
+<h3>Prerequisite<a class="headerlink" href="#Prerequisite" title="Link to this heading">¶</a></h3>
 <p>You need to have a working local installation of Ansys. Also you will need the following directives and inports.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -834,7 +834,7 @@ div.rendered_html tbody tr:hover {
 </section>
 </section>
 <section id="1.-Create-the-Resonator-design">
-<h1>1. Create the Resonator design<a class="headerlink" href="#1.-Create-the-Resonator-design" title="Link to this heading">#</a></h1>
+<h1>1. Create the Resonator design<a class="headerlink" href="#1.-Create-the-Resonator-design" title="Link to this heading">¶</a></h1>
 <p>Fix the design dimensions that you intend to reflect in the design rendering. Note that the design size extends from the origin into the first quadrant.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -879,10 +879,10 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="2.-Analyze-the-resonator-using-the-Eigenmode-EPR-method">
-<h1>2. Analyze the resonator using the Eigenmode-EPR method<a class="headerlink" href="#2.-Analyze-the-resonator-using-the-Eigenmode-EPR-method" title="Link to this heading">#</a></h1>
+<h1>2. Analyze the resonator using the Eigenmode-EPR method<a class="headerlink" href="#2.-Analyze-the-resonator-using-the-Eigenmode-EPR-method" title="Link to this heading">¶</a></h1>
 <p>In this section we will use a semi-manual (advanced) analysis flow. Please refer to tutorial 4.2 for the <code class="docutils literal notranslate"><span class="pre">suggested</span></code> method. As illustrated, the methods are equivalent, but the advanced method allows you to directly override some renderer-specific settings.</p>
 <section id="Finite-Element-Eigenmode-Analysis">
-<h2>Finite Element Eigenmode Analysis<a class="headerlink" href="#Finite-Element-Eigenmode-Analysis" title="Link to this heading">#</a></h2>
+<h2>Finite Element Eigenmode Analysis<a class="headerlink" href="#Finite-Element-Eigenmode-Analysis" title="Link to this heading">¶</a></h2>
 <p>Select the analysis you intend to run from the <code class="docutils literal notranslate"><span class="pre">qiskit_metal.analyses</span></code> collection. Select the design to analyze and the tool to use for any external simulation.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
@@ -1260,7 +1260,7 @@ WindowsPath(&#39;C:/workspace/qiskit-metal/docs/tut/4-Analysis/ansys.png&#39;)
 </div>
 </section>
 <section id="EPR-Analysis">
-<h2>EPR Analysis<a class="headerlink" href="#EPR-Analysis" title="Link to this heading">#</a></h2>
+<h2>EPR Analysis<a class="headerlink" href="#EPR-Analysis" title="Link to this heading">¶</a></h2>
 <p>In the <code class="docutils literal notranslate"><span class="pre">suggested</span></code> (tutorial 4.2) flow, we would now prepare the setup using <code class="docutils literal notranslate"><span class="pre">eig_res.setup</span></code> and run the analysis with <code class="docutils literal notranslate"><span class="pre">eig_res.run_epr()</span></code>. Notice that this method requires previous set of the <code class="docutils literal notranslate"><span class="pre">eig_res</span></code> variables <code class="docutils literal notranslate"><span class="pre">convergence_t</span></code> and <code class="docutils literal notranslate"><span class="pre">convergence_f</span></code> like we did a thee cells earlier.</p>
 <p>However we here exemplify the advanced approach, which is Ansys-specific since it uses the pyEPR module methods directly. #### Execute the energy distribution analysis</p>
 <p>First initialize epr for non-junction analysis. This will set the ground plain to ‘main’.</p>
@@ -1420,7 +1420,7 @@ EPR of substrate = 91.0%
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/02/13</div>
+              Last updated on 2024/12/16</div>
           </div>
           <div class="right-details">
             
@@ -1467,7 +1467,7 @@ EPR of substrate = 91.0%
 </div><script src="../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script src="../../_static/documentation_options.js?v=59fadc99"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>

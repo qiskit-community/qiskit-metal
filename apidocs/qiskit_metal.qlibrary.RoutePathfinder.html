@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="jj_dolan" href="qiskit_metal.qlibrary.jj_dolan.html" /><link rel="prev" title="RouteMixed" href="qiskit_metal.qlibrary.RouteMixed.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19 -->
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
         <title>RoutePathfinder - Qiskit Metal 0.1.5 0.1.5</title>
       <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=362ab14a" />
@@ -545,10 +545,10 @@
         </div>
         <article role="main">
           <br><br><br><section id="routepathfinder">
-<h1>RoutePathfinder<a class="headerlink" href="#routepathfinder" title="Link to this heading">#</a></h1>
+<h1>RoutePathfinder<a class="headerlink" href="#routepathfinder" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RoutePathfinder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">design</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'CPW'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/qlibrary/tlines/pathfinder.html#RoutePathfinder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RoutePathfinder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">design</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'CPW'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/qlibrary/tlines/pathfinder.html#RoutePathfinder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder" title="Link to this definition">¶</a></dt>
 <dd><p>Non-meandered CPW class that combines A* pathfinding algorithm with
 simple 1-, 2-, or S-shaped segment checks and user-specified anchor points.
 1. A* heap modified to prioritize paths with shortest length_travelled + Manhattan distance to destination.
@@ -595,12 +595,12 @@ Defaults to “CPW”.</p></li>
 <p class="rubric">Attributes</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.TOOLTIP">
-<span class="sig-name descname"><span class="pre">TOOLTIP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'</span> <span class="pre">Non-meandered</span> <span class="pre">CPW</span> <span class="pre">class</span> <span class="pre">that</span> <span class="pre">combines</span> <span class="pre">A*</span> <span class="pre">pathfinding</span> <span class="pre">algorithm</span> <span class="pre">with\n</span>&#160;&#160;&#160; <span class="pre">simple</span> <span class="pre">1-,</span> <span class="pre">2-,</span> <span class="pre">or</span> <span class="pre">S-shaped</span> <span class="pre">segment</span> <span class="pre">checks</span> <span class="pre">and</span> <span class="pre">user-specified</span> <span class="pre">anchor</span> <span class="pre">points.'</span></em><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.TOOLTIP" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">TOOLTIP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'</span> <span class="pre">Non-meandered</span> <span class="pre">CPW</span> <span class="pre">class</span> <span class="pre">that</span> <span class="pre">combines</span> <span class="pre">A*</span> <span class="pre">pathfinding</span> <span class="pre">algorithm</span> <span class="pre">with\n</span>&#160;&#160;&#160; <span class="pre">simple</span> <span class="pre">1-,</span> <span class="pre">2-,</span> <span class="pre">or</span> <span class="pre">S-shaped</span> <span class="pre">segment</span> <span class="pre">checks</span> <span class="pre">and</span> <span class="pre">user-specified</span> <span class="pre">anchor</span> <span class="pre">points.'</span></em><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.TOOLTIP" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.class_name">
-<span class="sig-name descname"><span class="pre">class_name</span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.class_name" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">class_name</span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.class_name" title="Link to this definition">¶</a></dt>
 <dd><p>the full module name with the
 class name. e.g., qiskit_metal.qlibrary.qubits.TransmonPocket.</p>
 <dl class="field-list simple">
@@ -618,19 +618,19 @@ class name. e.g., qiskit_metal.qlibrary.qubits.TransmonPocket.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.component_metadata">
-<span class="sig-name descname"><span class="pre">component_metadata</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'short_name':</span> <span class="pre">'cpw'}</span></em><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.component_metadata" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">component_metadata</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'short_name':</span> <span class="pre">'cpw'}</span></em><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.component_metadata" title="Link to this definition">¶</a></dt>
 <dd><p>Component metadata</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.default_options">
-<span class="sig-name descname"><span class="pre">default_options</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'advanced':</span> <span class="pre">{'avoid_collision':</span> <span class="pre">'true'},</span> <span class="pre">'step_size':</span> <span class="pre">'0.25mm'}</span></em><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.default_options" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">default_options</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'advanced':</span> <span class="pre">{'avoid_collision':</span> <span class="pre">'true'},</span> <span class="pre">'step_size':</span> <span class="pre">'0.25mm'}</span></em><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.default_options" title="Link to this definition">¶</a></dt>
 <dd><p>Default options</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.design">
-<span class="sig-name descname"><span class="pre">design</span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.design" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">design</span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.design" title="Link to this definition">¶</a></dt>
 <dd><p>Return a reference to the parent design object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -644,7 +644,7 @@ class name. e.g., qiskit_metal.qlibrary.qubits.TransmonPocket.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.id">
-<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.id" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.id" title="Link to this definition">¶</a></dt>
 <dd><p>The unique id of component within a design.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -658,7 +658,7 @@ class name. e.g., qiskit_metal.qlibrary.qubits.TransmonPocket.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.length">
-<span class="sig-name descname"><span class="pre">length</span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.length" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">length</span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.length" title="Link to this definition">¶</a></dt>
 <dd><p>Sum of all segments length, including the head.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -672,7 +672,7 @@ class name. e.g., qiskit_metal.qlibrary.qubits.TransmonPocket.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.logger">
-<span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.logger" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.logger" title="Link to this definition">¶</a></dt>
 <dd><p>The Qiskit Metal Logger.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -686,13 +686,13 @@ class name. e.g., qiskit_metal.qlibrary.qubits.TransmonPocket.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.name">
-<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.name" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.name" title="Link to this definition">¶</a></dt>
 <dd><p>Name of the component.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.options">
-<span class="sig-name descname"><span class="pre">options</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.options" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">options</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.options" title="Link to this definition">¶</a></dt>
 <dd><p>A dictionary of the component-designer-defined options.
 These options are used in the make function to create the QGeometry and QPins.
 All options should have string keys and preferrable string values.</p>
@@ -700,7 +700,7 @@ All options should have string keys and preferrable string values.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.pin_names">
-<span class="sig-name descname"><span class="pre">pin_names</span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.pin_names" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">pin_names</span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.pin_names" title="Link to this definition">¶</a></dt>
 <dd><p>The names of the pins.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -714,7 +714,7 @@ All options should have string keys and preferrable string values.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.qgeometry_types">
-<span class="sig-name descname"><span class="pre">qgeometry_types</span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.qgeometry_types" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">qgeometry_types</span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.qgeometry_types" title="Link to this definition">¶</a></dt>
 <dd><p>Get a list of the names of the element tables.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -728,19 +728,19 @@ All options should have string keys and preferrable string values.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.pins">
-<span class="sig-name descname"><span class="pre">pins</span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.pins" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">pins</span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.pins" title="Link to this definition">¶</a></dt>
 <dd><p>Dictionary of pins. Populated by component designer in make function using <cite>add_pin</cite>.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.metadata">
-<span class="sig-name descname"><span class="pre">metadata</span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.metadata" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">metadata</span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.metadata" title="Link to this definition">¶</a></dt>
 <dd><p>Metadata allows a designer to store extra information or analysis results.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.status">
-<span class="sig-name descname"><span class="pre">status</span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.status" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">status</span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.status" title="Link to this definition">¶</a></dt>
 <dd><p>Stores the latest status of the component. Values include:
 <code class="docutils literal notranslate"><span class="pre">Initialization</span> <span class="pre">Successful</span></code>, <code class="docutils literal notranslate"><span class="pre">Build</span> <span class="pre">Failed</span></code>, etc.</p>
 </dd></dl>
@@ -748,7 +748,7 @@ All options should have string keys and preferrable string values.</p>
 <p class="rubric">Methods</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.add_dependency">
-<span class="sig-name descname"><span class="pre">add_dependency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">child</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.add_dependency" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">add_dependency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">child</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.add_dependency" title="Link to this definition">¶</a></dt>
 <dd><p>Add a dependency between one component and another. Calls parent
 design.</p>
 <dl class="field-list simple">
@@ -763,7 +763,7 @@ design.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.add_pin">
-<span class="sig-name descname"><span class="pre">add_pin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_as_norm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gap</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.add_pin" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">add_pin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_as_norm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gap</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.add_pin" title="Link to this definition">¶</a></dt>
 <dd><p>Adds a pin from two points which are normal/tangent to the intended
 plane of the pin. The normal should ‘point’ in the direction of
 intended connection. Adds the new pin as a subdictionary to parent
@@ -778,7 +778,7 @@ component’s pins dictionary.</p>
 Defaults to False.. Make True for normal.</p></li>
 <li><p><strong>parent</strong> (<em>*</em>) – The id of the parent component.</p></li>
 <li><p><strong>chip</strong> (<em>*</em>) – the name of the chip the pin is located on. Defaults to None, which is</p></li>
-<li><p><strong>self.options.chip.</strong> (<em>converted to</em>) – </p></li>
+<li><p><strong>self.options.chip.</strong> (<em>converted to</em>)</p></li>
 <li><p><strong>gap</strong> (<em>*</em>) – the dielectric gap of the pin for the purpose of representing as a port
 for simulations.  Defaults to None which is converted to 0.6 * width.</p></li>
 </ul>
@@ -826,7 +826,7 @@ not connected))</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.add_qgeometry">
-<span class="sig-name descname"><span class="pre">add_qgeometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subtract</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">helper</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.add_qgeometry" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">add_qgeometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subtract</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">helper</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.add_qgeometry" title="Link to this definition">¶</a></dt>
 <dd><p>Add QGeometry.</p>
 <p>Takes any additional options in options.</p>
 <dl class="field-list simple">
@@ -844,7 +844,7 @@ Defaults to False.</p></li>
 <li><p><strong>layer</strong> (<em>int</em><em>, </em><em>str</em>) – The layer to which the set of QGeometry will belong
 Defaults to None, which is converted to self.options.chip.</p></li>
 <li><p><strong>chip</strong> (<em>str</em>) – Chip name. Defaults to None, which is converted to</p></li>
-<li><p><strong>self.options.chip.</strong> – </p></li>
+<li><p><strong>self.options.chip.</strong></p></li>
 <li><p><strong>kwargs</strong> (<em>dict</em>) – Parameters dictionary</p></li>
 </ul>
 </dd>
@@ -860,7 +860,7 @@ i.e., all lines or polys etc.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.assign_direction_to_anchor">
-<span class="sig-name descname"><span class="pre">assign_direction_to_anchor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref_pt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../stubs/qiskit_metal.qlibrary.QRoutePoint.html#qiskit_metal.qlibrary.QRoutePoint" title="qiskit_metal.qlibrary.core.qroute.QRoutePoint"><span class="pre">QRoutePoint</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">anchor_pt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../stubs/qiskit_metal.qlibrary.QRoutePoint.html#qiskit_metal.qlibrary.QRoutePoint" title="qiskit_metal.qlibrary.core.qroute.QRoutePoint"><span class="pre">QRoutePoint</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.assign_direction_to_anchor" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">assign_direction_to_anchor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref_pt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../stubs/qiskit_metal.qlibrary.QRoutePoint.html#qiskit_metal.qlibrary.QRoutePoint" title="qiskit_metal.qlibrary.core.qroute.QRoutePoint"><span class="pre">QRoutePoint</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">anchor_pt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../stubs/qiskit_metal.qlibrary.QRoutePoint.html#qiskit_metal.qlibrary.QRoutePoint" title="qiskit_metal.qlibrary.core.qroute.QRoutePoint"><span class="pre">QRoutePoint</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.assign_direction_to_anchor" title="Link to this definition">¶</a></dt>
 <dd><p>Method to assign a direction to a point. Currently assigned as the
 max(x,y projection) of the direct path between the reference point and
 the anchor. Method directly modifies the anchor_pt.direction, thus
@@ -877,7 +877,7 @@ there is no return value.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.connect_astar_or_simple">
-<span class="sig-name descname"><span class="pre">connect_astar_or_simple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_pt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../stubs/qiskit_metal.qlibrary.QRoutePoint.html#qiskit_metal.qlibrary.QRoutePoint" title="qiskit_metal.qlibrary.core.qroute.QRoutePoint"><span class="pre">QRoutePoint</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_pt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../stubs/qiskit_metal.qlibrary.QRoutePoint.html#qiskit_metal.qlibrary.QRoutePoint" title="qiskit_metal.qlibrary.core.qroute.QRoutePoint"><span class="pre">QRoutePoint</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="../_modules/qiskit_metal/qlibrary/tlines/pathfinder.html#RoutePathfinder.connect_astar_or_simple"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.connect_astar_or_simple" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">connect_astar_or_simple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_pt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../stubs/qiskit_metal.qlibrary.QRoutePoint.html#qiskit_metal.qlibrary.QRoutePoint" title="qiskit_metal.qlibrary.core.qroute.QRoutePoint"><span class="pre">QRoutePoint</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_pt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../stubs/qiskit_metal.qlibrary.QRoutePoint.html#qiskit_metal.qlibrary.QRoutePoint" title="qiskit_metal.qlibrary.core.qroute.QRoutePoint"><span class="pre">QRoutePoint</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="../_modules/qiskit_metal/qlibrary/tlines/pathfinder.html#RoutePathfinder.connect_astar_or_simple"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.connect_astar_or_simple" title="Link to this definition">¶</a></dt>
 <dd><p>Connect start and end via A* algo if connect_simple doesn’t work.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -898,7 +898,7 @@ there is no return value.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.connect_components_already_in_design">
-<span class="sig-name descname"><span class="pre">connect_components_already_in_design</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pin_name_self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comp2_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin2_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.connect_components_already_in_design" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">connect_components_already_in_design</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pin_name_self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comp2_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin2_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.connect_components_already_in_design" title="Link to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>WARNING: Do NOT use this method during generation of component instance.</dt><dd><p>This method is expecting self to be added to design._components dict.  More importantly,
 the unique id of self component needs to be in design._components dict.</p>
@@ -923,7 +923,7 @@ the unique id of self component needs to be in design._components dict.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.connect_simple">
-<span class="sig-name descname"><span class="pre">connect_simple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_pt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../stubs/qiskit_metal.qlibrary.QRoutePoint.html#qiskit_metal.qlibrary.QRoutePoint" title="qiskit_metal.qlibrary.core.qroute.QRoutePoint"><span class="pre">QRoutePoint</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_pt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../stubs/qiskit_metal.qlibrary.QRoutePoint.html#qiskit_metal.qlibrary.QRoutePoint" title="qiskit_metal.qlibrary.core.qroute.QRoutePoint"><span class="pre">QRoutePoint</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.connect_simple" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">connect_simple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_pt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../stubs/qiskit_metal.qlibrary.QRoutePoint.html#qiskit_metal.qlibrary.QRoutePoint" title="qiskit_metal.qlibrary.core.qroute.QRoutePoint"><span class="pre">QRoutePoint</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_pt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../stubs/qiskit_metal.qlibrary.QRoutePoint.html#qiskit_metal.qlibrary.QRoutePoint" title="qiskit_metal.qlibrary.core.qroute.QRoutePoint"><span class="pre">QRoutePoint</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.connect_simple" title="Link to this definition">¶</a></dt>
 <dd><p>Try connecting start and end with single or 2-segment/S-shaped CPWs
 if possible.</p>
 <dl class="field-list simple">
@@ -944,7 +944,7 @@ if possible.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.del_colinear_points">
-<span class="sig-name descname"><span class="pre">del_colinear_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.del_colinear_points" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">del_colinear_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.del_colinear_points" title="Link to this definition">¶</a></dt>
 <dd><p>Delete colinear points from the given array.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -961,14 +961,14 @@ if possible.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.delete">
-<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.delete" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.delete" title="Link to this definition">¶</a></dt>
 <dd><p>Delete the QComponent.</p>
 <p>Removes QGeometry, QPins, etc. from the design.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.free_manhattan_length_anchors">
-<span class="sig-name descname"><span class="pre">free_manhattan_length_anchors</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.free_manhattan_length_anchors" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">free_manhattan_length_anchors</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.free_manhattan_length_anchors" title="Link to this definition">¶</a></dt>
 <dd><p>Computes the free-flight manhattan distance between start_pt and
 end_pt passing through all of the given anchor points.</p>
 <dl class="field-list simple">
@@ -983,7 +983,7 @@ end_pt passing through all of the given anchor points.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.get_pin">
-<span class="sig-name descname"><span class="pre">get_pin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.get_pin" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_pin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.get_pin" title="Link to this definition">¶</a></dt>
 <dd><p>Interface for components to get pin data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1000,7 +1000,7 @@ end_pt passing through all of the given anchor points.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.get_points">
-<span class="sig-name descname"><span class="pre">get_points</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.get_points" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_points</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.get_points" title="Link to this definition">¶</a></dt>
 <dd><p>Assembles the list of points for the route by concatenating:
 head_pts + intermediate_pts, tail_pts.</p>
 <dl class="field-list simple">
@@ -1015,7 +1015,7 @@ head_pts + intermediate_pts, tail_pts.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.get_template_options">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_template_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">design</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../stubs/qiskit_metal.designs.QDesign.html#qiskit_metal.designs.QDesign" title="qiskit_metal.designs.QDesign"><span class="pre">QDesign</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Logger</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.get_template_options" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_template_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">design</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../stubs/qiskit_metal.designs.QDesign.html#qiskit_metal.designs.QDesign" title="qiskit_metal.designs.QDesign"><span class="pre">QDesign</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Logger</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.get_template_options" title="Link to this definition">¶</a></dt>
 <dd><p>Creates template options for the Metal Component class required for
 the class to function, based on the design template; i.e., be created,
 made, and rendered. Provides the blank option structure required.</p>
@@ -1041,7 +1041,7 @@ cls._get_unique_class_name().  Defaults to None.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.get_tip">
-<span class="sig-name descname"><span class="pre">get_tip</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../stubs/qiskit_metal.qlibrary.QRoutePoint.html#qiskit_metal.qlibrary.QRoutePoint" title="qiskit_metal.qlibrary.core.qroute.QRoutePoint"><span class="pre">QRoutePoint</span></a></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.get_tip" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_tip</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../stubs/qiskit_metal.qlibrary.QRoutePoint.html#qiskit_metal.qlibrary.QRoutePoint" title="qiskit_metal.qlibrary.core.qroute.QRoutePoint"><span class="pre">QRoutePoint</span></a></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.get_tip" title="Link to this definition">¶</a></dt>
 <dd><p>Access the last element in the QRouteLead.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -1056,7 +1056,7 @@ The values are numpy arrays with two float points each.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.get_unit_vectors">
-<span class="sig-name descname"><span class="pre">get_unit_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../stubs/qiskit_metal.qlibrary.QRoutePoint.html#qiskit_metal.qlibrary.QRoutePoint" title="qiskit_metal.qlibrary.core.qroute.QRoutePoint"><span class="pre">QRoutePoint</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../stubs/qiskit_metal.qlibrary.QRoutePoint.html#qiskit_metal.qlibrary.QRoutePoint" title="qiskit_metal.qlibrary.core.qroute.QRoutePoint"><span class="pre">QRoutePoint</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">snap</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.get_unit_vectors" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_unit_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../stubs/qiskit_metal.qlibrary.QRoutePoint.html#qiskit_metal.qlibrary.QRoutePoint" title="qiskit_metal.qlibrary.core.qroute.QRoutePoint"><span class="pre">QRoutePoint</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../stubs/qiskit_metal.qlibrary.QRoutePoint.html#qiskit_metal.qlibrary.QRoutePoint" title="qiskit_metal.qlibrary.core.qroute.QRoutePoint"><span class="pre">QRoutePoint</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">snap</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.get_unit_vectors" title="Link to this definition">¶</a></dt>
 <dd><p>Return the unit and target vector in which the CPW should process as
 its coordinate sys.</p>
 <dl class="field-list simple">
@@ -1079,7 +1079,7 @@ its coordinate sys.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.length_excess_corner_rounding">
-<span class="sig-name descname"><span class="pre">length_excess_corner_rounding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.length_excess_corner_rounding" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">length_excess_corner_rounding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.length_excess_corner_rounding" title="Link to this definition">¶</a></dt>
 <dd><p>Computes how much length to deduce for compensating the fillet
 settings.</p>
 <dl class="field-list simple">
@@ -1097,13 +1097,13 @@ settings.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.make">
-<span class="sig-name descname"><span class="pre">make</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/qlibrary/tlines/pathfinder.html#RoutePathfinder.make"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.make" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">make</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/qlibrary/tlines/pathfinder.html#RoutePathfinder.make"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.make" title="Link to this definition">¶</a></dt>
 <dd><p>Generates path from start pin to end pin.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.make_elements">
-<span class="sig-name descname"><span class="pre">make_elements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.make_elements" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">make_elements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.make_elements" title="Link to this definition">¶</a></dt>
 <dd><p>Turns the CPW points into design elements, and add them to the
 design object.</p>
 <dl class="field-list simple">
@@ -1115,7 +1115,7 @@ design object.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.parse_options">
-<span class="sig-name descname"><span class="pre">parse_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.parse_options" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">parse_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.parse_options" title="Link to this definition">¶</a></dt>
 <dd><p>Parse the options, converting string into interpreted values. Parses
 units, variables, strings, lists, and dictionaries. Explained by
 example below.</p>
@@ -1136,7 +1136,7 @@ example below.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.parse_value">
-<span class="sig-name descname"><span class="pre">parse_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Iterable</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Iterable</span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.parse_value" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">parse_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Iterable</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Iterable</span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.parse_value" title="Link to this definition">¶</a></dt>
 <dd><p>Parse a string, mappable (dict, Dict), iterable (list, tuple) to
 account for units conversion, some basic arithmetic, and design
 variables. This is the main parsing function of Qiskit Metal.</p>
@@ -1189,7 +1189,7 @@ will yield float(-0.2) when the default units are set to <cite>mm</cite>.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.populate_to_track_table_usage">
-<span class="sig-name descname"><span class="pre">populate_to_track_table_usage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.populate_to_track_table_usage" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">populate_to_track_table_usage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.populate_to_track_table_usage" title="Link to this definition">¶</a></dt>
 <dd><p>Use the element_handler to get a list of all the table names used in
 QGeometry.</p>
 <p>The dict qgeometry_able_usage should get updated by
@@ -1199,7 +1199,7 @@ for this component.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.qgeometry_bounds">
-<span class="sig-name descname"><span class="pre">qgeometry_bounds</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.qgeometry_bounds" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">qgeometry_bounds</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.qgeometry_bounds" title="Link to this definition">¶</a></dt>
 <dd><p>Fetched the component bound dict_value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -1218,7 +1218,7 @@ component as a whole.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.qgeometry_dict">
-<span class="sig-name descname"><span class="pre">qgeometry_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">BaseGeometry</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.qgeometry_dict" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">qgeometry_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">BaseGeometry</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.qgeometry_dict" title="Link to this definition">¶</a></dt>
 <dd><p>Returns a dict of element qgeometry (shapely geometry) of the
 component as a python dict, where the dict keys are the names of the
 qgeometry and the corresponding values are the shapely geometries.</p>
@@ -1238,7 +1238,7 @@ type (ie. table)</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.qgeometry_list">
-<span class="sig-name descname"><span class="pre">qgeometry_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'all'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">BaseGeometry</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.qgeometry_list" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">qgeometry_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'all'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">BaseGeometry</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.qgeometry_list" title="Link to this definition">¶</a></dt>
 <dd><p>Returns a list of element qgeometry (shapely geometry) of the
 component as a python list of shapely geometries.</p>
 <dl class="field-list simple">
@@ -1258,7 +1258,7 @@ Can also specify all</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.qgeometry_plot">
-<span class="sig-name descname"><span class="pre">qgeometry_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">matplotlib.axes.Axes</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_kw</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.qgeometry_plot" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">qgeometry_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">matplotlib.axes.Axes</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_kw</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.qgeometry_plot" title="Link to this definition">¶</a></dt>
 <dd><p>Draw all the qgeometry of the component (polys and path etc.)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1287,7 +1287,7 @@ q1.qgeometry_plot(ax)</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.qgeometry_table">
-<span class="sig-name descname"><span class="pre">qgeometry_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.qgeometry_table" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">qgeometry_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.qgeometry_table" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the entire element table for the component.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1305,7 +1305,7 @@ the element type (ie. table)</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.rebuild">
-<span class="sig-name descname"><span class="pre">rebuild</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.rebuild" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">rebuild</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.rebuild" title="Link to this definition">¶</a></dt>
 <dd><p>Builds the QComponent.</p>
 <p>This is the main action function of a
 QComponent, call it qc. It converts the qc.options into QGeometry with
@@ -1328,7 +1328,7 @@ fails to reach the final line of the build, where the build status is set to <ci
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.set_lead">
-<span class="sig-name descname"><span class="pre">set_lead</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../stubs/qiskit_metal.qlibrary.QRoutePoint.html#qiskit_metal.qlibrary.QRoutePoint" title="qiskit_metal.qlibrary.core.qroute.QRoutePoint"><span class="pre">QRoutePoint</span></a></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.set_lead" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">set_lead</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../stubs/qiskit_metal.qlibrary.QRoutePoint.html#qiskit_metal.qlibrary.QRoutePoint" title="qiskit_metal.qlibrary.core.qroute.QRoutePoint"><span class="pre">QRoutePoint</span></a></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.set_lead" title="Link to this definition">¶</a></dt>
 <dd><p>Defines the lead_extension by adding a point to the self.head/tail.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1348,7 +1348,7 @@ fails to reach the final line of the build, where the build status is set to <ci
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.set_lead_extension">
-<span class="sig-name descname"><span class="pre">set_lead_extension</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../stubs/qiskit_metal.qlibrary.QRoutePoint.html#qiskit_metal.qlibrary.QRoutePoint" title="qiskit_metal.qlibrary.core.qroute.QRoutePoint"><span class="pre">QRoutePoint</span></a></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.set_lead_extension" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">set_lead_extension</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../stubs/qiskit_metal.qlibrary.QRoutePoint.html#qiskit_metal.qlibrary.QRoutePoint" title="qiskit_metal.qlibrary.core.qroute.QRoutePoint"><span class="pre">QRoutePoint</span></a></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.set_lead_extension" title="Link to this definition">¶</a></dt>
 <dd><p>Defines the jogged lead_extension by adding a series of turns to the
 self.head/tail.</p>
 <dl class="field-list simple">
@@ -1372,7 +1372,7 @@ self.head/tail.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.set_pin">
-<span class="sig-name descname"><span class="pre">set_pin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../stubs/qiskit_metal.qlibrary.QRoutePoint.html#qiskit_metal.qlibrary.QRoutePoint" title="qiskit_metal.qlibrary.core.qroute.QRoutePoint"><span class="pre">QRoutePoint</span></a></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.set_pin" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">set_pin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../stubs/qiskit_metal.qlibrary.QRoutePoint.html#qiskit_metal.qlibrary.QRoutePoint" title="qiskit_metal.qlibrary.core.qroute.QRoutePoint"><span class="pre">QRoutePoint</span></a></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.set_pin" title="Link to this definition">¶</a></dt>
 <dd><p>Defines the CPW pins and returns the pin coordinates and normal
 direction vector.</p>
 <dl class="field-list simple">
@@ -1393,7 +1393,7 @@ direction vector.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.to_script">
-<span class="sig-name descname"><span class="pre">to_script</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_part_of_chip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.to_script" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">to_script</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_part_of_chip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.to_script" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -1410,7 +1410,7 @@ this function</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.trim_pts">
-<span class="sig-name descname"><span class="pre">trim_pts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.trim_pts" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">trim_pts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.trim_pts" title="Link to this definition">¶</a></dt>
 <dd><p>Crops the sequence of points to concatenate.</p>
 <p>For example, if a segment between two anchors has no points,
 then the segment is eliminated (only anchor points will do).
@@ -1420,7 +1420,7 @@ returned.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.unary_union">
-<span class="sig-name descname"><span class="pre">unary_union</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geoms</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.unary_union" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">unary_union</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geoms</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.unary_union" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the union of a sequence of geometries</p>
 <p>Usually used to convert a collection into the smallest set of polygons
 that cover the same area.</p>
@@ -1428,7 +1428,7 @@ that cover the same area.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.unobstructed">
-<span class="sig-name descname"><span class="pre">unobstructed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.unobstructed" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">unobstructed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.unobstructed" title="Link to this definition">¶</a></dt>
 <dd><p>Check that no component’s bounding box in self.design intersects or
 overlaps a given segment.</p>
 <dl class="field-list simple">
@@ -1446,7 +1446,7 @@ overlaps a given segment.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.RoutePathfinder.unobstructed_close_up">
-<span class="sig-name descname"><span class="pre">unobstructed_close_up</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.unobstructed_close_up" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">unobstructed_close_up</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#qiskit_metal.qlibrary.RoutePathfinder.unobstructed_close_up" title="Link to this definition">¶</a></dt>
 <dd><p>Checks whether the given component’s perimeter intersects or
 overlaps a given segment.</p>
 <dl class="field-list simple">
@@ -1503,7 +1503,7 @@ overlaps a given segment.</p>
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/02/13</div>
+              Last updated on 2024/12/16</div>
           </div>
           <div class="right-details">
             
@@ -1592,7 +1592,7 @@ overlaps a given segment.</p>
 </div><script src="../_static/jquery.js?v=5d32c60e"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script src="../_static/documentation_options.js?v=59fadc99"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>

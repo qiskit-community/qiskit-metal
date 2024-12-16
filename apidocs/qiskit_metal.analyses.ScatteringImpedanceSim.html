@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Renderers (qiskit_metal.renderers)" href="renderers.html" /><link rel="prev" title="EigenmodeSim" href="qiskit_metal.analyses.EigenmodeSim.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19 -->
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
         <title>ScatteringImpedanceSim - Qiskit Metal 0.1.5 0.1.5</title>
       <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=362ab14a" />
@@ -545,10 +545,10 @@
         </div>
         <article role="main">
           <br><br><br><section id="scatteringimpedancesim">
-<h1>ScatteringImpedanceSim<a class="headerlink" href="#scatteringimpedancesim" title="Link to this heading">#</a></h1>
+<h1>ScatteringImpedanceSim<a class="headerlink" href="#scatteringimpedancesim" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.ScatteringImpedanceSim">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ScatteringImpedanceSim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">design</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../stubs/qiskit_metal.designs.QDesign.html#qiskit_metal.designs.QDesign" title="qiskit_metal.designs.design_base.QDesign"><span class="pre">QDesign</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renderer_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'hfss'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/simulation/scattering_impedance.html#ScatteringImpedanceSim"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ScatteringImpedanceSim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">design</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../stubs/qiskit_metal.designs.QDesign.html#qiskit_metal.designs.QDesign" title="qiskit_metal.designs.design_base.QDesign"><span class="pre">QDesign</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renderer_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'hfss'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/simulation/scattering_impedance.html#ScatteringImpedanceSim"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim" title="Link to this definition">¶</a></dt>
 <dd><p>Uses drivenmodal simulation to extract the impedance.</p>
 <dl class="simple">
 <dt>Default Setup:</dt><dd><ul class="simple">
@@ -601,25 +601,25 @@ Used to access the QRenderer. Defaults to None.</p></li>
 <p class="rubric">Attributes</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.ScatteringImpedanceSim.data_labels">
-<span class="sig-name descname"><span class="pre">data_labels</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['sweep_name',</span> <span class="pre">'params_z',</span> <span class="pre">'params_y',</span> <span class="pre">'params_s']</span></em><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.data_labels" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">data_labels</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['sweep_name',</span> <span class="pre">'params_z',</span> <span class="pre">'params_y',</span> <span class="pre">'params_s']</span></em><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.data_labels" title="Link to this definition">¶</a></dt>
 <dd><p>Default data labels.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.ScatteringImpedanceSim.default_setup">
-<span class="sig-name descname"><span class="pre">default_setup</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'basis_order':</span> <span class="pre">1,</span> <span class="pre">'freq_ghz':</span> <span class="pre">5,</span> <span class="pre">'max_delta_s':</span> <span class="pre">0.1,</span> <span class="pre">'max_passes':</span> <span class="pre">10,</span> <span class="pre">'min_converged':</span> <span class="pre">1,</span> <span class="pre">'min_passes':</span> <span class="pre">1,</span> <span class="pre">'pct_refinement':</span> <span class="pre">30,</span> <span class="pre">'sweep_setup':</span> <span class="pre">{'count':</span> <span class="pre">101,</span> <span class="pre">'name':</span> <span class="pre">'Sweep',</span> <span class="pre">'save_fields':</span> <span class="pre">False,</span> <span class="pre">'start_ghz':</span> <span class="pre">2.0,</span> <span class="pre">'step_ghz':</span> <span class="pre">None,</span> <span class="pre">'stop_ghz':</span> <span class="pre">8.0,</span> <span class="pre">'type':</span> <span class="pre">'Fast'},</span> <span class="pre">'vars':</span> <span class="pre">{'Cj':</span> <span class="pre">'0</span> <span class="pre">fF',</span> <span class="pre">'Lj':</span> <span class="pre">'10</span> <span class="pre">nH'}}</span></em><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.default_setup" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">default_setup</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'basis_order':</span> <span class="pre">1,</span> <span class="pre">'freq_ghz':</span> <span class="pre">5,</span> <span class="pre">'max_delta_s':</span> <span class="pre">0.1,</span> <span class="pre">'max_passes':</span> <span class="pre">10,</span> <span class="pre">'min_converged':</span> <span class="pre">1,</span> <span class="pre">'min_passes':</span> <span class="pre">1,</span> <span class="pre">'pct_refinement':</span> <span class="pre">30,</span> <span class="pre">'sweep_setup':</span> <span class="pre">{'count':</span> <span class="pre">101,</span> <span class="pre">'name':</span> <span class="pre">'Sweep',</span> <span class="pre">'save_fields':</span> <span class="pre">False,</span> <span class="pre">'start_ghz':</span> <span class="pre">2.0,</span> <span class="pre">'step_ghz':</span> <span class="pre">None,</span> <span class="pre">'stop_ghz':</span> <span class="pre">8.0,</span> <span class="pre">'type':</span> <span class="pre">'Fast'},</span> <span class="pre">'vars':</span> <span class="pre">{'Cj':</span> <span class="pre">'0</span> <span class="pre">fF',</span> <span class="pre">'Lj':</span> <span class="pre">'10</span> <span class="pre">nH'}}</span></em><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.default_setup" title="Link to this definition">¶</a></dt>
 <dd><p>Default setup.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.ScatteringImpedanceSim.logger">
-<span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.logger" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.logger" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the logger.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.ScatteringImpedanceSim.param_s">
-<span class="sig-name descname"><span class="pre">param_s</span></span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.param_s" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">param_s</span></span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.param_s" title="Link to this definition">¶</a></dt>
 <dd><p>Getter</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -633,7 +633,7 @@ Used to access the QRenderer. Defaults to None.</p></li>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.ScatteringImpedanceSim.param_y">
-<span class="sig-name descname"><span class="pre">param_y</span></span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.param_y" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">param_y</span></span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.param_y" title="Link to this definition">¶</a></dt>
 <dd><p>Getter</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -647,7 +647,7 @@ Used to access the QRenderer. Defaults to None.</p></li>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.ScatteringImpedanceSim.param_z">
-<span class="sig-name descname"><span class="pre">param_z</span></span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.param_z" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">param_z</span></span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.param_z" title="Link to this definition">¶</a></dt>
 <dd><p>Getter</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -661,13 +661,13 @@ Used to access the QRenderer. Defaults to None.</p></li>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.ScatteringImpedanceSim.renderer_initialized">
-<span class="sig-name descname"><span class="pre">renderer_initialized</span></span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.renderer_initialized" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">renderer_initialized</span></span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.renderer_initialized" title="Link to this definition">¶</a></dt>
 <dd><p>Reports whether the renderer is initialized or stopped.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.ScatteringImpedanceSim.setup">
-<span class="sig-name descname"><span class="pre">setup</span></span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.setup" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">setup</span></span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.setup" title="Link to this definition">¶</a></dt>
 <dd><p>Dictionary intended to be used to modify the analysis behavior.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -684,7 +684,7 @@ Used to access the QRenderer. Defaults to None.</p></li>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.ScatteringImpedanceSim.sim_setup_name">
-<span class="sig-name descname"><span class="pre">sim_setup_name</span></span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.sim_setup_name" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sim_setup_name</span></span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.sim_setup_name" title="Link to this definition">¶</a></dt>
 <dd><p>Getter</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -698,7 +698,7 @@ Used to access the QRenderer. Defaults to None.</p></li>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.ScatteringImpedanceSim.supported_data">
-<span class="sig-name descname"><span class="pre">supported_data</span></span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.supported_data" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">supported_data</span></span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.supported_data" title="Link to this definition">¶</a></dt>
 <dd><p>Set that contains the names of the variables supported from the analysis.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -715,7 +715,7 @@ Used to access the QRenderer. Defaults to None.</p></li>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.ScatteringImpedanceSim.sweep_name">
-<span class="sig-name descname"><span class="pre">sweep_name</span></span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.sweep_name" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sweep_name</span></span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.sweep_name" title="Link to this definition">¶</a></dt>
 <dd><p>Getter</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -730,7 +730,7 @@ Used to access the QRenderer. Defaults to None.</p></li>
 <p class="rubric">Methods</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.ScatteringImpedanceSim.clear_data">
-<span class="sig-name descname"><span class="pre">clear_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.clear_data" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">clear_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.clear_data" title="Link to this definition">¶</a></dt>
 <dd><p>Clear data. Can optionally specify one or more labels to delete those labels and data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -742,13 +742,13 @@ Defaults to None.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.ScatteringImpedanceSim.close">
-<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.close" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.close" title="Link to this definition">¶</a></dt>
 <dd><p>Stops the renderer by executing the routine of the selected renderer.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.ScatteringImpedanceSim.get_admittance">
-<span class="sig-name descname"><span class="pre">get_admittance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['Y11',</span> <span class="pre">'Y21']</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/simulation/scattering_impedance.html#ScatteringImpedanceSim.get_admittance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.get_admittance" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_admittance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['Y11',</span> <span class="pre">'Y21']</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/simulation/scattering_impedance.html#ScatteringImpedanceSim.get_admittance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.get_admittance" title="Link to this definition">¶</a></dt>
 <dd><p>Create the impedance plot.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -760,7 +760,7 @@ to return. Defaults to [‘Y11’, ‘Y21’].</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.ScatteringImpedanceSim.get_data">
-<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.get_data" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.get_data" title="Link to this definition">¶</a></dt>
 <dd><p>Retrieves the analysis module data.
 Returns <cite>None</cite> if nothing is found.</p>
 <dl class="field-list simple">
@@ -779,7 +779,7 @@ entire dictionary is returned. Defaults to None.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.ScatteringImpedanceSim.get_data_labels">
-<span class="sig-name descname"><span class="pre">get_data_labels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.get_data_labels" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_data_labels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.get_data_labels" title="Link to this definition">¶</a></dt>
 <dd><p>Retrieves the list of data labels currently set.
 Returns <cite>None</cite> if nothing is found.</p>
 <dl class="field-list simple">
@@ -794,7 +794,7 @@ Returns <cite>None</cite> if nothing is found.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.ScatteringImpedanceSim.get_impedance">
-<span class="sig-name descname"><span class="pre">get_impedance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['Z11',</span> <span class="pre">'Z21']</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/simulation/scattering_impedance.html#ScatteringImpedanceSim.get_impedance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.get_impedance" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_impedance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['Z11',</span> <span class="pre">'Z21']</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/simulation/scattering_impedance.html#ScatteringImpedanceSim.get_impedance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.get_impedance" title="Link to this definition">¶</a></dt>
 <dd><p>Create the impedance plot.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -806,7 +806,7 @@ to return. Defaults to [‘Z11’, ‘Z21’].</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.ScatteringImpedanceSim.get_scattering">
-<span class="sig-name descname"><span class="pre">get_scattering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['S11',</span> <span class="pre">'S21']</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/simulation/scattering_impedance.html#ScatteringImpedanceSim.get_scattering"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.get_scattering" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_scattering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['S11',</span> <span class="pre">'S21']</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/simulation/scattering_impedance.html#ScatteringImpedanceSim.get_scattering"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.get_scattering" title="Link to this definition">¶</a></dt>
 <dd><p>Create the scattering plot.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -818,20 +818,20 @@ to return. Defaults to [‘S11’, ‘S21’].</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.ScatteringImpedanceSim.print_run_args">
-<span class="sig-name descname"><span class="pre">print_run_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.print_run_args" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">print_run_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.print_run_args" title="Link to this definition">¶</a></dt>
 <dd><p>Prints the args and kwargs that were used in the last run() of this Analysis instance.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.ScatteringImpedanceSim.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.run" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.run" title="Link to this definition">¶</a></dt>
 <dd><p>Alias for run_sim() necessary to implement super-class method, while
 preventing method name collision when sim and non-sim QAnalysis classes are inherited.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.ScatteringImpedanceSim.run_sim">
-<span class="sig-name descname"><span class="pre">run_sim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">components</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">open_terminations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jj_to_port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignored_jjs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">box_plus_buffer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/qiskit_metal/analyses/simulation/scattering_impedance.html#ScatteringImpedanceSim.run_sim"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.run_sim" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">run_sim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">components</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">open_terminations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jj_to_port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignored_jjs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">box_plus_buffer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/qiskit_metal/analyses/simulation/scattering_impedance.html#ScatteringImpedanceSim.run_sim"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.run_sim" title="Link to this definition">¶</a></dt>
 <dd><p>Executes the entire drivenmodal analysis and convergence result export.
 First it makes sure the tool is running. Then it does what’s necessary to render the design.
 Finally it runs the setup and sweep defined in this class. You need to modify the setup
@@ -868,21 +868,21 @@ of rendered geometries or use chip size from design class. Defaults to True.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.ScatteringImpedanceSim.run_sweep">
-<span class="sig-name descname"><span class="pre">run_sweep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.run_sweep" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">run_sweep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.run_sweep" title="Link to this definition">¶</a></dt>
 <dd><p>User requests sweeper based on arguments from
 Sweeper.run_sweep().</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.ScatteringImpedanceSim.save_run_args">
-<span class="sig-name descname"><span class="pre">save_run_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.save_run_args" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">save_run_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.save_run_args" title="Link to this definition">¶</a></dt>
 <dd><p>Intended to be used to store the kwargs passed to the run() method,
 for repeatability and for later identification of the QAnalysis instance.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.ScatteringImpedanceSim.save_screenshot">
-<span class="sig-name descname"><span class="pre">save_screenshot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.save_screenshot" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">save_screenshot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.save_screenshot" title="Link to this definition">¶</a></dt>
 <dd><p>Saves the screenshot.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -896,7 +896,7 @@ for repeatability and for later identification of the QAnalysis instance.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.ScatteringImpedanceSim.select_renderer">
-<span class="sig-name descname"><span class="pre">select_renderer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">renderer_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.select_renderer" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">select_renderer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">renderer_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.select_renderer" title="Link to this definition">¶</a></dt>
 <dd><p>Makes sure the renderer exists in qiskit-metal. If yes it sets the analysis
 class variables to be able to reach it easily. Else it throws an error.</p>
 <dl class="field-list simple">
@@ -914,7 +914,7 @@ class variables to be able to reach it easily. Else it throws an error.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.ScatteringImpedanceSim.set_data">
-<span class="sig-name descname"><span class="pre">set_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.set_data" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">set_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.set_data" title="Link to this definition">¶</a></dt>
 <dd><p>Stores data in a structure for later retrieval.
 Could be output, intermediate or even input data.
 Current implementation uses Dict()</p>
@@ -930,7 +930,7 @@ Current implementation uses Dict()</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.ScatteringImpedanceSim.setup_update">
-<span class="sig-name descname"><span class="pre">setup_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">section</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.setup_update" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">setup_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">section</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.setup_update" title="Link to this definition">¶</a></dt>
 <dd><p>Intended to modify multiple setup settings at once, while retaining previous settings.
 If you intend to change a single setting, the better way is: <cite>setup.setting1 = value</cite>.</p>
 <dl class="field-list simple">
@@ -942,7 +942,7 @@ If you intend to change a single setting, the better way is: <cite>setup.setting
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.ScatteringImpedanceSim.start">
-<span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.start" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.ScatteringImpedanceSim.start" title="Link to this definition">¶</a></dt>
 <dd><p>Starts the renderer by executing the routine of the selected renderer.</p>
 </dd></dl>
 
@@ -984,7 +984,7 @@ If you intend to change a single setting, the better way is: <cite>setup.setting
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/02/13</div>
+              Last updated on 2024/12/16</div>
           </div>
           <div class="right-details">
             
@@ -1051,7 +1051,7 @@ If you intend to change a single setting, the better way is: <cite>setup.setting
 </div><script src="../_static/jquery.js?v=5d32c60e"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script src="../_static/documentation_options.js?v=59fadc99"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>

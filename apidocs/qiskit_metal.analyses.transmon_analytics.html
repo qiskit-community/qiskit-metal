@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="cpw_calculations" href="qiskit_metal.analyses.cpw_calculations.html" /><link rel="prev" title="HO_wavefunctions" href="qiskit_metal.analyses.HO_wavefunctions.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19 -->
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
         <title>transmon_analytics - Qiskit Metal 0.1.5 0.1.5</title>
       <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=362ab14a" />
@@ -545,7 +545,7 @@
         </div>
         <article role="main">
           <br><br><br><section id="module-qiskit_metal.analyses.transmon_analytics">
-<span id="transmon-analytics"></span><h1>transmon_analytics<a class="headerlink" href="#module-qiskit_metal.analyses.transmon_analytics" title="Link to this heading">#</a></h1>
+<span id="transmon-analytics"></span><h1>transmon_analytics<a class="headerlink" href="#module-qiskit_metal.analyses.transmon_analytics" title="Link to this heading">¶</a></h1>
 <p>This code calculates the energy eigenvalues of the transmon qubit cooper pair box
 as a function of the offset charge and plots the corresponding results.</p>
 <dl class="simple">
@@ -576,7 +576,7 @@ Phys. Rev. A. 76, 042319 (2007).</p></li>
 </div>
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.transmon_analytics.kidx">
-<span class="sig-name descname"><span class="pre">kidx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">my_ng</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.transmon_analytics.kidx" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">kidx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">my_ng</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.transmon_analytics.kidx" title="Link to this definition">¶</a></dt>
 <dd><p>This function is a placeholder which performs an additional modulo operation
 with an offset of ng=0.5, but is not necessary when only integer values of
 kidxRAW(m, my_ng) are used. If non-integer values of kidxRAW are used, then
@@ -594,7 +594,7 @@ ng (float): the offset charge of the Josephjunction island (in units of 2e)</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.transmon_analytics.kidx_raw">
-<span class="sig-name descname"><span class="pre">kidx_raw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">my_ng</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.transmon_analytics.kidx_raw" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">kidx_raw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">my_ng</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.transmon_analytics.kidx_raw" title="Link to this definition">¶</a></dt>
 <dd><p>This function calculates the integers which correct sort the eigenstates and eigenenergies
 of the solution to Mathieu’s equation.</p>
 <blockquote>
@@ -610,7 +610,7 @@ my_ng (float): the offset charge of the Josephjunction island (in units of 2e)</
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.transmon_analytics.plot_eigenvalues">
-<span class="sig-name descname"><span class="pre">plot_eigenvalues</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.transmon_analytics.plot_eigenvalues" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">plot_eigenvalues</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.transmon_analytics.plot_eigenvalues" title="Link to this definition">¶</a></dt>
 <dd><p>This function actually creates the plot(s) of eigenvalues as a function of
 offset charge. No arguments need to be passed.</p>
 <dl class="field-list simple">
@@ -622,7 +622,7 @@ offset charge. No arguments need to be passed.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.transmon_analytics.transmon_eigenvalue">
-<span class="sig-name descname"><span class="pre">transmon_eigenvalue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">my_ng</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.transmon_analytics.transmon_eigenvalue" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">transmon_eigenvalue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">my_ng</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.transmon_analytics.transmon_eigenvalue" title="Link to this definition">¶</a></dt>
 <dd><p>This function calculate the energy eigenvalue of the transmon qubit for a given
 energy level (m) and offset charge (my_ng). The input values are first used to
 calculate the index using the function defined above, and then the calculated
@@ -674,7 +674,7 @@ ng (float): the offset charge of the Josephjunction island (in units of 2e)</p>
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/02/13</div>
+              Last updated on 2024/12/16</div>
           </div>
           <div class="right-details">
             
@@ -714,7 +714,7 @@ ng (float): the offset charge of the Josephjunction island (in units of 2e)</p>
 </div><script src="../_static/jquery.js?v=5d32c60e"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script src="../_static/documentation_options.js?v=59fadc99"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>

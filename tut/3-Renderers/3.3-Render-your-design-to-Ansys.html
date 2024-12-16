@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="How do I make my custom QRenderer" href="3.4-How-do-I-make-my-custom-QRenderer.html" /><link rel="prev" title="Export your design to GDS" href="3.2-Export-your-design-to-GDS.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19 -->
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
         <title>Render your design to Ansys - Qiskit Metal 0.1.5 0.1.5</title>
       <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=362ab14a" />
@@ -797,16 +797,16 @@ div.rendered_html tbody tr:hover {
 <p>This page was generated from <a class="reference external" href="https://github.com/Qiskit/qiskit-metal/blob/main/docs/tut//3-Renderers//3.3-Render-your-design-to-Ansys.ipynb">tut//3-Renderers//3.3-Render-your-design-to-Ansys.ipynb</a>.</p>
 </div>
 <section id="Render-your-design-to-Ansys">
-<h1>Render your design to Ansys<a class="headerlink" href="#Render-your-design-to-Ansys" title="Link to this heading">#</a></h1>
+<h1>Render your design to Ansys<a class="headerlink" href="#Render-your-design-to-Ansys" title="Link to this heading">¶</a></h1>
 <p>This notebook describes methods to directly interact with the renderer. As a designer, you might prefer this degree of control. Alternatively, you can decide to only interact with the Analysis modules (described in the 4.* tutorial notebooks) which will take care of some of these operations for you. they also provide a level of abstraction for which you will not need to learn the separate renderers, but seemlesly utilize any of them.</p>
 <section id="Prerequisite">
-<h2>Prerequisite<a class="headerlink" href="#Prerequisite" title="Link to this heading">#</a></h2>
+<h2>Prerequisite<a class="headerlink" href="#Prerequisite" title="Link to this heading">¶</a></h2>
 <p>You need to have Ansys installed locally (any version) - at the time of this notebook, Ansys is only supported in Windows.</p>
 </section>
 <section id="1.-Create-the-design-in-Metal">
-<h2>1. Create the design in Metal<a class="headerlink" href="#1.-Create-the-design-in-Metal" title="Link to this heading">#</a></h2>
+<h2>1. Create the design in Metal<a class="headerlink" href="#1.-Create-the-design-in-Metal" title="Link to this heading">¶</a></h2>
 <section id="1.1-Preload-libraries-and-classes,-then-open-Metal">
-<h3>1.1 Preload libraries and classes, then open Metal<a class="headerlink" href="#1.1-Preload-libraries-and-classes,-then-open-Metal" title="Link to this heading">#</a></h3>
+<h3>1.1 Preload libraries and classes, then open Metal<a class="headerlink" href="#1.1-Preload-libraries-and-classes,-then-open-Metal" title="Link to this heading">¶</a></h3>
 <p>Let’s start by importing all the key libraries and classes, and opening Metal</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -884,7 +884,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="1.2-Prepare-a-design-consisting-of-4-qubits-and-4-CPWs">
-<h3>1.2 Prepare a design consisting of 4 qubits and 4 CPWs<a class="headerlink" href="#1.2-Prepare-a-design-consisting-of-4-qubits-and-4-CPWs" title="Link to this heading">#</a></h3>
+<h3>1.2 Prepare a design consisting of 4 qubits and 4 CPWs<a class="headerlink" href="#1.2-Prepare-a-design-consisting-of-4-qubits-and-4-CPWs" title="Link to this heading">¶</a></h3>
 <p>First we import the necessary components and change key global variables to the desired size.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -998,7 +998,7 @@ div.rendered_html tbody tr:hover {
 </section>
 </section>
 <section id="2.-Render-into-Ansys-HFSS">
-<h2>2. Render into Ansys HFSS<a class="headerlink" href="#2.-Render-into-Ansys-HFSS" title="Link to this heading">#</a></h2>
+<h2>2. Render into Ansys HFSS<a class="headerlink" href="#2.-Render-into-Ansys-HFSS" title="Link to this heading">¶</a></h2>
 <p>The Ansys HFSS renderer was instantiated during the boot of Qiskit Metal. Let’s create a short handle to refer to it in the rest of this notebook.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
@@ -1010,7 +1010,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <section id="2.1-Connect-to-or-create-an-Ansys-project">
-<h3>2.1 Connect to or create an Ansys project<a class="headerlink" href="#2.1-Connect-to-or-create-an-Ansys-project" title="Link to this heading">#</a></h3>
+<h3>2.1 Connect to or create an Ansys project<a class="headerlink" href="#2.1-Connect-to-or-create-an-Ansys-project" title="Link to this heading">¶</a></h3>
 <p>To setup the project <strong>manually</strong>, follow these instructions: 1. Launch <code class="docutils literal notranslate"><span class="pre">ANSYS</span> <span class="pre">Electronics</span> <span class="pre">Desktop</span> <span class="pre">yyyy</span> <span class="pre">Rx</span></code> (from your Windows Start menu). 2. Create a new Ansys project by clicking on the <code class="docutils literal notranslate"><span class="pre">New</span></code> icon at the top left. (or open an existing project)</p>
 <p>Alternatively, you can <strong>automatically</strong> set up Ansys by executing the following cell. If Ansys is already open, executing this cell will connect this jupyter notebook session to the currently open windo, project, design and setup. you can modify that later.</p>
 <div class="nbinput docutils container">
@@ -1048,10 +1048,10 @@ True
 </div>
 </section>
 <section id="2.2-Setup-an-Ansys-HFSS-design">
-<h3>2.2 Setup an Ansys HFSS design<a class="headerlink" href="#2.2-Setup-an-Ansys-HFSS-design" title="Link to this heading">#</a></h3>
+<h3>2.2 Setup an Ansys HFSS design<a class="headerlink" href="#2.2-Setup-an-Ansys-HFSS-design" title="Link to this heading">¶</a></h3>
 <p>You can either create a new design or select and use an old one.</p>
 <section id="Creating-a-design">
-<h4>Creating a design<a class="headerlink" href="#Creating-a-design" title="Link to this heading">#</a></h4>
+<h4>Creating a design<a class="headerlink" href="#Creating-a-design" title="Link to this heading">¶</a></h4>
 <p>To create a new design <strong>manually</strong>, go to the Ansys GUI and follow these instructions: 1. Select the project from the leftmost menu in the Ansys GUI. 2. Go into the menu <code class="docutils literal notranslate"><span class="pre">Project</span></code> and select <code class="docutils literal notranslate"><span class="pre">Insert</span> <span class="pre">HFSS</span> <span class="pre">Design</span></code>. 3. Change the HFSS design to either eigenmode or modal by right-clicking on the HFSSdesign1 that just got created inside your project (left panel) and then selecting: <code class="docutils literal notranslate"><span class="pre">Solution</span> <span class="pre">Type...</span></code>.</p>
 <p>To create a new design <strong>automatically</strong>, execute one of the following two cells. The first will create a design with eigenmode solution type, the second one will create a design with drivenmodal solution type.</p>
 <p>NOTE: The design will be added to the project that was active when the command <code class="docutils literal notranslate"><span class="pre">fourq_hfss.start()</span></code> was executed. Note: If a design named <code class="docutils literal notranslate"><span class="pre">HFSSTransmonQubit</span></code> already exists in the project, a new design will be created, with the name suffixed with an incremental integer: <code class="docutils literal notranslate"><span class="pre">HFSSTransmonQubit1</span></code>, <code class="docutils literal notranslate"><span class="pre">HFSSTransmonQubit2</span></code>, etc.</p>
@@ -1119,7 +1119,7 @@ INFO 04:09PM [get_setup]:       Opened setup `Setup`  (&lt;class &#39;pyEPR.ansy
 </div>
 </section>
 <section id="Selecting-a-design-previously-created">
-<h4>Selecting a design previously created<a class="headerlink" href="#Selecting-a-design-previously-created" title="Link to this heading">#</a></h4>
+<h4>Selecting a design previously created<a class="headerlink" href="#Selecting-a-design-previously-created" title="Link to this heading">¶</a></h4>
 <p>If you created a design with the above commands, it will be automatically selected and linked to this jupyter notebook session. Instead, if you want to use a design that had been created beforehand in the project, you can select it by following one of following three approaches: * manually activating the design from the Ansys GUI, <strong>before</strong> you run the <code class="docutils literal notranslate"><span class="pre">fourq_hfss.start()</span></code> command. In the Ansys GUI, you will find the list of designs in the leftmost panel, and you can activate them with a
 double click. * using method <code class="docutils literal notranslate"><span class="pre">fourq_hfss.connect_ansys(*with</span> <span class="pre">parameters*)</span></code>, specifying which design to connect to. * using method <code class="docutils literal notranslate"><span class="pre">activate_ansys_design('name')</span></code>.</p>
 <p>The next two cells exemplify how to use the last method. We will switch between the two designs that we previously created.</p>
@@ -1163,7 +1163,7 @@ INFO 04:09PM [connect_design]:  Opened active design
 </section>
 </section>
 <section id="2.3-Render-some-component-from-the-Metal-design">
-<h3>2.3 Render some component from the Metal design<a class="headerlink" href="#2.3-Render-some-component-from-the-Metal-design" title="Link to this heading">#</a></h3>
+<h3>2.3 Render some component from the Metal design<a class="headerlink" href="#2.3-Render-some-component-from-the-Metal-design" title="Link to this heading">¶</a></h3>
 <p>Find below several rendering examples. You can choose to only execute one of them if you are just browsing this notebook.</p>
 <p>Notice how we explicitly clear the design before re-rendering. Indeed <code class="docutils literal notranslate"><span class="pre">render_design()</span></code> only adds shapes to the Ansys design. Re-rendering the same shapes will cause violations.</p>
 <div class="nbinput nblast docutils container">
@@ -1252,7 +1252,7 @@ INFO 04:09PM [connect_design]:  Opened active design
 </div>
 </section>
 <section id="2.4-Create-of-select-a-setup">
-<h3>2.4 Create of select a setup<a class="headerlink" href="#2.4-Create-of-select-a-setup" title="Link to this heading">#</a></h3>
+<h3>2.4 Create of select a setup<a class="headerlink" href="#2.4-Create-of-select-a-setup" title="Link to this heading">¶</a></h3>
 <p>This section is only needed if you plan to execute an analysis. This topic will be covered in the tutorial notebooks 4.x.</p>
 <p>To <strong>select</strong> a setup for the active design, you can use <code class="docutils literal notranslate"><span class="pre">activate_ansys_setup()</span></code>. If the setup exists, the QRenderer will reference the setup, otherwise, will make a new setup with the name give. If no name given, the default name of “Setup” will be used.</p>
 <div class="nbinput docutils container">
@@ -1296,7 +1296,7 @@ True
 </section>
 </section>
 <section id="3.-Render-into-Ansys-Q3D">
-<h2>3. Render into Ansys Q3D<a class="headerlink" href="#3.-Render-into-Ansys-Q3D" title="Link to this heading">#</a></h2>
+<h2>3. Render into Ansys Q3D<a class="headerlink" href="#3.-Render-into-Ansys-Q3D" title="Link to this heading">¶</a></h2>
 <p>The Ansys Q3D renderer was instantiated during the boot of Qiskit Metal. Let’s create a short handle to refer to it in the rest of this notebook.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
@@ -1308,7 +1308,7 @@ True
 </div>
 </div>
 <section id="3.1-Connect-to-or-create-an-Ansys-project">
-<h3>3.1 Connect to or create an Ansys project<a class="headerlink" href="#3.1-Connect-to-or-create-an-Ansys-project" title="Link to this heading">#</a></h3>
+<h3>3.1 Connect to or create an Ansys project<a class="headerlink" href="#3.1-Connect-to-or-create-an-Ansys-project" title="Link to this heading">¶</a></h3>
 <p>See section 2.1 in this notebook for additional details and options.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
@@ -1348,10 +1348,10 @@ True
 </div>
 </section>
 <section id="3.2-Setup-an-Ansys-Q3D-design">
-<h3>3.2 Setup an Ansys Q3D design<a class="headerlink" href="#3.2-Setup-an-Ansys-Q3D-design" title="Link to this heading">#</a></h3>
+<h3>3.2 Setup an Ansys Q3D design<a class="headerlink" href="#3.2-Setup-an-Ansys-Q3D-design" title="Link to this heading">¶</a></h3>
 <p>You can either create a new design or select and use an old one.</p>
 <section id="id3">
-<h4>Creating a design<a class="headerlink" href="#id3" title="Link to this heading">#</a></h4>
+<h4>Creating a design<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h4>
 <p>To create a new design <strong>manually</strong>, go to the Ansys GUI and follow these instructions: 1. Select the project from the leftmost menu in the Ansys GUI. 2. Go into the menu <code class="docutils literal notranslate"><span class="pre">Project</span></code> and select <code class="docutils literal notranslate"><span class="pre">Insert</span> <span class="pre">Q3D</span> <span class="pre">Extractor</span> <span class="pre">Design</span></code>.</p>
 <p>To create a new design <strong>automatically</strong>, execute the following cell.</p>
 <p>NOTE: If a design named <code class="docutils literal notranslate"><span class="pre">Q3dMetalDesign</span></code> already exists in the project, a new design will be created, with the name suffixed with an incremental integer: <code class="docutils literal notranslate"><span class="pre">Q3dMetalDesign1</span></code>, <code class="docutils literal notranslate"><span class="pre">Q3dMetalDesign2</span></code>, etc.</p>
@@ -1388,7 +1388,7 @@ INFO 04:11PM [get_setup]:       Opened setup `Setup`  (&lt;class &#39;pyEPR.ansy
 </div>
 </section>
 <section id="id4">
-<h4>Selecting a design previously created<a class="headerlink" href="#id4" title="Link to this heading">#</a></h4>
+<h4>Selecting a design previously created<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
 <p>If you created a design with the above commands, it will be automatically selected and linked to this jupyter notebook session. Instead, if you want to use a design that had been created beforehand in the project, you can select it by following one of following three approaches: * manually activating the design from the Ansys GUI, <strong>before</strong> you run the <code class="docutils literal notranslate"><span class="pre">fourq_hfss.start()</span></code> command. In the Ansys GUI, you will find the list of designs in the leftmost panel, and you can activate them with a
 double click. * using method <code class="docutils literal notranslate"><span class="pre">fourq_q3d.connect_ansys(*with</span> <span class="pre">parameters*)</span></code>, specifying which design to connect to. * using method <code class="docutils literal notranslate"><span class="pre">fourq_q3d.activate_ansys_design('name')</span></code>.</p>
 <p>The next two cells exemplify how to use the last method. The first of the two cells below will create a new design because the name does not corrispond to any design in the project. The second cell will return to the previously created design.</p>
@@ -1437,7 +1437,7 @@ INFO 04:11PM [connect_design]:  Opened active design
 </section>
 </section>
 <section id="3.3-Render-some-component-from-the-Metal-design">
-<h3>3.3 Render some component from the Metal design<a class="headerlink" href="#3.3-Render-some-component-from-the-Metal-design" title="Link to this heading">#</a></h3>
+<h3>3.3 Render some component from the Metal design<a class="headerlink" href="#3.3-Render-some-component-from-the-Metal-design" title="Link to this heading">¶</a></h3>
 <p>Find below several rendering examples. You can choose to only execute one of them if you are just browsing this notebook.</p>
 <p>Notice how we explicitly clear the design before re-rendering. Indeed <code class="docutils literal notranslate"><span class="pre">render_design()</span></code> only adds shapes to the Ansys design. Re-rendering the same shapes will cause violations.</p>
 <div class="nbinput nblast docutils container">
@@ -1505,7 +1505,7 @@ INFO 04:11PM [connect_design]:  Opened active design
 </div>
 </section>
 <section id="3.4-Create-of-select-a-setup">
-<h3>3.4 Create of select a setup<a class="headerlink" href="#3.4-Create-of-select-a-setup" title="Link to this heading">#</a></h3>
+<h3>3.4 Create of select a setup<a class="headerlink" href="#3.4-Create-of-select-a-setup" title="Link to this heading">¶</a></h3>
 <p>This section is only needed if you plan to execute an analysis. This topic will be covered in the tutorial notebooks 4.x.</p>
 <p>To <strong>select</strong> a setup for the active design, you can use <code class="docutils literal notranslate"><span class="pre">activate_ansys_setup()</span></code>. If the setup exists, the QRenderer will reference the setup, otherwise, will make a new setup with the name give. If no name given, the default name of “Setup” will be used.</p>
 <div class="nbinput docutils container">
@@ -1559,7 +1559,7 @@ True
 </section>
 </section>
 <section id="References---Miscellaneous-pyEPR/Ansys-commands">
-<h2>References - Miscellaneous pyEPR/Ansys commands<a class="headerlink" href="#References---Miscellaneous-pyEPR/Ansys-commands" title="Link to this heading">#</a></h2>
+<h2>References - Miscellaneous pyEPR/Ansys commands<a class="headerlink" href="#References---Miscellaneous-pyEPR/Ansys-commands" title="Link to this heading">¶</a></h2>
 <p>The following commands are for reference only to better understand how the backend code works. They’re not meant to be run directly in this notebook as part of the tutorial.</p>
 <p>import pyEPR as epr</p>
 <p>Connect to Ansys directly from notebook:</p>
@@ -1646,7 +1646,7 @@ True
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/02/13</div>
+              Last updated on 2024/12/16</div>
           </div>
           <div class="right-details">
             
@@ -1711,7 +1711,7 @@ True
 </div><script src="../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script src="../../_static/documentation_options.js?v=59fadc99"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>

@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="CPW Kappa Calculation" href="4.15-CPW-kappa-calculation.html" /><link rel="prev" title="Analyzing and tuning a transmon qubit with a resonator" href="4.13-Analyze-transmon-and-resonator.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19 -->
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
         <title>Analyzing a double hanger resonator (S Param) - Qiskit Metal 0.1.5 0.1.5</title>
       <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=362ab14a" />
@@ -797,9 +797,9 @@ div.rendered_html tbody tr:hover {
 <p>This page was generated from <a class="reference external" href="https://github.com/Qiskit/qiskit-metal/blob/main/docs/tut//4-Analysis//4.14-Analyze-a-double-hanger-resonator.ipynb">tut//4-Analysis//4.14-Analyze-a-double-hanger-resonator.ipynb</a>.</p>
 </div>
 <section id="Analyzing-a-double-hanger-resonator-(S-Param)">
-<h1>Analyzing a double hanger resonator (S Param)<a class="headerlink" href="#Analyzing-a-double-hanger-resonator-(S-Param)" title="Link to this heading">#</a></h1>
+<h1>Analyzing a double hanger resonator (S Param)<a class="headerlink" href="#Analyzing-a-double-hanger-resonator-(S-Param)" title="Link to this heading">¶</a></h1>
 <section id="Prerequisite">
-<h2>Prerequisite<a class="headerlink" href="#Prerequisite" title="Link to this heading">#</a></h2>
+<h2>Prerequisite<a class="headerlink" href="#Prerequisite" title="Link to this heading">¶</a></h2>
 <p>You must have a working local installation of Ansys.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -817,7 +817,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <section id="Create-the-design-in-Metal">
-<h3>Create the design in Metal<a class="headerlink" href="#Create-the-design-in-Metal" title="Link to this heading">#</a></h3>
+<h3>Create the design in Metal<a class="headerlink" href="#Create-the-design-in-Metal" title="Link to this heading">¶</a></h3>
 <p>Set up a design of a given dimension. Dimensions will be respected in the design rendering. Note the chip design is centered at origin (0,0).</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -1002,10 +1002,10 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="2.-Eigenmode-and-Impedance-analysis-using-the-advanced-flow">
-<h3>2. Eigenmode and Impedance analysis using the <code class="docutils literal notranslate"><span class="pre">advanced</span></code> flow<a class="headerlink" href="#2.-Eigenmode-and-Impedance-analysis-using-the-advanced-flow" title="Link to this heading">#</a></h3>
+<h3>2. Eigenmode and Impedance analysis using the <code class="docutils literal notranslate"><span class="pre">advanced</span></code> flow<a class="headerlink" href="#2.-Eigenmode-and-Impedance-analysis-using-the-advanced-flow" title="Link to this heading">¶</a></h3>
 <p>If you are interested in the <code class="docutils literal notranslate"><span class="pre">recommended</span></code> flow, please check the tutorial notebook 4.3. In this section we will use the advanced flow, which directly operates on the simulator thorugh the renderer commands.</p>
 <section id="Setup">
-<h4>Setup<a class="headerlink" href="#Setup" title="Link to this heading">#</a></h4>
+<h4>Setup<a class="headerlink" href="#Setup" title="Link to this heading">¶</a></h4>
 <p>Select the analysis you intend to run from the <code class="docutils literal notranslate"><span class="pre">qiskit_metal.analyses.simulation</span></code> collection. Select the design to analyze and the tool to use for any external simulation.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
@@ -1064,7 +1064,7 @@ True
 </div>
 </section>
 <section id="Execute-simulation-and-verify-convergence">
-<h4>Execute simulation and verify convergence<a class="headerlink" href="#Execute-simulation-and-verify-convergence" title="Link to this heading">#</a></h4>
+<h4>Execute simulation and verify convergence<a class="headerlink" href="#Execute-simulation-and-verify-convergence" title="Link to this heading">¶</a></h4>
 <p>Create and activate an eigenmode design called “HangingResonators”.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
@@ -1102,7 +1102,7 @@ INFO 06:21AM [get_setup]:       Opened setup `Setup`  (&lt;class &#39;pyEPR.ansy
 </div>
 </section>
 <section id="Execute-simulation-and-observe-the-Impedence">
-<h4>Execute simulation and observe the Impedence<a class="headerlink" href="#Execute-simulation-and-observe-the-Impedence" title="Link to this heading">#</a></h4>
+<h4>Execute simulation and observe the Impedence<a class="headerlink" href="#Execute-simulation-and-observe-the-Impedence" title="Link to this heading">¶</a></h4>
 <p>Assign lumped ports on the two cpw terminations. Then observe the impedance plots.</p>
 <p>Here, pins cpw_openRight_end and cpw_openLeft_end are converted into lumped ports with an impedance of 50 Ohms. Neither of the junctions in Q1 or Q2 are rendered.</p>
 <div class="nbinput nblast docutils container">
@@ -1369,7 +1369,7 @@ INFO 06:23AM [analyze]: Analyzing setup Setup : Sweep
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/02/13</div>
+              Last updated on 2024/12/16</div>
           </div>
           <div class="right-details">
             
@@ -1415,7 +1415,7 @@ INFO 06:23AM [analyze]: Analyzing setup Setup : Sweep
 </div><script src="../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script src="../../_static/documentation_options.js?v=59fadc99"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>

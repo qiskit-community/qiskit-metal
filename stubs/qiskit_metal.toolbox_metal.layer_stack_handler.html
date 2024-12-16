@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="bounds_for_path_and_poly_tables" href="qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables.html" /><link rel="prev" title="parsing" href="qiskit_metal.toolbox_metal.parsing.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19 -->
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
         <title>layer_stack_handler - Qiskit Metal 0.1.5 0.1.5</title>
       <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=362ab14a" />
@@ -545,7 +545,7 @@
         </div>
         <article role="main">
           <br><br><br><section id="module-qiskit_metal.toolbox_metal.layer_stack_handler">
-<span id="layer-stack-handler"></span><h1>layer_stack_handler<a class="headerlink" href="#module-qiskit_metal.toolbox_metal.layer_stack_handler" title="Link to this heading">#</a></h1>
+<span id="layer-stack-handler"></span><h1>layer_stack_handler<a class="headerlink" href="#module-qiskit_metal.toolbox_metal.layer_stack_handler" title="Link to this heading">¶</a></h1>
 <p class="rubric">Classes</p>
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
@@ -558,7 +558,7 @@
 </div>
 <dl class="py class">
 <dt class="sig sig-object py" id="qiskit_metal.toolbox_metal.layer_stack_handler.LayerStackHandler">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LayerStackHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">multi_planar_design</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="qiskit_metal.designs.MultiPlanar.html#qiskit_metal.designs.MultiPlanar" title="qiskit_metal.designs.MultiPlanar"><span class="pre">MultiPlanar</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/layer_stack_handler.html#LayerStackHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.layer_stack_handler.LayerStackHandler" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LayerStackHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">multi_planar_design</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="qiskit_metal.designs.MultiPlanar.html#qiskit_metal.designs.MultiPlanar" title="qiskit_metal.designs.MultiPlanar"><span class="pre">MultiPlanar</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/layer_stack_handler.html#LayerStackHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.layer_stack_handler.LayerStackHandler" title="Link to this definition">¶</a></dt>
 <dd><p>Use DataFrame to hold information for multiple chips.</p>
 <p>For all the chips, do NOT reuse the layer-number.  However, within the dataframe,
 we can repeat layer numbers since a layer can have multiple datatypes.</p>
@@ -571,7 +571,7 @@ and get the name of filename for layer stack.</p>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.toolbox_metal.layer_stack_handler.LayerStackHandler.get_layer_datatype_when_fill_is_true">
-<span class="sig-name descname"><span class="pre">get_layer_datatype_when_fill_is_true</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/layer_stack_handler.html#LayerStackHandler.get_layer_datatype_when_fill_is_true"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.layer_stack_handler.LayerStackHandler.get_layer_datatype_when_fill_is_true" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_layer_datatype_when_fill_is_true</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/layer_stack_handler.html#LayerStackHandler.get_layer_datatype_when_fill_is_true"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.layer_stack_handler.LayerStackHandler.get_layer_datatype_when_fill_is_true" title="Link to this definition">¶</a></dt>
 <dd><p>If a row has fill=True, then for each layer/datatype pair,
 return the rest of information in the row within a dict.</p>
 <dl class="field-list simple">
@@ -593,7 +593,7 @@ return the rest of information in the row within a dict.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.toolbox_metal.layer_stack_handler.LayerStackHandler.get_properties_for_layer_datatype">
-<span class="sig-name descname"><span class="pre">get_properties_for_layer_datatype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">properties</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datatype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/layer_stack_handler.html#LayerStackHandler.get_properties_for_layer_datatype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.layer_stack_handler.LayerStackHandler.get_properties_for_layer_datatype" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_properties_for_layer_datatype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">properties</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datatype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/layer_stack_handler.html#LayerStackHandler.get_properties_for_layer_datatype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.layer_stack_handler.LayerStackHandler.get_properties_for_layer_datatype" title="Link to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>When user provides a layer and datatype, they can get properties</dt><dd><p>from the layer_stack file. The allowed options for properties must
 be in Col_Names.  If any of the properties are not in Col_Names,
@@ -605,8 +605,8 @@ in the same order as provided in input variable properties.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>properties</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – The column(s) within the layer stack that you want</p></li>
-<li><p><strong>layer</strong> (<em>for a row based on</em>) – </p></li>
-<li><p><strong>datatype.</strong> (<em>and</em>) – </p></li>
+<li><p><strong>layer</strong> (<em>for a row based on</em>)</p></li>
+<li><p><strong>datatype.</strong> (<em>and</em>)</p></li>
 <li><p><strong>layer_number</strong> (<em>int</em>) – The layer number within the column denoted by layer.</p></li>
 <li><p><strong>datatype</strong> (<em>int</em><em>, </em><em>optional</em>) – The datatype within the column denoted
 by datatype. Defaults to 0.</p></li>
@@ -631,7 +631,7 @@ input variable denoted by properties.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.toolbox_metal.layer_stack_handler.LayerStackHandler.get_unique_chip_names">
-<span class="sig-name descname"><span class="pre">get_unique_chip_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">set</span></span></span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/layer_stack_handler.html#LayerStackHandler.get_unique_chip_names"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.layer_stack_handler.LayerStackHandler.get_unique_chip_names" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_unique_chip_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">set</span></span></span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/layer_stack_handler.html#LayerStackHandler.get_unique_chip_names"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.layer_stack_handler.LayerStackHandler.get_unique_chip_names" title="Link to this definition">¶</a></dt>
 <dd><p>Get a set of unique names used in the layer_stack dataframe.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -645,7 +645,7 @@ input variable denoted by properties.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.toolbox_metal.layer_stack_handler.LayerStackHandler.get_unique_layer_ints">
-<span class="sig-name descname"><span class="pre">get_unique_layer_ints</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">set</span></span></span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/layer_stack_handler.html#LayerStackHandler.get_unique_layer_ints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.layer_stack_handler.LayerStackHandler.get_unique_layer_ints" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_unique_layer_ints</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">set</span></span></span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/layer_stack_handler.html#LayerStackHandler.get_unique_layer_ints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.layer_stack_handler.LayerStackHandler.get_unique_layer_ints" title="Link to this definition">¶</a></dt>
 <dd><p>Get a set of unique layer ints used in the layer_stack dataframe.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -659,7 +659,7 @@ input variable denoted by properties.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.toolbox_metal.layer_stack_handler.LayerStackHandler.is_layer_data_unique">
-<span class="sig-name descname"><span class="pre">is_layer_data_unique</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/layer_stack_handler.html#LayerStackHandler.is_layer_data_unique"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.layer_stack_handler.LayerStackHandler.is_layer_data_unique" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">is_layer_data_unique</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/layer_stack_handler.html#LayerStackHandler.is_layer_data_unique"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.layer_stack_handler.LayerStackHandler.is_layer_data_unique" title="Link to this definition">¶</a></dt>
 <dd><p>For each layer number make sure the datatypes are unique.  A layers can
 #have multiple datatypes.</p>
 <dl class="field-list simple">
@@ -674,7 +674,7 @@ input variable denoted by properties.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.toolbox_metal.layer_stack_handler.LayerStackHandler.layer_stack_handler_pilot_error">
-<span class="sig-name descname"><span class="pre">layer_stack_handler_pilot_error</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/layer_stack_handler.html#LayerStackHandler.layer_stack_handler_pilot_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.layer_stack_handler.LayerStackHandler.layer_stack_handler_pilot_error" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">layer_stack_handler_pilot_error</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/layer_stack_handler.html#LayerStackHandler.layer_stack_handler_pilot_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.layer_stack_handler.LayerStackHandler.layer_stack_handler_pilot_error" title="Link to this definition">¶</a></dt>
 <dd><p>The handler will return None if incorrect arguments are passed.</p>
 </dd></dl>
 
@@ -716,7 +716,7 @@ input variable denoted by properties.</p>
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/02/13</div>
+              Last updated on 2024/12/16</div>
           </div>
           <div class="right-details">
             
@@ -761,7 +761,7 @@ input variable denoted by properties.</p>
 </div><script src="../_static/jquery.js?v=5d32c60e"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script src="../_static/documentation_options.js?v=59fadc99"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>

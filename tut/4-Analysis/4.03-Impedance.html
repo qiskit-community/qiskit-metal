@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Analyzing and tuning a transmon qubit" href="4.11-Analyze-and-tune-a-transmon.html" /><link rel="prev" title="Eigenmode and EPR analysis" href="4.02-Eigenmode-and-EPR.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19 -->
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
         <title>Impedance, admittance and scattering analysis - Qiskit Metal 0.1.5 0.1.5</title>
       <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=362ab14a" />
@@ -797,9 +797,9 @@ div.rendered_html tbody tr:hover {
 <p>This page was generated from <a class="reference external" href="https://github.com/Qiskit/qiskit-metal/blob/main/docs/tut//4-Analysis//4.03-Impedance.ipynb">tut//4-Analysis//4.03-Impedance.ipynb</a>.</p>
 </div>
 <section id="Impedance,-admittance-and-scattering-analysis">
-<h1>Impedance, admittance and scattering analysis<a class="headerlink" href="#Impedance,-admittance-and-scattering-analysis" title="Link to this heading">#</a></h1>
+<h1>Impedance, admittance and scattering analysis<a class="headerlink" href="#Impedance,-admittance-and-scattering-analysis" title="Link to this heading">¶</a></h1>
 <section id="Prerequisite">
-<h2>Prerequisite<a class="headerlink" href="#Prerequisite" title="Link to this heading">#</a></h2>
+<h2>Prerequisite<a class="headerlink" href="#Prerequisite" title="Link to this heading">¶</a></h2>
 <p>You need to have a working local installation of Ansys.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -817,7 +817,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <section id="1.-Create-the-design-in-Metal">
-<h3>1. Create the design in Metal<a class="headerlink" href="#1.-Create-the-design-in-Metal" title="Link to this heading">#</a></h3>
+<h3>1. Create the design in Metal<a class="headerlink" href="#1.-Create-the-design-in-Metal" title="Link to this heading">¶</a></h3>
 <p>Set up a design of a given dimension. Dimensions will be respected in the design rendering. Note that the design will be centered in the origin, will thus equally extend in all quadrants.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -856,9 +856,9 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="2.-Eigenmode-and-Impedance-analysis-using-the-analysis-package---most-users">
-<h3>2. Eigenmode and Impedance analysis using the analysis package - most users<a class="headerlink" href="#2.-Eigenmode-and-Impedance-analysis-using-the-analysis-package---most-users" title="Link to this heading">#</a></h3>
+<h3>2. Eigenmode and Impedance analysis using the analysis package - most users<a class="headerlink" href="#2.-Eigenmode-and-Impedance-analysis-using-the-analysis-package---most-users" title="Link to this heading">¶</a></h3>
 <section id="Setup">
-<h4>Setup<a class="headerlink" href="#Setup" title="Link to this heading">#</a></h4>
+<h4>Setup<a class="headerlink" href="#Setup" title="Link to this heading">¶</a></h4>
 <p>Select the analysis you intend to run from the <code class="docutils literal notranslate"><span class="pre">qiskit_metal.analyses</span></code> collection. Select the design to analyze and the tool to use for any external simulation.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
@@ -950,7 +950,7 @@ the sweep) * name=“Sweep” (name of sweep) * start_ghz=2.0 (starting frequenc
 </div>
 </section>
 <section id="Execute-simulation-and-observe-the-Impedence">
-<h4>Execute simulation and observe the Impedence<a class="headerlink" href="#Execute-simulation-and-observe-the-Impedence" title="Link to this heading">#</a></h4>
+<h4>Execute simulation and observe the Impedence<a class="headerlink" href="#Execute-simulation-and-observe-the-Impedence" title="Link to this heading">¶</a></h4>
 <p>Analyze a single qubit with shorted terminations. Assign lumped ports on the readout and on the junction. Then observe the impedance plots.</p>
 <p>Here, pin Q1_a is converted into a lumped port with an impedance of 70 Ohms. Meanwhile, the central junction Q1_rect_jj is rendered as both a port and an inductor with an impedance of 50 Ohms and an inductance of 10 nH, respectively.</p>
 <p>The 10nH inductance value is taken from the component option <code class="docutils literal notranslate"><span class="pre">hfss_inductance</span></code> (And the component options find their way in the QGeometry tables by rebuilding). So let’s demonstrate how to update the inductance of the junction in the next cell.</p>
@@ -1103,7 +1103,7 @@ setup_name   = Setup1
 </section>
 </section>
 <section id="3.-Directly-access-the-renderer-to-modify-other-parameters">
-<h3>3. Directly access the renderer to modify other parameters<a class="headerlink" href="#3.-Directly-access-the-renderer-to-modify-other-parameters" title="Link to this heading">#</a></h3>
+<h3>3. Directly access the renderer to modify other parameters<a class="headerlink" href="#3.-Directly-access-the-renderer-to-modify-other-parameters" title="Link to this heading">¶</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
@@ -1254,7 +1254,7 @@ Ansys will likely refuse to shut down
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/02/13</div>
+              Last updated on 2024/12/16</div>
           </div>
           <div class="right-details">
             
@@ -1300,7 +1300,7 @@ Ansys will likely refuse to shut down
 </div><script src="../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script src="../../_static/documentation_options.js?v=59fadc99"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>

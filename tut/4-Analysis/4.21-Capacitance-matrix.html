@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Sweeps - Eigenmode matrix" href="4.22-Eigenmode-matrix.html" /><link rel="prev" title="CPW Kappa Calculation" href="4.15-CPW-kappa-calculation.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19 -->
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
         <title>Sweeps - Capacitance matrix - Qiskit Metal 0.1.5 0.1.5</title>
       <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=362ab14a" />
@@ -797,12 +797,12 @@ div.rendered_html tbody tr:hover {
 <p>This page was generated from <a class="reference external" href="https://github.com/Qiskit/qiskit-metal/blob/main/docs/tut//4-Analysis//4.21-Capacitance-matrix.ipynb">tut//4-Analysis//4.21-Capacitance-matrix.ipynb</a>.</p>
 </div>
 <section id="Sweeps---Capacitance-matrix">
-<h1>Sweeps - Capacitance matrix<a class="headerlink" href="#Sweeps---Capacitance-matrix" title="Link to this heading">#</a></h1>
+<h1>Sweeps - Capacitance matrix<a class="headerlink" href="#Sweeps---Capacitance-matrix" title="Link to this heading">¶</a></h1>
 <section id="Prerequisite">
-<h2>Prerequisite<a class="headerlink" href="#Prerequisite" title="Link to this heading">#</a></h2>
+<h2>Prerequisite<a class="headerlink" href="#Prerequisite" title="Link to this heading">¶</a></h2>
 <p>You need to have a working local installation of Ansys</p>
 <section id="1.-Perform-the-necessary-imports-and-create-a-QDesign-in-Metal-first.">
-<h3>1. Perform the necessary imports and create a QDesign in Metal first.<a class="headerlink" href="#1.-Perform-the-necessary-imports-and-create-a-QDesign-in-Metal-first." title="Link to this heading">#</a></h3>
+<h3>1. Perform the necessary imports and create a QDesign in Metal first.<a class="headerlink" href="#1.-Perform-the-necessary-imports-and-create-a-QDesign-in-Metal-first." title="Link to this heading">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -851,7 +851,7 @@ div.rendered_html tbody tr:hover {
 </section>
 </section>
 <section id="In-this-example,-the-design-consists-of-4-qubits-and-4-CPWs.">
-<h2>In this example, the design consists of 4 qubits and 4 CPWs.<a class="headerlink" href="#In-this-example,-the-design-consists-of-4-qubits-and-4-CPWs." title="Link to this heading">#</a></h2>
+<h2>In this example, the design consists of 4 qubits and 4 CPWs.<a class="headerlink" href="#In-this-example,-the-design-consists-of-4-qubits-and-4-CPWs." title="Link to this heading">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
@@ -942,7 +942,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <section id="2-Metal-passes-information-to-the-simulator-“q3d”-to-extract-the-capacitance-matrix.">
-<h3>2 Metal passes information to the simulator “q3d” to extract the capacitance matrix.<a class="headerlink" href="#2-Metal-passes-information-to-the-simulator-“q3d”-to-extract-the-capacitance-matrix." title="Link to this heading">#</a></h3>
+<h3>2 Metal passes information to the simulator “q3d” to extract the capacitance matrix.<a class="headerlink" href="#2-Metal-passes-information-to-the-simulator-“q3d”-to-extract-the-capacitance-matrix." title="Link to this heading">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
@@ -1020,13 +1020,13 @@ div.rendered_html tbody tr:hover {
 <p>We will look at modifying the pad_gap of qubit 1, to see how it impacts the anharmonicity of the qubit.</p>
 <p>The steps will be; - Connect to Ansys Q3D. - Rebuild QComponents in Metal. - Render QComponents within Q3D and setup the simulation. - Delete/Clear the Q3D between each simulation. - Using the capacitance matrices, LOM for each value in option_sweep is found.</p>
 <section id="Returns-a-dict-and-return-code.-If-the-return-code-is-zero,-there-were-no-errors-detected.">
-<h4>Returns a dict and return code. If the return code is zero, there were no errors detected.<a class="headerlink" href="#Returns-a-dict-and-return-code.-If-the-return-code-is-zero,-there-were-no-errors-detected." title="Link to this heading">#</a></h4>
+<h4>Returns a dict and return code. If the return code is zero, there were no errors detected.<a class="headerlink" href="#Returns-a-dict-and-return-code.-If-the-return-code-is-zero,-there-were-no-errors-detected." title="Link to this heading">¶</a></h4>
 </section>
 <section id="The-dict-has:-key-=-each-value-used-to-sweep,-value-=-capacitance-matrix">
-<h4>The dict has: key = each value used to sweep, value = capacitance matrix<a class="headerlink" href="#The-dict-has:-key-=-each-value-used-to-sweep,-value-=-capacitance-matrix" title="Link to this heading">#</a></h4>
+<h4>The dict has: key = each value used to sweep, value = capacitance matrix<a class="headerlink" href="#The-dict-has:-key-=-each-value-used-to-sweep,-value-=-capacitance-matrix" title="Link to this heading">¶</a></h4>
 </section>
 <section id="This-could-take-minutes-or-hours-based-on-the-complexity-of-the-design.">
-<h4>This could take minutes or hours based on the complexity of the design.<a class="headerlink" href="#This-could-take-minutes-or-hours-based-on-the-complexity-of-the-design." title="Link to this heading">#</a></h4>
+<h4>This could take minutes or hours based on the complexity of the design.<a class="headerlink" href="#This-could-take-minutes-or-hours-based-on-the-complexity-of-the-design." title="Link to this heading">¶</a></h4>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
@@ -1866,7 +1866,7 @@ readout_connector_pad_Q1                  60.96517  , &#39;units&#39;: &#39;fF&#
 </section>
 </section>
 <section id="READ-THIS-BEFORE-running-the-cell.">
-<h1>READ THIS BEFORE running the cell.<a class="headerlink" href="#READ-THIS-BEFORE-running-the-cell." title="Link to this heading">#</a></h1>
+<h1>READ THIS BEFORE running the cell.<a class="headerlink" href="#READ-THIS-BEFORE-running-the-cell." title="Link to this heading">¶</a></h1>
 <p>This cell is to demonstrate that if you have already executed c1.sim.run(), you don’t have to set up the environment again for c1.run_sweep(). In another words, if you don’t pass updated arguments to c1.run_sweep(), then c1.run_sweep() looks for the previous desgin arguments.</p>
 <p>If you pass anything more than these three arguments: qcomp_name, option_name, option_sweep ….. Then NOTHING will be used from previous run.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>c1.sim.solution_order = &#39;Medium&#39;
@@ -1983,7 +1983,7 @@ True
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/02/13</div>
+              Last updated on 2024/12/16</div>
           </div>
           <div class="right-details">
             
@@ -2033,7 +2033,7 @@ True
 </div><script src="../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script src="../../_static/documentation_options.js?v=59fadc99"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>

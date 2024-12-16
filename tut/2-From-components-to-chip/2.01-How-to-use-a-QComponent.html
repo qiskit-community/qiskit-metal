@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="How to copy a QComponent" href="2.02-How-to-copy-a-QComponent.html" /><link rel="prev" title="Save your chip design" href="../1-Overview/1.3-Saving-Your-Chip-Design.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19 -->
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
         <title>How to use a QComponent - Qiskit Metal 0.1.5 0.1.5</title>
       <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=362ab14a" />
@@ -797,7 +797,7 @@ div.rendered_html tbody tr:hover {
 <p>This page was generated from <a class="reference external" href="https://github.com/Qiskit/qiskit-metal/blob/main/docs/tut//2-From-components-to-chip//2.01-How-to-use-a-QComponent.ipynb">tut//2-From-components-to-chip//2.01-How-to-use-a-QComponent.ipynb</a>.</p>
 </div>
 <section id="How-to-use-a-QComponent">
-<h1>How to use a QComponent<a class="headerlink" href="#How-to-use-a-QComponent" title="Link to this heading">#</a></h1>
+<h1>How to use a QComponent<a class="headerlink" href="#How-to-use-a-QComponent" title="Link to this heading">¶</a></h1>
 <p>For convenience, let’s begin by enabling <a class="reference external" href="https://ipython.readthedocs.io/en/stable/config/extensions/autoreload.html?highlight=autoreload">automatic reloading of modules</a> when they change.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -895,7 +895,7 @@ div.rendered_html tbody tr:hover {
 (CPWs). We will discuss this in more detail later in the tutorial.</p>
 </section>
 <section id="QComponent-Default-Options">
-<h1>QComponent Default Options<a class="headerlink" href="#QComponent-Default-Options" title="Link to this heading">#</a></h1>
+<h1>QComponent Default Options<a class="headerlink" href="#QComponent-Default-Options" title="Link to this heading">¶</a></h1>
 <p>QComponents come with some default options, which are used in the make function of the qcomponent to create the qgeometry that you see in the GUI. These options are parsed by Qiskit Metal, and can be changed using either the GUI or the script API.</p>
 <p>We can see what the options and other parameters are for our Qcomponent by typing the following command:</p>
 <div class="nbinput docutils container">
@@ -997,7 +997,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Modifying-the-Options">
-<h1>Modifying the Options<a class="headerlink" href="#Modifying-the-Options" title="Link to this heading">#</a></h1>
+<h1>Modifying the Options<a class="headerlink" href="#Modifying-the-Options" title="Link to this heading">¶</a></h1>
 <p>We can modify the QComponent by changing the default options. This can be done using either the python API or the GUI. Here’s an example where we’ll move the transmon from (0,0) to (2,2), while also modifying the pad height and width:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
@@ -1017,7 +1017,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Copying-a-QComponent">
-<h1>Copying a QComponent<a class="headerlink" href="#Copying-a-QComponent" title="Link to this heading">#</a></h1>
+<h1>Copying a QComponent<a class="headerlink" href="#Copying-a-QComponent" title="Link to this heading">¶</a></h1>
 <p>We can copy a QComponent using the “design.copy_qcomponent” command. Let’s make a copy of our transmon qubit, which is located at (2,2) and place the copy at (-2,2):</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
@@ -1064,7 +1064,7 @@ div.rendered_html tbody tr:hover {
 <p>Now we have four transmon qubits located at the corners of a square: (-2,-2), (-2,2), (2,2) and (2,-2).</p>
 </section>
 <section id="Deleting-a-QComponent">
-<h1>Deleting a QComponent<a class="headerlink" href="#Deleting-a-QComponent" title="Link to this heading">#</a></h1>
+<h1>Deleting a QComponent<a class="headerlink" href="#Deleting-a-QComponent" title="Link to this heading">¶</a></h1>
 <p>We saw in an earlier example how to delete all QComponents in a design using the either the “design.delete_all_components” command or by using the “Delete all” button in the GUI. But what if we only want to delete specific QComponents without deleting everything in a design?</p>
 <p>We can delete a specific qcomponent using either the GUI or the python API. If you wish to remove a specific QComponent, you can do so using the “delete_component” or “_delete component” commands. The first takes the string reference to a Qcomponent, while the second takes an integer reference to a QComponent. Suppose we want to remove qubit ‘Q1’. Presently, we do not need to pass a Boolean corresponding to whether we want to force the delete (true=1) even if the component has dependencies, or
 whether the deletion should not be executed in the event the QComponent does have dependencies (false=0). The bool option is for future potential possibilities of having Qcomponents with dependencies.</p>
@@ -1093,7 +1093,7 @@ whether the deletion should not be executed in the event the QComponent does hav
 </div>
 </section>
 <section id="Renaming-a-QComponent">
-<h1>Renaming a QComponent<a class="headerlink" href="#Renaming-a-QComponent" title="Link to this heading">#</a></h1>
+<h1>Renaming a QComponent<a class="headerlink" href="#Renaming-a-QComponent" title="Link to this heading">¶</a></h1>
 <p>In the first example in this notebook, we created a QComponent named “Pocket_1” then deleted it and created one with the name “Q1.” One can also simply rename a QComponent without deleting it and creating a new one. We can rename a QComponent by using the “design_rename.component” command. For example, let’s rename “Q3” and “Q4” to “Q_three” and “Q_four”, respectively. Note that “Q3” has a QComponent ID of 4, while “Q4” has a Qcomponent ID of 5.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
@@ -1116,7 +1116,7 @@ True
 </div>
 </section>
 <section id="Overwriting-a-QComponent">
-<h1>Overwriting a QComponent<a class="headerlink" href="#Overwriting-a-QComponent" title="Link to this heading">#</a></h1>
+<h1>Overwriting a QComponent<a class="headerlink" href="#Overwriting-a-QComponent" title="Link to this heading">¶</a></h1>
 <p>In order to enable component overwrite of qcomponents with the same name, we can use the following command:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
@@ -1130,7 +1130,7 @@ True
 <p>This allows for the qcomponent to be modified and re-built without having to delete it. Without this line, a qcomponent would have to be deleted before recreating it with different options.</p>
 </section>
 <section id="Closing-the-Qiskit-Metal-GUI">
-<h1>Closing the Qiskit Metal GUI<a class="headerlink" href="#Closing-the-Qiskit-Metal-GUI" title="Link to this heading">#</a></h1>
+<h1>Closing the Qiskit Metal GUI<a class="headerlink" href="#Closing-the-Qiskit-Metal-GUI" title="Link to this heading">¶</a></h1>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
@@ -1221,7 +1221,7 @@ True
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/02/13</div>
+              Last updated on 2024/12/16</div>
           </div>
           <div class="right-details">
             
@@ -1239,7 +1239,7 @@ True
 </div><script src="../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script src="../../_static/documentation_options.js?v=59fadc99"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>

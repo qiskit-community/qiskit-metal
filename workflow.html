@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Contributing to Qiskit Metal" href="contributor-guide.html" /><link rel="prev" title="FAQ’s" href="faq.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19 -->
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
         <title>Roadmap - Qiskit Metal 0.1.5 0.1.5</title>
       <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=362ab14a" />
@@ -545,7 +545,7 @@
         </div>
         <article role="main">
           <br><br><br><section id="roadmap">
-<span id="workflow"></span><h1>Roadmap<a class="headerlink" href="#roadmap" title="Link to this heading">#</a></h1>
+<span id="workflow"></span><h1>Roadmap<a class="headerlink" href="#roadmap" title="Link to this heading">¶</a></h1>
 <p>Near-term development roadmap:</p>
 <img alt="Missing Image" src="_images/roadmap.png" />
 <div class="admonition attention">
@@ -681,14 +681,15 @@ Let us know through github issues, slack channel messages, or by telling us in o
 </ul>
 </section>
 <section id="qiskit-metal-workflow">
-<h1>Qiskit Metal Workflow<a class="headerlink" href="#qiskit-metal-workflow" title="Link to this heading">#</a></h1>
+<h1>Qiskit Metal Workflow<a class="headerlink" href="#qiskit-metal-workflow" title="Link to this heading">¶</a></h1>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
 <p>This section is under construction.</p>
 </div>
 <p>Qiskit Metal enables chip prototyping in a matter of minutes.
 You can start from a convenient Python Jupyter notebook or take advantage of the user-friendly graphical user interface (GUI). Simply choose from a library of predefined quantum components, such as transmon qubits and coplanar resonators, and customize their parameters in real-time to fit your needs. Use the built-in algorithms to automatically connect components. Easily implement new experimental components using Python templates and examples.</p>
-<a class="reference internal image-reference" href="_images/workflow.jpg"><img alt="Missing Workflow Diagram" src="_images/workflow.jpg" style="width: 388px; height: 683px;" /></a>
+<a class="reference internal image-reference" href="_images/workflow.jpg"><img alt="Missing Workflow Diagram" src="_images/workflow.jpg" style="width: 388px; height: 683px;" />
+</a>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -712,7 +713,7 @@ In terms of a high-level description, we aim to perform the following tight feed
 </div>
 </section>
 <section id="quantization-methods-overview">
-<h1>Quantization Methods Overview<a class="headerlink" href="#quantization-methods-overview" title="Link to this heading">#</a></h1>
+<h1>Quantization Methods Overview<a class="headerlink" href="#quantization-methods-overview" title="Link to this heading">¶</a></h1>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
 <p>This section is under construction.</p>
@@ -724,7 +725,7 @@ The following image summarizes the main landscape of analysis and design methods
 <div class="line"><br /></div>
 </div>
 <section id="lumped-oscillator-model">
-<h2>Lumped-oscillator model<a class="headerlink" href="#lumped-oscillator-model" title="Link to this heading">#</a></h2>
+<h2>Lumped-oscillator model<a class="headerlink" href="#lumped-oscillator-model" title="Link to this heading">¶</a></h2>
 <p>In the lumped-oscillator model,
 one extract the quasi-static capacitance
 and inductances of the effective network model from fast simulations.</p>
@@ -744,14 +745,16 @@ constraints, couplings, parameter renormalizations, and non-perturbative loading
 <li><p>Zlatko K. Minev, Thomas G. McConkey, Maika Takita, Antonio Corcoles, Jay M. Gambetta,
 Circuit quantum electrodynamics (cQED) with modular quasi-lumped models. (2021)</p></li>
 </ul>
-<a class="reference internal image-reference" href="_images/lump.png"><img alt="Missing Image" src="_images/lump.png" style="width: 388px;" /></a>
-<a class="reference internal image-reference" href="_images/lumped2.png"><img alt="Missing Image" src="_images/lumped2.png" style="width: 400px;" /></a>
+<a class="reference internal image-reference" href="_images/lump.png"><img alt="Missing Image" src="_images/lump.png" style="width: 388px;" />
+</a>
+<a class="reference internal image-reference" href="_images/lumped2.png"><img alt="Missing Image" src="_images/lumped2.png" style="width: 400px;" />
+</a>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 </section>
 <section id="energy-the-energy-participation-ratio-epr-method">
-<h2>Energy: The energy-participation-ratio (EPR) method<a class="headerlink" href="#energy-the-energy-participation-ratio-epr-method" title="Link to this heading">#</a></h2>
+<h2>Energy: The energy-participation-ratio (EPR) method<a class="headerlink" href="#energy-the-energy-participation-ratio-epr-method" title="Link to this heading">¶</a></h2>
 <p>The energy-participation-ratio (EPR) method is a general (black-box) quantization method.
 Based on the Qiskit Metal integration with <a class="reference external" href="https://github.com/zlatko-minev/pyEPR">pyEPR</a>,
 one can automate the design and quantization of Josephson quantum circuits,
@@ -782,7 +785,7 @@ magnitude in energy.</p>
 </div>
 </section>
 <section id="impedance-impedance-based-black-box-quantization-bbq">
-<h2>Impedance: impedance-based black-box quantization (BBQ)<a class="headerlink" href="#impedance-impedance-based-black-box-quantization-bbq" title="Link to this heading">#</a></h2>
+<h2>Impedance: impedance-based black-box quantization (BBQ)<a class="headerlink" href="#impedance-impedance-based-black-box-quantization-bbq" title="Link to this heading">¶</a></h2>
 <p>“A semiclassical method for determining the effective low-energy quantum Hamiltonian of weakly anharmonic superconducting circuits
 containing mesoscopic Josephson junctions coupled to electromagnetic environments made of an arbitrary combination of distributed and lumped elements.
 A convenient basis, capturing the multimode physics, is given by the quantized eigenmodes of the linearized circuit and is fully determined
@@ -832,7 +835,7 @@ Nigg <em>et al.</em> (2012).</p>
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/02/13</div>
+              Last updated on 2024/12/16</div>
           </div>
           <div class="right-details">
             
@@ -850,7 +853,7 @@ Nigg <em>et al.</em> (2012).</p>
 </div><script src="_static/jquery.js?v=5d32c60e"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script src="_static/documentation_options.js?v=59fadc99"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>

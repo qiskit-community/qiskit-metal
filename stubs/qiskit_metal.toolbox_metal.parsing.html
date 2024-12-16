@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="layer_stack_handler" href="qiskit_metal.toolbox_metal.layer_stack_handler.html" /><link rel="prev" title="math_and_overrides" href="qiskit_metal.toolbox_metal.math_and_overrides.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19 -->
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
         <title>parsing - Qiskit Metal 0.1.5 0.1.5</title>
       <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=362ab14a" />
@@ -545,13 +545,13 @@
         </div>
         <article role="main">
           <br><br><br><section id="module-qiskit_metal.toolbox_metal.parsing">
-<span id="parsing"></span><h1>parsing<a class="headerlink" href="#module-qiskit_metal.toolbox_metal.parsing" title="Link to this heading">#</a></h1>
+<span id="parsing"></span><h1>parsing<a class="headerlink" href="#module-qiskit_metal.toolbox_metal.parsing" title="Link to this heading">¶</a></h1>
 <p>Parsing module Qiskit Metal.</p>
 <p>The main function in this module is <cite>parse_value</cite>, and it explains what
 and how it is handled. Some basic arithmetic can be handled as well,
 such as <cite>‘-2 * 1e5 nm’</cite> will yield float(-0.2) when the default units are set to <cite>mm</cite>.</p>
 <section id="example-parsing-values-test">
-<h2>Example parsing values test:<a class="headerlink" href="#example-parsing-values-test" title="Link to this heading">#</a></h2>
+<h2>Example parsing values test:<a class="headerlink" href="#example-parsing-values-test" title="Link to this heading">¶</a></h2>
 <blockquote>
 <div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">qiskit_metal.toolbox_metal.parsing</span> <span class="kn">import</span> <span class="o">*</span>
 
@@ -634,7 +634,7 @@ such as <cite>‘-2 * 1e5 nm’</cite> will yield float(-0.2) when the default u
 </div></blockquote>
 </section>
 <section id="returns">
-<h2>Returns:<a class="headerlink" href="#returns" title="Link to this heading">#</a></h2>
+<h2>Returns:<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h2>
 <blockquote>
 <div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">------------------------------------------------</span>
 <span class="n">String</span><span class="p">:</span> <span class="n">Basics</span>
@@ -742,7 +742,7 @@ such as <cite>‘-2 * 1e5 nm’</cite> will yield float(-0.2) when the default u
 </div>
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.toolbox_metal.parsing.is_for_ast_eval">
-<span class="sig-name descname"><span class="pre">is_for_ast_eval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/parsing.html#is_for_ast_eval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.parsing.is_for_ast_eval" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">is_for_ast_eval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/parsing.html#is_for_ast_eval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.parsing.is_for_ast_eval" title="Link to this definition">¶</a></dt>
 <dd><p>Is the test string a valid list of dict string, such as “[1, 2]”, that
 can be evaluated by ast eval.</p>
 <dl class="field-list simple">
@@ -760,7 +760,7 @@ can be evaluated by ast eval.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.toolbox_metal.parsing.is_numeric_possible">
-<span class="sig-name descname"><span class="pre">is_numeric_possible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/parsing.html#is_numeric_possible"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.parsing.is_numeric_possible" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">is_numeric_possible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/parsing.html#is_numeric_possible"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.parsing.is_numeric_possible" title="Link to this definition">¶</a></dt>
 <dd><p>Is the test string a valid possible numerical with /or w/o units.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -777,7 +777,7 @@ can be evaluated by ast eval.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.toolbox_metal.parsing.is_true">
-<span class="sig-name descname"><span class="pre">is_true</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/parsing.html#is_true"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.parsing.is_true" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">is_true</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/parsing.html#is_true"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.parsing.is_true" title="Link to this definition">¶</a></dt>
 <dd><p>Check if a value is true or not.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -794,7 +794,7 @@ can be evaluated by ast eval.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.toolbox_metal.parsing.is_variable_name">
-<span class="sig-name descname"><span class="pre">is_variable_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/parsing.html#is_variable_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.parsing.is_variable_name" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">is_variable_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/parsing.html#is_variable_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.parsing.is_variable_name" title="Link to this definition">¶</a></dt>
 <dd><p>Is the test string a valid name for a variable or not?</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -811,7 +811,7 @@ can be evaluated by ast eval.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.toolbox_metal.parsing.parse_options">
-<span class="sig-name descname"><span class="pre">parse_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parse_names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/parsing.html#parse_options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.parsing.parse_options" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">parse_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parse_names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/parsing.html#parse_options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.parsing.parse_options" title="Link to this definition">¶</a></dt>
 <dd><p>Calls parse_value to extract from a dictionary a small subset of values.
 You can specify parse_names = ‘x,y,z,cpw_width’.</p>
 <dl class="field-list simple">
@@ -827,7 +827,7 @@ You can specify parse_names = ‘x,y,z,cpw_width’.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.toolbox_metal.parsing.parse_value">
-<span class="sig-name descname"><span class="pre">parse_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/parsing.html#parse_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.parsing.parse_value" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">parse_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/parsing.html#parse_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.parsing.parse_value" title="Link to this definition">¶</a></dt>
 <dd><p>Parse a string, mappable (dict, Dict), iterable (list, tuple) to account
 for units conversion, some basic arithmetic, and design variables. This is
 the main parsing function of Qiskit Metal.</p>
@@ -913,7 +913,7 @@ will yield float(-0.2) when the default units are set to <cite>mm</cite>.</p>
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/02/13</div>
+              Last updated on 2024/12/16</div>
           </div>
           <div class="right-details">
             
@@ -957,7 +957,7 @@ will yield float(-0.2) when the default units are set to <cite>mm</cite>.</p>
 </div><script src="../_static/jquery.js?v=5d32c60e"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script src="../_static/documentation_options.js?v=59fadc99"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>

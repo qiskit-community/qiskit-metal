@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Modify chip options" href="2.23-Modify-chip-options.html" /><link rel="prev" title="Design a 4 qubit full chip" href="2.21-Design-a-4-qubit-full-chip.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19 -->
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
         <title>Design 100 qubits programmatically - Qiskit Metal 0.1.5 0.1.5</title>
       <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=362ab14a" />
@@ -797,12 +797,12 @@ div.rendered_html tbody tr:hover {
 <p>This page was generated from <a class="reference external" href="https://github.com/Qiskit/qiskit-metal/blob/main/docs/tut//2-From-components-to-chip//2.22-Design-100-qubits-programmatically.ipynb">tut//2-From-components-to-chip//2.22-Design-100-qubits-programmatically.ipynb</a>.</p>
 </div>
 <section id="Design-100-qubits-programmatically">
-<h1>Design 100 qubits programmatically<a class="headerlink" href="#Design-100-qubits-programmatically" title="Link to this heading">#</a></h1>
+<h1>Design 100 qubits programmatically<a class="headerlink" href="#Design-100-qubits-programmatically" title="Link to this heading">¶</a></h1>
 <section id="Prerequisite">
-<h2>Prerequisite<a class="headerlink" href="#Prerequisite" title="Link to this heading">#</a></h2>
+<h2>Prerequisite<a class="headerlink" href="#Prerequisite" title="Link to this heading">¶</a></h2>
 <p>A working local installation of Ansys</p>
 <section id="N_x-by-N_y-grid-of-qubits">
-<h3>N_x by N_y grid of qubits<a class="headerlink" href="#N_x-by-N_y-grid-of-qubits" title="Link to this heading">#</a></h3>
+<h3>N_x by N_y grid of qubits<a class="headerlink" href="#N_x-by-N_y-grid-of-qubits" title="Link to this heading">¶</a></h3>
 <p>A simple example of generating a large grid of qubits.</p>
 <p>Using TransmonPocket and RouteMeander, we can generate a large, varied grid array of qubits. This is not a practical design given the lack of readouts or control lines to the qubits, just an example for how to make a design algorithmically.</p>
 <div class="nbinput nblast docutils container">
@@ -857,7 +857,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Design">
-<h3>Design<a class="headerlink" href="#Design" title="Link to this heading">#</a></h3>
+<h3>Design<a class="headerlink" href="#Design" title="Link to this heading">¶</a></h3>
 <p>We can vary how big we want the grid to be by changing N_x/N_y (number of qubits along the x/y axis). Be careful as very large arrays can take a fair bit of time to generate. We modify the chip size so it contains all of the qubits.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
@@ -970,7 +970,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Analysis">
-<h3>Analysis<a class="headerlink" href="#Analysis" title="Link to this heading">#</a></h3>
+<h3>Analysis<a class="headerlink" href="#Analysis" title="Link to this heading">¶</a></h3>
 <p>We can quickly check if we have designed the qubits well with an LOM analysis. First we select the design that we want to analyse and the tool to use for any simulation.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
@@ -1321,7 +1321,7 @@ gbus3_4 16.145313 [MHz]
 </div>
 </section>
 <section id="GDS-Render">
-<h3>GDS Render<a class="headerlink" href="#GDS-Render" title="Link to this heading">#</a></h3>
+<h3>GDS Render<a class="headerlink" href="#GDS-Render" title="Link to this heading">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
@@ -1443,7 +1443,7 @@ True
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/02/13</div>
+              Last updated on 2024/12/16</div>
           </div>
           <div class="right-details">
             
@@ -1486,7 +1486,7 @@ True
 </div><script src="../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script src="../../_static/documentation_options.js?v=59fadc99"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>

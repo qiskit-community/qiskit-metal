@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="FAQ’s" href="faq.html" /><link rel="prev" title="Qiskit Metal | Quantum Device Design &amp; Analysis (Q-EDA) 0.1.5" href="index.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19 -->
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
         <title>Installation - Qiskit Metal 0.1.5 0.1.5</title>
       <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=362ab14a" />
@@ -545,15 +545,15 @@
         </div>
         <article role="main">
           <br><br><br><section id="installation">
-<span id="id1"></span><h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h1>
+<span id="id1"></span><h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h1>
 <section id="basic-installation">
-<h2>Basic Installation<a class="headerlink" href="#basic-installation" title="Link to this heading">#</a></h2>
+<h2>Basic Installation<a class="headerlink" href="#basic-installation" title="Link to this heading">¶</a></h2>
 <p>Please refer to the <a class="reference external" href="https://pypi.org/project/qiskit-metal/">PyPI deploy instructions</a></p>
 </section>
 <section id="advanced-installation">
-<h2>Advanced Installation<a class="headerlink" href="#advanced-installation" title="Link to this heading">#</a></h2>
+<h2>Advanced Installation<a class="headerlink" href="#advanced-installation" title="Link to this heading">¶</a></h2>
 <section id="video-instructions">
-<h3>Video Instructions<a class="headerlink" href="#video-instructions" title="Link to this heading">#</a></h3>
+<h3>Video Instructions<a class="headerlink" href="#video-instructions" title="Link to this heading">¶</a></h3>
 <a href="https://www.youtube.com/watch?v=sYVDtnJb-ZM&ab_channel=Qiskit">
 Click for YouTube Video</a><br><br>
 <table>
@@ -564,7 +564,7 @@ Click for YouTube Video</a><br><br>
     </td><td width="78%"></td></tr>
 </table></section>
 <section id="text-instructions">
-<h3>Text Instructions<a class="headerlink" href="#text-instructions" title="Link to this heading">#</a></h3>
+<h3>Text Instructions<a class="headerlink" href="#text-instructions" title="Link to this heading">¶</a></h3>
 <p>We recommend setting up a proper git linkage, which will simplify the retrieval of code updates and the possible contributions back to the source code.</p>
 <p>To do that, you will need to <cite>git clone</cite> this repository’s main branch following one of two ways.</p>
 <ol class="arabic simple">
@@ -583,12 +583,12 @@ Click for YouTube Video</a><br><br>
 <li><p>On Windows, the conda environment is strongly recommended because Shapely is difficult to install directly via pip.</p></li>
 </ul>
 <section id="conda-environment-setup-preferred-setup">
-<h4>Conda environment setup (preferred setup)<a class="headerlink" href="#conda-environment-setup-preferred-setup" title="Link to this heading">#</a></h4>
+<h4>Conda environment setup (preferred setup)<a class="headerlink" href="#conda-environment-setup-preferred-setup" title="Link to this heading">¶</a></h4>
 <p>If you did not yet install conda, please follow these <a class="reference external" href="https://docs.conda.io/projects/conda/en/latest/user-guide/install/">instructions</a>.</p>
 <p>We will setup a conda environment to use the local copy of qiskit-metal you created in the previous section. This approach enables you to immediately observe the effect of your code modifications.</p>
 <p>For this section you will need to use the command line. If you use github desktop, you can open one from the menu <cite>Repository -&gt; Open In….</cite></p>
 <section id="option-1-a-new-environment">
-<h5>Option 1: A new environment<a class="headerlink" href="#option-1-a-new-environment" title="Link to this heading">#</a></h5>
+<h5>Option 1: A new environment<a class="headerlink" href="#option-1-a-new-environment" title="Link to this heading">¶</a></h5>
 <p>The most reliable way to set up a qiskit_metal environment is to build one from scratch using the provided conda environment specification file <cite>environment.yml</cite>.</p>
 <p>To do so, first navigate to the folder created by the clone. For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">qiskit</span><span class="o">-</span><span class="n">metal</span>
@@ -607,7 +607,7 @@ Finally installs the local qiskit-metal code inside that environment.</p>
 <p>You can add the <cite>-v</cite> flag for verbose on-screen log information.</p>
 </section>
 <section id="option-2-a-pre-existing-environment">
-<h5>Option 2: A pre-existing environment<a class="headerlink" href="#option-2-a-pre-existing-environment" title="Link to this heading">#</a></h5>
+<h5>Option 2: A pre-existing environment<a class="headerlink" href="#option-2-a-pre-existing-environment" title="Link to this heading">¶</a></h5>
 <p>If convenient, you can instead try to install directly in an existing conda environment <cite>&lt;env_name_exist&gt;</cite>, if it is relatively up to date.</p>
 <p>To do so, execute these commands in the top-level of the repository:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">env</span> <span class="n">update</span> <span class="o">-</span><span class="n">n</span> <span class="o">&lt;</span><span class="n">env_name_exist</span><span class="o">&gt;</span> <span class="n">environment</span><span class="o">.</span><span class="n">yml</span>
@@ -625,7 +625,7 @@ Finally installs the local qiskit-metal code inside that environment.</p>
 However, if you prefer using jupyter lab, you will need to execute a couple of extra steps.</p>
 </section>
 <section id="optional-jupyter-lab">
-<h5>(Optional) Jupyter lab<a class="headerlink" href="#optional-jupyter-lab" title="Link to this heading">#</a></h5>
+<h5>(Optional) Jupyter lab<a class="headerlink" href="#optional-jupyter-lab" title="Link to this heading">¶</a></h5>
 <p>Launching jupyter lab will execute python code in the conda <cite>base</cite> environment by default.</p>
 <p>To change environment to the Qiskit Metal one you just finished setting up, denoted by <cite>&lt;env_name&gt;</cite>, which we usually just call <cite>metal</cite>, you will need first to add to jupyter lab’s list of available kernels.</p>
 <p>From the command line, run the following lines (inside an active &lt;env_name&gt; environment):</p>
@@ -639,7 +639,7 @@ However, if you prefer using jupyter lab, you will need to execute a couple of e
 </section>
 </section>
 <section id="subsequent-updates-of-the-conda-environment">
-<h4>Subsequent updates of the conda environment<a class="headerlink" href="#subsequent-updates-of-the-conda-environment" title="Link to this heading">#</a></h4>
+<h4>Subsequent updates of the conda environment<a class="headerlink" href="#subsequent-updates-of-the-conda-environment" title="Link to this heading">¶</a></h4>
 <p>Package dependencies will evolve over time and could at some point require a new version of a library.
 For example, we can anticipate updating <cite>pyEPR-quantum</cite> to enable Ansys interactions previously unsupported.
 To update your local install, simply execute the metal package install command</p>
@@ -655,7 +655,7 @@ To update your local install, simply execute the metal package install command</
 Indeed, since Qiskit Metal is installed using pip, the subsequent use of conda commands can introduce inconsistencies that could render your environment unusable.</p>
 </section>
 <section id="without-conda-virtual-environment-setup-alternative-setup">
-<h4>Without conda: Virtual environment setup (alternative setup)<a class="headerlink" href="#without-conda-virtual-environment-setup-alternative-setup" title="Link to this heading">#</a></h4>
+<h4>Without conda: Virtual environment setup (alternative setup)<a class="headerlink" href="#without-conda-virtual-environment-setup-alternative-setup" title="Link to this heading">¶</a></h4>
 <p><strong>On Windows, do this first:</strong> It is recommended that you first install <cite>Visual C++ 14.0</cite>, it is required for a successful install of <cite>gdspy</cite>.
 If you do not have <cite>Visual C++ 14.0</cite> installed you will be notified to install it when <cite>gdspy</cite> attempts to install.
 You can do this by downloading and installing <a class="reference external" href="https://visualstudio.microsoft.com/visual-cpp-build-tools/">C++ Build Tools</a>.
@@ -671,7 +671,7 @@ Be sure to select the latest versions of <cite>MSVCv142 - VS 2019 C++ x64/x86 bu
 On Windows, replace <cite>source &lt;virtual_env_path&gt;/bin/activate</cite> with <cite>.&lt;virtual_env_path&gt;Scriptsactivate</cite>.</p>
 </section>
 <section id="installation-hints">
-<h4>Installation hints<a class="headerlink" href="#installation-hints" title="Link to this heading">#</a></h4>
+<h4>Installation hints<a class="headerlink" href="#installation-hints" title="Link to this heading">¶</a></h4>
 <p>Here are some things to consider when setting up a development environment:</p>
 <ul class="simple">
 <li><p>If using a virtual environment, make sure <cite>pip</cite> is up to date. In initial environment testing, PySide2 is installable with only the latest version of <cite>pip</cite>.</p></li>
@@ -680,7 +680,7 @@ On Windows, replace <cite>source &lt;virtual_env_path&gt;/bin/activate</cite> wi
 </ul>
 </section>
 <section id="setting-up-precommit-hooks">
-<h4>Setting up precommit hooks<a class="headerlink" href="#setting-up-precommit-hooks" title="Link to this heading">#</a></h4>
+<h4>Setting up precommit hooks<a class="headerlink" href="#setting-up-precommit-hooks" title="Link to this heading">¶</a></h4>
 <p>If are planning on committing, you can run the following in the root of your project to link the available precommit hooks.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">hook_setup</span>
 </pre></div>
@@ -689,7 +689,7 @@ On Windows, replace <cite>source &lt;virtual_env_path&gt;/bin/activate</cite> wi
 </section>
 </section>
 <section id="common-issues">
-<h3>Common Issues<a class="headerlink" href="#common-issues" title="Link to this heading">#</a></h3>
+<h3>Common Issues<a class="headerlink" href="#common-issues" title="Link to this heading">¶</a></h3>
 <p>If you run into problems, consult the FAQ’s page <a class="reference internal" href="faq.html#faq-setup"><span class="std std-ref">here</span></a>.</p>
 </section>
 </section>
@@ -729,7 +729,7 @@ On Windows, replace <cite>source &lt;virtual_env_path&gt;/bin/activate</cite> wi
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/02/13</div>
+              Last updated on 2024/12/16</div>
           </div>
           <div class="right-details">
             
@@ -784,7 +784,7 @@ On Windows, replace <cite>source &lt;virtual_env_path&gt;/bin/activate</cite> wi
 </div><script src="_static/jquery.js?v=5d32c60e"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script src="_static/documentation_options.js?v=59fadc99"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>

@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Launch Videos" href="Example-used-in-the-launch-video.html" /><link rel="prev" title="Four Qubit Chip Design" href="../F.Small-quantum-chips/51-Four_qubit_chip.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19 -->
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
         <title>Example full chip design - Qiskit Metal 0.1.5 0.1.5</title>
       <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=362ab14a" />
@@ -797,7 +797,7 @@ div.rendered_html tbody tr:hover {
 <p>This page was generated from <a class="reference external" href="https://github.com/Qiskit/qiskit-metal/blob/main/docs/circuit-examples//full-design-flow-examples//Example-full-chip-design.ipynb">circuit-examples//full-design-flow-examples//Example-full-chip-design.ipynb</a>.</p>
 </div>
 <section id="Example-full-chip-design">
-<h1>Example full chip design<a class="headerlink" href="#Example-full-chip-design" title="Link to this heading">#</a></h1>
+<h1>Example full chip design<a class="headerlink" href="#Example-full-chip-design" title="Link to this heading">¶</a></h1>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -843,7 +843,7 @@ div.rendered_html tbody tr:hover {
 <p>One could generate subsections of the layout and tune individual components first, but in this case we will create all of the layout. We will be using both transmon pockets and crossmons, meandered and simple transmission lines, capacitive couplers, and launchers for wirebond connections. So we will import these, and also create a design instance and launch the GUI.</p>
 </section>
 <section id="Layout">
-<h1>Layout<a class="headerlink" href="#Layout" title="Link to this heading">#</a></h1>
+<h1>Layout<a class="headerlink" href="#Layout" title="Link to this heading">¶</a></h1>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
@@ -919,7 +919,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <section id="The-Qubits">
-<h2>The Qubits<a class="headerlink" href="#The-Qubits" title="Link to this heading">#</a></h2>
+<h2>The Qubits<a class="headerlink" href="#The-Qubits" title="Link to this heading">¶</a></h2>
 <p>We will add a collection of qubits. First we will place a transmon pocket with six connection pads. We can see any options the qubit qcomponent has to figure out what we might want to modify when creating the component. This will include the components default options (which the component designer included) as well as renderer options (which are added based on what renderers are present in Metal).</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
@@ -1118,7 +1118,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="The-Busses">
-<h2>The Busses<a class="headerlink" href="#The-Busses" title="Link to this heading">#</a></h2>
+<h2>The Busses<a class="headerlink" href="#The-Busses" title="Link to this heading">¶</a></h2>
 <p>We now couple the qubits to each other, primarily using RouteMeander. Although one needs to run simulations to properly tune the line lengths for target frequencies, an initial estimate could be determined from the below method;</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
@@ -1308,7 +1308,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="The-Readouts-and-Control-Lines">
-<h2>The Readouts and Control Lines<a class="headerlink" href="#The-Readouts-and-Control-Lines" title="Link to this heading">#</a></h2>
+<h2>The Readouts and Control Lines<a class="headerlink" href="#The-Readouts-and-Control-Lines" title="Link to this heading">¶</a></h2>
 <p>The intention for this design is to have the three north transmon pockets be multiplexed to one readout line. The crossmons to their own readouts, as well as Q_Main. The tunable coupler, and the two crossmons also have flux lines which need to be connected to launchers. First we will place the wirebond launchers at the edges of the chip.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
@@ -1733,7 +1733,7 @@ div.rendered_html tbody tr:hover {
 </section>
 </section>
 <section id="Analyze">
-<h1>Analyze<a class="headerlink" href="#Analyze" title="Link to this heading">#</a></h1>
+<h1>Analyze<a class="headerlink" href="#Analyze" title="Link to this heading">¶</a></h1>
 <p>First we want to quickly look at the qubit parameters. Initial simulation and analysis is to use a lumped element approximation, by extracting the capacitance matrix of the qubit. We first analyze the qubit <code class="docutils literal notranslate"><span class="pre">Q_Main</span></code>, by first extracting the matrix and then using LOM analysis on it.</p>
 <p>For starters, let’s select the appropriate QAnalysis class.</p>
 <div class="nbinput nblast docutils container">
@@ -2381,7 +2381,7 @@ Design &#34;Q_Main_q3d&#34; info:
 </div>
 <p>Once each of our qubits have been run through LOM, we can begin to look at the resonant busses and readouts, and larger coupled sections of the chip. One such case could be looking at Q_Main, Q5, and Bus_05. This allows us not only to look at some of the parameters of the individual qubits, but also the bus frequency and if the qubits are coupled (via the bus) to the degree we wish.</p>
 <section id="Preparations">
-<h2>Preparations<a class="headerlink" href="#Preparations" title="Link to this heading">#</a></h2>
+<h2>Preparations<a class="headerlink" href="#Preparations" title="Link to this heading">¶</a></h2>
 <p>We will setup the design and simulation in the same manner as we did previously, but with the methods needed for an eigenmode simulation.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
@@ -2754,7 +2754,7 @@ Index: [0, 1, 2]
 </div>
 <div class="output_area docutils container">
 <section id="Mode-frequencies-(MHz)">
-<h3>Mode frequencies (MHz)<a class="headerlink" href="#Mode-frequencies-(MHz)" title="Link to this heading">#</a></h3>
+<h3>Mode frequencies (MHz)<a class="headerlink" href="#Mode-frequencies-(MHz)" title="Link to this heading">¶</a></h3>
 </section>
 </div>
 </div>
@@ -2816,7 +2816,7 @@ Index: [0, 1, 2]
 </div>
 <div class="output_area docutils container">
 <section id="Kerr-Non-linear-coefficient-table-(MHz)">
-<h3>Kerr Non-linear coefficient table (MHz)<a class="headerlink" href="#Kerr-Non-linear-coefficient-table-(MHz)" title="Link to this heading">#</a></h3>
+<h3>Kerr Non-linear coefficient table (MHz)<a class="headerlink" href="#Kerr-Non-linear-coefficient-table-(MHz)" title="Link to this heading">¶</a></h3>
 </section>
 </div>
 </div>
@@ -2897,7 +2897,7 @@ Index: [0, 1, 2]
 </div>
 </div>
 <section id="Rendering-to-a-GDS-File">
-<h3>Rendering to a GDS File<a class="headerlink" href="#Rendering-to-a-GDS-File" title="Link to this heading">#</a></h3>
+<h3>Rendering to a GDS File<a class="headerlink" href="#Rendering-to-a-GDS-File" title="Link to this heading">¶</a></h3>
 <p>Once all of the tuning is complete, we will want to prepare a GDS file so we can create a mask and fabricate our chip. We first create a gds render instance.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
@@ -3057,7 +3057,7 @@ Index: [0, 1, 2]
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/02/13</div>
+              Last updated on 2024/12/16</div>
           </div>
           <div class="right-details">
             
@@ -3075,7 +3075,7 @@ Index: [0, 1, 2]
 </div><script src="../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script src="../../_static/documentation_options.js?v=59fadc99"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>

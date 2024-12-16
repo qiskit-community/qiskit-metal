@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Export your design to GDS" href="3.2-Export-your-design-to-GDS.html" /><link rel="prev" title="Add my QComponent to a reusable python file" href="../2-From-components-to-chip/2.33-Add-my-QComponent-to-a-reusable-python-file.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19 -->
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
         <title>Introduction to QRenderers - Qiskit Metal 0.1.5 0.1.5</title>
       <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=362ab14a" />
@@ -797,7 +797,7 @@ div.rendered_html tbody tr:hover {
 <p>This page was generated from <a class="reference external" href="https://github.com/Qiskit/qiskit-metal/blob/main/docs/tut//3-Renderers//3.1-Introduction-to-QRenderers.ipynb">tut//3-Renderers//3.1-Introduction-to-QRenderers.ipynb</a>.</p>
 </div>
 <section id="Introduction-to-QRenderers">
-<h1>Introduction to QRenderers<a class="headerlink" href="#Introduction-to-QRenderers" title="Link to this heading">#</a></h1>
+<h1>Introduction to QRenderers<a class="headerlink" href="#Introduction-to-QRenderers" title="Link to this heading">¶</a></h1>
 <p>For convenience, let’s begin by enabling <a class="reference external" href="https://ipython.readthedocs.io/en/stable/config/extensions/autoreload.html?highlight=autoreload">automatic reloading of modules</a> when they change.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -810,7 +810,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <section id="Import-Qiskit-Metal">
-<h2>Import Qiskit Metal<a class="headerlink" href="#Import-Qiskit-Metal" title="Link to this heading">#</a></h2>
+<h2>Import Qiskit Metal<a class="headerlink" href="#Import-Qiskit-Metal" title="Link to this heading">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -931,20 +931,20 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="A-renderer-needs-to-inherent-from-QRenderer">
-<h2>A renderer needs to inherent from QRenderer<a class="headerlink" href="#A-renderer-needs-to-inherent-from-QRenderer" title="Link to this heading">#</a></h2>
+<h2>A renderer needs to inherent from QRenderer<a class="headerlink" href="#A-renderer-needs-to-inherent-from-QRenderer" title="Link to this heading">¶</a></h2>
 <p>For Example, QGDSRender inherents from QRenderer.</p>
 <p>When any QRenderer is registered within QDesign, the QRenderer instance has options, which hold the latest set of values for default_options. The GUI can also update these options.</p>
 <p>An example of updating options is further below in this notebook.</p>
 </section>
 <section id="A-user-can-customize-things-two-ways">
-<h2>A user can customize things two ways<a class="headerlink" href="#A-user-can-customize-things-two-ways" title="Link to this heading">#</a></h2>
+<h2>A user can customize things two ways<a class="headerlink" href="#A-user-can-customize-things-two-ways" title="Link to this heading">¶</a></h2>
 <ol class="arabic simple">
 <li><p>Directly update the options that originated from default_options, for either QComponent or QRenderer.</p></li>
 <li><p>Pass options to a QComponent which will be placed in a QGeometry table, then used by QRenderer.</p></li>
 </ol>
 </section>
 <section id="How-to-get-options-from-QRenderer-to-be-placed-within-the-QGeometry-table?">
-<h2>How to get options from QRenderer to be placed within the QGeometry table?<a class="headerlink" href="#How-to-get-options-from-QRenderer-to-be-placed-within-the-QGeometry-table?" title="Link to this heading">#</a></h2>
+<h2>How to get options from QRenderer to be placed within the QGeometry table?<a class="headerlink" href="#How-to-get-options-from-QRenderer-to-be-placed-within-the-QGeometry-table?" title="Link to this heading">¶</a></h2>
 <p>We set this up so that older QComponents can be agnostic of newer QRenderers.</p>
 <div class="line-block">
 <div class="line">The “rate limiting factor” is to have QComponent denote in it’s metadata, which QGeometry tables it will write to. For this example, we will discuss the “junction” table. More details will be in the notebook at “tutorials/4 Plugin Developer”.</div>
@@ -968,7 +968,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="By-default,-QRenderers-are-registered-within-QDesign-during-init-QDesign">
-<h2>By default, QRenderers are registered within QDesign during init QDesign<a class="headerlink" href="#By-default,-QRenderers-are-registered-within-QDesign-during-init-QDesign" title="Link to this heading">#</a></h2>
+<h2>By default, QRenderers are registered within QDesign during init QDesign<a class="headerlink" href="#By-default,-QRenderers-are-registered-within-QDesign-during-init-QDesign" title="Link to this heading">¶</a></h2>
 <div class="line-block">
 <div class="line">The list of QRenderers which will be registered are in qiskit_metal.config.py;</div>
 <div class="line">the dictionary <code class="docutils literal notranslate"><span class="pre">renderers_to_load</span></code> has the name of the QRenderer (key), class name (value), and path (value).</div>
@@ -1055,7 +1055,7 @@ div.rendered_html tbody tr:hover {
 </section>
 </section>
 <section id="Note:">
-<h1>Note:<a class="headerlink" href="#Note:" title="Link to this heading">#</a></h1>
+<h1>Note:<a class="headerlink" href="#Note:" title="Link to this heading">¶</a></h1>
 <div class="line-block">
 <div class="line">The cell name denoted by, “gds_cell_name” will be the selected cell</div>
 <div class="line">from design.renderers.gds.options[‘path_filename’]</div>
@@ -1219,7 +1219,7 @@ div.rendered_html tbody tr:hover {
 </pre></div></div>
 </div>
 <section id="To-make-the-junction-table-work-correctly,-GDS-Renderer-needs-the-correct-path-to-the-gds-file-which-has-cells">
-<h2>To make the junction table work correctly, GDS Renderer needs the correct path to the gds file which has cells<a class="headerlink" href="#To-make-the-junction-table-work-correctly,-GDS-Renderer-needs-the-correct-path-to-the-gds-file-which-has-cells" title="Link to this heading">#</a></h2>
+<h2>To make the junction table work correctly, GDS Renderer needs the correct path to the gds file which has cells<a class="headerlink" href="#To-make-the-junction-table-work-correctly,-GDS-Renderer-needs-the-correct-path-to-the-gds-file-which-has-cells" title="Link to this heading">¶</a></h2>
 <p>Each cell is a junction to be placed in a Transmon. A sample gds file is provided in directory <code class="docutils literal notranslate"><span class="pre">qiskit_metal/tutorials/resources</span></code>. There are three cells with names “Fake_Junction_01”, “Fake_Junction_01”, and “my_other_junction”. The default name used by GDS Render is “my_other_junction”. If you want to customize and select a junction, through the options, you can pass it when a qcomponent is being added to QDesign.</p>
 <p>This allows for an already prepared e-beam pattern for a given junction structure to be automatically imported and placed at the correct location.</p>
 <div class="nbinput nblast docutils container">
@@ -1299,7 +1299,7 @@ div.rendered_html tbody tr:hover {
 </pre></div></div>
 </div>
 <section id="How-to-“execute”-exporting-an-QRenderer-from-GUI-vs-notebook?">
-<h3>How to “execute” exporting an QRenderer from GUI vs notebook?<a class="headerlink" href="#How-to-“execute”-exporting-an-QRenderer-from-GUI-vs-notebook?" title="Link to this heading">#</a></h3>
+<h3>How to “execute” exporting an QRenderer from GUI vs notebook?<a class="headerlink" href="#How-to-“execute”-exporting-an-QRenderer-from-GUI-vs-notebook?" title="Link to this heading">¶</a></h3>
 <p>Within the GUI, there are icons: GDS, HFSS and Q3D.</p>
 <p>Example for GDS: Select the components that you want to export from QGeometry Tables. Select the path/file_name and the same thing should happen as the cells above.</p>
 <div class="nbinput docutils container">
@@ -1320,13 +1320,13 @@ div.rendered_html tbody tr:hover {
 </section>
 </section>
 <section id="Answer:-QGeometry-tables!">
-<h2>Answer: QGeometry tables!<a class="headerlink" href="#Answer:-QGeometry-tables!" title="Link to this heading">#</a></h2>
+<h2>Answer: QGeometry tables!<a class="headerlink" href="#Answer:-QGeometry-tables!" title="Link to this heading">¶</a></h2>
 <section id="What-is-QGeometry?">
-<h3>What is QGeometry?<a class="headerlink" href="#What-is-QGeometry?" title="Link to this heading">#</a></h3>
+<h3>What is QGeometry?<a class="headerlink" href="#What-is-QGeometry?" title="Link to this heading">¶</a></h3>
 </section>
 </section>
 <section id="All-QRenderers-use-the-QGeometry-tables-to-export-from-QDesign.-Each-table-is-a-Pandas-DataFrame.">
-<h2>All QRenderers use the QGeometry tables to export from QDesign. Each table is a Pandas DataFrame.<a class="headerlink" href="#All-QRenderers-use-the-QGeometry-tables-to-export-from-QDesign.-Each-table-is-a-Pandas-DataFrame." title="Link to this heading">#</a></h2>
+<h2>All QRenderers use the QGeometry tables to export from QDesign. Each table is a Pandas DataFrame.<a class="headerlink" href="#All-QRenderers-use-the-QGeometry-tables-to-export-from-QDesign.-Each-table-is-a-Pandas-DataFrame." title="Link to this heading">¶</a></h2>
 <p>We can get all the QGeometry of a QComponent. There are several kinds, such as <code class="docutils literal notranslate"><span class="pre">path</span></code>, <code class="docutils literal notranslate"><span class="pre">poly</span></code> and, <code class="docutils literal notranslate"><span class="pre">junction</span></code>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
@@ -1480,7 +1480,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Let-us-look-at-all-the-polygons-used-to-create-qubit-q1">
-<h2>Let us look at all the polygons used to create qubit <code class="docutils literal notranslate"><span class="pre">q1</span></code><a class="headerlink" href="#Let-us-look-at-all-the-polygons-used-to-create-qubit-q1" title="Link to this heading">#</a></h2>
+<h2>Let us look at all the polygons used to create qubit <code class="docutils literal notranslate"><span class="pre">q1</span></code><a class="headerlink" href="#Let-us-look-at-all-the-polygons-used-to-create-qubit-q1" title="Link to this heading">¶</a></h2>
 <p>Poly table hold the polygons identified from QComponents.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
@@ -1771,10 +1771,10 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="The-junction-table-is-handled-differently-by-each-QRenderer.">
-<h2>The junction table is handled differently by each QRenderer.<a class="headerlink" href="#The-junction-table-is-handled-differently-by-each-QRenderer." title="Link to this heading">#</a></h2>
+<h2>The junction table is handled differently by each QRenderer.<a class="headerlink" href="#The-junction-table-is-handled-differently-by-each-QRenderer." title="Link to this heading">¶</a></h2>
 </section>
 <section id="What-does-GDS-do-with-“junction”-table?">
-<h2>What does GDS do with “junction” table?<a class="headerlink" href="#What-does-GDS-do-with-“junction”-table?" title="Link to this heading">#</a></h2>
+<h2>What does GDS do with “junction” table?<a class="headerlink" href="#What-does-GDS-do-with-“junction”-table?" title="Link to this heading">¶</a></h2>
 <p>This is better explained in folder 5 All QRenderers/5.2 GDS/GDS QRenderer notebook.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
@@ -1854,7 +1854,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Geometric-boundary-of-a-QComponent?">
-<h2>Geometric boundary of a QComponent?<a class="headerlink" href="#Geometric-boundary-of-a-QComponent?" title="Link to this heading">#</a></h2>
+<h2>Geometric boundary of a QComponent?<a class="headerlink" href="#Geometric-boundary-of-a-QComponent?" title="Link to this heading">¶</a></h2>
 <div class="line-block">
 <div class="line">Return the boundry box of the geometry, for example: <code class="docutils literal notranslate"><span class="pre">q1.qgeometry_bounds()</span></code>.</div>
 <div class="line">The function returns a tuple containing (minx, miny, maxx, maxy) bound values for the bounds of the component as a whole.</div>
@@ -1886,7 +1886,7 @@ cpw4       : [0.22       0.07576603 2.125      0.54423397]
 </div>
 </section>
 <section id="Qiskit-Metal-Version">
-<h2>Qiskit Metal Version<a class="headerlink" href="#Qiskit-Metal-Version" title="Link to this heading">#</a></h2>
+<h2>Qiskit Metal Version<a class="headerlink" href="#Qiskit-Metal-Version" title="Link to this heading">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
@@ -2001,7 +2001,7 @@ IBM Quantum Team
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/02/13</div>
+              Last updated on 2024/12/16</div>
           </div>
           <div class="right-details">
             
@@ -2059,7 +2059,7 @@ IBM Quantum Team
 </div><script src="../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script src="../../_static/documentation_options.js?v=59fadc99"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>

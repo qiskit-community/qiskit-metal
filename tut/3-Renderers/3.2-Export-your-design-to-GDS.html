@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Render your design to Ansys" href="3.3-Render-your-design-to-Ansys.html" /><link rel="prev" title="Introduction to QRenderers" href="3.1-Introduction-to-QRenderers.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19 -->
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
         <title>Export your design to GDS - Qiskit Metal 0.1.5 0.1.5</title>
       <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=362ab14a" />
@@ -797,10 +797,10 @@ div.rendered_html tbody tr:hover {
 <p>This page was generated from <a class="reference external" href="https://github.com/Qiskit/qiskit-metal/blob/main/docs/tut//3-Renderers//3.2-Export-your-design-to-GDS.ipynb">tut//3-Renderers//3.2-Export-your-design-to-GDS.ipynb</a>.</p>
 </div>
 <section id="Export-your-design-to-GDS">
-<h1>Export your design to GDS<a class="headerlink" href="#Export-your-design-to-GDS" title="Link to this heading">#</a></h1>
+<h1>Export your design to GDS<a class="headerlink" href="#Export-your-design-to-GDS" title="Link to this heading">¶</a></h1>
 <p>For convenience, let’s begin by enabling <a class="reference external" href="https://ipython.readthedocs.io/en/stable/config/extensions/autoreload.html?highlight=autoreload">automatic reloading of modules</a> when they change.</p>
 <section id="Will-export_to_gds()-add-to-my-GDS-file?">
-<h2>Will export_to_gds() add to my GDS file?<a class="headerlink" href="#Will-export_to_gds()-add-to-my-GDS-file?" title="Link to this heading">#</a></h2>
+<h2>Will export_to_gds() add to my GDS file?<a class="headerlink" href="#Will-export_to_gds()-add-to-my-GDS-file?" title="Link to this heading">¶</a></h2>
 <p>Most likely, yes!</p>
 <p>The cells below describe what is in an exported gds file. Geometries that an user wants to add for a component, can be put on a layer chosen by user. What export_to_gds does in the background is not finalized and will most likely be changed, based on a format, that is usable by multiple types of users. Layers represent manufacturing intention, thus proprietary information, which cannot be published outside scientific papers or fab-customer relationships. While on our roadmap, we have the
 enablement, of a techfile-driven setup for layers.</p>
@@ -815,7 +815,7 @@ enablement, of a techfile-driven setup for layers.</p>
 </div>
 </div>
 <section id="Import-Qiskit-Metal">
-<h3>Import Qiskit Metal<a class="headerlink" href="#Import-Qiskit-Metal" title="Link to this heading">#</a></h3>
+<h3>Import Qiskit Metal<a class="headerlink" href="#Import-Qiskit-Metal" title="Link to this heading">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -896,7 +896,7 @@ enablement, of a techfile-driven setup for layers.</p>
 </section>
 </section>
 <section id="Note-repeated-from-“Introduction-to-QRenderers.ipynb”:">
-<h2>Note repeated from “Introduction to QRenderers.ipynb”:<a class="headerlink" href="#Note-repeated-from-“Introduction-to-QRenderers.ipynb”:" title="Link to this heading">#</a></h2>
+<h2>Note repeated from “Introduction to QRenderers.ipynb”:<a class="headerlink" href="#Note-repeated-from-“Introduction-to-QRenderers.ipynb”:" title="Link to this heading">¶</a></h2>
 <div class="line-block">
 <div class="line">The cell name denoted by, “gds_cell_name” will be the selected cell</div>
 <div class="line">from design.renderers.gds.options[‘path_filename’]</div>
@@ -927,7 +927,7 @@ enablement, of a techfile-driven setup for layers.</p>
 </div>
 </section>
 <section id="Connecting-QPins-with-coplanar-waveguides-(CPWs)-as-described-in-earlier-notebooks.">
-<h2>Connecting QPins with coplanar waveguides (CPWs) as described in earlier notebooks.<a class="headerlink" href="#Connecting-QPins-with-coplanar-waveguides-(CPWs)-as-described-in-earlier-notebooks." title="Link to this heading">#</a></h2>
+<h2>Connecting QPins with coplanar waveguides (CPWs) as described in earlier notebooks.<a class="headerlink" href="#Connecting-QPins-with-coplanar-waveguides-(CPWs)-as-described-in-earlier-notebooks." title="Link to this heading">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
@@ -1065,16 +1065,16 @@ enablement, of a techfile-driven setup for layers.</p>
 </div>
 </section>
 <section id="Will-export_to_gds()-add-datatype-for-Polygon-and-Flexpath-to-my-GDS-file.">
-<h2>Will export_to_gds() add datatype for Polygon and Flexpath to my GDS file.<a class="headerlink" href="#Will-export_to_gds()-add-datatype-for-Polygon-and-Flexpath-to-my-GDS-file." title="Link to this heading">#</a></h2>
+<h2>Will export_to_gds() add datatype for Polygon and Flexpath to my GDS file.<a class="headerlink" href="#Will-export_to_gds()-add-datatype-for-Polygon-and-Flexpath-to-my-GDS-file." title="Link to this heading">¶</a></h2>
 <p>Yes. If you see a datatype being added to your positive mask, datatype=10 means a Polygon was added to the layer, datatype=11 means Flexpath was added to the layer. However, <code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">each</span> <span class="pre">layer</span></code> that has a negative mask, due to boolean subtract command done by export_to_gds, the 10 and 11 datatypes will not be in the gds file.</p>
 <p>For positive mask, datatype=0 is for the ground plane.</p>
 </section>
 <section id="To-make-junction-table-work-correctly,-GDS-Renderer-needs-a-correct-path-to-a-gds-file,-which-has-cells.">
-<h2>To make <code class="docutils literal notranslate"><span class="pre">junction</span> <span class="pre">table</span></code> work correctly, GDS Renderer needs a correct path to a gds file, which has cells.<a class="headerlink" href="#To-make-junction-table-work-correctly,-GDS-Renderer-needs-a-correct-path-to-a-gds-file,-which-has-cells." title="Link to this heading">#</a></h2>
+<h2>To make <code class="docutils literal notranslate"><span class="pre">junction</span> <span class="pre">table</span></code> work correctly, GDS Renderer needs a correct path to a gds file, which has cells.<a class="headerlink" href="#To-make-junction-table-work-correctly,-GDS-Renderer-needs-a-correct-path-to-a-gds-file,-which-has-cells." title="Link to this heading">¶</a></h2>
 <p>Each cell is a junction, to be placed, in a Transmon. A sample gds file is provided in directory <code class="docutils literal notranslate"><span class="pre">qiskit_metal/tutorials/resources</span></code>. There are three cells with names “Fake_Junction_01”, “Fake_Junction_01”, and “my_other_junction”. The default name used by GDS Render is “my_other_junction”. If you want to customize and select a junction, through the QComponent’s options, you can pass it when a qcomponent is being added to QDesign.</p>
 </section>
 <section id="If-your-added-junctions-to-a-qcomponent.">
-<h2>If your added junctions to a qcomponent.<a class="headerlink" href="#If-your-added-junctions-to-a-qcomponent." title="Link to this heading">#</a></h2>
+<h2>If your added junctions to a qcomponent.<a class="headerlink" href="#If-your-added-junctions-to-a-qcomponent." title="Link to this heading">¶</a></h2>
 <p>The junctions are imported from file at gds.options.path_filename. The cell from path_filename which is denoted by TransmonPocket.options.gds_cell_name is imported and placed at location determined by the qcomponent developer. The method export_to_gds will place the imported cell at the same layers which are identified in the file at gds.options.path_filename.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
@@ -1109,11 +1109,11 @@ enablement, of a techfile-driven setup for layers.</p>
 </div>
 </section>
 <section id="What-criteria-will-be-used-for-identifying-a-short-segment?">
-<h2>What criteria will be used for identifying a short segment?<a class="headerlink" href="#What-criteria-will-be-used-for-identifying-a-short-segment?" title="Link to this heading">#</a></h2>
+<h2>What criteria will be used for identifying a short segment?<a class="headerlink" href="#What-criteria-will-be-used-for-identifying-a-short-segment?" title="Link to this heading">¶</a></h2>
 <p>If a segment is smaller than (fillet length * scale_fillet)</p>
 </section>
 <section id="What-if-a-segment-of-LineString-has-few-short-segments?">
-<h2>What if a segment of LineString has few short segments?<a class="headerlink" href="#What-if-a-segment-of-LineString-has-few-short-segments?" title="Link to this heading">#</a></h2>
+<h2>What if a segment of LineString has few short segments?<a class="headerlink" href="#What-if-a-segment-of-LineString-has-few-short-segments?" title="Link to this heading">¶</a></h2>
 <p>If option ‘short_segments_to_not_fillet’ == ‘True’, QGDSRenderer will break the LineString into shorter Linestrings to make smaller LineStrings that will be either fillet’d or not, based on if the segment is short.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
@@ -1210,7 +1210,7 @@ enablement, of a techfile-driven setup for layers.</p>
 </div>
 </section>
 <section id="Answer:-QGeometry-tables!">
-<h2>Answer: QGeometry tables!<a class="headerlink" href="#Answer:-QGeometry-tables!" title="Link to this heading">#</a></h2>
+<h2>Answer: QGeometry tables!<a class="headerlink" href="#Answer:-QGeometry-tables!" title="Link to this heading">¶</a></h2>
 <p>This is better explained in folder “2 Front End User/2.4 QRenderer Introduction” in notebook, “QRenderer Introduction”.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
@@ -1448,7 +1448,7 @@ enablement, of a techfile-driven setup for layers.</p>
 </div>
 </section>
 <section id="Geometric-boundary-of-a-QComponent?">
-<h2>Geometric boundary of a QComponent?<a class="headerlink" href="#Geometric-boundary-of-a-QComponent?" title="Link to this heading">#</a></h2>
+<h2>Geometric boundary of a QComponent?<a class="headerlink" href="#Geometric-boundary-of-a-QComponent?" title="Link to this heading">¶</a></h2>
 <div class="line-block">
 <div class="line">How to obtain the boundary box of the geometry, for example: <code class="docutils literal notranslate"><span class="pre">q1.qgeometry_bounds()</span></code>.</div>
 <div class="line">Explained in in folder “2 Front End User/2.4 QRenderer Introduction” in notebook, “QRenderer Introduction”.</div>
@@ -1502,7 +1502,7 @@ enablement, of a techfile-driven setup for layers.</p>
 </div>
 </section>
 <section id="Number-of-vertices-for-linestrings.">
-<h2>Number of vertices for linestrings.<a class="headerlink" href="#Number-of-vertices-for-linestrings." title="Link to this heading">#</a></h2>
+<h2>Number of vertices for linestrings.<a class="headerlink" href="#Number-of-vertices-for-linestrings." title="Link to this heading">¶</a></h2>
 <p>The option max_points has default of 199. You can set it to a number no higher than 8191.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
@@ -1526,7 +1526,7 @@ enablement, of a techfile-driven setup for layers.</p>
 </div>
 </section>
 <section id="Changing-options-‘precision’-vs-‘tolerance’-ratio-can-impact-how-fillet-will-look.">
-<h2>Changing options ‘precision’ vs ‘tolerance’ ratio can impact how fillet will look.<a class="headerlink" href="#Changing-options-‘precision’-vs-‘tolerance’-ratio-can-impact-how-fillet-will-look." title="Link to this heading">#</a></h2>
+<h2>Changing options ‘precision’ vs ‘tolerance’ ratio can impact how fillet will look.<a class="headerlink" href="#Changing-options-‘precision’-vs-‘tolerance’-ratio-can-impact-how-fillet-will-look." title="Link to this heading">¶</a></h2>
 <p>The below numbers are used to create a gdspy.FlexPath when there is a fillet value in QGeometry table.</p>
 <p>bend_radius – Bend radii for each path when corners is ‘circular bend’. It has no effect for other corner types. QGDSRender uses ‘circular bend’ as a default for corners. The fillet value used here.</p>
 <p>Ensure that tolerance &gt; precision.</p>
@@ -1584,7 +1584,7 @@ enablement, of a techfile-driven setup for layers.</p>
 </div>
 </section>
 <section id="What-can-I-control-by-layer-number?">
-<h2>What can I control by layer number?<a class="headerlink" href="#What-can-I-control-by-layer-number?" title="Link to this heading">#</a></h2>
+<h2>What can I control by layer number?<a class="headerlink" href="#What-can-I-control-by-layer-number?" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>positive mask</p></li>
 <li><p>negative mask</p></li>
@@ -1593,7 +1593,7 @@ enablement, of a techfile-driven setup for layers.</p>
 </ul>
 </section>
 <section id="If-you-wanted-cheese-or-no_cheese-in-the-GDS-file.">
-<h2>If you wanted cheese or no_cheese in the GDS file.<a class="headerlink" href="#If-you-wanted-cheese-or-no_cheese-in-the-GDS-file." title="Link to this heading">#</a></h2>
+<h2>If you wanted cheese or no_cheese in the GDS file.<a class="headerlink" href="#If-you-wanted-cheese-or-no_cheese-in-the-GDS-file." title="Link to this heading">¶</a></h2>
 <p>The reason you choose to use cheesing is up to the developer. There are considerations for both manufacturing and EM design. This refers to the holes in the output GDS ground plane (cheese = holes). From an EM stand-point <a class="reference external" href="https://www.degruyter.com/document/doi/10.1515/psr-2017-8000/html">https://www.degruyter.com/document/doi/10.1515/psr-2017-8000/html</a>.</p>
 <p>Cheesing refers to the holes added to the chip. The “cheese” output will correspond to the mask (positive or negative) selected. Both cheese and no_cheese output can be generated for any layer. You can choose to add the no_cheese to the exported GDS file; adding no_cheese information in GDS file, is just to show the intermediate step.</p>
 <p>In the cheese dict, edge_nocheese option denotes a buffer around the perimeter of the chip. You can identify which layer has the cheesing by using the key view_in_file. To identify a datatype to store the geometry for cheesing, edit the key named datatype.</p>
@@ -1610,7 +1610,7 @@ it as True for each layer you are interested it.</p>
 <p><code class="docutils literal notranslate"><span class="pre">For</span> <span class="pre">positive</span> <span class="pre">mask</span></code>: TOP_chipname_layernumber_Cheese_diff is subtracted from ground and placed under TOP_chipname_layernumber.</p>
 </section>
 <section id="Changing-Cheesing-options">
-<h2>Changing Cheesing options<a class="headerlink" href="#Changing-Cheesing-options" title="Link to this heading">#</a></h2>
+<h2>Changing Cheesing options<a class="headerlink" href="#Changing-Cheesing-options" title="Link to this heading">¶</a></h2>
 <p>There are two dicts in default_options for cheesing. One for selecting the no_cheese (keep-out region) for cheesing, the other for cheesing. Use them to determine if you would like the cheesing cell and the no_cheese cell to be added to the GDS file.</p>
 <p>To create the no-cheese region, we take the existing components and add a buffer around the perimeter. The size of the buffer is an option.</p>
 <p>The output of the cells can be placed with a data type. The user can select a different data type for both the no-cheese region and the cheese region.</p>
@@ -1749,7 +1749,7 @@ it as True for each layer you are interested it.</p>
 </div>
 </section>
 <section id="If-you-want-a-positive-and/or-negative-masks.">
-<h2>If you want a positive and/or negative masks.<a class="headerlink" href="#If-you-want-a-positive-and/or-negative-masks." title="Link to this heading">#</a></h2>
+<h2>If you want a positive and/or negative masks.<a class="headerlink" href="#If-you-want-a-positive-and/or-negative-masks." title="Link to this heading">¶</a></h2>
 <p>User can request a positive or negative mask by chip-name and layer-number. The default is to use a positive mask. If user wants to use a negative mask, then just identify the layers that should be a negative mask. The user is allowed to mix the output per chip, per layer. Particularly, a chip can have both positive and negative masks; the granularity is by layer. This is exemplified in this notebook by editing option “negative_mask”. This feature was implemented for, potential use, for
 “flip-chip”.</p>
 <div class="nbinput docutils container">
@@ -1840,7 +1840,7 @@ it as True for each layer you are interested it.</p>
 </div>
 </section>
 <section id="Qiskit-Metal-Version">
-<h2>Qiskit Metal Version<a class="headerlink" href="#Qiskit-Metal-Version" title="Link to this heading">#</a></h2>
+<h2>Qiskit Metal Version<a class="headerlink" href="#Qiskit-Metal-Version" title="Link to this heading">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
 </pre></div>
@@ -1956,7 +1956,7 @@ IBM Quantum Team
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/02/13</div>
+              Last updated on 2024/12/16</div>
           </div>
           <div class="right-details">
             
@@ -2012,7 +2012,7 @@ IBM Quantum Team
 </div><script src="../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script src="../../_static/documentation_options.js?v=59fadc99"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>

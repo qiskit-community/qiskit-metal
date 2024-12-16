@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Eigenmode and EPR analysis" href="4.02-Eigenmode-and-EPR.html" /><link rel="prev" title="How do I make my custom QRenderer" href="../3-Renderers/3.4-How-do-I-make-my-custom-QRenderer.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19 -->
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
         <title>Capacitance matrix and LOM analysis - Qiskit Metal 0.1.5 0.1.5</title>
       <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=362ab14a" />
@@ -797,12 +797,12 @@ div.rendered_html tbody tr:hover {
 <p>This page was generated from <a class="reference external" href="https://github.com/Qiskit/qiskit-metal/blob/main/docs/tut//4-Analysis//4.01-Capacitance-and-LOM.ipynb">tut//4-Analysis//4.01-Capacitance-and-LOM.ipynb</a>.</p>
 </div>
 <section id="Capacitance-matrix-and-LOM-analysis">
-<h1>Capacitance matrix and LOM analysis<a class="headerlink" href="#Capacitance-matrix-and-LOM-analysis" title="Link to this heading">#</a></h1>
+<h1>Capacitance matrix and LOM analysis<a class="headerlink" href="#Capacitance-matrix-and-LOM-analysis" title="Link to this heading">¶</a></h1>
 <section id="Prerequisite">
-<h2>Prerequisite<a class="headerlink" href="#Prerequisite" title="Link to this heading">#</a></h2>
+<h2>Prerequisite<a class="headerlink" href="#Prerequisite" title="Link to this heading">¶</a></h2>
 <p>You need to have a working local installation of Ansys.</p>
 <section id="1.-Create-the-design-in-Metal">
-<h3>1. Create the design in Metal<a class="headerlink" href="#1.-Create-the-design-in-Metal" title="Link to this heading">#</a></h3>
+<h3>1. Create the design in Metal<a class="headerlink" href="#1.-Create-the-design-in-Metal" title="Link to this heading">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -850,7 +850,7 @@ div.rendered_html tbody tr:hover {
 </section>
 </section>
 <section id="In-this-example,-the-design-consists-of-4-qubits-and-4-CPWs">
-<h2>In this example, the design consists of 4 qubits and 4 CPWs<a class="headerlink" href="#In-this-example,-the-design-consists-of-4-qubits-and-4-CPWs" title="Link to this heading">#</a></h2>
+<h2>In this example, the design consists of 4 qubits and 4 CPWs<a class="headerlink" href="#In-this-example,-the-design-consists-of-4-qubits-and-4-CPWs" title="Link to this heading">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
@@ -940,11 +940,11 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <section id="2.-Capacitance-Analysis-and-LOM-derivation-using-the-analysis-package---most-users">
-<h3>2. Capacitance Analysis and LOM derivation using the analysis package - most users<a class="headerlink" href="#2.-Capacitance-Analysis-and-LOM-derivation-using-the-analysis-package---most-users" title="Link to this heading">#</a></h3>
+<h3>2. Capacitance Analysis and LOM derivation using the analysis package - most users<a class="headerlink" href="#2.-Capacitance-Analysis-and-LOM-derivation-using-the-analysis-package---most-users" title="Link to this heading">¶</a></h3>
 </section>
 </section>
 <section id="Capacitance-Analysis">
-<h2>Capacitance Analysis<a class="headerlink" href="#Capacitance-Analysis" title="Link to this heading">#</a></h2>
+<h2>Capacitance Analysis<a class="headerlink" href="#Capacitance-Analysis" title="Link to this heading">¶</a></h2>
 <p>Select the analysis you intend to run from the <code class="docutils literal notranslate"><span class="pre">qiskit_metal.analyses</span></code> collection. Select the design to analyze and the tool to use for any external simulation</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
@@ -1314,7 +1314,7 @@ pandas.core.frame.DataFrame
 </div>
 </section>
 <section id="Lumped-oscillator-model-(LOM)">
-<h2>Lumped oscillator model (LOM)<a class="headerlink" href="#Lumped-oscillator-model-(LOM)" title="Link to this heading">#</a></h2>
+<h2>Lumped oscillator model (LOM)<a class="headerlink" href="#Lumped-oscillator-model-(LOM)" title="Link to this heading">¶</a></h2>
 <p>Using capacitance matrices obtained from each pass, save the many parameters of the Hamiltonian of the system. <code class="docutils literal notranslate"><span class="pre">get_lumped_oscillator()</span></code> operates on 4 setup parameters: Lj: float Cj: float fr: Union[list, float] fb: Union[list, float]</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
@@ -1523,7 +1523,7 @@ INFO 08:34AM [hfss_report_full_convergence]: Creating report for variation 0
 </div>
 </div>
 <section id="3.-Directly-access-the-renderer-to-modify-other-parameters">
-<h3>3. Directly access the renderer to modify other parameters<a class="headerlink" href="#3.-Directly-access-the-renderer-to-modify-other-parameters" title="Link to this heading">#</a></h3>
+<h3>3. Directly access the renderer to modify other parameters<a class="headerlink" href="#3.-Directly-access-the-renderer-to-modify-other-parameters" title="Link to this heading">¶</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
@@ -1563,7 +1563,7 @@ INFO 08:34AM [connect]:         Connected to project &#34;Project22&#34; and des
 </div>
 <p>Every renderer will have its own collection of methods. Below an example with q3d</p>
 <section id="Prepare-and-run-a-collection-of-predefined-setups">
-<h4>Prepare and run a collection of predefined setups<a class="headerlink" href="#Prepare-and-run-a-collection-of-predefined-setups" title="Link to this heading">#</a></h4>
+<h4>Prepare and run a collection of predefined setups<a class="headerlink" href="#Prepare-and-run-a-collection-of-predefined-setups" title="Link to this heading">¶</a></h4>
 <p>This is equivalent to going to the Project Manager panel in Ansys, right clicking on Analysis within the active Q3D design, selecting “Add Solution Setup…”, and choosing/entering default values in the resulting popup window. You might want to do this to keep track of different solution setups, giving each of them a different/specific name.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
@@ -1595,7 +1595,7 @@ INFO 08:34AM [analyze]: Analyzing setup Setup_demo
 </div>
 </section>
 <section id="Get-the-capactiance-matrix-at-a-different-pass">
-<h4>Get the capactiance matrix at a different pass<a class="headerlink" href="#Get-the-capactiance-matrix-at-a-different-pass" title="Link to this heading">#</a></h4>
+<h4>Get the capactiance matrix at a different pass<a class="headerlink" href="#Get-the-capactiance-matrix-at-a-different-pass" title="Link to this heading">¶</a></h4>
 <p>You might want to use this if you intend to know what was the matrix at a different pass of the simulation.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
@@ -1651,7 +1651,7 @@ INFO 08:34AM [get_matrix]: Exporting matrix data to (C:\Temp\tmp3caa8vjk.txt, C,
 </section>
 </section>
 <section id="Code-to-swap-rows-and-columns-in-capacitance-matrix">
-<h2>Code to swap rows and columns in capacitance matrix<a class="headerlink" href="#Code-to-swap-rows-and-columns-in-capacitance-matrix" title="Link to this heading">#</a></h2>
+<h2>Code to swap rows and columns in capacitance matrix<a class="headerlink" href="#Code-to-swap-rows-and-columns-in-capacitance-matrix" title="Link to this heading">¶</a></h2>
 <p>from qiskit_metal.analyses.quantization.lumped_capacitive import df_reorder_matrix_basis</p>
 <p>df_reorder_matrix_basis(fourq_q3d.get_capacitance_matrix(), 1, 2)</p>
 <div class="nbinput nblast docutils container">
@@ -1727,7 +1727,7 @@ INFO 08:34AM [get_matrix]: Exporting matrix data to (C:\Temp\tmp3caa8vjk.txt, C,
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/02/13</div>
+              Last updated on 2024/12/16</div>
           </div>
           <div class="right-details">
             
@@ -1781,7 +1781,7 @@ INFO 08:34AM [get_matrix]: Exporting matrix data to (C:\Temp\tmp3caa8vjk.txt, C,
 </div><script src="../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script src="../../_static/documentation_options.js?v=59fadc99"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>

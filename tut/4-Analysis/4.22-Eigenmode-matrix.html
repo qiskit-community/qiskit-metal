@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Sweeps - Impedance, scattering and admittance (Z S Y) matrices" href="4.23-Impedance-and-scattering-Z-S-Y-matrices.html" /><link rel="prev" title="Sweeps - Capacitance matrix" href="4.21-Capacitance-matrix.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19 -->
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
         <title>Sweeps - Eigenmode matrix - Qiskit Metal 0.1.5 0.1.5</title>
       <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=362ab14a" />
@@ -797,12 +797,12 @@ div.rendered_html tbody tr:hover {
 <p>This page was generated from <a class="reference external" href="https://github.com/Qiskit/qiskit-metal/blob/main/docs/tut//4-Analysis//4.22-Eigenmode-matrix.ipynb">tut//4-Analysis//4.22-Eigenmode-matrix.ipynb</a>.</p>
 </div>
 <section id="Sweeps---Eigenmode-matrix">
-<h1>Sweeps - Eigenmode matrix<a class="headerlink" href="#Sweeps---Eigenmode-matrix" title="Link to this heading">#</a></h1>
+<h1>Sweeps - Eigenmode matrix<a class="headerlink" href="#Sweeps---Eigenmode-matrix" title="Link to this heading">¶</a></h1>
 <section id="Prerequisite">
-<h2>Prerequisite<a class="headerlink" href="#Prerequisite" title="Link to this heading">#</a></h2>
+<h2>Prerequisite<a class="headerlink" href="#Prerequisite" title="Link to this heading">¶</a></h2>
 <p>You need to have a working local installation of Ansys</p>
 <section id="1.-Perform-the-necessary-imports-and-create-a-QDesign-in-Metal-first.">
-<h3>1. Perform the necessary imports and create a QDesign in Metal first.<a class="headerlink" href="#1.-Perform-the-necessary-imports-and-create-a-QDesign-in-Metal-first." title="Link to this heading">#</a></h3>
+<h3>1. Perform the necessary imports and create a QDesign in Metal first.<a class="headerlink" href="#1.-Perform-the-necessary-imports-and-create-a-QDesign-in-Metal-first." title="Link to this heading">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -848,7 +848,7 @@ div.rendered_html tbody tr:hover {
 </section>
 </section>
 <section id="In-this-example,-the-design-consists-of-1-qubit-and-1-CPW-connected-to-OpenToGround.">
-<h2>In this example, the design consists of 1 qubit and 1 CPW connected to OpenToGround.<a class="headerlink" href="#In-this-example,-the-design-consists-of-1-qubit-and-1-CPW-connected-to-OpenToGround." title="Link to this heading">#</a></h2>
+<h2>In this example, the design consists of 1 qubit and 1 CPW connected to OpenToGround.<a class="headerlink" href="#In-this-example,-the-design-consists-of-1-qubit-and-1-CPW-connected-to-OpenToGround." title="Link to this heading">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
@@ -909,7 +909,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <section id="2-Metal-passes-information-to-‘hfss’-simulator,-and-gets-a-solution-matrix.">
-<h3>2 Metal passes information to ‘hfss’ simulator, and gets a solution matrix.<a class="headerlink" href="#2-Metal-passes-information-to-‘hfss’-simulator,-and-gets-a-solution-matrix." title="Link to this heading">#</a></h3>
+<h3>2 Metal passes information to ‘hfss’ simulator, and gets a solution matrix.<a class="headerlink" href="#2-Metal-passes-information-to-‘hfss’-simulator,-and-gets-a-solution-matrix." title="Link to this heading">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
@@ -983,13 +983,13 @@ div.rendered_html tbody tr:hover {
 <li><p>Calculate solution matrix for each value in option_sweep.</p></li>
 </ul>
 <section id="Return-a-dict-and-return-code.-If-the-return-code-is-zero,-there-were-no-errors-detected.">
-<h4>Return a dict and return code. If the return code is zero, there were no errors detected.<a class="headerlink" href="#Return-a-dict-and-return-code.-If-the-return-code-is-zero,-there-were-no-errors-detected." title="Link to this heading">#</a></h4>
+<h4>Return a dict and return code. If the return code is zero, there were no errors detected.<a class="headerlink" href="#Return-a-dict-and-return-code.-If-the-return-code-is-zero,-there-were-no-errors-detected." title="Link to this heading">¶</a></h4>
 </section>
 <section id="The-dict-has:-key-=-each-value-used-to-sweep,-value-=-data-from-simulators">
-<h4>The dict has: key = each value used to sweep, value = data from simulators<a class="headerlink" href="#The-dict-has:-key-=-each-value-used-to-sweep,-value-=-data-from-simulators" title="Link to this heading">#</a></h4>
+<h4>The dict has: key = each value used to sweep, value = data from simulators<a class="headerlink" href="#The-dict-has:-key-=-each-value-used-to-sweep,-value-=-data-from-simulators" title="Link to this heading">¶</a></h4>
 </section>
 <section id="This-could-take-minutes-based-size-of-design.">
-<h4>This could take minutes based size of design.<a class="headerlink" href="#This-could-take-minutes-based-size-of-design." title="Link to this heading">#</a></h4>
+<h4>This could take minutes based size of design.<a class="headerlink" href="#This-could-take-minutes-based-size-of-design." title="Link to this heading">¶</a></h4>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
@@ -1184,7 +1184,7 @@ Index: [0, 1]
 </div>
 <div class="output_area docutils container">
 <section id="Mode-frequencies-(MHz)">
-<h5>Mode frequencies (MHz)<a class="headerlink" href="#Mode-frequencies-(MHz)" title="Link to this heading">#</a></h5>
+<h5>Mode frequencies (MHz)<a class="headerlink" href="#Mode-frequencies-(MHz)" title="Link to this heading">¶</a></h5>
 </section>
 </div>
 </div>
@@ -1242,7 +1242,7 @@ Index: [0, 1]
 </div>
 <div class="output_area docutils container">
 <section id="Kerr-Non-linear-coefficient-table-(MHz)">
-<h5>Kerr Non-linear coefficient table (MHz)<a class="headerlink" href="#Kerr-Non-linear-coefficient-table-(MHz)" title="Link to this heading">#</a></h5>
+<h5>Kerr Non-linear coefficient table (MHz)<a class="headerlink" href="#Kerr-Non-linear-coefficient-table-(MHz)" title="Link to this heading">¶</a></h5>
 </section>
 </div>
 </div>
@@ -1451,7 +1451,7 @@ Index: [0, 1]
 </div>
 <div class="output_area docutils container">
 <section id="id2">
-<h5>Mode frequencies (MHz)<a class="headerlink" href="#id2" title="Link to this heading">#</a></h5>
+<h5>Mode frequencies (MHz)<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h5>
 </section>
 </div>
 </div>
@@ -1509,7 +1509,7 @@ Index: [0, 1]
 </div>
 <div class="output_area docutils container">
 <section id="id3">
-<h5>Kerr Non-linear coefficient table (MHz)<a class="headerlink" href="#id3" title="Link to this heading">#</a></h5>
+<h5>Kerr Non-linear coefficient table (MHz)<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h5>
 </section>
 </div>
 </div>
@@ -1718,7 +1718,7 @@ Index: [0, 1]
 </div>
 <div class="output_area docutils container">
 <section id="id4">
-<h5>Mode frequencies (MHz)<a class="headerlink" href="#id4" title="Link to this heading">#</a></h5>
+<h5>Mode frequencies (MHz)<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h5>
 </section>
 </div>
 </div>
@@ -1776,7 +1776,7 @@ Index: [0, 1]
 </div>
 <div class="output_area docutils container">
 <section id="id5">
-<h5>Kerr Non-linear coefficient table (MHz)<a class="headerlink" href="#id5" title="Link to this heading">#</a></h5>
+<h5>Kerr Non-linear coefficient table (MHz)<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h5>
 </section>
 </div>
 </div>
@@ -2279,7 +2279,7 @@ dict_keys([&#39;option_name&#39;, &#39;variables&#39;, &#39;sim_variables&#39;])
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/02/13</div>
+              Last updated on 2024/12/16</div>
           </div>
           <div class="right-details">
             
@@ -2328,7 +2328,7 @@ dict_keys([&#39;option_name&#39;, &#39;variables&#39;, &#39;sim_variables&#39;])
 </div><script src="../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script src="../../_static/documentation_options.js?v=59fadc99"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>

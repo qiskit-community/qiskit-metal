@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Add my QComponent to a reusable python file" href="2.33-Add-my-QComponent-to-a-reusable-python-file.html" /><link rel="prev" title="Create a QComponent - Basic" href="2.31-Create-a-QComponent-Basic.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19 -->
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
         <title>Create a QComponent - Advanced - Qiskit Metal 0.1.5 0.1.5</title>
       <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=362ab14a" />
@@ -797,7 +797,7 @@ div.rendered_html tbody tr:hover {
 <p>This page was generated from <a class="reference external" href="https://github.com/Qiskit/qiskit-metal/blob/main/docs/tut//2-From-components-to-chip//2.32-Create-a-QComponent-Advanced.ipynb">tut//2-From-components-to-chip//2.32-Create-a-QComponent-Advanced.ipynb</a>.</p>
 </div>
 <section id="Create-a-QComponent---Advanced">
-<h1>Create a QComponent - Advanced<a class="headerlink" href="#Create-a-QComponent---Advanced" title="Link to this heading">#</a></h1>
+<h1>Create a QComponent - Advanced<a class="headerlink" href="#Create-a-QComponent---Advanced" title="Link to this heading">¶</a></h1>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -820,7 +820,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <section id="Qubits-and-Junctions">
-<h2>Qubits and Junctions<a class="headerlink" href="#Qubits-and-Junctions" title="Link to this heading">#</a></h2>
+<h2>Qubits and Junctions<a class="headerlink" href="#Qubits-and-Junctions" title="Link to this heading">¶</a></h2>
 <p>The vast majority of junction management is actually under the QRenderers. The only information that a component designer needs to provide, is a linestring and width which indicates the location and orientation of a given junction. We can see this from a couple extracted lines of code from <code class="docutils literal notranslate"><span class="pre">TransmonPocket</span></code></p>
 <p><code class="docutils literal notranslate"><span class="pre">...</span></code></p>
 <p><code class="docutils literal notranslate"><span class="pre">rect_jj</span> <span class="pre">=</span> <span class="pre">draw.LineString([(0,</span> <span class="pre">-pad_gap</span> <span class="pre">/</span> <span class="pre">2),</span> <span class="pre">(0,</span> <span class="pre">+pad_gap</span> <span class="pre">/</span> <span class="pre">2)])</span></code></p>
@@ -840,7 +840,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Exteriors,-Interiors,-and-MultiPolygons">
-<h2>Exteriors, Interiors, and MultiPolygons<a class="headerlink" href="#Exteriors,-Interiors,-and-MultiPolygons" title="Link to this heading">#</a></h2>
+<h2>Exteriors, Interiors, and MultiPolygons<a class="headerlink" href="#Exteriors,-Interiors,-and-MultiPolygons" title="Link to this heading">¶</a></h2>
 <p>As was shown in 3.1, there is a great amount of flexibility already present in Metal for what a component can be, though as it is still in development, there are some limitations with respect to if renderers can accurately render a given shape, say, a multi-faceted polygon where some facets are composed of splines. What capabilities are currently missing and would be beneficial to be added are all part of the development process.</p>
 <p>Currently, a poly can be generated with interior cut outs, such as the smiley face previously,</p>
 <div class="nbinput docutils container">
@@ -955,7 +955,7 @@ shapely.geometry.multipolygon.MultiPolygon
 <p>This method also handles rounding of coordinates to try and avoid any numerical errors. It is called by <code class="docutils literal notranslate"><span class="pre">metal.qlibrary.core.QComponent.add_qgeometry</span></code> and should not be called directly.</p>
 </section>
 <section id="QComponent-Inheritance">
-<h2>QComponent Inheritance<a class="headerlink" href="#QComponent-Inheritance" title="Link to this heading">#</a></h2>
+<h2>QComponent Inheritance<a class="headerlink" href="#QComponent-Inheritance" title="Link to this heading">¶</a></h2>
 <p>As is the case with python classes, one can extend a given component by creating a qcomponent which inherits said class, making it a parent/child relationship. While python does support multiple inheritances, Metal may run into some bugs, so it is best to keep inheritances as single paths of heritage.</p>
 <p>A good example is <code class="docutils literal notranslate"><span class="pre">TransmonPocketCL</span></code>, which adds a “charge line” the a “standard” <code class="docutils literal notranslate"><span class="pre">TransmonPocket</span></code>. As can be seen in the below code, none of the charge islands or other connection pads are present, but will still be generated via the <code class="docutils literal notranslate"><span class="pre">super().make()</span></code> line in the <code class="docutils literal notranslate"><span class="pre">make()</span></code> method.</p>
 <div class="nbinput nblast docutils container">
@@ -1275,7 +1275,7 @@ True
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/02/13</div>
+              Last updated on 2024/12/16</div>
           </div>
           <div class="right-details">
             
@@ -1314,7 +1314,7 @@ True
 </div><script src="../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script src="../../_static/documentation_options.js?v=59fadc99"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>

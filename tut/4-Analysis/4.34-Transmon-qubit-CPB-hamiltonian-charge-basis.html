@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Josephson Junction QComponent Demo Notebook" href="../quick-topics/JJ-Demo-Notebook.html" /><link rel="prev" title="Transmon Analytics" href="4.33-Transmon-analytics.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19 -->
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
         <title>Modeling transmon qubit Cooper-pair box Hamiltonian in the charge basis - Qiskit Metal 0.1.5 0.1.5</title>
       <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=362ab14a" />
@@ -797,7 +797,7 @@ div.rendered_html tbody tr:hover {
 <p>This page was generated from <a class="reference external" href="https://github.com/Qiskit/qiskit-metal/blob/main/docs/tut//4-Analysis//4.34-Transmon-qubit-CPB-hamiltonian-charge-basis.ipynb">tut//4-Analysis//4.34-Transmon-qubit-CPB-hamiltonian-charge-basis.ipynb</a>.</p>
 </div>
 <section id="Modeling-transmon-qubit-Cooper-pair-box-Hamiltonian-in-the-charge-basis">
-<h1>Modeling transmon qubit Cooper-pair box Hamiltonian in the charge basis<a class="headerlink" href="#Modeling-transmon-qubit-Cooper-pair-box-Hamiltonian-in-the-charge-basis" title="Link to this heading">#</a></h1>
+<h1>Modeling transmon qubit Cooper-pair box Hamiltonian in the charge basis<a class="headerlink" href="#Modeling-transmon-qubit-Cooper-pair-box-Hamiltonian-in-the-charge-basis" title="Link to this heading">¶</a></h1>
 <p>(Zlatko Minev, Christopher Warren, Nick Lanzillo 2021)</p>
 <p>This module models the transmon qubit in the cooper-pair charge basis, assuming wrapped junction phase variable. The Hamiltonian is given by:</p>
 <div class="math-wrapper docutils container">
@@ -827,7 +827,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>Where <span class="math notranslate nohighlight">\(\hat{n} = \sum_{n=-\inf}^{\inf} |n\rangle\langle n|\)</span></p>
 <section id="Hcpb-class">
-<h2>Hcpb class<a class="headerlink" href="#Hcpb-class" title="Link to this heading">#</a></h2>
+<h2>Hcpb class<a class="headerlink" href="#Hcpb-class" title="Link to this heading">¶</a></h2>
 <p>Hamiltonian-model Cooper pair box (Hcpb) class.</p>
 <p>Used to model analytically the CPB Hamiltonian quickly and efficiently. Solves in charge basis tridiagonal eigenvalue problem for arbitrary Ej, Ec, ng values.</p>
 <p>As long as nlevels remains fixed the number of charge states considered does not change and it does not recreate the arrays, just recomputes the properties</p>
@@ -868,11 +868,11 @@ The autoreload extension is already loaded. To reload it, use:
 </pre></div></div>
 </div>
 <section id="Let’s-model-a-transmon">
-<h3>Let’s model a transmon<a class="headerlink" href="#Let’s-model-a-transmon" title="Link to this heading">#</a></h3>
+<h3>Let’s model a transmon<a class="headerlink" href="#Let’s-model-a-transmon" title="Link to this heading">¶</a></h3>
 </section>
 </section>
 <section id="Energy-levels">
-<h2>Energy levels<a class="headerlink" href="#Energy-levels" title="Link to this heading">#</a></h2>
+<h2>Energy levels<a class="headerlink" href="#Energy-levels" title="Link to this heading">¶</a></h2>
 <p>We can get a feel for how to use the Hcpb class by plotting the first few eigenvalues as a function of offset charge, similar to the plots reported in Phys. Rev. A 76, 042319 (2007.) Let’s start by defining the range of offset charge from -2.0 to +2.0 and also by defining a normalization for the eigenvalues, which will be the transition energy between the first two states evaluated at the degenercy point where ng=0.5. For this exercise, we’ll take Josephson Energy to be equal to the charging
 energy:</p>
 <div class="nbinput nblast docutils container">
@@ -930,7 +930,7 @@ energy:</p>
 </div>
 </section>
 <section id="Comparing-with-the-Analytic-Expressions-for-Energy">
-<h2>Comparing with the Analytic Expressions for Energy<a class="headerlink" href="#Comparing-with-the-Analytic-Expressions-for-Energy" title="Link to this heading">#</a></h2>
+<h2>Comparing with the Analytic Expressions for Energy<a class="headerlink" href="#Comparing-with-the-Analytic-Expressions-for-Energy" title="Link to this heading">¶</a></h2>
 <p>We can compare calculated eigenvalues with the analytic solutions by using the “Hcpb_analytic” class, which calculates the transmon eigenvalues analytically using Mathieu characteristic values instead of a matrix-based approach. Let’s compare the calculated values of the lowest energy at zero offset charge in both cases:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -964,7 +964,7 @@ Error: -1.6277142726798518e-14
 <p>As we can see above, the calculated eigenvalues using the Hcbp class match the analytic values extremely well.</p>
 </section>
 <section id="Wavefunctions">
-<h2>Wavefunctions<a class="headerlink" href="#Wavefunctions" title="Link to this heading">#</a></h2>
+<h2>Wavefunctions<a class="headerlink" href="#Wavefunctions" title="Link to this heading">¶</a></h2>
 <p>Let’s define a new Hamiltonian, this time with <span class="math notranslate nohighlight">\(E_{J} &gt;&gt; E_{C}\)</span> and an offset charge of <span class="math notranslate nohighlight">\(ng=0.001\)</span>. We can calculate the transition energy between the lowest two states as well as the anharmonicity with the following:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
@@ -1029,7 +1029,7 @@ Transmon frequencies
 </div>
 </section>
 <section id="Verifying-Orthonormality-of-the-Wavefunctions">
-<h2>Verifying Orthonormality of the Wavefunctions<a class="headerlink" href="#Verifying-Orthonormality-of-the-Wavefunctions" title="Link to this heading">#</a></h2>
+<h2>Verifying Orthonormality of the Wavefunctions<a class="headerlink" href="#Verifying-Orthonormality-of-the-Wavefunctions" title="Link to this heading">¶</a></h2>
 <p>Here, we can verify the orthonormality of the wavefunctions. Let’s first take the first two eigenstates and verify that their inner product is zero, thereby confirming orthogonality. Note that since the wavefunctions can be complex, we need to take the complex conjugate of <span class="math notranslate nohighlight">\(\Psi1\)</span>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
@@ -1074,9 +1074,9 @@ Transmon frequencies
 </section>
 </section>
 <section id="Additional-Analysis:-Charge-Dispersion,-Energy-Level-Differences,-Anharmonicity-and-Dephasing-Time-(T2)">
-<h1>Additional Analysis: Charge Dispersion, Energy Level Differences, Anharmonicity and Dephasing Time (T2)<a class="headerlink" href="#Additional-Analysis:-Charge-Dispersion,-Energy-Level-Differences,-Anharmonicity-and-Dephasing-Time-(T2)" title="Link to this heading">#</a></h1>
+<h1>Additional Analysis: Charge Dispersion, Energy Level Differences, Anharmonicity and Dephasing Time (T2)<a class="headerlink" href="#Additional-Analysis:-Charge-Dispersion,-Energy-Level-Differences,-Anharmonicity-and-Dephasing-Time-(T2)" title="Link to this heading">¶</a></h1>
 <section id="Charge-Dispersion">
-<h2>Charge Dispersion<a class="headerlink" href="#Charge-Dispersion" title="Link to this heading">#</a></h2>
+<h2>Charge Dispersion<a class="headerlink" href="#Charge-Dispersion" title="Link to this heading">¶</a></h2>
 <p>The peak-to-peak value of the charge dispersion for the mth energy level is given by the expression: <span class="math notranslate nohighlight">\(\epsilon_{m} = E_{m}(n_{g}=0.5) - E_{m}(n_{g}=0.0)\)</span>. We can plot <span class="math notranslate nohighlight">\(\epsilon_{m}/E_{01}\)</span> as a function of <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span> for the first few energy levels and reproduce the figure published in Phys. Rev. A 76, 042319 (2007) (Figure 4(a)).</p>
 <p>We can start by defining a value of charging energy and creating empty lists for <span class="math notranslate nohighlight">\(\epsilon_{0}\)</span> through <span class="math notranslate nohighlight">\(\epsilon_{4}\)</span>:</p>
 <div class="nbinput nblast docutils container">
@@ -1145,7 +1145,7 @@ Transmon frequencies
 </div>
 </section>
 <section id="Energy-Level-Differences">
-<h2>Energy Level Differences<a class="headerlink" href="#Energy-Level-Differences" title="Link to this heading">#</a></h2>
+<h2>Energy Level Differences<a class="headerlink" href="#Energy-Level-Differences" title="Link to this heading">¶</a></h2>
 <p>We can also evaluate the energy level difference (<span class="math notranslate nohighlight">\(E_{m0} = E_{m} - E_{0}\)</span>) evaluated at the degeneracy point (<span class="math notranslate nohighlight">\(n_{g}=0.5\)</span>) and compare to Fig. 4(b) of Phys. Rev. A 76, 042319 (2007). To do this, we just need to create empty lists for the energy levels (<span class="math notranslate nohighlight">\(E_{0}\)</span> through <span class="math notranslate nohighlight">\(E_{3}\)</span>) as well as the energy level differences (<span class="math notranslate nohighlight">\(E_{00}\)</span> through <span class="math notranslate nohighlight">\(E_{30}\)</span>.)</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
@@ -1209,7 +1209,7 @@ Transmon frequencies
 </div>
 </section>
 <section id="Anharmonicity">
-<h2>Anharmonicity<a class="headerlink" href="#Anharmonicity" title="Link to this heading">#</a></h2>
+<h2>Anharmonicity<a class="headerlink" href="#Anharmonicity" title="Link to this heading">¶</a></h2>
 <p>We know that for the transmon qubit, having the Josephson Energy much larger than the charging energy (<span class="math notranslate nohighlight">\(E_{J} &gt;&gt; E_{C}\)</span>) results in a decrease in anharmonicity. The latter is critical for a functional qubit in which the energy difference between the lowest two states (<span class="math notranslate nohighlight">\(E_{01}\)</span>) is sufficiently different than the energy difference between the second and third states, <span class="math notranslate nohighlight">\(E_{12}\)</span>. The absolute anharmonicity is defined as <span class="math notranslate nohighlight">\(\alpha = E_{12} - E_{01}\)</span>, while the relative
 anharmonicity is defined as <span class="math notranslate nohighlight">\(\alpha_{r} = \alpha/E_{01}\)</span>.</p>
 <p>We can easily make a plot of the anharmonicity as a function of <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span> using the Hcpb class. Let’s have the ratio of <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span> (which we’ll call x) vary from 0 to 80, and then we’ll create empty lists for <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\alpha_r\)</span>.</p>
@@ -1284,7 +1284,7 @@ Text(0, 0.5, &#39;alpha_r&#39;)
 <p>Indeed we see that the anharmonicity decays with the inverse of <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span> for small values of <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span> before reaching a minimum just before <span class="math notranslate nohighlight">\(E_{J}/E_{C} \approx 20.0\)</span>, then changing sign and approaching zero as <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span> approaches infinity. This matches very closely to the results found in Figure 5 of Phys. Rev. A 76, 042319 (2007).</p>
 </section>
 <section id="Dephasing-Time-(T2)">
-<h2>Dephasing Time (T2)<a class="headerlink" href="#Dephasing-Time-(T2)" title="Link to this heading">#</a></h2>
+<h2>Dephasing Time (T2)<a class="headerlink" href="#Dephasing-Time-(T2)" title="Link to this heading">¶</a></h2>
 <p>We can estimate the qubit dephasing time (T2) due to charge noise by the following expression: <span class="math notranslate nohighlight">\(T_{2} = \frac{\hbar}{A\pi |\epsilon_{1}|}\)</span> where <span class="math notranslate nohighlight">\(A\)</span> is on the order of <span class="math notranslate nohighlight">\(1E-4\)</span> according to Phys. Rev. A 76, 042319 (2007). Since this is essentially just the inverse of the charge dispersion for <span class="math notranslate nohighlight">\(\epsilon_{1}\)</span>, we can easily calculate T2 as a function of <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span> with the following:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
@@ -1335,7 +1335,7 @@ Text(0, 0.5, &#39;T2 (sec)&#39;)
 </section>
 </section>
 <section id="Qutip-simulation">
-<h1>Qutip simulation<a class="headerlink" href="#Qutip-simulation" title="Link to this heading">#</a></h1>
+<h1>Qutip simulation<a class="headerlink" href="#Qutip-simulation" title="Link to this heading">¶</a></h1>
 <p>Wrapper around Qutip to output the diagonalized Hamiltonian truncated up to n levels of the transmon for modeling</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
@@ -1496,7 +1496,7 @@ Quantum object: dims = [[6], [6]], shape = (6, 6), type = oper, isherm = True\be
 <p>We see that the above plot closely matches Fig. 7 of Koch et al. (2007) PRA. Physically, we see that the coupling between adjacent transmon states (<span class="math notranslate nohighlight">\(&lt;1|n|0&gt;\)</span> and <span class="math notranslate nohighlight">\(&lt;2|n|1&gt;\)</span>) is the only significant coupling in the <span class="math notranslate nohighlight">\(E_{J} &gt;&gt; E_{C}\)</span> regime. The coupling between non-adjacent states (like m=0 and m=2) is essentially zero at all values of <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span>.</p>
 </section>
 <section id="Experimental">
-<h1>Experimental<a class="headerlink" href="#Experimental" title="Link to this heading">#</a></h1>
+<h1>Experimental<a class="headerlink" href="#Experimental" title="Link to this heading">¶</a></h1>
 <p>Let’s use the “params_from_spectrum” function to calculate the target Ej and Ec values for a desired transmon frequency and anharmonicity. We’ll use values of Ej=13971.3 MHz and Ec=295.2 MHz.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
@@ -1543,7 +1543,7 @@ Ej: 14424.680512350775
 <p>We see that this is close to the starting vaue of 13971.3 MHz that we began with.</p>
 </section>
 <section id="New-section-on-integrating-sc_qubits.">
-<h1>New section on integrating sc_qubits.<a class="headerlink" href="#New-section-on-integrating-sc_qubits." title="Link to this heading">#</a></h1>
+<h1>New section on integrating sc_qubits.<a class="headerlink" href="#New-section-on-integrating-sc_qubits." title="Link to this heading">¶</a></h1>
 <p>This section is in development.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -1596,7 +1596,7 @@ Ej: 14424.680512350775
 </div>
 </section>
 <section id="Transmon-and-the-Oscillator">
-<h1>Transmon and the Oscillator<a class="headerlink" href="#Transmon-and-the-Oscillator" title="Link to this heading">#</a></h1>
+<h1>Transmon and the Oscillator<a class="headerlink" href="#Transmon-and-the-Oscillator" title="Link to this heading">¶</a></h1>
 <p>This section is currently in development.</p>
 </section>
 <h3>For more information, review the <b>Introduction to Quantum Computing and Quantum Hardware</b> lectures below</h3>
@@ -1661,7 +1661,7 @@ Ej: 14424.680512350775
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/02/13</div>
+              Last updated on 2024/12/16</div>
           </div>
           <div class="right-details">
             
@@ -1716,7 +1716,7 @@ Ej: 14424.680512350775
 </div><script src="../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script src="../../_static/documentation_options.js?v=59fadc99"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>

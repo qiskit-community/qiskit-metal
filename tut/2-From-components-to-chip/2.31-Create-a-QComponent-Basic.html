@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Create a QComponent - Advanced" href="2.32-Create-a-QComponent-Advanced.html" /><link rel="prev" title="Modify chip options" href="2.23-Modify-chip-options.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19 -->
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
         <title>Create a QComponent - Basic - Qiskit Metal 0.1.5 0.1.5</title>
       <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=362ab14a" />
@@ -797,11 +797,11 @@ div.rendered_html tbody tr:hover {
 <p>This page was generated from <a class="reference external" href="https://github.com/Qiskit/qiskit-metal/blob/main/docs/tut//2-From-components-to-chip//2.31-Create-a-QComponent-Basic.ipynb">tut//2-From-components-to-chip//2.31-Create-a-QComponent-Basic.ipynb</a>.</p>
 </div>
 <section id="Create-a-QComponent---Basic">
-<h1>Create a QComponent - Basic<a class="headerlink" href="#Create-a-QComponent---Basic" title="Link to this heading">#</a></h1>
+<h1>Create a QComponent - Basic<a class="headerlink" href="#Create-a-QComponent---Basic" title="Link to this heading">¶</a></h1>
 <p>Now that you have become familiar with Qiskit Metal and feel comfortable using the available aspects and functionality, the next step is learning how to make your own circuit component in Metal.</p>
 <p>We will start off by going over the sample <code class="docutils literal notranslate"><span class="pre">my_qcomponent</span></code> in <code class="docutils literal notranslate"><span class="pre">qiskit_metal&gt;qlibrary&gt;user_components</span></code> as a basis, which we will walk through below.</p>
 <section id="Reviewing-my_qcomponent">
-<h2>Reviewing my_qcomponent<a class="headerlink" href="#Reviewing-my_qcomponent" title="Link to this heading">#</a></h2>
+<h2>Reviewing my_qcomponent<a class="headerlink" href="#Reviewing-my_qcomponent" title="Link to this heading">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -977,7 +977,7 @@ Currently the options are:</p>
 <p><code class="docutils literal notranslate"><span class="pre">_qgeometry_table_junction='True'</span></code></p>
 <p>The <code class="docutils literal notranslate"><span class="pre">make()</span></code> method is where the actual generation of the component’s layout is written.</p>
 <section id="The-make()-method">
-<h3>The make() method<a class="headerlink" href="#The-make()-method" title="Link to this heading">#</a></h3>
+<h3>The make() method<a class="headerlink" href="#The-make()-method" title="Link to this heading">¶</a></h3>
 <p>Although not required, a good first line is <code class="docutils literal notranslate"><span class="pre">p</span> <span class="pre">=</span> <span class="pre">self.parse_options()</span></code> to cut down on your amount of typing. The <code class="docutils literal notranslate"><span class="pre">parse_options()</span></code> translates the keywords in <code class="docutils literal notranslate"><span class="pre">self.options</span></code> from strings into their appropriate value with respect to the prefix included, e.g.,<code class="docutils literal notranslate"><span class="pre">p.width</span></code>=&gt; “500um” -&gt; 0.0005</p>
 <p>Following this, all code generating the shapely geometries that are to represent your circuit layout should be written, via the <code class="docutils literal notranslate"><span class="pre">draw</span></code> module or even written in directly. It is a good practice to play around with the geometries in a jupyter notebook first for quick visual feedback, such as:</p>
 <div class="nbinput docutils container">
@@ -1042,7 +1042,7 @@ Currently the options are:</p>
 </div>
 <p>Once you are happy with your geometries, and have them properly parameterized to allow the Front End User as much customization of your component as you wish, it is time to convert the geometries into Metal <code class="docutils literal notranslate"><span class="pre">qgeometries</span></code> via <code class="docutils literal notranslate"><span class="pre">add_qgeometry</span></code></p>
 <section id="add_qgeometry">
-<h4>add_qgeometry<a class="headerlink" href="#add_qgeometry" title="Link to this heading">#</a></h4>
+<h4>add_qgeometry<a class="headerlink" href="#add_qgeometry" title="Link to this heading">¶</a></h4>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
@@ -1060,7 +1060,7 @@ Currently the options are:</p>
 <p><code class="docutils literal notranslate"><span class="pre">fillet</span></code> is an option that informs a renderer that the vertices of this qgeometry are to be filleted by that value (eg. <code class="docutils literal notranslate"><span class="pre">fillet</span> <span class="pre">=</span> <span class="pre">&quot;100um&quot;</span></code>).</p>
 </section>
 <section id="add_pin">
-<h4>add_pin<a class="headerlink" href="#add_pin" title="Link to this heading">#</a></h4>
+<h4>add_pin<a class="headerlink" href="#add_pin" title="Link to this heading">¶</a></h4>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
@@ -1077,7 +1077,7 @@ width), with the <code class="docutils literal notranslate"><span class="pre">ga
 </section>
 </section>
 <section id="Example">
-<h2>Example<a class="headerlink" href="#Example" title="Link to this heading">#</a></h2>
+<h2>Example<a class="headerlink" href="#Example" title="Link to this heading">¶</a></h2>
 <p>Below is a simple QComponent that implements everything we have reviewed.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
@@ -1277,7 +1277,7 @@ True
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/02/13</div>
+              Last updated on 2024/12/16</div>
           </div>
           <div class="right-details">
             
@@ -1322,7 +1322,7 @@ True
 </div><script src="../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script src="../../_static/documentation_options.js?v=59fadc99"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>

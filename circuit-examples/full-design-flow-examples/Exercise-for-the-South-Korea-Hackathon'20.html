@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="QLibrary (qiskit_metal.qlibrary)" href="../../apidocs/qlibrary.html" /><link rel="prev" title="Launch Videos" href="Example-used-in-the-launch-video.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19 -->
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
         <title>South Korea Qiskit Hackathon’20 - Qiskit Metal exercise - Qiskit Metal 0.1.5 0.1.5</title>
       <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=362ab14a" />
@@ -797,9 +797,9 @@ div.rendered_html tbody tr:hover {
 <p>This page was generated from <a class="reference external" href="https://github.com/Qiskit/qiskit-metal/blob/main/docs/circuit-examples//full-design-flow-examples//Exercise-for-the-South-Korea-Hackathon'20.ipynb">circuit-examples//full-design-flow-examples//Exercise-for-the-South-Korea-Hackathon’20.ipynb</a>.</p>
 </div>
 <section id="South-Korea-Qiskit-Hackathon’20---Qiskit-Metal-exercise">
-<h1>South Korea Qiskit Hackathon’20 - Qiskit Metal exercise<a class="headerlink" href="#South-Korea-Qiskit-Hackathon’20---Qiskit-Metal-exercise" title="Link to this heading">#</a></h1>
+<h1>South Korea Qiskit Hackathon’20 - Qiskit Metal exercise<a class="headerlink" href="#South-Korea-Qiskit-Hackathon’20---Qiskit-Metal-exercise" title="Link to this heading">¶</a></h1>
 <section id="Preparation">
-<h2>Preparation<a class="headerlink" href="#Preparation" title="Link to this heading">#</a></h2>
+<h2>Preparation<a class="headerlink" href="#Preparation" title="Link to this heading">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -845,7 +845,7 @@ div.rendered_html tbody tr:hover {
 <p>One could generate subsections of the layout and tune individual components first, but in this case we will create all of the layout. We will want a transmon (in this case choosing ones with charge lines), meandered and simple transmission lines, capacitor couplers, and launchers for wirebond connections. So we will import these, and also create a design instance and launch the GUI.</p>
 </section>
 <section id="Design-the-layout">
-<h2>Design the layout<a class="headerlink" href="#Design-the-layout" title="Link to this heading">#</a></h2>
+<h2>Design the layout<a class="headerlink" href="#Design-the-layout" title="Link to this heading">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
@@ -1192,10 +1192,10 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Simulation-and-Analysis">
-<h2>Simulation and Analysis<a class="headerlink" href="#Simulation-and-Analysis" title="Link to this heading">#</a></h2>
+<h2>Simulation and Analysis<a class="headerlink" href="#Simulation-and-Analysis" title="Link to this heading">¶</a></h2>
 <p>With our fully designed chip now laid out, we can start to focus on tuning the components to hit the circuit parameters we are interested in. These will tend to be; - qubit: frequency, the anharmonicity/alpha, and the coupling strength (as chi, g, or other) - busses: frequency (if resonant), the coupling strength - readout: frequency, coupling strength, coupling to external lines (as kappa, Q_external, or other)</p>
 <section id="Analysis-via-capacitance-matrix-and-LOM">
-<h3>Analysis via capacitance matrix and LOM<a class="headerlink" href="#Analysis-via-capacitance-matrix-and-LOM" title="Link to this heading">#</a></h3>
+<h3>Analysis via capacitance matrix and LOM<a class="headerlink" href="#Analysis-via-capacitance-matrix-and-LOM" title="Link to this heading">¶</a></h3>
 <p>All of the qubit paramters can initially be tuned via a capacitance matrix and the lumped oscillator method. This analysis is not as accurate as others, but allows for fairly fast and small simulations.</p>
 <p>We will start by selecting the Analysis class of interest.</p>
 <div class="nbinput nblast docutils container">
@@ -1734,7 +1734,7 @@ Design &#34;Qubit1_q3d&#34; info:
 </div>
 </section>
 <section id="Analysis-via-eigenmode-and-EPR">
-<h3>Analysis via eigenmode and EPR<a class="headerlink" href="#Analysis-via-eigenmode-and-EPR" title="Link to this heading">#</a></h3>
+<h3>Analysis via eigenmode and EPR<a class="headerlink" href="#Analysis-via-eigenmode-and-EPR" title="Link to this heading">¶</a></h3>
 <p>Now, although the previous simulation and analysis captured all of the parameters of the qubits and coupling to the bus, a more accurate (all be it slower) approach is to render the qubits and their coupling into an eigenmode simulation and perform EPR analysis on the result.</p>
 <p>We again start by selecting the Analysis class of interest.</p>
 <div class="nbinput nblast docutils container">
@@ -2023,7 +2023,7 @@ Index: [0, 1]
 </div>
 <div class="output_area docutils container">
 <section id="Mode-frequencies-(MHz)">
-<h4>Mode frequencies (MHz)<a class="headerlink" href="#Mode-frequencies-(MHz)" title="Link to this heading">#</a></h4>
+<h4>Mode frequencies (MHz)<a class="headerlink" href="#Mode-frequencies-(MHz)" title="Link to this heading">¶</a></h4>
 </section>
 </div>
 </div>
@@ -2081,7 +2081,7 @@ Index: [0, 1]
 </div>
 <div class="output_area docutils container">
 <section id="Kerr-Non-linear-coefficient-table-(MHz)">
-<h4>Kerr Non-linear coefficient table (MHz)<a class="headerlink" href="#Kerr-Non-linear-coefficient-table-(MHz)" title="Link to this heading">#</a></h4>
+<h4>Kerr Non-linear coefficient table (MHz)<a class="headerlink" href="#Kerr-Non-linear-coefficient-table-(MHz)" title="Link to this heading">¶</a></h4>
 </section>
 </div>
 </div>
@@ -2155,7 +2155,7 @@ Index: [0, 1]
 </div>
 </section>
 <section id="Rendering-to-a-GDS-File">
-<h3>Rendering to a GDS File<a class="headerlink" href="#Rendering-to-a-GDS-File" title="Link to this heading">#</a></h3>
+<h3>Rendering to a GDS File<a class="headerlink" href="#Rendering-to-a-GDS-File" title="Link to this heading">¶</a></h3>
 <p>Once all of the tuning is complete, we will want to prepare a GDS file so we can create a mask and fabricate our chip. We first create a gds render instance.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
@@ -2315,7 +2315,7 @@ Index: [0, 1]
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/02/13</div>
+              Last updated on 2024/12/16</div>
           </div>
           <div class="right-details">
             
@@ -2359,7 +2359,7 @@ Index: [0, 1]
 </div><script src="../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script src="../../_static/documentation_options.js?v=59fadc99"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
