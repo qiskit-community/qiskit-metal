@@ -2337,7 +2337,8 @@ class QGDSRenderer(QRenderer):
 
                 if (math.isnan(qgeometry_element.fillet) or
                         qgeometry_element.fillet <= 0 or
-                        qgeometry_element.fillet < qgeometry_element.width):
+                        qgeometry_element.fillet <
+                                      0.5 * qgeometry_element.width):
 
                     to_return = gdspy.FlexPath(list(geom.coords),
                                                use_width,
