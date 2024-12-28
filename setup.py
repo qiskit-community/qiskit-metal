@@ -14,7 +14,7 @@ Most used flags:
 # pylint: disable=invalid-name
 
 from pathlib import Path
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 here = Path(__file__).parent.absolute()  # pylint: disable=no-member
 
@@ -49,7 +49,16 @@ setup(
     ],
     keywords="qiskit sdk quantum eda",
     packages=find_packages(),
-    package_data={"": ["*.ui", "*.qrc", "_imgs/*.png", "_imgs/*.txt"]},
+    package_data={
+        "": [
+            "*.ui",
+            "*.qrc",
+            "_imgs/*.png",
+            "_imgs/*.txt",
+            "styles/*/style.qss",
+            "styles/*/rc/*.png",
+        ]
+    },
     python_requires=">=3.9",
     install_requires=requirements,
     project_urls={
