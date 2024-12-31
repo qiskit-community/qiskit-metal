@@ -97,7 +97,7 @@ class Ui_ComponentWidget(object):
                 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
                 "p, li { white-space: pre-wrap; }\n"
                 "</style></head><body style=\" font-family:\'.AppleSystemUIFont\'; font-size:13pt; font-weight:400; font-style:normal;\">\n"
-                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Arial\'; font-size:14pt;\">Help about a component will be displayed here when you select a compoent in the design components dialog. </span></p></body></html>",
+                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Arial\'; font-size:14pt;\">Help about a component will be displayed here when you select a component in the design components dialog. </span></p></body></html>",
                 None, -1))
         ComponentWidget.setTabText(
             ComponentWidget.indexOf(self.tabHelp),
@@ -110,7 +110,7 @@ class Ui_ComponentWidget(object):
                 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
                 "p, li { white-space: pre-wrap; }\n"
                 "</style></head><body style=\" font-family:\'.AppleSystemUIFont\'; font-size:13pt; font-weight:400; font-style:normal;\">\n"
-                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Arial\'; font-size:14pt;\">The source code of a QComponent class will be displayed here when you select a compoent in the design components dialog. </span></p></body></html>",
+                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Arial\'; font-size:14pt;\">The source code of a QComponent class will be displayed here when you select a component in the design components dialog. </span></p></body></html>",
                 None, -1))
         self.lineSourcePath.setToolTip(
             QtWidgets.QApplication.translate("ComponentWidget",
