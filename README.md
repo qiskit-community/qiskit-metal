@@ -119,7 +119,7 @@ Now you're set up and ready to check out some of the other examples from our
 ### Diagram
 
 ```mermaid
-   %%{init: {"flowchart": {"htmlLabels": true}} }%%
+   %%{init: {"flowchart": {"htmlLabels": true}, 'theme':'forest'} }%%
     graph TB
         classDef core fill:#87cefa,stroke:#000000;
         classDef gui fill:#FFDDC1,stroke:#000000;
