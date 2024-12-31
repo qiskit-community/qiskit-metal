@@ -112,11 +112,18 @@ Now you're set up and ready to check out some of the other examples from our
 [Qiskit Metal Tutorials](https://github.com/Qiskit/qiskit-metal/blob/main/tutorials/) repository or [Qiskit Metal Documentation](https://qiskit-community.github.io/qiskit-metal/tut/).
 
 
+
+## Authors and Citation
+Qiskit Metal is the work of [many people](https://github.com/Qiskit/qiskit-metal/pulse/monthly) who contribute to the project at different levels. Metal was conceived and developed by [Zlatko Minev](https://www.zlatko-minev.com) at IBM; then co-led with Thomas McConkey. If you use Qiskit Metal, please cite as per the included [BibTeX file](https://github.com/Qiskit/qiskit-metal/blob/main/Qiskit_Metal.bib). For icon attributions, see [here](https://github.com/Qiskit/qiskit-metal/blob/main/qiskit_metal/_gui/_imgs/icon_attributions.txt).
+
+
 ---
 
 # Big Picture Architecutre Overview
 
 ### Diagram
+
+The **Qiskit Metal** codebase is organized into several key modules, each with a distinct role in enabling the design, analysis, and visualization of quantum circuits. Below is an overview of the primary components and their interactions:
 
 ```mermaid
    %%{init: {"flowchart": {"htmlLabels": true}, 'theme':'forest'} }%%
@@ -209,9 +216,6 @@ Now you're set up and ready to check out some of the other examples from our
 ```
 
 
-
-The **Qiskit Metal** codebase is organized into several key modules, each with a distinct role in enabling the design, analysis, and visualization of quantum circuits. Below is an overview of the primary components and their interactions:
-
 ### Core
 The **Core** module serves as the backbone of Qiskit Metal, housing essential elements for design and component creation:
 - **QLibrary Components**: Predefined library of quantum circuit elements, such as qubits and resonators, that can be used in designs.
@@ -272,9 +276,6 @@ This modular structure ensures scalability, flexibility, and ease of use for des
 ---
 
 # Backmatter 
-
-## Authors and Citation
-Qiskit Metal is the work of [many people](https://github.com/Qiskit/qiskit-metal/pulse/monthly) who contribute to the project at different levels. Metal was conceived and developed by [Zlatko Minev](https://www.zlatko-minev.com) at IBM; then co-led with Thomas McConkey. If you use Qiskit Metal, please cite as per the included [BibTeX file](https://github.com/Qiskit/qiskit-metal/blob/main/Qiskit_Metal.bib). For icon attributions, see [here](https://github.com/Qiskit/qiskit-metal/blob/main/qiskit_metal/_gui/_imgs/icon_attributions.txt).
 
 ## Changelog and Release Notes
 The changelog provides a quick overview of notable changes for a given release.
