@@ -106,11 +106,176 @@ We use [GitHub issues](https://github.com/Qiskit/qiskit-metal/issues) for tracki
 [join the Qiskit Slack community](https://qisk.it/join-slack)
 and use our [Qiskit Slack channel](https://qiskit.slack.com) for discussion and simple questions.
 For questions that are more suited for a forum we use the Qiskit tag in the [Stack Exchange](https://quantumcomputing.stackexchange.com/questions/tagged/qiskit).
+
 ## Next Steps
 Now you're set up and ready to check out some of the other examples from our
 [Qiskit Metal Tutorials](https://github.com/Qiskit/qiskit-metal/blob/main/tutorials/) repository or [Qiskit Metal Documentation](https://qiskit-community.github.io/qiskit-metal/tut/).
+
+
+---
+
+# Big Picture Architecutre Overview
+
+### Diagram
+
+```mermaid
+   %%{init: {"flowchart": {"htmlLabels": true}} }%%
+    graph TB
+        classDef core fill:#87cefa,stroke:#000000;
+        classDef gui fill:#FFDDC1,stroke:#000000;
+        classDef renderer fill:#DBB9FF,stroke:#000000;
+        classDef utility fill:#FFD700,stroke:#000000;
+        classDef design fill:#90EE90,stroke:#000000;
+        classDef analysis fill:#FFB6C1,stroke:#000000;
+
+        subgraph Qiskit_Metal
+            subgraph Core
+                QLibraryComponents["QLibrary Components"]
+                QDesign["QDesign"]
+                QComponent["QComponent"]
+                QRoute["QRoute"]
+                BaseQubit["BaseQubit"]
+            end
+
+            subgraph GUI
+                MetalGUI["MetalGUI"]
+                ElementsWindow["ElementsWindow"]
+                NetListWindow["NetListWindow"]
+                ComponentWidget["ComponentWidget"]
+                QTableView_AllComponents["QTableView_AllComponents"]
+                QTreeView_Options["QTreeView_Options"]
+                QTextEditLogger["QTextEditLogger"]
+            end
+
+            subgraph Renderers
+                QRenderer["QRenderer"]
+                QRendererGui["QRendererGui"]
+                QGDSRenderer["QGDSRenderer"]
+                QAnsysRenderer["QAnsysRenderer"]
+                QHFSSRenderer["QHFSSRenderer"]
+                QQ3DRenderer["QQ3DRenderer"]
+                QPyaedt["QPyaedt"]
+                QGmshRenderer["QGmshRenderer"]
+                QElmerRenderer["QElmerRenderer"]
+            end
+
+            subgraph Analyses
+                Hamiltonian["Hamiltonian"]
+                Sweep_Options["Sweep_Options"]
+            end
+
+            subgraph Utilities
+                Parsing["Parsing"]
+                Exceptions["Exceptions"]
+                Logging["Logging"]
+                Toolbox["Toolbox"]
+            end
+        end
+
+        QLibraryComponents --> QDesign
+        QRenderer --> QDesign
+        QRendererGui --> QRenderer
+        MetalGUI --> QRendererGui
+        MetalGUI --> QLibraryComponents
+        MetalGUI --> QDesign
+        MetalGUI --> ElementsWindow
+        MetalGUI --> NetListWindow
+        MetalGUI --> ComponentWidget
+        MetalGUI --> QTableView_AllComponents
+        MetalGUI --> QTreeView_Options
+        MetalGUI --> QTextEditLogger
+        QGDSRenderer --> QRenderer
+        QAnsysRenderer --> QRenderer
+        QHFSSRenderer --> QRenderer
+        QQ3DRenderer --> QRenderer
+        QPyaedt --> QRenderer
+        QGmshRenderer --> QRenderer
+        QElmerRenderer --> QRenderer
+        Parsing --> QDesign
+        Exceptions --> QDesign
+        Logging --> QDesign
+        Toolbox --> QDesign
+        QDesign --> QComponent
+        QDesign --> QRoute
+        QDesign --> BaseQubit
+        Hamiltonian --> QDesign
+        Sweep_Options --> QDesign
+
+        class QLibraryComponents,QDesign,QComponent,QRoute,BaseQubit core;
+        class MetalGUI,ElementsWindow,NetListWindow,ComponentWidget,QTableView_AllComponents,QTreeView_Options,QTextEditLogger gui;
+        class QRenderer,QRendererGui,QGDSRenderer,QAnsysRenderer,QHFSSRenderer,QQ3DRenderer,QPyaedt,QGmshRenderer,QElmerRenderer renderer;
+        class Parsing,Exceptions,Logging,Toolbox utility;
+        class Hamiltonian,Sweep_Options analysis;
+```
+
+
+
+The **Qiskit Metal** codebase is organized into several key modules, each with a distinct role in enabling the design, analysis, and visualization of quantum circuits. Below is an overview of the primary components and their interactions:
+
+### Core
+The **Core** module serves as the backbone of Qiskit Metal, housing essential elements for design and component creation:
+- **QLibrary Components**: Predefined library of quantum circuit elements, such as qubits and resonators, that can be used in designs.
+- **QDesign**: The central design framework that integrates all components and handles design rules.
+- **QComponent**: Base class for all components in the design.
+- **QRoute**: Specialized class for managing connections between components.
+- **BaseQubit**: Represents foundational qubit structures used in circuit designs.
+
+### GUI
+The **GUI** module provides tools for user-friendly interaction with Qiskit Metal:
+- **MetalGUI**: The primary graphical interface for managing designs and visualizations.
+- **ElementsWindow**: Displays available circuit elements.
+- **NetListWindow**: Shows the connections between components.
+- **ComponentWidget**: Offers detailed views and controls for individual components.
+- **QTableView_AllComponents**: Lists all components in the design.
+- **QTreeView_Options**: Presents configuration options in a tree structure.
+- **QTextEditLogger**: Logs activities and messages for troubleshooting and feedback.
+
+### Renderers
+The **Renderers** module facilitates exporting designs to external tools for electromagnetic simulation and layout rendering:
+- **QRenderer**: Base class for all renderers.
+- **QRendererGui**: GUI interface for managing renderers.
+- Specialized renderers like:
+  - **QGDSRenderer**
+  - **QAnsysRenderer**
+  - **QHFSSRenderer**
+  - **QQ3DRenderer**
+  - **QPyaedt**
+  - **QGmshRenderer**
+  - **QElmerRenderer**
+
+These renderers enable integration with industry-standard tools for detailed simulation and fabrication.
+
+### Analyses
+The **Analyses** module includes tools for performing simulations and extracting insights from designs:
+- **Hamiltonian**: Supports calculations of Hamiltonian parameters.
+- **Sweep Options**: Provides tools for parametric sweeps and optimizations.
+
+### Utilities
+The **Utilities** module supports the overall functionality of Qiskit Metal by offering supplementary tools:
+- **Parsing**: Manages data parsing for design input and output.
+- **Exceptions**: Handles error reporting and debugging.
+- **Logging**: Tracks system activities and events.
+- **Toolbox**: Provides miscellaneous helper functions.
+
+
+
+### Key Interactions
+- The **Core** modules form the foundation and integrate tightly with the **Renderers**, **GUI**, and **Analyses** modules.
+- The **GUI** depends on the **Core** and **Renderers** to provide visualization and interactivity.
+- The **Renderers** serve as bridges between Qiskit Metal and external tools, interacting with the **Core** to export designs.
+- The **Analyses** modules leverage the **Core** to extract meaningful data for optimization and validation.
+- The **Utilities** modules provide essential supporting functionalities across the entire codebase.
+
+This modular structure ensures scalability, flexibility, and ease of use for designing, analyzing, and fabricating quantum circuits.
+
+
+---
+
+# Backmatter 
+
 ## Authors and Citation
 Qiskit Metal is the work of [many people](https://github.com/Qiskit/qiskit-metal/pulse/monthly) who contribute to the project at different levels. Metal was conceived and developed by [Zlatko Minev](https://www.zlatko-minev.com) at IBM; then co-led with Thomas McConkey. If you use Qiskit Metal, please cite as per the included [BibTeX file](https://github.com/Qiskit/qiskit-metal/blob/main/Qiskit_Metal.bib). For icon attributions, see [here](https://github.com/Qiskit/qiskit-metal/blob/main/qiskit_metal/_gui/_imgs/icon_attributions.txt).
+
 ## Changelog and Release Notes
 The changelog provides a quick overview of notable changes for a given release.
 
@@ -122,3 +287,5 @@ Additionally, as part of each release detailed release notes are written to docu
 
 ## License
 [Apache License 2.0](https://github.com/Qiskit/qiskit-metal/blob/main/LICENSE.txt)
+
+
