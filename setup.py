@@ -11,6 +11,7 @@ Most used flags:
     -v, --verbose
         Give more output.
 """
+
 # pylint: disable=invalid-name
 
 from pathlib import Path
@@ -27,7 +28,7 @@ with open(here / "requirements.txt", encoding="utf-8") as f:
 
 setup(
     name="qiskit_metal",
-    version="0.1.5",
+    version="0.5.0",
     description="Qiskit Metal | for quantum device design & analysis",
     long_description=long_description,
     long_description_content_type="text/markdown",
