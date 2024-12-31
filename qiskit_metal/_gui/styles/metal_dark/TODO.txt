@@ -1,4 +1,4 @@
-Remmebr to modify the highlight color to red fot the QToolbar hover
+Remember to modify the highlight color to red for the QToolbar hover
 
 QToolBar QToolButton:hover {
   border: 1px solid #e74d10;
