@@ -141,12 +141,6 @@ The **Qiskit Metal** codebase is organized into several key modules, each with a
 
             subgraph GUI
                 MetalGUI["MetalGUI"]
-                <!-- ElementsWindow["ElementsWindow"] -->
-                <!-- NetListWindow["NetListWindow"] -->
-                <!-- ComponentWidget["ComponentWidget"] -->
-                <!-- QTableView_AllComponents["QTableView_AllComponents"] -->
-                <!-- QTreeView_Options["QTreeView_Options"] -->
-                <!-- QTextEditLogger["QTextEditLogger"] -->
             end
 
             subgraph Renderers
@@ -180,12 +174,6 @@ The **Qiskit Metal** codebase is organized into several key modules, each with a
         MetalGUI --> QRendererGui
         MetalGUI --> QLibraryComponents
         MetalGUI --> QDesign
-        <!-- MetalGUI --> ElementsWindow
-        MetalGUI --> NetListWindow
-        MetalGUI --> ComponentWidget
-        MetalGUI --> QTableView_AllComponents
-        MetalGUI --> QTreeView_Options
-        MetalGUI --> QTextEditLogger -->
         QGDSRenderer --> QRenderer
         QAnsysRenderer --> QRenderer
         QHFSSRenderer --> QRenderer
