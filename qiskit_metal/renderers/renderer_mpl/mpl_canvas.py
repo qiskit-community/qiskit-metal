@@ -26,8 +26,8 @@ from matplotlib.backends.backend_qt5agg import \
     FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.transforms import Bbox
-from PySide2.QtCore import QTimer
-from PySide2.QtWidgets import QSizePolicy
+from PySide6.QtCore import QTimer
+from PySide6.QtWidgets import QSizePolicy
 from ... import Dict
 from ...designs import QDesign
 from .mpl_interaction import PanAndZoom
@@ -44,7 +44,7 @@ if TYPE_CHECKING:
     from ..._gui.widgets.plot_widget.plot_window import QMainWindowPlot
 
 # @mfacchin - moved to the root __init__ to prevent windows from hanging
-# mpl.use("Qt5Agg")
+# mpl.use("QtAgg")
 
 BACKGROUND_COLOR = '#F4F4F4'
 MPL_CONTEXT_DEFAULT = {

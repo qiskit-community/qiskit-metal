@@ -23,9 +23,10 @@ import logging
 import random
 from pathlib import Path
 
-from PySide2 import QtGui
-from PySide2.QtCore import Qt
-from PySide2.QtWidgets import QAction, QDockWidget, QTextEdit
+from PySide6 import QtGui
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QAction
+from PySide6.QtWidgets import QDockWidget, QTextEdit
 
 from .... import Dict, __version__, config
 from ...utility._handle_qt_messages import slot_catch_error

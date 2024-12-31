@@ -18,9 +18,9 @@ File System Model for QLibrary Display
 import os
 import typing
 from pathlib import Path
-from PySide2.QtCore import QModelIndex, QTimeZone, Qt, QSize
-from PySide2.QtGui import QIcon, QPixmap
-from PySide2.QtWidgets import QFileSystemModel
+from PySide6.QtCore import QModelIndex, QTimeZone, Qt, QSize
+from PySide6.QtGui import QIcon, QPixmap
+from PySide6.QtWidgets import QFileSystemModel
 from qiskit_metal._gui.utility.utils import findProperty
 
 

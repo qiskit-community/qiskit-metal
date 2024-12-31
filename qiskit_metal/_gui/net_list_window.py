@@ -16,9 +16,9 @@
 from typing import TYPE_CHECKING
 
 import numpy as np
-from PySide2 import QtCore, QtWidgets
-from PySide2.QtCore import QAbstractTableModel, QModelIndex
-from PySide2.QtWidgets import QMainWindow
+from PySide6 import QtCore, QtWidgets
+from PySide6.QtCore import QAbstractTableModel, QModelIndex
+from PySide6.QtWidgets import QMainWindow
 
 from .net_list_ui import Ui_NetListWindow
 
@@ -33,7 +33,7 @@ class NetListWindow(QMainWindow):
 
     Extends the `QMainWindow` class.
 
-    PySide2 Signal / Slots Extensions:
+    PySide6 Signal / Slots Extensions:
         The UI can call up to this class to execute button clicks for instance
         Extensions in qt designer on signals/slots are linked to this class
     """

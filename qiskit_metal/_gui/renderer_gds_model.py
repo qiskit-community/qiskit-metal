@@ -13,9 +13,9 @@
 # that they have been altered from the originals.
 # Tree model for GDS renderer
 
-import PySide2
-from PySide2 import QtWidgets
-from PySide2.QtWidgets import QTreeView, QWidget
+import PySide6
+from PySide6 import QtWidgets
+from PySide6.QtWidgets import QTreeView, QWidget
 
 from .widgets.bases.dict_tree_base import QTreeModel_Base
 
