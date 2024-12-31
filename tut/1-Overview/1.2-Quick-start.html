@@ -850,7 +850,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <section id="Interactivly-view,-edit,-and-simulate-QDesign:-Metal-GUI">
 <h3>Interactivly view, edit, and simulate QDesign: Metal GUI<a class="headerlink" href="#Interactivly-view,-edit,-and-simulate-QDesign:-Metal-GUI" title="Link to this heading">¶</a></h3>
-<p>To launch the qiskit metal GUI,use the method <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code>.</p>
+<p>To launch the qiskit metal GUI, use the method <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span> <span class="o">=</span> <span class="n">MetalGUI</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -909,7 +909,7 @@ div.rendered_html tbody tr:hover {
 </section>
 <section id="My-First-Quantum-Component-(QComponent)">
 <h2>My First Quantum Component (QComponent)<a class="headerlink" href="#My-First-Quantum-Component-(QComponent)" title="Link to this heading">¶</a></h2>
-<p>We can create a ready-made and optimized transmon qubit form the QLibrary of components. Qubit qcomponents are stored in the library <code class="docutils literal notranslate"><span class="pre">qiskit_metal.qlibrary.qubits</span></code>. The file that contains the transmon pocket is called <code class="docutils literal notranslate"><span class="pre">transmon_pocket</span></code>, and the <code class="docutils literal notranslate"><span class="pre">QComponent</span></code> class inside it is <code class="docutils literal notranslate"><span class="pre">TransmonPocket</span></code>.</p>
+<p>We can create a ready-made and optimized transmon qubit from the QLibrary of components. Qubit qcomponents are stored in the library <code class="docutils literal notranslate"><span class="pre">qiskit_metal.qlibrary.qubits</span></code>. The file that contains the transmon pocket is called <code class="docutils literal notranslate"><span class="pre">transmon_pocket</span></code>, and the <code class="docutils literal notranslate"><span class="pre">QComponent</span></code> class inside it is <code class="docutils literal notranslate"><span class="pre">TransmonPocket</span></code>.</p>
 <ul class="simple">
 <li><p>Let’s create a new qubit by creating an object of this class.</p></li>
 </ul>
@@ -993,7 +993,7 @@ div.rendered_html tbody tr:hover {
 </pre></div></div>
 </div>
 <p>Parsed view of options</p>
-<p>The QComponent comes with some default options. The options are used in the <code class="docutils literal notranslate"><span class="pre">make</span></code> function of the qcomponent to create the QGeometry you see in the plot above. * Options are parsed by Qiskit Metal. * You can change them from the gui or the script api.</p>
+<p>The QComponent comes with some default options. The options are used in the <code class="docutils literal notranslate"><span class="pre">make</span></code> function of the QComponent to create the QGeometry you see in the plot above. * Options are parsed by Qiskit Metal. * You can change them from the GUI or the script API.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
@@ -1021,7 +1021,7 @@ div.rendered_html tbody tr:hover {
     How do I edit options?  API or GUI
 </div></div>
 </div>
-<p>You can use the gui to create, edit, plot, modify, quantum components. Equivalently, you can also do everything form the python API. The GUI is just calling the API for you.</p>
+<p>You can use the GUI to create, edit, plot, modify, quantum components. Equivalently, you can also do everything from the python API. The GUI is just calling the API for you.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
@@ -1056,7 +1056,7 @@ div.rendered_html tbody tr:hover {
 <img alt="../../_images/tut_1-Overview_1.2-Quick-start_19_0.png" class="no-scaled-link" src="../../_images/tut_1-Overview_1.2-Quick-start_19_0.png" style="width: 500px;" />
 </div>
 </div>
-<p>They are stored in <code class="docutils literal notranslate"><span class="pre">design.components</span></code>. It can be accessd as a dictionary (<code class="docutils literal notranslate"><span class="pre">design.components['Q1']</span></code>) or object (<code class="docutils literal notranslate"><span class="pre">design.components.Q1</span></code>).</p>
+<p>They are stored in <code class="docutils literal notranslate"><span class="pre">design.components</span></code>. It can be accessed as a dictionary (<code class="docutils literal notranslate"><span class="pre">design.components['Q1']</span></code>) or object (<code class="docutils literal notranslate"><span class="pre">design.components.Q1</span></code>).</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
@@ -1093,7 +1093,7 @@ div.rendered_html tbody tr:hover {
     Where are the default options?
 </div></div>
 </div>
-<p>A QComponent is created with default options. To find out what these are use <code class="docutils literal notranslate"><span class="pre">QComponentClass.get_template_options(design)</span></code></p>
+<p>A QComponent is created with default options. To find out what these are, use <code class="docutils literal notranslate"><span class="pre">QComponentClass.get_template_options(design)</span></code></p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
@@ -1172,7 +1172,7 @@ div.rendered_html tbody tr:hover {
     How do I change the default options?
 </div></div>
 </div>
-<p>Now lets change the default options we will use to create the transmon</p>
+<p>Now let us change the default options we will use to create the transmon</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
@@ -1221,7 +1221,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Design default units for length: &#39;</span><span class="p">,</span> <span class="n">design</span><span class="o">.</span><span class="n">get_units</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Example 250 micron parsed to design units:&#39;</span><span class="p">,</span> <span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="s1">&#39;0.250 um&#39;</span><span class="p">),</span>  <span class="n">design</span><span class="o">.</span><span class="n">get_units</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Example 250 micron parsed to design units:&#39;</span><span class="p">,</span> <span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="s1">&#39;250 um&#39;</span><span class="p">),</span> <span class="n">design</span><span class="o">.</span><span class="n">get_units</span><span class="p">())</span>
 
 <span class="n">dictionary</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;key_in_cm&#39;</span><span class="p">:</span> <span class="s1">&#39;1.2 cm&#39;</span><span class="p">,</span> <span class="s1">&#39;key_in_microns&#39;</span><span class="p">:</span> <span class="s1">&#39;50 um&#39;</span><span class="p">}</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Example parse dict:&#39;</span><span class="p">,</span> <span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dictionary</span><span class="p">))</span>
@@ -1238,7 +1238,7 @@ div.rendered_html tbody tr:hover {
 <div class="highlight"><pre>
 Design default units for length:  mm
 
-Example 250 micron parsed to design units: 0.00025 mm
+Example 250 micron parsed to design units: 0.25 mm
 
 Example parse dict: {&#39;key_in_cm&#39;: 12.0, &#39;key_in_microns&#39;: 0.05}
 
@@ -1443,8 +1443,8 @@ Parsed output:
     color: white;
 "> Quantum pins: QPins! <h1></div>
 </div>
-<p>The component designer can define pins. Pins can be used to link components together. For examaple, two transmon can each have a pin. The two pins can be connectoed by CPWs, as we will show below.</p>
-<p>First, let us add pins to the transmon. We will add 4 pins called <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, <code class="docutils literal notranslate"><span class="pre">c</span></code>, and <code class="docutils literal notranslate"><span class="pre">d</span></code>. Each pin will be at a differnet location (corner of the transmon), defined by the options <code class="docutils literal notranslate"><span class="pre">loc_W</span></code> and <code class="docutils literal notranslate"><span class="pre">loc_H</span></code>.</p>
+<p>The component designer can define pins. Pins can be used to link components together. For example, two transmons can each have a pin. The two pins can be connected by CPWs, as we will show below.</p>
+<p>First, let us add pins to the transmon. We will add 4 pins called <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, <code class="docutils literal notranslate"><span class="pre">c</span></code>, and <code class="docutils literal notranslate"><span class="pre">d</span></code>. Each pin will be at a different location (corner of the transmon), defined by the options <code class="docutils literal notranslate"><span class="pre">loc_W</span></code> and <code class="docutils literal notranslate"><span class="pre">loc_H</span></code>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
@@ -1457,7 +1457,7 @@ Parsed output:
 <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
     <span class="n">pad_width</span> <span class="o">=</span> <span class="s1">&#39;425 um&#39;</span><span class="p">,</span>
     <span class="n">pocket_height</span> <span class="o">=</span> <span class="s1">&#39;650um&#39;</span><span class="p">,</span>
-    <span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>  <span class="c1"># pin connecotrs</span>
+    <span class="n">connection_pads</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>  <span class="c1"># pin connectors</span>
         <span class="n">a</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span><span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">),</span>
         <span class="n">b</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span><span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s1">&#39;30um&#39;</span><span class="p">),</span>
         <span class="n">c</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span><span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s1">&#39;200um&#39;</span><span class="p">),</span>
@@ -1520,7 +1520,7 @@ Parsed output:
  &#39;length&#39;: 0}
 </pre></div></div>
 </div>
-<p>If you have selected a QComponent, you can call the button that says edit source in the gui. Once selected, you could also call the same function from the code.</p>
+<p>If you have selected a QComponent, you can call the button that says edit source in the GUI. Once selected, you could also call the same function from the code.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
@@ -1560,7 +1560,7 @@ Parsed output:
 </section>
 <section id="Creating-a-whole-chip-of-qubit-with-connectors">
 <h2>Creating a whole chip of qubit with connectors<a class="headerlink" href="#Creating-a-whole-chip-of-qubit-with-connectors" title="Link to this heading">¶</a></h2>
-<p>Let’s now create a a whole chip. In the following, you will pass options to create 4 transmons qubits in a ring. First let us clear all qcomponents in the design.</p>
+<p>Let’s now create a a whole chip. In the following, you will pass options to create 4 transmon qubits in a ring. First let us clear all QComponents in the design.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
@@ -1583,7 +1583,7 @@ Parsed output:
 
 <span class="c1">## Custom options for all the transmons</span>
 <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="c1"># Some options we want to modify from the deafults</span>
+    <span class="c1"># Some options we want to modify from the defaults</span>
     <span class="c1"># (see below for defaults)</span>
     <span class="n">pad_width</span> <span class="o">=</span> <span class="s1">&#39;425 um&#39;</span><span class="p">,</span>
     <span class="n">pocket_height</span> <span class="o">=</span> <span class="s1">&#39;650um&#39;</span><span class="p">,</span>
@@ -1690,7 +1690,7 @@ Parsed output:
  &#39;q3d_wire_bonds&#39;: False}
 </pre></div></div>
 </div>
-<p>We can now modify the options and connect all four qubits. Since this is repetative, you can define a function to wrap up the repetatvie steps. Here we will call this <code class="docutils literal notranslate"><span class="pre">connect</span></code>. This function creates a <code class="docutils literal notranslate"><span class="pre">RouteMeander</span></code> QComponent class.</p>
+<p>We can now modify the options and connect all four qubits. Since this is repetitive, you can define a function to wrap up the repetitive steps. Here we will call this <code class="docutils literal notranslate"><span class="pre">connect</span></code>. This function creates a <code class="docutils literal notranslate"><span class="pre">RouteMeander</span></code> QComponent class.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
 </pre></div>
@@ -1901,7 +1901,7 @@ Parsed output:
 <span class="n">q3</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">=</span> <span class="s1">&#39;pad_width&#39;</span>
 <span class="n">q4</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">=</span> <span class="s1">&#39;pad_width&#39;</span>
 
-<span class="c1"># Rebuild all compoinent and refresh the gui</span>
+<span class="c1"># Rebuild all components and refresh the gui</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
 </pre></div>
@@ -2929,7 +2929,7 @@ IBM Quantum Team
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/12/16</div>
+              Last updated on 2024/12/31</div>
           </div>
           <div class="right-details">
             

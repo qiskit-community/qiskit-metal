@@ -866,8 +866,8 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <p>We see that this QComponent consists of two large metallic pads with a thin strip of metal connecting them, corresponding to a Josephson Junction. The transmon qubit is centered at the origin by default. In the GUI, we can see that the ID assigned to our QComponent is “1” and that the QComponent class is “Transmon Pocket.”</p>
-<p>Note that since we didn’t give the Qcomponent an explicit name, one was assigned automatically (“Pocket_1”) which we can also see in the GUI. Taking a look at the actual qcomponent python script, we see that there is a “short name” defined in the qcomponent metadata (short_name = “Pocket” in the dictionary), which is where this name comes from.</p>
-<p>It is easy to give a specific name to a Qcomponent object. We can delete the QComponent “Pocket_1” by just clicking the “Delete all” button in the Qiskit Metal GUI. Alternatively, this can done by executing the following command, which deletes all components in the design (more on deleting later in this tutorial):</p>
+<p>Note that since we didn’t give the QComponent an explicit name, one was assigned automatically (“Pocket_1”) which we can also see in the GUI. Taking a look at the actual QComponent python script, we see that there is a “short name” defined in the QComponent metadata (short_name = “Pocket” in the dictionary), which is where this name comes from.</p>
+<p>It is easy to give a specific name to a QComponent object. We can delete the QComponent “Pocket_1” by just clicking the “Delete all” button in the Qiskit Metal GUI. Alternatively, this can done by executing the following command, which deletes all components in the design (more on deleting later in this tutorial):</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
@@ -891,13 +891,13 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<p>The QComponent we’ve just created as a name “Q1” and a Qcomponent ID of 2, since an ID of 1 was already used for the now-deleted “Pocket_1” object. It is worth noting that the QComponent we’ve just created is not functional yet; it’s just two rectangular metal pads with a thin strip of metal connecting them. In order for a QComponent to be functional in an actual design, we will need to add a few additional things, such as qpins defining where the transmon pocket connects to coplanar waveguides
+<p>The QComponent we’ve just created as a name “Q1” and a Qcomponent ID of 2, since an ID of 1 was already used for the now-deleted “Pocket_1” object. It is worth noting that the QComponent we’ve just created is not functional yet; it’s just two rectangular metal pads with a thin strip of metal connecting them. In order for a QComponent to be functional in an actual design, we will need to add a few additional things, such as QPins defining where the transmon pocket connects to coplanar waveguides
 (CPWs). We will discuss this in more detail later in the tutorial.</p>
 </section>
 <section id="QComponent-Default-Options">
 <h1>QComponent Default Options<a class="headerlink" href="#QComponent-Default-Options" title="Link to this heading">¶</a></h1>
-<p>QComponents come with some default options, which are used in the make function of the qcomponent to create the qgeometry that you see in the GUI. These options are parsed by Qiskit Metal, and can be changed using either the GUI or the script API.</p>
-<p>We can see what the options and other parameters are for our Qcomponent by typing the following command:</p>
+<p>QComponents come with some default options, which are used in the make function of the QComponent to create the qgeometry that you see in the GUI. These options are parsed by Qiskit Metal, and can be changed using either the GUI or the script API.</p>
+<p>We can see what the options and other parameters are for our QComponent by typing the following command:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
@@ -1065,9 +1065,9 @@ div.rendered_html tbody tr:hover {
 </section>
 <section id="Deleting-a-QComponent">
 <h1>Deleting a QComponent<a class="headerlink" href="#Deleting-a-QComponent" title="Link to this heading">¶</a></h1>
-<p>We saw in an earlier example how to delete all QComponents in a design using the either the “design.delete_all_components” command or by using the “Delete all” button in the GUI. But what if we only want to delete specific QComponents without deleting everything in a design?</p>
-<p>We can delete a specific qcomponent using either the GUI or the python API. If you wish to remove a specific QComponent, you can do so using the “delete_component” or “_delete component” commands. The first takes the string reference to a Qcomponent, while the second takes an integer reference to a QComponent. Suppose we want to remove qubit ‘Q1’. Presently, we do not need to pass a Boolean corresponding to whether we want to force the delete (true=1) even if the component has dependencies, or
-whether the deletion should not be executed in the event the QComponent does have dependencies (false=0). The bool option is for future potential possibilities of having Qcomponents with dependencies.</p>
+<p>We saw in an earlier example how to delete all QComponents in a design using either the “design.delete_all_components” command or by using the “Delete all” button in the GUI. But what if we only want to delete specific QComponents without deleting everything in a design?</p>
+<p>We can delete a specific QComponent using either the GUI or the python API. If you wish to remove a specific QComponent, you can do so using the “delete_component” or “_delete_component” commands. The first takes the string reference to a Qcomponent, while the second takes an integer reference to a QComponent. Suppose we want to remove qubit ‘Q1’. Presently, we do not need to pass a Boolean corresponding to whether we want to force the delete (true=1) even if the component has dependencies, or
+whether the deletion should not be executed in the event the QComponent does have dependencies (false=0). The bool option is for future potential possibilities of having QComponents with dependencies.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
@@ -1094,7 +1094,7 @@ whether the deletion should not be executed in the event the QComponent does hav
 </section>
 <section id="Renaming-a-QComponent">
 <h1>Renaming a QComponent<a class="headerlink" href="#Renaming-a-QComponent" title="Link to this heading">¶</a></h1>
-<p>In the first example in this notebook, we created a QComponent named “Pocket_1” then deleted it and created one with the name “Q1.” One can also simply rename a QComponent without deleting it and creating a new one. We can rename a QComponent by using the “design_rename.component” command. For example, let’s rename “Q3” and “Q4” to “Q_three” and “Q_four”, respectively. Note that “Q3” has a QComponent ID of 4, while “Q4” has a Qcomponent ID of 5.</p>
+<p>In the first example in this notebook, we created a QComponent named “Pocket_1” then deleted it and created one with the name “Q1”. One can also simply rename a QComponent without deleting it and creating a new one. We can rename a QComponent by using the “design_rename.component” command. For example, let’s rename “Q3” and “Q4” to “Q_three” and “Q_four”, respectively. Note that “Q3” has a QComponent ID of 4, while “Q4” has a QComponent ID of 5.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
@@ -1117,7 +1117,7 @@ True
 </section>
 <section id="Overwriting-a-QComponent">
 <h1>Overwriting a QComponent<a class="headerlink" href="#Overwriting-a-QComponent" title="Link to this heading">¶</a></h1>
-<p>In order to enable component overwrite of qcomponents with the same name, we can use the following command:</p>
+<p>In order to enable component overwrite of QComponents with the same name, we can use the following command:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
@@ -1127,7 +1127,7 @@ True
 </pre></div>
 </div>
 </div>
-<p>This allows for the qcomponent to be modified and re-built without having to delete it. Without this line, a qcomponent would have to be deleted before recreating it with different options.</p>
+<p>This allows for the QComponent to be modified and re-built without having to delete it. Without this line, a QComponent would have to be deleted before recreating it with different options.</p>
 </section>
 <section id="Closing-the-Qiskit-Metal-GUI">
 <h1>Closing the Qiskit Metal GUI<a class="headerlink" href="#Closing-the-Qiskit-Metal-GUI" title="Link to this heading">¶</a></h1>
@@ -1148,15 +1148,6 @@ True
 <div class="highlight"><pre>
 True
 </pre></div></div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
 </div>
 </section>
 <h3>For more information, review the <b>Introduction to Quantum Computing and Quantum Hardware</b> lectures below</h3>
@@ -1221,7 +1212,7 @@ True
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/12/16</div>
+              Last updated on 2024/12/31</div>
           </div>
           <div class="right-details">
             
