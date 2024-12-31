@@ -10,7 +10,7 @@ The high level Metal architecture is diagramed in the overview below.  The user 
 ### Diagram
 
 ```mermaid
-   %%{init: {"flowchart": {"htmlLabels": true}} }%%
+    %%{init: {"flowchart": {"htmlLabels": true}, 'theme':'forest'} }%%
     graph TB
         classDef core fill:#87cefa,stroke:#000000;
         classDef gui fill:#FFDDC1,stroke:#000000;
