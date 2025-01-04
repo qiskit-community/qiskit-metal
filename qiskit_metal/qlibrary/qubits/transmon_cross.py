@@ -12,7 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-import numpy as np
 from qiskit_metal import draw, Dict
 from qiskit_metal.qlibrary.core import BaseQubit
 
@@ -106,7 +105,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
     def make_pocket(self):
         """Makes a basic Crossmon, 4 arm cross."""
 
-        # self.p allows us to directly access parsed values (string -> numbers) form the user option
+        # self.p allows us to directly access parsed values (string -> numbers) from the user option
         p = self.p
 
         cross_width = p.cross_width
@@ -164,7 +163,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
             name (str) : Name of the connector pad
         """
 
-        # self.p allows us to directly access parsed values (string -> numbers) form the user option
+        # self.p allows us to directly access parsed values (string -> numbers) from the user option
         p = self.p
         cross_width = p.cross_width
         cross_length = p.cross_length

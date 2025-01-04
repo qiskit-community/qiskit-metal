@@ -150,7 +150,7 @@ class TransmonPocket(BaseQubit):
     def make_pocket(self):
         """Makes standard transmon in a pocket."""
 
-        # self.p allows us to directly access parsed values (string -> numbers) form the user option
+        # self.p allows us to directly access parsed values (string -> numbers) from the user option
         p = self.p
 
         # extract chip name
@@ -197,18 +197,18 @@ class TransmonPocket(BaseQubit):
                            chip=chip)
 
     def make_connection_pads(self):
-        """Makes standard transmon in a pocket."""
+        """Goes through connector pads and makes each one."""
         for name in self.options.connection_pads:
             self.make_connection_pad(name)
 
     def make_connection_pad(self, name: str):
-        """Makes n individual connector.
+        """Makes an individual connector.
 
         Args:
             name (str) : Name of the connector
         """
 
-        # self.p allows us to directly access parsed values (string -> numbers) form the user option
+        # self.p allows us to directly access parsed values (string -> numbers) from the user option
         p = self.p
         pc = self.p.connection_pads[name]  # parser on connector options
 

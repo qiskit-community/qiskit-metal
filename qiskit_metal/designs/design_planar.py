@@ -26,7 +26,7 @@ __all__ = ['DesignPlanar']
 
 class DesignPlanar(QDesign):
     """Metal class for a planar (2D) design, consisting of a single plane chip.
-    Typically assumed to have some CPW geometires.
+    Typically assumed to have some CPW geometries.
 
     Inherits QDesign class.
     """

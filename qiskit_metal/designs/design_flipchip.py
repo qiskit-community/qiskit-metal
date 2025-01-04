@@ -29,7 +29,7 @@ __all__ = ["DesignFlipChip"]
 
 class DesignFlipChip(QDesign):
     """Metal class for a flipchip design, consisting of two chips with their device sides facing each other.
-    Typically assumed to have some CPW geometires.
+    Typically assumed to have some CPW geometries.
 
     Inherits QDesign class.
     """
