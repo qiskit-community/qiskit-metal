@@ -26,7 +26,7 @@ from qiskit_metal.qlibrary.core import QComponent
 
 
 class LaunchpadWirebond(QComponent):
-    """Launch pad to feed/read signals to/from the chip.
+    r"""Launch pad to feed/read signals to/from the chip.
 
     Inherits 'QComponent' class.
 
