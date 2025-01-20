@@ -190,7 +190,7 @@ if config.is_building_docs():
     from .qubits.transmon_pocket_teeth import TransmonPocketTeeth
     from .qubits.SQUID_loop import SQUID_LOOP
     from .qubits.star_qubit import StarQubit
-    from .resonator.readoutres_fc import ReadoutResFC
-    from .resonator.resonator_lumped import ResonatorLumped
+    from .resonators.readoutres_fc import ReadoutResFC
+    from .resonators.resonator_lumped import ResonatorLumped
 
     from .tlines import anchored_path

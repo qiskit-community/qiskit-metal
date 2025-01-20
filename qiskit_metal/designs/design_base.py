@@ -805,8 +805,8 @@ class QDesign():
                 Returns the number as is. Int to int, etc.
 
 
-        Arithemetic:
-            Some basic arithemetic can be handled as well, such as `'-2 * 1e5 nm'`
+        Arithmetic:
+            Some basic arithmetic can be handled as well, such as `'-2 * 1e5 nm'`
             will yield float(-0.2) when the default units are set to `mm`.
 
         Default units:

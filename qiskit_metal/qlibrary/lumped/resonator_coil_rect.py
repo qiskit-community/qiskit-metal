@@ -69,7 +69,7 @@ class ResonatorCoilRect(QComponent):
     modified by the code based on the total length inputed."""
 
     def make(self):
-        """The make function implements the logic that creates the geoemtry
+        """The make function implements the logic that creates the geometry
         (poly, path, etc.) from the qcomponent.options dictionary of
         parameters, and the adds them to the design, using
         qcomponent.add_qgeometry(...), adding in extra needed information, such
@@ -85,7 +85,7 @@ class ResonatorCoilRect(QComponent):
                                       (2 * n - 1))
 
         if x_n <= p.gap + p.line_width:
-            self._error_message = f'Inputted values results in the width of the spiral being too small.'
+            self._error_message = 'Inputted values results in the width of the spiral being too small.'
             self.logger.warning(self._error_message)
             return
 

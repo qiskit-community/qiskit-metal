@@ -103,7 +103,7 @@ Qiskit Metal Overview
    * - Components
      - This is a user interface for the design._components dict. The keys are unique integers, however, this interface allows user to treat the keys as strings.  Set up variables and logger which are used to emulate a dict which is referencing design._components.
    * - DesignPlanar
-     - Metal class for a planar (2D) design, consisting of a single plane chip. Typically assumed to have some CPW geometires.
+     - Metal class for a planar (2D) design, consisting of a single plane chip. Typically assumed to have some CPW geometries.
    * - QDesign
      - QDesign is the base class for Qiskit Metal Designs. A design is the most top-level object in all of Qiskit Metal.  Create a new Metal QDesign.
    * - QNet
