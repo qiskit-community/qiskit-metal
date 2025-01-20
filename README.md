@@ -9,7 +9,7 @@
 We're excited to share that we're nearing the completion of porting Qiskit Metal from PySide2 to PySide6! This update enables native support for M* Macs (Apple Silicon) and includes several other enhancements for the upcoming release. Please take a moment to review and provide feedback on [Pull Request #1002](https://github.com/qiskit-community/qiskit-metal/pull/1002) before we proceed with merging and tagging. Your input is invaluable to ensure the release meets everyone's expectations. Thank you for your continued contributions!
 
 ## Installation
-If you are interested in customizing your experience, or if you are unable to install qiskit-metal using the `pip install` instructions below, consider installing directly the source code, following the instructions in the [documentation](https://qiskit-community.github.io/qiskit-metal/installation.html) and/or the [installation instructions for developers](https://github.com/Qiskit/qiskit-metal/blob/main/README_developers.md).
+If you are interested in customizing your experience, or if you are unable to install qiskit-metal using the `pip install` instructions below, consider installing directly the source code, following the instructions in the [documentation](https://qiskit-community.github.io/qiskit-metal/installation.html) and/or the [installation instructions for developers](https://github.com/Qiskit/qiskit-metal/blob/main/README_Developers.md).
 
 For normal use, please continue reading.
 
@@ -118,7 +118,7 @@ Now you're set up and ready to check out some of the other examples from our
 
 ### Diagram
 
-The **Qiskit Metal** codebase is organized into several key modules, each with a distinct role in enabling the design, analysis, and visualization of quantum circuits. Below is an overview of the primary components and their interactions, discussed deeper in the [Architecture Readme](README_ARCH.md) and the docs:
+The **Qiskit Metal** codebase is organized into several key modules, each with a distinct role in enabling the design, analysis, and visualization of quantum circuits. Below is an overview of the primary components and their interactions, discussed deeper in the [Architecture Readme](README_Architecture.md) and the docs:
 
 ```mermaid
    %%{init: {"flowchart": {"htmlLabels": true}, 'theme':'forest'} }%%
@@ -229,7 +229,7 @@ The **Analyses** module includes tools for performing simulations and extracting
 
 
 ### GUI
-The **GUI** module provides tools for user-friendly interaction with Qiskit Metal. The **MetalGUI** clas is the primary graphical interface for managing designs and visualizations. It is discussed in more depth in the [Architecture Readme](README_ARCH.md).
+The **GUI** module provides tools for user-friendly interaction with Qiskit Metal. The **MetalGUI** clas is the primary graphical interface for managing designs and visualizations. It is discussed in more depth in the [Architecture Readme](README_Architecture.md).
 
 ### Utilities
 The **Utilities** module supports the overall functionality of Qiskit Metal by offering supplementary tools.
