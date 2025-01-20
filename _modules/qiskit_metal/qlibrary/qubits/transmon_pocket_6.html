@@ -694,7 +694,7 @@
     <span class="k">def</span> <span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Define the way the options are turned into QGeometry.</span>
 
-<span class="sd">        The make function implements the logic that creates the geoemtry</span>
+<span class="sd">        The make function implements the logic that creates the geometry</span>
 <span class="sd">        (poly, path, etc.) from the qcomponent.options dictionary of</span>
 <span class="sd">        parameters, and the adds them to the design, using</span>
 <span class="sd">        qcomponent.add_qgeometry(...), adding in extra needed</span>
@@ -709,7 +709,7 @@
     <span class="k">def</span> <span class="nf">make_pocket</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Makes standard transmon in a pocket.&quot;&quot;&quot;</span>
 
-        <span class="c1"># self.p allows us to directly access parsed values (string -&gt; numbers) form the user option</span>
+        <span class="c1"># self.p allows us to directly access parsed values (string -&gt; numbers) from the user option</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
 
         <span class="c1"># since we will reuse these options, parse them once and define them as variables</span>
@@ -750,7 +750,7 @@
 <div class="viewcode-block" id="TransmonPocket6.make_connection_pads">
 <a class="viewcode-back" href="../../../../stubs/qiskit_metal.qlibrary.TransmonPocket6.make_connection_pads.html#qiskit_metal.qlibrary.TransmonPocket6.make_connection_pads">[docs]</a>
     <span class="k">def</span> <span class="nf">make_connection_pads</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Makes standard transmon in a pocket.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Goes through connector pads and makes each one.&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">connection_pads</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">make_connection_pad</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
 
@@ -758,13 +758,13 @@
 <div class="viewcode-block" id="TransmonPocket6.make_connection_pad">
 <a class="viewcode-back" href="../../../../stubs/qiskit_metal.qlibrary.TransmonPocket6.make_connection_pad.html#qiskit_metal.qlibrary.TransmonPocket6.make_connection_pad">[docs]</a>
     <span class="k">def</span> <span class="nf">make_connection_pad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Makes n individual connector.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Makes an individual connector.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            name (str) : Name of the connector</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="c1"># self.p allows us to directly access parsed values (string -&gt; numbers) form the user option</span>
+        <span class="c1"># self.p allows us to directly access parsed values (string -&gt; numbers) from the user option</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
         <span class="n">pc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">connection_pads</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>  <span class="c1"># parser on connector options</span>
 
@@ -860,7 +860,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/12/31</div>
+              Last updated on 2025/01/20</div>
           </div>
           <div class="right-details">
             
