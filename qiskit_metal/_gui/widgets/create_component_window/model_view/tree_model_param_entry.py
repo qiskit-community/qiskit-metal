@@ -376,7 +376,7 @@ class TreeModelParamEntry(QAbstractItemModel):
             design (QDesign): Current design using the model
         """
         super().__init__(parent=parent)
-        self._rowCount = -1  # pylint: disable=invalid-name
+        self._row_count = -1  # pylint: disable=invalid-name
         self.root = BranchNode('')
         self.view = view
         self._design = design
@@ -497,10 +497,22 @@ class TreeModelParamEntry(QAbstractItemModel):
         completely rebuild the model and tree.
         """
         # TODO: Check if new nodes have been added; if so, rebuild model.
-        newRowCount = self.rowCount(self.createIndex(0, 0))  # pylint: disable=invalid-name
-        if self._rowCount != newRowCount:
-            self.modelReset.emit()
-            self._rowCount = newRowCount
+        new_row_count = self.rowCount(self.createIndex(0, 0))  # pylint: disable=invalid-name
+        if self._row_count != new_row_count:
+            # Wrap the reset logic in beginResetModel and endResetModel
+            self.beginResetModel()
+            try:
+
+                # When a model is reset it should be considered that all
+                # information previously retrieved from it is invalid.
+                # This includes but is not limited to the rowCount() and
+                # columnCount(), flags(), data retrieved through data(), and roleNames().
+                # This will loose the current selection.
+                # self.modelReset.emit()
+
+                self._row_count = new_row_count
+            finally:
+                self.endResetModel()
 
     def getPaths(self, curdict: OrderedDict, curpath: list):  # pylint: disable=invalid-name
         """Recursively finds and saves all root-to-leaf paths in model"""

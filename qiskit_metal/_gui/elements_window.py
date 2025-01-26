@@ -15,7 +15,6 @@
 
 from typing import TYPE_CHECKING
 
-import numpy as np
 from PySide6 import QtCore, QtWidgets
 from PySide6.QtCore import QAbstractTableModel, QModelIndex
 from PySide6.QtWidgets import QMainWindow
@@ -108,13 +107,13 @@ class ElementTableModel(QAbstractTableModel):
     __timer_interval = 500  # ms
 
     def __init__(self, gui, parent=None, element_type='poly'):
-        super().__init__(parent=parent)
         """
         Args:
             gui (MetalGUI): The GUI
             parent (QMainWindowExtension): Parent window.  Defaults to None.
             element_type (str): The element type.  Defaults to 'poly'.
         """
+        super().__init__(parent=parent)
         self.logger = gui.logger
         self.gui = gui
         self._row_count = -1
@@ -165,7 +164,12 @@ class ElementTableModel(QAbstractTableModel):
 
         Completely rebuild the model.
         """
-        self.modelReset.emit()
+        self.beginResetModel()
+        try:
+            # parent_index = self.createIndex(0, 0, self.root)
+            self._row_count = self.rowCount(None)
+        finally:
+            self.endResetModel()
 
     def refresh_auto(self):
         """Update row count etc."""
@@ -175,16 +179,22 @@ class ElementTableModel(QAbstractTableModel):
         if self._row_count != new_count:
             #self.logger.info('Number of components changed')
 
-            # When a model is reset it should be considered that all
-            # information previously retrieved from it is invalid.
-            # This includes but is not limited to the rowCount() and
-            # columnCount(), flags(), data retrieved through data(), and roleNames().
-            # This will loose the current selection.
-            self.modelReset.emit()
+            # Wrap the reset logic in beginResetModel and endResetModel
+            self.beginResetModel()
+            try:
 
-            self._row_count = new_count
+                # When a model is reset it should be considered that all
+                # information previously retrieved from it is invalid.
+                # This includes but is not limited to the rowCount() and
+                # columnCount(), flags(), data retrieved through data(), and roleNames().
+                # This will loose the current selection.
+                # self.modelReset.emit()
 
-    def rowCount(self, parent: QModelIndex = None):
+                self._row_count = new_count
+            finally:
+                self.endResetModel()
+
+    def rowCount(self, parent: QModelIndex = None) -> int:
         """Counts all the rows.
 
         Args:
@@ -193,11 +203,13 @@ class ElementTableModel(QAbstractTableModel):
         Returns:
             int: The number of rows
         """
+        if parent is None:
+            parent = QModelIndex()
         if self.table is None:
             return 0
         return self.table.shape[0]
 
-    def columnCount(self, parent: QModelIndex = None):
+    def columnCount(self, parent: QModelIndex = None):  #pylint: disable=unused-argument
         """Counts all the columns.
 
         Args:

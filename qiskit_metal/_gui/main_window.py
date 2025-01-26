@@ -55,7 +55,7 @@ if not config.is_building_docs():
     pass
 
 if TYPE_CHECKING:
-    from ..renderers.renderer_mpl.mpl_canvas import PlotCanvas
+    from ..renderers.renderer_mpl.mpl_canvas import PlotCanvas  # pylint: disable=syntax-error
 
 
 class QMainWindowExtension(QMainWindowExtensionBase):
@@ -724,15 +724,21 @@ class MetalGUI(QMainWindowBaseHandler):
         """
         view = self.ui.dockLibrary_tree_view
         dock = self.ui.dockLibrary
-        dock.proxy_library_model.filter_text = text
+        proxy_model = dock.proxy_library_model
 
-        dock.proxy_library_model.setFilterWildcard(text)
+        # Wrap changes to filter_text and setFilterWildcard with reset calls
+        proxy_model.beginResetModel()
+        try:
+            proxy_model.filter_text = text
+            proxy_model.setFilterWildcard(text)
+        finally:
+            proxy_model.endResetModel()
 
         view.setRootIndex(
-            dock.proxy_library_model.mapFromSource(
+            proxy_model.mapFromSource(
                 dock.library_model.index(dock.library_model.rootPath())))
 
-        if len(text) >= 1 and dock.proxy_library_model.rowCount() > 0:
+        if len(text) >= 1 and proxy_model.rowCount() > 0:
             view.expandAll()
         else:
             view.collapseAll()

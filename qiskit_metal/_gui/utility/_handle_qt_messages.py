@@ -66,10 +66,30 @@ def _qt_message_handler(mode, context, message):
             mode = 'FATAL'
         else:
             mode = 'DEBUG'
+        # logger.log(
+        #     getattr(logging, 'CRITICAL'), 'line: %d, func: %s(), file: %s' %
+        #     (context.line, context.function, context.file) + '  %s: %s\n' %
+        #     (mode, message))
+
+        # Log basic message details
+        base_message = f"{mode}: {message}"
+
+        # Include context if available
+        if context.file and context.function:
+            base_message += (
+                f" (File: {context.file}, Line: {context.line}, Function: {context.function})"
+            )
+        else:
+            base_message += " (No context available from Qt)"
+
+        # Capture Python traceback for additional details
+        python_traceback = "".join(traceback.format_stack(limit=10))
+
+        # Log the message with the Python traceback
         logger.log(
-            getattr(logging, 'CRITICAL'), 'line: %d, func: %s(), file: %s' %
-            (context.line, context.function, context.file) + '  %s: %s\n' %
-            (mode, message))
+            getattr(logging, mode, logging.DEBUG),
+            f"{base_message}\nPython Traceback (most recent call last):\n{python_traceback}"
+        )
 
 
 #######################################################################################
@@ -85,19 +105,19 @@ def do_debug(msg, name='info'):
         name (str): info wran, debug, etc.  Defaults to 'info'.
     """
 
-    if 0:
-        # This just gives the qt main loop traceback. Not useful.
-        callers = []
-        for i in range(1, 20):
-            try:
-                stack = inspect.stack()[i]
-                callers += [f'{stack.function}[{stack.lineno}]']
-            except Exception as e:  # pylint: disable=broad-except
-                print("Exception during do_debug exception handling: " +
-                      e.__repr__())
-        callers = reversed(callers)
-        callers = '\n'.join(callers)
-        msg = callers + "\n" + str(msg) + '\n'
+    # if 0:
+    #     # This just gives the qt main loop traceback. Not useful.
+    #     callers = []
+    #     for i in range(1, 20):
+    #         try:
+    #             stack = inspect.stack()[i]
+    #             callers += [f'{stack.function}[{stack.lineno}]']
+    #         except Exception as e:  # pylint: disable=broad-except
+    #             print("Exception during do_debug exception handling: " +
+    #                   e.__repr__())
+    #     callers = reversed(callers)
+    #     callers = '\n'.join(callers)
+    #     msg = callers + "\n" + str(msg) + '\n'
 
     getattr(logger, name)(msg)
 
