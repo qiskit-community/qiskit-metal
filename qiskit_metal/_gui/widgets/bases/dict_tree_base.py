@@ -241,7 +241,7 @@ class QTreeModel_Base(QAbstractItemModel):
         self.paths = []
 
         self._start_timer()
-        self.load()
+        self.load()  # handles beginResetModel and endResetModel
 
     @property
     def gui(self):
@@ -297,13 +297,14 @@ class QTreeModel_Base(QAbstractItemModel):
 
         Completely rebuild the model and tree.
         """
-        self.beginResetModel()  # TODO: BEFORE OR AFTER ?
-        try:
-            self.load()  # rebuild the tree
-            parent_index = self.createIndex(0, 0, self.root)
-            self._row_count = self.rowCount(parent_index)
-        finally:
-            self.endResetModel()
+        # self.beginResetModel()  # load handles refresh, cant nest
+        # try:
+        self.load(
+        )  # rebuild the tree; handles beginResetModel and endResetModel
+        parent_index = self.createIndex(0, 0, self.root)
+        self._row_count = self.rowCount(parent_index)
+        # finally:
+        #     # self.endResetModel()
 
     def getPaths(self, curdict: dict, curpath: list):
         """Recursively finds and saves all root-to-leaf paths in model."""

@@ -15,6 +15,7 @@
 
 from typing import TYPE_CHECKING, List
 
+import warnings
 import matplotlib
 import matplotlib as mpl
 import matplotlib.patches as patches
@@ -343,6 +344,8 @@ class PlotCanvas(FigureCanvas):
 
         self.mpl_context = MPL_CONTEXT_DEFAULT.copy()
 
+        warnings.filterwarnings("ignore", ".*Ignoring fixed.*")
+
         with mpl.rc_context(rc=self.mpl_context):
             fig = Figure()
 
@@ -559,13 +562,15 @@ class PlotCanvas(FigureCanvas):
             ax (axis): The axis
             num (int): Not used
         """
-        # ax.set_aspect(1)
+        ax.set_aspect(1)
         # # If 'box', change the physical dimensions of the Axes. If 'datalim',
         # # change the x or y data limits.
-        # ax.set_adjustable('datalim')
+        ax.set_adjustable('datalim')
+        ax.set_anchor('C')  # Center the plot
 
-        # Allow flexible container sizing while maintaining data scale
-        ax.set_aspect('auto')
+        # Set axis scales to be equal
+        ax.set_xscale('linear')
+        ax.set_yscale('linear')
 
         # Ensure data units are equal
         ax.set_box_aspect(None)
@@ -598,14 +603,6 @@ class PlotCanvas(FigureCanvas):
 
         #[left, bottom, width, height]
         # ax.set_position([0,0,1,1])
-
-        # Set axis scales to be equal
-        ax.set_xscale('linear')
-        ax.set_yscale('linear')
-
-        # Update axis limits to maintain square units
-        ax.set_adjustable('datalim')
-        ax.set_anchor('C')  # Center the plot
 
     def style_figure(self):
         """Style a figure."""
@@ -746,8 +743,7 @@ class PlotCanvas(FigureCanvas):
             component_id = int(component_id)
 
             if component_id in self.design._components:
-                # type: QComponent
-                component = self.design._components[component_id]
+                component: "QComponent" = self.design._components[component_id]
 
                 if 1:  # highlight bounding box
                     bounds = component.qgeometry_bounds(
@@ -823,8 +819,8 @@ class PlotCanvas(FigureCanvas):
                                 **text_kw,
                                 **dict(horizontalalignment='left' if n[0] >= 0 else 'right')
                             }
-                            # type: matplotlib.text.Text
-                            text = ax.text(*(m + dist * n), pin_name, **kw)
+                            text: "matplotlib.text.Text" = ax.text(
+                                *(m + dist * n), pin_name, **kw)
                             text.set_bbox(text_bbox_kw)
                             self._annotations['text'] += [text]
 
