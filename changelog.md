@@ -16,6 +16,10 @@ This release addresses significant package changes and ports:
 - **GDSPY to GDSTK**: Replaced GDSPY with the more robust GDSTK library.
 - **PYAEDT to Ansys (v1.0)**: Major update with a new syntax. Extensive testing required.
 - **Installation Improvements**: Transitioned to `venv` for faster environment setup, moving away from `conda`. Also, most package versions have been floated and upgraded.
+- **Docs**:
+    - Migrate qiskit_sphinx_theme to the new theme
+    - Add divs on the front page to tuts etc
+    - Add user content and showcase page
 
 ---
 
