@@ -8,16 +8,26 @@ The changelog for all releases can be found in the release page: [![Releases](ht
 
 ## QISKIT METAL v0.5 (2025)
 
-Adressing massive package changes and ports:
-- pyqt5 to pyside6 - massive port of the GUI.
-- GDSPY to GDSTK
-- PYAEDT to ansys and v1.0 new syntax. Major update. Needs lots of testing.
+### Major Updates
 
-### Gui
-1. Added traceback reporting in the logging.
-2.  Fixed - "metal: WARNING: endResetModel called on LibraryFileProxyModel(0x17fda8200) without calling beginResetModel first (No context available from Qt)"
-3. Fixed MPL Rendere axes issue "Ignoring fixed y limits to fulfill fixed data aspect with adjustable data limits. Ignoring fixed x limits to fulfill fixed data aspect with adjustable data limits."
-4. Added red border style to new component UI create button to underscore
+This release addresses significant package changes and ports:
 
-### PYAEDT
-FutureWarning: Module 'pyaedt' has become an alias to the new package structure. Please update you imports to use the new architecture based on 'ansys.aedt.core'. In addition, some files have been renamed to follow the PEP 8 naming convention. The old structure and file names will be deprecated in future versions, see https://aedt.docs.pyansys.com/version/stable/release_1_0.html
+- **PyQt5 to PySide6**: A complete overhaul of the GUI.
+- **GDSPY to GDSTK**: Replaced GDSPY with the more robust GDSTK library.
+- **PYAEDT to Ansys (v1.0)**: Major update with a new syntax. Extensive testing required.
+- **Installation Improvements**: Transitioned to `venv` for faster environment setup, moving away from `conda`. Also, most package versions have been floated and upgraded.
+
+---
+
+### GUI Enhancements
+
+1. **Traceback Reporting**: Added detailed traceback reporting in the logging system to aid debugging.
+2. **Model Reset Issue**: Fixed the issue causing the warning: *"metal: WARNING: endResetModel called on LibraryFileProxyModel(0x17fda8200) without calling beginResetModel first (No context available from Qt)"*.
+3. **MPL Renderer Issue**: Resolved the error: *"Ignoring fixed y limits to fulfill fixed data aspect with adjustable data limits. Ignoring fixed x limits to fulfill fixed data aspect with adjustable data limits."*.
+4. **UI Button Update**: Added a red border style to the "Create Component" button in the UI for better visibility.
+
+---
+
+### PYAEDT Update
+
+- **FutureWarning**: The `pyaedt` module has been restructured and is now an alias for the new package structure based on `ansys.aedt.core`. To avoid issues in future versions, please update your imports to use the new architecture. Additionally, several files have been renamed to follow the PEP 8 naming conventions. For more information, refer to the [Ansys AEDT documentation](https://aedt.docs.pyansys.com/version/stable/release_1_0.html).
