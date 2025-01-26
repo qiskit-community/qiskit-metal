@@ -2271,3 +2271,8 @@ PlotWidget {
     /* Fix cut labels in plots #134 */
     padding: 0px;
 }
+
+QPushButton#create_qcomp_button {
+    border: 1px solid #e74d10;
+    border-radius: 1px;
+  }
