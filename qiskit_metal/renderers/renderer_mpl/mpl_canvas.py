@@ -559,11 +559,16 @@ class PlotCanvas(FigureCanvas):
             ax (axis): The axis
             num (int): Not used
         """
-        ax.set_aspect(1)
+        # ax.set_aspect(1)
+        # # If 'box', change the physical dimensions of the Axes. If 'datalim',
+        # # change the x or y data limits.
+        # ax.set_adjustable('datalim')
 
-        # If 'box', change the physical dimensions of the Axes. If 'datalim',
-        # change the x or y data limits.
-        ax.set_adjustable('datalim')
+        # Allow flexible container sizing while maintaining data scale
+        ax.set_aspect('auto')
+
+        # Ensure data units are equal
+        ax.set_box_aspect(None)
 
         ax.set_xlabel('x position (mm)')
         ax.set_ylabel('y position (mm)')
@@ -593,6 +598,14 @@ class PlotCanvas(FigureCanvas):
 
         #[left, bottom, width, height]
         # ax.set_position([0,0,1,1])
+
+        # Set axis scales to be equal
+        ax.set_xscale('linear')
+        ax.set_yscale('linear')
+
+        # Update axis limits to maintain square units
+        ax.set_adjustable('datalim')
+        ax.set_anchor('C')  # Center the plot
 
     def style_figure(self):
         """Style a figure."""
