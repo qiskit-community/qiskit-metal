@@ -14,71 +14,40 @@
 """ This module has a QRenderer to export QDesign to a GDS file."""
 # pylint: disable=too-many-lines
 
+import math
+import os
 from copy import deepcopy
 from operator import itemgetter
-from typing import TYPE_CHECKING, Tuple, Union, Dict as DictType
-
-import os
-import math
-import pandas as pd
-import numpy as np
+from typing import TYPE_CHECKING, Tuple, Union
+from typing import Dict as DictType
 
 import gdstk
-import shapely
 import geopandas
-
+import numpy as np
+import pandas as pd
+import shapely
 from scipy.spatial import distance
 from shapely.geometry import LineString
 
+from qiskit_metal import draw
 from qiskit_metal.renderers.renderer_base import QRenderer
 from qiskit_metal.renderers.renderer_gds.make_cheese import Cheesing
 from qiskit_metal.toolbox_metal.parsing import is_true
-from qiskit_metal import draw
 
 from ... import Dict
-
 from .. import config
 
 if not config.is_building_docs():
-    from qiskit_metal.toolbox_python.utility_functions import can_write_to_path
     from qiskit_metal.toolbox_python.utility_functions import (
-        get_range_of_vertex_to_not_fillet,)
+        can_write_to_path,
+        get_range_of_vertex_to_not_fillet,
+    )
 
 if TYPE_CHECKING:
     # For linting typechecking, import modules that can't be loaded here under normal conditions.
     # For example, I can't import QDesign, because it requires QRenderer first. We have the
     # chicken and egg issue.
     from qiskit_metal.designs import QDesign
-
-
-def _new_cell(lib: "gdstk.Library", name: str,
-              overwrite_duplicate: bool) -> "gdstk.Cell":
-    """Helper to create or overwrite a gdstk cell in a library.
-
-    Args:
-        lib (gdstk.Library): Library to hold the new cell.
-        name (str): Name of the new cell.
-        overwrite_duplicate (bool): If True, remove existing cell of same name, then recreate.
-
-    Returns:
-        gdstk.Cell: The newly created cell.
-    """
-    existing = next((c for c in lib.cells if c.name == name), None)
-    if existing and overwrite_duplicate:
-        lib.remove(existing)
-    new_cell = gdstk.Cell(name)
-    lib.add(new_cell)
-    return new_cell
-
-
-def _rename_cell(cell: "gdstk.Cell", new_name: str) -> None:
-    """Helper to rename a gdstk cell.
-
-    Args:
-        cell (gdstk.Cell): Cell object to rename.
-        new_name (str): New name for the cell.
-    """
-    cell.name = new_name
 
 
 class QGDSRenderer(QRenderer):
@@ -116,7 +85,7 @@ class QGDSRenderer(QRenderer):
         * gds_unit: '1'
         * ground_plane: 'True'
         * negative_mask: Dict(main=[])
-        * corners: 'circular bend'
+        * corners: 'natural'
         * tolerance: '0.00001'
         * precision: '0.000000001'
         * width_LineString: '10um'
@@ -183,14 +152,13 @@ class QGDSRenderer(QRenderer):
         #           delete for positive mask: TOP_main_#_NoCheese_99, TOP_main_#_one_hole,
         #                                       ground_main_#
         fabricate="False",
-        # corners: ('natural', 'miter', 'bevel', 'round', 'smooth',
-        # 'circular bend', callable, list)
+        # corners: ("natural", "miter", "bevel", "round", "smooth", callable)
         # Type of joins. A callable must receive 6 arguments
         # (vertex and direction vector from both segments being joined,
         # the center and width of the path)
         # and return a list of vertices that make the join.
         # A list can be used to define the join for each parallel path.
-        corners="circular bend",
+        corners="natural",
         # tolerance > precision
         # Precision used for gds lib, boolean operations and FlexPath should
         # likely be kept the same.  They can be different, but increases odds
@@ -995,8 +963,7 @@ class QGDSRenderer(QRenderer):
         # For now, DO NOT allow the user of GDS to provide the precision.
         # user_precision = int(np.abs(np.log10(precision)))
 
-        func = get_range_of_vertex_to_not_fillet  # pylint: disable=possibly-used-before-assignment
-        all_idx_bad_fillet["reduced_idx"] = func(
+        all_idx_bad_fillet["reduced_idx"] = get_range_of_vertex_to_not_fillet(
             coords,
             a_fillet,
             self.design.template_options.PRECISION,
@@ -1420,8 +1387,8 @@ class QGDSRenderer(QRenderer):
                                 no_cheese_subtract_cell_name = (
                                     f"TOP_{chip_name}_{chip_layer}_NoCheese_{sub_layer}"
                                 )
-                                no_cheese_cell = _new_cell(
-                                    lib, no_cheese_subtract_cell_name, True)
+                                no_cheese_cell = lib.new_cell(
+                                    no_cheese_subtract_cell_name)
                                 for poly_el in all_nocheese_gds:
                                     if isinstance(poly_el, list):
                                         for sub_poly in poly_el:
@@ -1547,18 +1514,15 @@ class QGDSRenderer(QRenderer):
         """
 
         precision = float(self.parse_value(self.options.precision))
-        max_points = int(self.parse_value(self.options.max_points))
 
         lib = self.new_gds_library()
 
         if is_true(self.options.ground_plane):
             all_chips_top_name = "TOP"
-            all_chips_top = lib.new_cell(all_chips_top_name,
-                                         overwrite_duplicate=True)
+            all_chips_top = lib.new_cell(all_chips_top_name)
             for chip_name, _ in self.chip_info.items():
                 chip_only_top_name = f"TOP_{chip_name}"
-                chip_only_top = lib.new_cell(chip_only_top_name,
-                                             overwrite_duplicate=True)
+                chip_only_top = lib.new_cell(chip_only_top_name)
 
                 layers_in_chip, rectangle_points = self._get_rectangle_points(
                     chip_name)
@@ -1571,7 +1535,6 @@ class QGDSRenderer(QRenderer):
                         chip_layer,
                         rectangle_points,
                         precision,
-                        max_points,
                     )
 
                 # If junction table, import the cell and cell to chip_only_top
@@ -1581,7 +1544,7 @@ class QGDSRenderer(QRenderer):
                                                        layers_in_chip)
 
                 # put all chips into TOP
-                if chip_only_top.get_bounding_box() is not None:
+                if chip_only_top.bounding_box() is not None:
                     all_chips_top.add(gdstk.Reference(chip_only_top))
                 else:
                     lib.remove(chip_only_top)
@@ -1594,7 +1557,6 @@ class QGDSRenderer(QRenderer):
         chip_layer: int,
         rectangle_points: list,
         precision: float,
-        max_points: int,
     ):
         """Handle the positive vs negative mask.
 
@@ -1606,14 +1568,13 @@ class QGDSRenderer(QRenderer):
             rectangle_points (list): The rectangle to denote the ground
                                     for each layer.
             precision (float): Used for GDS python export.
-            max_points (int): Used for GDS python export, 199 as the default.
         """
 
         self.chip_info[chip_name]["subtract_poly"] = gdstk.Polygon(
             rectangle_points, layer=chip_layer, datatype=10)
 
         ground_cell_name = f"TOP_{chip_name}_{chip_layer}"
-        ground_cell = lib.new_cell(ground_cell_name, overwrite_duplicate=True)
+        ground_cell = lib.new_cell(ground_cell_name)
 
         if self._is_negative_mask(chip_name, chip_layer):
             self._negative_mask(
@@ -1623,7 +1584,6 @@ class QGDSRenderer(QRenderer):
                 chip_name,
                 chip_layer,
                 precision,
-                max_points,
             )
         else:
             self._positive_mask(
@@ -1633,7 +1593,6 @@ class QGDSRenderer(QRenderer):
                 chip_name,
                 chip_layer,
                 precision,
-                max_points,
             )
 
     def _is_negative_mask(self, chip: str, layer: int) -> bool:
@@ -1662,7 +1621,6 @@ class QGDSRenderer(QRenderer):
         chip_name: str,
         chip_layer: int,
         precision: float,
-        max_points: int,
     ):
         """Apply logic for negative_mask.
 
@@ -1673,46 +1631,22 @@ class QGDSRenderer(QRenderer):
             chip_name (str): Name of chip to render.
             chip_layer (int): Layer of the chip to render.
             precision (float):  GDS geometry precision.
-            max_points (int): GDS geometry max points, default is 199.
         """
         if len(self.chip_info[chip_name][chip_layer]["q_subtract_true"]) != 0:
-
-            # When subtract==True for chip and layer.
-            subtract_true_cell_name = f"SUBTRACT_true_{chip_name}_{chip_layer}"
-            subtract_true_cell = lib.new_cell(subtract_true_cell_name,
-                                              overwrite_duplicate=True)
-            subtract_true_cell.add(
-                self.chip_info[chip_name][chip_layer]["q_subtract_true"])
-
-            # When subtract==False for chip and layer.
-            subtract_false_cell_name = f"SUBTRACT_false_{chip_name}_{chip_layer}"
-            subtract_false_cell = lib.new_cell(subtract_false_cell_name,
-                                               overwrite_duplicate=True)
-            subtract_false_cell.add(
-                self.chip_info[chip_name][chip_layer]["q_subtract_false"])
-
-            subtract_true_polygons = subtract_true_cell.polygons
-            subtract_false_polygons = subtract_false_cell.polygons
-
             # Difference for True-False.
             diff_geometry = gdstk.boolean(
-                subtract_true_polygons,
-                subtract_false_polygons,
+                self.chip_info[chip_name][chip_layer]["q_subtract_true"],
+                self.chip_info[chip_name][chip_layer]["q_subtract_false"],
                 "not",
                 layer=chip_layer,
-                datatype=10,
                 precision=precision,
-                max_points=max_points,
             )
-
-            lib.remove(subtract_true_cell)
-            lib.remove(subtract_false_cell)
 
             if diff_geometry is None:
                 self.design.logger.warning(
                     "There is no table named diff_geometry to write.")
             else:
-                ground_cell.add(diff_geometry)
+                ground_cell.add(*diff_geometry)
 
         QGDSRenderer._add_groundcell_to_chip_only_top(lib, chip_only_top,
                                                       ground_cell)
@@ -1725,7 +1659,6 @@ class QGDSRenderer(QRenderer):
         chip_name: str,
         chip_layer: int,
         precision: float,
-        max_points: int,
     ):
         """Apply logic for positive mask for a chip to render.
 
@@ -1736,42 +1669,22 @@ class QGDSRenderer(QRenderer):
             chip_name (str): Chip name.
             chip_layer (int): Layer index.
             precision (float): GDS geometry precision.
-            max_points (int): GDS geometry max points.
         """
         if len(self.chip_info[chip_name][chip_layer]["q_subtract_true"]) != 0:
-            subtract_cell_name = f"SUBTRACT_{chip_name}_{chip_layer}"
-            subtract_cell = lib.new_cell(subtract_cell_name,
-                                         overwrite_duplicate=True)
-            subtract_cell.add(
-                self.chip_info[chip_name][chip_layer]["q_subtract_true"])
-
-            # gdspy.boolean() is not documented clearly.  If there are multiple
-            # elements to subtract (both poly & path), the way I could
-            # make it work is to put them into a cell, within lib. I used
-            # the method cell_name.get_polygons(), which appears to convert
-            # all elements within the cell to poly. After the boolean(),
-            # I deleted the cell from lib. The memory is freed up then.
             diff_geometry = gdstk.boolean(
                 [self.chip_info[chip_name]["subtract_poly"]],
-                subtract_cell.polygons,
+                self.chip_info[chip_name][chip_layer]["q_subtract_true"],
                 "not",
                 layer=chip_layer,
                 datatype=10,
                 precision=precision,
-                max_points=max_points,
             )
-
-            lib.remove(subtract_cell)
 
             if diff_geometry is None:
                 self.design.logger.warning(
                     "There is no table named diff_geometry to write.")
             else:
-                ground_chip_layer_name = f"ground_{chip_name}_{chip_layer}"
-                ground_chip_layer = lib.new_cell(ground_chip_layer_name)
-                # diff_geometry is a polygon set. So put into it's own cell.
-                ground_chip_layer.add(diff_geometry)
-                ground_cell.add(gdstk.Reference(ground_chip_layer))
+                ground_cell.add(*diff_geometry)
 
         self._handle_q_subtract_false(chip_name, chip_layer, ground_cell)
         QGDSRenderer._add_groundcell_to_chip_only_top(lib, chip_only_top,
@@ -1795,7 +1708,7 @@ class QGDSRenderer(QRenderer):
             if len(self.chip_info[chip_name][chip_layer]
                    ["q_subtract_false"]) != 0:
                 ground_cell.add(
-                    self.chip_info[chip_name][chip_layer]["q_subtract_false"])
+                    *self.chip_info[chip_name][chip_layer]["q_subtract_false"])
 
     @classmethod
     def _add_groundcell_to_chip_only_top(cls, lib: "gdstk.Library",
@@ -2005,12 +1918,12 @@ class QGDSRenderer(QRenderer):
                             (c for c in lib.cells
                              if c.name == chip_only_top_layer_name), None)
                         if top_layer_cell:
-                            hold_all_pads_cell = _new_cell(
-                                lib, f"r_l_hold_all_pads_{iter_layer}", True)
+                            hold_all_pads_cell = lib.new_cell(
+                                f"r_l_hold_all_pads_{iter_layer}")
                             top_layer_cell.add(
                                 gdstk.Reference(hold_all_pads_cell))
-                            hold_all_jj_cell = _new_cell(
-                                lib, f"all_jj_imported_{iter_layer}", True)
+                            hold_all_jj_cell = lib.new_cell(
+                                f"all_jj_imported_{iter_layer}")
 
                             self._add_negative_extension_to_jj(
                                 chip_name,
@@ -2081,19 +1994,17 @@ class QGDSRenderer(QRenderer):
                     "mask usage.")
 
         diff_r_l_pads_name = f"r_l_pads_diff_{jj_layer}"
-        diff_pad_cell_layer = _new_cell(lib, diff_r_l_pads_name, True)
+        diff_pad_cell_layer = lib.new_cell(diff_r_l_pads_name)
         chip_only_top.add(gdstk.Reference(diff_pad_cell_layer))
 
         precision = float(self.parse_value(self.options.precision))
-        max_points = int(self.parse_value(self.options.max_points))
 
         if chip_only_top_layer.bounding_box() is not None:
             boolean_result = gdstk.boolean(
-                chip_only_top_layer.polygons,
-                hold_all_pads_cell.polygons,
+                chip_only_top_layer.get_polygons(),
+                hold_all_pads_cell.get_polygons(),
                 "not",
                 precision=precision,
-                max_points=max_points,
             )
             if boolean_result:
                 for poly in boolean_result:
@@ -2128,7 +2039,7 @@ class QGDSRenderer(QRenderer):
         """
         hold_name = chip_only_top_layer.name
         lib.remove(chip_only_top_layer)
-        _rename_cell(diff_pad_cell_layer, hold_name)
+        lib.rename_cell(diff_pad_cell_layer, hold_name)
 
         if diff_pad_cell_layer.bounding_box() is not None:
             chip_only_top.add(gdstk.Reference(diff_pad_cell_layer))
@@ -2170,7 +2081,7 @@ class QGDSRenderer(QRenderer):
             row, bounding_box)
         jj_pad_r_l_name = (f"{row.gds_cell_name}_QComponent_is_{row.component}"
                            f"_Name_is_{row.name}_name_is_{row.name}")
-        temp_cell = _new_cell(lib, jj_pad_r_l_name, True)
+        temp_cell = lib.new_cell(jj_pad_r_l_name)
         if pad_left is not None:
             temp_cell.add(pad_left)
         if pad_right is not None:
@@ -2210,7 +2121,7 @@ class QGDSRenderer(QRenderer):
         jj_pad_r_l_name = (
             f"pads_{row.gds_cell_name}_QComponent_is_{row.component}_name_is_{row.name}"
         )
-        temp_cell = _new_cell(lib, jj_pad_r_l_name, True)
+        temp_cell = lib.new_cell(jj_pad_r_l_name)
 
         if pad_left is not None:
             temp_cell.add(pad_left)
@@ -2260,6 +2171,8 @@ class QGDSRenderer(QRenderer):
         # if imported, hold the path to file name, otherwise None.
         self.imported_junction_gds = None
 
+        max_points = int(self.parse_value(self.options.max_points))
+
         if self._create_qgeometry_for_gds(highlight_qcomponents) == 0:
             # Create self.lib and populate path and poly.
             self._populate_poly_path_for_export()
@@ -2275,7 +2188,7 @@ class QGDSRenderer(QRenderer):
             self._populate_cheese()
 
             # Export the file to disk from self.lib
-            self.lib.write_gds(file_name)
+            self.lib.write_gds(file_name, max_points)
 
             return 1
 
@@ -2304,7 +2217,6 @@ class QGDSRenderer(QRenderer):
         # pylint: disable=too-many-locals
 
         precision = float(self.parse_value(self.options.precision))
-        max_points = int(self.parse_value(self.options.max_points))
 
         all_polys = list(multi_poly.geoms)
         all_gds = list()
@@ -2331,19 +2243,16 @@ class QGDSRenderer(QRenderer):
                     layer=layer,
                     datatype=data_type,
                     precision=precision,
-                    max_points=max_points,
                 )
                 # Poly fracturing leading to a funny shape. Leave this out of gds output for now.
                 # a_poly.fillet(no_cheese_buffer,
                 #               points_per_2pi=128,
-                #               max_points=max_points,
                 #               precision=precision)
                 all_gds.append(diff_result)
             else:
                 # Poly fracturing leading to a funny shape. Leave this out of gds output for now.
                 # exterior_poly.fillet(no_cheese_buffer,
                 #                      points_per_2pi=128,
-                #                      max_points=max_points,
                 #                      precision=precision)
                 all_gds.append(exterior_poly)
 
@@ -2379,20 +2288,9 @@ class QGDSRenderer(QRenderer):
             https://gdspy.readthedocs.io/en/stable/reference.html#polygon
         """
 
-        # pylint: disable=too-many-locals
-
-        # corners = self.options.corners
-        # tolerance = self.parse_value(self.options.tolerance)
-        # WARNING: corners and tolerance are not used in this method.
-        # TODO: CHECK THIS WORKS AS EXPECTED.
-        # The gdstk.FlexPath constructor does not support a direct equivalent
-        # for the corners, tolerance, or bend_radius parameters.
-        # a minimal conversion was implemented here without recreating the
-        # full behavior of these parameters.
-        # Filleting was handled using Shapely's buffer method.
-
+        corners = self.options.corners
         precision = self.parse_value(self.options.precision)
-        max_points = int(self.parse_value(self.options.max_points))
+        tolerance = self.parse_value(self.options.tolerance)
 
         geom = qgeometry_element.geometry
         layer_num = int(qgeometry_element.layer)
@@ -2419,64 +2317,63 @@ class QGDSRenderer(QRenderer):
                     "not",
                     layer=layer_num,
                     datatype=10,
-                    max_points=max_points,
                     precision=float(precision),
                 )
                 return result
             return exterior_poly
 
         if isinstance(geom, shapely.geometry.LineString):
-            use_width = self.parse_value(self.options.width_LineString)
             if not math.isnan(qgeometry_element.width):
                 use_width = qgeometry_element.width
+            else:
+                use_width = self.parse_value(self.options.width_LineString)
+                qcomponent_id = self.parse_value(qgeometry_element.component)
+                name = self.parse_value(qgeometry_element['name'])
+                layer_num = self.parse_value(qgeometry_element.layer)
+                width = self.parse_value(qgeometry_element.width)
+                self.logger.warning(
+                    f'Since width:{width} for a Path is not a number, '
+                    f'it will be exported using width_LineString:'
+                    f' {use_width}.  The component_id is:{qcomponent_id},'
+                    f' name is:{name}, layer is: {layer_num}')
 
-            fillet_val = 0
-            if "fillet" in qgeometry_element and not (
-                    math.isnan(qgeometry_element.fillet) or
-                    qgeometry_element.fillet <= 0 or
-                    qgeometry_element.fillet < qgeometry_element.width):
-                fillet_val = qgeometry_element.fillet
+            if 'fillet' in qgeometry_element:
+                if (math.isnan(qgeometry_element.fillet) or
+                        qgeometry_element.fillet <= 0 or
+                        qgeometry_element.fillet < qgeometry_element.width):
 
-            if fillet_val > 0:
-                # Apply fillet using shapely's buffer to create a rounded polygon
-                buffered = geom.buffer(fillet_val, cap_style=2, join_style=2)
-                if isinstance(buffered, shapely.geometry.Polygon):
-                    exterior_coords = list(buffered.exterior.coords)
-                    return gdstk.Polygon(
-                        exterior_coords,
+                    to_return = gdstk.FlexPath(
+                        list(geom.coords),
+                        use_width,
                         layer=layer_num,
                         datatype=11,
                     )
-                elif isinstance(buffered, shapely.geometry.MultiPolygon):
-                    polygons = []
-                    for poly in buffered:
-                        exterior_coords = list(poly.exterior.coords)
-                        polygons.append(
-                            gdstk.Polygon(
-                                exterior_coords,
-                                layer=layer_num,
-                                datatype=11,
-                            ))
-                    return polygons  # Return list of polygons for MultiPolygon
-                else:
-                    self.logger.warning(
-                        f"Buffered geometry type={type(buffered)} not supported."
-                    )
-                    return None
-            else:
-                # No fillet; create a FlexPath as before
-                path_points = list(geom.coords)
-                new_flexpath = gdstk.FlexPath(
-                    path_points,
-                    use_width,
-                    layer=layer_num,
-                    datatype=11,
-                    max_points=max_points,
-                )
-                return new_flexpath
 
-        self.logger.warning(f"Unsupported geometry type={type(geom)} in"
-                            " _qgeometry_to_gds. Expected Polygon/LineString.")
+                else:
+                    to_return = gdstk.FlexPath(
+                        list(geom.coords),
+                        use_width,
+                        layer=layer_num,
+                        datatype=11,
+                        joins=corners,
+                        bend_radius=qgeometry_element.fillet,
+                        tolerance=tolerance,
+                    )
+
+                return to_return
+
+            # Could be junction table with a linestring.
+            # Look for gds_path_filename in column.
+            self.logger.warning(f'Linestring did not have fillet in column. '
+                                f'The qgeometry_element was not drawn.\n'
+                                f'The qgeometry_element within table is:\n'
+                                f'{qgeometry_element}')
+            return None  # Need explicitly to avoid lint warnings.
+
+        self.logger.warning(
+            f'Unexpected shapely object geometry.'
+            f'The variable qgeometry_element is {type(geom)}, '
+            f'method can currently handle Polygon and FlexPath.')
         return None
 
     def _get_chip_names(self) -> Dict:
