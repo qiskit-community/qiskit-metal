@@ -33,7 +33,7 @@ class ElementsWindow(QMainWindow):
     Extends the `QMainWindow` class.
 
     PySide6 Signal / Slots Extensions:
-        The UI can call up to this class to execeute button clicks for instance
+        The UI can call up to this class to execute button clicks for instance
         Extensiosn in qt designer on signals/slots are linked to this class
     """
 
