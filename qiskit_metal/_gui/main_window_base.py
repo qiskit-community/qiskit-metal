@@ -25,10 +25,9 @@ from PySide6.QtCore import QTimer
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication, QFileDialog, QMainWindow, QMessageBox, QDockWidget
 
-from .. import Dict, config
+from .. import config
 from ..toolbox_python._logging import setup_logger
 from . import __version__
-from .main_window_ui import Ui_MainWindow
 from .utility._handle_qt_messages import slot_catch_error
 from .widgets.log_widget.log_metal import LogHandler_for_QTextLog
 
@@ -44,7 +43,7 @@ class QMainWindowExtensionBase(QMainWindow):
         """"""
         super().__init__()
         # Set manually
-        self.handler = None  # type: QMainWindowBaseHandler
+        self.handler: QMainWindowBaseHandler = None
         self.force_close = False
 
     @property
@@ -152,7 +151,7 @@ class QMainWindowExtensionBase(QMainWindow):
         path = Path(name + '.' + type_).resolve()
 
         # grab the main window
-        screenshot = self.grab()  # type: QtGui.QPixMap
+        screenshot: QtGui.QPixmap = self.grab()
         screenshot.save(str(path), type_)
 
         # copy to clipboard
@@ -618,7 +617,7 @@ def kick_start_qApp():
                 try:
                     from IPython import get_ipython
                     ipython = get_ipython()
-                    ipython.magic('gui qt6')
+                    ipython.run_line_magic("gui", "qt6")
 
                 except Exception as e:
                     print("exception")
