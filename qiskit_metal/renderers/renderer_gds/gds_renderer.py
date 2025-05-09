@@ -11,7 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-""" This module has a QRenderer to export QDesign to a GDS file."""
+"""This module has a QRenderer to export QDesign to a GDS file."""
 # pylint: disable=too-many-lines
 
 import math
@@ -125,7 +125,7 @@ class QGDSRenderer(QRenderer):
         short_segments_to_not_fillet="True",
         check_short_segments_by_scaling_fillet="2.0",
         # DO NOT MODIFY `gds_unit`. Gets overwritten by ``set_units``.
-        # gdspy unit is 1 meter.  gds_units appear to ONLY be used during
+        # gdstk unit is 1 meter.  gds_units appear to ONLY be used during
         # write_gds().  Note that gds_unit will be overwritten from the design
         # units, during init().
         # Moving to Gdstk, the default unit is 1 µm (10⁻⁶ m), but we overwrite this.
@@ -602,7 +602,6 @@ class QGDSRenderer(QRenderer):
             all_table_no_subtracts = []
 
             for table_name in self.design.qgeometry.get_element_types():
-
                 # Get table for chip and table_name, and reduce
                 # to keep just the list of unique_qcomponents.
                 table = self._get_table(table_name, unique_qcomponents,
@@ -656,8 +655,8 @@ class QGDSRenderer(QRenderer):
         segments get fillet'ed.  Add the multiple LINESTRINGS back to table.
         Also remove "bad" LINESTRING from table.
 
-        Then use _qgeometry_to_gds() to convert the QGeometry elements to gdspy
-        elements.  The gdspy elements are placed in
+        Then use _qgeometry_to_gds() to convert the QGeometry elements to gdstk
+        elements.  The gdstk elements are placed in
         self.chip_info[chip_name]['q_subtract_true'].
 
         Args:
@@ -1017,8 +1016,8 @@ class QGDSRenderer(QRenderer):
 
         # Done because ground plane option may be false.
         # This is not used anywhere currently.
-        # Keep this depreciated code.
-        # polys use gdspy.Polygon;    paths use gdspy.LineString
+        # Keep this deprecated code.
+        # polys use gdstk.Polygon;    paths use gdstk.LineString
 
         # q_geometries = table.apply(self._qgeometry_to_gds, axis=1)
         # setattr(self, f'{chip_name}_{table_name}s', q_geometries)
@@ -1060,7 +1059,7 @@ class QGDSRenderer(QRenderer):
 
     # To export the data.
 
-    def new_gds_library(self) -> "gdstk.Library":
+    def new_gds_library(self) -> gdstk.Library:
         """Creates a new GDS Library. Deletes the old. Create a new GDS library
         file. It can contains multiple cells.
 
@@ -1367,23 +1366,26 @@ class QGDSRenderer(QRenderer):
                 code = self._check_either_cheese(chip_name, chip_layer)
 
                 if code in (1, 2, 3):
-                    if len(self.chip_info[chip_name][chip_layer]
-                           ["all_subtract_true"]) != 0:
+                    if (len(self.chip_info[chip_name][chip_layer]
+                            ["all_subtract_true"]) != 0):
                         sub_df = self.chip_info[chip_name][chip_layer][
                             "all_subtract_true"]
                         no_cheese_multipolygon = self._cheese_buffer_maker(
                             sub_df, chip_name, no_cheese_buffer)
                         if no_cheese_multipolygon is not None:
                             self.chip_info[chip_name][chip_layer][
-                                "no_cheese"] = no_cheese_multipolygon
+                                "no_cheese"] = (no_cheese_multipolygon)
                             all_nocheese_gds = self._multipolygon_to_gds(
-                                no_cheese_multipolygon, chip_layer, sub_layer,
-                                no_cheese_buffer)
+                                no_cheese_multipolygon,
+                                chip_layer,
+                                sub_layer,
+                                no_cheese_buffer,
+                            )
                             self.chip_info[chip_name][chip_layer][
-                                "no_cheese_gds"] = all_nocheese_gds
+                                "no_cheese_gds"] = (all_nocheese_gds)
 
-                            if self._check_no_cheese(
-                                    chip_name, chip_layer) == 1 and not fab:
+                            if (self._check_no_cheese(chip_name, chip_layer)
+                                    == 1 and not fab):
                                 no_cheese_subtract_cell_name = (
                                     f"TOP_{chip_name}_{chip_layer}_NoCheese_{sub_layer}"
                                 )
@@ -1399,9 +1401,12 @@ class QGDSRenderer(QRenderer):
                                 chip_only_top_name = f"TOP_{chip_name}"
                                 chip_only_top = next(
                                     (c for c in lib.cells
-                                     if c.name == chip_only_top_name), None)
-                                if chip_only_top and no_cheese_cell.bounding_box(
-                                ) is not None:
+                                     if c.name == chip_only_top_name),
+                                    None,
+                                )
+                                if (chip_only_top and
+                                        no_cheese_cell.bounding_box()
+                                        is not None):
                                     chip_only_top.add(
                                         gdstk.Reference(no_cheese_cell))
                                 else:
@@ -1551,8 +1556,8 @@ class QGDSRenderer(QRenderer):
 
     def _handle_photo_resist(
         self,
-        lib: "gdstk.Library",
-        chip_only_top: "gdstk.Cell",
+        lib: gdstk.Library,
+        chip_only_top: gdstk.Cell,
         chip_name: str,
         chip_layer: int,
         rectangle_points: list,
@@ -1615,9 +1620,9 @@ class QGDSRenderer(QRenderer):
 
     def _negative_mask(
         self,
-        lib: "gdstk.Library",
-        chip_only_top: "gdstk.Cell",
-        ground_cell: "gdstk.Cell",
+        lib: gdstk.Library,
+        chip_only_top: gdstk.Cell,
+        ground_cell: gdstk.Cell,
         chip_name: str,
         chip_layer: int,
         precision: float,
@@ -1653,9 +1658,9 @@ class QGDSRenderer(QRenderer):
 
     def _positive_mask(
         self,
-        lib: "gdstk.Library",
-        chip_only_top: "gdstk.Cell",
-        ground_cell: "gdstk.Cell",
+        lib: gdstk.Library,
+        chip_only_top: gdstk.Cell,
+        ground_cell: gdstk.Cell,
         chip_name: str,
         chip_layer: int,
         precision: float,
@@ -1691,7 +1696,7 @@ class QGDSRenderer(QRenderer):
                                                       ground_cell)
 
     def _handle_q_subtract_false(self, chip_name: str, chip_layer: int,
-                                 ground_cell: "gdstk.Cell"):
+                                 ground_cell: gdstk.Cell):
         """For each layer, add the subtract=false components to ground.
 
         Args:
@@ -1711,9 +1716,9 @@ class QGDSRenderer(QRenderer):
                     *self.chip_info[chip_name][chip_layer]["q_subtract_false"])
 
     @classmethod
-    def _add_groundcell_to_chip_only_top(cls, lib: "gdstk.Library",
-                                         chip_only_top: "gdstk.Cell",
-                                         ground_cell: "gdstk.Cell") -> None:
+    def _add_groundcell_to_chip_only_top(cls, lib: gdstk.Library,
+                                         chip_only_top: gdstk.Cell,
+                                         ground_cell: gdstk.Cell) -> None:
         """Add the ground cell to the top of cell for chip.
 
         Args:
@@ -1723,7 +1728,7 @@ class QGDSRenderer(QRenderer):
                                     chip_only_top. Cell created for each layer.
         """
         # put all cells into TOP_chipname, if not empty.
-        # When checking for bounding box, gdspy will return None if empty.
+        # When checking for bounding box, gdstk will return None if empty.
 
         if ground_cell.bounding_box() is not None:
             chip_only_top.add(gdstk.Reference(ground_cell))
@@ -1731,7 +1736,7 @@ class QGDSRenderer(QRenderer):
             lib.remove(ground_cell)
 
     def _get_linestring_characteristics(
-            self, row: "pd.Pandas") -> Tuple[Tuple, float, float]:
+            self, row: pd.Series) -> Tuple[Tuple, float, float]:
         """Given a row in the Junction table, give the characteristics of
         LineString in row.geometry.
 
@@ -1763,8 +1768,12 @@ class QGDSRenderer(QRenderer):
 
     def _give_rotation_center_twopads(
         self, row: pd.Series, a_cell_bounding_box: np.ndarray
-    ) -> Tuple[float, Tuple[float, float], Union[gdstk.Polygon, None], Union[
-            gdstk.Polygon, None]]:
+    ) -> Tuple[
+            float,
+            Tuple[float, float],
+            Union[gdstk.Polygon, None],
+            Union[gdstk.Polygon, None],
+    ]:
         """Calculate the angle for rotation, center of LineString in
         row.geometry, and if needed create two pads to connect the junction to
         qubit.
@@ -1841,7 +1850,7 @@ class QGDSRenderer(QRenderer):
 
     ############
 
-    def _import_junction_gds_file(self, lib: "gdstk.Library",
+    def _import_junction_gds_file(self, lib: gdstk.Library,
                                   directory_name: str) -> bool:
         """Import the file which contains all junctions for design.
         If the file has already been imported, just return True.
@@ -1876,8 +1885,8 @@ class QGDSRenderer(QRenderer):
     def _import_junctions_to_one_cell(
         self,
         chip_name: str,
-        lib: "gdstk.Library",
-        chip_only_top: "gdstk.Cell",
+        lib: gdstk.Library,
+        chip_only_top: gdstk.Cell,
         layers_in_chip: list,
     ):
         """Given lib, import the gds file from default options.  Based on the
@@ -1907,7 +1916,6 @@ class QGDSRenderer(QRenderer):
 
         if self._import_junction_gds_file(lib=lib,
                                           directory_name=directory_name):
-
             for iter_layer in layers_in_chip:
                 if self._is_negative_mask(chip_name, iter_layer):
                     # Want to export negative mask
@@ -1916,7 +1924,9 @@ class QGDSRenderer(QRenderer):
                         chip_only_top_layer_name = f"TOP_{chip_name}_{iter_layer}"
                         top_layer_cell = next(
                             (c for c in lib.cells
-                             if c.name == chip_only_top_layer_name), None)
+                             if c.name == chip_only_top_layer_name),
+                            None,
+                        )
                         if top_layer_cell:
                             hold_all_pads_cell = lib.new_cell(
                                 f"r_l_hold_all_pads_{iter_layer}")
@@ -1940,11 +1950,13 @@ class QGDSRenderer(QRenderer):
                     ):
                         chip_layer = int(row.layer)
                         ground_cell_name = f"TOP_{chip_name}_{chip_layer}"
-                        if ground_cell_name in [c.name for c in lib.cells
-                                               ] and chip_layer == iter_layer:
+                        if (ground_cell_name in [c.name for c in lib.cells] and
+                                chip_layer == iter_layer):
                             chip_layer_cell = next(
                                 (c for c in lib.cells
-                                 if c.name == ground_cell_name), None)
+                                 if c.name == ground_cell_name),
+                                None,
+                            )
                             if row.gds_cell_name in [c.name for c in lib.cells]:
                                 self._add_positive_extension_to_jj(
                                     lib, row, chip_layer_cell)
@@ -1958,11 +1970,11 @@ class QGDSRenderer(QRenderer):
         self,
         chip_name: str,
         jj_layer: int,
-        lib: "gdstk.Library",
-        chip_only_top: "gdstk.Cell",
-        chip_only_top_layer: "gdstk.Cell",
-        hold_all_pads_cell: "gdstk.Cell",
-        hold_all_jj_cell: "gdstk.Cell",
+        lib: gdstk.Library,
+        chip_only_top: gdstk.Cell,
+        chip_only_top_layer: gdstk.Cell,
+        hold_all_pads_cell: gdstk.Cell,
+        hold_all_jj_cell: gdstk.Cell,
     ) -> None:
         """Gather extension pads & junctions for negative mask usage.
         Manipulate existing geometries for the layer that the junctions need
@@ -2013,17 +2025,22 @@ class QGDSRenderer(QRenderer):
         if hold_all_jj_cell.bounding_box() is not None:
             diff_pad_cell_layer.add(gdstk.Reference(hold_all_jj_cell))
 
-        self._clean_hierarchy(lib, chip_only_top, chip_only_top_layer,
-                              diff_pad_cell_layer, hold_all_pads_cell)
+        self._clean_hierarchy(
+            lib,
+            chip_only_top,
+            chip_only_top_layer,
+            diff_pad_cell_layer,
+            hold_all_pads_cell,
+        )
 
     @classmethod
     def _clean_hierarchy(
         cls,
-        lib: "gdstk.Library",
-        chip_only_top: "gdstk.Cell",
-        chip_only_top_layer: "gdstk.Cell",
-        diff_pad_cell_layer: "gdstk.Cell",
-        hold_all_pads_cell: "gdstk.Cell",
+        lib: gdstk.Library,
+        chip_only_top: gdstk.Cell,
+        chip_only_top_layer: gdstk.Cell,
+        diff_pad_cell_layer: gdstk.Cell,
+        hold_all_pads_cell: gdstk.Cell,
     ) -> None:
         """Delete cell that doesn't have pad nor jjs.  Then use same
         name for correct cell.  Also, get rid of cell that had the pads
@@ -2052,10 +2069,10 @@ class QGDSRenderer(QRenderer):
 
     def _gather_negative_extension_for_jj(
         self,
-        lib: "gdstk.Library",
+        lib: gdstk.Library,
         row: pd.Series,
-        hold_all_pads_cell: "gdstk.Cell",
-        hold_all_jj_cell: "gdstk.Cell",
+        hold_all_pads_cell: gdstk.Cell,
+        hold_all_jj_cell: gdstk.Cell,
     ) -> None:
         """Gather the pads and jjs and put them in separate cells.  The
         the pads can be boolean'd 'not' just once. After boolean for pads, then
@@ -2094,9 +2111,9 @@ class QGDSRenderer(QRenderer):
 
     def _add_positive_extension_to_jj(
         self,
-        lib: "gdstk.Library",
-        row: "pd.Series",
-        chip_layer_cell: "gdstk.Cell",
+        lib: gdstk.Library,
+        row: pd.Series,
+        chip_layer_cell: gdstk.Cell,
     ):
         """Get the extension pads, then add or subtract to extracted cell based on
         positive or negative mask.
@@ -2201,14 +2218,14 @@ class QGDSRenderer(QRenderer):
             data_type: int,
             no_cheese_buffer: float,  # pylint: disable=unused-argument
     ) -> list:
-        """Convert a shapely MultiPolygon to corresponding gdspy.
+        """Convert a shapely MultiPolygon to corresponding gdstk.
 
         Args:
             multi_poly (shapely.geometry.multipolygon.MultiPolygon): The
                                 shapely geometry of no-cheese boundary.
             layer (int): The layer of the input multipolygon.
             data_type (int): Used as a "sub-layer" to place the no-cheese
-                                gdspy output.
+                                gdstk output.
             no_cheese_buffer (float): Used for both fillet and buffer size.
 
         Returns:
@@ -2285,7 +2302,7 @@ class QGDSRenderer(QRenderer):
                                 This can be changed.
 
         See:
-            https://gdspy.readthedocs.io/en/stable/reference.html#polygon
+            https://heitzmann.github.io/gdstk/geometry/gdstk.Polygon.html
         """
 
         corners = self.options.corners
@@ -2328,20 +2345,19 @@ class QGDSRenderer(QRenderer):
             else:
                 use_width = self.parse_value(self.options.width_LineString)
                 qcomponent_id = self.parse_value(qgeometry_element.component)
-                name = self.parse_value(qgeometry_element['name'])
+                name = self.parse_value(qgeometry_element["name"])
                 layer_num = self.parse_value(qgeometry_element.layer)
                 width = self.parse_value(qgeometry_element.width)
                 self.logger.warning(
-                    f'Since width:{width} for a Path is not a number, '
-                    f'it will be exported using width_LineString:'
-                    f' {use_width}.  The component_id is:{qcomponent_id},'
-                    f' name is:{name}, layer is: {layer_num}')
+                    f"Since width:{width} for a Path is not a number, "
+                    f"it will be exported using width_LineString:"
+                    f" {use_width}.  The component_id is:{qcomponent_id},"
+                    f" name is:{name}, layer is: {layer_num}")
 
-            if 'fillet' in qgeometry_element:
+            if "fillet" in qgeometry_element:
                 if (math.isnan(qgeometry_element.fillet) or
                         qgeometry_element.fillet <= 0 or
                         qgeometry_element.fillet < qgeometry_element.width):
-
                     to_return = gdstk.FlexPath(
                         list(geom.coords),
                         use_width,
@@ -2364,16 +2380,16 @@ class QGDSRenderer(QRenderer):
 
             # Could be junction table with a linestring.
             # Look for gds_path_filename in column.
-            self.logger.warning(f'Linestring did not have fillet in column. '
-                                f'The qgeometry_element was not drawn.\n'
-                                f'The qgeometry_element within table is:\n'
-                                f'{qgeometry_element}')
+            self.logger.warning(f"Linestring did not have fillet in column. "
+                                f"The qgeometry_element was not drawn.\n"
+                                f"The qgeometry_element within table is:\n"
+                                f"{qgeometry_element}")
             return None  # Need explicitly to avoid lint warnings.
 
         self.logger.warning(
-            f'Unexpected shapely object geometry.'
-            f'The variable qgeometry_element is {type(geom)}, '
-            f'method can currently handle Polygon and FlexPath.')
+            f"Unexpected shapely object geometry."
+            f"The variable qgeometry_element is {type(geom)}, "
+            f"method can currently handle Polygon and FlexPath.")
         return None
 
     def _get_chip_names(self) -> Dict:

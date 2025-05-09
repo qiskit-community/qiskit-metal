@@ -147,10 +147,10 @@ Once inside `JupyterLab`, you can switch to the newly created Metal kernel to us
 Without conda: Virtual environment setup (alternative setup)
 ------------------------------------------------------------
 
-**On Windows, do this first:** It is recommended that you first install `Visual C++ 14.0`, required for a successful install of `gdspy`.
-If you do not have `Visual C++ 14.0` installed, you will be notified to install it when `gdspy` attempts to install.
+**On Windows, do this first:** It is recommended that you first install `Visual C++ x.0`, required for a successful install of `gdstk`.
+If you do not have `Visual C++ x.0` installed, you will be notified to install it when `gdstk` attempts to install.
 You can do this by downloading and installing `C++ Build Tools <https://visualstudio.microsoft.com/visual-cpp-build-tools/>`_.
-Be sure to select the latest versions of `MSVCv142 - VS 2019 C++ x64/x86 build tools` and `Windows 10 SDK` in the installer as suggested in `this wiki <https://wiki.python.org/moin/WindowsCompilers>`_ referenced by the gdspy documentation.
+Be sure to select the latest versions of `MSVC` and `Windows SDK` in the installer as suggested in `this wiki <https://wiki.python.org/moin/WindowsCompilers>`_.
 
 To use a Python virtual environment, execute these commands in the top-level of the repository:
 
