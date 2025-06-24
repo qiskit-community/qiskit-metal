@@ -16,7 +16,7 @@
 import ast
 import inspect
 from pathlib import Path
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, List, Union
 
 import numpy as np
 import PySide6
@@ -188,8 +188,8 @@ class ComponentWidget(QTabWidget):
             color: #000000;
             """)
         self.src_doc = create_QTextDocument(self.ui.textSource)
-        self._html_css_lex = None  # type: pygments.formatters.html.HtmlFormatter
-        self.src_widgets = []  # type: List[QtWidgets.QWidget]
+        self._html_css_lex: pygments.formatters.html.HtmlFormatter = None
+        self.src_widgets: List[QtWidgets.QWidget] = []
 
         # Help stylesheet
         document = self.ui.textHelp.document()
