@@ -2,7 +2,7 @@ name: qiskit-metal
 channels:
   - conda-forge
 dependencies:
-  - python>=3.9
+  - python=3.10
   - addict==2.4.0
   - descartes==1.1.0
   - gdspy==1.6.12
@@ -12,9 +12,7 @@ dependencies:
   - numpy==1.24.2
   - pandas==1.5.3
   - pint==0.20.1
-  - pyepr-quantum==0.8.5.7
   - pygments==2.14.0
-  - pyside2==5.15.8
   - qdarkstyle==3.1
   - qutip==4.7.1
   - scipy==1.10.0
@@ -24,6 +22,3 @@ dependencies:
   - pyyaml==6.0
   - pip==23.0
   - cython<3.0.0
-  - pip:
-      - pyaedt==0.6.46
-      - gmsh==4.11.1
