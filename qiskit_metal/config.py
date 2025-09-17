@@ -59,7 +59,7 @@ GUI_CONFIG = Dict(
         'in the gui, it will be reflected in your Python interpreter and vice versa. '
         'Note that the gui does not automatically refresh on all events if you update '
         'variables from the Python interpreter.',
-        'Changed some object parameters? Click the <b>Remake</b> button in the main '
+        'Changed some object parameters? Click the <b>Rebuild</b> button in the main '
         'toolbar to recreate the polygons.',
         """<b>Log widget:</b> Right click the logger window to be able to change the log level and
         the loggers that are shown / hidden.""",
