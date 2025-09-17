@@ -44,8 +44,10 @@ setup(
         "Operating System :: MacOS",
         "Operating System :: POSIX :: Linux",
         "Programming Language :: Python :: 3 :: Only",
-        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
         "Topic :: Scientific/Engineering",
     ],
     keywords="qiskit sdk quantum eda",
@@ -60,7 +62,7 @@ setup(
             "styles/*/rc/*.png",
         ]
     },
-    python_requires=">=3.9",
+    python_requires=">=3.10",
     install_requires=requirements,
     project_urls={
         "Bug Tracker": "https://github.com/Qiskit/qiskit-metal/issues",
