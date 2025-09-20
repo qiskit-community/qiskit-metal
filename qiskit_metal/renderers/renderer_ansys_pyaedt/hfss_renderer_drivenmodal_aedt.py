@@ -1,13 +1,11 @@
-#
 from qiskit_metal.renderers.renderer_ansys_pyaedt.hfss_renderer_aedt import QHFSSPyaedt
-from qiskit_metal.toolbox_metal.parsing import parse_entry, parse_units
+from qiskit_metal.toolbox_metal.parsing import parse_entry
 from qiskit_metal import Dict
-from typing import List, Tuple, Union
+from typing import Union
 from collections import OrderedDict
 import pandas as pd
-import pyaedt
-from pyaedt import settings
-from pyaedt.modules.solutions import SolutionData
+from ansys.aedt.core import settings
+from ansys.aedt.core.visualization.post.solution_data import SolutionData
 
 
 class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
@@ -281,15 +279,15 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
 
         if setup_name not in self.current_app.setup_names:
             self.logger.warning(
-                f'Since the setup_name is not in the project/design which was used to start HFSS DrivenModal, '
-                f'a new setup will be added to design with default settings for HFSS DrivenModal.'
+                'Since the setup_name is not in the project/design which was used to start HFSS DrivenModal, '
+                'a new setup will be added to design with default settings for HFSS DrivenModal.'
             )
             self.add_hfss_dm_setup(setup_name)
 
         if sweep_name not in self.current_app.get_sweeps(setup_name):
             self.logger.warning(
-                f'Since the sweep_name is not in the setup, '
-                f'a new sweep will be added to setup with default settings for HFSS DrivenModal.'
+                'Since the sweep_name is not in the setup, '
+                'a new sweep will be added to setup with default settings for HFSS DrivenModal.'
             )
             self.add_sweep(setup_name=setup_name, name=sweep_name)
 
@@ -344,7 +342,7 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
 
         if expressions_dm is None:
             self.design.logger.warning(
-                f'Do not have valid string to search on for get_solution_data.')
+                'Do not have valid string to search on for get_solution_data.')
             return None
 
         # Activate project_name and design_name before anything else
@@ -366,7 +364,7 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
         return dm_solution_data
 
     def populate_mag_phase(self, dm_solution_data: dict,
-                           dm_data: pyaedt.modules.solutions.SolutionData):
+                           dm_data: SolutionData):
         """Update dm_solution_data with magnitude and phase of dm_data.
 
         Args:
@@ -380,7 +378,7 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
         dm_solution_data['phase'] = dm_data.full_matrix_mag_phase[1]
 
     def populate_real_imag(self, dm_solution_data: dict,
-                           dm_data: pyaedt.modules.solutions.SolutionData):
+                           dm_data: SolutionData):
         """Update dm_solution_data with real and imaginary format of dm_data.
 
         Args:
