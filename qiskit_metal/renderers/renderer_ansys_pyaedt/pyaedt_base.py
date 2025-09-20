@@ -637,10 +637,8 @@ class QPyaedt(QRendererAnalysis):
                                          data_type: int = 0):
         pass
 
-    def add_linestring_width(
-            self, qc_width: float,
-            a_polyline: Polyline, points_3d: list,
-            material: str) -> Polyline:
+    def add_linestring_width(self, qc_width: float, a_polyline: Polyline,
+                             points_3d: list, material: str) -> Polyline:
         """Determine the orthogonal vector.  Then sweep along a_polyline using qc_width.
         Then return the reference to new polyline with sweep in Ansys.
 
@@ -750,8 +748,7 @@ class QPyaedt(QRendererAnalysis):
                 self.add_one_endcap(comp_name, pin_name, layer_num, endcap_str)
 
     def add_fillet_linestring(self, qgeom: pd.Series, points_3d: list,
-                              qc_fillet: float,
-                              a_polyline: Polyline):
+                              qc_fillet: float, a_polyline: Polyline):
         """Determine the idx of Polyline vertices to fillet and fillet them.
 
         Args:

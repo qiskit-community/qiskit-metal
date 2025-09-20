@@ -363,8 +363,7 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
 
         return dm_solution_data
 
-    def populate_mag_phase(self, dm_solution_data: dict,
-                           dm_data: SolutionData):
+    def populate_mag_phase(self, dm_solution_data: dict, dm_data: SolutionData):
         """Update dm_solution_data with magnitude and phase of dm_data.
 
         Args:
@@ -377,8 +376,7 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
         dm_solution_data['mag'] = dm_data.full_matrix_mag_phase[0]
         dm_solution_data['phase'] = dm_data.full_matrix_mag_phase[1]
 
-    def populate_real_imag(self, dm_solution_data: dict,
-                           dm_data: SolutionData):
+    def populate_real_imag(self, dm_solution_data: dict, dm_data: SolutionData):
         """Update dm_solution_data with real and imaginary format of dm_data.
 
         Args:
