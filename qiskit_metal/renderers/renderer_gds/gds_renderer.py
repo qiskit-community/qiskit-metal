@@ -1337,7 +1337,7 @@ class QGDSRenderer(QRenderer):
             a_cheese = None
 
         if a_cheese is not None:
-            dummy_a_lib = a_cheese.apply_cheesing()
+            _dummy_a_lib = a_cheese.apply_cheesing()
 
     def _populate_no_cheese(self):
         """Iterate through every chip and layer.  If options choose to have
@@ -2336,7 +2336,11 @@ class QGDSRenderer(QRenderer):
                     datatype=10,
                     precision=float(precision),
                 )
-                return result
+                if len(result) != 1:
+                    self.logger.warning(
+                        "Some elements are not inside the geometry; these are invalid holes."
+                    )
+                return result[0]
             return exterior_poly
 
         if isinstance(geom, shapely.geometry.LineString):
@@ -2356,8 +2360,7 @@ class QGDSRenderer(QRenderer):
 
             if "fillet" in qgeometry_element:
                 if (math.isnan(qgeometry_element.fillet) or
-                        qgeometry_element.fillet <= 0 or
-                        qgeometry_element.fillet < qgeometry_element.width):
+                        qgeometry_element.fillet <= 0):
                     to_return = gdstk.FlexPath(
                         list(geom.coords),
                         use_width,
