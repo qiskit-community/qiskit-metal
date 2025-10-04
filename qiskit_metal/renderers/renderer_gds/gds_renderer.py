@@ -2336,7 +2336,11 @@ class QGDSRenderer(QRenderer):
                     datatype=10,
                     precision=float(precision),
                 )
-                return result
+                if len(result) != 1:
+                    self.logger.warning(
+                        "Some elements are not inside the geometry; these are invalid holes."
+                    )
+                return result[0]
             return exterior_poly
 
         if isinstance(geom, shapely.geometry.LineString):
