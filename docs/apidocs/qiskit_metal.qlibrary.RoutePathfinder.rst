@@ -45,7 +45,6 @@ RoutePathfinder
       RoutePathfinder.add_pin
       RoutePathfinder.add_qgeometry
       RoutePathfinder.assign_direction_to_anchor
-      RoutePathfinder.cascaded_union
       RoutePathfinder.connect_astar_or_simple
       RoutePathfinder.connect_components_already_in_design
       RoutePathfinder.connect_simple
