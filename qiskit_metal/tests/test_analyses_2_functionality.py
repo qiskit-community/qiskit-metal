@@ -743,7 +743,8 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         hcpb = Hcpb(nlevels=2, Ej=13971.3, Ec=295.2, ng=0.001)
 
         expected = [
-            0.434102035, 0.558197591, 0.000417109677, -0.557943545, -0.434361255
+            -0.434102035, -0.558197591, -0.000417109677, 0.557943545,
+            0.434361255
         ]
         actual = hcpb.evec_k(1)
 
