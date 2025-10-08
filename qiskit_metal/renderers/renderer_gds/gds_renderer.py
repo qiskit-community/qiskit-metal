@@ -2366,6 +2366,7 @@ class QGDSRenderer(QRenderer):
                         use_width,
                         layer=layer_num,
                         datatype=11,
+                        tolerance=tolerance,
                     )
 
                 else:
