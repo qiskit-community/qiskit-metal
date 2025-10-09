@@ -5,7 +5,6 @@ dependencies:
   - python>=3.10 # Let's see if we can float higher in future.
   - scqubits~=3.1.0 # Very careful to update higher, as it can break things. Want to update in future.
   - addict~=2.4
-  - descartes>=1.1.0
   - geopandas>=0.12.2
   - ipython>=8.10.0
   - matplotlib~=3.7

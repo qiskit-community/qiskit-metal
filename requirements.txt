@@ -1,6 +1,5 @@
 addict~=2.4
 cython<3.0.0
-descartes>=1.1.0
 gdstk~=0.9
 geopandas>=0.12.2
 gmsh~=4.11.1
