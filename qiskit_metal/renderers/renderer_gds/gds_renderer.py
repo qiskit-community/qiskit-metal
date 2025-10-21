@@ -2360,7 +2360,9 @@ class QGDSRenderer(QRenderer):
 
             if "fillet" in qgeometry_element:
                 if (math.isnan(qgeometry_element.fillet) or
-                        qgeometry_element.fillet <= 0):
+                        qgeometry_element.fillet <= 0 or
+                        qgeometry_element.fillet
+                        < 0.5 * qgeometry_element.width):
                     to_return = gdstk.FlexPath(
                         list(geom.coords),
                         use_width,

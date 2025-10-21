@@ -3,26 +3,25 @@ channels:
   - conda-forge
 dependencies:
   - python>=3.10 # Let's see if we can float higher in future.
-  - scqubits==3.1.0 # Very careful to update higher, as it can break things. Want to update in future.
-  - addict>=2.4.0
-  - descartes>=1.1.0
+  - scqubits~=3.1.0 # Very careful to update higher, as it can break things. Want to update in future.
+  - addict~=2.4
   - geopandas>=0.12.2
   - ipython>=8.10.0
-  - matplotlib>=3.7.0
+  - matplotlib~=3.7
   - numpy>=1.24.2,<2
   - pandas>=1.5.3
-  - pint>=0.20.1
-  - pyEPR-quantum>=0.9.0
-  - pygments>=2.14.0
-  - qdarkstyle>=3.1
+  - pint~=0.20
+  - pyEPR-quantum~=0.9.0
+  - pygments~=2.14
+  - qdarkstyle~=3.1
   - qutip>=4.7.1
-  - scipy>=1.10.0
-  - shapely>=2.0.1
+  - scipy~=1.10
+  - shapely~=2.0
   - jupyter
   - cython<3.0.0
   - pip
   - pip:
-      - pyaedt>=0.19
+      - pyaedt~=0.21
       - gmsh>=4.11.1
-      - gdstk>=0.9 # Used to be gdspy>=1.6.12
-      - pyside6 # Critical to building gui, can causes lots of problems, careful.
+      - gdstk~=0.9 # Used to be gdspy>=1.6.12
+      - pyside6~=6.8 # Critical to building gui, can causes lots of problems, careful.

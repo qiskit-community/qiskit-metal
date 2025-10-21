@@ -747,6 +747,8 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
             0.434361255
         ]
         actual = hcpb.evec_k(1)
+        if actual[0] * expected[0] < 0:
+            actual *= -1
 
         self.assertIterableAlmostEqual(expected, actual, abs_tol=1e-4)
 
