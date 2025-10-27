@@ -1681,7 +1681,7 @@ class QGDSRenderer(QRenderer):
                 self.chip_info[chip_name][chip_layer]["q_subtract_true"],
                 "not",
                 layer=chip_layer,
-                datatype=10,
+                datatype=0,
                 precision=precision,
             )
 
@@ -1689,7 +1689,10 @@ class QGDSRenderer(QRenderer):
                 self.design.logger.warning(
                     "There is no table named diff_geometry to write.")
             else:
-                ground_cell.add(*diff_geometry)
+                ground_plane_cell_name = f"ground_{chip_name}_{chip_layer}"
+                ground_plane_cell = lib.new_cell(ground_plane_cell_name)
+                ground_plane_cell.add(*diff_geometry)
+                ground_cell.add(gdstk.Reference(ground_plane_cell))
 
         self._handle_q_subtract_false(chip_name, chip_layer, ground_cell)
         QGDSRenderer._add_groundcell_to_chip_only_top(lib, chip_only_top,
