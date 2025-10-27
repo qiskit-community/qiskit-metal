@@ -38,9 +38,13 @@ Once you are in the folder that contains the `environemnt.yml` file, execute the
 ```sh
 conda env create -n <env_name> environment.yml
 conda activate <env_name>
+pip install pyside2==5.15.2.1
+pip install gmsh==4.11.1
+pip install pyepr-quantum==0.8.5.7
+pip install pyaedt==0.6.46
 python -m pip install --no-deps -e .
 ```
-Note the use of `--no-deps`. Indeed the `environment.yml` already instructs conda to install all the necessary package dependencies. We therefore prevent `setup.py` from overwriting them with the pip-equivalent packages, which might not be compatible with conda.
+Note the use of `--no-deps` in the final step. Indeed the `environment.yml` already instructs conda to install most necessary package dependencies. However, some packages (pyside2, gmsh, pyepr-quantum, and pyaedt) need to be installed manually via pip after the conda environment setup to avoid version conflicts. We therefore prevent `setup.py` from overwriting them with potentially incompatible packages.
 
 This creates a new environment with name `<env_name>` with all the necessary library dependencies.
 Then it activates the new environment.
@@ -54,6 +58,10 @@ If convenient, you can instead try to install directly in an existing conda envi
 ```
 conda env update -n <env_name_exist> environment.yml
 conda activate <env_name_exist>
+pip install pyside2==5.15.2.1
+pip install gmsh==4.11.1
+pip install pyepr-quantum==0.8.5.7
+pip install pyaedt==0.6.46
 python -m pip install --no-deps -e .
 ```
 
