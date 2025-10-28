@@ -33,6 +33,8 @@ import pandas as pd
 import numpy as np
 
 from qiskit_metal.renderers.renderer_base import QRenderer
+from qiskit_metal.renderers.renderer_gds.airbridge import Airbridge_forGDS
+from qiskit_metal.renderers.renderer_gds.make_airbridge import Airbridging
 from qiskit_metal.renderers.renderer_gds.make_cheese import Cheesing
 from qiskit_metal.toolbox_metal.parsing import is_true
 from qiskit_metal import draw
@@ -94,6 +96,13 @@ class QGDSRenderer(QRenderer):
         * junction_pad_overlap: '5um'
         * max_points: '199'
         * fabricate: 'False'
+        * airbridge: Dict
+            * geometry: Dict
+                qcomponent_base: Airbridge_forGDS
+                options: Dict(crossover_length='22um')
+            * bridge_pitch: '100um'
+            * bridge_minimum_spacing: '5um'
+            * datatype: '0'
         * cheese: Dict
             * datatype: '100'
             * shape: '0'
@@ -212,6 +221,26 @@ class QGDSRenderer(QRenderer):
         # handle is 8191.
         max_points='199',
 
+        # Airbriding
+        airbridge=Dict(
+            # GDS datatype of airbridges.
+            datatype='0',
+
+            # Setup geometrical style of airbridge
+            geometry=Dict(
+                # Skeleton of airbridge in QComponent form,
+                # meaning this is a child of QComponents.
+                qcomponent_base=Airbridge_forGDS,
+                # These options are plugged into the qcomponent_base.
+                # Think of it as calling qcomponent_base(design, name, options=options).
+                options=Dict(crossover_length='22um')),
+            # Spacing between centers of each airbridge.
+            bridge_pitch='100um',
+
+            # Minimum spacing between each airbridge,
+            # this number usually comes from fabrication guidelines.
+            bridge_minimum_spacing='5um'),
+
         # Cheesing is denoted by each chip and layer.
         cheese=Dict(
             #Cheesing is NOT completed
@@ -288,7 +317,8 @@ class QGDSRenderer(QRenderer):
 
     element_table_data = dict(
         # Cell_name must exist in gds file with: path_filename
-        junction=dict(cell_name='my_other_junction'))
+        junction=dict(cell_name='my_other_junction'),
+        path=dict(make_airbridge=False))
     """Element table data"""
 
     def __init__(self,
@@ -1096,6 +1126,89 @@ class QGDSRenderer(QRenderer):
 
         return self.lib
 
+    ### Start of Airbridging
+
+    def _populate_airbridge(self):
+        """
+        Main function to make airbridges. This is called in `self.export_to_gds()`.
+        """
+        for chip_name in self.chip_info:
+            layers_in_chip = self.design.qgeometry.get_all_unique_layers(
+                chip_name)
+
+            chip_box, status = self.design.get_x_y_for_chip(chip_name)
+            if status == 0:
+                minx, miny, maxx, maxy = chip_box
+
+                # Right now this code assumes airbridges will look
+                # the same across all CPWs. If you want to change that,
+                # add an if/else statement here to check for custom behavior.
+                # You will also have to update the self.default_options.
+                self._make_uniform_airbridging_df(minx, miny, maxx, maxy,
+                                                  chip_name)
+
+    def _make_uniform_airbridging_df(self, minx: float, miny: float,
+                                     maxx: float, maxy: float, chip_name: str):
+        """
+        Apply airbridges to all `path` elements which have 
+        options.gds_make_airbridge = True. This is a 
+        wrapper for Airbridging.make_uniform_airbridging_df(...).
+
+        Args:
+            minx (float): Chip minimum x location.
+            miny (float): Chip minimum y location.
+            maxx (float): Chip maximum x location.
+            maxy (float): chip maximum y location.
+            chip_name (str): User defined chip name.
+        """
+        # Warning / limitations
+        if (self.options.corners != 'circular bend'):
+            self.logger.warning(
+                'Uniform airbridging is designed for `self.options.corners = "circular bend"`. You might experience unexpected behavior.'
+            )
+
+        # gdspy objects
+        top_cell = self.lib.cells[f'TOP_{chip_name}']
+        lib_cell = self.lib.new_cell(f'TOP_{chip_name}_ab')
+        datatype = int(self.parse_value(self.options.airbridge.datatype))
+        no_cheese_buffer = float(self.parse_value(
+            self.options.no_cheese.buffer))
+
+        # Airbridge Options
+        self.options.airbridge.qcomponent_base
+        self.options.airbridge.options
+        airbridging = Airbridging(design=self.design,
+                                  lib=self.lib,
+                                  minx=minx,
+                                  miny=miny,
+                                  maxx=maxx,
+                                  maxy=maxy,
+                                  chip_name=chip_name,
+                                  precision=self.options.precision)
+        airbridges_df = airbridging.make_uniform_airbridging_df(
+            custom_qcomponent=self.options.airbridge.geometry.qcomponent_base,
+            qcomponent_options=self.options.airbridge.geometry.options,
+            bridge_pitch=self.options.airbridge.bridge_pitch,
+            bridge_minimum_spacing=self.options.airbridge.bridge_minimum_spacing
+        )
+
+        # Get all MultiPolygons and render to gds file
+        for _, row in airbridges_df.iterrows():
+            ab_component_multi_poly = row['MultiPoly']
+            ab_component_layer = row['layer']
+            airbridge_gds = self._multipolygon_to_gds(
+                multi_poly=ab_component_multi_poly,
+                layer=ab_component_layer,
+                data_type=datatype,
+                no_cheese_buffer=no_cheese_buffer)
+
+            lib_cell.add(airbridge_gds)
+            top_cell.add(gdspy.CellReference(lib_cell))
+
+    ### End of Airbridging
+
+    ### Start of Cheesing
+
     def _check_cheese(self, chip: str, layer: int) -> int:
         """Examine the option for cheese_view_in_file.
 
@@ -1480,6 +1593,8 @@ class QGDSRenderer(QRenderer):
             # <class 'shapely.geometry.multipolygon.MultiPolygon'>
             return combo_shapely
         return None  # Need explicitly to avoid lint warnings.
+
+    ### End of Cheesing
 
     def _get_rectangle_points(self, chip_name: str) -> Tuple[list, list]:
         """There can be more than one chip in QGeometry. All chips export to
@@ -2161,6 +2276,10 @@ class QGDSRenderer(QRenderer):
         if self._create_qgeometry_for_gds(highlight_qcomponents) == 0:
             # Create self.lib and populate path and poly.
             self._populate_poly_path_for_export()
+
+            # Adds airbridges to CPWs w/ options.gds_make_airbridge = True
+            # Options for these airbridges are in self.options.airbridge
+            self._populate_airbridge()
 
             # Add no-cheese MultiPolygon to
             # self.chip_info[chip_name][chip_layer]['no_cheese'],
