@@ -2283,7 +2283,7 @@ class QGDSRenderer(QRenderer):
             exterior_poly = gdspy.Polygon(
                 list(geom.exterior.coords),
                 layer=qgeometry_element.layer,
-                datatype=10,
+                datatype=qgeometry_element.sublayer,
             )
 
             # If polygons have a holes, need to remove it for gdspy.
@@ -2294,7 +2294,7 @@ class QGDSRenderer(QRenderer):
                     all_interiors.append(interior_coords)
                 a_poly_set = gdspy.PolygonSet(all_interiors,
                                               layer=qgeometry_element.layer,
-                                              datatype=10)
+                                              datatype=qgeometry_element.sublayer)
                 # Since there is max_points in boolean, don't need to do this twice.
                 # a_poly_set = a_poly_set.fracture(max_points=max_points)
                 # exterior_poly = exterior_poly.fracture(max_points=max_points)
@@ -2304,7 +2304,7 @@ class QGDSRenderer(QRenderer):
                                        max_points=max_points,
                                        precision=precision,
                                        layer=qgeometry_element.layer,
-                                       datatype=10)
+                                       datatype=qgeometry_element.sublayer)
                 return a_poly
 
             exterior_poly = exterior_poly.fracture(max_points=max_points,
@@ -2343,13 +2343,13 @@ class QGDSRenderer(QRenderer):
                                                use_width,
                                                layer=qgeometry_element.layer,
                                                max_points=max_points,
-                                               datatype=11)
+                                               datatype=qgeometry_element.sublayer+1)
                 else:
                     to_return = gdspy.FlexPath(
                         list(geom.coords),
                         use_width,
                         layer=qgeometry_element.layer,
-                        datatype=11,
+                        datatype=qgeometry_element.sublayer+1,
                         max_points=max_points,
                         corners=corners,
                         bend_radius=qgeometry_element.fillet,
