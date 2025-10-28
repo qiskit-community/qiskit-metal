@@ -20,8 +20,8 @@ import traceback
 import types
 from functools import wraps
 
-from PySide2 import QtCore
-from PySide2.QtCore import Slot
+from PySide6 import QtCore
+from PySide6.QtCore import Slot
 
 from ... import logger
 
@@ -56,20 +56,40 @@ def _qt_message_handler(mode, context, message):
             'QSocketNotifier: Multiple socket notifiers for same socket'):
         pass  # Caused by running %gui qt multiple times
     else:
-        if mode == QtCore.QtInfoMsg:
+        if mode == QtCore.QtMsgType.QtInfoMsg:
             mode = 'INFO'
-        elif mode == QtCore.QtWarningMsg:
+        elif mode == QtCore.QtMsgType.QtWarningMsg:
             mode = 'WARNING'
-        elif mode == QtCore.QtCriticalMsg:
+        elif mode == QtCore.QtMsgType.QtCriticalMsg:
             mode = 'CRITICAL'
-        elif mode == QtCore.QtFatalMsg:
+        elif mode == QtCore.QtMsgType.QtFatalMsg:
             mode = 'FATAL'
         else:
             mode = 'DEBUG'
+        # logger.log(
+        #     getattr(logging, 'CRITICAL'), 'line: %d, func: %s(), file: %s' %
+        #     (context.line, context.function, context.file) + '  %s: %s\n' %
+        #     (mode, message))
+
+        # Log basic message details
+        base_message = f"{mode}: {message}"
+
+        # Include context if available
+        if context.file and context.function:
+            base_message += (
+                f" (File: {context.file}, Line: {context.line}, Function: {context.function})"
+            )
+        else:
+            base_message += " (No context available from Qt)"
+
+        # Capture Python traceback for additional details
+        python_traceback = "".join(traceback.format_stack(limit=10))
+
+        # Log the message with the Python traceback
         logger.log(
-            getattr(logging, 'CRITICAL'), 'line: %d, func: %s(), file: %s' %
-            (context.line, context.function, context.file) + '  %s: %s\n' %
-            (mode, message))
+            getattr(logging, mode, logging.DEBUG),
+            f"{base_message}\nPython Traceback (most recent call last):\n{python_traceback}"
+        )
 
 
 #######################################################################################
@@ -77,7 +97,7 @@ def _qt_message_handler(mode, context, message):
 
 
 def do_debug(msg, name='info'):
-    """Utility function used to print debug statements from PySide2 Socket
+    """Utility function used to print debug statements from PySide6 Socket
     calls A bit of a cludge.
 
     Args:
@@ -85,19 +105,19 @@ def do_debug(msg, name='info'):
         name (str): info wran, debug, etc.  Defaults to 'info'.
     """
 
-    if 0:
-        # This just gives the qt main loop traceback. Not useful.
-        callers = []
-        for i in range(1, 20):
-            try:
-                stack = inspect.stack()[i]
-                callers += [f'{stack.function}[{stack.lineno}]']
-            except Exception as e:  # pylint: disable=broad-except
-                print("Exception during do_debug exception handling: " +
-                      e.__repr__())
-        callers = reversed(callers)
-        callers = '\n'.join(callers)
-        msg = callers + "\n" + str(msg) + '\n'
+    # if 0:
+    #     # This just gives the qt main loop traceback. Not useful.
+    #     callers = []
+    #     for i in range(1, 20):
+    #         try:
+    #             stack = inspect.stack()[i]
+    #             callers += [f'{stack.function}[{stack.lineno}]']
+    #         except Exception as e:  # pylint: disable=broad-except
+    #             print("Exception during do_debug exception handling: " +
+    #                   e.__repr__())
+    #     callers = reversed(callers)
+    #     callers = '\n'.join(callers)
+    #     msg = callers + "\n" + str(msg) + '\n'
 
     getattr(logger, name)(msg)
 

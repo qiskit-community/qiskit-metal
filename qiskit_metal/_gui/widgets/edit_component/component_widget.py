@@ -16,14 +16,14 @@
 import ast
 import inspect
 from pathlib import Path
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, List, Union
 
 import numpy as np
-import PySide2
-from PySide2 import QtCore, QtGui, QtWidgets
-from PySide2.QtCore import QAbstractTableModel, QModelIndex, Qt
-from PySide2.QtGui import QFont, QColor
-from PySide2.QtWidgets import (QAbstractItemView, QApplication, QFileDialog,
+import PySide6
+from PySide6 import QtCore, QtGui, QtWidgets
+from PySide6.QtCore import QAbstractTableModel, QModelIndex, Qt
+from PySide6.QtGui import QFont, QColor
+from PySide6.QtWidgets import (QAbstractItemView, QApplication, QFileDialog,
                                QLabel, QMainWindow, QMessageBox, QTabWidget)
 
 from .... import logger
@@ -137,7 +137,6 @@ def create_QTextDocument(doc: QtWidgets.QTextEdit) -> QtGui.QTextDocument:
         font.setStyleHint(QFont.Arial)
     else:
         font.setStyleHint(QFont.Courier)
-    font.setFamily("Courier")
     document.setDefaultFont(font)
 
     return document
@@ -189,8 +188,8 @@ class ComponentWidget(QTabWidget):
             color: #000000;
             """)
         self.src_doc = create_QTextDocument(self.ui.textSource)
-        self._html_css_lex = None  # type: pygments.formatters.html.HtmlFormatter
-        self.src_widgets = []  # type: List[QtWidgets.QWidget]
+        self._html_css_lex: pygments.formatters.html.HtmlFormatter = None
+        self.src_widgets: List[QtWidgets.QWidget] = []
 
         # Help stylesheet
         document = self.ui.textHelp.document()

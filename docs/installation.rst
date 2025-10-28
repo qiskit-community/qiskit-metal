@@ -4,6 +4,19 @@
 Installation
 ************
 
+~~~~~~~~~~~~~~~~~~~~~~~
+Outline of Installation
+~~~~~~~~~~~~~~~~~~~~~~~
+
+* **Basic Installation**: Quick setup instructions for PyPI deployment.
+* **Advanced Installation**: Detailed options for different environments.
+  - **Conda environment setup** (preferred setup): Instructions for creating a new or using an existing conda environment.
+  - **Without conda**: Alternative setup using Python virtual environments.
+* **Other**
+    * **Optional Jupyter Lab**: Steps to integrate the environment with Jupyter Lab.
+    * **Installation hints**: Tips and troubleshooting for setting up the environment.
+    * **Common Issues**: FAQ and solutions to common problems.
+
 ~~~~~~~~~~~~~~~~~~
 Basic Installation
 ~~~~~~~~~~~~~~~~~~
@@ -67,7 +80,7 @@ Option 1: A new environment
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The most reliable way to set up a qiskit_metal environment is to build one from scratch using the provided conda environment specification file `environment.yml`.
 
-To do so, first navigate to the folder created by the clone. For example:
+To do so, first navigate to the root folder created by the code clone. For example:
 
 ::
 
@@ -85,7 +98,7 @@ This creates a new environment with name `<env_name>` with all the necessary lib
 Then it activates the new environment.
 Finally installs the local qiskit-metal code inside that environment.
 
-The `-e` flag install qiskit\_metal in `editable mode <https://pip.pypa.io/en/stable/reference/pip_install/#cmdoption-e>`_.
+The `-e` flag installs qiskit\_metal in `editable mode <https://pip.pypa.io/en/stable/reference/pip_install/#cmdoption-e>`_.
 
 You can add the `-v` flag for verbose on-screen log information.
 
@@ -98,7 +111,7 @@ To do so, execute these commands in the top-level of the repository:
 
 ::
 
-    conda env update -n <env_name_exist> environment.yml
+    conda env update -n <env_name_exist> -f environment.yml
     conda activate <env_name_exist>
     python -m pip install --no-deps -e .
 
@@ -108,15 +121,15 @@ Notes:
 * Remember the period (".") at the end of the third command.
 * **Important**: Remember to `conda activate <env_name>` if you intend to use qiskit-metal.  See what a `conda environment is <https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html>`_
 
-At this point you can already use qiskit-metal through jupyter notebook.
-However, if you prefer using jupyter lab, you will need to execute a couple of extra steps.
+At this point you can already use qiskit-metal through Jupyter Notebook.
+However, if you prefer using JupyterLab, you will need to execute a couple of extra steps.
 
 ^^^^^^^^^^^^^^^^^^^^^^
-(Optional) Jupyter lab
+(Optional) Jupyter Lab
 ^^^^^^^^^^^^^^^^^^^^^^
-Launching jupyter lab will execute python code in the conda `base` environment by default.
+Launching JupyterLab will execute Python code in the conda `base` environment by default.
 
-To change environment to the Qiskit Metal one you just finished setting up, denoted by `<env_name>`, which we usually just call `metal`, you will need first to add to jupyter lab's list of available kernels. 
+To change environment to the Qiskit Metal one you just finished setting up, denoted by `<env_name>`, which we usually just call `metal`, you will need first to add to JupyterLab's list of available kernels.
 
 From the command line, run the following lines (inside an active <env_name> environment):
 
@@ -128,40 +141,19 @@ From the command line, run the following lines (inside an active <env_name> envi
 
 Using the above command, you will now have the current conda environment in any Jupyter notebook.
 
-Once inside `jupyter lab`, you can switch to the newly created Metal kernel to use qiskit-metal. Use the Menu `Kernel>Change Kernel`.
-
--------------------------------------------
-Subsequent updates of the conda environment
--------------------------------------------
-
-Package dependencies will evolve over time and could at some point require a new version of a library.
-For example, we can anticipate updating `pyEPR-quantum` to enable Ansys interactions previously unsupported.
-To update your local install, simply execute the metal package install command
-
-::
-
-    python -m pip install -ve .
-
-Alternatively, you can remove your conda environment by executing the commands below and later re-create a new environment following the original install instructions in section 1.
-
-::
-
-    conda env list
-    conda env remove -n <env_name_exist>
-
-We discourage using conda commands to update packages after the install of Qiskit Metal.
-Indeed, since Qiskit Metal is installed using pip, the subsequent use of conda commands can introduce inconsistencies that could render your environment unusable.
+Once inside `JupyterLab`, you can switch to the newly created Metal kernel to use qiskit-metal. Use the Menu `Kernel>Change Kernel`.
 
 ------------------------------------------------------------
 Without conda: Virtual environment setup (alternative setup)
 ------------------------------------------------------------
 
-**On Windows, do this first:** It is recommended that you first install `Visual C++ 14.0`, it is required for a successful install of `gdspy`.
-If you do not have `Visual C++ 14.0` installed you will be notified to install it when `gdspy` attempts to install.
+**On Windows, do this first:** It is recommended that you first install `Visual C++ x.0`, required for a successful install of `gdstk`.
+If you do not have `Visual C++ x.0` installed, you will be notified to install it when `gdstk` attempts to install.
 You can do this by downloading and installing `C++ Build Tools <https://visualstudio.microsoft.com/visual-cpp-build-tools/>`_.
-Be sure to select the latest versions of `MSVCv142 - VS 2019 C++ x64/x86 build tools` and `Windows 10 SDK` in the installer as suggested in `this wiki <https://wiki.python.org/moin/WindowsCompilers>`_ referenced by the gdspy documentation.
+Be sure to select the latest versions of `MSVC` and `Windows SDK` in the installer as suggested in `this wiki <https://wiki.python.org/moin/WindowsCompilers>`_.
 
 To use a Python virtual environment, execute these commands in the top-level of the repository:
+
 ::
 
     python -m venv <virtual_env_path>
@@ -169,9 +161,7 @@ To use a Python virtual environment, execute these commands in the top-level of 
     python -m pip install -U pip
     python -m pip install -r requirements.txt -r requirements-dev.txt -e .
 
-
-where `<virtual_env_path>` is where you want the Python virtual environment to be installed.
-On Windows, replace `source <virtual_env_path>/bin/activate` with `.\<virtual_env_path>\Scripts\activate`.
+On Windows, replace `source <virtual_env_path>/bin/activate` with `.<virtual_env_path>\Scripts\activate`.
 
 ------------------
 Installation hints
@@ -181,9 +171,9 @@ Here are some things to consider when setting up a development environment:
 
 * If using a virtual environment, make sure `pip` is up to date. In initial environment testing, PySide2 is installable with only the latest version of `pip`.
 
-* Add the path of your qiskit-metal folder to your PATH
+* Add the path of your qiskit-metal folder to your PATH.
 
-* Library errors when activating conda environments, or initializing jupyter notebook/lab, indicate a conflict between python libraries in the base and sub environments. Go ahead and manually delete the library from the base environment `site-packages` folder, shows in the error message. You might need to reinstall them in the sub environment, or create a new one.
+* Library errors when activating conda environments or initializing Jupyter Notebook/Lab indicate a conflict between Python libraries in the base and sub-environments. Go ahead and manually delete the library from the base environment `site-packages` folder shown in the error message. You might need to reinstall them in the sub-environment or create a new one.
 
 --------------------------
 Setting up precommit hooks

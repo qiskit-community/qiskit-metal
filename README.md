@@ -9,7 +9,7 @@
 We're excited to share that we're nearing the completion of porting Qiskit Metal from PySide2 to PySide6! This update enables native support for M* Macs (Apple Silicon) and includes several other enhancements for the upcoming release. Please take a moment to review and provide feedback on [Pull Request #1002](https://github.com/qiskit-community/qiskit-metal/pull/1002) before we proceed with merging and tagging. Your input is invaluable to ensure the release meets everyone's expectations. Thank you for your continued contributions!
 
 ## Installation
-If you are interested in customizing your experience, or if you are unable to install qiskit-metal using the `pip install` instructions below, consider installing directly the source code, following the instructions in the [documentation](https://qiskit-community.github.io/qiskit-metal/installation.html) and/or the [installation instructions for developers](https://github.com/Qiskit/qiskit-metal/blob/main/README_developers.md).
+If you are interested in customizing your experience, or if you are unable to install qiskit-metal using the `pip install` instructions below, consider installing directly the source code, following the instructions in the [documentation](https://qiskit-community.github.io/qiskit-metal/installation.html) and/or the [installation instructions for developers](https://github.com/Qiskit/qiskit-metal/blob/main/README_Developers.md).
 
 For normal use, please continue reading.
 
@@ -106,11 +106,153 @@ We use [GitHub issues](https://github.com/Qiskit/qiskit-metal/issues) for tracki
 [join the Qiskit Slack community](https://qisk.it/join-slack)
 and use our [Qiskit Slack channel](https://qiskit.slack.com) for discussion and simple questions.
 For questions that are more suited for a forum we use the Qiskit tag in the [Stack Exchange](https://quantumcomputing.stackexchange.com/questions/tagged/qiskit).
+
 ## Next Steps
 Now you're set up and ready to check out some of the other examples from our
 [Qiskit Metal Tutorials](https://github.com/Qiskit/qiskit-metal/blob/main/tutorials/) repository or [Qiskit Metal Documentation](https://qiskit-community.github.io/qiskit-metal/tut/).
+
+
+---
+
+# Big Picture Architecutre Overview
+
+### Diagram
+
+The **Qiskit Metal** codebase is organized into several key modules, each with a distinct role in enabling the design, analysis, and visualization of quantum circuits. Below is an overview of the primary components and their interactions, discussed deeper in the [Architecture Readme](README_Architecture.md) and the docs:
+
+```mermaid
+   %%{init: {"flowchart": {"htmlLabels": true}, 'theme':'forest'} }%%
+    graph TB
+        classDef core fill:#87cefa,stroke:#000000;
+        classDef gui fill:#FFDDC1,stroke:#000000;
+        classDef renderer fill:#DBB9FF,stroke:#000000;
+        classDef utility fill:#FFD700,stroke:#000000;
+        classDef design fill:#90EE90,stroke:#000000;
+        classDef analysis fill:#FFB6C1,stroke:#000000;
+
+        subgraph Qiskit_Metal
+            subgraph Core
+                QLibraryComponents["QLibrary Components"]
+                QDesign["QDesign"]
+                QComponent["QComponent"]
+                QRoute["QRoute"]
+                BaseQubit["BaseQubit"]
+            end
+
+            subgraph GUI
+                MetalGUI["MetalGUI"]
+            end
+
+            subgraph Renderers
+                QRenderer["QRenderer"]
+                QRendererGui["QRendererGui"]
+                QGDSRenderer["QGDSRenderer"]
+                QAnsysRenderer["QAnsysRenderer"]
+                QHFSSRenderer["QHFSSRenderer"]
+                QQ3DRenderer["QQ3DRenderer"]
+                QPyaedt["QPyaedt"]
+                QGmshRenderer["QGmshRenderer"]
+                QElmerRenderer["QElmerRenderer"]
+            end
+
+            subgraph Analyses
+                Hamiltonian["Hamiltonian"]
+                Sweep_Options["Sweep_Options"]
+            end
+
+            subgraph Utilities
+                Parsing["Parsing"]
+                Exceptions["Exceptions"]
+                Logging["Logging"]
+                Toolbox["Toolbox"]
+            end
+        end
+
+        QLibraryComponents --> QDesign
+        QRenderer --> QDesign
+        QRendererGui --> QRenderer
+        MetalGUI --> QRendererGui
+        MetalGUI --> QLibraryComponents
+        MetalGUI --> QDesign
+        QGDSRenderer --> QRenderer
+        QAnsysRenderer --> QRenderer
+        QHFSSRenderer --> QRenderer
+        QQ3DRenderer --> QRenderer
+        QPyaedt --> QRenderer
+        QGmshRenderer --> QRenderer
+        QElmerRenderer --> QRenderer
+        Parsing --> QDesign
+        Exceptions --> QDesign
+        Logging --> QDesign
+        Toolbox --> QDesign
+        QDesign --> QComponent
+        QDesign --> QRoute
+        QDesign --> BaseQubit
+        Hamiltonian --> QDesign
+        Sweep_Options --> QDesign
+
+        class QLibraryComponents,QDesign,QComponent,QRoute,BaseQubit core;
+        class MetalGUI gui;
+        class QRenderer,QRendererGui,QGDSRenderer,QAnsysRenderer,QHFSSRenderer,QQ3DRenderer,QPyaedt,QGmshRenderer,QElmerRenderer renderer;
+        class Parsing,Exceptions,Logging,Toolbox utility;
+        class Hamiltonian,Sweep_Options analysis;
+```
+
+
+### Core
+The **Core** module serves as the backbone of Qiskit Metal, housing essential elements for design and component creation:
+- **QLibrary Components**: Predefined library of quantum circuit elements, such as qubits and resonators, that can be used in designs.
+- **QDesign**: The central design framework that integrates all components and handles design rules.
+- **QComponent**: Base class for all components in the design.
+- **QRoute**: Specialized class for managing connections between components.
+- **BaseQubit**: Represents foundational qubit structures used in circuit designs.
+
+### Renderers
+The **Renderers** module facilitates exporting designs to external tools for electromagnetic simulation and layout rendering:
+- **QRenderer**: Base class for all renderers.
+- **QRendererGui**: GUI interface for managing renderers.
+- Specialized renderers like:
+  - **QGDSRenderer**
+  - **QAnsysRenderer**
+  - **QHFSSRenderer**
+  - **QQ3DRenderer**
+  - **QPyaedt**
+  - **QGmshRenderer**
+  - **QElmerRenderer**
+
+These renderers enable integration with industry-standard tools for detailed simulation and fabrication.
+
+### Analyses
+The **Analyses** module includes tools for performing simulations and extracting insights from designs:
+- **Hamiltonian**: Supports calculations of Hamiltonian parameters.
+- **Sweep Options**: Provides tools for parametric sweeps and optimizations.
+
+
+### GUI
+The **GUI** module provides tools for user-friendly interaction with Qiskit Metal. The **MetalGUI** clas is the primary graphical interface for managing designs and visualizations. It is discussed in more depth in the [Architecture Readme](README_Architecture.md).
+
+### Utilities
+The **Utilities** module supports the overall functionality of Qiskit Metal by offering supplementary tools.
+
+
+
+### Key Interactions
+- The **Core** modules form the foundation and integrate tightly with the **Renderers**, **GUI**, and **Analyses** modules.
+- The **GUI** depends on the **Core** and **Renderers** to provide visualization and interactivity.
+- The **Renderers** serve as bridges between Qiskit Metal and external tools, interacting with the **Core** to export designs.
+- The **Analyses** modules leverage the **Core** to extract meaningful data for optimization and validation.
+- The **Utilities** modules provide essential supporting functionalities across the entire codebase.
+
+This modular structure ensures scalability, flexibility, and ease of use for designing, analyzing, and fabricating quantum circuits.
+
+
+---
+
+# Backmatter 
+
 ## Authors and Citation
 Qiskit Metal is the work of [many people](https://github.com/Qiskit/qiskit-metal/pulse/monthly) who contribute to the project at different levels. Metal was conceived and developed by [Zlatko Minev](https://www.zlatko-minev.com) at IBM; then co-led with Thomas McConkey. If you use Qiskit Metal, please cite as per the included [BibTeX file](https://github.com/Qiskit/qiskit-metal/blob/main/Qiskit_Metal.bib). For icon attributions, see [here](https://github.com/Qiskit/qiskit-metal/blob/main/qiskit_metal/_gui/_imgs/icon_attributions.txt).
+
 ## Changelog and Release Notes
 The changelog provides a quick overview of notable changes for a given release.
 
@@ -122,3 +264,5 @@ Additionally, as part of each release detailed release notes are written to docu
 
 ## License
 [Apache License 2.0](https://github.com/Qiskit/qiskit-metal/blob/main/LICENSE.txt)
+
+

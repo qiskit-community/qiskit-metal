@@ -12,13 +12,13 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-import numpy as np
-from PySide2 import QtCore, QtWidgets
-from PySide2.QtCore import QAbstractTableModel, QModelIndex, Qt
-from PySide2.QtGui import QBrush, QColor, QFont, QIcon, QPixmap
-from PySide2.QtWidgets import QTableView
+# pylint: disable=invalid-name
 
-from ...utility._handle_qt_messages import slot_catch_error
+from PySide6 import QtCore
+from PySide6.QtCore import QAbstractTableModel, QModelIndex, Qt
+from PySide6.QtGui import QBrush, QColor, QFont, QIcon
+
+# from ...utility._handle_qt_messages import slot_catch_error
 from ...utility._toolbox_qt import blend_colors
 from typing import TYPE_CHECKING
 
@@ -84,9 +84,13 @@ class QTableModel_AllComponents(QAbstractTableModel):
     def refresh(self):
         """Force refresh.
 
-        Completly rebuild the model.
+        Completely rebuild the model.
         """
-        self.modelReset.emit()
+        self.beginResetModel()
+        try:
+            self._row_count = self.rowCount()
+        finally:
+            self.endResetModel()
 
     def refresh_auto(self):
         """Automatic refresh, update row count, view, etc."""
@@ -95,19 +99,25 @@ class QTableModel_AllComponents(QAbstractTableModel):
 
         # if the number of rows have changed
         if self._row_count != new_count:
-            #self.logger.info('Number of components changed')
+            # self.logger.info('Number of components changed')
 
-            # When a model is reset it should be considered that all
-            # information previously retrieved from it is invalid.
-            # This includes but is not limited to the rowCount() and
-            # columnCount(), flags(), data retrieved through data(), and roleNames().
-            # This will loose the current selection.
-            self.modelReset.emit()
+            # Wrap the reset logic in beginResetModel and endResetModel
+            self.beginResetModel()
+            try:
+
+                # When a model is reset it should be considered that all
+                # information previously retrieved from it is invalid.
+                # This includes but is not limited to the rowCount() and
+                # columnCount(), flags(), data retrieved through data(), and roleNames().
+                # This will loose the current selection.
+                # self.modelReset.emit()
+
+                self._row_count = new_count
+            finally:
+                self.endResetModel()
 
             # for some reason the horizontal header is hidden even if i call this in init
             self._tableView.horizontalHeader().show()
-
-            self._row_count = new_count
             self.update_view()
 
     def update_view(self):
@@ -115,7 +125,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
         if self._tableView:
             self._tableView.resizeColumnsToContents()
 
-    def rowCount(self, parent: QModelIndex = None):
+    def rowCount(self, parent: QModelIndex = None):  # pylint: disable=unused-argument
         """Returns the number of rows.
 
         Args:
@@ -135,7 +145,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
             self._tableView.show_placeholder_text()
             return 0
 
-    def columnCount(self, parent: QModelIndex = None):
+    def columnCount(self, parent: QModelIndex = None):  # pylint: disable=unused-argument
         """Returns the number of columns.
 
         Args:
@@ -248,5 +258,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
 
         elif role == Qt.ToolTipRole or role == Qt.StatusTipRole:
             component = self.design.components[component_name]
-            text = f"""Component name= "{component.name}" instance of class "{component.__class__.__name__}" from module "{component.__class__.__module__}" """
+            text = f"""Component name= "{component.name}" instance of """\
+                f"""class "{component.__class__.__name__}" from module""" \
+                    f"""{component.__class__.__module__}" """
             return text

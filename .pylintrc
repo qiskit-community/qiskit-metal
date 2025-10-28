@@ -6,7 +6,7 @@
 # A comma-separated list of package or module names from where C extensions may
 # be loaded. Extensions are loading into the active Python interpreter and may
 # run arbitrary code.
-extension-pkg-whitelist=PySide2
+extension-pkg-whitelist=PySide6,gdstk
 
 # Add files or directories to the blacklist. They should be base names, not
 # paths.
@@ -91,7 +91,7 @@ disable=apply-builtin,
         dict-values-not-iterating,
         dict-view-method,
         div-method,
-        eq-without-hash,
+;         eq-without-hash,
         exception-escape,
         exception-message-attribute,
         execfile-builtin,
@@ -108,21 +108,21 @@ disable=apply-builtin,
         intern-builtin,
         invalid-str-codec,
         locally-disabled,
-        logging-fstring-interpolation  # fstrings inside logging
+        logging-fstring-interpolation, # fstrings inside logging
         long-builtin,
-        long-suffix,
+;         long-suffix,
         map-builtin-not-iterating,
         metaclass-assignment,
         missing-module-docstring,
         next-method-called,
         next-method-defined,
         no-absolute-import,
-        non-ascii-bytes-literal,
+;         non-ascii-bytes-literal,
         nonzero-method,
         oct-method,
         old-division,
-        old-ne-operator,
-        old-octal-literal,
+;         old-ne-operator,
+;         old-octal-literal,
         old-raise-syntax,
         parameter-unpacking,
         print-statement,
@@ -339,8 +339,8 @@ max-module-lines=1000
 # separator` is used to allow tabulation in dicts, etc.: {1  : 1,\n222: 2}.
 # `trailing-comma` allows a space between comma and closing bracket: (a, ).
 # `empty-line` allows space-only lines.
-no-space-check=trailing-comma,
-               dict-separator
+; no-space-check=trailing-comma,
+;                dict-separator
 
 # Allow the body of a class to be on the same line as the declaration if body
 # contains single statement.

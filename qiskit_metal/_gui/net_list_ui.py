@@ -4,11 +4,11 @@
 # licensing of './net_list_ui.ui' applies.
 #
 # Created: Wed May 25 09:29:27 2022
-#      by: pyside2-uic  running on PySide2 5.13.2
+#      by: pyside6-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
 
-from PySide2 import QtCore, QtGui, QtWidgets
+from PySide6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_NetListWindow(object):

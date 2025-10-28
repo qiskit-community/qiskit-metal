@@ -60,8 +60,8 @@ class TestElements(unittest.TestCase):
     def test_qgeometry_element_columns(self):
         """Test that ELEMENT_COLUMNS was not accidentally changed in
         element_handler.py."""
-        import imp
-        imp.reload(qgeometries_handler)
+        import importlib
+        importlib.reload(qgeometries_handler)
         e_c = qgeometries_handler.ELEMENT_COLUMNS
 
         self.assertEqual(len(e_c), 4)

@@ -13,7 +13,6 @@
 # that they have been altered from the originals.
 """Plotting functions for shapely components using mpl."""
 
-import descartes  # shapely plot
 import matplotlib as mpl
 import matplotlib.cbook as cbook
 import matplotlib.image as image

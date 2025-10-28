@@ -6,7 +6,7 @@ from qiskit_metal.renderers.renderer_ansys_pyaedt.pyaedt_base import QPyaedt
 from qiskit_metal.toolbox_metal.parsing import is_true
 
 from qiskit_metal import Dict
-from pyaedt import settings
+from ansys.aedt.core import settings
 import pandas as pd
 import numpy as np
 import shapely
@@ -261,7 +261,7 @@ class QQ3DPyaedt(QPyaedt):
             open_pins, [])
         if not self.open_pins_is_valid:
             self.logger.error(
-                f'Check the arguments to render_design, invalid name was probably used.'
+                'Check the arguments to render_design, invalid name was probably used.'
             )
         else:
             self.activate_user_project_design()
@@ -350,22 +350,22 @@ class QQ3DPyaedt(QPyaedt):
                 self.current_app.analyze_setup(setup_name)
             else:
                 self.logger.warning(
-                    f'Auto Identify Nets returned False. '
-                    f'Please review your design to see what is failing. '
-                    f'Within Ansys, press simulation in the tab, then validate (green check mark).'
+                    'Auto Identify Nets returned False. '
+                    'Please review your design to see what is failing. '
+                    'Within Ansys, press simulation in the tab, then validate (green check mark).'
                 )
         else:
             self.logger.warning(
-                f'Since the setup_name is not in the project/design which was used to start Q3d, '
-                f'a new setup will be added with default settings for Q3D.')
+                'Since the setup_name is not in the project/design which was used to start Q3d, '
+                'a new setup will be added with default settings for Q3D.')
             self.add_q3d_setup(setup_name)
             if self.current_app.auto_identify_nets():
                 self.current_app.analyze_setup(setup_name)
             else:
                 self.logger.warning(
-                    f'Auto Identify Nets returned False. '
-                    f'Please review your design to see what is failing. '
-                    f'Within Ansys, press simulation in the tab, then validate (green check mark).'
+                    'Auto Identify Nets returned False. '
+                    'Please review your design to see what is failing. '
+                    'Within Ansys, press simulation in the tab, then validate (green check mark).'
                 )
 
     # Below commands are from a notebook which shows abstraction usage.
@@ -398,8 +398,8 @@ class QQ3DPyaedt(QPyaedt):
 
         if len(all_C_matrices) == 0:
             self.design.logger.warning(
-                f'There are no capacitance matrixes to return.'
-                f'Did you execute analyze_setup()?')
+                'There are no capacitance matrixes to return.'
+                'Did you execute analyze_setup()?')
             return None
 
         # Pandas output should have been set prior to opening Ansys,

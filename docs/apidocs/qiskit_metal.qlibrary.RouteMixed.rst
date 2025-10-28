@@ -46,7 +46,6 @@ RouteMixed
       RouteMixed.add_qgeometry
       RouteMixed.adjust_length
       RouteMixed.assign_direction_to_anchor
-      RouteMixed.cascaded_union
       RouteMixed.connect_astar_or_simple
       RouteMixed.connect_components_already_in_design
       RouteMixed.connect_meandered

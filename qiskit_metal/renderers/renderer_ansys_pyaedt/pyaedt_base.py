@@ -1,31 +1,22 @@
 # -*- coding: utf-8 -*-
 
-#from pyaedt.HFSS import HFSS
-#from curses import qiflush
-from typing import List, Tuple, Union
-from collections import defaultdict
+from typing import List, Union
 import pandas as pd
-import shapely
-import geopandas
 import math
 import numpy as np
 import inspect
 
-import pyaedt
-from pyaedt import Desktop
-from pyaedt import Hfss, Q3d
-from pyaedt import constants
+from ansys.aedt.core import Desktop, Hfss, Q3d
+from ansys.aedt.core.modeler.cad.primitives import Polyline
 
-#from qiskit_metal.renderers.renderer_base import QRenderer
 from qiskit_metal.renderers.renderer_base import QRendererAnalysis
 
 #The below imports are for typecheck and will probably be removed if move to the open side.
-from qiskit_metal.designs import QDesign, is_design
+from qiskit_metal.designs import QDesign
 from qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables import BoundsForPathAndPolyTables
-from qiskit_metal.toolbox_metal.parsing import parse_entry, parse_units
-from qiskit_metal.draw.utility import to_vec3D, to_vec3D_list
+from qiskit_metal.toolbox_metal.parsing import parse_entry
+from qiskit_metal.draw.utility import to_vec3D_list
 from qiskit_metal import Dict
-from qiskit_metal.draw.basic import is_rectangle
 
 from qiskit_metal import config
 if not config.is_building_docs():
@@ -194,7 +185,7 @@ class QPyaedt(QRendererAnalysis):
         self.open_pins_is_valid = None
 
         # Before opening the application, activate Pandas before opening Ansys.
-        from pyaedt import settings
+        from ansys.aedt.core import settings
         settings.enable_pandas_output = True
 
     def initialized(self):
@@ -352,10 +343,10 @@ class QPyaedt(QRendererAnalysis):
 
         if subtract and not fill_value:
             self.logger.warning(
-                f'\nsubtract==True and Fill is False'
-                f'\nWe don\'t render the geometry since there is nothing to subtract from.'
-                f'FYI: The fill value comes from layer_stack, '
-                f'and the subtract value comes from component.')
+                '\nsubtract==True and Fill is False'
+                '\nWe don\'t render the geometry since there is nothing to subtract from.'
+                'FYI: The fill value comes from layer_stack, '
+                'and the subtract value comes from component.')
             return
 
         if qc_width > 0:
@@ -421,10 +412,10 @@ class QPyaedt(QRendererAnalysis):
 
         if subtract and not fill_value:
             self.logger.warning(
-                f'\nsubtract==True and Fill is False'
-                f'\nWe don\'t render the geometry since there is nothing to subtract from.'
-                f'FYI: The fill value comes from layer_stack, '
-                f'and the subtract value comes from component.')
+                '\nsubtract==True and Fill is False'
+                '\nWe don\'t render the geometry since there is nothing to subtract from.'
+                'FYI: The fill value comes from layer_stack, '
+                'and the subtract value comes from component.')
             return
 
         #still need to deal with fillet for polygons?????
@@ -497,9 +488,9 @@ class QPyaedt(QRendererAnalysis):
         # https://aedtdocs.pyansys.com/API/_autosummary/pyaedt.Desktop.html
         # Don't need to add the version: Version of AEDT to use.
         # The default is None, in which case the active setup or latest installed version is used.
-        desktop = Desktop(specified_version=None,
+        desktop = Desktop(version=None,
                           non_graphical=False,
-                          new_desktop_session=True,
+                          new_desktop=True,
                           close_on_exit=False,
                           student_version=False)
 
@@ -646,21 +637,19 @@ class QPyaedt(QRendererAnalysis):
                                          data_type: int = 0):
         pass
 
-    def add_linestring_width(
-            self, qc_width: float,
-            a_polyline: "pyaedt.modeler.Primitives.Polyline", points_3d: list,
-            material: str) -> "pyaedt.modeler.Primitives.Polyline":
+    def add_linestring_width(self, qc_width: float, a_polyline: Polyline,
+                             points_3d: list, material: str) -> Polyline:
         """Determine the orthogonal vector.  Then sweep along a_polyline using qc_width.
         Then return the reference to new polyline with sweep in Ansys.
 
         Args:
             qc_width (float): The width of polyline to generate.
-            a_polyline (pyaedt.modeler.Primitives.Polyline): The center of desired polyline.
+            a_polyline (Polyline): The center of desired polyline.
             points_3d (list): [[x0,y0,z0], ....[xn,yn,zn]] List of list of points used for a_polyline.
             material (str):  The material to widen.
 
         Returns:
-            pyaedt.modeler.Primitives.Polyline: Reference to polyline that was widened.
+            Polyline: Reference to polyline that was widened.
         """
 
         x0, y0, z0 = points_3d[0]
@@ -759,15 +748,14 @@ class QPyaedt(QRendererAnalysis):
                 self.add_one_endcap(comp_name, pin_name, layer_num, endcap_str)
 
     def add_fillet_linestring(self, qgeom: pd.Series, points_3d: list,
-                              qc_fillet: float,
-                              a_polyline: "pyaedt.modeler.Primitives.Polyline"):
+                              qc_fillet: float, a_polyline: Polyline):
         """Determine the idx of Polyline vertices to fillet and fillet them.
 
         Args:
             qgeom (pd.Series): One row from QGeometry table._
             points_3d (list): Each entry is list of x,y,z vertex.
             qc_fillet (float): Radius of fillet value
-            a_polyline (pyaedt.modeler.Primitives.Polyline): A pyaetd primitive
+            a_polyline (Polyline): A pyaetd primitive
                                                         used for linestring from qgeometry table.
         """
         qc_fillet = parse_entry(qc_fillet)
@@ -987,7 +975,7 @@ class QPyaedt(QRendererAnalysis):
             comp_name, pin = item
             if self.qcomp_ids:
                 # User wants to render a subset, ensure part of selection.
-                if not self.design.components[comp_name].id in self.qcomp_ids:
+                if self.design.components[comp_name].id not in self.qcomp_ids:
                     self.design.logger.error(
                         f'You entered the component_name='
                         f'{self.design.components[comp_name].name} and the corresponding'
@@ -1122,11 +1110,11 @@ class QPyaedt(QRendererAnalysis):
     #########PROPERTIES##################################################
 
     @property
-    def desktop(self) -> 'pyaedt.desktop.Desktop':
+    def desktop(self) -> Desktop:
         """Access to hidden variable for Ansys desktop.
 
         Returns:
-            pyaedt.desktop.Desktop: easier reference to pyaedt desktop.
+            Desktop: easier reference to pyaedt desktop.
         """
 
         return self._desktop

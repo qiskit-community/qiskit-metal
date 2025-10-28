@@ -57,6 +57,7 @@ instance/
 # User Folders:
 .scrapy
 _sandbox_/
+_debug/
 qiskit_metal/qlibrary/user_components/*
 !qiskit_metal/qlibrary/user_components/__init__.py
 !qiskit_metal/qlibrary/user_components/my_qcomponent.py
@@ -92,6 +93,7 @@ celerybeat-schedule
 # virtualenv
 .venv
 venv/
+venvz/
 ENV/
 
 # Spyder project settings

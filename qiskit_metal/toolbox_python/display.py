@@ -112,7 +112,7 @@ def get_screenshot(self: 'QMainWindow',
         do_display (bool): True to display the file.  Defaults to True.
         disp_ops (dict): Disctionary of options.  Defaults to None.
     """
-    from PySide2.QtWidgets import QApplication, QMainWindow
+    from PySide6.QtWidgets import QApplication, QMainWindow
 
     path = Path(name).resolve()
 
@@ -164,7 +164,7 @@ def style_colon_list(text: str,
                      sty2a=Color.blue,
                      sty2b=Color.END) -> str:
     """Color on the left and right sides of single :"""
-    text = re.sub('(.*?):(.*)', f'{sty1a}\g<1>{sty1b}:{sty2a}\g<2>{sty2b}',
+    text = re.sub('(.*?):(.*)', fr'{sty1a}\g<1>{sty1b}:{sty2a}\g<2>{sty2b}',
                   text)  # *? is non-greedy
     return text
 

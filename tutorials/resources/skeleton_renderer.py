@@ -12,32 +12,17 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from qiskit_metal import Dict
-import math
-from scipy.spatial import distance
-import os
-import gdspy
+from typing import TYPE_CHECKING, Tuple
+
 import geopandas
-import shapely
 
-from shapely.geometry import LineString as LineString
-from copy import deepcopy
-from operator import itemgetter
-from typing import TYPE_CHECKING
-from typing import Dict as Dict_
-from typing import List, Tuple, Union, Any, Iterable
-import pandas as pd
-from pandas.api.types import is_numeric_dtype
-
-import numpy as np
-
+from qiskit_metal import Dict
 from qiskit_metal.renderers.renderer_base import QRenderer
-from qiskit_metal.toolbox_metal.parsing import is_true
 
 from qiskit_metal import config
 if not config.is_building_docs():
     from qiskit_metal.toolbox_python.utility_functions import can_write_to_path
-    from qiskit_metal.toolbox_python.utility_functions import get_range_of_vertex_to_not_fillet
+    from qiskit_metal.toolbox_python.utility_functions import get_range_of_vertex_to_not_fillet  # pylint: disable=unused-import
 
 if TYPE_CHECKING:
     # For linting typechecking, import modules that can't be loaded here under normal conditions.
@@ -84,7 +69,8 @@ class QSkeletonRenderer(QRenderer):
     element_table_data = dict(
         # Example of adding a column named "skeleton_a_column_name"
         # with default values of "a_default_value" to the junction table.
-        # Note: QSkeletonRenderer.name is prefixed to "a_column_name" when the table is appended by QComponents.
+        # Note: QSkeletonRenderer.name is prefixed
+        # to "a_column_name" when the table is appended by QComponents.
         junction=dict(a_column_name='a_default_value'))
     """element extensions dictionary   element_extensions = dict() from base class"""
 
@@ -98,7 +84,8 @@ class QSkeletonRenderer(QRenderer):
         Args:
             design (QDesign): Use QGeometry within QDesign  to obtain elements.
             initiate (bool, optional): True to initiate the renderer. Defaults to True.
-            render_template (Dict, optional): Typically used by GUI for template options for GDS.  Defaults to None.
+            render_template (Dict, optional): Typically used by GUI for
+                    template options for GDS.  Defaults to None.
             render_options (Dict, optional):  Used to overide all options. Defaults to None.
         """
 
@@ -138,7 +125,7 @@ class QSkeletonRenderer(QRenderer):
         Returns:
             int: 1 if access is allowed. Else returns 0, if access not given.
         """
-        status, directory_name = can_write_to_path(file)
+        status, directory_name = can_write_to_path(file)  # pylint: disable=possibly-used-before-assignment
         if status:
             return 1
 
@@ -153,8 +140,9 @@ class QSkeletonRenderer(QRenderer):
         that the name of component exists in QDesign.
 
         Args:
-            highlight_qcomponents (list, optional): List of strings which denote the name of QComponents to render.
-                                                     Defaults to []. Empty list means to render entire design.
+            highlight_qcomponents (list, optional): List of strings which
+                denote the name of QComponents to render.
+                Defaults to []. Empty list means to render entire design.
 
         Returns:
             Tuple[list, int]:
@@ -173,10 +161,12 @@ class QSkeletonRenderer(QRenderer):
                 return unique_qcomponents, 1
 
         # For Subtraction bounding box.
-        # If list passed to export is the whole chip, then want to use the bounding box from design planar.
-        # If list is subset of chip, then caluclate a custom bounding box and scale it.
+        # If list passed to export is the whole chip,
+        # then want to use the bounding box from design planar.
+        # If list is subset of chip, then caluclate a
+        # custom bounding box and scale it.
 
-        if len(unique_qcomponents) == len(self.design._components):
+        if len(unique_qcomponents) == len(self.design._components):  # pylint: disable=protected-access
             # Since user wants all of the chip to be rendered, use the design.planar bounding box.
             unique_qcomponents[:] = []
 
@@ -191,9 +181,11 @@ class QSkeletonRenderer(QRenderer):
            Duplicate names in hightlight_qcomponents will be removed without warning.
 
         Args:
-            highlight_qcomponents (list): List of strings which denote the name of QComponents to render.
+            highlight_qcomponents (list): List of strings which denote the
+                                        name of QComponents to render.
                                         If empty, render all comonents in design.
-                                        If QComponent names are dupliated, duplicates will be ignored.
+                                        If QComponent names are dupliated,
+                                        duplicates will be ignored.
 
         Returns:
             Tuple[int, list]:
@@ -207,7 +199,8 @@ class QSkeletonRenderer(QRenderer):
             return 1, table_names_for_highlight
         for chip_name in self.chip_info:
             for table_name in self.design.qgeometry.get_element_types():
-                # Get table for chip and table_name, and reduce to keep just the list of unique_qcomponents.
+                # Get table for chip and table_name, and reduce
+                # to keep just the list of unique_qcomponents.
                 table = self.get_table(table_name, unique_qcomponents,
                                        chip_name)
 
@@ -263,8 +256,9 @@ class QSkeletonRenderer(QRenderer):
         Args:
             file_name (str): File name which can also include directory path.
                              If the file exists, it will be overwritten.
-            highlight_qcomponents (list): List of strings which denote the name of QComponents to render.
-                                        If empty, render all qcomponents in qdesign.
+            highlight_qcomponents (list): List of strings which denote the
+                                name of QComponents to render.
+                                If empty, render all qcomponents in qdesign.
 
         Returns:
             int: 0=file_name can not be written, otherwise 1=file_name has been written
@@ -286,7 +280,7 @@ class QSkeletonRenderer(QRenderer):
 
         total_bones_text = 'Number of bones:  ' + total_bones + '\n'
 
-        if (status == 0):
+        if status == 0:
             skeleton_out = open(file_name, 'w')
             skeleton_out.writelines(total_bones_text)
             skeleton_out.writelines(table_names_used)

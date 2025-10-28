@@ -330,7 +330,7 @@ class TestRenderers(unittest.TestCase):
         self.assertEqual(options['gds_unit'], '1')
         self.assertEqual(options['ground_plane'], 'True')
         self.assertEqual(options['negative_mask']['main'], [])
-        self.assertEqual(options['corners'], 'circular bend')
+        self.assertEqual(options['corners'], 'natural')
         self.assertEqual(options['tolerance'], '0.00001')
         self.assertEqual(options['precision'], '0.000000001')
         self.assertEqual(options['width_LineString'], '10um')
