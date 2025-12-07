@@ -10,77 +10,71 @@ RouteMixed
    :no-inherited-members:
    :no-special-members:
 
-   
-   
 
+   
    .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      RouteMixed.TOOLTIP
-      RouteMixed.class_name
-      RouteMixed.component_metadata
-      RouteMixed.default_options
-      RouteMixed.design
-      RouteMixed.id
-      RouteMixed.length
-      RouteMixed.logger
-      RouteMixed.name
-      RouteMixed.options
-      RouteMixed.pin_names
-      RouteMixed.qgeometry_types
-   
-   
-
-   
+      
+   .. autoattribute:: RouteMixed.TOOLTIP
+   .. autoattribute:: RouteMixed.class_name
+   .. autoattribute:: RouteMixed.component_metadata
+   .. autoattribute:: RouteMixed.default_options
+   .. autoattribute:: RouteMixed.design
+   .. autoattribute:: RouteMixed.id
+   .. autoattribute:: RouteMixed.length
+   .. autoattribute:: RouteMixed.logger
+   .. autoattribute:: RouteMixed.name
+   .. autoattribute:: RouteMixed.options
+   .. autoattribute:: RouteMixed.pin_names
+   .. autoattribute:: RouteMixed.qgeometry_types
+   .. autoattribute:: RouteMixed.pins
+   .. autoattribute:: RouteMixed.metadata
+   .. autoattribute:: RouteMixed.status
    
 
+
+
+   
    .. rubric:: Methods
+   
+   .. automethod:: RouteMixed.add_dependency
+   .. automethod:: RouteMixed.add_pin
+   .. automethod:: RouteMixed.add_qgeometry
+   .. automethod:: RouteMixed.adjust_length
+   .. automethod:: RouteMixed.assign_direction_to_anchor
+   .. automethod:: RouteMixed.connect_astar_or_simple
+   .. automethod:: RouteMixed.connect_components_already_in_design
+   .. automethod:: RouteMixed.connect_meandered
+   .. automethod:: RouteMixed.connect_simple
+   .. automethod:: RouteMixed.del_colinear_points
+   .. automethod:: RouteMixed.delete
+   .. automethod:: RouteMixed.free_manhattan_length_anchors
+   .. automethod:: RouteMixed.get_index_for_side1_meander
+   .. automethod:: RouteMixed.get_pin
+   .. automethod:: RouteMixed.get_points
+   .. automethod:: RouteMixed.get_template_options
+   .. automethod:: RouteMixed.get_tip
+   .. automethod:: RouteMixed.get_unit_vectors
+   .. automethod:: RouteMixed.issideways
+   .. automethod:: RouteMixed.length_excess_corner_rounding
+   .. automethod:: RouteMixed.make
+   .. automethod:: RouteMixed.make_elements
+   .. automethod:: RouteMixed.parse_options
+   .. automethod:: RouteMixed.parse_value
+   .. automethod:: RouteMixed.populate_to_track_table_usage
+   .. automethod:: RouteMixed.qgeometry_bounds
+   .. automethod:: RouteMixed.qgeometry_dict
+   .. automethod:: RouteMixed.qgeometry_list
+   .. automethod:: RouteMixed.qgeometry_plot
+   .. automethod:: RouteMixed.qgeometry_table
+   .. automethod:: RouteMixed.rebuild
+   .. automethod:: RouteMixed.select_connect_method
+   .. automethod:: RouteMixed.set_lead
+   .. automethod:: RouteMixed.set_lead_extension
+   .. automethod:: RouteMixed.set_pin
+   .. automethod:: RouteMixed.to_script
+   .. automethod:: RouteMixed.trim_pts
+   .. automethod:: RouteMixed.unary_union
+   .. automethod:: RouteMixed.unobstructed
+   .. automethod:: RouteMixed.unobstructed_close_up
 
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      RouteMixed.add_dependency
-      RouteMixed.add_pin
-      RouteMixed.add_qgeometry
-      RouteMixed.adjust_length
-      RouteMixed.assign_direction_to_anchor
-      RouteMixed.connect_astar_or_simple
-      RouteMixed.connect_components_already_in_design
-      RouteMixed.connect_meandered
-      RouteMixed.connect_simple
-      RouteMixed.del_colinear_points
-      RouteMixed.delete
-      RouteMixed.free_manhattan_length_anchors
-      RouteMixed.get_index_for_side1_meander
-      RouteMixed.get_pin
-      RouteMixed.get_points
-      RouteMixed.get_template_options
-      RouteMixed.get_tip
-      RouteMixed.get_unit_vectors
-      RouteMixed.issideways
-      RouteMixed.length_excess_corner_rounding
-      RouteMixed.make
-      RouteMixed.make_elements
-      RouteMixed.parse_options
-      RouteMixed.parse_value
-      RouteMixed.populate_to_track_table_usage
-      RouteMixed.qgeometry_bounds
-      RouteMixed.qgeometry_dict
-      RouteMixed.qgeometry_list
-      RouteMixed.qgeometry_plot
-      RouteMixed.qgeometry_table
-      RouteMixed.rebuild
-      RouteMixed.select_connect_method
-      RouteMixed.set_lead
-      RouteMixed.set_lead_extension
-      RouteMixed.set_pin
-      RouteMixed.to_script
-      RouteMixed.trim_pts
-      RouteMixed.unobstructed
-      RouteMixed.unobstructed_close_up
-   
-
-   
    

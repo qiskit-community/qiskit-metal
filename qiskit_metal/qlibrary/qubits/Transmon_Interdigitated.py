@@ -37,7 +37,7 @@ class TransmonInterdigitated(QComponent):
         Transmon_Interdigitated.png
 
     .. meta::
-        Transmon Interdigitated
+        :description: Transmon Interdigitated
 
     Default Options:
         * pad_width: '1000um' -- width of the large rectangular pads on either side

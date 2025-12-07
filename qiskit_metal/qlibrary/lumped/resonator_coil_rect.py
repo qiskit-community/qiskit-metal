@@ -41,7 +41,7 @@ class ResonatorCoilRect(QComponent):
         ResonatorCoilRect.png
 
     .. meta::
-        Resonator Coil Rectangle
+        :description: Resonator Coil Rectangle
 
     Default Options:
         Convention: Values (unless noted) are strings with units included,

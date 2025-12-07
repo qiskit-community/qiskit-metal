@@ -10,55 +10,48 @@ CoupledLineTee
    :no-inherited-members:
    :no-special-members:
 
-   
-   
 
+   
    .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      CoupledLineTee.TOOLTIP
-      CoupledLineTee.class_name
-      CoupledLineTee.component_metadata
-      CoupledLineTee.default_options
-      CoupledLineTee.design
-      CoupledLineTee.id
-      CoupledLineTee.logger
-      CoupledLineTee.name
-      CoupledLineTee.options
-      CoupledLineTee.pin_names
-      CoupledLineTee.qgeometry_types
-   
-   
-
-   
+      
+   .. autoattribute:: CoupledLineTee.TOOLTIP
+   .. autoattribute:: CoupledLineTee.class_name
+   .. autoattribute:: CoupledLineTee.component_metadata
+   .. autoattribute:: CoupledLineTee.default_options
+   .. autoattribute:: CoupledLineTee.design
+   .. autoattribute:: CoupledLineTee.id
+   .. autoattribute:: CoupledLineTee.logger
+   .. autoattribute:: CoupledLineTee.name
+   .. autoattribute:: CoupledLineTee.options
+   .. autoattribute:: CoupledLineTee.pin_names
+   .. autoattribute:: CoupledLineTee.qgeometry_types
+   .. autoattribute:: CoupledLineTee.pins
+   .. autoattribute:: CoupledLineTee.metadata
+   .. autoattribute:: CoupledLineTee.status
    
 
+
+
+   
    .. rubric:: Methods
+   
+   .. automethod:: CoupledLineTee.add_dependency
+   .. automethod:: CoupledLineTee.add_pin
+   .. automethod:: CoupledLineTee.add_qgeometry
+   .. automethod:: CoupledLineTee.connect_components_already_in_design
+   .. automethod:: CoupledLineTee.delete
+   .. automethod:: CoupledLineTee.get_pin
+   .. automethod:: CoupledLineTee.get_template_options
+   .. automethod:: CoupledLineTee.make
+   .. automethod:: CoupledLineTee.parse_options
+   .. automethod:: CoupledLineTee.parse_value
+   .. automethod:: CoupledLineTee.populate_to_track_table_usage
+   .. automethod:: CoupledLineTee.qgeometry_bounds
+   .. automethod:: CoupledLineTee.qgeometry_dict
+   .. automethod:: CoupledLineTee.qgeometry_list
+   .. automethod:: CoupledLineTee.qgeometry_plot
+   .. automethod:: CoupledLineTee.qgeometry_table
+   .. automethod:: CoupledLineTee.rebuild
+   .. automethod:: CoupledLineTee.to_script
 
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      CoupledLineTee.add_dependency
-      CoupledLineTee.add_pin
-      CoupledLineTee.add_qgeometry
-      CoupledLineTee.connect_components_already_in_design
-      CoupledLineTee.delete
-      CoupledLineTee.get_pin
-      CoupledLineTee.get_template_options
-      CoupledLineTee.make
-      CoupledLineTee.parse_options
-      CoupledLineTee.parse_value
-      CoupledLineTee.populate_to_track_table_usage
-      CoupledLineTee.qgeometry_bounds
-      CoupledLineTee.qgeometry_dict
-      CoupledLineTee.qgeometry_list
-      CoupledLineTee.qgeometry_plot
-      CoupledLineTee.qgeometry_table
-      CoupledLineTee.rebuild
-      CoupledLineTee.to_script
-   
-
-   
    

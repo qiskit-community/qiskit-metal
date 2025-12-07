@@ -10,58 +10,51 @@ TransmonPocket6
    :no-inherited-members:
    :no-special-members:
 
-   
-   
 
+   
    .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      TransmonPocket6.TOOLTIP
-      TransmonPocket6.class_name
-      TransmonPocket6.component_metadata
-      TransmonPocket6.default_options
-      TransmonPocket6.design
-      TransmonPocket6.id
-      TransmonPocket6.logger
-      TransmonPocket6.name
-      TransmonPocket6.options
-      TransmonPocket6.pin_names
-      TransmonPocket6.qgeometry_types
-   
-   
-
-   
+      
+   .. autoattribute:: TransmonPocket6.TOOLTIP
+   .. autoattribute:: TransmonPocket6.class_name
+   .. autoattribute:: TransmonPocket6.component_metadata
+   .. autoattribute:: TransmonPocket6.default_options
+   .. autoattribute:: TransmonPocket6.design
+   .. autoattribute:: TransmonPocket6.id
+   .. autoattribute:: TransmonPocket6.logger
+   .. autoattribute:: TransmonPocket6.name
+   .. autoattribute:: TransmonPocket6.options
+   .. autoattribute:: TransmonPocket6.pin_names
+   .. autoattribute:: TransmonPocket6.qgeometry_types
+   .. autoattribute:: TransmonPocket6.pins
+   .. autoattribute:: TransmonPocket6.metadata
+   .. autoattribute:: TransmonPocket6.status
    
 
+
+
+   
    .. rubric:: Methods
+   
+   .. automethod:: TransmonPocket6.add_dependency
+   .. automethod:: TransmonPocket6.add_pin
+   .. automethod:: TransmonPocket6.add_qgeometry
+   .. automethod:: TransmonPocket6.connect_components_already_in_design
+   .. automethod:: TransmonPocket6.delete
+   .. automethod:: TransmonPocket6.get_pin
+   .. automethod:: TransmonPocket6.get_template_options
+   .. automethod:: TransmonPocket6.make
+   .. automethod:: TransmonPocket6.make_connection_pad
+   .. automethod:: TransmonPocket6.make_connection_pads
+   .. automethod:: TransmonPocket6.make_pocket
+   .. automethod:: TransmonPocket6.parse_options
+   .. automethod:: TransmonPocket6.parse_value
+   .. automethod:: TransmonPocket6.populate_to_track_table_usage
+   .. automethod:: TransmonPocket6.qgeometry_bounds
+   .. automethod:: TransmonPocket6.qgeometry_dict
+   .. automethod:: TransmonPocket6.qgeometry_list
+   .. automethod:: TransmonPocket6.qgeometry_plot
+   .. automethod:: TransmonPocket6.qgeometry_table
+   .. automethod:: TransmonPocket6.rebuild
+   .. automethod:: TransmonPocket6.to_script
 
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      TransmonPocket6.add_dependency
-      TransmonPocket6.add_pin
-      TransmonPocket6.add_qgeometry
-      TransmonPocket6.connect_components_already_in_design
-      TransmonPocket6.delete
-      TransmonPocket6.get_pin
-      TransmonPocket6.get_template_options
-      TransmonPocket6.make
-      TransmonPocket6.make_connection_pad
-      TransmonPocket6.make_connection_pads
-      TransmonPocket6.make_pocket
-      TransmonPocket6.parse_options
-      TransmonPocket6.parse_value
-      TransmonPocket6.populate_to_track_table_usage
-      TransmonPocket6.qgeometry_bounds
-      TransmonPocket6.qgeometry_dict
-      TransmonPocket6.qgeometry_list
-      TransmonPocket6.qgeometry_plot
-      TransmonPocket6.qgeometry_table
-      TransmonPocket6.rebuild
-      TransmonPocket6.to_script
-   
-
-   
    

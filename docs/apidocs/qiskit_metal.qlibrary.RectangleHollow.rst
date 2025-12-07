@@ -10,55 +10,48 @@ RectangleHollow
    :no-inherited-members:
    :no-special-members:
 
-   
-   
 
+   
    .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      RectangleHollow.TOOLTIP
-      RectangleHollow.class_name
-      RectangleHollow.component_metadata
-      RectangleHollow.default_options
-      RectangleHollow.design
-      RectangleHollow.id
-      RectangleHollow.logger
-      RectangleHollow.name
-      RectangleHollow.options
-      RectangleHollow.pin_names
-      RectangleHollow.qgeometry_types
-   
-   
-
-   
+      
+   .. autoattribute:: RectangleHollow.TOOLTIP
+   .. autoattribute:: RectangleHollow.class_name
+   .. autoattribute:: RectangleHollow.component_metadata
+   .. autoattribute:: RectangleHollow.default_options
+   .. autoattribute:: RectangleHollow.design
+   .. autoattribute:: RectangleHollow.id
+   .. autoattribute:: RectangleHollow.logger
+   .. autoattribute:: RectangleHollow.name
+   .. autoattribute:: RectangleHollow.options
+   .. autoattribute:: RectangleHollow.pin_names
+   .. autoattribute:: RectangleHollow.qgeometry_types
+   .. autoattribute:: RectangleHollow.pins
+   .. autoattribute:: RectangleHollow.metadata
+   .. autoattribute:: RectangleHollow.status
    
 
+
+
+   
    .. rubric:: Methods
+   
+   .. automethod:: RectangleHollow.add_dependency
+   .. automethod:: RectangleHollow.add_pin
+   .. automethod:: RectangleHollow.add_qgeometry
+   .. automethod:: RectangleHollow.connect_components_already_in_design
+   .. automethod:: RectangleHollow.delete
+   .. automethod:: RectangleHollow.get_pin
+   .. automethod:: RectangleHollow.get_template_options
+   .. automethod:: RectangleHollow.make
+   .. automethod:: RectangleHollow.parse_options
+   .. automethod:: RectangleHollow.parse_value
+   .. automethod:: RectangleHollow.populate_to_track_table_usage
+   .. automethod:: RectangleHollow.qgeometry_bounds
+   .. automethod:: RectangleHollow.qgeometry_dict
+   .. automethod:: RectangleHollow.qgeometry_list
+   .. automethod:: RectangleHollow.qgeometry_plot
+   .. automethod:: RectangleHollow.qgeometry_table
+   .. automethod:: RectangleHollow.rebuild
+   .. automethod:: RectangleHollow.to_script
 
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      RectangleHollow.add_dependency
-      RectangleHollow.add_pin
-      RectangleHollow.add_qgeometry
-      RectangleHollow.connect_components_already_in_design
-      RectangleHollow.delete
-      RectangleHollow.get_pin
-      RectangleHollow.get_template_options
-      RectangleHollow.make
-      RectangleHollow.parse_options
-      RectangleHollow.parse_value
-      RectangleHollow.populate_to_track_table_usage
-      RectangleHollow.qgeometry_bounds
-      RectangleHollow.qgeometry_dict
-      RectangleHollow.qgeometry_list
-      RectangleHollow.qgeometry_plot
-      RectangleHollow.qgeometry_table
-      RectangleHollow.rebuild
-      RectangleHollow.to_script
-   
-
-   
    

@@ -10,55 +10,48 @@ NGon
    :no-inherited-members:
    :no-special-members:
 
-   
-   
 
+   
    .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      NGon.TOOLTIP
-      NGon.class_name
-      NGon.component_metadata
-      NGon.default_options
-      NGon.design
-      NGon.id
-      NGon.logger
-      NGon.name
-      NGon.options
-      NGon.pin_names
-      NGon.qgeometry_types
-   
-   
-
-   
+      
+   .. autoattribute:: NGon.TOOLTIP
+   .. autoattribute:: NGon.class_name
+   .. autoattribute:: NGon.component_metadata
+   .. autoattribute:: NGon.default_options
+   .. autoattribute:: NGon.design
+   .. autoattribute:: NGon.id
+   .. autoattribute:: NGon.logger
+   .. autoattribute:: NGon.name
+   .. autoattribute:: NGon.options
+   .. autoattribute:: NGon.pin_names
+   .. autoattribute:: NGon.qgeometry_types
+   .. autoattribute:: NGon.pins
+   .. autoattribute:: NGon.metadata
+   .. autoattribute:: NGon.status
    
 
+
+
+   
    .. rubric:: Methods
+   
+   .. automethod:: NGon.add_dependency
+   .. automethod:: NGon.add_pin
+   .. automethod:: NGon.add_qgeometry
+   .. automethod:: NGon.connect_components_already_in_design
+   .. automethod:: NGon.delete
+   .. automethod:: NGon.get_pin
+   .. automethod:: NGon.get_template_options
+   .. automethod:: NGon.make
+   .. automethod:: NGon.parse_options
+   .. automethod:: NGon.parse_value
+   .. automethod:: NGon.populate_to_track_table_usage
+   .. automethod:: NGon.qgeometry_bounds
+   .. automethod:: NGon.qgeometry_dict
+   .. automethod:: NGon.qgeometry_list
+   .. automethod:: NGon.qgeometry_plot
+   .. automethod:: NGon.qgeometry_table
+   .. automethod:: NGon.rebuild
+   .. automethod:: NGon.to_script
 
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      NGon.add_dependency
-      NGon.add_pin
-      NGon.add_qgeometry
-      NGon.connect_components_already_in_design
-      NGon.delete
-      NGon.get_pin
-      NGon.get_template_options
-      NGon.make
-      NGon.parse_options
-      NGon.parse_value
-      NGon.populate_to_track_table_usage
-      NGon.qgeometry_bounds
-      NGon.qgeometry_dict
-      NGon.qgeometry_list
-      NGon.qgeometry_plot
-      NGon.qgeometry_table
-      NGon.rebuild
-      NGon.to_script
-   
-
-   
    

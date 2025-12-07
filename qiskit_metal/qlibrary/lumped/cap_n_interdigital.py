@@ -49,7 +49,7 @@ class CapNInterdigital(QComponent):
         CapNInterdigital.png
     
     .. meta::
-        Cap N Interdigital
+        :description: Cap N Interdigital
     
     Options:
         * north_width: '10um' -- The width of the 'north' portion of the CPW transmission line

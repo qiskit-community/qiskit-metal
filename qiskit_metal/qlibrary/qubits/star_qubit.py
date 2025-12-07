@@ -29,7 +29,7 @@ class StarQubit(QComponent):
         star_qubit.png
 
     .. meta::
-        Star Qubit
+        :description: Star Qubit
 
     Default Options:
         * radius: '300um' -- Radius of the circle defining the star shape

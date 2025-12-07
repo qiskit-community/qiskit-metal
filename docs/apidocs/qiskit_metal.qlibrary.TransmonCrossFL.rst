@@ -10,59 +10,52 @@ TransmonCrossFL
    :no-inherited-members:
    :no-special-members:
 
-   
-   
 
+   
    .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      TransmonCrossFL.TOOLTIP
-      TransmonCrossFL.class_name
-      TransmonCrossFL.component_metadata
-      TransmonCrossFL.default_options
-      TransmonCrossFL.design
-      TransmonCrossFL.id
-      TransmonCrossFL.logger
-      TransmonCrossFL.name
-      TransmonCrossFL.options
-      TransmonCrossFL.pin_names
-      TransmonCrossFL.qgeometry_types
-   
-   
-
-   
+      
+   .. autoattribute:: TransmonCrossFL.TOOLTIP
+   .. autoattribute:: TransmonCrossFL.class_name
+   .. autoattribute:: TransmonCrossFL.component_metadata
+   .. autoattribute:: TransmonCrossFL.default_options
+   .. autoattribute:: TransmonCrossFL.design
+   .. autoattribute:: TransmonCrossFL.id
+   .. autoattribute:: TransmonCrossFL.logger
+   .. autoattribute:: TransmonCrossFL.name
+   .. autoattribute:: TransmonCrossFL.options
+   .. autoattribute:: TransmonCrossFL.pin_names
+   .. autoattribute:: TransmonCrossFL.qgeometry_types
+   .. autoattribute:: TransmonCrossFL.pins
+   .. autoattribute:: TransmonCrossFL.metadata
+   .. autoattribute:: TransmonCrossFL.status
    
 
+
+
+   
    .. rubric:: Methods
+   
+   .. automethod:: TransmonCrossFL.add_dependency
+   .. automethod:: TransmonCrossFL.add_pin
+   .. automethod:: TransmonCrossFL.add_qgeometry
+   .. automethod:: TransmonCrossFL.connect_components_already_in_design
+   .. automethod:: TransmonCrossFL.delete
+   .. automethod:: TransmonCrossFL.get_pin
+   .. automethod:: TransmonCrossFL.get_template_options
+   .. automethod:: TransmonCrossFL.make
+   .. automethod:: TransmonCrossFL.make_connection_pad
+   .. automethod:: TransmonCrossFL.make_connection_pads
+   .. automethod:: TransmonCrossFL.make_flux_line
+   .. automethod:: TransmonCrossFL.make_pocket
+   .. automethod:: TransmonCrossFL.parse_options
+   .. automethod:: TransmonCrossFL.parse_value
+   .. automethod:: TransmonCrossFL.populate_to_track_table_usage
+   .. automethod:: TransmonCrossFL.qgeometry_bounds
+   .. automethod:: TransmonCrossFL.qgeometry_dict
+   .. automethod:: TransmonCrossFL.qgeometry_list
+   .. automethod:: TransmonCrossFL.qgeometry_plot
+   .. automethod:: TransmonCrossFL.qgeometry_table
+   .. automethod:: TransmonCrossFL.rebuild
+   .. automethod:: TransmonCrossFL.to_script
 
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      TransmonCrossFL.add_dependency
-      TransmonCrossFL.add_pin
-      TransmonCrossFL.add_qgeometry
-      TransmonCrossFL.connect_components_already_in_design
-      TransmonCrossFL.delete
-      TransmonCrossFL.get_pin
-      TransmonCrossFL.get_template_options
-      TransmonCrossFL.make
-      TransmonCrossFL.make_connection_pad
-      TransmonCrossFL.make_connection_pads
-      TransmonCrossFL.make_flux_line
-      TransmonCrossFL.make_pocket
-      TransmonCrossFL.parse_options
-      TransmonCrossFL.parse_value
-      TransmonCrossFL.populate_to_track_table_usage
-      TransmonCrossFL.qgeometry_bounds
-      TransmonCrossFL.qgeometry_dict
-      TransmonCrossFL.qgeometry_list
-      TransmonCrossFL.qgeometry_plot
-      TransmonCrossFL.qgeometry_table
-      TransmonCrossFL.rebuild
-      TransmonCrossFL.to_script
-   
-
-   
    

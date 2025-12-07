@@ -28,7 +28,7 @@ class RouteMixed(RoutePathfinder, RouteMeander):
     `RoutePathfinder, RouteMeander` class, thus also QRoute and RouteAnchors.
 
     .. meta::
-        Route Mixed
+        :description: Route Mixed
 
     Default Options:
         * between_anchors: Empty OrderedDict -- Intermediate anchors only; doesn't include endpoints

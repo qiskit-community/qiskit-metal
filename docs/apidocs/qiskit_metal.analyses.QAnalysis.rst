@@ -10,40 +10,30 @@ QAnalysis
    :no-inherited-members:
    :no-special-members:
 
-   
-   
 
+   
    .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      QAnalysis.data_labels
-      QAnalysis.default_setup
-      QAnalysis.logger
-      QAnalysis.setup
-      QAnalysis.supported_data
-   
+      
+   .. autoattribute:: QAnalysis.data_labels
+   .. autoattribute:: QAnalysis.default_setup
+   .. autoattribute:: QAnalysis.logger
+   .. autoattribute:: QAnalysis.setup
+   .. autoattribute:: QAnalysis.supported_data
    
 
-   
-   
 
+
+   
    .. rubric:: Methods
+   
+   .. automethod:: QAnalysis.clear_data
+   .. automethod:: QAnalysis.get_data
+   .. automethod:: QAnalysis.get_data_labels
+   .. automethod:: QAnalysis.print_run_args
+   .. automethod:: QAnalysis.run
+   .. automethod:: QAnalysis.run_sweep
+   .. automethod:: QAnalysis.save_run_args
+   .. automethod:: QAnalysis.set_data
+   .. automethod:: QAnalysis.setup_update
 
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      QAnalysis.clear_data
-      QAnalysis.get_data
-      QAnalysis.get_data_labels
-      QAnalysis.print_run_args
-      QAnalysis.run
-      QAnalysis.run_sweep
-      QAnalysis.save_run_args
-      QAnalysis.set_data
-      QAnalysis.setup_update
-   
-
-   
    

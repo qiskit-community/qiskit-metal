@@ -10,58 +10,51 @@ TransmonCross
    :no-inherited-members:
    :no-special-members:
 
-   
-   
 
+   
    .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      TransmonCross.TOOLTIP
-      TransmonCross.class_name
-      TransmonCross.component_metadata
-      TransmonCross.default_options
-      TransmonCross.design
-      TransmonCross.id
-      TransmonCross.logger
-      TransmonCross.name
-      TransmonCross.options
-      TransmonCross.pin_names
-      TransmonCross.qgeometry_types
-   
-   
-
-   
+      
+   .. autoattribute:: TransmonCross.TOOLTIP
+   .. autoattribute:: TransmonCross.class_name
+   .. autoattribute:: TransmonCross.component_metadata
+   .. autoattribute:: TransmonCross.default_options
+   .. autoattribute:: TransmonCross.design
+   .. autoattribute:: TransmonCross.id
+   .. autoattribute:: TransmonCross.logger
+   .. autoattribute:: TransmonCross.name
+   .. autoattribute:: TransmonCross.options
+   .. autoattribute:: TransmonCross.pin_names
+   .. autoattribute:: TransmonCross.qgeometry_types
+   .. autoattribute:: TransmonCross.pins
+   .. autoattribute:: TransmonCross.metadata
+   .. autoattribute:: TransmonCross.status
    
 
+
+
+   
    .. rubric:: Methods
+   
+   .. automethod:: TransmonCross.add_dependency
+   .. automethod:: TransmonCross.add_pin
+   .. automethod:: TransmonCross.add_qgeometry
+   .. automethod:: TransmonCross.connect_components_already_in_design
+   .. automethod:: TransmonCross.delete
+   .. automethod:: TransmonCross.get_pin
+   .. automethod:: TransmonCross.get_template_options
+   .. automethod:: TransmonCross.make
+   .. automethod:: TransmonCross.make_connection_pad
+   .. automethod:: TransmonCross.make_connection_pads
+   .. automethod:: TransmonCross.make_pocket
+   .. automethod:: TransmonCross.parse_options
+   .. automethod:: TransmonCross.parse_value
+   .. automethod:: TransmonCross.populate_to_track_table_usage
+   .. automethod:: TransmonCross.qgeometry_bounds
+   .. automethod:: TransmonCross.qgeometry_dict
+   .. automethod:: TransmonCross.qgeometry_list
+   .. automethod:: TransmonCross.qgeometry_plot
+   .. automethod:: TransmonCross.qgeometry_table
+   .. automethod:: TransmonCross.rebuild
+   .. automethod:: TransmonCross.to_script
 
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      TransmonCross.add_dependency
-      TransmonCross.add_pin
-      TransmonCross.add_qgeometry
-      TransmonCross.connect_components_already_in_design
-      TransmonCross.delete
-      TransmonCross.get_pin
-      TransmonCross.get_template_options
-      TransmonCross.make
-      TransmonCross.make_connection_pad
-      TransmonCross.make_connection_pads
-      TransmonCross.make_pocket
-      TransmonCross.parse_options
-      TransmonCross.parse_value
-      TransmonCross.populate_to_track_table_usage
-      TransmonCross.qgeometry_bounds
-      TransmonCross.qgeometry_dict
-      TransmonCross.qgeometry_list
-      TransmonCross.qgeometry_plot
-      TransmonCross.qgeometry_table
-      TransmonCross.rebuild
-      TransmonCross.to_script
-   
-
-   
    

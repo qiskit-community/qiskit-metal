@@ -64,7 +64,7 @@ class LaunchpadWirebondDriven(QComponent):
         LaunchpadWirebond.png
 
     .. meta::
-        Launchpad Wirebond Driven
+        :description: Launchpad Wirebond Driven
 
     Default Options:
         * trace_width: 'cpw_width' -- Width of the transmission line attached to the launch pad

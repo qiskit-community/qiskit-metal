@@ -10,52 +10,43 @@ EPRanalysis
    :no-inherited-members:
    :no-special-members:
 
-   
-   
 
+   
    .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      EPRanalysis.data_labels
-      EPRanalysis.default_setup
-      EPRanalysis.energy_elec
-      EPRanalysis.energy_elec_sub
-      EPRanalysis.energy_mag
-      EPRanalysis.logger
-      EPRanalysis.setup
-      EPRanalysis.supported_data
-   
+      
+   .. autoattribute:: EPRanalysis.data_labels
+   .. autoattribute:: EPRanalysis.default_setup
+   .. autoattribute:: EPRanalysis.energy_elec
+   .. autoattribute:: EPRanalysis.energy_elec_sub
+   .. autoattribute:: EPRanalysis.energy_mag
+   .. autoattribute:: EPRanalysis.logger
+   .. autoattribute:: EPRanalysis.setup
+   .. autoattribute:: EPRanalysis.supported_data
    
 
-   
-   
 
+
+   
    .. rubric:: Methods
+   
+   .. automethod:: EPRanalysis.add_junction
+   .. automethod:: EPRanalysis.clear_data
+   .. automethod:: EPRanalysis.del_junction
+   .. automethod:: EPRanalysis.epr_start
+   .. automethod:: EPRanalysis.get_data
+   .. automethod:: EPRanalysis.get_data_labels
+   .. automethod:: EPRanalysis.get_frequencies
+   .. automethod:: EPRanalysis.get_stored_energy
+   .. automethod:: EPRanalysis.load_simulation_data
+   .. automethod:: EPRanalysis.print_run_args
+   .. automethod:: EPRanalysis.report_hamiltonian
+   .. automethod:: EPRanalysis.run
+   .. automethod:: EPRanalysis.run_analysis
+   .. automethod:: EPRanalysis.run_epr
+   .. automethod:: EPRanalysis.run_sweep
+   .. automethod:: EPRanalysis.save_run_args
+   .. automethod:: EPRanalysis.set_data
+   .. automethod:: EPRanalysis.setup_update
+   .. automethod:: EPRanalysis.spectrum_analysis
 
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      EPRanalysis.add_junction
-      EPRanalysis.clear_data
-      EPRanalysis.del_junction
-      EPRanalysis.epr_start
-      EPRanalysis.get_data
-      EPRanalysis.get_data_labels
-      EPRanalysis.get_frequencies
-      EPRanalysis.get_stored_energy
-      EPRanalysis.print_run_args
-      EPRanalysis.report_hamiltonian
-      EPRanalysis.run
-      EPRanalysis.run_analysis
-      EPRanalysis.run_epr
-      EPRanalysis.run_sweep
-      EPRanalysis.save_run_args
-      EPRanalysis.set_data
-      EPRanalysis.setup_update
-      EPRanalysis.spectrum_analysis
-   
-
-   
    

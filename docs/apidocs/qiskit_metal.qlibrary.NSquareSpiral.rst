@@ -10,55 +10,48 @@ NSquareSpiral
    :no-inherited-members:
    :no-special-members:
 
-   
-   
 
+   
    .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      NSquareSpiral.TOOLTIP
-      NSquareSpiral.class_name
-      NSquareSpiral.component_metadata
-      NSquareSpiral.default_options
-      NSquareSpiral.design
-      NSquareSpiral.id
-      NSquareSpiral.logger
-      NSquareSpiral.name
-      NSquareSpiral.options
-      NSquareSpiral.pin_names
-      NSquareSpiral.qgeometry_types
-   
-   
-
-   
+      
+   .. autoattribute:: NSquareSpiral.TOOLTIP
+   .. autoattribute:: NSquareSpiral.class_name
+   .. autoattribute:: NSquareSpiral.component_metadata
+   .. autoattribute:: NSquareSpiral.default_options
+   .. autoattribute:: NSquareSpiral.design
+   .. autoattribute:: NSquareSpiral.id
+   .. autoattribute:: NSquareSpiral.logger
+   .. autoattribute:: NSquareSpiral.name
+   .. autoattribute:: NSquareSpiral.options
+   .. autoattribute:: NSquareSpiral.pin_names
+   .. autoattribute:: NSquareSpiral.qgeometry_types
+   .. autoattribute:: NSquareSpiral.pins
+   .. autoattribute:: NSquareSpiral.metadata
+   .. autoattribute:: NSquareSpiral.status
    
 
+
+
+   
    .. rubric:: Methods
+   
+   .. automethod:: NSquareSpiral.add_dependency
+   .. automethod:: NSquareSpiral.add_pin
+   .. automethod:: NSquareSpiral.add_qgeometry
+   .. automethod:: NSquareSpiral.connect_components_already_in_design
+   .. automethod:: NSquareSpiral.delete
+   .. automethod:: NSquareSpiral.get_pin
+   .. automethod:: NSquareSpiral.get_template_options
+   .. automethod:: NSquareSpiral.make
+   .. automethod:: NSquareSpiral.parse_options
+   .. automethod:: NSquareSpiral.parse_value
+   .. automethod:: NSquareSpiral.populate_to_track_table_usage
+   .. automethod:: NSquareSpiral.qgeometry_bounds
+   .. automethod:: NSquareSpiral.qgeometry_dict
+   .. automethod:: NSquareSpiral.qgeometry_list
+   .. automethod:: NSquareSpiral.qgeometry_plot
+   .. automethod:: NSquareSpiral.qgeometry_table
+   .. automethod:: NSquareSpiral.rebuild
+   .. automethod:: NSquareSpiral.to_script
 
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      NSquareSpiral.add_dependency
-      NSquareSpiral.add_pin
-      NSquareSpiral.add_qgeometry
-      NSquareSpiral.connect_components_already_in_design
-      NSquareSpiral.delete
-      NSquareSpiral.get_pin
-      NSquareSpiral.get_template_options
-      NSquareSpiral.make
-      NSquareSpiral.parse_options
-      NSquareSpiral.parse_value
-      NSquareSpiral.populate_to_track_table_usage
-      NSquareSpiral.qgeometry_bounds
-      NSquareSpiral.qgeometry_dict
-      NSquareSpiral.qgeometry_list
-      NSquareSpiral.qgeometry_plot
-      NSquareSpiral.qgeometry_table
-      NSquareSpiral.rebuild
-      NSquareSpiral.to_script
-   
-
-   
    

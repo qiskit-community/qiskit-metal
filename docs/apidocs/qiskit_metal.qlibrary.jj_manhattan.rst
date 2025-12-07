@@ -10,55 +10,48 @@ jj_manhattan
    :no-inherited-members:
    :no-special-members:
 
-   
-   
 
+   
    .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      jj_manhattan.TOOLTIP
-      jj_manhattan.class_name
-      jj_manhattan.component_metadata
-      jj_manhattan.default_options
-      jj_manhattan.design
-      jj_manhattan.id
-      jj_manhattan.logger
-      jj_manhattan.name
-      jj_manhattan.options
-      jj_manhattan.pin_names
-      jj_manhattan.qgeometry_types
-   
-   
-
-   
+      
+   .. autoattribute:: jj_manhattan.TOOLTIP
+   .. autoattribute:: jj_manhattan.class_name
+   .. autoattribute:: jj_manhattan.component_metadata
+   .. autoattribute:: jj_manhattan.default_options
+   .. autoattribute:: jj_manhattan.design
+   .. autoattribute:: jj_manhattan.id
+   .. autoattribute:: jj_manhattan.logger
+   .. autoattribute:: jj_manhattan.name
+   .. autoattribute:: jj_manhattan.options
+   .. autoattribute:: jj_manhattan.pin_names
+   .. autoattribute:: jj_manhattan.qgeometry_types
+   .. autoattribute:: jj_manhattan.pins
+   .. autoattribute:: jj_manhattan.metadata
+   .. autoattribute:: jj_manhattan.status
    
 
+
+
+   
    .. rubric:: Methods
+   
+   .. automethod:: jj_manhattan.add_dependency
+   .. automethod:: jj_manhattan.add_pin
+   .. automethod:: jj_manhattan.add_qgeometry
+   .. automethod:: jj_manhattan.connect_components_already_in_design
+   .. automethod:: jj_manhattan.delete
+   .. automethod:: jj_manhattan.get_pin
+   .. automethod:: jj_manhattan.get_template_options
+   .. automethod:: jj_manhattan.make
+   .. automethod:: jj_manhattan.parse_options
+   .. automethod:: jj_manhattan.parse_value
+   .. automethod:: jj_manhattan.populate_to_track_table_usage
+   .. automethod:: jj_manhattan.qgeometry_bounds
+   .. automethod:: jj_manhattan.qgeometry_dict
+   .. automethod:: jj_manhattan.qgeometry_list
+   .. automethod:: jj_manhattan.qgeometry_plot
+   .. automethod:: jj_manhattan.qgeometry_table
+   .. automethod:: jj_manhattan.rebuild
+   .. automethod:: jj_manhattan.to_script
 
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      jj_manhattan.add_dependency
-      jj_manhattan.add_pin
-      jj_manhattan.add_qgeometry
-      jj_manhattan.connect_components_already_in_design
-      jj_manhattan.delete
-      jj_manhattan.get_pin
-      jj_manhattan.get_template_options
-      jj_manhattan.make
-      jj_manhattan.parse_options
-      jj_manhattan.parse_value
-      jj_manhattan.populate_to_track_table_usage
-      jj_manhattan.qgeometry_bounds
-      jj_manhattan.qgeometry_dict
-      jj_manhattan.qgeometry_list
-      jj_manhattan.qgeometry_plot
-      jj_manhattan.qgeometry_table
-      jj_manhattan.rebuild
-      jj_manhattan.to_script
-   
-
-   
    

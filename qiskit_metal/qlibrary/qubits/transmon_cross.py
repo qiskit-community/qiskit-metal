@@ -48,7 +48,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
         transmon_cross.png
 
     .. meta::
-        Transmon Cross
+        :description: Transmon Cross
 
     BaseQubit Default Options:
         * connection_pads: Empty Dict -- The dictionary which contains all active connection lines for the qubit.

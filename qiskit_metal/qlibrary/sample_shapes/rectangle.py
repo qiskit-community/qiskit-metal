@@ -28,7 +28,7 @@ class Rectangle(QComponent):
         Rectangle.png
 
     .. meta::
-        Rectangle
+        :description: Rectangle
 
     Default Options:
         * width: '500um'

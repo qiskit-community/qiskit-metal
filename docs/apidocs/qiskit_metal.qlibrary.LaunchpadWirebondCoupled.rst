@@ -10,55 +10,48 @@ LaunchpadWirebondCoupled
    :no-inherited-members:
    :no-special-members:
 
-   
-   
 
+   
    .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      LaunchpadWirebondCoupled.TOOLTIP
-      LaunchpadWirebondCoupled.class_name
-      LaunchpadWirebondCoupled.component_metadata
-      LaunchpadWirebondCoupled.default_options
-      LaunchpadWirebondCoupled.design
-      LaunchpadWirebondCoupled.id
-      LaunchpadWirebondCoupled.logger
-      LaunchpadWirebondCoupled.name
-      LaunchpadWirebondCoupled.options
-      LaunchpadWirebondCoupled.pin_names
-      LaunchpadWirebondCoupled.qgeometry_types
-   
-   
-
-   
+      
+   .. autoattribute:: LaunchpadWirebondCoupled.TOOLTIP
+   .. autoattribute:: LaunchpadWirebondCoupled.class_name
+   .. autoattribute:: LaunchpadWirebondCoupled.component_metadata
+   .. autoattribute:: LaunchpadWirebondCoupled.default_options
+   .. autoattribute:: LaunchpadWirebondCoupled.design
+   .. autoattribute:: LaunchpadWirebondCoupled.id
+   .. autoattribute:: LaunchpadWirebondCoupled.logger
+   .. autoattribute:: LaunchpadWirebondCoupled.name
+   .. autoattribute:: LaunchpadWirebondCoupled.options
+   .. autoattribute:: LaunchpadWirebondCoupled.pin_names
+   .. autoattribute:: LaunchpadWirebondCoupled.qgeometry_types
+   .. autoattribute:: LaunchpadWirebondCoupled.pins
+   .. autoattribute:: LaunchpadWirebondCoupled.metadata
+   .. autoattribute:: LaunchpadWirebondCoupled.status
    
 
+
+
+   
    .. rubric:: Methods
+   
+   .. automethod:: LaunchpadWirebondCoupled.add_dependency
+   .. automethod:: LaunchpadWirebondCoupled.add_pin
+   .. automethod:: LaunchpadWirebondCoupled.add_qgeometry
+   .. automethod:: LaunchpadWirebondCoupled.connect_components_already_in_design
+   .. automethod:: LaunchpadWirebondCoupled.delete
+   .. automethod:: LaunchpadWirebondCoupled.get_pin
+   .. automethod:: LaunchpadWirebondCoupled.get_template_options
+   .. automethod:: LaunchpadWirebondCoupled.make
+   .. automethod:: LaunchpadWirebondCoupled.parse_options
+   .. automethod:: LaunchpadWirebondCoupled.parse_value
+   .. automethod:: LaunchpadWirebondCoupled.populate_to_track_table_usage
+   .. automethod:: LaunchpadWirebondCoupled.qgeometry_bounds
+   .. automethod:: LaunchpadWirebondCoupled.qgeometry_dict
+   .. automethod:: LaunchpadWirebondCoupled.qgeometry_list
+   .. automethod:: LaunchpadWirebondCoupled.qgeometry_plot
+   .. automethod:: LaunchpadWirebondCoupled.qgeometry_table
+   .. automethod:: LaunchpadWirebondCoupled.rebuild
+   .. automethod:: LaunchpadWirebondCoupled.to_script
 
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      LaunchpadWirebondCoupled.add_dependency
-      LaunchpadWirebondCoupled.add_pin
-      LaunchpadWirebondCoupled.add_qgeometry
-      LaunchpadWirebondCoupled.connect_components_already_in_design
-      LaunchpadWirebondCoupled.delete
-      LaunchpadWirebondCoupled.get_pin
-      LaunchpadWirebondCoupled.get_template_options
-      LaunchpadWirebondCoupled.make
-      LaunchpadWirebondCoupled.parse_options
-      LaunchpadWirebondCoupled.parse_value
-      LaunchpadWirebondCoupled.populate_to_track_table_usage
-      LaunchpadWirebondCoupled.qgeometry_bounds
-      LaunchpadWirebondCoupled.qgeometry_dict
-      LaunchpadWirebondCoupled.qgeometry_list
-      LaunchpadWirebondCoupled.qgeometry_plot
-      LaunchpadWirebondCoupled.qgeometry_table
-      LaunchpadWirebondCoupled.rebuild
-      LaunchpadWirebondCoupled.to_script
-   
-
-   
    

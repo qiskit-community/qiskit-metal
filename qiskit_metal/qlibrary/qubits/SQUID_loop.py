@@ -47,7 +47,7 @@ class SQUID_LOOP(QComponent):
         SQUID_LOOP.png
 
     .. meta::
-        Squid Loop
+        :description: Squid Loop
 
     Default Options:
         * plate1_width: '5.5um' -- width of plate1 (left)  

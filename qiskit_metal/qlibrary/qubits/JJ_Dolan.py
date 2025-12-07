@@ -38,7 +38,7 @@ class jj_dolan(QComponent):
         JJ_Dolan.png
 
     .. meta::
-        Josephson Junction Dolan
+        :description: Josephson Junction Dolan
 
     Default Options:
         * JJ_pad_lower_width: '25um' -- width of lower JJ metal region

@@ -40,7 +40,7 @@ class CoupledLineTee(QComponent):
         CoupledLineTee.png
 
     .. meta::
-        Coupled Line Tee
+        :description: Coupled Line Tee
 
     Default Options:
         * prime_width: '10um' -- The width of the trace of the two pin CPW transmission line

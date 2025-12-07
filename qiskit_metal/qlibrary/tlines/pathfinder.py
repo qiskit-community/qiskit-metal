@@ -31,7 +31,7 @@ class RoutePathfinder(RouteAnchors):
     3. Tweaks connect_simple to account for end anchor direction in determining which CPW (elbow or S-segment) to use.
 
     .. meta::
-        Route Pathfinder
+        :description: Route Pathfinder
 
     RouteAnchors Default Options:
         * anchors: OrderedDict -- Intermediate anchors only; doesn't include endpoints

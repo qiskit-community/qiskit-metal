@@ -10,55 +10,48 @@ ShortToGround
    :no-inherited-members:
    :no-special-members:
 
-   
-   
 
+   
    .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      ShortToGround.TOOLTIP
-      ShortToGround.class_name
-      ShortToGround.component_metadata
-      ShortToGround.default_options
-      ShortToGround.design
-      ShortToGround.id
-      ShortToGround.logger
-      ShortToGround.name
-      ShortToGround.options
-      ShortToGround.pin_names
-      ShortToGround.qgeometry_types
-   
-   
-
-   
+      
+   .. autoattribute:: ShortToGround.TOOLTIP
+   .. autoattribute:: ShortToGround.class_name
+   .. autoattribute:: ShortToGround.component_metadata
+   .. autoattribute:: ShortToGround.default_options
+   .. autoattribute:: ShortToGround.design
+   .. autoattribute:: ShortToGround.id
+   .. autoattribute:: ShortToGround.logger
+   .. autoattribute:: ShortToGround.name
+   .. autoattribute:: ShortToGround.options
+   .. autoattribute:: ShortToGround.pin_names
+   .. autoattribute:: ShortToGround.qgeometry_types
+   .. autoattribute:: ShortToGround.pins
+   .. autoattribute:: ShortToGround.metadata
+   .. autoattribute:: ShortToGround.status
    
 
+
+
+   
    .. rubric:: Methods
+   
+   .. automethod:: ShortToGround.add_dependency
+   .. automethod:: ShortToGround.add_pin
+   .. automethod:: ShortToGround.add_qgeometry
+   .. automethod:: ShortToGround.connect_components_already_in_design
+   .. automethod:: ShortToGround.delete
+   .. automethod:: ShortToGround.get_pin
+   .. automethod:: ShortToGround.get_template_options
+   .. automethod:: ShortToGround.make
+   .. automethod:: ShortToGround.parse_options
+   .. automethod:: ShortToGround.parse_value
+   .. automethod:: ShortToGround.populate_to_track_table_usage
+   .. automethod:: ShortToGround.qgeometry_bounds
+   .. automethod:: ShortToGround.qgeometry_dict
+   .. automethod:: ShortToGround.qgeometry_list
+   .. automethod:: ShortToGround.qgeometry_plot
+   .. automethod:: ShortToGround.qgeometry_table
+   .. automethod:: ShortToGround.rebuild
+   .. automethod:: ShortToGround.to_script
 
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      ShortToGround.add_dependency
-      ShortToGround.add_pin
-      ShortToGround.add_qgeometry
-      ShortToGround.connect_components_already_in_design
-      ShortToGround.delete
-      ShortToGround.get_pin
-      ShortToGround.get_template_options
-      ShortToGround.make
-      ShortToGround.parse_options
-      ShortToGround.parse_value
-      ShortToGround.populate_to_track_table_usage
-      ShortToGround.qgeometry_bounds
-      ShortToGround.qgeometry_dict
-      ShortToGround.qgeometry_list
-      ShortToGround.qgeometry_plot
-      ShortToGround.qgeometry_table
-      ShortToGround.rebuild
-      ShortToGround.to_script
-   
-
-   
    

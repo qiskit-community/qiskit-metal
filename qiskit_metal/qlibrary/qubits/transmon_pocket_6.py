@@ -103,7 +103,7 @@ class TransmonPocket6(BaseQubit):
         transmon_pocket_6.png
 
     .. meta::
-        Transmon Pocket 6
+        :description: Transmon Pocket 6
 
     """
 

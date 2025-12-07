@@ -26,7 +26,7 @@ class MyQComponent(QComponent):
 	Use this class as a blueprint to put together for your components - have fun
     
     .. meta::
-        My QComponent
+        :description: My QComponent
 
     """
 

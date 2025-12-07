@@ -30,7 +30,7 @@ class TransmonConcentricType2(BaseQubit):
         transmon_concentric_type_2.png
 
     .. meta::
-        Transmon Concentric Type 2
+        :description: Transmon Concentric Type 2
 
     BaseQubit Default Options:
         * connection_pads: empty Dict -- the dictionary which contains all active

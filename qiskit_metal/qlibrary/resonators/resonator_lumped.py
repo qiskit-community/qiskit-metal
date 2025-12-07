@@ -27,7 +27,7 @@ class ResonatorLumped(QComponent):
         resonator_lumped.png
 
     .. meta::
-        Lumped Resonator
+        :description: Lumped Resonator
 
     Default Options:
         * pos_x: '0um' -- x-coordinate of the bottom center of the resonator

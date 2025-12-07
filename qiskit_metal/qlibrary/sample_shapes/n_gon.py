@@ -26,7 +26,7 @@ class NGon(QComponent):
         NGon.png
 
     .. meta::
-        N-Gon Polygon
+        :description: N-Gon Polygon
 
     Default Options:
         Convention: Values (unless noted) are strings with units included,

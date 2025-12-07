@@ -26,7 +26,7 @@ class SmileyFace(QComponent):
         SmileyFace.png
 
     .. meta::
-        Smiley Face :)
+        :description: Smiley Face :)
 
     Default Options:
         * happy: True

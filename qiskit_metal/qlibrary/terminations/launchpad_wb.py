@@ -34,7 +34,7 @@ class LaunchpadWirebond(QComponent):
         LaunchpadWirebond.png
 
     .. meta::
-        Launchpad Wirebond
+        :description: Launchpad Wirebond
 
     Creates a 50 ohm launch pad with a ground pocket cutout.
     Limited but expandable parameters to control the launchpad polygons.

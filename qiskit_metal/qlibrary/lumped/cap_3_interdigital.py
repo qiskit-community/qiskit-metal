@@ -54,7 +54,7 @@ class Cap3Interdigital(QComponent):
         Cap3Interdigital.png
 
     .. meta::
-        Cap 3 Interdigital
+        :description: Cap 3 Interdigital
 
     Default Options:
         * trace_width: '10um'

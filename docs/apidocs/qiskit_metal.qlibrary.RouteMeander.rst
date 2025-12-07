@@ -10,70 +10,63 @@ RouteMeander
    :no-inherited-members:
    :no-special-members:
 
-   
-   
 
+   
    .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      RouteMeander.TOOLTIP
-      RouteMeander.class_name
-      RouteMeander.component_metadata
-      RouteMeander.default_options
-      RouteMeander.design
-      RouteMeander.id
-      RouteMeander.length
-      RouteMeander.logger
-      RouteMeander.name
-      RouteMeander.options
-      RouteMeander.pin_names
-      RouteMeander.qgeometry_types
-   
-   
-
-   
+      
+   .. autoattribute:: RouteMeander.TOOLTIP
+   .. autoattribute:: RouteMeander.class_name
+   .. autoattribute:: RouteMeander.component_metadata
+   .. autoattribute:: RouteMeander.default_options
+   .. autoattribute:: RouteMeander.design
+   .. autoattribute:: RouteMeander.id
+   .. autoattribute:: RouteMeander.length
+   .. autoattribute:: RouteMeander.logger
+   .. autoattribute:: RouteMeander.name
+   .. autoattribute:: RouteMeander.options
+   .. autoattribute:: RouteMeander.pin_names
+   .. autoattribute:: RouteMeander.qgeometry_types
+   .. autoattribute:: RouteMeander.pins
+   .. autoattribute:: RouteMeander.metadata
+   .. autoattribute:: RouteMeander.status
    
 
+
+
+   
    .. rubric:: Methods
+   
+   .. automethod:: RouteMeander.add_dependency
+   .. automethod:: RouteMeander.add_pin
+   .. automethod:: RouteMeander.add_qgeometry
+   .. automethod:: RouteMeander.adjust_length
+   .. automethod:: RouteMeander.assign_direction_to_anchor
+   .. automethod:: RouteMeander.connect_components_already_in_design
+   .. automethod:: RouteMeander.connect_meandered
+   .. automethod:: RouteMeander.del_colinear_points
+   .. automethod:: RouteMeander.delete
+   .. automethod:: RouteMeander.get_index_for_side1_meander
+   .. automethod:: RouteMeander.get_pin
+   .. automethod:: RouteMeander.get_points
+   .. automethod:: RouteMeander.get_template_options
+   .. automethod:: RouteMeander.get_tip
+   .. automethod:: RouteMeander.get_unit_vectors
+   .. automethod:: RouteMeander.issideways
+   .. automethod:: RouteMeander.length_excess_corner_rounding
+   .. automethod:: RouteMeander.make
+   .. automethod:: RouteMeander.make_elements
+   .. automethod:: RouteMeander.parse_options
+   .. automethod:: RouteMeander.parse_value
+   .. automethod:: RouteMeander.populate_to_track_table_usage
+   .. automethod:: RouteMeander.qgeometry_bounds
+   .. automethod:: RouteMeander.qgeometry_dict
+   .. automethod:: RouteMeander.qgeometry_list
+   .. automethod:: RouteMeander.qgeometry_plot
+   .. automethod:: RouteMeander.qgeometry_table
+   .. automethod:: RouteMeander.rebuild
+   .. automethod:: RouteMeander.set_lead
+   .. automethod:: RouteMeander.set_lead_extension
+   .. automethod:: RouteMeander.set_pin
+   .. automethod:: RouteMeander.to_script
 
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      RouteMeander.add_dependency
-      RouteMeander.add_pin
-      RouteMeander.add_qgeometry
-      RouteMeander.adjust_length
-      RouteMeander.assign_direction_to_anchor
-      RouteMeander.connect_components_already_in_design
-      RouteMeander.connect_meandered
-      RouteMeander.del_colinear_points
-      RouteMeander.delete
-      RouteMeander.get_index_for_side1_meander
-      RouteMeander.get_pin
-      RouteMeander.get_points
-      RouteMeander.get_template_options
-      RouteMeander.get_tip
-      RouteMeander.get_unit_vectors
-      RouteMeander.issideways
-      RouteMeander.length_excess_corner_rounding
-      RouteMeander.make
-      RouteMeander.make_elements
-      RouteMeander.parse_options
-      RouteMeander.parse_value
-      RouteMeander.populate_to_track_table_usage
-      RouteMeander.qgeometry_bounds
-      RouteMeander.qgeometry_dict
-      RouteMeander.qgeometry_list
-      RouteMeander.qgeometry_plot
-      RouteMeander.qgeometry_table
-      RouteMeander.rebuild
-      RouteMeander.set_lead
-      RouteMeander.set_lead_extension
-      RouteMeander.set_pin
-      RouteMeander.to_script
-   
-
-   
    

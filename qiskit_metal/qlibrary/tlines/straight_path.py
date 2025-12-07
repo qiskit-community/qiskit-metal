@@ -21,7 +21,7 @@ class RouteStraight(QRoute):
     Draw a straight Route connecting two pins.
     
     .. meta::
-        Route Straight
+        :description: Route Straight
     """
 
     component_metadata = Dict(short_name='cpw')

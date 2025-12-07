@@ -28,7 +28,7 @@ class CircleRaster(QComponent):
         CircleRaster.png
 
     .. meta::
-        Circle Raster
+        :description: Circle Raster
 
     Default Options:
         * radius: '300um'

@@ -10,72 +10,66 @@ RoutePathfinder
    :no-inherited-members:
    :no-special-members:
 
-   
-   
 
+   
    .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      RoutePathfinder.TOOLTIP
-      RoutePathfinder.class_name
-      RoutePathfinder.component_metadata
-      RoutePathfinder.default_options
-      RoutePathfinder.design
-      RoutePathfinder.id
-      RoutePathfinder.length
-      RoutePathfinder.logger
-      RoutePathfinder.name
-      RoutePathfinder.options
-      RoutePathfinder.pin_names
-      RoutePathfinder.qgeometry_types
-   
-   
-
-   
+      
+   .. autoattribute:: RoutePathfinder.TOOLTIP
+   .. autoattribute:: RoutePathfinder.class_name
+   .. autoattribute:: RoutePathfinder.component_metadata
+   .. autoattribute:: RoutePathfinder.default_options
+   .. autoattribute:: RoutePathfinder.design
+   .. autoattribute:: RoutePathfinder.id
+   .. autoattribute:: RoutePathfinder.length
+   .. autoattribute:: RoutePathfinder.logger
+   .. autoattribute:: RoutePathfinder.name
+   .. autoattribute:: RoutePathfinder.options
+   .. autoattribute:: RoutePathfinder.pin_names
+   .. autoattribute:: RoutePathfinder.qgeometry_types
+   .. autoattribute:: RoutePathfinder.pins
+   .. autoattribute:: RoutePathfinder.metadata
+   .. autoattribute:: RoutePathfinder.status
    
 
+
+
+   
    .. rubric:: Methods
+   
+   .. automethod:: RoutePathfinder.add_dependency
+   .. automethod:: RoutePathfinder.add_pin
+   .. automethod:: RoutePathfinder.add_qgeometry
+   .. automethod:: RoutePathfinder.assign_direction_to_anchor
+   .. automethod:: RoutePathfinder.connect_astar_or_simple
+   .. automethod:: RoutePathfinder.connect_components_already_in_design
+   .. automethod:: RoutePathfinder.connect_simple
+   .. automethod:: RoutePathfinder.del_colinear_points
+   .. automethod:: RoutePathfinder.delete
+   .. automethod:: RoutePathfinder.free_manhattan_length_anchors
+   .. automethod:: RoutePathfinder.get_pin
+   .. automethod:: RoutePathfinder.get_points
+   .. automethod:: RoutePathfinder.get_template_options
+   .. automethod:: RoutePathfinder.get_tip
+   .. automethod:: RoutePathfinder.get_unit_vectors
+   .. automethod:: RoutePathfinder.length_excess_corner_rounding
+   .. automethod:: RoutePathfinder.make
+   .. automethod:: RoutePathfinder.make_elements
+   .. automethod:: RoutePathfinder.parse_options
+   .. automethod:: RoutePathfinder.parse_value
+   .. automethod:: RoutePathfinder.populate_to_track_table_usage
+   .. automethod:: RoutePathfinder.qgeometry_bounds
+   .. automethod:: RoutePathfinder.qgeometry_dict
+   .. automethod:: RoutePathfinder.qgeometry_list
+   .. automethod:: RoutePathfinder.qgeometry_plot
+   .. automethod:: RoutePathfinder.qgeometry_table
+   .. automethod:: RoutePathfinder.rebuild
+   .. automethod:: RoutePathfinder.set_lead
+   .. automethod:: RoutePathfinder.set_lead_extension
+   .. automethod:: RoutePathfinder.set_pin
+   .. automethod:: RoutePathfinder.to_script
+   .. automethod:: RoutePathfinder.trim_pts
+   .. automethod:: RoutePathfinder.unary_union
+   .. automethod:: RoutePathfinder.unobstructed
+   .. automethod:: RoutePathfinder.unobstructed_close_up
 
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      RoutePathfinder.add_dependency
-      RoutePathfinder.add_pin
-      RoutePathfinder.add_qgeometry
-      RoutePathfinder.assign_direction_to_anchor
-      RoutePathfinder.connect_astar_or_simple
-      RoutePathfinder.connect_components_already_in_design
-      RoutePathfinder.connect_simple
-      RoutePathfinder.del_colinear_points
-      RoutePathfinder.delete
-      RoutePathfinder.free_manhattan_length_anchors
-      RoutePathfinder.get_pin
-      RoutePathfinder.get_points
-      RoutePathfinder.get_template_options
-      RoutePathfinder.get_tip
-      RoutePathfinder.get_unit_vectors
-      RoutePathfinder.length_excess_corner_rounding
-      RoutePathfinder.make
-      RoutePathfinder.make_elements
-      RoutePathfinder.parse_options
-      RoutePathfinder.parse_value
-      RoutePathfinder.populate_to_track_table_usage
-      RoutePathfinder.qgeometry_bounds
-      RoutePathfinder.qgeometry_dict
-      RoutePathfinder.qgeometry_list
-      RoutePathfinder.qgeometry_plot
-      RoutePathfinder.qgeometry_table
-      RoutePathfinder.rebuild
-      RoutePathfinder.set_lead
-      RoutePathfinder.set_lead_extension
-      RoutePathfinder.set_pin
-      RoutePathfinder.to_script
-      RoutePathfinder.trim_pts
-      RoutePathfinder.unobstructed
-      RoutePathfinder.unobstructed_close_up
-   
-
-   
    

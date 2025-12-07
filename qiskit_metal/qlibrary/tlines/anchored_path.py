@@ -31,7 +31,7 @@ def intersecting(a: np.array, b: np.array, c: np.array, d: np.array) -> bool:
     a, b, c, and d are all coordinates.
 
     .. meta::
-        Anchored Path
+        :description: Anchored Path
 
     Args:
         a (np.array): Coordinate

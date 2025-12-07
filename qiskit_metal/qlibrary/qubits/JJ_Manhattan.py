@@ -36,7 +36,7 @@ class jj_manhattan(QComponent):
         JJ_Manhattan.png
 
     .. meta::
-        Josephson Junction Manhattan
+        :description: Josephson Junction Manhattan
 
     Default Options:
         * JJ_pad_lower_width: '4um' -- width of lower JJ metal region

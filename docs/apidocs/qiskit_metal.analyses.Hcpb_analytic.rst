@@ -10,20 +10,14 @@ Hcpb_analytic
    :no-inherited-members:
    :no-special-members:
 
-   
-   
-   
 
    
-   
 
+
+
+   
    .. rubric:: Methods
+   
+   .. automethod:: Hcpb_analytic.evalue_k
 
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      Hcpb_analytic.evalue_k
-   
-
-   
    

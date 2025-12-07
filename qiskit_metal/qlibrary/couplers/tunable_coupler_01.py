@@ -43,7 +43,7 @@ class TunableCoupler01(BaseQubit):
         TunableCoupler01.png
 
     .. meta::
-        Tunable Coupler 01
+        :description: Tunable Coupler 01
 
     Options:
         Convention: Values (unless noted) are strings with units included,

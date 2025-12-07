@@ -25,7 +25,7 @@ class OpenToGround(QComponent):
         OpenToGround.png
 
     .. meta::
-        Open to Ground
+        :description: Open to Ground
 
     Default Options:
         * width: '10um' -- The width of the 'cpw' terminating to ground (this is merely

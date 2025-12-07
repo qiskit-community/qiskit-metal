@@ -10,40 +10,30 @@ Hcpb
    :no-inherited-members:
    :no-special-members:
 
-   
-   
 
+   
    .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      Hcpb.Ec
-      Hcpb.Ej
-      Hcpb.ng
-      Hcpb.nlevels
-   
+      
+   .. autoattribute:: Hcpb.Ec
+   .. autoattribute:: Hcpb.Ej
+   .. autoattribute:: Hcpb.ng
+   .. autoattribute:: Hcpb.nlevels
    
 
-   
-   
 
+
+   
    .. rubric:: Methods
+   
+   .. automethod:: Hcpb.anharm
+   .. automethod:: Hcpb.evalue_k
+   .. automethod:: Hcpb.evec_k
+   .. automethod:: Hcpb.fij
+   .. automethod:: Hcpb.h0_to_qutip
+   .. automethod:: Hcpb.n_ij
+   .. automethod:: Hcpb.n_to_qutip
+   .. automethod:: Hcpb.params_from_freq_fixEC
+   .. automethod:: Hcpb.params_from_spectrum
+   .. automethod:: Hcpb.psi_k
 
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      Hcpb.anharm
-      Hcpb.evalue_k
-      Hcpb.evec_k
-      Hcpb.fij
-      Hcpb.h0_to_qutip
-      Hcpb.n_ij
-      Hcpb.n_to_qutip
-      Hcpb.params_from_freq_fixEC
-      Hcpb.params_from_spectrum
-      Hcpb.psi_k
-   
-
-   
    

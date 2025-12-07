@@ -10,45 +10,36 @@ LOManalysis
    :no-inherited-members:
    :no-special-members:
 
-   
-   
 
+   
    .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      LOManalysis.data_labels
-      LOManalysis.default_setup
-      LOManalysis.logger
-      LOManalysis.lumped_oscillator
-      LOManalysis.lumped_oscillator_all
-      LOManalysis.setup
-      LOManalysis.supported_data
-   
+      
+   .. autoattribute:: LOManalysis.data_labels
+   .. autoattribute:: LOManalysis.default_setup
+   .. autoattribute:: LOManalysis.logger
+   .. autoattribute:: LOManalysis.lumped_oscillator
+   .. autoattribute:: LOManalysis.lumped_oscillator_all
+   .. autoattribute:: LOManalysis.setup
+   .. autoattribute:: LOManalysis.supported_data
    
 
-   
-   
 
+
+   
    .. rubric:: Methods
+   
+   .. automethod:: LOManalysis.clear_data
+   .. automethod:: LOManalysis.get_data
+   .. automethod:: LOManalysis.get_data_labels
+   .. automethod:: LOManalysis.load_simulation_data
+   .. automethod:: LOManalysis.plot_convergence
+   .. automethod:: LOManalysis.plot_convergence_chi
+   .. automethod:: LOManalysis.print_run_args
+   .. automethod:: LOManalysis.run
+   .. automethod:: LOManalysis.run_lom
+   .. automethod:: LOManalysis.run_sweep
+   .. automethod:: LOManalysis.save_run_args
+   .. automethod:: LOManalysis.set_data
+   .. automethod:: LOManalysis.setup_update
 
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      LOManalysis.clear_data
-      LOManalysis.get_data
-      LOManalysis.get_data_labels
-      LOManalysis.plot_convergence
-      LOManalysis.plot_convergence_chi
-      LOManalysis.print_run_args
-      LOManalysis.run
-      LOManalysis.run_lom
-      LOManalysis.run_sweep
-      LOManalysis.save_run_args
-      LOManalysis.set_data
-      LOManalysis.setup_update
-   
-
-   
    

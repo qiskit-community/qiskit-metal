@@ -38,7 +38,7 @@ class NSquareSpiral(QComponent):
         NSquareSpiral.png
 
     .. meta::
-        N Square Spiral
+        :description: N Square Spiral
 
     Default Options:
         Convention: Values (unless noted) are strings with units included,

@@ -55,7 +55,7 @@ class TransmonCrossFL(TransmonCross):  # pylint: disable=invalid-name
         transmon_cross_fl.png
 
     .. meta::
-        Transmon Cross Flux Line
+        :description: Transmon Cross Flux Line
 
     """
 

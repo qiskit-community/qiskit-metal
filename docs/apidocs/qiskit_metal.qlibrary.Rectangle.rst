@@ -10,55 +10,48 @@ Rectangle
    :no-inherited-members:
    :no-special-members:
 
-   
-   
 
+   
    .. rubric:: Attributes
-
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      Rectangle.TOOLTIP
-      Rectangle.class_name
-      Rectangle.component_metadata
-      Rectangle.default_options
-      Rectangle.design
-      Rectangle.id
-      Rectangle.logger
-      Rectangle.name
-      Rectangle.options
-      Rectangle.pin_names
-      Rectangle.qgeometry_types
-   
-   
-
-   
+      
+   .. autoattribute:: Rectangle.TOOLTIP
+   .. autoattribute:: Rectangle.class_name
+   .. autoattribute:: Rectangle.component_metadata
+   .. autoattribute:: Rectangle.default_options
+   .. autoattribute:: Rectangle.design
+   .. autoattribute:: Rectangle.id
+   .. autoattribute:: Rectangle.logger
+   .. autoattribute:: Rectangle.name
+   .. autoattribute:: Rectangle.options
+   .. autoattribute:: Rectangle.pin_names
+   .. autoattribute:: Rectangle.qgeometry_types
+   .. autoattribute:: Rectangle.pins
+   .. autoattribute:: Rectangle.metadata
+   .. autoattribute:: Rectangle.status
    
 
+
+
+   
    .. rubric:: Methods
+   
+   .. automethod:: Rectangle.add_dependency
+   .. automethod:: Rectangle.add_pin
+   .. automethod:: Rectangle.add_qgeometry
+   .. automethod:: Rectangle.connect_components_already_in_design
+   .. automethod:: Rectangle.delete
+   .. automethod:: Rectangle.get_pin
+   .. automethod:: Rectangle.get_template_options
+   .. automethod:: Rectangle.make
+   .. automethod:: Rectangle.parse_options
+   .. automethod:: Rectangle.parse_value
+   .. automethod:: Rectangle.populate_to_track_table_usage
+   .. automethod:: Rectangle.qgeometry_bounds
+   .. automethod:: Rectangle.qgeometry_dict
+   .. automethod:: Rectangle.qgeometry_list
+   .. automethod:: Rectangle.qgeometry_plot
+   .. automethod:: Rectangle.qgeometry_table
+   .. automethod:: Rectangle.rebuild
+   .. automethod:: Rectangle.to_script
 
-   .. autosummary::
-      :toctree: ../stubs/
-   
-      Rectangle.add_dependency
-      Rectangle.add_pin
-      Rectangle.add_qgeometry
-      Rectangle.connect_components_already_in_design
-      Rectangle.delete
-      Rectangle.get_pin
-      Rectangle.get_template_options
-      Rectangle.make
-      Rectangle.parse_options
-      Rectangle.parse_value
-      Rectangle.populate_to_track_table_usage
-      Rectangle.qgeometry_bounds
-      Rectangle.qgeometry_dict
-      Rectangle.qgeometry_list
-      Rectangle.qgeometry_plot
-      Rectangle.qgeometry_table
-      Rectangle.rebuild
-      Rectangle.to_script
-   
-
-   
    

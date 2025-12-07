@@ -42,7 +42,7 @@ class LineTee(QComponent):
         LineTee.png
 
     .. meta::
-        Line Tee
+        :description: Line Tee
 
     Options:
         * prime_width: '10um' -- The width of the trace of the two pin CPW transmission line
