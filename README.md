@@ -33,7 +33,7 @@ Quantum Metal has graduated from being an IBM maintained project and is now one 
   [Sign for 2026](https://qdw-ucla.squarespace.com/qdw2026) to meet the community, learn from experts, and participate directly.*
 
 - **Quantum Device Consortium (QDC)** — an upcoming community organization that will maintain and evolve Quantum Metal as part of a shared ecosystem of tools (including SQUADDS, SQDMetal, scqubits, pyEPR, and many others).
-  *(Website and governance page coming soon.)*
+  *([Website and governance page](https://qdc-qcsa.vercel.app))*
 
 
 ## 🌱 From IBM to a Community-Maintained Project
