@@ -1,8 +1,0 @@
-﻿
-
-RouteStraight.qgeometry_bounds
-====================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: RouteStraight.qgeometry_bounds

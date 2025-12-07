@@ -1,8 +1,0 @@
-﻿
-
-NSquareSpiral.TOOLTIP
-===========================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoattribute:: NSquareSpiral.TOOLTIP

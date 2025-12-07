@@ -1,8 +1,0 @@
-﻿
-
-jj_manhattan.qgeometry_bounds
-===================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: jj_manhattan.qgeometry_bounds

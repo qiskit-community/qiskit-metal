@@ -1,8 +1,0 @@
-﻿
-
-TransmonPocket6.rebuild
-=============================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: TransmonPocket6.rebuild

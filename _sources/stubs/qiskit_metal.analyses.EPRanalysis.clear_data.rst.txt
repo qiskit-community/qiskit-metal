@@ -1,8 +1,0 @@
-﻿
-
-EPRanalysis.clear_data
-============================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. automethod:: EPRanalysis.clear_data

@@ -1,8 +1,0 @@
-﻿
-
-EigenmodeSim.get_data_labels
-==================================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. automethod:: EigenmodeSim.get_data_labels

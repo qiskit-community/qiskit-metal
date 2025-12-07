@@ -1,8 +1,0 @@
-﻿
-
-RouteMeander.component_metadata
-=====================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoattribute:: RouteMeander.component_metadata

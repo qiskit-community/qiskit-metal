@@ -1,8 +1,0 @@
-﻿
-
-ResonatorCoilRect.design
-==============================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoproperty:: ResonatorCoilRect.design

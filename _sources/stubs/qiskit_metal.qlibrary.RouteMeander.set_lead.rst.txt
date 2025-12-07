@@ -1,8 +1,0 @@
-﻿
-
-RouteMeander.set_lead
-===========================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: RouteMeander.set_lead

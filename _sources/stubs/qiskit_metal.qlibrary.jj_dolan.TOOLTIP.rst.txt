@@ -1,8 +1,0 @@
-﻿
-
-jj_dolan.TOOLTIP
-======================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoattribute:: jj_dolan.TOOLTIP

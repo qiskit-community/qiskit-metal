@@ -1,8 +1,0 @@
-﻿
-
-jj_dolan.component_metadata
-=================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoattribute:: jj_dolan.component_metadata

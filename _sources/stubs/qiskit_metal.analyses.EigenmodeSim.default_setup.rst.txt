@@ -1,8 +1,0 @@
-﻿
-
-EigenmodeSim.default_setup
-================================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. autoattribute:: EigenmodeSim.default_setup

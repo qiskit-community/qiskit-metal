@@ -1,8 +1,0 @@
-﻿
-
-RouteStraight.name
-========================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoproperty:: RouteStraight.name

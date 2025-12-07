@@ -1,8 +1,0 @@
-﻿
-
-RouteFramed.pin_names
-===========================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoproperty:: RouteFramed.pin_names

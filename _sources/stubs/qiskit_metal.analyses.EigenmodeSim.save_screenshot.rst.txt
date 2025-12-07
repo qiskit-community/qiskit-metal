@@ -1,8 +1,0 @@
-﻿
-
-EigenmodeSim.save_screenshot
-==================================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. automethod:: EigenmodeSim.save_screenshot

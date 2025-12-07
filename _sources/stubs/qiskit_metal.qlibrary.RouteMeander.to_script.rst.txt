@@ -1,8 +1,0 @@
-﻿
-
-RouteMeander.to_script
-============================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: RouteMeander.to_script

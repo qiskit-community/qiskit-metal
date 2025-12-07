@@ -1,8 +1,0 @@
-﻿
-
-LineTee.make
-==================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: LineTee.make

@@ -1,8 +1,0 @@
-﻿
-
-NGon.options
-==================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoattribute:: NGon.options

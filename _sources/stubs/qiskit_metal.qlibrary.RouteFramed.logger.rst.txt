@@ -1,8 +1,0 @@
-﻿
-
-RouteFramed.logger
-========================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoproperty:: RouteFramed.logger

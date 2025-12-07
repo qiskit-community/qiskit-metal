@@ -1,8 +1,0 @@
-﻿
-
-TransmonCrossFL.make
-==========================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: TransmonCrossFL.make

@@ -1,8 +1,0 @@
-﻿
-
-ShortToGround.rebuild
-===========================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: ShortToGround.rebuild

@@ -1,8 +1,0 @@
-﻿
-
-RouteFramed.totlength
-===========================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: RouteFramed.totlength

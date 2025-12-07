@@ -1,8 +1,0 @@
-﻿
-
-RouteAnchors.id
-=====================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoproperty:: RouteAnchors.id

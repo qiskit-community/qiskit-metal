@@ -1,8 +1,0 @@
-﻿
-
-TransmonCrossFL.make_flux_line
-====================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: TransmonCrossFL.make_flux_line

@@ -1,8 +1,0 @@
-﻿
-
-jj_dolan.name
-===================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoproperty:: jj_dolan.name

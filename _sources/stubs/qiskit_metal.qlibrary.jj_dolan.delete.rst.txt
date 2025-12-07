@@ -1,8 +1,0 @@
-﻿
-
-jj_dolan.delete
-=====================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: jj_dolan.delete

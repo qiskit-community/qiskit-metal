@@ -1,8 +1,0 @@
-﻿
-
-jj_manhattan.logger
-=========================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoproperty:: jj_manhattan.logger

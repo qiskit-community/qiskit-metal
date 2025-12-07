@@ -1,8 +1,0 @@
-﻿
-
-TransmonConcentric.default_options
-========================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoattribute:: TransmonConcentric.default_options

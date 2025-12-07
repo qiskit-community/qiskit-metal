@@ -1,8 +1,0 @@
-﻿
-
-jj_manhattan.pin_names
-============================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoproperty:: jj_manhattan.pin_names

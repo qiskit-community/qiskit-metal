@@ -1,8 +1,0 @@
-﻿
-
-Rectangle.qgeometry_table
-===============================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: Rectangle.qgeometry_table

@@ -1,8 +1,0 @@
-﻿
-
-Rectangle.make
-====================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: Rectangle.make

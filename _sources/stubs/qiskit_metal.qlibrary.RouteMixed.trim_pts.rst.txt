@@ -1,8 +1,0 @@
-﻿
-
-RouteMixed.trim_pts
-=========================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: RouteMixed.trim_pts

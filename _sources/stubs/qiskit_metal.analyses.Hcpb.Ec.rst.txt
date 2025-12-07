@@ -1,8 +1,0 @@
-﻿
-
-Hcpb.Ec
-=============================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. autoproperty:: Hcpb.Ec

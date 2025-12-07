@@ -1,8 +1,0 @@
-﻿
-
-Rectangle.rebuild
-=======================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: Rectangle.rebuild

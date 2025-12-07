@@ -1,8 +1,0 @@
-﻿
-
-RouteStraight.qgeometry_types
-===================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoproperty:: RouteStraight.qgeometry_types

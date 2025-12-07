@@ -1,8 +1,0 @@
-﻿
-
-QSimulation.save_screenshot
-=================================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. automethod:: QSimulation.save_screenshot

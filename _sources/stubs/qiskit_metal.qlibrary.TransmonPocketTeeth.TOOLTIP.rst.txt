@@ -1,8 +1,0 @@
-﻿
-
-TransmonPocketTeeth.TOOLTIP
-=================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoattribute:: TransmonPocketTeeth.TOOLTIP

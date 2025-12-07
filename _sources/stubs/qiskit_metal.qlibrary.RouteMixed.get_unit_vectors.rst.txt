@@ -1,8 +1,0 @@
-﻿
-
-RouteMixed.get_unit_vectors
-=================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: RouteMixed.get_unit_vectors

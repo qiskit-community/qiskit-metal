@@ -1,8 +1,0 @@
-﻿
-
-ResonatorCoilRect.pin_names
-=================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoproperty:: ResonatorCoilRect.pin_names

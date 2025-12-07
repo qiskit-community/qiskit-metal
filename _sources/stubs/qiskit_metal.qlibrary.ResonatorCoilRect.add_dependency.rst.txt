@@ -1,8 +1,0 @@
-﻿
-
-ResonatorCoilRect.add_dependency
-======================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: ResonatorCoilRect.add_dependency

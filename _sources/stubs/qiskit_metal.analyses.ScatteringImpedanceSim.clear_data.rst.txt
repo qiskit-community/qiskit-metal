@@ -1,8 +1,0 @@
-﻿
-
-ScatteringImpedanceSim.clear_data
-=======================================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. automethod:: ScatteringImpedanceSim.clear_data

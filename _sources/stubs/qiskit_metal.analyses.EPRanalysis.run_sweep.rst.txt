@@ -1,8 +1,0 @@
-﻿
-
-EPRanalysis.run_sweep
-===========================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. automethod:: EPRanalysis.run_sweep

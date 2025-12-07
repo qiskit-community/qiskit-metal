@@ -1,8 +1,0 @@
-﻿
-
-jj_dolan.design
-=====================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoproperty:: jj_dolan.design

@@ -1,8 +1,0 @@
-﻿
-
-TransmonCrossFL.make_connection_pads
-==========================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: TransmonCrossFL.make_connection_pads

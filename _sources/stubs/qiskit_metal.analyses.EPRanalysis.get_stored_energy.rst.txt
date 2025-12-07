@@ -1,8 +1,0 @@
-﻿
-
-EPRanalysis.get_stored_energy
-===================================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. automethod:: EPRanalysis.get_stored_energy

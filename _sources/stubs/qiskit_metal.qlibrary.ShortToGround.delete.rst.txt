@@ -1,8 +1,0 @@
-﻿
-
-ShortToGround.delete
-==========================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: ShortToGround.delete

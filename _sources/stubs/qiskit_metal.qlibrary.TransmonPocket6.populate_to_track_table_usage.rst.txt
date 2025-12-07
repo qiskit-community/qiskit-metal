@@ -1,8 +1,0 @@
-﻿
-
-TransmonPocket6.populate_to_track_table_usage
-===================================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: TransmonPocket6.populate_to_track_table_usage

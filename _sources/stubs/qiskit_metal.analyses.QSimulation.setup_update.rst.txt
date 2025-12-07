@@ -1,8 +1,0 @@
-﻿
-
-QSimulation.setup_update
-==============================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. automethod:: QSimulation.setup_update

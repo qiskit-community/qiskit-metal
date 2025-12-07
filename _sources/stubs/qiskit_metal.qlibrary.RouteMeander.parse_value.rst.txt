@@ -1,8 +1,0 @@
-﻿
-
-RouteMeander.parse_value
-==============================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: RouteMeander.parse_value

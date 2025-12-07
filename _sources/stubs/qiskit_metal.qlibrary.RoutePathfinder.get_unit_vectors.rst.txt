@@ -1,8 +1,0 @@
-﻿
-
-RoutePathfinder.get_unit_vectors
-======================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: RoutePathfinder.get_unit_vectors

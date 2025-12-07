@@ -1,8 +1,0 @@
-﻿
-
-CapNInterdigital.qgeometry_list
-=====================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: CapNInterdigital.qgeometry_list

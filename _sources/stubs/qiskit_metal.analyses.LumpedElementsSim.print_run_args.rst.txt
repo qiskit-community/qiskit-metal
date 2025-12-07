@@ -1,8 +1,0 @@
-﻿
-
-LumpedElementsSim.print_run_args
-======================================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. automethod:: LumpedElementsSim.print_run_args

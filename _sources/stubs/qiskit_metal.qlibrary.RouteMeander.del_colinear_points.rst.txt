@@ -1,8 +1,0 @@
-﻿
-
-RouteMeander.del_colinear_points
-======================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: RouteMeander.del_colinear_points

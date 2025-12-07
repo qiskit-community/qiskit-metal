@@ -1,8 +1,0 @@
-﻿
-
-RoutePathfinder.get_tip
-=============================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: RoutePathfinder.get_tip

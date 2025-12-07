@@ -1,8 +1,0 @@
-﻿
-
-TransmonPocketTeeth.name
-==============================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoproperty:: TransmonPocketTeeth.name

@@ -1,8 +1,0 @@
-﻿
-
-RouteStraight.get_points
-==============================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: RouteStraight.get_points

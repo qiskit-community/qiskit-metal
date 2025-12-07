@@ -1,8 +1,0 @@
-﻿
-
-TransmonPocketTeeth.qgeometry_dict
-========================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: TransmonPocketTeeth.qgeometry_dict

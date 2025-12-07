@@ -1,8 +1,0 @@
-﻿
-
-Rectangle.TOOLTIP
-=======================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoattribute:: Rectangle.TOOLTIP

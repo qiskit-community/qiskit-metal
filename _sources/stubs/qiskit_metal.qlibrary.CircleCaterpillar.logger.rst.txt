@@ -1,8 +1,0 @@
-﻿
-
-CircleCaterpillar.logger
-==============================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoproperty:: CircleCaterpillar.logger

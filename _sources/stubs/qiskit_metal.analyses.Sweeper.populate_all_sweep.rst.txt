@@ -1,8 +1,0 @@
-﻿
-
-Sweeper.populate_all_sweep
-================================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. automethod:: Sweeper.populate_all_sweep

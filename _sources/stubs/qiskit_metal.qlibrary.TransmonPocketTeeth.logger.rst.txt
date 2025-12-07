@@ -1,8 +1,0 @@
-﻿
-
-TransmonPocketTeeth.logger
-================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoproperty:: TransmonPocketTeeth.logger

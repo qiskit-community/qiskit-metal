@@ -1,8 +1,0 @@
-﻿
-
-RouteAnchors.qgeometry_dict
-=================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: RouteAnchors.qgeometry_dict

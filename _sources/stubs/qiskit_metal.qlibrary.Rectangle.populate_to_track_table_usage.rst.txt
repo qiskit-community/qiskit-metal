@@ -1,8 +1,0 @@
-﻿
-
-Rectangle.populate_to_track_table_usage
-=============================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: Rectangle.populate_to_track_table_usage

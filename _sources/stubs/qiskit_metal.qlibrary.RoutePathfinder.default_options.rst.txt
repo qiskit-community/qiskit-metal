@@ -1,8 +1,0 @@
-﻿
-
-RoutePathfinder.default_options
-=====================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoattribute:: RoutePathfinder.default_options

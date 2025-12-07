@@ -1,8 +1,0 @@
-﻿
-
-QAnalysis.setup
-=====================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. autoproperty:: QAnalysis.setup

@@ -1,8 +1,0 @@
-﻿
-
-RouteStraight.qgeometry_dict
-==================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: RouteStraight.qgeometry_dict

@@ -1,8 +1,0 @@
-﻿
-
-RouteFramed.design
-========================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoproperty:: RouteFramed.design

@@ -1,8 +1,0 @@
-﻿
-
-RouteMeander.make
-=======================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: RouteMeander.make

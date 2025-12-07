@@ -1,8 +1,0 @@
-﻿
-
-RouteFramed.set_lead
-==========================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: RouteFramed.set_lead

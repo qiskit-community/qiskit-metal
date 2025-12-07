@@ -1,8 +1,0 @@
-﻿
-
-TransmonCrossFL.component_metadata
-========================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoattribute:: TransmonCrossFL.component_metadata

@@ -1,8 +1,0 @@
-﻿
-
-EigenmodeSim.save_run_args
-================================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. automethod:: EigenmodeSim.save_run_args

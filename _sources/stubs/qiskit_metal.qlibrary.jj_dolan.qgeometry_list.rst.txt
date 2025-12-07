@@ -1,8 +1,0 @@
-﻿
-
-jj_dolan.qgeometry_list
-=============================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: jj_dolan.qgeometry_list

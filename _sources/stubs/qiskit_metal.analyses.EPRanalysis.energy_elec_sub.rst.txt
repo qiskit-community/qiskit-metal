@@ -1,8 +1,0 @@
-﻿
-
-EPRanalysis.energy_elec_sub
-=================================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. autoproperty:: EPRanalysis.energy_elec_sub

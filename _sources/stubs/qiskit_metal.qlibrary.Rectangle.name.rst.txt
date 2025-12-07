@@ -1,8 +1,0 @@
-﻿
-
-Rectangle.name
-====================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoproperty:: Rectangle.name

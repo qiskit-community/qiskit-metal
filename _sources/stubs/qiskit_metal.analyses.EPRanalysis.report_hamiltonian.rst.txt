@@ -1,8 +1,0 @@
-﻿
-
-EPRanalysis.report_hamiltonian
-====================================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. automethod:: EPRanalysis.report_hamiltonian

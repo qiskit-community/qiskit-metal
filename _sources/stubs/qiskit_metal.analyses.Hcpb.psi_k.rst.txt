@@ -1,8 +1,0 @@
-﻿
-
-Hcpb.psi_k
-================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. automethod:: Hcpb.psi_k

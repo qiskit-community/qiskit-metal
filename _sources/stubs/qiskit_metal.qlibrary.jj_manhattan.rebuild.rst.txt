@@ -1,8 +1,0 @@
-﻿
-
-jj_manhattan.rebuild
-==========================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: jj_manhattan.rebuild

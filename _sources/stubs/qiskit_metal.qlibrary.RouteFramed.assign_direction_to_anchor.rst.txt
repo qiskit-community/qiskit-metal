@@ -1,8 +1,0 @@
-﻿
-
-RouteFramed.assign_direction_to_anchor
-============================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: RouteFramed.assign_direction_to_anchor

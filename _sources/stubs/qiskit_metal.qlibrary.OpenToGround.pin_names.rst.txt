@@ -1,8 +1,0 @@
-﻿
-
-OpenToGround.pin_names
-============================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoproperty:: OpenToGround.pin_names

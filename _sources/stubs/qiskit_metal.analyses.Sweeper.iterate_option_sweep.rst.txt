@@ -1,8 +1,0 @@
-﻿
-
-Sweeper.iterate_option_sweep
-==================================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. automethod:: Sweeper.iterate_option_sweep

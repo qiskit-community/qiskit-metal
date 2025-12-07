@@ -1,8 +1,0 @@
-﻿
-
-jj_dolan.logger
-=====================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoproperty:: jj_dolan.logger

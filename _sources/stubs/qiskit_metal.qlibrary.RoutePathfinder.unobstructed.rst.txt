@@ -1,8 +1,0 @@
-﻿
-
-RoutePathfinder.unobstructed
-==================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: RoutePathfinder.unobstructed

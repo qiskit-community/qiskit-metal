@@ -1,8 +1,0 @@
-﻿
-
-NGon.qgeometry_plot
-=========================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: NGon.qgeometry_plot

@@ -1,8 +1,0 @@
-﻿
-
-QSimulation.get_data_labels
-=================================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. automethod:: QSimulation.get_data_labels

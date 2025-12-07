@@ -1,8 +1,0 @@
-﻿
-
-TransmonPocket6.to_script
-===============================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: TransmonPocket6.to_script

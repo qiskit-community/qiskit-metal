@@ -1,8 +1,0 @@
-﻿
-
-LumpedElementsSim.setup
-=============================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. autoproperty:: LumpedElementsSim.setup

@@ -1,8 +1,0 @@
-﻿
-
-RouteMixed.adjust_length
-==============================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: RouteMixed.adjust_length

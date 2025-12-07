@@ -1,8 +1,0 @@
-﻿
-
-RouteMixed.issideways
-===========================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: RouteMixed.issideways

@@ -1,8 +1,0 @@
-﻿
-
-LumpedElementsSim.renderer_initialized
-============================================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. autoproperty:: LumpedElementsSim.renderer_initialized

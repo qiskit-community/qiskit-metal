@@ -1,8 +1,0 @@
-﻿
-
-RectangleHollow.design
-============================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoproperty:: RectangleHollow.design

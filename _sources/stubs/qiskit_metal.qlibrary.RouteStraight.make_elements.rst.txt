@@ -1,8 +1,0 @@
-﻿
-
-RouteStraight.make_elements
-=================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: RouteStraight.make_elements

@@ -1,8 +1,0 @@
-﻿
-
-LumpedElementsSim.capacitance_all_passes
-==============================================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. autoproperty:: LumpedElementsSim.capacitance_all_passes

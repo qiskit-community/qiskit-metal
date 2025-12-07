@@ -1,8 +1,0 @@
-﻿
-
-LaunchpadWirebond.delete
-==============================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: LaunchpadWirebond.delete

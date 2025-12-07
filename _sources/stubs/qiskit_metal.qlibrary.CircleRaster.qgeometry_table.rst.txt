@@ -1,8 +1,0 @@
-﻿
-
-CircleRaster.qgeometry_table
-==================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: CircleRaster.qgeometry_table

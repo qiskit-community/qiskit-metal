@@ -1,8 +1,0 @@
-﻿
-
-jj_manhattan.name
-=======================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoproperty:: jj_manhattan.name

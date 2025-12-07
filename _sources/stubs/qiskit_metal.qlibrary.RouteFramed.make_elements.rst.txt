@@ -1,8 +1,0 @@
-﻿
-
-RouteFramed.make_elements
-===============================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: RouteFramed.make_elements

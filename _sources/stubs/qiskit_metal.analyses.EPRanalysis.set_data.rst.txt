@@ -1,8 +1,0 @@
-﻿
-
-EPRanalysis.set_data
-==========================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. automethod:: EPRanalysis.set_data

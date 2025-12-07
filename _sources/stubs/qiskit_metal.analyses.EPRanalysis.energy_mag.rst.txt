@@ -1,8 +1,0 @@
-﻿
-
-EPRanalysis.energy_mag
-============================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. autoproperty:: EPRanalysis.energy_mag

@@ -1,8 +1,0 @@
-﻿
-
-EigenmodeSim.clear_fields
-===============================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. automethod:: EigenmodeSim.clear_fields

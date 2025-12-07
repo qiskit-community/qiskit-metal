@@ -1,8 +1,0 @@
-﻿
-
-EigenmodeSim.set_data
-===========================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. automethod:: EigenmodeSim.set_data

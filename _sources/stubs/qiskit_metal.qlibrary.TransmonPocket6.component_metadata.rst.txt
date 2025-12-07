@@ -1,8 +1,0 @@
-﻿
-
-TransmonPocket6.component_metadata
-========================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoattribute:: TransmonPocket6.component_metadata

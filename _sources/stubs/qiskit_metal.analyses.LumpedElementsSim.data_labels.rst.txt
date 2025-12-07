@@ -1,8 +1,0 @@
-﻿
-
-LumpedElementsSim.data_labels
-===================================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. autoattribute:: LumpedElementsSim.data_labels

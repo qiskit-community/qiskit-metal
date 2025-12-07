@@ -1,8 +1,0 @@
-﻿
-
-EPRanalysis.get_data_labels
-=================================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. automethod:: EPRanalysis.get_data_labels

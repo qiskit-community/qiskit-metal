@@ -1,8 +1,0 @@
-﻿
-
-StarQubit.logger
-======================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoproperty:: StarQubit.logger

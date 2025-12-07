@@ -1,8 +1,0 @@
-﻿
-
-TransmonConcentric.parse_value
-====================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: TransmonConcentric.parse_value

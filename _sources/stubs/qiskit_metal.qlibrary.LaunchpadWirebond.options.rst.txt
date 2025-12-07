@@ -1,8 +1,0 @@
-﻿
-
-LaunchpadWirebond.options
-===============================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoattribute:: LaunchpadWirebond.options

@@ -1,8 +1,0 @@
-﻿
-
-Hcpb.params_from_spectrum
-===============================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. automethod:: Hcpb.params_from_spectrum

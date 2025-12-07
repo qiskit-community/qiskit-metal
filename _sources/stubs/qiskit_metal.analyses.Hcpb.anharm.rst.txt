@@ -1,8 +1,0 @@
-﻿
-
-Hcpb.anharm
-=================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. automethod:: Hcpb.anharm

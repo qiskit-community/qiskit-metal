@@ -1,8 +1,0 @@
-﻿
-
-EigenmodeSim.logger
-=========================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. autoproperty:: EigenmodeSim.logger

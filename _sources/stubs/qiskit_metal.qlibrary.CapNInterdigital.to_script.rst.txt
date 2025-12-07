@@ -1,8 +1,0 @@
-﻿
-
-CapNInterdigital.to_script
-================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: CapNInterdigital.to_script

@@ -1,8 +1,0 @@
-﻿
-
-Rectangle.component_metadata
-==================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoattribute:: Rectangle.component_metadata

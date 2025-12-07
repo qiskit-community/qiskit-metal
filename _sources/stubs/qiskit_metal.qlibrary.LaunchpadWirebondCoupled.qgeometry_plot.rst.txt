@@ -1,8 +1,0 @@
-﻿
-
-LaunchpadWirebondCoupled.qgeometry_plot
-=============================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: LaunchpadWirebondCoupled.qgeometry_plot

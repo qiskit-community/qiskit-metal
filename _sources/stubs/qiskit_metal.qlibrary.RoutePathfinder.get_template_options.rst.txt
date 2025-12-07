@@ -1,8 +1,0 @@
-﻿
-
-RoutePathfinder.get_template_options
-==========================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: RoutePathfinder.get_template_options

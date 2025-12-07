@@ -1,8 +1,0 @@
-﻿
-
-jj_dolan.options
-======================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. autoattribute:: jj_dolan.options

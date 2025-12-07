@@ -1,8 +1,0 @@
-﻿
-
-TransmonPocket6.qgeometry_dict
-====================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: TransmonPocket6.qgeometry_dict

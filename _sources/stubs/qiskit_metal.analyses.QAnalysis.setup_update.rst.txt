@@ -1,8 +1,0 @@
-﻿
-
-QAnalysis.setup_update
-============================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. automethod:: QAnalysis.setup_update

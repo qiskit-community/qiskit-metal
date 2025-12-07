@@ -1,8 +1,0 @@
-﻿
-
-LumpedElementsSim.save_screenshot
-=======================================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. automethod:: LumpedElementsSim.save_screenshot

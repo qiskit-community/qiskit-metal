@@ -1,8 +1,0 @@
-﻿
-
-RouteFramed.add_pin
-=========================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: RouteFramed.add_pin

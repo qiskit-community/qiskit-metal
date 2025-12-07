@@ -1,8 +1,0 @@
-﻿
-
-TransmonCross.to_script
-=============================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: TransmonCross.to_script

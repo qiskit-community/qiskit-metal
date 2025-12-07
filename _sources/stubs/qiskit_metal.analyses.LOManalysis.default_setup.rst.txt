@@ -1,8 +1,0 @@
-﻿
-
-LOManalysis.default_setup
-===============================================
-
-.. currentmodule:: qiskit_metal.analyses
-
-.. autoattribute:: LOManalysis.default_setup

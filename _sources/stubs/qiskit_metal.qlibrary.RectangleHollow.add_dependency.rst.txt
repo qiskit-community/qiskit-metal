@@ -1,8 +1,0 @@
-﻿
-
-RectangleHollow.add_dependency
-====================================================
-
-.. currentmodule:: qiskit_metal.qlibrary
-
-.. automethod:: RectangleHollow.add_dependency
