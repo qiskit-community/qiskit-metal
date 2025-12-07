@@ -28,7 +28,7 @@ QDesign
 ---------------
 
 .. autosummary::
-    :toctree: ../stubs/
+    :toctree: .
 
     QDesign
 
@@ -37,7 +37,7 @@ DesignPlanar
 ---------------
 
 .. autosummary::
-    :toctree: ../stubs/
+    :toctree: .
 
     DesignPlanar
 
@@ -46,7 +46,7 @@ MultiPlanar
 ---------------
 
 .. autosummary::
-    :toctree: ../stubs/
+    :toctree: .
 
     MultiPlanar
 
@@ -55,7 +55,7 @@ DesignFlipChip
 ---------------
 
 .. autosummary::
-    :toctree: ../stubs/
+    :toctree: .
 
     DesignFlipChip
 
@@ -63,7 +63,7 @@ QNet
 ---------------
 
 .. autosummary::
-    :toctree: ../stubs/
+    :toctree: .
 
     QNet
 
@@ -72,7 +72,7 @@ InterfaceComponents
 -------------------
 
 .. autosummary::
-    :toctree: ../stubs/
+    :toctree: .
 
     Components
 """

@@ -38,7 +38,7 @@ Quantum Metal has graduated from being an IBM maintained project and is now one 
 
 ## 🌱 From IBM to a Community-Maintained Project
 
-Originally developed at IBM by **Dr. Zlatko K. Minev**, Qiskit Metal has, over the last two years, naturally transitioned into a **community-driven project** supported by multiple universities, research groups, labs, and individual contributors.
+Originally developed at IBM, originated by **Dr. Zlatko K. Minev**, Qiskit Metal has, over the last two years, naturally transitioned into a **community-driven project** supported by multiple universities, research groups, labs, and individual contributors.
 
 This v0.5 release marks the formal graduation into that next phase of the project’s life.
 

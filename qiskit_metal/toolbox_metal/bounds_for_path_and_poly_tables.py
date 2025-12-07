@@ -54,33 +54,22 @@ class BoundsForPathAndPolyTables():
         y_buff: float
     ) -> tuple[tuple[float, float, float, float], pd.DataFrame, pd.DataFrame,
                bool, Union[None, set]]:
-        """If box_plus_buffer is True, returns a tuple containing minx, miny, maxx, maxy values for the
-        bounds of what was selected to be rendered.
-        Else, use the chip size for Tuple.
-
-        Also, return the Tuple so can be used later within a renderer.
+        """Return bounds and concatenated geometry tables for selected components.
 
         Args:
-            box_plus_buffer (bool): Use the box of selected components plus a buffer size OR
-                                the chip size based on QComponents selected.
-            qcomp_ids (List):  Empty or partial list of components in QDesign.
-                                From QRenderer.get_unique_component_ids
-            case (int): Return code used from QRenderer.get_unique_component_ids()
-            x_buff (float): If box_plus_buffer, need the buffer value in x coordinate.
-            y_buff (float): If box_plus_buffer, need the buffer value in y coordinate.
+            box_plus_buffer: If True, use selected components' bounding box plus
+                the supplied buffer; otherwise use the chip size.
+            qcomp_ids: Component ids to include (may be empty to include all).
+            case: Return code from ``QRenderer.get_unique_component_ids``.
+            x_buff: Buffer to add in x when ``box_plus_buffer`` is True.
+            y_buff: Buffer to add in y when ``box_plus_buffer`` is True.
 
         Returns:
-            tuple[tuple[float, float, float, float], pd.DataFrame, pd.DataFrame, bool, Union[None,set]]:
-                                    tuple: minx, miny, maxx, maxy values based
-                                                    on either total chip size or box_plus_buffer.
-                                                    In xy plane, the box_for_xy_bounds will be limited
-                                                    by the chip_bounds_xy if box_for_xy_bounds is larger
-                                                    than chip_bounds_xy.
-                                    pd.DataFrame: The path and poly dataframes concatenated for qcomp_ids
-                                    pd.DataFrame: The path, poly, junction dataframes concatenated for qcomp_ids
-                                    bool: If there is a key in design with same chip_name as in layer_stack
-                                    Union[None,set]: Either None if the names don't match,
-                                                    or the set of chip_names that can be used.
+            tuple: Bounding box (minx, miny, maxx, maxy).
+            pd.DataFrame: Path and poly tables concatenated for the selection.
+            pd.DataFrame: Path, poly, and junction tables concatenated.
+            bool: True if chip names match between design and layer stack.
+            set | None: Valid chip names if they match, otherwise None.
         """
         box_for_xy_bounds = None
         self.chip_names_matched = None

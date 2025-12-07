@@ -24,7 +24,7 @@ Renderer Base
 ---------------
 
 .. autosummary::
-    :toctree: ../stubs/
+    :toctree: .
 
     QRenderer
     QRendererGui
@@ -35,7 +35,7 @@ MPL Renderer
 ---------------
 
 .. autosummary::
-    :toctree: ../stubs/
+    :toctree: .
 
     PlotCanvas
     MplInteraction
@@ -49,7 +49,7 @@ GDS Renderer
 ---------------
 
 .. autosummary::
-    :toctree: ../stubs/
+    :toctree: .
 
     QGDSRenderer
     Cheesing
@@ -59,7 +59,7 @@ Ansys Renderer
 ---------------
 
 .. autosummary::
-    :toctree: ../stubs/
+    :toctree: .
 
     QAnsysRenderer
     QHFSSRenderer
@@ -76,7 +76,7 @@ GMSH Renderer
 ---------------
 
 .. autosummary::
-    :toctree: ../stubs/
+    :toctree: .
 
     QGmshRenderer
     Vec3DArray

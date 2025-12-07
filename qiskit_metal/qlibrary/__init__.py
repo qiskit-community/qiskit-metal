@@ -26,7 +26,7 @@ Core Classes
 ----------------
 
 .. autosummary::
-    :toctree: ../stubs/
+    :toctree: .
 
     QComponent
     ParsedDynamicAttributes_Component

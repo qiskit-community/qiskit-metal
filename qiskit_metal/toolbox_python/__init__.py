@@ -24,7 +24,7 @@ Headings
 ---------------
 
 .. autosummary::
-    :toctree: ../stubs/
+    :toctree: .
 
     MetalTutorialMagics
     Headings
@@ -35,7 +35,7 @@ Submodules
 ---------------
 
 .. autosummary::
-    :toctree: ../stubs/
+    :toctree: .
 
     _logging
     display

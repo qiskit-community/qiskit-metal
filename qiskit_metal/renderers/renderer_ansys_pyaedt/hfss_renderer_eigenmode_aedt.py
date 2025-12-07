@@ -287,34 +287,25 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
                 fock_trunc: int = None,
                 numeric: bool = None,
                 print_result: bool = None):
-        '''
-        Runs EPR analysis
+        """Run EPR analysis and return the results dict.
 
-        Interpreting Results:
-        f_0 [MHz]    : Eigenmode frequencies computed by HFSS; i.e., linear freq returned in GHz
-        f_1 [MHz]    : Dressed mode frequencies (by the non-linearity; e.g., Lamb shift, etc. ).
-                        If numerical diagonalizaiton is run, then we return the numerically diagonalizaed
-                        frequencies, otherwise, use 1st order pertuirbation theory on the 4th order
-                        expansion of the cosine.
-        f_ND [MHz]   : Numerical diagonalizaiton
-        chi_O1 [MHz] : Analytic expression for the chis based on a cos trunc to 4th order, and using 1st
-                        order perturbation theory. Diag is anharmonicity, off diag is full cross-Kerr.
-        chi_ND [MHz] : Numerically diagonalized chi matrix. Diag is anharmonicity, off diag is full
-                        cross-Kerr.
+        Interpreting results:
+        - ``f_0`` [MHz]: Eigenmode frequencies from HFSS (linear).
+        - ``f_1`` [MHz]: Dressed mode frequencies (includes Lamb shift, etc.).
+        - ``f_ND`` [MHz]: Numerically diagonalized frequencies.
+        - ``chi_O1`` [MHz]: Analytic chis (cosine truncated to 4th order, first-order perturbation).
+        - ``chi_ND`` [MHz]: Numerically diagonalized chi matrix (diag = anharmonicity, off-diag = cross-Kerr).
 
         Args:
-            dielectric_layers (list, optional): Specify which layers are dielectrics.
-                Layers are specified in `LayerStackHandler.ls_df['layer']`.
-                Defaults to self.default_pyepr_options
-            cos_trunc (int, optional): Truncation of the cosine. Defaults to self.default_pyepr_options.
-            fock_trunc (int, optional): Truncation of the fock. Defaults to self.default_pyepr_options. 
-            numeric (bool, optional): Use numerical diagonalization. Defaults to self.default_pyepr_options.
-            print_result (bool, optional): Print results of EPR analysis. Defaults to self.default_pyepr_options.
+            dielectric_layers: Layers treated as dielectrics (defaults to ``default_pyepr_options``).
+            cos_trunc: Cosine truncation (defaults to ``default_pyepr_options``).
+            fock_trunc: Fock truncation (defaults to ``default_pyepr_options``).
+            numeric: Use numerical diagonalization (defaults to ``default_pyepr_options``).
+            print_result: Print results (defaults to ``default_pyepr_options``).
 
         Returns:
-            self.epr_quantum_analysis.data (dict): all results of EPR analysis
-
-        '''
+            dict: ``self.epr_quantum_analysis.data`` with all EPR results.
+        """
         if (print_result == None):
             print_result = self.default_pyepr_options.print_result
 

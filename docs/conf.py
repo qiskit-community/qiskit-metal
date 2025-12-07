@@ -197,6 +197,10 @@ autoclass_content = 'both'
 # have a caption.
 numfig = True
 
+# Mock heavy/external modules so autodoc does not pull in their docstrings
+# (e.g., matplotlib roles that are not defined in our docs build).
+autodoc_mock_imports = ['matplotlib']
+
 # A dictionary mapping 'figure', 'table', 'code-block' and 'section' to
 # strings that are used for format of figure numbers. As a special character,
 # %s will be replaced to figure number.

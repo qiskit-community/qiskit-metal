@@ -2,8 +2,9 @@
 Quantum Metal (formerly Qiskit Metal)
 ##############################################################
 
+
 Quantum Device Design & Analysis (Q-EDA)
-----------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
 .. attention::
@@ -15,17 +16,18 @@ Quantum Device Design & Analysis (Q-EDA)
     For details on the transition and the roadmap, see the :doc:`Roadmap </workflow>`.
 
 .. hint::
+    **Community support?**
+    Join the Quantum Device Community (QDC) Discord and Quantum Metal channel:
+    `discord.gg/kaZ3UFuq <https://discord.gg/kaZ3UFuq>`_.
+    You can also join the the Slack channel `#metal <https://qiskit.slack.com/archives/C01R8KP5WP7>`_
+    in the `Qiskit workspace <https://qisk.it/join-slack>`_, which we will slowly phase out.
+
     You can open this documentation using
 
     .. code-block:: python
 
         import qiskit_metal
         qiskit_metal.open_docs()
-
-.. hint::
-    Community support: join the Slack channel `#metal <https://qiskit.slack.com/archives/C01R8KP5WP7>`_
-    in the `Qiskit workspace <https://qisk.it/join-slack>`_. You can also join the community Discord:
-    `discord.gg/kaZ3UFuq <https://discord.gg/kaZ3UFuq>`_.
 
 .. image:: images/logo1.png
    :alt: Missing Logo Diagram

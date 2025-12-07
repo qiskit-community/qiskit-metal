@@ -11,36 +11,66 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""Module containing Basic Qiskit Metal Planar (2D) design for CPW type
-geometry."""
+"""Module containing the basic planar (2D) design for CPW-style geometries."""
 
-#from typing import TYPE_CHECKING
-from typing import Tuple
-#from typing import Dict as Dict_
-#from typing import List, Union
-
+from typing import Tuple, Optional
 from .design_base import QDesign, Dict
 
 __all__ = ['DesignPlanar']
 
 
 class DesignPlanar(QDesign):
-    """Metal class for a planar (2D) design, consisting of a single plane chip.
-    Typically assumed to have some CPW geometries.
+    """Planar (2D) design with a single chip and CPW-style geometries.
 
-    Inherits QDesign class.
+    Use this as the default design class when you are laying out coplanar
+    waveguides, qubits, resonators, and other planar components on a single
+    dielectric/metal stack.
+
+    What this design manages for you:
+
+    - Chip metadata: material, layer span, and a default chip size and origin.
+      The defaults are centered at ``(0, 0)`` with a 9 mm x 6 mm footprint and
+      a finite thickness in ``z``. Adjust these in ``self._chips`` or through
+      your YAML/options before exporting.
+    - Coordinate system: everything is centered at the chip origin; renders and
+      exports use these bounds for clipping, subtraction, and cheesing.
+    - Renderer enablement: set ``enable_renderers=False`` if you want a pure
+      geometry run without renderer bootstrapping.
+
+    Typical workflow:
+
+    #. Instantiate ``DesignPlanar`` with optional metadata and renderer control.
+    #. Add QComponents (qubits, resonators, launch pads, routes) to the design.
+    #. Use the chip size helpers (e.g., ``get_x_y_for_chip``) to clip or subtract
+       geometries during export.
+    #. Run your renderer of choice (GDS, Ansys, etc.) using the design’s tables.
+
+    Philosophy and extensions:
+
+    - Keep it simple and fast: this design is intentionally minimal—one chip,
+      one stack—so iteration is quick. Start here unless you explicitly need
+      multiple substrates or flip-chip structures.
+    - Need multiple chips or 3D stacking? Switch to ``MultiPlanar`` or
+      ``DesignFlipChip``; the API is similar, but those classes manage multiple
+      chip entries and inter-chip alignments.
+    - Chip size and origin matter: routing, subtraction, and cheesing rely on
+      the chip bounds. Adjust ``self._chips['main']['size']`` early to avoid
+      surprises in exports.
     """
 
     def __init__(self,
-                 metadata: dict = None,
+                 metadata: Optional[dict] = None,
                  overwrite_enabled: bool = False,
                  enable_renderers: bool = True):
-        """Pass metadata to QDesign.
+        """Create a planar design with optional metadata and renderer control.
 
         Args:
-            metadata (dict, optional): Pass to QDesign. Defaults to {}.
-            overwrite_enabled (bool, optional): Passed to QDesign base class. Defaults to False.
-            enable_renderers (bool, optional): Passed to QDesign base class. Defaults to True.
+            metadata: Optional metadata dict to annotate the design (e.g.,
+                owner, project, notes). Passed through to ``QDesign``.
+            overwrite_enabled: Allow overwriting existing component names.
+                Keep False to catch accidental collisions.
+            enable_renderers: Initialize renderer registration on creation.
+                Set False for lightweight geometry-only workflows.
         """
 
         super().__init__(metadata=metadata,
@@ -76,7 +106,9 @@ class DesignPlanar(QDesign):
             sample_holder_bottom='1650um'  # how tall is the vacuum below z=0
         )
 
-    def get_x_y_for_chip(self, chip_name: str) -> Tuple[tuple, int]:
+    def get_x_y_for_chip(
+            self,
+            chip_name: str) -> Tuple[Tuple[float, float, float, float], int]:
         """If the chip_name is in self.chips, along with entry for size
         information then return a tuple=(minx, miny, maxx, maxy). Used for
         subtraction while exporting design.

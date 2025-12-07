@@ -24,7 +24,7 @@ QGeometryTables
 ---------------
 
 .. autosummary::
-    :toctree: ../stubs/
+    :toctree: .
 
     QGeometryTables
 

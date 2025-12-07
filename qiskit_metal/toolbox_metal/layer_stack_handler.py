@@ -80,13 +80,11 @@ class LayerStackHandler():
             self.ls_df = pd.DataFrame(data=self.layer_stack_default)
 
     def get_layer_datatype_when_fill_is_true(self) -> Union[dict, None]:
-        """If a row has fill=True, then for each layer/datatype pair, 
-        return the rest of information in the row within a dict. 
+        """Return layer/datatype rows where ``fill`` is True.
 
         Returns:
-            Union[dict, None]: Dict with key being tuple (layer, datatype) 
-                             Value is dict with key of column name of layerstack, and parsed value of column.
-                         None if fill != True
+            dict | None: Mapping of (layer, datatype) -> dict of parsed column
+            values, or None if no rows have ``fill=True``.
         """
         if self.ls_df is None:
             abs_path = os.path.abspath(self.filename_csv_df)

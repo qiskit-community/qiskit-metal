@@ -57,10 +57,11 @@ to_poly_patch = np.vectorize(PolygonPatch)
 
 
 class QMplRenderer():
-    """Matplotlib handle all rendering of an axis.
-    The axis is given in the function render.
-    Access:
-        self = gui.canvas.metal_renderer
+    """Matplotlib renderer for Metal designs.
+
+    Notes:
+        Access via ``gui.canvas.metal_renderer``. The axis to render is passed
+        in the ``render`` method.
     """
 
     def __init__(self, canvas: 'PlotCanvas', design: QDesign,

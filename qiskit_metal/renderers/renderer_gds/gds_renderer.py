@@ -2548,6 +2548,7 @@ class QGDSRenderer(QRenderer):
         """Print a concise summary report for a gdstk.Library.
 
         The summary includes:
+
         - Library metadata (name, unit, precision, number of cells).
         - Cell names and whether they have geometry.
         - Per (layer, datatype) statistics:

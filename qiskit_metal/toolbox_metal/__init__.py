@@ -28,7 +28,7 @@ Custom Exceptions
 -----------------
 
 .. autosummary::
-    :toctree: ../stubs/
+    :toctree: .
 
     QiskitMetalExceptions
     QiskitMetalDesignError
@@ -38,7 +38,7 @@ Submodules
 ---------------
 
 .. autosummary::
-    :toctree: ../stubs/
+    :toctree: .
 
     about
     import_export

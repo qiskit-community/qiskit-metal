@@ -14,8 +14,6 @@
 """The base class of all QDesigns in Qiskit Metal."""
 
 import importlib
-#import inspect
-#import os
 from datetime import datetime
 from typing import Any, Dict as Dict_, Iterable, List, TYPE_CHECKING, Union
 
@@ -45,9 +43,59 @@ __all__ = ['QDesign']
 
 
 class QDesign():
-    """QDesign is the base class for Qiskit Metal Designs.
+    """Base class for all Qiskit Metal designs.
 
-    A design is the most top-level object in all of Qiskit Metal.
+    Philosophy
+    ----------
+    A design is the top-level container that owns *everything* about your chip:
+    QComponents, QGeometry tables, variables, chip metadata, and registered
+    renderers. You create a design once, add components to it, tweak options,
+    then hand that design to the renderer or analysis of your choice.
+
+    Key ideas:
+
+    - Single source of truth: geometry, options, and metadata live here and are
+      written to the QGeometry tables. Renderers read from these tables.
+    - Stable identifiers: each component gets a unique id; names are user-facing
+      and can be reused/renamed, but ids do not recycle.
+    - Chips and bounds: ``self._chips`` defines chip size, material, and stack
+      info. Set these early so routing/subtraction/cheesing use the right bounds.
+    - Variables: ``self._variables`` is a shared dictionary for design-level
+      parameters (use them in component options for parametric layouts).
+    - Renderers: can be enabled/disabled at init; they subscribe to this design
+      and pull geometry/options when you render.
+
+    Typical workflow
+    ----------------
+    #. Instantiate a concrete design (e.g., ``DesignPlanar`` or ``MultiPlanar``)
+       which subclasses ``QDesign``.
+    #. Add QComponents (qubits, launchpads, routes, etc.) with names and options.
+    #. Adjust chip metadata (size, material) and design variables as needed.
+    #. Call a renderer (GDS, Ansys, MPL, etc.) to export or visualize; the
+       renderer reads from this design’s tables and options.
+    #. Iterate: delete/rename components, change variables, rerun renderers.
+
+    Properties to keep in mind
+    --------------------------
+    - ``components``: user-facing mapping name -> QComponent.
+    - ``_components``: internal id -> QComponent.
+    - ``name_to_id``: reverse lookup of names to ids.
+    - ``_qcomponent_latest_assigned_id``: monotonically increasing id counter.
+    - ``_chips``: chip definitions (size, material, z extents, holders).
+    - ``_variables``: global design variables you can reference in options.
+    - ``components.logger`` / ``self.logger``: use for diagnostics.
+    - ``overwrite_enabled``: if True, new components can reuse an existing name
+      (old one is removed); if False, name collisions are rejected.
+
+    Rebuilding and lifecycle
+    ------------------------
+    - Components can be rebuilt (e.g., after option changes) to refresh their
+      geometry in QGeometry tables. Use component APIs or renderer triggers to
+      force rebuilds when needed.
+    - IDs are stable across rebuilds/renames; do not expect an id to be reused
+      after deletion.
+    - Renderer enablement can be toggled at construction (``enable_renderers``)
+      to speed up geometry-only workflows.
     """
     # pylint: disable=too-many-instance-attributes, too-many-public-methods
 

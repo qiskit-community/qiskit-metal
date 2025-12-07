@@ -61,52 +61,33 @@ class Cheesing:
         delta_x: float = 0.00010,
         delta_y: float = 0.00010,
     ):
-        """Create the cheesing based on the no-cheese multi_poly.
+        """Create cheesing polygons based on the no-cheese regions.
 
         Args:
-            multi_poly (shapely.geometry.multipolygon.MultiPolygon): The area
-                                            on chip per layer for no-cheese.
-            all_nocheese_gds (list): The same as multi_poly, but a list to be
-                                    used for gdstk.
-            lib (gdstk.Library): Holds all of the cells for export.
-            minx (float): Chip minimum x location.
-            miny (float): Chip minimum y location.
-            maxx (float): Chip maximum x location.
-            maxy (float): Chip maximum y location.
-            chip_name (str): User defined chip name.
-            edge_nocheese (float): Keep a buffer around the perimeter of chip,
-                                    that will not need cheesing.
-            layer (int): Layer number for calculating the cheese.
-            is_neg_mask: Export a negative mask for chip and layer of init. If
-                        False, export a positive mask.
-            datatype_cheese (int): User defined datatype, considered a
-                                sub-layer number for where to place the
-                                cheese output.
-            datatype_keepout (int): User defined datatype, considered a
-                                sub-layer number for where to place the
-                                keepout of cheese.
-            fab (bool):   To determine if the cells are meant for fabrication versus showing
-                        iterative information used in a "developer" mode.
-                        If false, show the intermediate steps in the exported gds file.
-                        If true, show the geometries on either neg_datatype_fabricate or pos_datatype_fabricate.
-                            Example:  # denotes the layer number
-                                    delete for negative mask- TOP_main_#_NoCheese_99, TOP_main_#_one_hole
-                                    delete for positive mask- TOP_main_#_NoCheese_99, TOP_main_#_one_hole,
-                                                            ground_main_#
-            max_points (int): Used in gdstk to identify max number of points
-                                for a Polygon.
-            precision (float): Used in gdstk to identify precision.
-            logger (logging.Logger):  Used to give warnings and errors.
-            cheese_shape (int, optional): 0 is rectangle. 1 is circle.
-                                        Defaults to 0.
-            shape_0_x (float, optional): The width will be centered at
-                                    (x=0,y=0). Defaults to 0.000050.
-            shape_0_y (float, optional): The height will be centered at
-                                    (x=0,y=0). Defaults to 0.000050.
-            shape_1_radius (float, optional): The radius of circle.
-                                    Defaults to 0.000025.
-            delta_x (float, optional): The spacing between holes in x.
-            delta_y (float, optional): The spacing between holes in y.
+            multi_poly: No-cheese areas per layer (shapely multipolygon).
+            all_nocheese_gds: Same geometry in a gdstk-friendly list.
+            lib: Library that will hold all generated cells.
+            minx: Chip minimum x location.
+            miny: Chip minimum y location.
+            maxx: Chip maximum x location.
+            maxy: Chip maximum y location.
+            chip_name: User-defined chip name.
+            edge_nocheese: Buffer around the chip perimeter to leave un-cheesed.
+            layer: Layer number for calculating the cheese.
+            is_neg_mask: If True, export a negative mask; otherwise positive.
+            datatype_cheese: Datatype for cheese polygons.
+            datatype_keepout: Datatype for keepout regions.
+            fab: If True, output fabrication-ready layers; if False, include
+                intermediate/debug layers.
+            max_points: Maximum number of points for a polygon in gdstk.
+            precision: gdstk precision to use.
+            logger: Logger to emit warnings/errors.
+            cheese_shape: 0 for rectangle, 1 for circle.
+            shape_0_x: Rectangle width (centered at 0,0).
+            shape_0_y: Rectangle height (centered at 0,0).
+            shape_1_radius: Circle radius.
+            delta_x: Spacing between holes in x.
+            delta_y: Spacing between holes in y.
         """
 
         # All the no-cheese locations.

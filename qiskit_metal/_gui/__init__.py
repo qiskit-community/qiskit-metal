@@ -28,7 +28,7 @@ Main Window
 ---------------
 
 .. autosummary::
-    :toctree: ../stubs/
+    :toctree: .
 
     MetalGUI
 
