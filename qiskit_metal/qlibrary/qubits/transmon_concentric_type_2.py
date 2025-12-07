@@ -26,8 +26,7 @@ class TransmonConcentricType2(BaseQubit):
     ring. There are two Josephson Junction connecting the circle to the ring;
     one at the south end and one at the north end. There is a readout resonator.
 
-    .. image::
-        apidocs/TransmonConcentricType2.png
+    .. TODO: add TransmonConcentricType2.png when available
 
     .. meta::
         :description: Transmon Concentric Type 2

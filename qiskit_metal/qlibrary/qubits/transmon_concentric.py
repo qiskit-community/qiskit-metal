@@ -30,7 +30,7 @@ class TransmonConcentric(BaseQubit):
     one at the south end and one at the north end. There is a readout resonator.
 
     .. image::
-        apidocs/TransmonConcentric.png
+        TransmonConcentric.png
 
     .. meta::
         :description: Transmon Concentric

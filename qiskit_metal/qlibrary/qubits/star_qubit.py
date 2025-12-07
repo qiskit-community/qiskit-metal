@@ -26,7 +26,7 @@ class StarQubit(QComponent):
     Create a circular transmon qubit with up to 4 connectors and one readout.
 
     .. image::
-        apidocs/StarQubit.png
+        StarQubit.png
 
     .. meta::
         :description: Star Qubit

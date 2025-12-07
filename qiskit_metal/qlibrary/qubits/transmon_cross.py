@@ -45,7 +45,7 @@ class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
 
 
     .. image::
-        apidocs/TransmonCross.png
+        TransmonCross.png
 
     .. meta::
         :description: Transmon Cross
