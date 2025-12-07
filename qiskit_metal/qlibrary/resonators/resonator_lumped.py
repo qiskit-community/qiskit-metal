@@ -23,8 +23,7 @@ class ResonatorLumped(QComponent):
     The base ResonatorLumped class
     Inherits the QComponent class
 
-    .. image::
-        resonator_lumped.png
+    .. TODO: add resonator_lumped.png once asset is available for docs
 
     .. meta::
         :description: Lumped Resonator

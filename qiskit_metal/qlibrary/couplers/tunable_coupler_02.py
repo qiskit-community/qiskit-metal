@@ -23,8 +23,7 @@ from qiskit_metal.qlibrary.core import BaseQubit
 class TunableCoupler02(BaseQubit):
     """One of the tunable couplers
 
-    .. image::
-        tunable_coupler_02.png
+    .. TODO: add apidocs/TunableCoupler02.png once available
 
     .. meta::
         :description: Tunable Coupler 2

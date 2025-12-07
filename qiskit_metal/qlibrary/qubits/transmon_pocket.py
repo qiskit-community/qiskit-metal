@@ -70,7 +70,7 @@ class TransmonPocket(BaseQubit):
                  -1                            -1
 
     .. image::
-        transmon_pocket.png
+        apidocs/TransmonPocket.png
 
     .. meta::
         :description: Transmon Pocket

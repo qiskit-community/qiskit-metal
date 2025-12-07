@@ -57,7 +57,7 @@ class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
 
 
     .. image::
-        transmon_pocket_cl.png
+        apidocs/TransmonPocketCL.png
 
     .. meta::
         :description: Transmon Pocket Charge Line

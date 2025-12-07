@@ -34,7 +34,7 @@ class TransmonInterdigitated(QComponent):
     defined; these can be connected to other structures in a design using CPWs.
 
     .. image::
-        Transmon_Interdigitated.png
+        apidocs/TransmonInterdigitated.png
 
     .. meta::
         :description: Transmon Interdigitated

@@ -27,7 +27,7 @@ class TransmonConcentricType2(BaseQubit):
     one at the south end and one at the north end. There is a readout resonator.
 
     .. image::
-        transmon_concentric_type_2.png
+        apidocs/TransmonConcentricType2.png
 
     .. meta::
         :description: Transmon Concentric Type 2
