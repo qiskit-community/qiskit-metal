@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -49,8 +47,8 @@ def about():
         str: About message
     """
     import qiskit_metal
-    from PySide2.QtCore import __version__ as QT_VERSION_STR
-    from PySide2 import __version__ as PYSIDE_VERSION_STR
+    from PySide6.QtCore import __version__ as QT_VERSION_STR
+    from PySide6 import __version__ as PYSIDE_VERSION_STR
 
     try:
         import matplotlib
@@ -86,7 +84,7 @@ ____________________________________
 
 GUI
 ____________________________________
- PySide2 version     {PYSIDE_VERSION_STR}
+ PySide6 version     {PYSIDE_VERSION_STR}
  Qt version          {QT_VERSION_STR}
  SIP version         {SIP_VERSION_STR}
 
@@ -108,7 +106,7 @@ def get_module_doc_page(module,
     return Path(os.path.dirname(module.__file__)) / folder / page
 
 
-def open_docs(page='https://qiskit.org/documentation/metal/'):
+def open_docs(page='https://qiskit-community.github.io/qiskit-metal/'):
     """Open the qiskit_metal documentation in HTML.
 
     Open the URL in new window, raising the window if possible.

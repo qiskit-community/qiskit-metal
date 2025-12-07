@@ -29,7 +29,6 @@
 """
 from qiskit_metal import draw, Dict
 from qiskit_metal.qlibrary.core.base import QComponent
-import numpy as np
 
 
 class SQUID_LOOP(QComponent):

@@ -14,11 +14,12 @@
 """
 Proxy Model to clean display of QComponents in Library tab
 """
+# pylint: disable=invalid-name
 
 import typing
 
-from PySide2.QtCore import QModelIndex, QSortFilterProxyModel, Qt, QSize
-from PySide2.QtWidgets import QWidget, QFileSystemModel
+from PySide6.QtCore import QModelIndex, QSortFilterProxyModel, Qt
+from PySide6.QtWidgets import QFileSystemModel, QWidget
 
 
 class LibraryFileProxyModel(QSortFilterProxyModel):
@@ -38,7 +39,9 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
         # (Aren't hidden (begin w/ .), don't begin with __init__, don't begin with _template, etc. AND end in .py)  OR (don't begin with __pycache__ and don't have a '.' in the name   # pylint: disable=line-too-long
         # (QComponent files) OR (Directories)
         self.accepted_files__regex = r"(^((?!\.))(?!base)(?!__init__)(?!_template)(?!_parsed)(?!__pycache__).*\.py)|(?!__pycache__)(^([^.]+)$)"  # pylint: disable=line-too-long
-        self.setFilterRegExp(self.accepted_files__regex)
+        self.beginResetModel()
+        self.setFilterRegularExpression(self.accepted_files__regex)
+        self.endResetModel()
         self.filter_text = ""
 
     def filterAcceptsColumn(
@@ -78,11 +81,11 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
             relativeFilename] if relativeFilename in nameCache else None
         #fi = source_model.fileInfo(index)
 
-        if displayName != None:
+        if displayName is not None:
             found = (self.filter_text in relativeFilename) or (self.filter_text
                                                                in displayName)
         else:
-            found = (self.filter_text in relativeFilename)
+            found = self.filter_text in relativeFilename
 
         accept = (not relativeFilename.startswith("_")) and found
         return accept
@@ -101,6 +104,10 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
 
         # allow editable
         if role == Qt.EditRole:
-            return self.data(index, Qt.DisplayRole)
+            self.beginResetModel()
+            try:
+                return self.data(index, Qt.DisplayRole)
+            finally:
+                self.endResetModel()
 
         return super().data(index, role)

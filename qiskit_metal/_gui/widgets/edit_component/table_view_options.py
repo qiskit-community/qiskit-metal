@@ -15,9 +15,9 @@
 
 from typing import TYPE_CHECKING
 
-from PySide2 import QtCore, QtWidgets
-from PySide2.QtCore import Qt, QTimer
-from PySide2.QtWidgets import QTableView, QAbstractItemView
+from PySide6 import QtCore, QtWidgets
+from PySide6.QtCore import Qt, QTimer
+from PySide6.QtWidgets import QTableView, QAbstractItemView
 
 from ..bases.QWidget_PlaceholderText import QWidget_PlaceholderText
 

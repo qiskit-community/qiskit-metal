@@ -11,10 +11,11 @@ Most used flags:
     -v, --verbose
         Give more output.
 """
+
 # pylint: disable=invalid-name
 
 from pathlib import Path
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 here = Path(__file__).parent.absolute()  # pylint: disable=no-member
 
@@ -27,13 +28,13 @@ with open(here / "requirements.txt", encoding="utf-8") as f:
 
 setup(
     name="qiskit_metal",
-    version="0.1.5",
+    version="0.5.0",
     description="Qiskit Metal | for quantum device design & analysis",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/Qiskit/qiskit-metal",
     author="Qiskit Metal Development Team",
-    author_email="qiskit@qiskit.org",
+    author_email="qiskit@us.ibm.com",
     license="Apache 2.0",
     classifiers=[
         "License :: OSI Approved :: Apache Software License",
@@ -43,18 +44,29 @@ setup(
         "Operating System :: MacOS",
         "Operating System :: POSIX :: Linux",
         "Programming Language :: Python :: 3 :: Only",
-        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
         "Topic :: Scientific/Engineering",
     ],
     keywords="qiskit sdk quantum eda",
     packages=find_packages(),
-    package_data={"": ["*.ui", "*.qrc", "_imgs/*.png", "_imgs/*.txt"]},
-    python_requires=">=3.9",
+    package_data={
+        "": [
+            "*.ui",
+            "*.qrc",
+            "_imgs/*.png",
+            "_imgs/*.txt",
+            "styles/*/style.qss",
+            "styles/*/rc/*.png",
+        ]
+    },
+    python_requires=">=3.10",
     install_requires=requirements,
     project_urls={
         "Bug Tracker": "https://github.com/Qiskit/qiskit-metal/issues",
-        "Documentation": "https://qiskit.org/documentation/metal",
+        "Documentation": "https://qiskit-community.github.io/qiskit-metal/",
         "Source Code": "https://github.com/Qiskit/qiskit-metal",
     },
 )

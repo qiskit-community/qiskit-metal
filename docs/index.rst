@@ -76,7 +76,7 @@ The goal of Qiskit Metal is to allow for easy quantum hardware modeling with red
     :maxdepth: 2
     :hidden:
 
-    Home<https://qiskit.org/documentation/metal/>
+    Home<self>
     Installing Qiskit Metal<installation>
     Frequently Asked Questions<faq>
     Metal Workflow<workflow>

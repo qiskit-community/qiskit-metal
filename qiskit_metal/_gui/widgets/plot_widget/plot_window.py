@@ -12,17 +12,17 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """Main module that handles the entier plot window which is docked inside the
-mmain window.
+main window.
 
-This can be undocked and can have its own toolbar. this is largley why i
-ddecied to use a QMainWindow, so that we can have inner docking and
+This can be undocked and can have its own toolbar. this is largley why I
+decided to use a QMainWindow, so that we can have inner docking and
 toolbars available.
 """
 
 from typing import TYPE_CHECKING
 
-from PySide2 import QtWidgets
-from PySide2.QtWidgets import (QApplication, QFileDialog, QLabel, QMainWindow,
+from PySide6 import QtWidgets
+from PySide6.QtWidgets import (QApplication, QFileDialog, QLabel, QMainWindow,
                                QMessageBox)
 
 from ... import config

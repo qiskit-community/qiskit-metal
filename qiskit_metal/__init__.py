@@ -15,7 +15,7 @@
 # pylint: disable=wrong-import-order
 # pylint: disable=wrong-import-position
 """Qiskit Metal"""
-__version__ = '0.1.5'
+__version__ = '0.5.0'
 __license__ = "Apache 2.0"
 __copyright__ = 'Copyright IBM 2019-2020'
 __author__ = 'Zlatko Minev, Thomas McConkey, and them IBM Quantum Team'
@@ -37,7 +37,7 @@ if os.name == 'nt':
             >>>>>> from the list of qiskit-metal package dependencies in Windows. <<<<<<\n \
             >>>>>>>> Before you can use Qiskit Metal, please install geopandas. <<<<<<<<\n \
             >>>> For more information, you can follow the instructions on this FAQ <<<<<\n \
-            >>>>>>>>>>>>> https://qiskit.org/documentation/metal/faq.html <<<<<<<<<<<<<<\n"
+            >>>>>>>>>>>>> https://qiskit-community.github.io/qiskit-metal/faq.html <<<<<<<<<<<<<<\n"
              )
         raise
 
@@ -55,10 +55,10 @@ def __setup_Qt_backend():  # pylint: disable=invalid-name
 
     # When in vscode and in debug-mode, may want to comment
     # next line out, "os.environ["QT_API"] = "pyside2""
-    os.environ["QT_API"] = "pyside2"
+    os.environ["QT_API"] = "pyside6"
 
-    from PySide2 import QtCore  #, QtWidgets
-    from PySide2.QtCore import Qt
+    from PySide6 import QtCore  #, QtWidgets
+    from PySide6.QtCore import Qt
 
     def set_attribute(name: str, value=True):
         """Describes attributes that change the behavior of application-wide
@@ -107,7 +107,7 @@ def __setup_Qt_backend():  # pylint: disable=invalid-name
     if not os.getenv('QISKIT_METAL_HEADLESS', None):
         # pylint: disable=import-outside-toplevel
         import matplotlib as mpl
-        mpl.use("Qt5Agg")
+        mpl.use("QtAgg")
         # pylint: disable=redefined-outer-name
         import matplotlib.pyplot as plt
         plt.ion()  # interactive

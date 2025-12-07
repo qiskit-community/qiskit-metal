@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -20,11 +18,11 @@ import webbrowser
 from pathlib import Path
 from typing import TYPE_CHECKING, List
 
-from PySide2.QtCore import Qt, QTimer
-from PySide2.QtGui import QIcon, QPixmap
-from PySide2.QtWidgets import (QAction, QDialog, QDockWidget, QFileDialog,
+from PySide6.QtCore import Qt, QTimer
+from PySide6.QtGui import QIcon, QPixmap, QAction
+from PySide6.QtWidgets import (QWidget, QDialog, QDockWidget, QFileDialog,
                                QLabel, QMainWindow, QMessageBox, QVBoxLayout)
-from PySide2.QtCore import QSortFilterProxyModel
+from PySide6.QtCore import QSortFilterProxyModel
 from qiskit_metal._gui.widgets.qlibrary_display.delegate_qlibrary import \
     LibraryDelegate
 from qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary import \
@@ -57,7 +55,7 @@ if not config.is_building_docs():
     pass
 
 if TYPE_CHECKING:
-    from ..renderers.renderer_mpl.mpl_canvas import PlotCanvas
+    from ..renderers.renderer_mpl.mpl_canvas import PlotCanvas  # pylint: disable=syntax-error
 
 
 class QMainWindowExtension(QMainWindowExtensionBase):
@@ -128,7 +126,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
             self,
             'Delete all components?',
             "Are you sure you want to clear all Metal components?",
-            buttons=(QMessageBox.Yes | QMessageBox.No))
+            buttons=QMessageBox.Yes | QMessageBox.No)
         if ret == QMessageBox.Yes:
             self.logger.info('Delete all components.')
             self.design.delete_all_components()
@@ -149,7 +147,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         pyscript = self.design.to_python_script()
         #check whether filename is empty or not. Save file only when filename is non-empty.
         if len(filename):
-            with open(filename, 'w') as f:
+            with open(filename, 'w', encoding='utf-8') as f:
                 f.write(pyscript)
 
     @slot_catch_error()
@@ -174,7 +172,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
             pyscript = self.design.to_python_script()
             #check whether filename is empty or not. Save file only when filename is non-empty.
             if len(filename):
-                with open(filename, 'w') as f:
+                with open(filename, 'w', encoding='utf-8') as f:
                     f.write(pyscript)
 
                 #make it clear it's saving
@@ -221,7 +219,8 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     @slot_catch_error()
     def open_web_help(self, _=None):
         """"Handles click on Build History button."""
-        webbrowser.open('https://qiskit.org/documentation/metal/', new=1)
+        webbrowser.open('https://qiskit-community.github.io/qiskit-metal/',
+                        new=1)
 
     @slot_catch_error()
     def set_force_close(self, ison: bool):
@@ -263,7 +262,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         if reply == QMessageBox.Cancel:
             return False
         elif reply == QMessageBox.Yes:
-            wait = self.save_design()
+            _ = self.save_design()
             return True
         return True
 
@@ -323,6 +322,7 @@ class MetalGUI(QMainWindowBaseHandler):
         self._setup_plot_widget()
         self._setup_design_components_widget()
         self._setup_elements_widget()
+        self.main_window.show()
         self._setup_variables_widget()
         self._ui_adjustments_final()
         self._setup_library_widget()
@@ -330,6 +330,7 @@ class MetalGUI(QMainWindowBaseHandler):
 
         # Show and raise
         self.main_window.show()
+
         # self.qApp.processEvents(QEventLoop.AllEvents, 1)
         # - don't think I need this here, it doesn't help to show and raise
         # - need to call from different thread.
@@ -359,7 +360,7 @@ class MetalGUI(QMainWindowBaseHandler):
         def setEnabled(parent, widgets):
             for widgetname in widgets:
                 if hasattr(parent, widgetname):
-                    widget = getattr(parent, widgetname)  # type: QWidget
+                    widget: 'QWidget' = getattr(parent, widgetname)
                     if widget:
                         widget.setEnabled(enabled)
                 else:
@@ -486,8 +487,8 @@ class MetalGUI(QMainWindowBaseHandler):
             icon = QIcon()
             icon.addPixmap(QPixmap(iconName), QIcon.Normal, QIcon.Off)
 
-            # Function call & monkey patch class instance
-            dock.doShow = doShowHighlighWidget.__get__(dock, type(dock))  # pylint: disable=assignment-from-no-return
+            # Function call & monkey patch class instance ala Monkey Patch
+            dock.doShow = doShowHighlighWidget.__get__(dock, type(dock))  # pylint: disable=assignment-from-no-return, no-value-for-parameter
 
             # QT Action with trigger, embed in toolbar
             action = QAction('', dock, triggered=dock.doShow)
@@ -530,9 +531,9 @@ class MetalGUI(QMainWindowBaseHandler):
         # Add to the tabbed main view
         self.ui.mainViewTab.layout().addWidget(self.plot_win)
 
-        # add highlight function
+        # add highlight function ala Monkey Patch
         obj = self.ui.mainViewTab
-        obj.doShow = doShowHighlighWidget.__get__(obj, type(obj))  # pylint: disable=assignment-from-no-return
+        obj.doShow = doShowHighlighWidget.__get__(obj, type(obj))  # pylint: disable=assignment-from-no-return, no-value-for-parameter
 
         # Move the dock
         self._move_dock_to_new_parent(self.ui.dockLog, self.plot_win)
@@ -548,7 +549,8 @@ class MetalGUI(QMainWindowBaseHandler):
         Args:
             dock (QDockWidget): Dock to move
             new_parent (QMainWindow): New parent window
-            dock_location (Qt dock location): Location of the dock.  Defaults to Qt.BottomDockWidgetArea.
+            dock_location (Qt dock location): Location of the dock.
+                Defaults to Qt.BottomDockWidgetArea.
         """
         dock.setParent(new_parent)
         new_parent.addDockWidget(dock_location, dock)
@@ -639,10 +641,12 @@ class MetalGUI(QMainWindowBaseHandler):
 
     def _create_new_component_object_from_qlibrary(self, full_path: str):
         """
-        Must be defined outside of _setup_library_widget to ensure self == MetalGUI and will retain opened ScrollArea
+        Must be defined outside of _setup_library_widget to ensure
+        self == MetalGUI and will retain opened ScrollArea
 
         Args:
-            relative_index: QModelIndex of the desired QComponent file in the Qlibrary GUI display
+            relative_index: QModelIndex of the desired QComponent file in
+                the Qlibrary GUI display
 
         """
         try:
@@ -678,7 +682,11 @@ class MetalGUI(QMainWindowBaseHandler):
         dock.library_model.setRootPath(self.QLIBRARY_ROOT)
 
         # QSortFilterProxyModel
-        #QSortFilterProxyModel: sorting items, filtering out items, or both.  maps the original model indexes to new indexes, allows a given source model to be restructured as far as views are concerned without requiring any transformations on the underlying data, and without duplicating the data in memory.
+        #QSortFilterProxyModel: sorting items, filtering out items, or both.
+        #   maps the original model indexes to new indexes, allows a given
+        # source model to be restructured as far as views are concerned
+        # without requiring any transformations on the underlying data, and
+        # without duplicating the data in memory.
         dock.proxy_library_model = LibraryFileProxyModel()
         dock.proxy_library_model.setSourceModel(dock.library_model)
         dock.proxy_library_model.setFilterCaseSensitivity(Qt.CaseInsensitive)
@@ -723,15 +731,21 @@ class MetalGUI(QMainWindowBaseHandler):
         """
         view = self.ui.dockLibrary_tree_view
         dock = self.ui.dockLibrary
-        dock.proxy_library_model.filter_text = text
+        proxy_model = dock.proxy_library_model
 
-        dock.proxy_library_model.setFilterWildcard(text)
+        # Wrap changes to filter_text and setFilterWildcard with reset calls
+        proxy_model.beginResetModel()
+        try:
+            proxy_model.filter_text = text
+            proxy_model.setFilterWildcard(text)
+        finally:
+            proxy_model.endResetModel()
 
         view.setRootIndex(
-            dock.proxy_library_model.mapFromSource(
+            proxy_model.mapFromSource(
                 dock.library_model.index(dock.library_model.rootPath())))
 
-        if len(text) >= 1 and dock.proxy_library_model.rowCount() > 0:
+        if len(text) >= 1 and proxy_model.rowCount() > 0:
             view.expandAll()
         else:
             view.collapseAll()
@@ -766,7 +780,7 @@ class MetalGUI(QMainWindowBaseHandler):
         return axes
 
     @property
-    def axes(self) -> List['Axes']:
+    def axes(self) -> List['matplotlib.plt.Axes']:
         """Returns the axes."""
         return self.plot_win.canvas.axes
 
@@ -870,3 +884,12 @@ class MetalGUI(QMainWindowBaseHandler):
         self.build_log_window = BuildHistoryScrollArea(
             self.design.build_logs.data())
         self.build_log_window.show()
+
+    def save_file(self):
+        """Save file. Called on exit.
+
+        Raises:
+            NotImplementedError: Function not written
+        """
+        print("TODO: Save file - not yet implemented here")
+        raise NotImplementedError()

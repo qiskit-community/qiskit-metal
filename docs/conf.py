@@ -127,9 +127,13 @@ author = 'Qiskit Metal Development Team'
 # -- General configuration ---------------------------------------------------
 
 extensions = [
-    'sphinx.ext.napoleon', 'sphinx.ext.autodoc', 'sphinx.ext.autosummary',
-    'sphinx.ext.mathjax', 'sphinx.ext.viewcode', 'sphinx.ext.extlinks',
-    'jupyter_sphinx', 'nbsphinx',
+    'sphinx.ext.napoleon',
+    'sphinx.ext.autodoc',
+    'sphinx.ext.autosummary',
+    'sphinx.ext.mathjax',
+    'sphinx.ext.viewcode',
+    'sphinx.ext.extlinks',
+    "nbsphinx",
     "qiskit_sphinx_theme",
 ]
 
@@ -196,7 +200,7 @@ numfig_format = {'table': 'Table %s'}
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = 'en'
 
 # A boolean that decides whether module names are prepended to all object names
 # (for object types where a “module” of some kind is defined), e.g. for
@@ -214,16 +218,7 @@ modindex_common_prefix = ['qiskit_metal.']
 
 # -- Options for HTML output -------------------------------------------------
 
-html_theme = "qiskit_sphinx_theme"
+html_theme = "qiskit-ecosystem"
+html_title = f"{project} {release}"
 
-html_logo = 'images/logo.png'
 html_last_updated_fmt = '%Y/%m/%d'
-
-html_theme_options = {
-    'logo_only': False,
-    'display_version': True,
-    'prev_next_buttons_location': 'bottom',
-    'style_external_links': True,
-    'collapse_navigation': True,
-    'sticky_navigation': True,
-}

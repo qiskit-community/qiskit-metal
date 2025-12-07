@@ -15,10 +15,9 @@
 
 from typing import TYPE_CHECKING
 
-import numpy as np
-from PySide2 import QtCore, QtWidgets
-from PySide2.QtCore import QAbstractTableModel, QModelIndex
-from PySide2.QtWidgets import QMainWindow
+from PySide6 import QtCore
+from PySide6.QtCore import QAbstractTableModel, QModelIndex
+from PySide6.QtWidgets import QMainWindow
 
 from .net_list_ui import Ui_NetListWindow
 
@@ -33,7 +32,7 @@ class NetListWindow(QMainWindow):
 
     Extends the `QMainWindow` class.
 
-    PySide2 Signal / Slots Extensions:
+    PySide6 Signal / Slots Extensions:
         The UI can call up to this class to execute button clicks for instance
         Extensions in qt designer on signals/slots are linked to this class
     """
@@ -88,13 +87,13 @@ class NetListTableModel(QAbstractTableModel):
     __timer_interval = 500  # ms
 
     def __init__(self, gui, parent=None):
-        super().__init__(parent=parent)
         """
         Args:
             gui (MetalGUI): The GUI
             parent (QMainWindowExtension): Parent window.  Defaults to None.
             element_type (str): The element type.  Defaults to 'poly'.
         """
+        super().__init__(parent=parent)
         self.logger = gui.logger
         self.gui = gui
         self._row_count = -1
@@ -139,7 +138,11 @@ class NetListTableModel(QAbstractTableModel):
 
         Completely rebuild the model.
         """
-        self.modelReset.emit()
+        self.beginResetModel()
+        try:
+            self._row_count = self.rowCount()
+        finally:
+            self.endResetModel()
 
     def refresh_auto(self):
         """Update row count etc."""
@@ -149,16 +152,22 @@ class NetListTableModel(QAbstractTableModel):
         if self._row_count != new_count:
             #self.logger.info('Number of components changed')
 
-            # When a model is reset it should be considered that all
-            # information previously retrieved from it is invalid.
-            # This includes but is not limited to the rowCount() and
-            # columnCount(), flags(), data retrieved through data(), and roleNames().
-            # This will loose the current selection.
-            self.modelReset.emit()
+            # Wrap the reset logic in beginResetModel and endResetModel
+            self.beginResetModel()
+            try:
 
-            self._row_count = new_count
+                # When a model is reset it should be considered that all
+                # information previously retrieved from it is invalid.
+                # This includes but is not limited to the rowCount() and
+                # columnCount(), flags(), data retrieved through data(), and roleNames().
+                # This will loose the current selection.
+                # self.modelReset.emit()
 
-    def rowCount(self, parent: QModelIndex = None):
+                self._row_count = new_count
+            finally:
+                self.endResetModel()
+
+    def rowCount(self, parent: QModelIndex = None):  # pylint: disable=unused-argument
         """Counts all the rows.
 
         Args:
@@ -171,7 +180,7 @@ class NetListTableModel(QAbstractTableModel):
             return 0
         return self.net_info.shape[0]
 
-    def columnCount(self, parent: QModelIndex = None):
+    def columnCount(self, parent: QModelIndex = None):  # pylint: disable=unused-argument
         """Counts all the columns.
 
         Args:

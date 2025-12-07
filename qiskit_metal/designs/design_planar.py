@@ -26,7 +26,7 @@ __all__ = ['DesignPlanar']
 
 class DesignPlanar(QDesign):
     """Metal class for a planar (2D) design, consisting of a single plane chip.
-    Typically assumed to have some CPW geometires.
+    Typically assumed to have some CPW geometries.
 
     Inherits QDesign class.
     """
@@ -53,7 +53,7 @@ class DesignPlanar(QDesign):
         parser for "self.p" for design base. For now, just hard code in
         something.
 
-        # GDSPY is using numbers based on 1 meter unit.
+        # GDSTK is using numbers based on 1 meter unit.
         # When the gds file is exported, data is converted to "user-selected" units.
         # centered at (0,0) and 9 by 6 size.
 

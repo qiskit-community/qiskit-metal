@@ -211,9 +211,7 @@ documentation locally and save the output to ``docs/_build/html``.
 Additionally, the Docs CI job on azure pipelines will run this and host a zip
 file of the output that you can download and view locally.
 
-If you have an issue with the `combined documentation <https://qiskit.org/documentation/>`__
-that is maintained in the `Qiskit/qiskit repo <https://github.com/Qiskit/qiskit>`__,
-you can open a `documentation issue <https://github.com/Qiskit/qiskit/issues/new/choose>`__
+You can open a `documentation issue <https://github.com/qiskit-community/qiskit-metal/issues/new/choose>`__
 if you see doc bugs, have a new feature that needs to be documented, or think
 that material could be added to the existing docs.
 
@@ -399,15 +397,14 @@ and that they want the display name of this file to be ``MyQComponent``.
 Contributing to Documentation
 *****************************
 
-Qiskit documentation is shaped by the `docs as code
+Qiskit Metal documentation is shaped by the `docs as code
 <https://www.writethedocs.org/guide/docs-as-code/>`__ philosophy, primarily
-drawn from Qiskit code comments in the `style of API documentation
+drawn from Qiskit Metal code comments in the `style of API documentation
 <https://alistapart.com/article/the-ten-essentials-for-good-api-documentation/>`__.
 
-The documentation is built from the master branch of `Qiskit/qiskit/docs
-<https://github.com/Qiskit/qiskit/tree/master/docs>`__ using `Sphinx
+The documentation is built using `Sphinx
 <http://www.sphinx-doc.org/en/master/>`__. The majority of documentation, under
-`API Reference <https://qiskit.org/documentation/apidoc/qiskit.html>`__, is
+`API Reference <https://qiskit-community.github.io/qiskit-metal/overview.html>`__, is
 drawn from code comments in the repositories listed in :ref:`where_things_are`.
 
 
@@ -476,12 +473,6 @@ The actual docstring for the elements listed in the module docstring
    The `napoleon documentation <https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html>`__
    contains a good example of how docstrings should be formatted.
 
-   .. note::metal
-      You can use any Sphinx directive or rst formatting in a docstring as it
-      makes sense. For example, one common extension used is the ``jupyter-execute``
-      directive, which is used to execute a code block in Jupyter and display both
-      the code and output. This is particularly useful for visualizations.
-
 Rebuilding Documentation
 ------------------------
 
@@ -503,82 +494,3 @@ Tutorials
 
 Jupyter notebook tutorials showing off features of Qiskit Metal are located in the `_tutorials_`
 folder. If you add a new feature, please add a demonstration of its use to a notebook or start a new notebook.
-
-
-Documentation Integration
--------------------------
-
-The hosted documentation at https://qiskit.org/documentation/ covers the entire
-Qiskit project; Metal is just one component of that. As such, the documentation
-builds for the hosted version are built by the Qiskit meta-package repository
-https://github.com/Qiskit/qiskit. When commits are merged to that repo, the
-output of Sphinx builds are uploaded to the qiskit.org website. Those Sphinx
-builds are configured to pull in the documentation from the version of the
-Qiskit elements installed by the meta-package at that point. For example, if
-the meta-package version is currently 0.13.0, then that will copy the
-documentation from Metal's 0.10.0 release. When the meta-package's requirements
-are bumped, then it will start pulling documentation from the new version. This
-means that fixes for incorrect API documentation will need to be
-included in a new release. Documentation fixes are valid backports for a stable
-patch release per the stable branch policy (see that section below).
-
-During the build process, the contents of each element's ``docs/apidocs/``
-are recursively copied into a shared copy of ``doc/apidocs/`` in the meta-package
-repository along with all the other elements. This means that what is in the root of
-docs/apidocs on each element at a release will end up on the root of
-https://qiskit.org/documentation/apidoc/.
-
-
-
-Translating Documentation
-=========================
-
-Qiskit documentation is translated (localized) using Crowdin, a software and web
-localization platform that allows organizations to coordinate translation
-projects and collaborate with communities to translate materials. Crowdin allows
-our community of translators to amplify their impact by automatically reusing
-the work invested translating one sentence to translate other, similar
-sentences. Crowdin also makes translations resilient to many types of changes to
-the original material, such as moving sentences around, even across files.
-
-Qiskit localization requests are handled in `Qiskit Translations <https://github.com/Qiskit/qiskit-translations>`__
-repository. To contribute to Qiskit localization, please follow these steps:
-
-#. Add your name (or ID) to the `LOCALIZATION_CONTRIBUTORS
-   <https://github.com/qiskit-community/qiskit-translations/blob/master/LOCALIZATION_CONTRIBUTORS>`__
-   file.
-#. Create a pull request (PR) to merge your change. Make sure to follow the template
-   to open a Pull Request.
-
-   .. note::
-
-      - Each contributor has to create their own PR and sign the CLA.
-      - Please mention the language that you'd like to contribute to in the PR
-        summary.
-      - If you have an open issue for a language request, **add the issue link
-        to the PR**.
-#. You will be asked to sign the Qiskit Contributors License Agreement (CLA);
-   please do so.
-#. A minimum of **three contributors** per language are necessary for any new
-   languages to be added, to receive official support from the administrators of
-   the localization project.
-#. Among the group of contributors, a translation lead must be identified to serve
-   as a liaison with the administrators of the localization project.
-   The lead must contact: Yuri Kobayashi (yurik@jp.ibm.com) by email.
-#. In the `Qiskit-Docs <https://crowdin.com/project/qiskit-docs>`__
-   Crowdin project, choose the language that you want to contribute to.
-
-   .. note::
-
-      As mentioned in the blog post, `Qiskit in my language is Qiskit <https://medium.com/qiskit/qiskit-in-my-language-is-qiskit-73d4626a99d3>`__,
-      we want to make sure that translated languages have enough community support
-      to build a translation team with translators, proofreaders, and translation leads.
-      If you want to be a translation lead or would be willing to join a new
-      translation project team, you can open a `GitHub issue <https://github.com/qiskit-community/qiskit-translations/issues/new/choose>`__
-      to start a discussion with the Qiskit team and recruit translation project members.
-#. Click the **Join** button and **paste the URL of your PR** in the dialog box where you
-   are asked why you want to join the Crowdin project.
-
-The administrators of the Crowdin project will review your request and give you
-access as quickly as they can.
-

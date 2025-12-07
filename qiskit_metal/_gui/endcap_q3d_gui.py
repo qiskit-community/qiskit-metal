@@ -14,7 +14,7 @@
 
 from typing import Tuple
 
-from PySide2.QtWidgets import (QComboBox, QTableWidgetItem, QAbstractItemView,
+from PySide6.QtWidgets import (QComboBox, QTableWidgetItem, QAbstractItemView,
                                QMainWindow)
 
 from .endcap_q3d_ui import Ui_mainWindow

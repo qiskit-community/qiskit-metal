@@ -12,20 +12,16 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """Dict tree base."""
+# pylint: disable=invalid-name
 
 import ast
-from pathlib import Path
 from typing import Union, TYPE_CHECKING
 
-import numpy as np
-import PySide2
-from PySide2 import QtCore, QtGui, QtWidgets
-from PySide2.QtCore import QAbstractItemModel, QModelIndex, QTimer, Qt
-from PySide2.QtGui import QFont
-from PySide2.QtWidgets import (QAbstractItemView, QApplication, QFileDialog,
-                               QWidget, QTreeView, QLabel, QMainWindow,
-                               QMessageBox, QTabWidget)
-from .... import logger
+from PySide6 import QtCore
+from PySide6.QtCore import QAbstractItemModel, QModelIndex, QTimer, Qt
+from PySide6.QtGui import QFont
+from PySide6.QtWidgets import (QWidget, QTreeView)
+# from .... import logger
 
 if TYPE_CHECKING:
     from ....designs.design_base import QDesign
@@ -234,7 +230,7 @@ class QTreeModel_Base(QAbstractItemModel):
         super().__init__(parent=parent)
         self.logger = gui.logger
         self._gui = gui
-        self._rowCount = -1
+        self._row_count = -1
         self._view = view
         self.optionstype = child
         if self.optionstype == 'component':
@@ -245,7 +241,7 @@ class QTreeModel_Base(QAbstractItemModel):
         self.paths = []
 
         self._start_timer()
-        self.load()
+        self.load()  # handles beginResetModel and endResetModel
 
     @property
     def gui(self):
@@ -277,10 +273,22 @@ class QTreeModel_Base(QAbstractItemModel):
         If so, completely rebuild the model and tree.
         """
         # TODO: Check if new nodes have been added; if so, rebuild model.
-        newRowCount = self.rowCount(self.createIndex(0, 0))
-        if self._rowCount != newRowCount:
-            self.modelReset.emit()
-            self._rowCount = newRowCount
+        new_row_count = self.rowCount(self.createIndex(0, 0))
+        if self._row_count != new_row_count:
+            # Wrap the reset logic in beginResetModel and endResetModel
+            self.beginResetModel()
+            try:
+
+                # When a model is reset it should be considered that all
+                # information previously retrieved from it is invalid.
+                # This includes but is not limited to the rowCount() and
+                # columnCount(), flags(), data retrieved through data(), and roleNames().
+                # This will loose the current selection.
+                # self.modelReset.emit()
+
+                self._row_count = new_row_count
+            finally:
+                self.endResetModel()
             if self._view:
                 self._view.autoresize_columns()
 
@@ -289,8 +297,14 @@ class QTreeModel_Base(QAbstractItemModel):
 
         Completely rebuild the model and tree.
         """
-        self.load()  # rebuild the tree
-        self.modelReset.emit()
+        # self.beginResetModel()  # load handles refresh, cant nest
+        # try:
+        self.load(
+        )  # rebuild the tree; handles beginResetModel and endResetModel
+        parent_index = self.createIndex(0, 0, self.root)
+        self._row_count = self.rowCount(parent_index)
+        # finally:
+        #     # self.endResetModel()
 
     def getPaths(self, curdict: dict, curpath: list):
         """Recursively finds and saves all root-to-leaf paths in model."""
@@ -357,7 +371,7 @@ class QTreeModel_Base(QAbstractItemModel):
             return 0
         return len(node)
 
-    def columnCount(self, parent: QModelIndex):
+    def columnCount(self, parent: QModelIndex):  # pylint: disable=unused-argument
         """Get the number of columns.
 
         Args:
@@ -452,12 +466,13 @@ class QTreeModel_Base(QAbstractItemModel):
                         lbl = node.label  # option key
 
                         self.logger.info(
-                            f'Setting {self.optionstype} option {lbl:>10s}: old value={old_value}; new value={value};'
-                        )
+                            f'Setting {self.optionstype} option {lbl:>10s}:'
+                            f' old value={old_value}; new value={value};')
 
                         ##### Parse value if not str ##############################
                         # Somewhat legacy code for extended handling of non string options
-                        # These days we tend to have all options be strings, so not so releavnt, but keep here for now
+                        # These days we tend to have all options be strings,
+                        # so not so releavnt, but keep here for now
                         # to allow extended use in te future
                         if not isinstance(old_value, str):
                             processed_value, used_ast = parse_param_from_str(
@@ -592,7 +607,7 @@ def parse_param_from_str(text):
     try:  # crude way to handle list and values
         value = ast.literal_eval(text)
         used_ast = True
-    except Exception as exception:
+    except Exception:  #  as exception
         pass
         # print(exception)
     return value, used_ast

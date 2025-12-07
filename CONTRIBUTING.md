@@ -1,5 +1,5 @@
 # Contributing to Qiskit Metal
-Qiskit Metal follows the overall Qiskit project contributing guidelines. These are all included in the [Qiskit Documentation](https://qiskit.org/documentation/contributing_to_qiskit.html).
+Qiskit Metal follows the overall Qiskit project contributing guidelines. These are all included in the [Qiskit Documentation](https://github.com/Qiskit/qiskit/blob/main/CONTRIBUTING.md).
 
 Please read those general guidelines first, then the specific details for contributing to Metal below.
 
@@ -43,19 +43,35 @@ https://google.github.io/styleguide/pyguide.html) for auto formatting. The custo
 
 #### VSCode Setup
 
+Steps:
+1. Install the following extensions: `python` and `yapf` if you have not yet.
+2. Add the following workspace setting in the workspace `settings.json`.
+
 If you are using VSCode for your code editor, you can add these settings
 to your `settings.json` to enforce your code to our style. Make sure to add PySide2 to the linter:
-```
+```json
 {
     "python.linting.pylintEnabled": true,
     "python.linting.enabled": true,
-    "python.linting.pylintArgs": [
-        "--extension-pkg-whitelist=PySide2"
-    ],
     "python.formatting.provider": "yapf",
     "editor.formatOnSave": true,
     "files.trimTrailingWhitespace": true,
     "files.trimFinalNewlines": true
+}
+```
+
+
+In newer versions of VS Code:
+```json
+{
+    "editor.formatOnSave": true,
+    "files.trimTrailingWhitespace": true,
+    "files.trimFinalNewlines": true,
+    "editor.defaultFormatter": "eeyore.yapf",
+    "notebook.defaultFormatter": "eeyore.yapf",
+    "[python]": {
+        "editor.defaultFormatter": "eeyore.yapf"
+    }
 }
 ```
 
@@ -165,37 +181,13 @@ The actual docstring for the elements listed in the module docstring
 
 
     >  You can use any Sphinx directive or rst formatting in a docstring as it
-    >  makes sense. For example, one common extension used is the ``jupyter-execute``
-    >  directive, which is used to execute a code block in Jupyter and display both
-    >  the code and output. This is particularly useful for visualizations.
+    >  makes sense.
 
 ### Rebuilding Documentation
 
-If you make changes to the codebase and want to rebuild the documentation,
+If you make changes to the codebase and want to rebuild the documentation: `tox -e docs`.
 
-1. Install `sphinx` and `numpydoc`.
-```
-conda install sphinx numpydoc
-(or pip install -U sphinx)
-```
-
-2. Install [read the docs theme](https://github.com/Qiskit/qiskit_sphinx_theme) and set in the config `html_theme = "qiskit_sphinx_theme"`.
-```
-pip install qiskit_sphinx_theme
-```
-
-3. Install required packages.
-```
-pip install sphinx_automodapi
-pip install jupyter_sphinx
-```
-
-4. Make the docs.  In the `docs` directory,
-```
-make html
-```
-
-You can also use this to update the doc tree.
+Sometimes Sphinx can have bad cache state. Run `tox -e docs-clean` to reset Tox.
 
 ## Check-list for specific types of Pull Requests
 Please refer to [these instructions](https://github.com/Qiskit/qiskit-metal/blob/main/contributor_guidelines/pull_request_rules.md)
