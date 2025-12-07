@@ -1,5 +1,5 @@
 # Quantum Metal (formerly: Qiskit Metal)
-[![License](https://img.shields.io/github/license/Qiskit/qiskit-metal.svg?style=popout-square)](https://opensource.org/licenses/Apache-2.0)<!--- long-description-skip-begin -->[![Release](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)<!--- long-description-skip-begin -->[![join slack](https://img.shields.io/badge/slack-@qiskit-yellow.svg?logo=slack&style=popout-square)](https://qisk.it/join-slack)[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4618153.svg)](https://doi.org/10.5281/zenodo.4618153)
+[![License](https://img.shields.io/github/license/Qiskit/qiskit-metal.svg?style=popout-square)](https://opensource.org/licenses/Apache-2.0)<!--- long-description-skip-begin -->[![Release](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)<!--- long-description-skip-begin -->[![join slack](https://img.shields.io/badge/slack-@qiskit-yellow.svg?logo=slack&style=popout-square)](https://qisk.it/join-slack)[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4618153.svg)](https://doi.org/10.5281/zenodo.4618153) [Discord](https://discord.gg/kaZ3UFuq)
 
 >![Welcome to Qiskit Metal!](https://raw.githubusercontent.com/Qiskit/qiskit-metal/main/docs/images/zkm_banner.png 'Welcome to Qiskit Metal')
 > Quantum Metal is an open-source framework for engineers and scientists to design superconducting quantum devices with ease.
@@ -33,7 +33,7 @@ Quantum Metal has graduated from being an IBM maintained project and is now one 
   [Sign for 2026](https://qdw-ucla.squarespace.com/qdw2026) to meet the community, learn from experts, and participate directly.*
 
 - **Quantum Device Consortium (QDC)** — an upcoming community organization that will maintain and evolve Quantum Metal as part of a shared ecosystem of tools (including SQUADDS, SQDMetal, scqubits, pyEPR, and many others).
-  *([Website and governance page](https://qdc-qcsa.vercel.app))*
+  *([Website and governance page](https://qdc-qcsa.vercel.app))* [Discord Channel here](https://discord.gg/kaZ3UFuq)
 
 
 ## 🌱 From IBM to a Community-Maintained Project
