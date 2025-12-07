@@ -14,21 +14,6 @@ PlotCanvas
    
    .. rubric:: Attributes
       
-   .. autoattribute:: PlotCanvas.DrawChildren
-   .. autoattribute:: PlotCanvas.DrawWindowBackground
-   .. autoattribute:: PlotCanvas.IgnoreMask
-   .. autoattribute:: PlotCanvas.PdmDepth
-   .. autoattribute:: PlotCanvas.PdmDevicePixelRatio
-   .. autoattribute:: PlotCanvas.PdmDevicePixelRatioScaled
-   .. autoattribute:: PlotCanvas.PdmDpiX
-   .. autoattribute:: PlotCanvas.PdmDpiY
-   .. autoattribute:: PlotCanvas.PdmHeight
-   .. autoattribute:: PlotCanvas.PdmHeightMM
-   .. autoattribute:: PlotCanvas.PdmNumColors
-   .. autoattribute:: PlotCanvas.PdmPhysicalDpiX
-   .. autoattribute:: PlotCanvas.PdmPhysicalDpiY
-   .. autoattribute:: PlotCanvas.PdmWidth
-   .. autoattribute:: PlotCanvas.PdmWidthMM
    .. autoattribute:: PlotCanvas.button_pick_id
    .. autoattribute:: PlotCanvas.buttond
    .. autoattribute:: PlotCanvas.callbacks
@@ -56,6 +41,7 @@ PlotCanvas
    
    .. automethod:: PlotCanvas.acceptDrops
    .. automethod:: PlotCanvas.accessibleDescription
+   .. automethod:: PlotCanvas.accessibleIdentifier
    .. automethod:: PlotCanvas.accessibleName
    .. automethod:: PlotCanvas.actionEvent
    .. automethod:: PlotCanvas.actions
@@ -71,8 +57,6 @@ PlotCanvas
    .. automethod:: PlotCanvas.blit
    .. automethod:: PlotCanvas.blockSignals
    .. automethod:: PlotCanvas.buffer_rgba
-   .. automethod:: PlotCanvas.button_press_event
-   .. automethod:: PlotCanvas.button_release_event
    .. automethod:: PlotCanvas.changeEvent
    .. automethod:: PlotCanvas.childAt
    .. automethod:: PlotCanvas.childEvent
@@ -85,7 +69,6 @@ PlotCanvas
    .. automethod:: PlotCanvas.clear_axis
    .. automethod:: PlotCanvas.close
    .. automethod:: PlotCanvas.closeEvent
-   .. automethod:: PlotCanvas.close_event
    .. automethod:: PlotCanvas.colorCount
    .. automethod:: PlotCanvas.connect
    .. automethod:: PlotCanvas.connectNotify
@@ -99,6 +82,7 @@ PlotCanvas
    .. automethod:: PlotCanvas.createWindowContainer
    .. automethod:: PlotCanvas.cursor
    .. automethod:: PlotCanvas.customEvent
+   .. automethod:: PlotCanvas.debug_axis_config
    .. automethod:: PlotCanvas.deleteLater
    .. automethod:: PlotCanvas.depth
    .. automethod:: PlotCanvas.destroy
@@ -113,7 +97,6 @@ PlotCanvas
    .. automethod:: PlotCanvas.dragMoveEvent
    .. automethod:: PlotCanvas.draw
    .. automethod:: PlotCanvas.drawRectangle
-   .. automethod:: PlotCanvas.draw_event
    .. automethod:: PlotCanvas.draw_idle
    .. automethod:: PlotCanvas.dropEvent
    .. automethod:: PlotCanvas.dumpObjectInfo
@@ -121,9 +104,9 @@ PlotCanvas
    .. automethod:: PlotCanvas.dynamicPropertyNames
    .. automethod:: PlotCanvas.effectiveWinId
    .. automethod:: PlotCanvas.emit
+   .. automethod:: PlotCanvas.encodeMetricF
    .. automethod:: PlotCanvas.ensurePolished
    .. automethod:: PlotCanvas.enterEvent
-   .. automethod:: PlotCanvas.enter_notify_event
    .. automethod:: PlotCanvas.event
    .. automethod:: PlotCanvas.eventFilter
    .. automethod:: PlotCanvas.find
@@ -146,7 +129,6 @@ PlotCanvas
    .. automethod:: PlotCanvas.frameGeometry
    .. automethod:: PlotCanvas.frameSize
    .. automethod:: PlotCanvas.geometry
-   .. automethod:: PlotCanvas.getContentsMargins
    .. automethod:: PlotCanvas.get_axis
    .. automethod:: PlotCanvas.get_default_filename
    .. automethod:: PlotCanvas.get_default_filetype
@@ -186,13 +168,13 @@ PlotCanvas
    .. automethod:: PlotCanvas.isAncestorOf
    .. automethod:: PlotCanvas.isEnabled
    .. automethod:: PlotCanvas.isEnabledTo
-   .. automethod:: PlotCanvas.isEnabledToTLW
    .. automethod:: PlotCanvas.isFullScreen
    .. automethod:: PlotCanvas.isHidden
    .. automethod:: PlotCanvas.isLeftToRight
    .. automethod:: PlotCanvas.isMaximized
    .. automethod:: PlotCanvas.isMinimized
    .. automethod:: PlotCanvas.isModal
+   .. automethod:: PlotCanvas.isQuickItemType
    .. automethod:: PlotCanvas.isRightToLeft
    .. automethod:: PlotCanvas.isSignalConnected
    .. automethod:: PlotCanvas.isTopLevel
@@ -205,14 +187,11 @@ PlotCanvas
    .. automethod:: PlotCanvas.is_saving
    .. automethod:: PlotCanvas.keyPressEvent
    .. automethod:: PlotCanvas.keyReleaseEvent
-   .. automethod:: PlotCanvas.key_press_event
-   .. automethod:: PlotCanvas.key_release_event
    .. automethod:: PlotCanvas.keyboardGrabber
    .. automethod:: PlotCanvas.killTimer
    .. automethod:: PlotCanvas.layout
    .. automethod:: PlotCanvas.layoutDirection
    .. automethod:: PlotCanvas.leaveEvent
-   .. automethod:: PlotCanvas.leave_notify_event
    .. automethod:: PlotCanvas.locale
    .. automethod:: PlotCanvas.logicalDpiX
    .. automethod:: PlotCanvas.logicalDpiY
@@ -233,8 +212,6 @@ PlotCanvas
    .. automethod:: PlotCanvas.minimumSize
    .. automethod:: PlotCanvas.minimumSizeHint
    .. automethod:: PlotCanvas.minimumWidth
-   .. automethod:: PlotCanvas.minumumSizeHint
-   .. automethod:: PlotCanvas.motion_notify_event
    .. automethod:: PlotCanvas.mouseDoubleClickEvent
    .. automethod:: PlotCanvas.mouseEventCoords
    .. automethod:: PlotCanvas.mouseGrabber
@@ -263,8 +240,6 @@ PlotCanvas
    .. automethod:: PlotCanvas.parentWidget
    .. automethod:: PlotCanvas.physicalDpiX
    .. automethod:: PlotCanvas.physicalDpiY
-   .. automethod:: PlotCanvas.pick
-   .. automethod:: PlotCanvas.pick_event
    .. automethod:: PlotCanvas.plot
    .. automethod:: PlotCanvas.pos
    .. automethod:: PlotCanvas.previousInFocusChain
@@ -284,7 +259,6 @@ PlotCanvas
    .. automethod:: PlotCanvas.rect
    .. automethod:: PlotCanvas.redirected
    .. automethod:: PlotCanvas.refresh
-   .. automethod:: PlotCanvas.registerUserData
    .. automethod:: PlotCanvas.releaseKeyboard
    .. automethod:: PlotCanvas.releaseMouse
    .. automethod:: PlotCanvas.releaseShortcut
@@ -295,17 +269,16 @@ PlotCanvas
    .. automethod:: PlotCanvas.repaint
    .. automethod:: PlotCanvas.resize
    .. automethod:: PlotCanvas.resizeEvent
-   .. automethod:: PlotCanvas.resize_event
    .. automethod:: PlotCanvas.restoreGeometry
    .. automethod:: PlotCanvas.restore_region
    .. automethod:: PlotCanvas.saveGeometry
    .. automethod:: PlotCanvas.screen
    .. automethod:: PlotCanvas.scroll
-   .. automethod:: PlotCanvas.scroll_event
    .. automethod:: PlotCanvas.sender
    .. automethod:: PlotCanvas.senderSignalIndex
    .. automethod:: PlotCanvas.setAcceptDrops
    .. automethod:: PlotCanvas.setAccessibleDescription
+   .. automethod:: PlotCanvas.setAccessibleIdentifier
    .. automethod:: PlotCanvas.setAccessibleName
    .. automethod:: PlotCanvas.setAttribute
    .. automethod:: PlotCanvas.setAutoFillBackground
@@ -343,6 +316,7 @@ PlotCanvas
    .. automethod:: PlotCanvas.setPalette
    .. automethod:: PlotCanvas.setParent
    .. automethod:: PlotCanvas.setProperty
+   .. automethod:: PlotCanvas.setScreen
    .. automethod:: PlotCanvas.setShortcutAutoRepeat
    .. automethod:: PlotCanvas.setShortcutEnabled
    .. automethod:: PlotCanvas.setSizeIncrement
@@ -394,7 +368,6 @@ PlotCanvas
    .. automethod:: PlotCanvas.styleSheet
    .. automethod:: PlotCanvas.style_axis
    .. automethod:: PlotCanvas.style_figure
-   .. automethod:: PlotCanvas.switch_backends
    .. automethod:: PlotCanvas.tabletEvent
    .. automethod:: PlotCanvas.testAttribute
    .. automethod:: PlotCanvas.thread
@@ -403,7 +376,6 @@ PlotCanvas
    .. automethod:: PlotCanvas.toolTipDuration
    .. automethod:: PlotCanvas.topLevelWidget
    .. automethod:: PlotCanvas.tostring_argb
-   .. automethod:: PlotCanvas.tostring_rgb
    .. automethod:: PlotCanvas.tr
    .. automethod:: PlotCanvas.underMouse
    .. automethod:: PlotCanvas.ungrabGesture
