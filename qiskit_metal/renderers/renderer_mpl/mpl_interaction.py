@@ -76,10 +76,12 @@ Known limitations:
     - Interfere with matplotlib toolbar.
 """
 
-import logging
+from typing import Any
+
 import math
-import warnings
 import weakref
+import logging
+import warnings
 
 import matplotlib.pyplot as _plt
 import numpy
@@ -234,33 +236,83 @@ class ZoomOnWheel(MplInteraction):
         else:
             return new_max, new_min
 
-    def _on_mouse_wheel(self, event):
-        """Mouse wheel event."""
-        if event.step > 0:
-            scale_factor = self.scale_factor
-        else:
-            scale_factor = 1. / self.scale_factor
+    def _on_mouse_wheel(self, event: Any) -> None:
+        """Handle mouse wheel zoom for all relevant axes.
 
-        # Go through all axes to enable zoom for multiple axes subplots
+        The zoom is centered on the mouse cursor (in data coordinates) and applied
+        to all x and y axes returned by :meth:`_axes_to_update`.
+
+        Args:
+            event: Backend-specific mouse wheel event. Expected to provide:
+                - ``x`` and ``y``: mouse position in display (pixel) coordinates.
+                - ``step``: signed scroll step (positive for zoom in, negative for
+                zoom out).
+        """
+        if not hasattr(event, "step") or event.step == 0:
+            return
+
+        scale_factor: float = (self.scale_factor if event.step > 0 else 1.0 /
+                               self.scale_factor)
+
+        # Determine which axes to zoom.
         x_axes, y_axes = self._axes_to_update(event)
 
+        # Nothing to update.
+        if not x_axes and not y_axes:
+            return
+
+        # Use the first available axis as a reference to convert display
+        # coordinates (pixels) to data coordinates.
+        axes_for_reference = x_axes or y_axes
+        reference_ax = next(iter(axes_for_reference))
+
+        transform = reference_ax.transData.inverted()
+        xdata, ydata = transform.transform_point((event.x, event.y))
+
+        def _zoom_axis_limits(ax: Any, is_x: bool, data_coord: float) -> None:
+            """Zoom a single axis while suppressing aspect-ratio warnings.
+
+            Args:
+                ax: Matplotlib axes object.
+                is_x: If True, zoom the x-axis; otherwise zoom the y-axis.
+                data_coord: Data coordinate of the mouse position along this axis.
+            """
+            if is_x:
+                current_min, current_max = ax.get_xlim()
+                scale = ax.get_xscale()
+                set_limits = ax.set_xlim
+            else:
+                current_min, current_max = ax.get_ylim()
+                scale = ax.get_yscale()
+                set_limits = ax.set_ylim
+
+            new_min, new_max = self._zoom_range(
+                current_min,
+                current_max,
+                data_coord,
+                scale_factor,
+                scale,
+            )
+
+            with warnings.catch_warnings():
+                warnings.filterwarnings(
+                    "ignore",
+                    message=
+                    (".*Ignoring fixed .* limits to fulfill fixed data aspect.*"
+                    ),
+                )
+                set_limits((new_min, new_max))
+
+        # Apply zoom to all x-axes.
         for ax in x_axes:
-            transform = ax.transData.inverted()
-            xdata, ydata = transform.transform_point((event.x, event.y))
+            _zoom_axis_limits(ax, is_x=True, data_coord=xdata)
 
-            xlim = ax.get_xlim()
-            xlim = self._zoom_range(xlim[0], xlim[1], xdata, scale_factor,
-                                    ax.get_xscale())
-            ax.set_xlim(xlim)
-
+        # Apply zoom to all y-axes.
         for ax in y_axes:
-            ylim = ax.get_ylim()
-            ylim = self._zoom_range(ylim[0], ylim[1], ydata, scale_factor,
-                                    ax.get_yscale())
-            ax.set_ylim(ylim)
+            _zoom_axis_limits(ax, is_x=False, data_coord=ydata)
 
-        if x_axes or y_axes:
-            self._draw()
+        # Redraw once after all axes are updated.
+        self._draw()
 
 
 class PanAndZoom(ZoomOnWheel):

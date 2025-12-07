@@ -825,3 +825,24 @@ class PlotCanvas(FigureCanvas):
                             self._annotations['text'] += [text]
 
         self.refresh()
+
+    def debug_axis_config(self, ax=None):
+        """Print axis configuration for debugging."""
+        if ax is None:
+            ax = self.get_axis()
+
+        print("======= AXES CONFIG =======")
+        print("aspect:        ", ax.get_aspect())
+        print("adjustable:    ", ax.get_adjustable())
+        print("anchor:        ", ax.get_anchor())
+        print("box_aspect:    ", ax.get_box_aspect())
+        print("xlim:          ", ax.get_xlim())
+        print("ylim:          ", ax.get_ylim())
+        print("xscale / yscale:", ax.get_xscale(), "/", ax.get_yscale())
+        print("data_ratio:    ", ax.get_data_ratio())
+        try:
+            print("data_ratio_log:", ax.get_data_ratio_log())
+        except Exception:
+            pass
+        print("position bbox: ", ax.get_position())
+        print("===========================")
