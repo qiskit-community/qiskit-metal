@@ -19,7 +19,7 @@ Setting up environment
 
 *conda*:
 
-.. code-block:: RST
+.. code-block:: bash
 
    conda activate <env_name>
    conda install ipykernel
@@ -27,7 +27,7 @@ Setting up environment
 
 *virtualenv*:
 
-.. code-block:: RST
+.. code-block:: bash
 
    source <env_name>/bin/activate  # or .\<env_name>\Scripts\activate
    python -m pip install ipykernel
@@ -52,17 +52,17 @@ This is the result of a known limitation of the PyPI Windows wheels for ``gdal``
 
 Conda has valid ``gdal`` and ``fiona`` packages. Simply run:
 
-.. code-block:: RST
+.. code-block:: bash
 
    conda install geopandas
    python -m pip install -e .   (replace this line with the one you executed before the error)
 
 *python venv:*
 
-You will need to download and install the binary wheels from `here <https://www.lfd.uci.edu/~gohlke/pythonlibs/>`_.
+You will need to download and install the binary wheels from `here <https://www.lfd.uci.edu/~gohlke/pythonlibs/>`__.
 After downloading the wheels, install ``gdal`` first, then ``fiona``, then ``geopandas``. Finally re-install ``qiskit-metal``. Replace the wheel names in the example below with the names of the files you downloaded:
 
-.. code-block:: RST
+.. code-block:: bash
 
    python -m pip install .\GDAL-3.2.3-cp38-cp38-win_amd64.whl
    python -m pip install .\Fiona-1.8.19-cp38-cp38-win_amd64.whl
@@ -87,13 +87,13 @@ If not, they can be installed with: ``xcode-select —install``
 *Windows:*
 
 Open Windows Command Prompt and type:
- 
+
 ``$Env:Path``
 
 Copy the resulting output. Example: ``"PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"``
-Then open the applicable settings.json in your VS Code. (See how to open command palette here `here <https://code.visualstudio.com/docs/getstarted/tips-and-tricks>`_). Search "settings" and click Open Workspace Settings (JSON)). Paste:
+Then open the applicable settings.json in your VS Code. (See how to open command palette here `here2 <https://code.visualstudio.com/docs/getstarted/tips-and-tricks>`_). Search "settings" and click Open Workspace Settings (JSON)). Paste:
 
-.. code-block:: RST
+.. code-block:: json
 
    "terminal.integrated.env.windows": {
       "PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
@@ -107,9 +107,9 @@ Open Terminal and type:
 ``echo $PATH``
 
 Copy the resulting output. Example: ``"PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"``
-Then open the applicable settings.json in your VS Code. (See how to open command palette `here <https://code.visualstudio.com/docs/getstarted/tips-and-tricks>`_). Search "settings" and click Open Workspace Settings (JSON)). Paste:
+Then open the applicable settings.json in your VS Code. (See how to open command palette `here <https://code.visualstudio.com/docs/getstarted/tips-and-tricks>`__). Search "settings" and click Open Workspace Settings (JSON)). Paste:
 
-.. code-block:: RST
+.. code-block:: json
 
    "terminal.integrated.env.osx": {
       "PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
@@ -171,7 +171,7 @@ Getting started with GUI developement
 
 **Q: Is there a video tutorial for starting QT Designer?**
 
-**A:** Yes there is, check it out `on youtube here <https://www.youtube.com/watch?v=XXPNpdaK9WA>`_.
+**A:** Yes there is, check it out `on youtube here <https://www.youtube.com/watch?v=XXPNpdaK9WA>`__.
 
 
 **Q: I'm having trouble with slots and signals.  Can you help?**

@@ -8,19 +8,48 @@ Installation
 Outline of Installation
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-* **Basic Installation**: Legacy PyPI package (pre-0.5) only.
 
-* **Advanced Installation**: Current v0.5 code from source.
 
-  - **Fast path: uv** (recommended during the v0.5 Quantum Metal transition)
-  - **Conda environment setup** (best for binary-heavy stacks and Windows)
-  - **Without conda** (standard Python virtual environment)
+.. grid:: 1 1 2 3
+   :gutter: 2
+   :margin: 1 0 2 0
 
-* **Other**
+   .. grid-item-card::
+      :class-card: sd-bg-light sd-border
+      :class-header: sd-bg-secondary sd-text-white
+      :text-align: left
 
-  - **Optional Jupyter Lab**: Steps to integrate the environment with Jupyter Lab.
-  - **Installation hints**: Tips and troubleshooting for setting up the environment.
-  - **Common Issues**: FAQ and solutions to common problems.
+      **Basic Installation**
+
+      Legacy PyPI package (pre-0.5 only).
+
+      - ``pip install qiskit-metal``
+      - Useful when you need compatibility with older notebooks/tutorials
+
+   .. grid-item-card::
+      :class-card: sd-bg-light sd-border
+      :class-header: sd-bg-primary sd-text-white
+      :text-align: left
+
+      **Advanced Installation (v0.5)**
+
+      Install the active Quantum Metal source tree.
+
+      **Options:**
+      - **Fast path: uv** (recommended during the v0.5 transition)
+      - **Conda environment setup** (best for Windows / binary-heavy stacks)
+      - **Without conda** (standard Python ``venv``)
+
+   .. grid-item-card::
+      :class-card: sd-bg-light sd-border
+      :class-header: sd-bg-success sd-text-white
+      :text-align: left
+
+      **Other Setup Topics**
+
+      - Optional Jupyter Lab integration
+      - Installation hints and tips
+      - Common Issues / FAQ
 
 
 ~~~~~~~~~~~~~~~~~~

@@ -150,12 +150,23 @@ In terms of a high-level description, we aim to perform the following tight feed
 Quantization Methods Overview
 *****************************
 
-.. attention::
+We currently support two complementary quantization approaches that cover most day-to-day chip design
+work: a lightweight lumped/ quasi-lumped model and a full-wave, black-box style energy-participation
+ratio (EPR) workflow. Use this section as a quick “why and when” guide before you pick a solver.
 
-   This section is under construction.
+**What you give us**
+- Your device geometry (from the QComponent library or your own components)
+- A small set of materials/stack assumptions (dielectrics, metal films, boundaries)
+- The excitation/ports you care about (for scattering or eigenmode solves)
 
-We are currently implementing lumped, quasi-lumped, and full-wave quantization methods in Qiskit Metal.
-The following image summarizes the main landscape of analysis and design methods:
+**What you get back**
+- Modal frequencies, anharmonicities, and dispersive shifts
+- Coupling strengths and participation matrices you can plug into Hamiltonians
+- Loss estimates tied to specific volumes (dielectrics, conductors, seams) so you can chase the right bottleneck
+
+Each method balances speed, fidelity, and required setup. Start with the lumped model when you need
+fast iteration and intuitive circuit pictures; switch to EPR when geometry and field participation
+really matter.
 
 .. image:: images/quantization.png
    :alt: Missing Image
@@ -167,22 +178,18 @@ The following image summarizes the main landscape of analysis and design methods
 Lumped-oscillator model
 -----------------------
 
-In the lumped-oscillator model,
-one extract the quasi-static capacitance
-and inductances of the effective network model from fast simulations.
+In the lumped-oscillator model you treat each component as a compact circuit element whose capacitance
+and inductance can be extracted from fast quasi-static simulations or closed-form formulas. Think of it
+as a guided way to draw a circuit, pull out the C and L values, and then stitch those into a Hamiltonian.
 
-*Overview.* Extracting the Hamiltonian of interacting quantum-information processing systems
-is a keystone problem in the realization of complex phenomena and large-scale quantum computers.
-The remarkable growth of the field increasingly requires precise, widely-applicable, and modular methods
-that can model the quantum electrodynamics of the physical circuits, and even of their more-subtle
-renormalization effects.
+*When to use it.* Early design and parameter sweeps when you want intuition and speed. Routing,
+connector placement, and first-order coupling strengths are often “good enough” here. Because solves are
+cheap, you can explore a lot of geometry/stack variants before moving to heavier solvers.
 
-The lumped method can be a computationally-efficient method satisfying these criteria.
-The method partitions a quantum device into compact lumped or quasi-distributed cells.
-Each is first simulated individually. The composite system is then reduced and mapped to a set of simple
-subsystem building blocks and their pairwise interactions.
-The method operates within the quasi-lumped approximation and systematically accounts for
-constraints, couplings, parameter renormalizations, and non-perturbative loading effects.
+*How it works.* Partition the device into a handful of cells, solve each one quickly to get effective
+C/L values, then assemble the network and quantize. The reduction step preserves the pairwise couplings
+so you keep track of renormalization and loading. The result is a simple Hamiltonian with parameters you
+can iterate on in minutes.
 
 References:
 
@@ -222,12 +229,44 @@ The EPR method is experimentally tested on a variety of Josephson circuits, and 
 high agreement for nonlinear couplings and modal Hamiltonian parameters, over many order of
 magnitude in energy.
 
+*When to use it.* When layout details matter: packaging effects, higher-mode participation, junction
+placement, seams, or substrate losses. EPR gives you a field-aware Hamiltonian and ties every loss
+number to a physical volume, so you know which lever to pull next.
+
+*What you set up.* Draw your design, define materials and boundaries, place ports, and run a single
+eigenmode solve on the linearized circuit. pyEPR reads the fields, computes participations for every
+nonlinear/lossy element, and hands back frequencies, dispersive shifts, anharmonicities, and loss
+budgets. Because it is black-box, it scales to multi-mode, multi-junction systems with minimal
+hand-tuning.
+
 References:
 
 * Minev, Z. K., Leghtas, Z., Mudhada, S. O., Reinhold, P., Diringer, A., & Devoret, M. H. (2018). `pyEPR: The energy-participation-ratio (EPR) open-source framework for quantum device design. <https://github.com/zlatko-minev/pyEPR/blob/master/pyEPR.bib>`_
 * Minev, Z. K., Leghtas, Z., Mundhada, S. O., Christakis, L., Pop, I. M., & Devoret, M. H. (2020). Energy-participation quantization of Josephson circuits. ArXiv. Retrieved from `http://arxiv.org/abs/2010.00620 <http://arxiv.org/abs/2010.00620>`_ (2020)
 * Z.K. Minev, Ph.D. Dissertation, Yale University (2018), Chapter 4. `arXiv:1902.10355 <https://arxiv.org/abs/1902.10355>`_  (2018)
 * `pyEPR docs <https://pyepr-docs.readthedocs.io>`_
+
+
+----------------------------------------------------------
+Impedance: impedance-based black-box quantization (BBQ)
+----------------------------------------------------------
+
+The impedance formulation of black-box quantization builds the Hamiltonian directly from the
+frequency-dependent impedance seen between nonlinear elements and ground. It shares the “full-wave
+fields first, circuit later” philosophy of EPR, but works in the impedance domain: from a port-defined
+impedance matrix you extract effective mode frequencies, participation factors, and couplings.
+
+*When to use it.* For strongly multi-port/multi-mode layouts where port impedances are the most natural
+handle (e.g., rich bus networks, Purcell filters, or chip-package assemblies). It is also a good cross
+check to EPR when you want to validate couplings via an independent pipeline.
+
+*What you set up.* Define ports at the locations of junctions or pins, run an eigenmode or driven solve
+to obtain the impedance matrix versus frequency, then sample around the modes of interest. The resulting
+impedances map to effective inductive/capacitive participations and give you the Hamiltonian parameters.
+
+*Outputs.* Mode frequencies, nonlinear participation, and cross-Kerr rates derived from the impedance
+matrix, plus a clear picture of how design changes move those impedances. Use it to tune Purcell filters,
+set coupling windows, or debug unexpected mode crowding.
 
 .. image:: images/epr.png
    :alt: Missing Image

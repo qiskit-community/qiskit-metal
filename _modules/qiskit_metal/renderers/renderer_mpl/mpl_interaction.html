@@ -1,0 +1,1235 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
+
+    <!-- Generated with Sphinx 7.4.7 and Furo 2024.01.29 -->
+        <title>qiskit_metal.renderers.renderer_mpl.mpl_interaction - Quantum Metal 0.5.0</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=fe84956c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-ecosystem.css?v=745c5aa7" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+<script src="../../../../_static/js/web-components/top-nav-bar.js"></script></head>
+  <body>
+    
+    <script>document.body.dataset.theme = "light";</script>
+    
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg id="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+      <defs><style>.cls-1{fill:none;}</style></defs>
+      <path d="M28,4H4A2,2,0,0,0,2,6V26a2,2,0,0,0,2,2H28a2,2,0,0,0,2-2V6A2,2,0,0,0,28,4ZM4,6H20V26H4ZM28,26H22V6h6Z"/>
+      <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg id="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+      <defs><style>.cls-1{fill:none;}</style></defs>
+      <rect x="4" y="6" width="24" height="2"/>
+      <rect x="4" y="24" width="24" height="2"/>
+      <rect x="4" y="12" width="24" height="2"/>
+      <rect x="4" y="18" width="24" height="2"/>
+      <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg version="1.1" id="icon" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+         viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve"><polygon points="22,16 12,26 10.6,24.6 19.2,16 10.6,7.4 12,6 " stroke="currentColor"/>
+      <rect id="_x3C_Transparent_Rectangle_x3E_" fill="none" width="32" height="32"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-new-tab" viewBox="0 0 32 32">
+    <svg id="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+      <defs>
+        <style>
+          .cls-1 {
+            fill: none;
+          }
+        </style>
+      </defs>
+      <path fill="#6929C4" d="M26,28H6a2.0027,2.0027,0,0,1-2-2V6A2.0027,2.0027,0,0,1,6,4H16V6H6V26H26V16h2V26A2.0027,2.0027,0,0,1,26,28Z"/>
+      <polygon fill="#6929C4" points="20 2 20 4 26.586 4 18 12.586 19.414 14 28 5.414 28 12 30 12 30 2 20 2"/>
+      <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../../index.html"><div class="brand">Quantum Metal 0.5.0</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><div class="sidebar-brand">
+  <a href="https://www.qiskit.org/ecosystem">
+    <div class="sidebar-logo-container">
+      <img class="sidebar-logo" src="../../../../_static/images/ecosystem-logo.svg" alt="Qiskit Ecosystem logo"/>
+    </div>
+  </a>
+  
+  <span class="sidebar-brand-text">Quantum Metal 0.5.0</span>
+</div><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installing Qiskit Metal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../workflow.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../workflow.html#qiskit-metal-workflow">Qiskit Metal Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../workflow.html#quantization-methods-overview">Quantization Methods Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contributor Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributor-guide.html">Contributing to Qiskit Metal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributor-guide.html#where-things-are">Where Things Are</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributor-guide.html#reporting-bugs-and-requesting-enhancements">Reporting Bugs and Requesting Enhancements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributor-guide.html#contributing-code">Contributing Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributor-guide.html#contributing-to-documentation">Contributing to Documentation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/playlist?list=PLOFEBzvs-VvqHl5ZqVmhB_FcSqmLufsjb">Video Recordings</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../apidocs/qlibrary.html">All Quantum Devices</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of All Quantum Devices</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.QComponent.html">QComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.ParsedDynamicAttributes_Component.html">ParsedDynamicAttributes_Component</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.BaseQubit.html">BaseQubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.QRoute.html">QRoute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.QRouteLead.html">QRouteLead</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.QRoutePoint.html">QRoutePoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.CircleCaterpillar.html">CircleCaterpillar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.CircleRaster.html">CircleRaster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.NGon.html">NGon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.NSquareSpiral.html">NSquareSpiral</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.Rectangle.html">Rectangle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.RectangleHollow.html">RectangleHollow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.Cap3Interdigital.html">Cap3Interdigital</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.CapNInterdigital.html">CapNInterdigital</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.ResonatorCoilRect.html">ResonatorCoilRect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.CoupledLineTee.html">CoupledLineTee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.LineTee.html">LineTee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.CapNInterdigitalTee.html">CapNInterdigitalTee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.TunableCoupler01.html">TunableCoupler01</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.TunableCoupler02.html">TunableCoupler02</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.ReadoutResFC.html">ReadoutResFC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.ResonatorLumped.html">ResonatorLumped</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.LaunchpadWirebond.html">LaunchpadWirebond</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.LaunchpadWirebondCoupled.html">LaunchpadWirebondCoupled</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.LaunchpadWirebondDriven.html">LaunchpadWirebondDriven</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.OpenToGround.html">OpenToGround</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.ShortToGround.html">ShortToGround</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.RouteStraight.html">RouteStraight</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.RouteFramed.html">RouteFramed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.RouteMeander.html">RouteMeander</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.RouteAnchors.html">RouteAnchors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.RouteMixed.html">RouteMixed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.RoutePathfinder.html">RoutePathfinder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.jj_dolan.html">jj_dolan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.jj_manhattan.html">jj_manhattan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonConcentric.html">TransmonConcentric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonConcentricType2.html">TransmonConcentricType2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonCross.html">TransmonCross</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonCrossFL.html">TransmonCrossFL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonInterdigitated.html">TransmonInterdigitated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonPocket.html">TransmonPocket</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonPocketCL.html">TransmonPocketCL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonPocket6.html">TransmonPocket6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonPocketTeeth.html">TransmonPocketTeeth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.TunableCoupler01.html">TunableCoupler01</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.SQUID_LOOP.html">SQUID_LOOP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.StarQubit.html">StarQubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.anchored_path.html">anchored_path</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../overview.html">Overview</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../apidocs/designs.html">QDesigns</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of QDesigns</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.designs.QDesign.html">QDesign</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.designs.DesignPlanar.html">DesignPlanar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.designs.MultiPlanar.html">MultiPlanar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.designs.DesignFlipChip.html">DesignFlipChip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.designs.QNet.html">QNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.designs.Components.html">Components</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../apidocs/qlibrary.html">QComponents</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of QComponents</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.QComponent.html">QComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.ParsedDynamicAttributes_Component.html">ParsedDynamicAttributes_Component</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.BaseQubit.html">BaseQubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.QRoute.html">QRoute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.QRouteLead.html">QRouteLead</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.QRoutePoint.html">QRoutePoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.CircleCaterpillar.html">CircleCaterpillar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.CircleRaster.html">CircleRaster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.NGon.html">NGon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.NSquareSpiral.html">NSquareSpiral</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.Rectangle.html">Rectangle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.RectangleHollow.html">RectangleHollow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.Cap3Interdigital.html">Cap3Interdigital</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.CapNInterdigital.html">CapNInterdigital</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.ResonatorCoilRect.html">ResonatorCoilRect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.CoupledLineTee.html">CoupledLineTee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.LineTee.html">LineTee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.CapNInterdigitalTee.html">CapNInterdigitalTee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.TunableCoupler01.html">TunableCoupler01</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.TunableCoupler02.html">TunableCoupler02</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.ReadoutResFC.html">ReadoutResFC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.ResonatorLumped.html">ResonatorLumped</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.LaunchpadWirebond.html">LaunchpadWirebond</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.LaunchpadWirebondCoupled.html">LaunchpadWirebondCoupled</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.LaunchpadWirebondDriven.html">LaunchpadWirebondDriven</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.OpenToGround.html">OpenToGround</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.ShortToGround.html">ShortToGround</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.RouteStraight.html">RouteStraight</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.RouteFramed.html">RouteFramed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.RouteMeander.html">RouteMeander</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.RouteAnchors.html">RouteAnchors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.RouteMixed.html">RouteMixed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.RoutePathfinder.html">RoutePathfinder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.jj_dolan.html">jj_dolan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.jj_manhattan.html">jj_manhattan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonConcentric.html">TransmonConcentric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonConcentricType2.html">TransmonConcentricType2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonCross.html">TransmonCross</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonCrossFL.html">TransmonCrossFL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonInterdigitated.html">TransmonInterdigitated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonPocket.html">TransmonPocket</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonPocketCL.html">TransmonPocketCL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonPocket6.html">TransmonPocket6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonPocketTeeth.html">TransmonPocketTeeth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.TunableCoupler01.html">TunableCoupler01</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.SQUID_LOOP.html">SQUID_LOOP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.StarQubit.html">StarQubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.anchored_path.html">anchored_path</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../apidocs/analyses.html">Analyses</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Analyses</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.analyses.QAnalysis.html">QAnalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.analyses.QSimulation.html">QSimulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.analyses.Hcpb.html">Hcpb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.analyses.Hcpb_analytic.html">Hcpb_analytic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.analyses.HO_wavefunctions.html">HO_wavefunctions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.analyses.transmon_analytics.html">transmon_analytics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.analyses.cpw_calculations.html">cpw_calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.analyses.kappa_calculation.html">kappa_calculation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.analyses.Sweeper.html">Sweeper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.analyses.LOManalysis.html">LOManalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.analyses.EPRanalysis.html">EPRanalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.analyses.lumped_capacitive.html">lumped_capacitive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.analyses.LumpedElementsSim.html">LumpedElementsSim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.analyses.EigenmodeSim.html">EigenmodeSim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.analyses.ScatteringImpedanceSim.html">ScatteringImpedanceSim</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../apidocs/renderers.html">QRenderes</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of QRenderes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QRenderer.html">QRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QRendererGui.html">QRendererGui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QRendererAnalysis.html">QRendererAnalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.PlotCanvas.html">PlotCanvas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.MplInteraction.html">MplInteraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.ZoomOnWheel.html">ZoomOnWheel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.PanAndZoom.html">PanAndZoom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QMplRenderer.html">QMplRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.AnimatedText.html">AnimatedText</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QGDSRenderer.html">QGDSRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.Cheesing.html">Cheesing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QAnsysRenderer.html">QAnsysRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QHFSSRenderer.html">QHFSSRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QQ3DRenderer.html">QQ3DRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QPyaedt.html">QPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QQ3DPyaedt.html">QQ3DPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QHFSSPyaedt.html">QHFSSPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.html">QHFSSDrivenmodalPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QHFSSEigenmodePyaedt.html">QHFSSEigenmodePyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QGmshRenderer.html">QGmshRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.Vec3DArray.html">Vec3DArray</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../apidocs/toolbox_metal.html">Toolbox</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Toolbox</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.toolbox_metal.QiskitMetalExceptions.html">QiskitMetalExceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.toolbox_metal.QiskitMetalDesignError.html">QiskitMetalDesignError</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.toolbox_metal.about.html">about</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.toolbox_metal.import_export.html">import_export</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.toolbox_metal.math_and_overrides.html">math_and_overrides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.toolbox_metal.parsing.html">parsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.toolbox_metal.layer_stack_handler.html">layer_stack_handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables.html">bounds_for_path_and_poly_tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.toolbox_metal.determine_larger_box.html">determine_larger_box</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../apidocs/qgeometries.html">QGeometry</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of QGeometry</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html">QGeometryTables</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../apidocs/gui.html">GUI</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal._gui.MetalGUI.html">MetalGUI</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/Qiskit/qiskit/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
+</ul>
+
+</div></div>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <h1>Source code for qiskit_metal.renderers.renderer_mpl.mpl_interaction</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="c1"># This code is part of Qiskit.</span>
+<span class="c1">#</span>
+<span class="c1"># (C) Copyright IBM 2017, 2021.</span>
+<span class="c1">#</span>
+<span class="c1"># This code is licensed under the Apache License, Version 2.0. You may</span>
+<span class="c1"># obtain a copy of this license in the LICENSE.txt file in the root directory</span>
+<span class="c1"># of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.</span>
+<span class="c1">#</span>
+<span class="c1"># Any modifications or derivative works of this code must retain this</span>
+<span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
+<span class="c1"># that they have been altered from the originals.</span>
+
+<span class="c1"># /*##########################################################################</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (c) 2016 European Synchrotron Radiation Facility</span>
+<span class="c1">#</span>
+<span class="c1"># Permission is hereby granted, free of charge, to any person obtaining a copy</span>
+<span class="c1"># of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
+<span class="c1"># in the Software without restriction, including without limitation the rights</span>
+<span class="c1"># to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
+<span class="c1"># copies of the Software, and to permit persons to whom the Software is</span>
+<span class="c1"># furnished to do so, subject to the following conditions:</span>
+<span class="c1">#</span>
+<span class="c1"># The above copyright notice and this permission notice shall be included in</span>
+<span class="c1"># all copies or substantial portions of the Software.</span>
+<span class="c1">#</span>
+<span class="c1"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="c1"># IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="c1"># FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+<span class="c1"># AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="c1"># LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+<span class="c1"># OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN</span>
+<span class="c1"># THE SOFTWARE.</span>
+<span class="c1">#</span>
+<span class="c1"># ###########################################################################*/</span>
+<span class="sd">&quot;&quot;&quot;Pan and zoom interaction to plug on a matplotlib Figure.</span>
+
+<span class="sd">Interaction:</span>
+<span class="sd">    - Zoom in/out with the mouse wheel</span>
+<span class="sd">    - Pan figures by dragging the mouse with left button pressed</span>
+<span class="sd">    - Select a zoom-in area by dragging the mouse with right button pressed</span>
+
+<span class="sd">It provides a figure_pz function to create a Figure with interaction.</span>
+
+<span class="sd">Example:</span>
+
+<span class="sd">.. code-block:: python</span>
+
+<span class="sd">    import matplotlib.pyplot as plt</span>
+<span class="sd">    from mpl_interaction import figure_pz</span>
+<span class="sd">    fig = figure_pz()</span>
+<span class="sd">    ax = fig.add_subplot(1, 1, 1)</span>
+<span class="sd">    ax.plot((1, 2, 1))</span>
+<span class="sd">    plt.show()</span>
+
+<span class="sd">The :class:`PanAndZoom` class can be used to add interaction</span>
+<span class="sd">to an existing Figure.</span>
+
+<span class="sd">Example:</span>
+
+<span class="sd">.. code-block:: python</span>
+
+<span class="sd">    import matplotlib.pyplot as plt</span>
+<span class="sd">    from mpl_interaction import PanAndZoom</span>
+<span class="sd">    fig = plt.figure()</span>
+<span class="sd">    pan_zoom = PanAndZoom(fig)  # Add support for pan and zoom</span>
+<span class="sd">    ax = fig.add_subplot(1, 1, 1)</span>
+<span class="sd">    ax.plot((1, 2, 1))</span>
+<span class="sd">    plt.show()</span>
+
+<span class="sd">Known limitations:</span>
+<span class="sd">    - Only support linear and log scale axes.</span>
+<span class="sd">    - Zoom area not working well with keep aspect ratio.</span>
+<span class="sd">    - Interfere with matplotlib toolbar.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">weakref</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">_plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QIcon</span><span class="p">,</span> <span class="n">QAction</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QLabel</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">...</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;figure_pz&#39;</span><span class="p">,</span> <span class="s1">&#39;MplInteraction&#39;</span><span class="p">,</span> <span class="s1">&#39;PanAndZoom&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="MplInteraction">
+<a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.MplInteraction.html#qiskit_metal.renderers.MplInteraction">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MplInteraction</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for class providing interaction to a matplotlib Figure.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">figure</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            figure (figure): The matplotlib figure to attach the behavior to.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fig_ref</span> <span class="o">=</span> <span class="n">weakref</span><span class="o">.</span><span class="n">ref</span><span class="p">(</span><span class="n">figure</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cids</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Disconnect.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_add_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_name</span><span class="p">,</span> <span class="n">callback</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Called to add a connection to an event of the figure.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            event_name (str): The matplotlib event name to connect to.</span>
+<span class="sd">            callback (callback): The callback to register to this event.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">mpl_connect</span><span class="p">(</span><span class="n">event_name</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cid</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MplInteraction.disconnect">
+<a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.MplInteraction.html#qiskit_metal.renderers.MplInteraction.disconnect">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Disconnect interaction from Figure.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fig_ref</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">figure</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fig_ref</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">figure</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">cid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cids</span><span class="p">:</span>
+                    <span class="n">figure</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">mpl_disconnect</span><span class="p">(</span><span class="n">cid</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fig_ref</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">figure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The Figure this interaction is connected to or None if not</span>
+<span class="sd">        connected.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fig_ref</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fig_ref</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_axes_to_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns two sets of Axes to update according to event. Takes care of</span>
+<span class="sd">        multiple axes and shared axes.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            event (MouseEvent): Matplotlib event to consider</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: Axes for which to update xlimits and ylimits.</span>
+<span class="sd">            2-tuple of set (xaxes, yaxes)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">x_axes</span><span class="p">,</span> <span class="n">y_axes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(),</span> <span class="nb">set</span><span class="p">()</span>
+
+        <span class="c1"># Go through all axes to enable zoom for multiple axes subplots</span>
+        <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">axes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ax</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">event</span><span class="p">)[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="c1"># For twin x axes, makes sure the zoom is applied once</span>
+                <span class="n">shared_x_axes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_shared_x_axes</span><span class="p">()</span><span class="o">.</span><span class="n">get_siblings</span><span class="p">(</span><span class="n">ax</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">x_axes</span><span class="o">.</span><span class="n">isdisjoint</span><span class="p">(</span><span class="n">shared_x_axes</span><span class="p">):</span>
+                    <span class="n">x_axes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+
+                <span class="c1"># For twin y axes, makes sure the zoom is applied once</span>
+                <span class="n">shared_y_axes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_shared_y_axes</span><span class="p">()</span><span class="o">.</span><span class="n">get_siblings</span><span class="p">(</span><span class="n">ax</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">y_axes</span><span class="o">.</span><span class="n">isdisjoint</span><span class="p">(</span><span class="n">shared_y_axes</span><span class="p">):</span>
+                    <span class="n">y_axes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">x_axes</span><span class="p">,</span> <span class="n">y_axes</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convenient method to redraw the figure.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="ZoomOnWheel">
+<a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.ZoomOnWheel.html#qiskit_metal.renderers.ZoomOnWheel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ZoomOnWheel</span><span class="p">(</span><span class="n">MplInteraction</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class providing zoom on wheel interaction to a matplotlib Figure.</span>
+
+<span class="sd">    This class extends the `MplInteraction` class.</span>
+
+<span class="sd">    Supports subplots, twin Axes and log scales.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">figure</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scale_factor</span><span class="o">=</span><span class="mf">1.1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            figure (figure): The matplotlib figure to attach the behavior to.</span>
+<span class="sd">            scale_factor (float): The scale factor to apply on wheel event.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ZoomOnWheel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">figure</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_connection</span><span class="p">(</span><span class="s1">&#39;scroll_event&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_mouse_wheel</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">=</span> <span class="n">scale_factor</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_zoom_range</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">scale_factor</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute a 1D range zoomed around center.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            begin (float): The begin bound of the range</span>
+<span class="sd">            end (float): The end bound of the range</span>
+<span class="sd">            center (float): The center of the zoom (i.e., invariant point)</span>
+<span class="sd">            scale_factor (float): The scale factor to apply</span>
+<span class="sd">            scale (str): The scale of the axis</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: The zoomed range (min, max)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">begin</span> <span class="o">&lt;</span> <span class="n">end</span><span class="p">:</span>
+            <span class="n">min_</span><span class="p">,</span> <span class="n">max_</span> <span class="o">=</span> <span class="n">begin</span><span class="p">,</span> <span class="n">end</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">min_</span><span class="p">,</span> <span class="n">max_</span> <span class="o">=</span> <span class="n">end</span><span class="p">,</span> <span class="n">begin</span>
+
+        <span class="k">if</span> <span class="n">scale</span> <span class="o">==</span> <span class="s1">&#39;linear&#39;</span><span class="p">:</span>
+            <span class="n">old_min</span><span class="p">,</span> <span class="n">old_max</span> <span class="o">=</span> <span class="n">min_</span><span class="p">,</span> <span class="n">max_</span>
+        <span class="k">elif</span> <span class="n">scale</span> <span class="o">==</span> <span class="s1">&#39;log&#39;</span><span class="p">:</span>
+            <span class="n">old_min</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">min_</span> <span class="k">if</span> <span class="n">min_</span> <span class="o">&gt;</span> <span class="mf">0.</span> <span class="k">else</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nextafter</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="n">center</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">center</span> <span class="k">if</span> <span class="n">center</span> <span class="o">&gt;</span>
+                                 <span class="mf">0.</span> <span class="k">else</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nextafter</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="n">old_max</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">max_</span><span class="p">)</span> <span class="k">if</span> <span class="n">max_</span> <span class="o">&gt;</span> <span class="mf">0.</span> <span class="k">else</span> <span class="mf">0.</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Zoom on wheel not implemented for scale &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span>
+                            <span class="n">scale</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">begin</span><span class="p">,</span> <span class="n">end</span>
+
+        <span class="n">offset</span> <span class="o">=</span> <span class="p">(</span><span class="n">center</span> <span class="o">-</span> <span class="n">old_min</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">old_max</span> <span class="o">-</span> <span class="n">old_min</span><span class="p">)</span>
+        <span class="n">range_</span> <span class="o">=</span> <span class="p">(</span><span class="n">old_max</span> <span class="o">-</span> <span class="n">old_min</span><span class="p">)</span> <span class="o">/</span> <span class="n">scale_factor</span>
+        <span class="n">new_min</span> <span class="o">=</span> <span class="n">center</span> <span class="o">-</span> <span class="n">offset</span> <span class="o">*</span> <span class="n">range_</span>
+        <span class="n">new_max</span> <span class="o">=</span> <span class="n">center</span> <span class="o">+</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">offset</span><span class="p">)</span> <span class="o">*</span> <span class="n">range_</span>
+
+        <span class="k">if</span> <span class="n">scale</span> <span class="o">==</span> <span class="s1">&#39;log&#39;</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">new_min</span><span class="p">,</span> <span class="n">new_max</span> <span class="o">=</span> <span class="mf">10.</span><span class="o">**</span><span class="nb">float</span><span class="p">(</span><span class="n">new_min</span><span class="p">),</span> <span class="mf">10.</span><span class="o">**</span><span class="nb">float</span><span class="p">(</span><span class="n">new_max</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">OverflowError</span><span class="p">:</span>  <span class="c1"># Limit case</span>
+                <span class="n">new_min</span><span class="p">,</span> <span class="n">new_max</span> <span class="o">=</span> <span class="n">min_</span><span class="p">,</span> <span class="n">max_</span>
+            <span class="k">if</span> <span class="n">new_min</span> <span class="o">&lt;=</span> <span class="mf">0.</span> <span class="ow">or</span> <span class="n">new_max</span> <span class="o">&lt;=</span> <span class="mf">0.</span><span class="p">:</span>  <span class="c1"># Limit case</span>
+                <span class="n">new_min</span><span class="p">,</span> <span class="n">new_max</span> <span class="o">=</span> <span class="n">min_</span><span class="p">,</span> <span class="n">max_</span>
+
+        <span class="k">if</span> <span class="n">begin</span> <span class="o">&lt;</span> <span class="n">end</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">new_min</span><span class="p">,</span> <span class="n">new_max</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">new_max</span><span class="p">,</span> <span class="n">new_min</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_on_mouse_wheel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle mouse wheel zoom for all relevant axes.</span>
+
+<span class="sd">        The zoom is centered on the mouse cursor (in data coordinates) and applied</span>
+<span class="sd">        to all x and y axes returned by :meth:`_axes_to_update`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            event: Backend-specific mouse wheel event. Expected to provide:</span>
+<span class="sd">                - ``x`` and ``y``: mouse position in display (pixel) coordinates.</span>
+<span class="sd">                - ``step``: signed scroll step (positive for zoom in, negative for</span>
+<span class="sd">                zoom out).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="s2">&quot;step&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">event</span><span class="o">.</span><span class="n">step</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">scale_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scale_factor</span> <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">step</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">1.0</span> <span class="o">/</span>
+                               <span class="bp">self</span><span class="o">.</span><span class="n">scale_factor</span><span class="p">)</span>
+
+        <span class="c1"># Determine which axes to zoom.</span>
+        <span class="n">x_axes</span><span class="p">,</span> <span class="n">y_axes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_axes_to_update</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+
+        <span class="c1"># Nothing to update.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">x_axes</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">y_axes</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Use the first available axis as a reference to convert display</span>
+        <span class="c1"># coordinates (pixels) to data coordinates.</span>
+        <span class="n">axes_for_reference</span> <span class="o">=</span> <span class="n">x_axes</span> <span class="ow">or</span> <span class="n">y_axes</span>
+        <span class="n">reference_ax</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">axes_for_reference</span><span class="p">))</span>
+
+        <span class="n">transform</span> <span class="o">=</span> <span class="n">reference_ax</span><span class="o">.</span><span class="n">transData</span><span class="o">.</span><span class="n">inverted</span><span class="p">()</span>
+        <span class="n">xdata</span><span class="p">,</span> <span class="n">ydata</span> <span class="o">=</span> <span class="n">transform</span><span class="o">.</span><span class="n">transform_point</span><span class="p">((</span><span class="n">event</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">_zoom_axis_limits</span><span class="p">(</span><span class="n">ax</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">is_x</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">data_coord</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Zoom a single axis while suppressing aspect-ratio warnings.</span>
+
+<span class="sd">            Args:</span>
+<span class="sd">                ax: Matplotlib axes object.</span>
+<span class="sd">                is_x: If True, zoom the x-axis; otherwise zoom the y-axis.</span>
+<span class="sd">                data_coord: Data coordinate of the mouse position along this axis.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="n">is_x</span><span class="p">:</span>
+                <span class="n">current_min</span><span class="p">,</span> <span class="n">current_max</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()</span>
+                <span class="n">scale</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_xscale</span><span class="p">()</span>
+                <span class="n">set_limits</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">current_min</span><span class="p">,</span> <span class="n">current_max</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()</span>
+                <span class="n">scale</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_yscale</span><span class="p">()</span>
+                <span class="n">set_limits</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span>
+
+            <span class="n">new_min</span><span class="p">,</span> <span class="n">new_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_zoom_range</span><span class="p">(</span>
+                <span class="n">current_min</span><span class="p">,</span>
+                <span class="n">current_max</span><span class="p">,</span>
+                <span class="n">data_coord</span><span class="p">,</span>
+                <span class="n">scale_factor</span><span class="p">,</span>
+                <span class="n">scale</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span>
+                    <span class="s2">&quot;ignore&quot;</span><span class="p">,</span>
+                    <span class="n">message</span><span class="o">=</span>
+                    <span class="p">(</span><span class="s2">&quot;.*Ignoring fixed .* limits to fulfill fixed data aspect.*&quot;</span>
+                    <span class="p">),</span>
+                <span class="p">)</span>
+                <span class="n">set_limits</span><span class="p">((</span><span class="n">new_min</span><span class="p">,</span> <span class="n">new_max</span><span class="p">))</span>
+
+        <span class="c1"># Apply zoom to all x-axes.</span>
+        <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">x_axes</span><span class="p">:</span>
+            <span class="n">_zoom_axis_limits</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">is_x</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">data_coord</span><span class="o">=</span><span class="n">xdata</span><span class="p">)</span>
+
+        <span class="c1"># Apply zoom to all y-axes.</span>
+        <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">y_axes</span><span class="p">:</span>
+            <span class="n">_zoom_axis_limits</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">is_x</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">data_coord</span><span class="o">=</span><span class="n">ydata</span><span class="p">)</span>
+
+        <span class="c1"># Redraw once after all axes are updated.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_draw</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="PanAndZoom">
+<a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.PanAndZoom.html#qiskit_metal.renderers.PanAndZoom">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PanAndZoom</span><span class="p">(</span><span class="n">ZoomOnWheel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class providing pan &amp; zoom interaction to a matplotlib Figure. Left</span>
+<span class="sd">    button for pan, right button for zoom area and zoom on wheel. Support</span>
+<span class="sd">    subplots, twin Axes and log scales.</span>
+
+<span class="sd">    This class extends the `ZoomOnWheel` class.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">figure</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scale_factor</span><span class="o">=</span><span class="mf">1.1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            figure (figure): The matplotlib figure to attach the behavior to.</span>
+<span class="sd">            scale_factor (float): The scale factor to apply on wheel event.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PanAndZoom</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">figure</span><span class="p">,</span> <span class="n">scale_factor</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_connection</span><span class="p">(</span><span class="s1">&#39;button_press_event&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_mouse_press</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_connection</span><span class="p">(</span><span class="s1">&#39;button_release_event&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_mouse_release</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_connection</span><span class="p">(</span><span class="s1">&#39;motion_notify_event&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_mouse_motion</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pressed_button</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># To store active button</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_axes</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># To store x and y axes concerned by interaction</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># To store reference event during interaction</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">report_point_position</span><span class="o">=</span><span class="kc">True</span><span class="p">,))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_statusbar_label</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># self._get_images_path()</span>
+        <span class="c1"># self._add_toolbar_tools()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_style_figure</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ix_iy_old</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_images_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the path to images.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: path</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            Exception: path error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># to be removed</span>
+        <span class="k">try</span><span class="p">:</span>  <span class="c1"># Get tool image path</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">...</span><span class="w"> </span><span class="kn">import</span> <span class="n">_gui</span>
+            <span class="n">imgs_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">_gui</span><span class="o">.</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;_imgs&#39;</span>
+            <span class="k">if</span> <span class="n">imgs_path</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Bad File path for images! </span><span class="si">{</span><span class="n">imgs_path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">imgs_path</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;ERROR: &#39;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+            <span class="n">imgs_path</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">imgs_path</span> <span class="o">=</span> <span class="n">imgs_path</span>
+
+        <span class="k">return</span> <span class="n">imgs_path</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_add_toolbar_tools</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add tools.&quot;&quot;&quot;</span>
+        <span class="c1"># TODO: Outdated - to be removed</span>
+
+        <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.backend_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">ToolToggleBase</span>  <span class="c1"># ToolBase</span>
+
+        <span class="k">class</span><span class="w"> </span><span class="nc">ToolPointPosition</span><span class="p">(</span><span class="n">ToolToggleBase</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Tools.&quot;&quot;&quot;</span>
+            <span class="n">default_keymap</span> <span class="o">=</span> <span class="s1">&#39;Ctrl+p&#39;</span>
+            <span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;Click to get point coordinate printed&#39;</span>
+            <span class="n">default_toggled</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># str(imgs_path)</span>
+
+            <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">parent</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="p">(</span><span class="s1">&#39;Pass a parent&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+
+            <span class="k">def</span><span class="w"> </span><span class="nf">enable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">report_point_position</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="k">def</span><span class="w"> </span><span class="nf">disable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">report_point_position</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="n">fig</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span>
+        <span class="n">imgs_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">imgs_path</span>
+        <span class="c1"># pylint: disable=attribute-defined-outside-init</span>
+        <span class="n">toolbar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">toolbar</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">toolbar</span>
+
+        <span class="c1"># Get tool manager</span>
+
+        <span class="c1"># TODO: Remove use of tool manager just use PySide2 bare as below</span>
+
+        <span class="c1"># ToolbarQt   --- https://github.com/matplotlib/matplotlib/blob/master/lib/matplotlib/backends/backend_qt5.py</span>
+        <span class="n">tm</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">toolmanager</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tm</span> <span class="o">=</span> <span class="n">tm</span>
+        <span class="c1"># Tool: Print point location</span>
+        <span class="n">ToolPointPosition</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">imgs_path</span> <span class="o">/</span> <span class="s1">&#39;click.png&#39;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+            <span class="n">tm</span><span class="o">.</span><span class="n">add_tool</span><span class="p">(</span><span class="s2">&quot;Point_position&quot;</span><span class="p">,</span> <span class="n">ToolPointPosition</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">toolbar</span><span class="o">.</span><span class="n">add_tool</span><span class="p">(</span><span class="n">tm</span><span class="o">.</span><span class="n">get_tool</span><span class="p">(</span><span class="s2">&quot;Point_position&quot;</span><span class="p">),</span>
+                                            <span class="s2">&quot;toolgroup&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Tool: Copy to Clipboard</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.backend_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">ToolCopyToClipboard</span>
+        <span class="n">ToolCopyToClipboard</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">imgs_path</span> <span class="o">/</span> <span class="s1">&#39;copy.png&#39;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+            <span class="c1"># OVvrwties Ctrl+C and issues warning</span>
+            <span class="n">tm</span><span class="o">.</span><span class="n">add_tool</span><span class="p">(</span><span class="s2">&quot;Copy_to_clipboard&quot;</span><span class="p">,</span> <span class="n">ToolCopyToClipboard</span><span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">toolbar</span><span class="o">.</span><span class="n">add_tool</span><span class="p">(</span><span class="n">tm</span><span class="o">.</span><span class="n">get_tool</span><span class="p">(</span><span class="s2">&quot;Copy_to_clipboard&quot;</span><span class="p">),</span>
+                                            <span class="s2">&quot;toolgroup&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># add QT Pieces</span>
+            <span class="n">toolbar</span><span class="o">.</span><span class="n">action_ascale</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span>
+                <span class="n">QIcon</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">imgs_path</span> <span class="o">/</span> <span class="s1">&#39;auto_zoom.png&#39;</span><span class="p">)),</span> <span class="s1">&#39;Auto scale&#39;</span><span class="p">,</span> <span class="n">toolbar</span><span class="p">)</span>
+            <span class="n">toolbar</span><span class="o">.</span><span class="n">action_ascale</span><span class="o">.</span><span class="n">setShortcut</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
+            <span class="n">toolbar</span><span class="o">.</span><span class="n">action_ascale</span><span class="o">.</span><span class="n">setShortcutContext</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">WindowShortcut</span><span class="p">)</span>
+            <span class="n">toolbar</span><span class="o">.</span><span class="n">action_ascale</span><span class="o">.</span><span class="n">setStatusTip</span><span class="p">(</span><span class="s1">&#39;Autoscale&#39;</span><span class="p">)</span>
+            <span class="n">toolbar</span><span class="o">.</span><span class="n">action_ascale</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">auto_scale</span><span class="p">)</span>
+            <span class="n">toolbar</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">toolbar</span><span class="o">.</span><span class="n">action_ascale</span><span class="p">)</span>
+
+        <span class="c1"># Status Bar: Second label to report</span>
+        <span class="n">figManager</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">manager</span>  <span class="c1"># plt.get_current_fig_manager()</span>
+        <span class="n">status_bar</span> <span class="o">=</span> <span class="n">figManager</span><span class="o">.</span><span class="n">window</span><span class="o">.</span><span class="n">statusBar</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_status_label_2</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="n">status_bar</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_status_label_2</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">status_bar</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_status_label_2</span><span class="p">)</span>
+        <span class="c1">#from matplotlib.backends.backend_qt5 import StatusbarQt</span>
+        <span class="c1">#st = StatusbarQt(figManager.window, figManager.toolmanager)</span>
+        <span class="c1"># figManager.statusbar.set_message(&#39;&#39;)</span>
+
+<div class="viewcode-block" id="PanAndZoom.auto_scale">
+<a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.PanAndZoom.html#qiskit_metal.renderers.PanAndZoom.auto_scale">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">auto_scale</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Auto scaler.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">axes</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
+        <span class="c1"># self.figure.canvas.flush_events()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_style_figure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Style figure.&quot;&quot;&quot;</span>
+        <span class="c1">#self.figure.dpi = 150</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_pan_update_limits</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">axis_id</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">last_event</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute limits with applied pan.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            axis_id (int): ID of the axis</span>
+<span class="sd">            event (event): The event</span>
+<span class="sd">            last_event (event): The previous event</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            double: New limit</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: Value error</span>
+<span class="sd">            OverflowError: Overflow error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">axis_id</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">axis_id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">lim</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_xscale</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">lim</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_yscale</span><span class="p">()</span>
+
+        <span class="n">pixel_to_data</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">transData</span><span class="o">.</span><span class="n">inverted</span><span class="p">()</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">pixel_to_data</span><span class="o">.</span><span class="n">transform_point</span><span class="p">((</span><span class="n">event</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
+        <span class="n">last_data</span> <span class="o">=</span> <span class="n">pixel_to_data</span><span class="o">.</span><span class="n">transform_point</span><span class="p">((</span><span class="n">last_event</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">last_event</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">scale</span> <span class="o">==</span> <span class="s1">&#39;linear&#39;</span><span class="p">:</span>
+            <span class="n">delta</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">axis_id</span><span class="p">]</span> <span class="o">-</span> <span class="n">last_data</span><span class="p">[</span><span class="n">axis_id</span><span class="p">]</span>
+            <span class="n">new_lim</span> <span class="o">=</span> <span class="n">lim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">delta</span><span class="p">,</span> <span class="n">lim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">delta</span>
+        <span class="k">elif</span> <span class="n">scale</span> <span class="o">==</span> <span class="s1">&#39;log&#39;</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">delta</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">axis_id</span><span class="p">])</span> <span class="o">-</span> \
+                    <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">last_data</span><span class="p">[</span><span class="n">axis_id</span><span class="p">])</span>
+                <span class="n">new_lim</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="nb">pow</span><span class="p">(</span><span class="mf">10.</span><span class="p">,</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">lim</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">delta</span><span class="p">)),</span>
+                    <span class="nb">pow</span><span class="p">(</span><span class="mf">10.</span><span class="p">,</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">lim</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="n">delta</span><span class="p">))</span>
+                <span class="p">]</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">OverflowError</span><span class="p">):</span>
+                <span class="n">new_lim</span> <span class="o">=</span> <span class="n">lim</span>  <span class="c1"># Keep previous limits</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Pan not implemented for scale &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">scale</span><span class="p">)</span>
+            <span class="n">new_lim</span> <span class="o">=</span> <span class="n">lim</span>
+        <span class="k">return</span> <span class="n">new_lim</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_pan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Pan.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            event (event): The event</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;button_press_event&#39;</span><span class="p">:</span>  <span class="c1"># begin pan</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_event</span> <span class="o">=</span> <span class="n">event</span>
+
+        <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;button_release_event&#39;</span><span class="p">:</span>  <span class="c1"># end pan</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_event</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;motion_notify_event&#39;</span><span class="p">:</span>  <span class="c1"># pan</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span>
+
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">x</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event</span><span class="o">.</span><span class="n">x</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="n">xlim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pan_update_limits</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event</span><span class="p">)</span>
+                    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">xlim</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">y</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event</span><span class="o">.</span><span class="n">y</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                    <span class="n">ylim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pan_update_limits</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event</span><span class="p">)</span>
+                    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">ylim</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">x</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event</span><span class="o">.</span><span class="n">x</span> <span class="ow">or</span> <span class="n">event</span><span class="o">.</span><span class="n">y</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event</span><span class="o">.</span><span class="n">y</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_draw</span><span class="p">()</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_event</span> <span class="o">=</span> <span class="n">event</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_zoom_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Zoom.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            event (event): The event</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;button_press_event&#39;</span><span class="p">:</span>  <span class="c1"># begin drag</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_event</span> <span class="o">=</span> <span class="n">event</span>
+            <span class="c1"># pylint: disable=attribute-defined-outside-init</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_patch</span> <span class="o">=</span> <span class="n">_plt</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">(</span><span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">xdata</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">ydata</span><span class="p">),</span>
+                                         <span class="n">width</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                         <span class="n">height</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                         <span class="n">fill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                         <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span>
+                                         <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;solid&#39;</span><span class="p">,</span>
+                                         <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_event</span><span class="o">.</span><span class="n">inaxes</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_patch</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;button_release_event&#39;</span><span class="p">:</span>  <span class="c1"># end drag</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_patch</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_patch</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="ow">or</span>
+                    <span class="nb">abs</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">):</span>
+                <span class="k">return</span>  <span class="c1"># No zoom when points are too close</span>
+
+            <span class="n">x_axes</span><span class="p">,</span> <span class="n">y_axes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_axes</span>
+
+            <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">x_axes</span><span class="p">:</span>
+                <span class="n">pixel_to_data</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">transData</span><span class="o">.</span><span class="n">inverted</span><span class="p">()</span>
+                <span class="n">begin_pt</span> <span class="o">=</span> <span class="n">pixel_to_data</span><span class="o">.</span><span class="n">transform_point</span><span class="p">((</span><span class="n">event</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
+                <span class="n">end_pt</span> <span class="o">=</span> <span class="n">pixel_to_data</span><span class="o">.</span><span class="n">transform_point</span><span class="p">(</span>
+                    <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_event</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
+
+                <span class="n">min_</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">begin_pt</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">end_pt</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">max_</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">begin_pt</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">end_pt</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">ax</span><span class="o">.</span><span class="n">xaxis_inverted</span><span class="p">():</span>
+                    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">min_</span><span class="p">,</span> <span class="n">max_</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">max_</span><span class="p">,</span> <span class="n">min_</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">y_axes</span><span class="p">:</span>
+                <span class="n">pixel_to_data</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">transData</span><span class="o">.</span><span class="n">inverted</span><span class="p">()</span>
+                <span class="n">begin_pt</span> <span class="o">=</span> <span class="n">pixel_to_data</span><span class="o">.</span><span class="n">transform_point</span><span class="p">((</span><span class="n">event</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
+                <span class="n">end_pt</span> <span class="o">=</span> <span class="n">pixel_to_data</span><span class="o">.</span><span class="n">transform_point</span><span class="p">(</span>
+                    <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_event</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
+
+                <span class="n">min_</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">begin_pt</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">end_pt</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">max_</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">begin_pt</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">end_pt</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">ax</span><span class="o">.</span><span class="n">yaxis_inverted</span><span class="p">():</span>
+                    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">min_</span><span class="p">,</span> <span class="n">max_</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">max_</span><span class="p">,</span> <span class="n">min_</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_event</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;motion_notify_event&#39;</span><span class="p">:</span>  <span class="c1"># drag</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span>
+
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">inaxes</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event</span><span class="o">.</span><span class="n">inaxes</span><span class="p">:</span>
+                <span class="k">return</span>  <span class="c1"># Ignore event outside plot</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_patch</span><span class="o">.</span><span class="n">set_width</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">xdata</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event</span><span class="o">.</span><span class="n">xdata</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_patch</span><span class="o">.</span><span class="n">set_height</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">ydata</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event</span><span class="o">.</span><span class="n">ydata</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_draw</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_on_mouse_press</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Mouse press event.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            event (event): The event</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pressed_button</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>  <span class="c1"># Discard event if a button is already pressed</span>
+
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>  <span class="c1"># Start</span>
+            <span class="n">x_axes</span><span class="p">,</span> <span class="n">y_axes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_axes_to_update</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">x_axes</span> <span class="ow">or</span> <span class="n">y_axes</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_axes</span> <span class="o">=</span> <span class="n">x_axes</span><span class="p">,</span> <span class="n">y_axes</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_pressed_button</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pressed_button</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># pan</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_pan</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">report_point_position</span><span class="p">:</span>  <span class="c1"># check if we want to report point</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_report_point_position</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pressed_button</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>  <span class="c1"># zoom area</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_zoom_area</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_on_mouse_release</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Mouse release event.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            event (event): The event</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pressed_button</span> <span class="o">==</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pressed_button</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># pan</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_pan</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pressed_button</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>  <span class="c1"># zoom area</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_zoom_area</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pressed_button</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_on_mouse_motion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Mouse motion event.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            event (event): The event</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pressed_button</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># pan</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pan</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pressed_button</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>  <span class="c1"># zoom area</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_zoom_area</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_report_point_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Report point position.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            event (event): the event</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ix</span><span class="p">,</span> <span class="n">iy</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">xdata</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">ydata</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_ix_iy_old&#39;</span><span class="p">):</span>
+            <span class="n">ix_old</span><span class="p">,</span> <span class="n">iy_old</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ix_iy_old</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ix_old</span><span class="p">,</span> <span class="n">iy_old</span> <span class="o">=</span> <span class="p">(</span><span class="n">ix</span><span class="p">,</span> <span class="n">iy</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ix_iy_old</span> <span class="o">=</span> <span class="n">ix</span><span class="p">,</span> <span class="n">iy</span>
+
+        <span class="n">_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;(x,y) = (</span><span class="si">{</span><span class="n">ix</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">iy</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">)  Δ last point (</span><span class="si">{</span><span class="n">ix</span><span class="o">-</span><span class="n">ix_old</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">iy</span><span class="o">-</span><span class="n">iy_old</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">)&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">_text</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_statusbar_label</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_statusbar_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">_text</span><span class="p">)</span></div>
+
+        <span class="c1"># print(_text)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">figure_pz</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;matplotlib.pyplot.figure with pan and zoom interaction.&quot;&quot;&quot;</span>
+    <span class="c1">#import warnings</span>
+    <span class="c1"># warnings.filterwarnings(action=&#39;ignore&#39;)</span>
+
+    <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">_plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">pan_zoom</span> <span class="o">=</span> <span class="n">PanAndZoom</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+
+    <span class="c1"># warnings.resetwarnings()</span>
+
+    <span class="k">return</span> <span class="n">fig</span>
+
+
+<span class="c1"># &quot;&quot;&quot;</span>
+<span class="c1"># if __name__ == &quot;__main__&quot;:</span>
+<span class="c1">#     import matplotlib.pyplot as plt</span>
+
+<span class="c1">#     fig = figure_pz()</span>
+<span class="c1">#     # Alternative:</span>
+<span class="c1">#     # fig = plt.figure()</span>
+<span class="c1">#     # pan_zoom = PanAndZoom(fig)</span>
+
+<span class="c1">#     nrow, ncol = 2, 3</span>
+
+<span class="c1">#     ax1 = fig.add_subplot(nrow, ncol, 1)</span>
+<span class="c1">#     ax1.set_title(&#39;basic&#39;)</span>
+<span class="c1">#     ax1.plot((1, 2, 3))</span>
+
+<span class="c1">#     ax2 = fig.add_subplot(nrow, ncol, 2)</span>
+<span class="c1">#     ax2.set_title(&#39;log + twinx&#39;)</span>
+<span class="c1">#     ax2.set_yscale(&#39;log&#39;)</span>
+<span class="c1">#     ax2.plot((1, 2, 1))</span>
+
+<span class="c1">#     ax2bis = ax2.twinx()</span>
+<span class="c1">#     ax2bis.plot((3, 2, 1), color=&#39;red&#39;)</span>
+
+<span class="c1">#     ax3 = fig.add_subplot(nrow, ncol, 3)</span>
+<span class="c1">#     ax3.set_title(&#39;inverted y axis&#39;)</span>
+<span class="c1">#     ax3.plot((1, 2, 3))</span>
+<span class="c1">#     lim = ax3.get_ylim()</span>
+<span class="c1">#     ax3.set_ylim(lim[1], lim[0])</span>
+
+<span class="c1">#     ax4 = fig.add_subplot(nrow, ncol, 4)</span>
+<span class="c1">#     ax4.set_title(&#39;keep ratio&#39;)</span>
+<span class="c1">#     ax4.axis(&#39;equal&#39;)</span>
+<span class="c1">#     ax4.imshow(numpy.arange(100).reshape(10, 10))</span>
+
+<span class="c1">#     ax5 = fig.add_subplot(nrow, ncol, 5)</span>
+<span class="c1">#     ax5.set_xlabel(&#39;symlog scale + twiny&#39;)</span>
+<span class="c1">#     ax5.set_xscale(&#39;symlog&#39;)</span>
+<span class="c1">#     ax5.plot((1, 2, 3))</span>
+<span class="c1">#     ax5bis = ax5.twiny()</span>
+<span class="c1">#     ax5bis.plot((3, 2, 1), color=&#39;red&#39;)</span>
+
+<span class="c1">#     # The following is taken from:</span>
+<span class="c1">#     # http://matplotlib.org/examples/axes_grid/demo_curvelinear_grid.html</span>
+<span class="c1">#     from mpl_toolkits.axisartist import Subplot</span>
+<span class="c1">#     from mpl_toolkits.axisartist.grid_helper_curvelinear import \</span>
+<span class="c1">#         GridHelperCurveLinear</span>
+
+<span class="c1">#     def tr(x, y):  # source (data) to target (rectilinear plot) coordinates</span>
+<span class="c1">#         x, y = numpy.asarray(x), numpy.asarray(y)</span>
+<span class="c1">#         return x + 0.2 * y, y - x</span>
+
+<span class="c1">#     def inv_tr(x, y):</span>
+<span class="c1">#         x, y = numpy.asarray(x), numpy.asarray(y)</span>
+<span class="c1">#         return x - 0.2 * y, y + x</span>
+
+<span class="c1">#     grid_helper = GridHelperCurveLinear((tr, inv_tr))</span>
+
+<span class="c1">#     ax6 = Subplot(fig, nrow, ncol, 6, grid_helper=grid_helper)</span>
+<span class="c1">#     fig.add_subplot(ax6)</span>
+<span class="c1">#     ax6.set_title(&#39;non-ortho axes&#39;)</span>
+
+<span class="c1">#     xx, yy = tr([3, 6], [5.0, 10.])</span>
+<span class="c1">#     ax6.plot(xx, yy)</span>
+
+<span class="c1">#     ax6.set_aspect(1.)</span>
+<span class="c1">#     ax6.set_xlim(0, 10.)</span>
+<span class="c1">#     ax6.set_ylim(0, 10.)</span>
+
+<span class="c1">#     ax6.axis[&quot;t&quot;] = ax6.new_floating_axis(0, 3.)</span>
+<span class="c1">#     ax6.axis[&quot;t2&quot;] = ax6.new_floating_axis(1, 7.)</span>
+<span class="c1">#     ax6.grid(True)</span>
+
+<span class="c1">#     plt.show()</span>
+<span class="c1"># &quot;&quot;&quot;</span>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; Quantum Metal Community; 2019-2025 Qiskit Development Team
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on 2025/12/07</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../../../../_static/documentation_options.js?v=1dd76d02"></script>
+    <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>
+    <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    </body>
+</html>
