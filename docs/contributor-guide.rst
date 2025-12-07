@@ -15,7 +15,7 @@ community in this goal.
 Where Things Are
 ****************
 
-The code for Qiskit Metal is located in the `Qiskit GitHub organization <https://github.com/Qiskit>`__, 
+The code for Qiskit Metal is located in the `Qiskit GitHub organization <https://github.com/Qiskit>`__,
 as part of the larger umbrella of Qiskit projects.
 
 ******************************************
@@ -67,7 +67,7 @@ Style Guide
 
 To enforce a consistent code style in the project, we use customized `Pylint
 <https://www.pylint.org>`__ for linting and `YAPF`<https://github.com/google/yapf>__ with the `Google style
-<https://google.github.io/styleguide/pyguide.html>`__ for auto formatting. The custom 
+<https://google.github.io/styleguide/pyguide.html>`__ for auto formatting. The custom
 `.pylintrc` and `.style.yapf` files is located in the root of the repository.
 Our CI pipeline will enforce these styles when you make the pull request.
 
@@ -364,7 +364,7 @@ porting.
 
 
 Custom Names and Images for QComponents
-====================
+=======================================
 
 When adding new qcomponents, new images for these components go
 in the following directory::
@@ -477,16 +477,56 @@ Rebuilding Documentation
 ------------------------
 
 As you make changes to your local RST files, you can update your
-HTML files by navigating to `/docs/` and running the following in a terminal
-window:
+HTML files by navigating to `/docs/` and running:
 
 .. code-block:: sh
 
    make html
 
-This will build a styled, HTML version of your local documentation repository
-in the subdirectory `/docs/_build/html/`.
+For a fast, more advanced build that uses parallelization and makes sure we skip
+executing notebooks (which is the default behavior), run:
 
+.. code-block:: sh
+
+   QISKIT_DOCS_BUILD_TUTORIALS=never sphinx-build -M html . _build -j auto
+
+Notes:
+
+- `QISKIT_DOCS_BUILD_TUTORIALS=never` skips executing notebooks during the build (fast; uses stored outputs if present).
+- `-j auto` enables parallel Sphinx workers to speed up the build on multi-core machines.
+- The HTML output is written to `/docs/_build/html/`. Use `open _build/html/index.html` (macOS) or `python -m http.server 8000 -d _build/html` to preview locally.
+
+The jupyter notebooks can be a bit slow to build, so if you are not
+working on those, you can skip including them altogether in a local build by using the following code.
+We also added -v for verbose output and -T traceback during the build.
+
+.. code-block:: sh
+
+   sphinx-build -M html . _build -j auto -v -T -D "exclude_patterns=**/*.ipynb,**/.ipynb_checkpoints,tut/**,circuit-examples/**"
+
+
+---------------------------
+Live Preview with autobuild
+---------------------------
+
+To get fast, automatic rebuilding of the documentation while you edit it, use
+``sphinx-autobuild`` together with ``uv`` package manager (you can use conda or v env too).
+
+First, install the tool into your development environment:
+
+::
+
+   uv pip install sphinx-autobuild
+
+Then start the live documentation server:
+
+::
+
+   cd docs
+   uv run sphinx-autobuild . _build/html -j auto
+
+This launches a local server (default: http://127.0.0.1:8000) and rebuilds the
+HTML pages incrementally whenever source files change.
 
 
 Tutorials

@@ -9,14 +9,19 @@ Outline of Installation
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 * **Basic Installation**: Legacy PyPI package (pre-0.5) only.
+
 * **Advanced Installation**: Current v0.5 code from source.
+
   - **Fast path: uv** (recommended during the v0.5 Quantum Metal transition)
   - **Conda environment setup** (best for binary-heavy stacks and Windows)
   - **Without conda** (standard Python virtual environment)
+
 * **Other**
-    * **Optional Jupyter Lab**: Steps to integrate the environment with Jupyter Lab.
-    * **Installation hints**: Tips and troubleshooting for setting up the environment.
-    * **Common Issues**: FAQ and solutions to common problems.
+
+  - **Optional Jupyter Lab**: Steps to integrate the environment with Jupyter Lab.
+  - **Installation hints**: Tips and troubleshooting for setting up the environment.
+  - **Common Issues**: FAQ and solutions to common problems.
+
 
 ~~~~~~~~~~~~~~~~~~
 Basic Installation
@@ -57,193 +62,112 @@ Text Instructions
 =================
 We recommend setting up a proper git linkage, which will simplify the retrieval of code updates and the possible contributions back to the source code.
 
-To do that, you will need to `git clone` this repository's main branch following one of two ways.
-
-1. Open any command line shell that has been configured with git and execute the following command:
+Clone the repository (command line):
 
 ::
 
     git clone https://github.com/Qiskit/qiskit-metal.git
 
-
-2. Alternatively, you can download and use the user interface `GitHub Desktop GUI <https://desktop.github.com/>`_ and refer to these `notes <https://help.github.com/en/desktop/contributing-to-projects/cloning-a-repository-from-github-to-github-desktop>`_.
-
-Now that you have a local copy of the code, you can install Qiskit Metal either in a virtual `conda environment <https://docs.conda.io/en/latest/miniconda.html>`_ or in a virtual Python environment, as described below. We recommend conda.
+Or use the `GitHub Desktop GUI <https://desktop.github.com/>`_ (`cloning notes <https://help.github.com/en/desktop/contributing-to-projects/cloning-a-repository-from-github-to-github-desktop>`_).
 
 Notes:
 
-* For your own sanity, it is recommended to read this document in its entirety before proceeding.
-* On Windows, the conda environment is strongly recommended because Shapely is difficult to install directly via pip.
+* On Windows, conda is recommended because binary wheels (e.g., Shapely/gdstk) are easier.
+* Read this document before starting; it will save you time.
 
------------------------------------------------
-Fast path: uv (recommended during v0.5 transition)
------------------------------------------------
-**Why:** Fast, modern resolver/installer; avoids many scientific-stack issues. Works well across macOS/Linux/Windows. Stick to Python 3.10 or 3.11.
+------------------------
+Choose an install method
+------------------------
 
-::
+.. tab-set::
 
-    # Install uv (see https://docs.astral.sh/uv/)
-    curl -LsSf https://astral.sh/uv/install.sh | sh
+   .. tab-item:: uv (recommended)
 
-    # Clone the repo (v0.5 is source-only for now)
-    git clone https://github.com/qiskit-community/qiskit-metal.git quantum-metal
-    cd quantum-metal
+      **Why:** Fast, modern resolver/installer; typically the least friction for scientific stacks. Use Python 3.10 or 3.11.
 
-    uv python pin 3.11          # or 3.10
-    uv venv
-    source .venv/bin/activate   # Windows: .venv\Scripts\activate
+      .. code-block:: sh
 
-    uv pip install -r requirements.txt
-    uv pip install -e .
+         # Install uv (see https://docs.astral.sh/uv/)
+         curl -LsSf https://astral.sh/uv/install.sh | sh
 
-Use this path if you want the quickest setup and reproducibility with minimal dependency friction.
-Optionally, you can add the development requirements, which include jupyter, testing, linting, formatting, and doc tools:
+         # Clone the repo (v0.5 is source-only for now)
+         git clone https://github.com/qiskit-community/qiskit-metal.git quantum-metal
+         cd quantum-metal
 
-::
+         uv python pin 3.11          # or 3.10
+         uv venv
+         source .venv/bin/activate   # Windows: .venv\\Scripts\\activate
 
-    uv pip install -r requirements-dev.txt
+         uv pip install -r requirements.txt
+         uv pip install -e .
 
---------------------------------------------------
-Conda environment setup (formerly preferred setup)
---------------------------------------------------
-**Why:** Most robust for binary-heavy scientific dependencies; recommended on Windows.
+         # Optional: dev extras (docs, tests, lint, formatting)
+         uv pip install -r requirements-dev.txt
 
-If you did not yet install conda, please follow these `instructions <https://docs.conda.io/projects/conda/en/latest/user-guide/install/>`_.
+   .. tab-item:: Conda (robust, esp. Windows)
 
-We will setup a conda environment to use the local copy of qiskit-metal you created in the previous section. This approach enables you to immediately observe the effect of your code modifications.
+      **Why:** Best for binary-heavy dependencies and Windows toolchains.
 
-For this section you will need to use the command line. If you use github desktop, you can open one from the menu `Repository -> Open In....`
+      .. code-block:: sh
 
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Option 1: A new environment
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The most reliable way to set up a qiskit_metal environment is to build one from scratch using the provided conda environment specification file `environment.yml`.
+         # Create a fresh env from environment.yml
+         conda env create -n <env_name> -f environment.yml
+         conda activate <env_name>
+         python -m pip install --no-deps -e .
 
-To do so, first navigate to the root folder created by the code clone. For example:
+         # Or update an existing env
+         conda env update -n <env_name_exist> -f environment.yml
+         conda activate <env_name_exist>
+         python -m pip install --no-deps -e .
 
-::
+      Tips:
+      - Keep the trailing ``.`` in the editable install command.
+      - If conflicts arise, try a new env.
 
-    cd qiskit-metal
+   .. tab-item:: Python venv (lightweight)
 
-Once you are in the folder that contains the `environment.yml` file, execute the following installation commands:
+      **Why:** Simple and familiar if you do not need conda’s binary packages.
 
-::
+      .. code-block:: sh
 
-    conda env create -n <env_name> -f environment.yml
-    conda activate <env_name>
-    python -m pip install --no-deps -e .
+         python -m venv <virtual_env_path>
+         source <virtual_env_path>/bin/activate     # Windows: <virtual_env_path>\\Scripts\\activate
+         python -m pip install -U pip
+         python -m pip install -r requirements.txt -r requirements-dev.txt -e .
 
-This creates a new environment with name `<env_name>` with all the necessary library dependencies.
-Then it activates the new environment.
-Finally installs the local qiskit-metal code inside that environment.
-
-The `-e` flag installs qiskit\_metal in `editable mode <https://pip.pypa.io/en/stable/reference/pip_install/#cmdoption-e>`_.
-
-You can add the `-v` flag for verbose on-screen log information.
-
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Option 2: A pre-existing environment
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-If convenient, you can instead try to install directly in an existing conda environment `<env_name_exist>`, if it is relatively up to date.
-
-To do so, execute these commands in the top-level of the repository:
-
-::
-
-    conda env update -n <env_name_exist> -f environment.yml
-    conda activate <env_name_exist>
-    python -m pip install --no-deps -e .
-
-Notes:
-
-* It is possible that you may run into version conflicts during the above installation, as qiskit-metal requires specific library versions to work correctly on every OS.
-* Remember the period (".") at the end of the third command.
-* **Important**: Remember to `conda activate <env_name>` if you intend to use qiskit-metal.  See what a `conda environment is <https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html>`_
-
-At this point you can already use qiskit-metal through Jupyter Notebook.
-However, if you prefer using JupyterLab, you will need to execute a couple of extra steps.
+      Windows note: install the latest MSVC/Windows SDK (Visual C++ Build Tools) to satisfy gdstk.
 
 ^^^^^^^^^^^^^^^^^^^^^^
 (Optional) Jupyter Lab
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Jupyter can be used with **any** of the installation pathways (uv, conda, or venv).
-The key is that you must install the kernel *inside the environment you plan to use*.
+Jupyter works with **any** pathway. Install the kernel from inside the environment you plan to use.
 
-Follow the instructions below depending on which environment you created.
+.. tab-set::
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-If you installed using **uv**
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   .. tab-item:: uv / venv
 
-Activate the uv-created environment (usually ``.venv``):
+      .. code-block:: sh
 
-::
+         source .venv/bin/activate      # adjust to your venv; Windows: .venv\\Scripts\\activate
+         python -m pip install jupyterlab ipykernel
+         python -m ipykernel install --user --name quantum-metal-uv --display-name "Quantum Metal (uv)"
 
-    source .venv/bin/activate
-    # Windows:
-    .venv\Scripts\activate
+   .. tab-item:: conda
 
-Install Jupyter and register a kernel:
+      .. code-block:: sh
 
-::
+         conda activate <env_name>
+         conda install jupyterlab ipykernel
+         python -m ipykernel install --user --name quantum-metal-conda --display-name "Quantum Metal (conda)"
 
-    uv pip install jupyterlab ipykernel
-    python -m ipykernel install --user --name quantum-metal-uv --display-name "Quantum Metal (uv)"
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-If you installed using **conda**
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Activate the conda environment:
-
-::
-
-    conda activate <env_name>
-
-Install Jupyter and add a kernel:
-
-::
-
-    conda install jupyterlab ipykernel
-    python -m ipykernel install --user --name quantum-metal-conda --display-name "Quantum Metal (conda)"
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-If you installed using **venv**
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Activate your virtual environment:
-
-::
-
-    source <virtual_env_path>/bin/activate
-    # Windows:
-    <virtual_env_path>\Scripts\activate
-
-Install Jupyter and register the kernel:
-
-::
-
-    pip install jupyterlab ipykernel
-    python -m ipykernel install --user --name quantum-metal-venv --display-name "Quantum Metal (venv)"
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Using the kernel in JupyterLab
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Launch JupyterLab from *inside the active environment*:
+Launch JupyterLab from the active environment:
 
 ::
 
     jupyter lab
 
-Then, inside JupyterLab:
-
-* Go to **Kernel → Change Kernel**
-* Select the corresponding kernel:
-  *Quantum Metal (uv)*, *Quantum Metal (conda)*, or *Quantum Metal (venv)*
-
-This ensures your notebooks run with the correct version of Quantum Metal and its dependencies.
+Then pick the matching kernel via **Kernel → Change Kernel**.
 
 
 

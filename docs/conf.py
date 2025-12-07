@@ -121,27 +121,28 @@ nbsphinx_epilog = """
 """
 
 # -- Project information -----------------------------------------------------
-project = 'Qiskit Metal {}'.format(version)
-copyright = '2019, Qiskit Development Team'  # pylint: disable=redefined-builtin
-author = 'Qiskit Metal Development Team'
+project = f'Quantum Metal'  # {version}
+copyright = 'Quantum Metal Community; 2019-2025 Qiskit Development Team'  # pylint: disable=redefined-builtin
+author = 'Quantum Metal Community Team'
 # -- General configuration ---------------------------------------------------
 
 extensions = [
-    'sphinx.ext.napoleon',
-    'sphinx.ext.autodoc',
-    'sphinx.ext.autosummary',
-    'sphinx.ext.mathjax',
-    'sphinx.ext.viewcode',
-    'sphinx.ext.extlinks',
-    "nbsphinx",
-    "qiskit_sphinx_theme",
+    'sphinx.ext.napoleon', 'sphinx.ext.autodoc', 'sphinx.ext.autosummary',
+    'sphinx.ext.mathjax', 'sphinx.ext.viewcode', 'sphinx.ext.extlinks',
+    "nbsphinx", "qiskit_sphinx_theme", "sphinx_design"
 ]
 
 html_static_path = ['_static']
 templates_path = ['_templates']
 
 exclude_patterns = [
-    '_build', 'build', '*.ipynb', '**.ipynb_checkpoints', '_utility'
+    '_build',
+    'build',
+    '**.ipynb_checkpoints',
+    '_utility',  # '*.ipynb',
+    "tut/**",  # TODO: Temp debug
+    "circuit-examples/**",  # TODO: Temp debug
+    "stubs/**"  # autosummary stub files are generated but not included in any toctree
 ]
 
 nbsphinx_execute_arguments = [
@@ -171,6 +172,11 @@ nbsphinx_thumbnails = {
     'tut/1-Overview/1.3-Saving-Your-Chip-Design':
         '_static/1-3-save.png',
 }
+
+# NBSPHINX: If you want fast builds and correct renders:
+#  - Keep nbsphinx_execute='never' for daily docs;
+#    pre-run notebooks once (jupyter nbconvert --execute --inplace docs/tut/...) and commit the saved outputs, or set QISKIT_DOCS_BUILD_TUTORIALS=auto when you need fresh outputs.
+#  - For heavier caching, add jupyter-cache and point nbsphinx to it; but pre-running and committing outputs is usually enough.
 
 # -----------------------------------------------------------------------------
 # Autosummary

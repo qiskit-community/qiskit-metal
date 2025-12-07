@@ -1,6 +1,10 @@
-############################################################################################################
-Quantum Metal (formerly Qiskit Metal) | Quantum Device Design & Analysis (Q-EDA) |version|
-############################################################################################################
+##############################################################
+Quantum Metal (formerly Qiskit Metal)
+##############################################################
+
+Quantum Device Design & Analysis (Q-EDA)
+----------------------------------------
+
 
 .. attention::
 
@@ -8,6 +12,7 @@ Quantum Metal (formerly Qiskit Metal) | Quantum Device Design & Analysis (Q-EDA)
     The Python import path remains ``qiskit_metal`` for now; a follow-up release will update it.
     The PyPI package ``qiskit-metal`` stays archived at the pre-0.5 state—install v0.5 **from source**
     via the :doc:`installation </installation>` guide.
+    For details on the transition and the roadmap, see the :doc:`Roadmap </workflow>`.
 
 .. hint::
     You can open this documentation using
