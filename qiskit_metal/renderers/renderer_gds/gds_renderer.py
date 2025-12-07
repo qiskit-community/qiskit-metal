@@ -20,6 +20,7 @@ from copy import deepcopy
 from operator import itemgetter
 from typing import TYPE_CHECKING, Tuple, Union
 from typing import Dict as DictType
+from collections import defaultdict
 
 import gdstk
 import geopandas
@@ -2422,3 +2423,194 @@ class QGDSRenderer(QRenderer):
         for chip in unique_list:
             unique_dict[chip] = Dict()
         return unique_dict
+
+    def show_imported_junction_gds(self):
+        r"""If junction gds file has been imported, show the cells in it.
+        To use, you may need to first set:
+        >>> gds.options.path_filename = "../resources/Fake_Junctions.GDS"
+        This function will read the file again, and print out the cells in it.
+        It will also render the cells as an SVG inline if run in a Jupyter notebook.
+        """
+        if self.imported_junction_gds is not None:
+            imported_lib = gdstk.read_gds(self.imported_junction_gds)
+            print("imported_lib name:", imported_lib.name)
+            print("imported_lib unit:", imported_lib.unit)
+            print("imported_lib precision:", imported_lib.precision)
+            for cell in imported_lib.cells:
+                self.debug_print_cell(cell, show=True)
+        else:
+            self.logger.info(
+                "No junction gds file has been imported. \n"
+                "You can set it with `gds.options.path_filename = ...`")
+
+    @staticmethod
+    def debug_print_cell(cell, show=False):
+        """Compact pretty-print summary of a gdstk Cell."""
+
+        if show:
+            cell.write_svg("test_output.svg")
+            from IPython.display import SVG, display
+            display(SVG("test_output.svg"))
+
+        print(f"\n=== {cell.name} ===")
+
+        # Bounding box
+        try:
+            bbox = cell.bounding_box()
+        except Exception:
+            bbox = None
+        print(f"bbox: {bbox}")
+
+        # Paths
+        print("paths:", end=" ")
+        if cell.paths:
+            print(f"{len(cell.paths)}")
+            for p in cell.paths:
+                print(f"  - {p} (pts={len(p.points)})")
+        else:
+            print("0")
+
+        # Polygons
+        print("polygons:", end=" ")
+        if cell.polygons:
+            print(f"{len(cell.polygons)}")
+            for poly in cell.polygons:
+                print(f"  - poly(n={len(poly.points)})")
+        else:
+            print("0")
+
+        # References
+        print("refs:", end=" ")
+        if cell.references:
+            print(f"{len(cell.references)}")
+            for r in cell.references:
+                print(f"  - {r}")
+        else:
+            print("0")
+
+        # Properties
+        print("props:", end=" ")
+        if cell.properties:
+            print(f"{len(cell.properties)}")
+            for obj, props in cell.properties.items():
+                print(f"  - {obj}: {props}")
+        else:
+            print("0")
+
+        print("=== end ===\n")
+
+    @staticmethod
+    def debug_summarize_gds_library(lib: gdstk.Library, show=False) -> None:
+        """Print a concise summary report for a gdstk.Library.
+
+        The summary includes:
+        - Library metadata (name, unit, precision, number of cells).
+        - Cell names and whether they have geometry.
+        - Per (layer, datatype) statistics:
+            - number of polygons
+            - number of paths
+
+        Args:
+            lib: Loaded gdstk.Library instance.
+
+        Example:
+            .. code-block:: python
+
+                import gdstk
+
+                lib = gdstk.read_gds("awesome_design.gds")
+                summarize_gds_library(lib)
+        """
+        if show:
+            write_library_overview_svg(lib, "test_output.svg")
+            from IPython.display import SVG, display
+            display(SVG("test_output.svg"))
+
+        # Basic library info
+        print(f"\n=== GDS LIBRARY SUMMARY ===")
+        print(f"name:      {getattr(lib, 'name', None)}")
+        print(f"unit:      {lib.unit}")
+        print(f"precision: {lib.precision}")
+        print(f"cells:     {len(lib.cells)}")
+
+        # Cell list
+        print("\nCELLS:")
+        for cell in lib.cells:
+            has_geom = bool(cell.polygons or cell.paths or cell.references)
+            bbox = cell.bounding_box()
+            bbox_str = "None" if bbox is None else f"{bbox}"
+            print(f"  - {cell.name:30s} geom={has_geom} bbox={bbox_str}")
+
+        # Collect per (layer, datatype) stats
+        layer_stats: DictType[Tuple[int, int],
+                              DictType[str, int]] = defaultdict(lambda: {
+                                  "polygons": 0,
+                                  "paths": 0
+                              })
+
+        for cell in lib.cells:
+            # Polygons
+            for poly in cell.polygons:
+                key = (poly.layer, poly.datatype)
+                layer_stats[key]["polygons"] += 1
+
+            # Paths (FlexPath / RobustPath)
+            for path in cell.paths:
+                # FlexPath / RobustPath can have multiple parallel elements
+                # with potentially multiple layers; treat each layer separately.
+                layers = getattr(path, "layers", [getattr(path, "layer", 0)])
+                datatypes = getattr(path, "datatypes",
+                                    [getattr(path, "datatype", 0)])
+
+                # Normalize to lists of same length
+                if not isinstance(layers, (list, tuple)):
+                    layers = [layers]
+                if not isinstance(datatypes, (list, tuple)):
+                    datatypes = [datatypes]
+
+                # Pair up safely
+                for lyr, dt in zip(layers, datatypes):
+                    key = (int(lyr), int(dt))
+                    layer_stats[key]["paths"] += 1
+
+        # If lib.layers_and_datatypes() is available, we can cross-check:
+        try:
+            lad = lib.layers_and_datatypes()
+        except AttributeError:
+            lad = None
+
+        print("\nLAYER / DATATYPE USAGE:")
+        if not layer_stats:
+            print("  (no geometry found)")
+        else:
+            print("  layer  dtype   polys   paths")
+            print("  -----  -----   -----   -----")
+            for (layer, dtype), counts in sorted(layer_stats.items()):
+                print(f"  {layer:5d}  {dtype:5d}   "
+                      f"{counts['polygons']:5d}   {counts['paths']:5d}")
+
+        if lad is not None:
+            # Show the raw set from lib.layers_and_datatypes() for comparison
+            print("\nlib.layers_and_datatypes():")
+            for layer, dtype in sorted(lad):
+                print(f"  (layer={layer}, datatype={dtype})")
+
+        print("\n=== END SUMMARY ===\n")
+
+
+def write_library_overview_svg(lib: gdstk.Library,
+                               filename: str = "library_overview.svg",
+                               background: str | None = "white",
+                               scale: float = 10.0) -> None:
+    """Write a single SVG that references all cells in a library.
+
+    Args:
+        lib: GDS library to export.
+        filename: Output SVG filename.
+        background: SVG background color, or None for transparent.
+        scale: Coordinate scaling factor applied when writing SVG.
+    """
+    top = gdstk.Cell("LIB_OVERVIEW")
+    for cell in lib.top_level():  # for cell in lib.cells:
+        top.add(gdstk.Reference(cell))
+    top.write_svg(filename, background=background, scaling=scale)
