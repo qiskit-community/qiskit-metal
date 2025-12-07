@@ -8,10 +8,11 @@ Installation
 Outline of Installation
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-* **Basic Installation**: Quick setup instructions for PyPI deployment.
-* **Advanced Installation**: Detailed options for different environments.
-  - **Conda environment setup** (preferred setup): Instructions for creating a new or using an existing conda environment.
-  - **Without conda**: Alternative setup using Python virtual environments.
+* **Basic Installation**: Legacy PyPI package (pre-0.5) only.
+* **Advanced Installation**: Current v0.5 code from source.
+  - **Fast path: uv** (recommended during the v0.5 Quantum Metal transition)
+  - **Conda environment setup** (best for binary-heavy stacks and Windows)
+  - **Without conda** (standard Python virtual environment)
 * **Other**
     * **Optional Jupyter Lab**: Steps to integrate the environment with Jupyter Lab.
     * **Installation hints**: Tips and troubleshooting for setting up the environment.
@@ -20,7 +21,16 @@ Outline of Installation
 ~~~~~~~~~~~~~~~~~~
 Basic Installation
 ~~~~~~~~~~~~~~~~~~
-Please refer to the `PyPI deploy instructions <https://pypi.org/project/qiskit-metal/>`_
+During the v0.5 transition to **Quantum Metal**, the PyPI package ``qiskit-metal`` remains available only in its pre-0.5 archived state. To get the current v0.5 code, use the advanced (from-source) methods below.
+
+If you specifically need the legacy PyPI build:
+
+::
+
+    pip install qiskit-metal
+
+For the active Quantum Metal v0.5 codebase, clone the repository and follow the advanced installation paths.
+We will have a pip installable package for quantum-metal in a future release.
 
 ~~~~~~~~~~~~~~~~~~~~~
 Advanced Installation
@@ -65,9 +75,38 @@ Notes:
 * For your own sanity, it is recommended to read this document in its entirety before proceeding.
 * On Windows, the conda environment is strongly recommended because Shapely is difficult to install directly via pip.
 
------------------------------------------
-Conda environment setup (preferred setup)
------------------------------------------
+-----------------------------------------------
+Fast path: uv (recommended during v0.5 transition)
+-----------------------------------------------
+**Why:** Fast, modern resolver/installer; avoids many scientific-stack issues. Works well across macOS/Linux/Windows. Stick to Python 3.10 or 3.11.
+
+::
+
+    # Install uv (see https://docs.astral.sh/uv/)
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+
+    # Clone the repo (v0.5 is source-only for now)
+    git clone https://github.com/qiskit-community/qiskit-metal.git quantum-metal
+    cd quantum-metal
+
+    uv python pin 3.11          # or 3.10
+    uv venv
+    source .venv/bin/activate   # Windows: .venv\Scripts\activate
+
+    uv pip install -r requirements.txt
+    uv pip install -e .
+
+Use this path if you want the quickest setup and reproducibility with minimal dependency friction.
+Optionally, you can add the development requirements, which include jupyter, testing, linting, formatting, and doc tools:
+
+::
+
+    uv pip install -r requirements-dev.txt
+
+--------------------------------------------------
+Conda environment setup (formerly preferred setup)
+--------------------------------------------------
+**Why:** Most robust for binary-heavy scientific dependencies; recommended on Windows.
 
 If you did not yet install conda, please follow these `instructions <https://docs.conda.io/projects/conda/en/latest/user-guide/install/>`_.
 
@@ -127,25 +166,92 @@ However, if you prefer using JupyterLab, you will need to execute a couple of ex
 ^^^^^^^^^^^^^^^^^^^^^^
 (Optional) Jupyter Lab
 ^^^^^^^^^^^^^^^^^^^^^^
-Launching JupyterLab will execute Python code in the conda `base` environment by default.
 
-To change environment to the Qiskit Metal one you just finished setting up, denoted by `<env_name>`, which we usually just call `metal`, you will need first to add to JupyterLab's list of available kernels.
+Jupyter can be used with **any** of the installation pathways (uv, conda, or venv).
+The key is that you must install the kernel *inside the environment you plan to use*.
 
-From the command line, run the following lines (inside an active <env_name> environment):
+Follow the instructions below depending on which environment you created.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+If you installed using **uv**
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Activate the uv-created environment (usually ``.venv``):
+
+::
+
+    source .venv/bin/activate
+    # Windows:
+    .venv\Scripts\activate
+
+Install Jupyter and register a kernel:
+
+::
+
+    uv pip install jupyterlab ipykernel
+    python -m ipykernel install --user --name quantum-metal-uv --display-name "Quantum Metal (uv)"
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+If you installed using **conda**
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Activate the conda environment:
 
 ::
 
     conda activate <env_name>
-    conda install ipykernel
-    ipython kernel install --user --name=<any_name_for_kernel>
 
-Using the above command, you will now have the current conda environment in any Jupyter notebook.
+Install Jupyter and add a kernel:
 
-Once inside `JupyterLab`, you can switch to the newly created Metal kernel to use qiskit-metal. Use the Menu `Kernel>Change Kernel`.
+::
+
+    conda install jupyterlab ipykernel
+    python -m ipykernel install --user --name quantum-metal-conda --display-name "Quantum Metal (conda)"
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+If you installed using **venv**
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Activate your virtual environment:
+
+::
+
+    source <virtual_env_path>/bin/activate
+    # Windows:
+    <virtual_env_path>\Scripts\activate
+
+Install Jupyter and register the kernel:
+
+::
+
+    pip install jupyterlab ipykernel
+    python -m ipykernel install --user --name quantum-metal-venv --display-name "Quantum Metal (venv)"
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Using the kernel in JupyterLab
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Launch JupyterLab from *inside the active environment*:
+
+::
+
+    jupyter lab
+
+Then, inside JupyterLab:
+
+* Go to **Kernel → Change Kernel**
+* Select the corresponding kernel:
+  *Quantum Metal (uv)*, *Quantum Metal (conda)*, or *Quantum Metal (venv)*
+
+This ensures your notebooks run with the correct version of Quantum Metal and its dependencies.
+
+
+
 
 ------------------------------------------------------------
 Without conda: Virtual environment setup (alternative setup)
 ------------------------------------------------------------
+**Why:** Lightweight and familiar; use if you prefer the standard venv workflow and do not need conda’s binary packages.
 
 **On Windows, do this first:** It is recommended that you first install `Visual C++ x.0`, required for a successful install of `gdstk`.
 If you do not have `Visual C++ x.0` installed, you will be notified to install it when `gdstk` attempts to install.

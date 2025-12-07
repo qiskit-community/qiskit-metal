@@ -1,12 +1,13 @@
 ############################################################################################################
-Qiskit Metal | Quantum Device Design & Analysis (Q-EDA) |version|
+Quantum Metal (formerly Qiskit Metal) | Quantum Device Design & Analysis (Q-EDA) |version|
 ############################################################################################################
 
 .. attention::
 
-    This is an alpha version of Qiskit Metal, the code is still under development.
-    Please let us know about anything you might want us to add or elaborate upon in the
-    Slack channel `#metal <https://qiskit.slack.com/archives/C01R8KP5WP7>`_ in the `qiskit workspace <https://qisk.it/join-slack>`_.
+    **v0.5 transition in progress.** Qiskit Metal is officially becoming **Quantum Metal**.
+    The Python import path remains ``qiskit_metal`` for now; a follow-up release will update it.
+    The PyPI package ``qiskit-metal`` stays archived at the pre-0.5 state—install v0.5 **from source**
+    via the :doc:`installation </installation>` guide.
 
 .. hint::
     You can open this documentation using
@@ -16,31 +17,38 @@ Qiskit Metal | Quantum Device Design & Analysis (Q-EDA) |version|
         import qiskit_metal
         qiskit_metal.open_docs()
 
+.. hint::
+    Community support: join the Slack channel `#metal <https://qiskit.slack.com/archives/C01R8KP5WP7>`_
+    in the `Qiskit workspace <https://qisk.it/join-slack>`_. You can also join the community Discord:
+    `discord.gg/kaZ3UFuq <https://discord.gg/kaZ3UFuq>`_.
+
 .. image:: images/logo1.png
    :alt: Missing Logo Diagram
 
 .. rubric:: **About**
 
-**Qiskit Metal | for quantum device design & analysis (`Qiskit Metal`)**
-is an open-source framework (and library) for the design of superconducting quantum
-chips and devices.
-Call it quantum EDA (Q-EDA) and analysis. Qiskit Metal is:
+**Quantum Metal | for quantum device design & analysis** (formerly Qiskit Metal)
+is an open-source framework (and library) for the design of superconducting quantum chips and devices.
+Call it quantum EDA (Q-EDA) and analysis. Quantum Metal is:
 
 * Open source
-* Community-driven
+* Community-driven (graduated from IBM stewardship into community maintenance)
 * A python API and a front-end visual GUI interface
 * Leverages existing tools and aims to seamlessly interconnect for quantum analysis
-* licensed under Apache 2.0. IBM reserves no copyright over outputs of qiskit-metal.
+* Licensed under Apache 2.0. IBM reserves no copyright over outputs of qiskit-metal.
 * Community-oriented and tutorial-driven, join the `#metal <https://qiskit.slack.com/archives/C01R8KP5WP7>`_ Slack.
 
+.. rubric:: **Live tutorials and Q&A**
+We host live tutorials and Q&A sessions. Announcements for future tutorials are posted in the #metal channel.
 
-Use the slack channel.  Join `qiskit slack <https://qisk.it/join-slack>`_ and
-then join the `#metal <https://qiskit.slack.com/archives/C01R8KP5WP7>`_ channel to communicate with the developers and other participants.
-You may also use this channel to learn about upcoming weekly tutorials and to inquire about potential collaborations.
+.. rubric:: **Community & Ecosystem**
 
+Join the conversation, share designs, and meet collaborators:
 
-.. rubric:: **Live tutorials and Q&A**:
-We host live tutorials and Q&A sessions.  Announcements for future tutorials are posted in the #metal channel.
+- `Qiskit Slack #metal <https://qiskit.slack.com/archives/C01R8KP5WP7>`_: fastest way to reach maintainers and the broader community.
+- `Quantum Device Workspace (QDW) <https://qdw-ucla.squarespace.com/>`_: annual workshop hosted at UCLA/USC. `Sign for 2026 <https://qdw-ucla.squarespace.com/qdw2026>`_.
+- Quantum Device Consortium (QDC): community organization stewarding Quantum Metal and companion tools. *Website & governance:* https://qdc-qcsa.vercel.app — *Discord:* `discord.gg/kaZ3UFuq <https://discord.gg/kaZ3UFuq>`_
+- Discord: community server live at `discord.gg/kaZ3UFuq <https://discord.gg/kaZ3UFuq>`_.
 
 .. rubric:: **Qiskit Metal Vision**:
 
@@ -65,7 +73,7 @@ The goal of Qiskit Metal is to allow for easy quantum hardware modeling with red
 
 (read the full `Medium blog <https://medium.com/qiskit/what-if-we-had-a-computer-aided-design-program-for-quantum-computers-4cb88bd1ddea>`_)
 
-**Qiskit Metal consists of four foundational elements:**
+**Quantum Metal consists of four foundational elements:**
 
     - Quantum Device Design (QDesign): :ref:`qdesign`
     - Quantum Device Components (QComponent): :ref:`qlibrary`
