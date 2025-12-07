@@ -18,7 +18,7 @@ import math
 import os
 from copy import deepcopy
 from operator import itemgetter
-from typing import TYPE_CHECKING, Tuple, Union
+from typing import TYPE_CHECKING, Tuple, Union, Optional
 from typing import Dict as DictType
 from collections import defaultdict
 
@@ -1854,37 +1854,81 @@ class QGDSRenderer(QRenderer):
 
     ############
 
-    def _import_junction_gds_file(self, lib: gdstk.Library,
-                                  directory_name: str) -> bool:
+    def import_junction_gds_file(self,
+                                 lib: gdstk.Library,
+                                 directory_name: Optional[str] = None) -> bool:
         """Import the file which contains all junctions for design.
+
         If the file has already been imported, just return True.
 
         When the design has junctions on multiple chips,
-        we only need to import file once to get ALL of the junctions.
+        we only need to import the file once to get all of the junction cells.
 
         Args:
-            lib (gdstk.Library): The library used to export the entire QDesign.
-            directory_name (str): The path of directory to read file with junctions.
+            lib: Main GDS library used by this renderer.
+            directory_name: Directory path where the junction GDS file is expected.
 
         Returns:
-            bool: True if file imported to GDS lib or previously imported.
-                   False if file not found.
+            True if the file was imported (or was already imported), False otherwise.
         """
 
+        if self.imported_junction_gds is None:  # auto get dir name
+            if self.options.path_filename is None or self.options.path_filename == '':
+                self.logger.warning(
+                    "No path_filename specified for junction GDS import.")
+                return False
+            else:
+                _, directory_name = can_write_to_path(
+                    self.options.path_filename)
+
+        # TODO: Validate this works as intended with new gdstk.read_gds
+        # already imported once in this renderer
         if self.imported_junction_gds is not None:
             return True
 
-        if os.path.isfile(self.options.path_filename):
-            lib.read_gds(self.options.path_filename, units="convert")
-            self.imported_junction_gds = self.options.path_filename
-            return True
-        else:
+        if not os.path.isfile(self.options.path_filename):
             message_str = (
                 f'Not able to find file:"{self.options.path_filename}".  '
                 f"Not used to replace junction."
                 f' Checked directory:"{directory_name}".')
             self.logger.warning(message_str)
             return False
+
+        # read external library (with its own unit/precision)
+        imported_lib = gdstk.read_gds(self.options.path_filename)
+        imported_cells = getattr(imported_lib, "cells", None)
+
+        if not imported_cells:
+            message_str = (
+                f'Imported file "{self.options.path_filename}" contains no cells.  '
+                "Not used to replace junction.")
+            self.logger.warning(message_str)
+            return False
+
+        # replicate old gdspy `units="convert"` behavior:
+        # # rescale imported cells so their physical size matches this renderer's lib.
+        # # coord_target = coord_imported * (imported_lib.unit / lib.unit)
+        # scale = imported_lib.unit / lib.unit
+
+        # # only do work if there is a real difference
+        # if not math.isclose(scale, 1.0, rel_tol=1e-12, abs_tol=0.0):
+        #     self.logger.info(
+        #         "Rescaling imported junction library from unit=%g to unit=%g "
+        #         "(scale factor=%g).",
+        #         imported_lib.unit,
+        #         lib.unit,
+        #         scale,
+        #     )
+        #     for cell in imported_cells:
+        #         # scale in-place; affects polygons, paths, labels, references
+        #         cell.scale(scale, scale)
+
+        # merge imported cells into main library, like old lib.read_gds did
+        for cell in imported_cells:
+            lib.add(cell)
+
+        self.imported_junction_gds = self.options.path_filename
+        return True
 
     def _import_junctions_to_one_cell(
         self,
@@ -1918,8 +1962,8 @@ class QGDSRenderer(QRenderer):
         layers_in_junction_table = set(
             self.chip_info[chip_name]["junction"]["layer"])
 
-        if self._import_junction_gds_file(lib=lib,
-                                          directory_name=directory_name):
+        if self.import_junction_gds_file(lib=lib,
+                                         directory_name=directory_name):
             for iter_layer in layers_in_chip:
                 if self._is_negative_mask(chip_name, iter_layer):
                     # Want to export negative mask
