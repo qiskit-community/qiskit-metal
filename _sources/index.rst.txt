@@ -44,6 +44,7 @@ Call it quantum EDA (Q-EDA) and analysis. Quantum Metal is:
 * Community-oriented and tutorial-driven, join the `#metal <https://qiskit.slack.com/archives/C01R8KP5WP7>`_ Slack.
 
 .. rubric:: **Live tutorials and Q&A**
+
 We host live tutorials and Q&A sessions. Announcements for future tutorials are posted in the #metal channel.
 
 .. rubric:: **Community & Ecosystem**

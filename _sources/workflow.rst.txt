@@ -42,12 +42,13 @@ Near-term development roadmap:
    Let us know through github issues, slack channel messages, or by telling us in one of the tutorials.
 
 
-
 In the near future we aim to (see near-term roadmap image):
+
 **Legend:**
-   ✓ Completed
-   ✰ Desired
-   ✰✰✰ Highly desired
+
+✓ Completed
+✰ Desired
+✰✰✰ Highly desired
 
 * **More quantum components**
    * ✓ Tunable couplers (community-driven)
