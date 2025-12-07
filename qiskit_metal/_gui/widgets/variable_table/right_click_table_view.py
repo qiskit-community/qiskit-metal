@@ -12,11 +12,11 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from PySide2 import QtWidgets, QtCore, QtGui
-from PySide2.QtGui import QContextMenuEvent
-from PySide2.QtCore import QPoint, QModelIndex, QTimer
-from PySide2.QtWidgets import QInputDialog, QLineEdit, QTableView, QMenu, QMessageBox
-from PySide2.QtWidgets import QAbstractItemView
+from PySide6 import QtWidgets, QtCore, QtGui
+from PySide6.QtGui import QContextMenuEvent
+from PySide6.QtCore import QPoint, QModelIndex, QTimer
+from PySide6.QtWidgets import QInputDialog, QLineEdit, QTableView, QMenu, QMessageBox
+from PySide6.QtWidgets import QAbstractItemView
 
 
 class RightClickView(QTableView):

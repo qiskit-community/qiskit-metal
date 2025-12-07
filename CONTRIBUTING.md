@@ -43,19 +43,35 @@ https://google.github.io/styleguide/pyguide.html) for auto formatting. The custo
 
 #### VSCode Setup
 
+Steps:
+1. Install the following extensions: `python` and `yapf` if you have not yet.
+2. Add the following workspace setting in the workspace `settings.json`.
+
 If you are using VSCode for your code editor, you can add these settings
 to your `settings.json` to enforce your code to our style. Make sure to add PySide2 to the linter:
-```
+```json
 {
     "python.linting.pylintEnabled": true,
     "python.linting.enabled": true,
-    "python.linting.pylintArgs": [
-        "--extension-pkg-whitelist=PySide2"
-    ],
     "python.formatting.provider": "yapf",
     "editor.formatOnSave": true,
     "files.trimTrailingWhitespace": true,
     "files.trimFinalNewlines": true
+}
+```
+
+
+In newer versions of VS Code:
+```json
+{
+    "editor.formatOnSave": true,
+    "files.trimTrailingWhitespace": true,
+    "files.trimFinalNewlines": true,
+    "editor.defaultFormatter": "eeyore.yapf",
+    "notebook.defaultFormatter": "eeyore.yapf",
+    "[python]": {
+        "editor.defaultFormatter": "eeyore.yapf"
+    }
 }
 ```
 

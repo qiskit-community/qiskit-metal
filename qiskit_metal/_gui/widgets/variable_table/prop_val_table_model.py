@@ -12,9 +12,9 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from PySide2 import QtCore
-from PySide2.QtCore import QAbstractTableModel, QModelIndex, Qt
-from PySide2.QtGui import QFont
+from PySide6 import QtCore
+from PySide6.QtCore import QAbstractTableModel, QModelIndex, Qt
+from PySide6.QtGui import QFont
 
 from .... import config
 
@@ -42,7 +42,7 @@ class PropValTable(QAbstractTableModel):
         self._design = design
         self._gui = gui
         self._view = view
-        self._rowCount = -1
+        self._row_count = -1
         self._start_timer()
 
     def set_design(self, design):
@@ -52,7 +52,8 @@ class PropValTable(QAbstractTableModel):
             design (QDesign): The design
         """
         self._design = design
-        self.modelReset.emit()
+        # self.modelReset.emit()
+        self.auto_refresh()
         # refresh table or something if needed
 
     @property
@@ -75,10 +76,15 @@ class PropValTable(QAbstractTableModel):
 
     def auto_refresh(self):
         """Do an automatic refresh."""
-        newRowCount = self.rowCount(self)
-        if self._rowCount != newRowCount:
-            self.modelReset.emit()
-            self._rowCount = newRowCount
+        new_row_count = self.rowCount(self)
+        if self._row_count != new_row_count:
+            # Wrap the reset logic in beginResetModel and endResetModel
+            self.beginResetModel()
+            try:
+                # self.modelReset.emit()
+                self._row_count = new_row_count
+            finally:
+                self.endResetModel()
             if self._view:
                 self._view.resizeColumnsToContents()
 

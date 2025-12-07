@@ -91,8 +91,8 @@ Notice that using the `conda env update` command might introduce inconsistencies
 ### Setup without conda: in a virtual environment (alternative setup)
 
 #### Prerequisites
-The package dependency `gdspy`, needs C++ compilation to successfully install in a base or virtualenv. Make sure the right compiler is installed on your machine if you encounter errors during the installation process described above.
-**Windows** you can install the `Visual C++ x.0` using the [C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/). Be sure to select the most current versions of `MSVC` and `Windows SDK`, as suggested in [this wiki](https://wiki.python.org/moin/WindowsCompilers) referenced by the gdspy documentation.
+The package dependency `gdstk`, needs C++ compilation to successfully install in a base or virtualenv. Make sure the right compiler is installed on your machine if you encounter errors during the installation process described above.
+**Windows** you can install the `Visual C++ x.0` using the [C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/). Be sure to select the most current versions of `MSVC` and `Windows SDK`, as suggested in [this wiki](https://wiki.python.org/moin/WindowsCompilers).
 **Linux** on Ubuntu or other Debian based systems, execute the following command `sudo apt-get install gcc g++`. Linux users might encounter other python-related errors during creation of the virtualenv or during qiskit-metal installation. You might be able to deal with those by executing `sudo apt-get install python3-dev python3-venv`. Be sure to customize the `python3` string if you are trying to use a custom installation of python.
 
 #### Install

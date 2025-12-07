@@ -15,6 +15,7 @@
 
 from typing import TYPE_CHECKING, List
 
+import warnings
 import matplotlib
 import matplotlib as mpl
 import matplotlib.patches as patches
@@ -26,8 +27,8 @@ from matplotlib.backends.backend_qt5agg import \
     FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.transforms import Bbox
-from PySide2.QtCore import QTimer
-from PySide2.QtWidgets import QSizePolicy
+from PySide6.QtCore import QTimer
+from PySide6.QtWidgets import QSizePolicy
 from ... import Dict
 from ...designs import QDesign
 from .mpl_interaction import PanAndZoom
@@ -44,7 +45,7 @@ if TYPE_CHECKING:
     from ..._gui.widgets.plot_widget.plot_window import QMainWindowPlot
 
 # @mfacchin - moved to the root __init__ to prevent windows from hanging
-# mpl.use("Qt5Agg")
+# mpl.use("QtAgg")
 
 BACKGROUND_COLOR = '#F4F4F4'
 MPL_CONTEXT_DEFAULT = {
@@ -343,6 +344,8 @@ class PlotCanvas(FigureCanvas):
 
         self.mpl_context = MPL_CONTEXT_DEFAULT.copy()
 
+        warnings.filterwarnings("ignore", ".*Ignoring fixed.*")
+
         with mpl.rc_context(rc=self.mpl_context):
             fig = Figure()
 
@@ -560,10 +563,17 @@ class PlotCanvas(FigureCanvas):
             num (int): Not used
         """
         ax.set_aspect(1)
-
-        # If 'box', change the physical dimensions of the Axes. If 'datalim',
-        # change the x or y data limits.
+        # # If 'box', change the physical dimensions of the Axes. If 'datalim',
+        # # change the x or y data limits.
         ax.set_adjustable('datalim')
+        ax.set_anchor('C')  # Center the plot
+
+        # Set axis scales to be equal
+        ax.set_xscale('linear')
+        ax.set_yscale('linear')
+
+        # Ensure data units are equal
+        ax.set_box_aspect(None)
 
         ax.set_xlabel('x position (mm)')
         ax.set_ylabel('y position (mm)')
@@ -733,8 +743,7 @@ class PlotCanvas(FigureCanvas):
             component_id = int(component_id)
 
             if component_id in self.design._components:
-                # type: QComponent
-                component = self.design._components[component_id]
+                component: "QComponent" = self.design._components[component_id]
 
                 if 1:  # highlight bounding box
                     bounds = component.qgeometry_bounds(
@@ -810,9 +819,30 @@ class PlotCanvas(FigureCanvas):
                                 **text_kw,
                                 **dict(horizontalalignment='left' if n[0] >= 0 else 'right')
                             }
-                            # type: matplotlib.text.Text
-                            text = ax.text(*(m + dist * n), pin_name, **kw)
+                            text: "matplotlib.text.Text" = ax.text(
+                                *(m + dist * n), pin_name, **kw)
                             text.set_bbox(text_bbox_kw)
                             self._annotations['text'] += [text]
 
         self.refresh()
+
+    def debug_axis_config(self, ax=None):
+        """Print axis configuration for debugging."""
+        if ax is None:
+            ax = self.get_axis()
+
+        print("======= AXES CONFIG =======")
+        print("aspect:        ", ax.get_aspect())
+        print("adjustable:    ", ax.get_adjustable())
+        print("anchor:        ", ax.get_anchor())
+        print("box_aspect:    ", ax.get_box_aspect())
+        print("xlim:          ", ax.get_xlim())
+        print("ylim:          ", ax.get_ylim())
+        print("xscale / yscale:", ax.get_xscale(), "/", ax.get_yscale())
+        print("data_ratio:    ", ax.get_data_ratio())
+        try:
+            print("data_ratio_log:", ax.get_data_ratio_log())
+        except Exception:
+            pass
+        print("position bbox: ", ax.get_position())
+        print("===========================")

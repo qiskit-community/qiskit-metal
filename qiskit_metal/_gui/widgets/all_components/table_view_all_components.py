@@ -12,15 +12,14 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from typing import TYPE_CHECKING
-from typing import List
+from typing import TYPE_CHECKING, List
 
-from PySide2 import QtCore, QtWidgets
-from PySide2.QtCore import QModelIndex, Qt, QTimer
-from PySide2.QtGui import QContextMenuEvent
-from PySide2.QtWidgets import (QInputDialog, QLabel, QLineEdit, QMenu,
-                               QMessageBox, QTableView, QVBoxLayout,
-                               QAbstractItemView)
+from PySide6 import QtCore, QtWidgets
+from PySide6.QtCore import QModelIndex, Qt, QTimer
+from PySide6.QtGui import QContextMenuEvent
+from PySide6.QtWidgets import (QAbstractItemView, QInputDialog, QLabel,
+                               QLineEdit, QMenu, QMessageBox, QTableView,
+                               QVBoxLayout)
 
 from ...utility._handle_qt_messages import slot_catch_error
 from ..bases.QWidget_PlaceholderText import QWidget_PlaceholderText
@@ -50,14 +49,18 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         QTableView.__init__(self, parent)
         QWidget_PlaceholderText.__init__(
             self,
-            "No QComponents to show.\n\nCreate components from the QLibrary.")
+            "No QComponents to show.\n\nCreate components from the QLibrary.",
+            self)
+
+        # Connect signals
         self.clicked.connect(self.viewClicked)
         self.doubleClicked.connect(self.doDoubleClicked)
 
-        # Handling selection dynamically
+        # Configure selection behavior
         self.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.setSelectionBehavior(QTableView.SelectRows)
 
+        # Apply styling
         QTimer.singleShot(100, self.style2)
 
     def style2(self):

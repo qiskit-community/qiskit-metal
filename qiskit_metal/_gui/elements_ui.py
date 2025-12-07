@@ -4,11 +4,11 @@
 # licensing of './elements_ui.ui' applies.
 #
 # Created: Thu Jun 30 16:30:20 2022
-#      by: pyside2-uic  running on PySide2 5.13.2
+#      by: pyside6-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
 
-from PySide2 import QtCore, QtGui, QtWidgets
+from PySide6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_ElementsWindow(object):
@@ -50,7 +50,7 @@ class Ui_ElementsWindow(object):
             self.label.sizePolicy().hasHeightForWidth())
         self.label.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
-        font.setWeight(75)
+        font.setLegacyWeight(75)
         font.setBold(True)
         self.label.setFont(font)
         self.label.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing |
@@ -77,7 +77,7 @@ class Ui_ElementsWindow(object):
         self.horizontalLayout.addWidget(self.line)
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
         font = QtGui.QFont()
-        font.setWeight(75)
+        font.setLegacyWeight(75)
         font.setBold(True)
         self.label_3.setFont(font)
         self.label_3.setObjectName("label_3")
