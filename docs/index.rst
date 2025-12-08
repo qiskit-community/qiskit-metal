@@ -249,7 +249,7 @@ The goal of Qiskit Metal is to allow for easy quantum hardware modeling with red
     :maxdepth: 2
     :hidden:
 
-    Home<self>
+    About<self>
     Installing Qiskit Metal<installation>
 
 .. toctree::
@@ -263,7 +263,7 @@ The goal of Qiskit Metal is to allow for easy quantum hardware modeling with red
 
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
     :caption: Tutorials
     :hidden:
 
@@ -272,7 +272,7 @@ The goal of Qiskit Metal is to allow for easy quantum hardware modeling with red
     Example Designs<circuit-examples/index>
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
     :caption: Libraries
     :hidden:
 

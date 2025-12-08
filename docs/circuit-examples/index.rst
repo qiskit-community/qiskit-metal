@@ -1,8 +1,11 @@
 .. _circuit-examples:
 
-######
+================
+Circuit Examples
+================
+
 Qubits
-######
+======
 
 
 .. nbgallery::
@@ -11,9 +14,8 @@ Qubits
     A.Qubits/*
 
 
-##########
 Resonators
-##########
+==========
 
 
 .. nbgallery::
@@ -22,9 +24,8 @@ Resonators
     B.Resonators/*
 
 
-############################
 Composite Bi-Partite Systems
-############################
+============================
 
 
 .. nbgallery::
@@ -33,9 +34,8 @@ Composite Bi-Partite Systems
     C.Composite-bi-partite/*
 
 
-##############
 Qubit Couplers
-##############
+==============
 
 
 .. nbgallery::
@@ -44,9 +44,8 @@ Qubit Couplers
     D.Qubit-couplers/*
 
 
-#####################
 Input-Output Coupling
-#####################
+=====================
 
 
 .. nbgallery::
@@ -55,9 +54,8 @@ Input-Output Coupling
     E.Input-output-coupling/*
 
 
-###################
 Small Quantum Chips
-###################
+===================
 
 
 .. nbgallery::
@@ -66,9 +64,8 @@ Small Quantum Chips
     F.Small-quantum-chips/*
 
 
-###########
 Design Flow
-###########
+===========
 
 
 .. nbgallery::

@@ -13,9 +13,10 @@
 # that they have been altered from the originals.
 """MPL Canvas."""
 
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING, List, Optional
 
 import warnings
+import logging
 import matplotlib
 import matplotlib as mpl
 import matplotlib.patches as patches
@@ -321,7 +322,7 @@ class PlotCanvas(FigureCanvas):
 
     def __init__(self,
                  design: QDesign,
-                 parent: 'QMainWindowPlot' = None,
+                 parent: Optional['QMainWindowPlot'] = None,
                  logger=None,
                  statusbar_label=None):
         """
@@ -344,7 +345,21 @@ class PlotCanvas(FigureCanvas):
 
         self.mpl_context = MPL_CONTEXT_DEFAULT.copy()
 
-        warnings.filterwarnings("ignore", ".*Ignoring fixed.*")
+        # Silence benign matplotlib aspect-ratio warnings while leaving other warnings visible.
+        warnings.filterwarnings(
+            "ignore",
+            message=r".*Ignoring fixed .* limits to fulfill fixed data aspect.*",
+        )
+
+        # Drop the matching Matplotlib logger messages emitted during pan/resize autoscale.
+        class _IgnoreFixedAspect(logging.Filter):
+
+            def filter(self, record):
+                msg = record.getMessage()
+                return "Ignoring fixed" not in msg or "limits to fulfill fixed data aspect" not in msg
+
+        logging.getLogger("matplotlib.axes._base").addFilter(
+            _IgnoreFixedAspect())
 
         with mpl.rc_context(rc=self.mpl_context):
             fig = Figure()
@@ -519,7 +534,7 @@ class PlotCanvas(FigureCanvas):
                   va='bottom',
                   alpha=0.18,
                   zorder=-100)
-        ax.annotate('Qiskit Metal',
+        ax.annotate('Quantum Metal',
                     xy=(0.98, 0.02),
                     xycoords='axes fraction',
                     **kw)
@@ -619,12 +634,11 @@ class PlotCanvas(FigureCanvas):
         Metal."""
 
         # pylint: disable=attribute-defined-outside-init
-        self._welcome_text = AnimatedText(
-            self.axes[0],
-            "Welcome to Qiskit Metal Early Access Alpha",
-            self,
-            start=False,
-            kw={'fontsize': 20})
+        self._welcome_text = AnimatedText(self.axes[0],
+                                          "Welcome to Quantum Metal!",
+                                          self,
+                                          start=False,
+                                          kw={'fontsize': 20})
 
         self._welcome_start_timer = QTimer.singleShot(
             250, self._welcome_message_start)

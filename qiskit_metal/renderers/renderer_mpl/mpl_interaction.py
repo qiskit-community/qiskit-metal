@@ -92,6 +92,11 @@ from PySide6.QtWidgets import QLabel
 
 from ... import Dict
 
+warnings.filterwarnings(
+    "ignore",
+    message=r".*Ignoring fixed .* limits to fulfill fixed data aspect.*",
+)
+
 __all__ = ['figure_pz', 'MplInteraction', 'PanAndZoom']
 
 
@@ -165,7 +170,13 @@ class MplInteraction(object):
 
     def _draw(self):
         """Convenient method to redraw the figure."""
-        self.figure.canvas.draw()
+        with warnings.catch_warnings():
+            warnings.filterwarnings(
+                "ignore",
+                message=
+                r".*Ignoring fixed .* limits to fulfill fixed data aspect.*",
+            )
+            self.figure.canvas.draw()
 
 
 class ZoomOnWheel(MplInteraction):
@@ -450,9 +461,21 @@ class PanAndZoom(ZoomOnWheel):
     def auto_scale(self):
         """Auto scaler."""
         for ax in self.figure.axes:
-            ax.autoscale()
+            with warnings.catch_warnings():
+                warnings.filterwarnings(
+                    "ignore",
+                    message=
+                    r".*Ignoring fixed .* limits to fulfill fixed data aspect.*",
+                )
+                ax.autoscale()
         # self.figure.canvas.flush_events()
-        self.figure.canvas.draw()
+        with warnings.catch_warnings():
+            warnings.filterwarnings(
+                "ignore",
+                message=
+                r".*Ignoring fixed .* limits to fulfill fixed data aspect.*",
+            )
+            self.figure.canvas.draw()
 
     def _style_figure(self):
         """Style figure."""

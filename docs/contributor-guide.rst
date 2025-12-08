@@ -484,25 +484,19 @@ HTML files by navigating to `/docs/` and running:
    make html
 
 For a fast, more advanced build that uses parallelization and makes sure we skip
-executing notebooks (which is the default behavior), run:
+executing notebooks (which is the default behavior), run (if using uv):
 
 .. code-block:: sh
 
-   QISKIT_DOCS_BUILD_TUTORIALS=never sphinx-build -M html . _build -j auto
+   uv sphinx-build -M html . _build -j auto
+   uv sphinx-build -M html . _build -j auto -v -T
 
 Notes:
 
 - `QISKIT_DOCS_BUILD_TUTORIALS=never` skips executing notebooks during the build (fast; uses stored outputs if present).
 - `-j auto` enables parallel Sphinx workers to speed up the build on multi-core machines.
 - The HTML output is written to `/docs/_build/html/`. Use `open _build/html/index.html` (macOS) or `python -m http.server 8000 -d _build/html` to preview locally.
-
-The jupyter notebooks can be a bit slow to build, so if you are not
-working on those, you can skip including them altogether in a local build by using the following code.
-We also added -v for verbose output and -T traceback during the build.
-
-.. code-block:: sh
-
-   sphinx-build -M html . _build -j auto -v -T -D "exclude_patterns=**/*.ipynb,**/.ipynb_checkpoints,tut/**,circuit-examples/**"
+- We also added -v for verbose output and -T traceback during the build.
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -527,6 +521,12 @@ Then start the live documentation server:
 
 This launches a local server (default: http://127.0.0.1:8000) and rebuilds the
 HTML pages incrementally whenever source files change.
+
+
+.. warning::
+
+   Avoid running the docs build **and** importing `qiskit_metal` at the same time from the same checkout. A legacy guard (`config.is_building_docs()` looks for a `.buildingdocs` file) can skip certain imports when that marker file is present. If you see unexpected import errors while developing and building docs, check for and remove `docs/.buildingdocs` before importing. Longer-term we’ll remove this guard, but for now be mindful of the interaction.
+
 
 
 Tutorials

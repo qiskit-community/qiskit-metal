@@ -268,15 +268,22 @@ class QMainWindowExtension(QMainWindowExtensionBase):
 
 
 class MetalGUI(QMainWindowBaseHandler):
-    """Qiskit Metal Main GUI.
+    """Main Qt window for interacting with a Qiskit Metal design.
 
-    This class extends the `QMainWindowBaseHandler` class.
+    MetalGUI wraps a `QDesign` and gives you a synchronized visual view of
+    components, variables, and geometry. Anything you do in the GUI (add/edit
+    components, tweak options, rebuild) updates the underlying design object,
+    and Python-side edits show up in the GUI after a rebuild.
 
-    The GUI can be controlled by the user using the mouse and keyboard or
-    API for full control.
-
-    Args:
-        QMainWindowBase (QMainWindowBase): Base window
+    Key behaviors and subtleties:
+    - Starts a Qt event loop if one is not already running.
+    - Exposes docks for components, connectors, variables, and logs; you can
+      hide/show or undock them without breaking synchronization.
+    - The plot window shows the current QGeometry; call ``rebuild()`` after
+      changing component options to refresh geometry before exporting or
+      autoscaling.
+    - Some imports are skipped when ``config.is_building_docs()`` is true to
+      keep doc builds lean; avoid that flag in interactive GUI sessions.
     """
 
     __UI__ = Ui_MainWindow
@@ -291,10 +298,13 @@ class MetalGUI(QMainWindowBaseHandler):
     ]
 
     def __init__(self, design: QDesign = None):
-        """
+        """Create a GUI bound to the provided ``design`` (or create one later).
+
         Args:
-            design (QDesign, optional): Pass in the design that the GUI should handle.
-                Defaults to None.
+            design (QDesign, optional): The design to visualize and edit. You can
+                also call ``set_design`` after constructing the GUI. When passed,
+                the GUI will immediately populate docks and the canvas from this
+                design. Defaults to None.
         """
 
         from .utility._handle_qt_messages import QtCore, _qt_message_handler
@@ -377,11 +387,14 @@ class MetalGUI(QMainWindowBaseHandler):
         setEnabled(self, widgets)
 
     def set_design(self, design: QDesign):
-        """Core function to set a new design.
+        """Bind a ``QDesign`` to the GUI and refresh all views.
+
+        This wires the provided design into the plot window, component lists,
+        netlist, variables table, and any renderer sub-GUIs (GDS/HFSS/Q3D).
+        Call this once after constructing the GUI or when swapping designs.
 
         Args:
-            design (QDesign): A qiskit metal design, such as a planar one.
-                The design contains all components and elements
+            design (QDesign): The design to visualize/edit. Must be non-None.
         """
         self.design = design
 
@@ -800,8 +813,13 @@ class MetalGUI(QMainWindowBaseHandler):
         return self.plot_win.canvas
 
     def rebuild(self, autoscale: bool = False):
-        """
-        Rebuild all components in the design from scratch and refresh the gui.
+        """Rebuild all components and refresh the GUI.
+
+        Calls ``design.rebuild()`` (regenerates QGeometry for all components),
+        then refreshes tables and plots. Optionally autoscale after the redraw.
+
+        Args:
+            autoscale (bool): If True, call ``self.autoscale()`` after refresh.
         """
 
         self.design.rebuild()
@@ -841,27 +859,30 @@ class MetalGUI(QMainWindowBaseHandler):
     #########################################################
     # COMPONENT FUNCTIONS
     def edit_component(self, name: str):
-        """Set the component to be examined by the component widget.
+        """Make the named component active in the component editor widget.
 
         Args:
-            name (str): Name of component to exmaine.
+            name (str): Component name to load. Must exist in ``design.components``.
+
+        Note:
+            This does not rebuild geometry; use ``rebuild()`` if options are changed.
         """
         if self.component_window:
             self.component_window.set_component(name)
 
     def highlight_components(self, component_names: List[str]):
-        """Hihglight a list of components.
+        """Visually highlight components in the plot canvas.
 
         Args:
-            component_names (List[str]): List of component names to highlight
+            component_names (List[str]): Names to highlight; others remain unhighlighted.
         """
         self.canvas.highlight_components(component_names)
 
     def zoom_on_components(self, components: List[str]):
-        """Zoom to the components.
+        """Zoom the canvas to fit the given components.
 
         Args:
-            components (List[str]): List of components to zoom to
+            components (List[str]): Names of components to frame.
         """
         bounds = self.canvas.find_component_bounds(components)
         self.canvas.zoom_to_rectangle(bounds)
