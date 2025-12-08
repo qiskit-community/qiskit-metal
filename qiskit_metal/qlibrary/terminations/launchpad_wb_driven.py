@@ -30,22 +30,20 @@ class LaunchpadWirebondDriven(QComponent):
 
     Inherits 'QComponent' class.
 
-    Creates a 50 ohm launch pad with a ground pocket cutout.
-    Limited but expandable parameters to control the launchpad polygons.
-    The (0,0) point is the center of the necking of the launch tip.
-    The pin attaches directly to the built in lead length at its midpoint
-	There is pin at the back of the pad for DrivenModal simulations
+    Creates a 50 ohm launch pad with a ground pocket cutout. Parameters control
+    the launchpad polygons. The (0,0) point is the center of the necking of the
+    launch tip. The pin attaches directly to the built-in lead length at its
+    midpoint. There is also a pin at the back of the pad for DrivenModal simulations.
 
     Pocket and pad:
-        Pocket and launch pad geometries are currently fixed.
-        (0,0) point is the midpoint of the necking of the launch tip.
-        Pocket is a negative shape that is cut out of the ground plane
+    - Pocket and launch pad geometries are currently fixed.
+    - (0,0) point is the midpoint of the necking of the launch tip.
+    - Pocket is a negative shape that is cut out of the ground plane.
 
-    Values (unless noted) are strings with units included, (e.g., '30um')
+    Values (unless noted) are strings with units included, (e.g., '30um').
 
     Sketch:
-        Below is a sketch of the launch
-        ::
+    Below is a sketch of the launch::
 
             -----------
             |          \

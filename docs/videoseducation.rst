@@ -16,8 +16,9 @@ Call to action
 Overviews by Dr. Zlatko Minev
 -----------------------------
 All slides can be found on a `GitHub repo <https://github.com/zlatko-minev/zlatko-minev-quantum-repository>`_.
+
 - `QDW Beginner Track (Day 1, Sessions 2–3): Superconducting qubits 101 — making your first qubit <https://www.youtube.com/watch?v=rUjePWndpiY>`_
-  - More Qiskit Metal/Quantum Device Workshop (QDW) videos: https://www.youtube.com/@uclaqcsa
+- More Qiskit Metal/Quantum Device Workshop (QDW) videos: https://www.youtube.com/@uclaqcsa
 - `Quantum Hardware Design: Energy, Circuits, and Metal (Qiskit Seminar Series) <https://www.youtube.com/watch?v=jjdYHZ0qxcY>`_
 - `Superconducting Qubits: design, analysis, energy & Qiskit Metal (Berkeley) <https://www.youtube.com/watch?v=ggfQa6jBV3Y>`_
 - `Qiskit Global Summer School (quantization lecture + full playlist) <https://www.youtube.com/playlist?list=PLOFEBzvs-VvqJwybFxkTiDzhf5E11p8BI>`_

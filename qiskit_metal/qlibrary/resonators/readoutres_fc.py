@@ -5,36 +5,28 @@ from qiskit_metal.qlibrary.core import QComponent
 
 
 class ReadoutResFC(QComponent):
-    '''
-    The base ReadoutResFC class
+    """Flip-chip readout resonator used in the flipchip tutorial.
 
-    Inherits the QComponent class
+    Geometry overview:
+    - Circle centered at (``pos_x``, ``pos_y``) with radius ``readout_radius``.
+    - Straight line (length ``readout_l1``) at 45 degrees.
+    - 45 degree arc.
+    - Vertical line (length ``readout_l2``).
+    - 90 degree arc.
+    - Horizontal line (length ``readout_l3``).
+    - 180 degree arc.
+    - Horizontal line (length ``readout_l4``).
+    - Five meandering horizontal lines (length ``readout_l5``) separated by 180 degree arcs.
 
-    Readout resonator for the flipchip dev. Written for the flipchip tutorial.
+    The arc bend radius is ``readout_cpw_turnradius``, measured from the CPW center to the
+    center of rotation. Lines and arcs form a CPW with width ``readout_cpw_width`` and
+    gap ``readout_cpw_gap``.
 
-    The device consists of the following shapes combined together:
-        - a circle centered at ('pos_x', 'pos_y') with a radius of 'readout_radius', followed by
-        - a straight line (length= 'readout_l1') at a 45 degree angle, followed by
-        - a 45 degree arc, followed by
-        - a vertical line (length = 'readout_l2'), followed by
-        - a 90 degree arc, followed by
-        - a horizontal line (length = 'readout_l3'), followed by
-        - a 180 degree arc, followed by
-        - a horizontal line (length = 'readout_l4'), followed by
-        - 5 meandering horizontal lines (length = 'readout_l5') separated 180 degree arcs.
-
-    The arc has a bend radius of 'readout_cpw_turnradius',
-        it is measured from the center of the cpw to the center of rotation.
-    The lines and arcs will form a cpw with a signal linewidth of 'readout_cpw_width', and
-        signal-to-ground separation of 'readout_cpw_gap'.
-
-    One of the ways to adjust this design to your needs:
-    - change the coupling to the qubit by varying the 'readout_radius',
-    - couple the resonator to the feedthrough transmission line via
-        the horizontal section with this length 'readout_l3',
-    - adjust the frequency of the resonator by varying 'readout_l5'.
-
-    '''
+    Tuning tips:
+    - Change coupling to the qubit by varying ``readout_radius``.
+    - Couple to the feedthrough line via the horizontal section of length ``readout_l3``.
+    - Adjust resonator frequency by varying ``readout_l5``.
+    """
 
     default_options = Dict(pos_x='0 um',
                            pos_y='0 um',
@@ -68,13 +60,11 @@ class ReadoutResFC(QComponent):
     ##########################
 
     def make_ro(self):
-        '''
-        Create the head of the readout resonator.
-        Contains: the circular patch for coupling,
-            the 45 deg line,
-            the 45 deg arc,
-            a short straight segment (of length w) for smooth subtraction
-        '''
+        """Create the head of the readout resonator.
+
+        Contains the circular coupling patch, 45 deg line, 45 deg arc, and a short
+        straight segment (of length w) for smooth subtraction.
+        """
         # access to parsed values from the user option
         p = self.p
 

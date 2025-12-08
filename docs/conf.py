@@ -41,38 +41,23 @@ version = qiskit_metal.__version__
 # The full version, including alpha/beta/rc tags
 release = qiskit_metal.__version__
 
-rst_prolog = """
+rst_prolog = f"""
 .. raw:: html
 
-    <br><br><br>
+.. |version| replace:: {release}
 
-.. |version| replace:: {0}
-""".format(release)
+.. role:: rc
+.. role:: mpltype
+
+"""
 
 nbsphinx_prolog = """
-{% set docname = env.doc2path(env.docname, base=None)|replace("circuit-examples", "circuit-examples/") %}
-{% set docname = docname|replace("A.Qubits", "A.Qubits/") %}
-{% set docname = docname|replace("B.Resonators", "B.Resonators/") %}
-{% set docname = docname|replace("C.Composite-bi-partite", "C.Composite-bi-partite/") %}
-{% set docname = docname|replace("D.Qubit-couplers", "D.Qubit-couplers/") %}
-{% set docname = docname|replace("E.Input-output-coupling", "E.Input-output-coupling/") %}
-{% set docname = docname|replace("F.Small-quantum-chips", "F.Small-quantum-chips/") %}
-{% set docname = docname|replace("full-design-flow-examples", "full-design-flow-examples/") %}
-{% set docname = docname|replace("tut", "tut/") %}
-{% set docname = docname|replace("1-Overview", "1-Overview/") %}
-{% set docname = docname|replace("2-From-components-to-chip", "2-From-components-to-chip/") %}
-{% set docname = docname|replace("3-Renderers", "3-Renderers/") %}
-{% set docname = docname|replace("4-Analysis", "4-Analysis/") %}
-{% set docname = docname|replace("quick-topics", "quick-topics/") %}
+{% set docname = env.doc2path(env.docname, base=None) %}
 
 .. only:: html
 
     .. role:: raw-html(raw)
         :format: html
-
-    .. raw:: html
-
-        <br><br><br>
 
     .. note::
         This page was generated from `{{ docname }}`__.
@@ -80,6 +65,7 @@ nbsphinx_prolog = """
     __ https://github.com/Qiskit/qiskit-metal/blob/main/docs/{{ docname }}
 """
 
+# This is added to the end of each rendered notebook html
 nbsphinx_epilog = """
 {% set docname = env.doc2path(env.docname, base=None) %}
 .. only:: html
@@ -89,6 +75,7 @@ nbsphinx_epilog = """
 
     .. raw:: html
 
+        <br><br>
         <h3>For more information, review the <b>Introduction to Quantum Computing and Quantum Hardware</b> lectures below</h3>
         <div style="border:solid 1 px #990000;">
         <table>
@@ -121,7 +108,7 @@ nbsphinx_epilog = """
 """
 
 # -- Project information -----------------------------------------------------
-project = f'Quantum Metal'  # {version}
+project = 'Quantum Metal'  # {version}
 copyright = 'Quantum Metal Community; 2019-2025 Qiskit Development Team'  # pylint: disable=redefined-builtin
 author = 'Quantum Metal Community Team'
 # -- General configuration ---------------------------------------------------
@@ -140,9 +127,7 @@ exclude_patterns = [
     'build',
     '**.ipynb_checkpoints',
     '_utility',  # '*.ipynb',
-    "tut/**",  # TODO: Temp debug
-    "circuit-examples/**",  # TODO: Temp debug
-    "stubs/**"  # autosummary stub files are generated but not included in any toctree
+    "stubs/**",  # autosummary stub files are generated but not included in any toctree
 ]
 
 nbsphinx_execute_arguments = [
@@ -152,7 +137,9 @@ nbsphinx_execute_arguments = [
 
 nbsphinx_execute = os.getenv('QISKIT_DOCS_BUILD_TUTORIALS', 'never')
 
-source_suffix = ['.rst', '.ipynb']
+# Let Sphinx/nbsphinx choose the appropriate parser for each suffix.
+# source_suffix = ['.rst', '.ipynb']
+source_suffix = ['.rst']
 
 suppress_warnings = ['ref.ref']
 
@@ -172,11 +159,6 @@ nbsphinx_thumbnails = {
     'tut/1-Overview/1.3-Saving-Your-Chip-Design':
         '_static/1-3-save.png',
 }
-
-# NBSPHINX: If you want fast builds and correct renders:
-#  - Keep nbsphinx_execute='never' for daily docs;
-#    pre-run notebooks once (jupyter nbconvert --execute --inplace docs/tut/...) and commit the saved outputs, or set QISKIT_DOCS_BUILD_TUTORIALS=auto when you need fresh outputs.
-#  - For heavier caching, add jupyter-cache and point nbsphinx to it; but pre-running and committing outputs is usually enough.
 
 # -----------------------------------------------------------------------------
 # Autosummary

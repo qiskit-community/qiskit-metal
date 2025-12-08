@@ -1,21 +1,11 @@
 .. _tutorials-overview:
 
-.. raw:: html
+=========
+Tutorials
+=========
 
-    <a href="https://www.youtube.com/playlist?list=PLOFEBzvs-VvqHl5ZqVmhB_FcSqmLufsjb">
-    Click for Video Tutorials</a><br><br>
-    <table>
-        <tr><td width="22%">
-        <a href="https://www.youtube.com/playlist?list=PLOFEBzvs-VvqHl5ZqVmhB_FcSqmLufsjb">
-	        <img src="https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg" width="100">
-        </a>
-        </td><td width="78%"></td></tr>
-    </table>
-
-
-########
 Overview
-########
+========
 
 
 .. nbgallery::
@@ -24,9 +14,8 @@ Overview
     1-Overview/*
 
 
-##########
 Components
-##########
+==========
 
 -----------------
 Using QComponents
@@ -70,18 +59,17 @@ How do I make my custom QComponent
 
 #########
 Renderers
-#########
-    
-    
+=========
+
+
 .. nbgallery::
     :glob:
-    
+
     3-Renderers/*
 
 
-########
 Analysis
-########
+========
 
 --------------------------
 Core - EM and quantization
@@ -123,9 +111,8 @@ Hamiltonian models
     4-Analysis/4.3*
 
 
-############
 Quick Topics
-############
+============
 
 .. nbgallery::
     :glob:

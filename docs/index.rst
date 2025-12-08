@@ -52,13 +52,21 @@ Leverages existing EDA stacks, automates tedious workflows, and keeps best pract
 
          Install
 
+      .. button-ref:: videoseducation
+         :ref-type: doc
+         :color: primary
+         :outline:
+         :expand:
+
+         Tutorials (videos)
+
       .. button-ref:: tut/index
          :ref-type: doc
          :color: primary
          :outline:
          :expand:
 
-         Tutorials
+         Tutorials index
 
       .. button-ref:: videoseducation
          :ref-type: doc
@@ -263,13 +271,7 @@ The goal of Qiskit Metal is to allow for easy quantum hardware modeling with red
 
     Videos & Education<videoseducation>
     Tutorials<tut/index>
-
-.. toctree::
-    :maxdepth: 2
-    :caption: Circuit Example Library
-    :hidden:
-
-    Circuit Examples<circuit-examples/index>
+    Example Designs<circuit-examples/index>
 
 .. toctree::
     :maxdepth: 2

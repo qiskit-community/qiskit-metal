@@ -94,7 +94,7 @@ class TransmonPocketTeeth(BaseQubit):
         transmon_pocket_teeth.png
 
     .. meta::
-        Transmon Pocket Teeth
+        :description: Transmon Pocket Teeth
 
     """
 
