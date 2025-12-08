@@ -32,31 +32,162 @@ Quantum Device Design & Analysis (Q-EDA)
 .. image:: images/logo1.png
    :alt: Missing Logo Diagram
 
-.. rubric:: **About**
+**Quantum Metal | Open source • Community maintained & driven quantum EDA • API**
 
-**Quantum Metal | for quantum device design & analysis** (formerly Qiskit Metal)
-is an open-source framework (and library) for the design of superconducting quantum chips and devices.
-Call it quantum EDA (Q-EDA) and analysis. Quantum Metal is:
+Design and analyze superconducting quantum chips with a Python API + GUI that plugs into your favorite tools.
+Leverages existing EDA stacks, automates tedious workflows, and keeps best practices baked in.
 
-* Open source
-* Community-driven (graduated from IBM stewardship into community maintenance)
-* A python API and a front-end visual GUI interface
-* Leverages existing tools and aims to seamlessly interconnect for quantum analysis
-* Licensed under Apache 2.0. IBM reserves no copyright over outputs of qiskit-metal.
-* Community-oriented and tutorial-driven, join the `#metal <https://qiskit.slack.com/archives/C01R8KP5WP7>`_ Slack.
+.. grid:: 1 2 2 2
+   :gutter: 1
 
-.. rubric:: **Live tutorials and Q&A**
+   .. grid-item-card:: Get Started
+      :class-header: sd-bg-primary sd-text-light
 
-We host live tutorials and Q&A sessions. Announcements for future tutorials are posted in the #metal channel.
 
-.. rubric:: **Community & Ecosystem**
+      .. button-ref:: installation
+         :ref-type: doc
+         :color: primary
+         :outline:
+         :expand:
 
-Join the conversation, share designs, and meet collaborators:
+         Install
 
-- `Qiskit Slack #metal <https://qiskit.slack.com/archives/C01R8KP5WP7>`_: fastest way to reach maintainers and the broader community.
-- `Quantum Device Workspace (QDW) <https://qdw-ucla.squarespace.com/>`_: annual workshop hosted at UCLA/USC. `Sign for 2026 <https://qdw-ucla.squarespace.com/qdw2026>`_.
-- Quantum Device Consortium (QDC): community organization stewarding Quantum Metal and companion tools. *Website & governance:* https://qdc-qcsa.vercel.app — *Discord:* `discord.gg/kaZ3UFuq <https://discord.gg/kaZ3UFuq>`_
-- Discord: community server live at `discord.gg/kaZ3UFuq <https://discord.gg/kaZ3UFuq>`_.
+      .. button-ref:: videoseducation
+         :ref-type: doc
+         :color: primary
+         :outline:
+         :expand:
+
+         Tutorials (videos)
+
+      .. button-ref:: tut/index
+         :ref-type: doc
+         :color: primary
+         :outline:
+         :expand:
+
+         Tutorials index
+
+      .. button-ref:: videoseducation
+         :ref-type: doc
+         :color: primary
+         :outline:
+         :expand:
+
+         Videos & Education
+
+   .. grid-item-card:: Quick links
+      :class-header: sd-bg-secondary sd-text-light
+
+      .. grid:: 1 1 1 1
+         :gutter: 1
+
+         .. grid-item::
+            :child-align: start
+
+            .. button-ref:: overview
+               :ref-type: doc
+               :color: primary
+               :outline:
+               :expand:
+
+               API Overview
+
+         .. grid-item::
+            :child-align: start
+
+            .. button-ref:: apidocs/qlibrary
+               :ref-type: doc
+               :color: primary
+               :outline:
+               :expand:
+
+               API Reference
+
+
+         .. grid-item::
+            :child-align: start
+
+            .. button-ref:: contributor-guide
+               :ref-type: doc
+               :color: primary
+               :outline:
+               :expand:
+
+               Contribute
+
+.. dropdown:: Live tutorials and Q&A
+   :icon: calendar
+   :open:
+
+   We host live tutorials and Q&A sessions. Announcements for future tutorials are posted in the #metal channel.
+
+.. grid:: 1 2 2 4
+   :gutter: 1
+
+   .. grid-item-card:: Community Discord
+      :class-header: sd-bg-secondary sd-text-light
+
+      Fastest way to reach maintainers and the broader community.
+      Open community server for Quantum Metal users and collaborators.
+
+      .. button-link:: https://discord.gg/kaZ3UFuq
+         :color: primary
+         :outline:
+         :expand:
+
+         Join Discord
+
+   .. grid-item-card:: Qiskit Slack #metal
+      :class-header: sd-bg-primary sd-text-light
+
+      Former main community workspace, being replaced by Discord.
+
+      .. button-link:: https://qiskit.slack.com/archives/C01R8KP5WP7
+         :color: primary
+         :outline:
+         :expand:
+
+         Join #metal on Slack
+
+   .. grid-item-card:: Quantum Device Workshop (QDW) Annual Conference
+      :class-header: sd-bg-secondary sd-text-light
+
+      Annual workshop hosted at UCLA/USC.
+
+      .. button-link:: https://qdw-ucla.squarespace.com/
+         :color: primary
+         :outline:
+         :expand:
+
+         QDW site
+
+      .. button-link:: https://qdw-ucla.squarespace.com/qdw2026
+         :color: secondary
+         :outline:
+         :expand:
+
+         Sign for 2026
+
+   .. grid-item-card:: Quantum Device Consortium (QDC)
+      :class-header: sd-bg-primary sd-text-light
+
+      Community organization stewarding Quantum Metal and companion tools.
+
+      .. button-link:: https://qdc-qcsa.vercel.app
+         :color: primary
+         :outline:
+         :expand:
+
+         QDC website & governance
+
+      .. button-link:: https://discord.gg/kaZ3UFuq
+         :color: secondary
+         :outline:
+         :expand:
+
+         QDC Discord
+
 
 .. rubric:: **Qiskit Metal Vision**:
 
@@ -83,47 +214,65 @@ The goal of Qiskit Metal is to allow for easy quantum hardware modeling with red
 
 **Quantum Metal consists of four foundational elements:**
 
-    - Quantum Device Design (QDesign): :ref:`qdesign`
-    - Quantum Device Components (QComponent): :ref:`qlibrary`
-    - Quantum Renderer (QRenderer): :ref:`qrenderer`
-    - Quantum Analysis (QAnalysis): :ref:`qanalysis`
+.. grid:: 2 2 2 4
+   :gutter: 1
+
+   .. grid-item-card:: Quantum Device Design
+      :class-header: sd-bg-primary sd-text-light
+      :link: qdesign
+      :link-type: ref
+
+      :ref:`qdesign`
+
+   .. grid-item-card:: Quantum Device Components
+      :class-header: sd-bg-secondary sd-text-light
+      :link: qlibrary
+      :link-type: ref
+
+      :ref:`qlibrary`
+
+   .. grid-item-card:: Quantum Renderer
+      :class-header: sd-bg-primary sd-text-light
+      :link: qrenderer
+      :link-type: ref
+
+      :ref:`qrenderer`
+
+   .. grid-item-card:: Quantum Analysis
+      :class-header: sd-bg-secondary sd-text-light
+      :link: qanalysis
+      :link-type: ref
+
+      :ref:`qanalysis`
 
 .. toctree::
     :maxdepth: 2
     :hidden:
 
-    Home<self>
+    About<self>
     Installing Qiskit Metal<installation>
-    Frequently Asked Questions<faq>
-    Metal Workflow<workflow>
-
-.. TODO: Add Getting Started With Metal between Metal Workflow and Installing Qiskit Metal
 
 .. toctree::
     :maxdepth: 2
-    :caption: Contributor Guide
+    :caption: Overview
     :hidden:
 
+    Metal Workflow<workflow>
     Contributor Guide<contributor-guide>
+    Frequently Asked Questions<faq>
 
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
     :caption: Tutorials
     :hidden:
 
+    Videos & Education<videoseducation>
     Tutorials<tut/index>
-    Video Recordings<https://www.youtube.com/playlist?list=PLOFEBzvs-VvqHl5ZqVmhB_FcSqmLufsjb>
+    Example Designs<circuit-examples/index>
 
 .. toctree::
-    :maxdepth: 2
-    :caption: Circuit Example Library
-    :hidden:
-
-    Circuit Examples<circuit-examples/index>
-
-.. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
     :caption: Libraries
     :hidden:
 

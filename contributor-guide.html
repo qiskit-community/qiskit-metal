@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="QLibrary (qiskit_metal.qlibrary)" href="apidocs/qlibrary.html" /><link rel="prev" title="Roadmap" href="workflow.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="FAQ’s" href="faq.html" /><link rel="prev" title="Roadmap" href="workflow.html" />
 
     <!-- Generated with Sphinx 7.4.7 and Furo 2024.01.29 -->
         <title>Contributing to Qiskit Metal - Quantum Metal 0.5.0</title>
@@ -154,7 +154,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -178,28 +178,106 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
-<li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installing Qiskit Metal</a></li>
-<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="workflow.html">Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="workflow.html#qiskit-metal-workflow">Qiskit Metal Workflow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="workflow.html#quantization-methods-overview">Quantization Methods Overview</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Contributor Guide</span></p>
-<ul class="current">
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Contributing to Qiskit Metal</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#where-things-are">Where Things Are</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#reporting-bugs-and-requesting-enhancements">Reporting Bugs and Requesting Enhancements</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#contributing-code">Contributing Code</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#contributing-to-documentation">Contributing to Documentation</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Contributor Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference external" href="https://www.youtube.com/playlist?list=PLOFEBzvs-VvqHl5ZqVmhB_FcSqmLufsjb">Video Recordings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="videoseducation.html">Videos &amp; Education</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="tut/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Tutorials</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="tut/1-Overview/1.1-Bird%27s-eye-view-of-Qiskit-Metal.html">Bird’s eye view of Qiskit Metal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/1-Overview/1.2-Quick-start.html">Quick Start: Build your first 4-qubit processor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/1-Overview/1.3-Saving-Your-Chip-Design.html">Save your chip design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html">How to use a QComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html#QComponent-Default-Options">QComponent Default Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html#Modifying-the-Options">Modifying the Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html#Copying-a-QComponent">Copying a QComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html#Deleting-a-QComponent">Deleting a QComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html#Renaming-a-QComponent">Renaming a QComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html#Overwriting-a-QComponent">Overwriting a QComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html#Closing-the-Qiskit-Metal-GUI">Closing the Qiskit Metal GUI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.02-How-to-copy-a-QComponent.html">How to copy a QComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.11-Routing-101.html">Routing 101</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.12-Simple-Meander.html">Simple Meander</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.12-Simple-Meander.html#Using-CPW-meanders-to-connect-the-3-Qbits">Using CPW meanders to connect the 3 Qbits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.13-Hybrid-Auto-and-AStar.html">Hybrid Auto and AStar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.14-Get-them-all-with-MixedRoute.html">Get them all with MixedRoute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.21-Design-a-4-qubit-full-chip.html">Design a 4 qubit full chip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.22-Design-100-qubits-programmatically.html">Design 100 qubits programmatically</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.23-Modify-chip-options.html">Modify chip options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.31-Create-a-QComponent-Basic.html">Create a QComponent - Basic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.32-Create-a-QComponent-Advanced.html">Create a QComponent - Advanced</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.33-Add-my-QComponent-to-a-reusable-python-file.html">Add my QComponent to a reusable python file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/3-Renderers/3.1-Introduction-to-QRenderers.html">Introduction to QRenderers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/3-Renderers/3.1-Introduction-to-QRenderers.html#Note:">Note:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/3-Renderers/3.2-Export-your-design-to-GDS.html">Export your design to GDS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/3-Renderers/3.3-Render-your-design-to-Ansys.html">Render your design to Ansys</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/3-Renderers/3.4-How-do-I-make-my-custom-QRenderer.html">How do I make my custom QRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.01-Capacitance-and-LOM.html">Capacitance matrix and LOM analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.02-Eigenmode-and-EPR.html">Eigenmode and EPR analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.03-Impedance.html">Impedance, admittance and scattering analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.11-Analyze-and-tune-a-transmon.html">Analyzing and tuning a transmon qubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.11-Analyze-and-tune-a-transmon.html#1.-Create-the-Qbit-design">1. Create the Qbit design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.12-Analyze-a-resonator.html">Analyzing and tuning a resonator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.13-Analyze-transmon-and-resonator.html">Analyzing and tuning a transmon qubit with a resonator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.14-Analyze-a-double-hanger-resonator.html">Analyzing a double hanger resonator (S Param)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.15-CPW-kappa-calculation.html">CPW Kappa Calculation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.21-Capacitance-matrix.html">Sweeps - Capacitance matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.21-Capacitance-matrix.html#READ-THIS-BEFORE-running-the-cell.">READ THIS BEFORE running the cell.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.22-Eigenmode-matrix.html">Sweeps - Eigenmode matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.23-Impedance-and-scattering-Z-S-Y-matrices.html">Sweeps - Impedance, scattering and admittance (Z S Y) matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.31-Plot-quantum-oscillator-wavefunction.html">Plotting Wavefunctions of the Quantum Harmonic Oscillator (LC Circuit)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.32-Transmon-analytics-HCPB.html">Transmon Analytics: Plotting Eigenvalues as a Function of Offset Charge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.33-Transmon-analytics.html">Transmon Analytics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.34-Transmon-qubit-CPB-hamiltonian-charge-basis.html">Modeling transmon qubit Cooper-pair box Hamiltonian in the charge basis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/quick-topics/JJ-Demo-Notebook.html">Josephson Junction QComponent Demo Notebook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/quick-topics/Managing-pins.html">Managing pins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/quick-topics/Managing-variables.html">Managing variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/quick-topics/Opening-documentation.html">Opening the documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/quick-topics/QComponent-3-fingers-capacitor.html">QComponent - 3-fingers capacitor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/quick-topics/QComponent-Interdigitated-transmon.html">QComponent - Interdigitated transmon qubit</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="circuit-examples/index.html">Example Designs</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Example Designs</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/01-Transmon_cross.html">Single Transmon - Grounded (xmon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/02-Transmon_floating.html">Single Transmon - Floating</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/03-concentric_transmon.html">Concentric Transmon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/04-Interdigitated_Transmon.html">Interdigitated Transmon Qubits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/05-Transmon_cross_fl.html">Single Transmon - Grounded (xmon) flux lines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/06-Transmon_floating_6.html">Single Transmon - Floating with 6 connection pads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/07-Transmon_floating_cl.html">Single Transmon - Floating with charge lines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/08-JJ-Dolan.html">Josephson Junction (Dolan)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/09-JJ-Manhattan.html">Josephson Junction (Manhattan)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/10-Transmon_floating_teeth.html">Single Transmon - Floating with teeth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/11-Star_shaped_qubit.html">Star shaped qubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/11-Star_shaped_qubit.html#A-Star-Qubit">A Star Qubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/11-Star_shaped_qubit.html#Closing-the-Qiskit-Metal-GUI">Closing the Qiskit Metal GUI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/B.Resonators/11-Resonator_Meander.html">Simple CPW Meander</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/C.Composite-bi-partite/21-OneTransmonsWithMeanderAndOTG.html">Transmon coupled to CPW resonator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/D.Qubit-couplers/31-TwoCrossmonsTunableCoupler.html">Tunable Coupler (MIT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/D.Qubit-couplers/32-TwoTransmonsDirectCoupling.html">Direct Coupler (transmon-transmon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/D.Qubit-couplers/33-TwoTransmonsWithMeander.html">Bus Resonator Coupler (transmon-transmon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/E.Input-output-coupling/41-LaunchPad.html">CPW Launch Pad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/E.Input-output-coupling/42-ResonatorAndLaunchPad.html">Readout line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/E.Input-output-coupling/43-TransmonPocketCL.html">Charge Line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/F.Small-quantum-chips/51-Four_qubit_chip.html">Four Qubit Chip Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/full-design-flow-examples/Example-full-chip-design.html">Example full chip design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/full-design-flow-examples/Example-used-in-the-launch-video.html">Launch Videos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/full-design-flow-examples/Exercise-for-the-South-Korea-Hackathon%2720.html">South Korea Qiskit Hackathon’20 - Qiskit Metal exercise</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
 <ul>
-<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/qlibrary.html">All Quantum Devices</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of All Quantum Devices</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/qlibrary.html">All Quantum Devices</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of All Quantum Devices</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.QComponent.html">QComponent</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.ParsedDynamicAttributes_Component.html">ParsedDynamicAttributes_Component</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.BaseQubit.html">BaseQubit</a></li>
@@ -254,7 +332,7 @@
 <p class="caption" role="heading"><span class="caption-text">API References</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/designs.html">QDesigns</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of QDesigns</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/designs.html">QDesigns</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of QDesigns</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.designs.QDesign.html">QDesign</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.designs.DesignPlanar.html">DesignPlanar</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.designs.MultiPlanar.html">MultiPlanar</a></li>
@@ -263,7 +341,7 @@
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.designs.Components.html">Components</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/qlibrary.html">QComponents</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of QComponents</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/qlibrary.html">QComponents</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of QComponents</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.QComponent.html">QComponent</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.ParsedDynamicAttributes_Component.html">ParsedDynamicAttributes_Component</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.BaseQubit.html">BaseQubit</a></li>
@@ -314,7 +392,7 @@
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.anchored_path.html">anchored_path</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/analyses.html">Analyses</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Analyses</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/analyses.html">Analyses</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Analyses</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.analyses.QAnalysis.html">QAnalysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.analyses.QSimulation.html">QSimulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.analyses.Hcpb.html">Hcpb</a></li>
@@ -332,7 +410,7 @@
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.analyses.ScatteringImpedanceSim.html">ScatteringImpedanceSim</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/renderers.html">QRenderes</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of QRenderes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/renderers.html">QRenderes</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of QRenderes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.renderers.QRenderer.html">QRenderer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.renderers.QRendererGui.html">QRendererGui</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.renderers.QRendererAnalysis.html">QRendererAnalysis</a></li>
@@ -356,7 +434,7 @@
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.renderers.Vec3DArray.html">Vec3DArray</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/toolbox_metal.html">Toolbox</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Toolbox</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/toolbox_metal.html">Toolbox</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Toolbox</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.toolbox_metal.QiskitMetalExceptions.html">QiskitMetalExceptions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.toolbox_metal.QiskitMetalDesignError.html">QiskitMetalDesignError</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.toolbox_metal.about.html">about</a></li>
@@ -368,11 +446,11 @@
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.toolbox_metal.determine_larger_box.html">determine_larger_box</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/qgeometries.html">QGeometry</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of QGeometry</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/qgeometries.html">QGeometry</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of QGeometry</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qgeometries.QGeometryTables.html">QGeometryTables</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/gui.html">GUI</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/gui.html">GUI</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal._gui.MetalGUI.html">MetalGUI</a></li>
 </ul>
 </li>
@@ -405,25 +483,24 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
         <article role="main">
-          <br><br><br><section id="contributing-to-qiskit-metal">
+          <section id="contributing-to-qiskit-metal">
 <span id="contributor-guide"></span><h1>Contributing to Qiskit Metal<a class="headerlink" href="#contributing-to-qiskit-metal" title="Link to this heading">¶</a></h1>
 <p>Qiskit Metal is an open-source project committed to bringing quantum hardware design to
 people of all backgrounds. This page describes how you can join the Qiskit Metal
 community in this goal.</p>
-</section>
 <section id="where-things-are">
-<span id="id1"></span><h1>Where Things Are<a class="headerlink" href="#where-things-are" title="Link to this heading">¶</a></h1>
+<span id="id1"></span><h2>Where Things Are<a class="headerlink" href="#where-things-are" title="Link to this heading">¶</a></h2>
 <p>The code for Qiskit Metal is located in the <a class="reference external" href="https://github.com/Qiskit">Qiskit GitHub organization</a>,
 as part of the larger umbrella of Qiskit projects.</p>
 </section>
 <section id="reporting-bugs-and-requesting-enhancements">
-<h1>Reporting Bugs and Requesting Enhancements<a class="headerlink" href="#reporting-bugs-and-requesting-enhancements" title="Link to this heading">¶</a></h1>
+<h2>Reporting Bugs and Requesting Enhancements<a class="headerlink" href="#reporting-bugs-and-requesting-enhancements" title="Link to this heading">¶</a></h2>
 <p>When you encounter a problem, please open an issue in the
 issue tracker: <a class="reference external" href="https://github.com/Qiskit/qiskit-metal/issues">https://github.com/Qiskit/qiskit-metal/issues</a></p>
 <p>When reporting an issue, please follow this template:</p>
@@ -457,15 +534,15 @@ the repository issue tracker. Opening an issue starts a discussion with the team
 fits in with the project, how it can be implemented, etc.</p>
 </section>
 <section id="contributing-code">
-<h1>Contributing Code<a class="headerlink" href="#contributing-code" title="Link to this heading">¶</a></h1>
+<h2>Contributing Code<a class="headerlink" href="#contributing-code" title="Link to this heading">¶</a></h2>
 <section id="style-guide">
-<h2>Style Guide<a class="headerlink" href="#style-guide" title="Link to this heading">¶</a></h2>
+<h3>Style Guide<a class="headerlink" href="#style-guide" title="Link to this heading">¶</a></h3>
 <p>To enforce a consistent code style in the project, we use customized <a class="reference external" href="https://www.pylint.org">Pylint</a> for linting and <a class="reference external" href="https://google.github.io/styleguide/pyguide.html">YAPF`&lt;https://github.com/google/yapf&gt;__ with the `Google style</a> for auto formatting. The custom
 <cite>.pylintrc</cite> and <cite>.style.yapf</cite> files is located in the root of the repository.
 Our CI pipeline will enforce these styles when you make the pull request.</p>
 </section>
 <section id="contributor-license-agreement">
-<h2>Contributor License Agreement<a class="headerlink" href="#contributor-license-agreement" title="Link to this heading">¶</a></h2>
+<h3>Contributor License Agreement<a class="headerlink" href="#contributor-license-agreement" title="Link to this heading">¶</a></h3>
 <p>Before you can submit any code, all contributors must sign a
 contributor license agreement (CLA). By signing a CLA, you’re attesting
 that you are the author of the contribution, and that you’re freely
@@ -484,7 +561,7 @@ email it to us at &lt;<a class="reference external" href="mailto:qiskit&#37;&#52
 </div>
 </section>
 <section id="pull-requests">
-<h2>Pull Requests<a class="headerlink" href="#pull-requests" title="Link to this heading">¶</a></h2>
+<h3>Pull Requests<a class="headerlink" href="#pull-requests" title="Link to this heading">¶</a></h3>
 <p>We use <a class="reference external" href="https://help.github.com/articles/about-pull-requests">GitHub pull requests</a> to accept
 contributions.</p>
 <p>While not required, opening a new issue about the bug you’re fixing or the
@@ -503,14 +580,14 @@ not merge the commit until it is finished. You or a reviewer can remove the
 WIP status when the code is ready to be fully reviewed for merging.</p>
 </section>
 <section id="code-review">
-<h2>Code Review<a class="headerlink" href="#code-review" title="Link to this heading">¶</a></h2>
+<h3>Code Review<a class="headerlink" href="#code-review" title="Link to this heading">¶</a></h3>
 <p>Code review is done in the open and is open to anyone. While only maintainers have
 access to merge commits, community feedback on pull requests is extremely valuable.
 It is also a good mechanism to learn about the code base. You can
 view a list of all open pull requests at <a class="reference external" href="https://github.com/Qiskit/qiskit-metal/pulls">https://github.com/Qiskit/qiskit-metal/pulls</a></p>
 </section>
 <section id="commit-messages">
-<h2>Commit Messages<a class="headerlink" href="#commit-messages" title="Link to this heading">¶</a></h2>
+<h3>Commit Messages<a class="headerlink" href="#commit-messages" title="Link to this heading">¶</a></h3>
 <p>The content of the commit message describing a change is just as important as the
 change itself. The commit message provides the context for
 not only code review but also the change history in the git log. A detailed
@@ -571,7 +648,7 @@ the commit message. Use the syntax:</p>
 understand and review the patch for correctness. Less is not more.</p>
 </section>
 <section id="documenting-your-code">
-<h2>Documenting Your Code<a class="headerlink" href="#documenting-your-code" title="Link to this heading">¶</a></h2>
+<h3>Documenting Your Code<a class="headerlink" href="#documenting-your-code" title="Link to this heading">¶</a></h3>
 <p>If you make a change to an element, make sure you update the associated
 <em>docstrings</em> and parts of the documentation under <code class="docutils literal notranslate"><span class="pre">docs/apidocs</span></code> in the
 corresponding repo. To locally build the element-specific
@@ -584,7 +661,7 @@ if you see doc bugs, have a new feature that needs to be documented, or think
 that material could be added to the existing docs.</p>
 </section>
 <section id="good-first-contributions">
-<h2>Good First Contributions<a class="headerlink" href="#good-first-contributions" title="Link to this heading">¶</a></h2>
+<h3>Good First Contributions<a class="headerlink" href="#good-first-contributions" title="Link to this heading">¶</a></h3>
 <p>If you would like to contribute to Qiskit Metal, but aren’t sure
 where to get started, the <code class="docutils literal notranslate"><span class="pre">good</span> <span class="pre">first</span> <span class="pre">issue</span></code> label on issues for a project
 highlights items appropriate for people new to the project.
@@ -594,7 +671,7 @@ words, intimate familiarity with Qiskit Metal is not a requirement to develop a 
 for the issue.</p>
 </section>
 <section id="deprecation-policy">
-<h2>Deprecation Policy<a class="headerlink" href="#deprecation-policy" title="Link to this heading">¶</a></h2>
+<h3>Deprecation Policy<a class="headerlink" href="#deprecation-policy" title="Link to this heading">¶</a></h3>
 <p>Qiskit users need to know if a feature or an API they rely
 upon will continue to be supported by the software tomorrow. Knowing under which conditions
 the project can remove (or change in a backwards-incompatible manner) a feature or
@@ -621,6 +698,7 @@ date of the first release to include the deprecation warning.</p>
 that the deprecated feature appears for at least double that time. Also, per
 the stable branch policy, deprecation removals can only occur during minor
 version releases; they are not appropriate for backporting.</p>
+</section>
 <section id="deprecation-warnings">
 <h3>Deprecation Warnings<a class="headerlink" href="#deprecation-warnings" title="Link to this heading">¶</a></h3>
 <p>The proper way to raise a deprecation warning is to use the <code class="docutils literal notranslate"><span class="pre">warn</span></code> function
@@ -648,9 +726,8 @@ stack and where <code class="docutils literal notranslate"><span class="pre">war
 raised by a private method that only has one caller, <code class="docutils literal notranslate"><span class="pre">stack_level=3</span></code> might be
 appropriate.</p>
 </section>
-</section>
 <section id="stable-branch-policy">
-<h2>Stable Branch Policy<a class="headerlink" href="#stable-branch-policy" title="Link to this heading">¶</a></h2>
+<h3>Stable Branch Policy<a class="headerlink" href="#stable-branch-policy" title="Link to this heading">¶</a></h3>
 <p>The stable branch is intended to be a safe source of fixes for high-impact
 bugs and security issues that have been fixed on master since a
 release. When reviewing a stable branch PR, we must balance the risk
@@ -673,6 +750,7 @@ what a less risky fix might look like.</p></li>
 a change already merged onto master, unless the change simply does
 not make sense on master.</p></li>
 </ul>
+</section>
 <section id="backporting-procedure">
 <h3>Backporting procedure:<a class="headerlink" href="#backporting-procedure" title="Link to this heading">¶</a></h3>
 <p>When backporting a patch from master to stable, we want to keep a
@@ -704,10 +782,8 @@ proposed, the tag should be removed.</p>
 as a sign that setting the target branch as stable was not
 a mistake. Also, reference to the PR number in master that you are
 porting.</p>
-</section>
-</section>
 <section id="custom-names-and-images-for-qcomponents">
-<h2>Custom Names and Images for QComponents<a class="headerlink" href="#custom-names-and-images-for-qcomponents" title="Link to this heading">¶</a></h2>
+<h4>Custom Names and Images for QComponents<a class="headerlink" href="#custom-names-and-images-for-qcomponents" title="Link to this heading">¶</a></h4>
 <p>When adding new qcomponents, new images for these components go
 in the following directory:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qiskit</span><span class="o">-</span><span class="n">metal</span><span class="o">/</span><span class="n">qiskit_metal</span><span class="o">/</span><span class="n">_gui</span><span class="o">/</span><span class="n">_imgs</span><span class="o">/</span><span class="n">components</span>
@@ -734,15 +810,16 @@ the qiskit metal application that the image for the qcomponent is named
 <p>and that they want the display name of this file to be <code class="docutils literal notranslate"><span class="pre">MyQComponent</span></code>.</p>
 </section>
 </section>
+</section>
 <section id="contributing-to-documentation">
-<h1>Contributing to Documentation<a class="headerlink" href="#contributing-to-documentation" title="Link to this heading">¶</a></h1>
+<h2>Contributing to Documentation<a class="headerlink" href="#contributing-to-documentation" title="Link to this heading">¶</a></h2>
 <p>Qiskit Metal documentation is shaped by the <a class="reference external" href="https://www.writethedocs.org/guide/docs-as-code/">docs as code</a> philosophy, primarily
 drawn from Qiskit Metal code comments in the <a class="reference external" href="https://alistapart.com/article/the-ten-essentials-for-good-api-documentation/">style of API documentation</a>.</p>
 <p>The documentation is built using <a class="reference external" href="http://www.sphinx-doc.org/en/master/">Sphinx</a>. The majority of documentation, under
 <a class="reference external" href="https://qiskit-community.github.io/qiskit-metal/overview.html">API Reference</a>, is
 drawn from code comments in the repositories listed in <a class="reference internal" href="#where-things-are"><span class="std std-ref">Where Things Are</span></a>.</p>
 <section id="documentation-structure">
-<h2>Documentation Structure<a class="headerlink" href="#documentation-structure" title="Link to this heading">¶</a></h2>
+<h3>Documentation Structure<a class="headerlink" href="#documentation-structure" title="Link to this heading">¶</a></h3>
 <p>The way documentation is structured in Qiskit Metal is to push as much of the actual
 documentation into the docstrings as possible. This makes it easier for
 additions and corrections to be made during development, because the majority
@@ -798,6 +875,7 @@ The <a class="reference external" href="https://sphinxcontrib-napoleon.readthedo
 contains a good example of how docstrings should be formatted.</p>
 </dd>
 </dl>
+</section>
 <section id="rebuilding-documentation">
 <h3>Rebuilding Documentation<a class="headerlink" href="#rebuilding-documentation" title="Link to this heading">¶</a></h3>
 <p>As you make changes to your local RST files, you can update your
@@ -806,24 +884,18 @@ HTML files by navigating to <cite>/docs/</cite> and running:</p>
 </pre></div>
 </div>
 <p>For a fast, more advanced build that uses parallelization and makes sure we skip
-executing notebooks (which is the default behavior), run:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nv">QISKIT_DOCS_BUILD_TUTORIALS</span><span class="o">=</span>never<span class="w"> </span>sphinx-build<span class="w"> </span>-M<span class="w"> </span>html<span class="w"> </span>.<span class="w"> </span>_build<span class="w"> </span>-j<span class="w"> </span>auto
+executing notebooks (which is the default behavior), run (if using uv):</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>sphinx-build<span class="w"> </span>-M<span class="w"> </span>html<span class="w"> </span>.<span class="w"> </span>_build<span class="w"> </span>-j<span class="w"> </span>auto
+uv<span class="w"> </span>sphinx-build<span class="w"> </span>-M<span class="w"> </span>html<span class="w"> </span>.<span class="w"> </span>_build<span class="w"> </span>-j<span class="w"> </span>auto<span class="w"> </span>-v<span class="w"> </span>-T
 </pre></div>
 </div>
 <p>Notes:</p>
 <ul class="simple">
-<li><p><cite>QISKIT_DOCS_BUILD_TUTORIALS=never</cite> skips executing notebooks during the build (fast; uses stored outputs if present).</p></li>
 <li><p><cite>-j auto</cite> enables parallel Sphinx workers to speed up the build on multi-core machines.</p></li>
 <li><p>The HTML output is written to <cite>/docs/_build/html/</cite>. Use <cite>open _build/html/index.html</cite> (macOS) or <cite>python -m http.server 8000 -d _build/html</cite> to preview locally.</p></li>
+<li><p>We also added -v for verbose output and -T traceback during the build.</p></li>
+<li><p>Env variable <cite>QISKIT_DOCS_BUILD_TUTORIALS=never</cite> skips executing notebooks during the build (fast; uses stored outputs if present).</p></li>
 </ul>
-<p>The jupyter notebooks can be a bit slow to build, so if you are not
-working on those, you can skip including them altogether in a local build by using the following code.
-We also added -v for verbose output and -T traceback during the build.</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sphinx-build<span class="w"> </span>-M<span class="w"> </span>html<span class="w"> </span>.<span class="w"> </span>_build<span class="w"> </span>-j<span class="w"> </span>auto<span class="w"> </span>-v<span class="w"> </span>-T<span class="w"> </span>-D<span class="w"> </span><span class="s2">&quot;exclude_patterns=**/*.ipynb,**/.ipynb_checkpoints,tut/**,circuit-examples/**&quot;</span>
-</pre></div>
-</div>
-<section id="live-preview-with-autobuild">
-<h4>Live Preview with autobuild<a class="headerlink" href="#live-preview-with-autobuild" title="Link to this heading">¶</a></h4>
 <p>To get fast, automatic rebuilding of the documentation while you edit it, use
 <code class="docutils literal notranslate"><span class="pre">sphinx-autobuild</span></code> together with <code class="docutils literal notranslate"><span class="pre">uv</span></code> package manager (you can use conda or v env too).</p>
 <p>First, install the tool into your development environment:</p>
@@ -837,7 +909,10 @@ We also added -v for verbose output and -T traceback during the build.</p>
 </div>
 <p>This launches a local server (default: <a class="reference external" href="http://127.0.0.1:8000">http://127.0.0.1:8000</a>) and rebuilds the
 HTML pages incrementally whenever source files change.</p>
-</section>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Avoid running the docs build <strong>and</strong> importing <cite>qiskit_metal</cite> at the same time from the same checkout. A legacy guard (<cite>config.is_building_docs()</cite> looks for a <cite>.buildingdocs</cite> file) can skip certain imports when that marker file is present. If you see unexpected import errors while developing and building docs, check for and remove <cite>docs/.buildingdocs</cite> before importing. Longer-term we’ll remove this guard, but for now be mindful of the interaction.</p>
+</div>
 </section>
 <section id="tutorials">
 <h3>Tutorials<a class="headerlink" href="#tutorials" title="Link to this heading">¶</a></h3>
@@ -851,12 +926,12 @@ folder. If you add a new feature, please add a demonstration of its use to a not
       </div>
       <footer>
         <div class="related-pages">
-          <a class="next-page" href="apidocs/qlibrary.html">
+          <a class="next-page" href="faq.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">QLibrary (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.qlibrary</span></code>)</div>
+                <div class="title">FAQ’s</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -881,7 +956,7 @@ folder. If you add a new feature, please add a demonstration of its use to a not
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2025/12/07</div>
+              Last updated on 2025/12/08</div>
           </div>
           <div class="right-details">
             
@@ -890,8 +965,52 @@ folder. If you add a new feature, please add a demonstration of its use to a not
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Contributing to Qiskit Metal</a><ul>
+<li><a class="reference internal" href="#where-things-are">Where Things Are</a></li>
+<li><a class="reference internal" href="#reporting-bugs-and-requesting-enhancements">Reporting Bugs and Requesting Enhancements</a></li>
+<li><a class="reference internal" href="#contributing-code">Contributing Code</a><ul>
+<li><a class="reference internal" href="#style-guide">Style Guide</a></li>
+<li><a class="reference internal" href="#contributor-license-agreement">Contributor License Agreement</a></li>
+<li><a class="reference internal" href="#pull-requests">Pull Requests</a></li>
+<li><a class="reference internal" href="#code-review">Code Review</a></li>
+<li><a class="reference internal" href="#commit-messages">Commit Messages</a></li>
+<li><a class="reference internal" href="#documenting-your-code">Documenting Your Code</a></li>
+<li><a class="reference internal" href="#good-first-contributions">Good First Contributions</a></li>
+<li><a class="reference internal" href="#deprecation-policy">Deprecation Policy</a></li>
+<li><a class="reference internal" href="#deprecation-warnings">Deprecation Warnings</a></li>
+<li><a class="reference internal" href="#stable-branch-policy">Stable Branch Policy</a></li>
+<li><a class="reference internal" href="#backporting-procedure">Backporting procedure:</a></li>
+<li><a class="reference internal" href="#backport-labels">Backport labels</a><ul>
+<li><a class="reference internal" href="#custom-names-and-images-for-qcomponents">Custom Names and Images for QComponents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#contributing-to-documentation">Contributing to Documentation</a><ul>
+<li><a class="reference internal" href="#documentation-structure">Documentation Structure</a></li>
+<li><a class="reference internal" href="#rebuilding-documentation">Rebuilding Documentation</a></li>
+<li><a class="reference internal" href="#tutorials">Tutorials</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
