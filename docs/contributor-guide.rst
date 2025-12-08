@@ -493,10 +493,10 @@ executing notebooks (which is the default behavior), run (if using uv):
 
 Notes:
 
-- `QISKIT_DOCS_BUILD_TUTORIALS=never` skips executing notebooks during the build (fast; uses stored outputs if present).
 - `-j auto` enables parallel Sphinx workers to speed up the build on multi-core machines.
 - The HTML output is written to `/docs/_build/html/`. Use `open _build/html/index.html` (macOS) or `python -m http.server 8000 -d _build/html` to preview locally.
 - We also added -v for verbose output and -T traceback during the build.
+- Env variable `QISKIT_DOCS_BUILD_TUTORIALS=never` skips executing notebooks during the build (fast; uses stored outputs if present).
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~

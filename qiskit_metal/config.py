@@ -18,10 +18,11 @@
 
 Mostly internal.
 """
+import os
+import sys
 
 from .toolbox_python.attr_dict import Dict
 from ._defaults import DefaultMetalOptions, DefaultOptionsRenderer
-import os
 
 renderers_to_load = Dict(
     hfss=Dict(path_name='qiskit_metal.renderers.renderer_ansys.hfss_renderer',
@@ -118,7 +119,7 @@ A dictionary containing the log format for standard text and date/time
 """
 
 
-def is_using_ipython():
+def is_using_ipython() -> bool:
     """Check if we're in IPython.
 
     Returns:
@@ -127,16 +128,22 @@ def is_using_ipython():
     return 'JPY_PARENT_PID' in os.environ
 
 
-def is_building_docs():
-    """Checks for the existance of the .buildingdocs file which is only present
-    when building the docs.
+def is_building_docs() -> bool:
+    """Return True if we are in a documentation (Sphinx) build context."""
+    if os.getenv("QISKIT_METAL_DOCS_BUILD") == "1":
+        return True
+    # Fallback heuristic if someone builds docs without our env flag
+    return "sphinx" in sys.modules
 
-    Returns:
-        bool: True if .buildingdocs exists
-    """
-    from pathlib import Path  # pylint: disable=import-outside-toplevel
-    build_docs_file = Path(__file__).parent.parent / "docs" / ".buildingdocs"
-    return Path.exists(build_docs_file)
+    # OLD:
+    # """Checks for the existance of the .buildingdocs file which is only present
+    # when building the docs.
+    # Returns:
+    #     bool: True if .buildingdocs exists
+    # """
+    # from pathlib import Path  # pylint: disable=import-outside-toplevel
+    # build_docs_file = Path(__file__).parent.parent / "docs" / ".buildingdocs"
+    # return Path.exists(build_docs_file)
 
 
 _ipython = is_using_ipython()
