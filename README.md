@@ -93,29 +93,40 @@ If you prefer installing from source or contributing, please follow the develope
 
 For now, Quantum Metal v0.5 is **not** published on PyPI. The only way to install the updated version is directly **from source**. Clone the repository and install it locally.
 
-Use **Python 3.10 or 3.11** — newer versions (≥3.12) may cause NumPy build failures due to missing wheels.
+Continuous integration runs on **Python 3.11 and 3.12** across Linux (Ubuntu 24.04), macOS 15, and Windows, plus separate jobs for lint and docs. Sticking to those versions mirrors the CI-tested setup; on Ubuntu you may need extra system libs for Gmsh (see CI script).
 
 > **Key notes to keep in mind:**
 >
-> * Python **3.10/3.11** ensure full binary wheel availability for NumPy, SciPy, GDSTK, and GeoPandas.
+> * Python **3.11/3.12** mirror the CI matrix; earlier 3.10 also works but isn’t CI-covered.
 > * macOS ARM users should avoid Python 3.12+ to prevent C/C++ toolchain errors.
 > * `uv` is the **preferred and fastest** method and avoids most scientific‑stack headaches.
 
 ### Preferred: `uv` (fast, modern, reliable)
-First install `uv`, then close the repository, use python 3.11, set up the virtual environment, then install requirements and Quantum Metal.
-```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
+First install `uv`, then clone the repository, use Python 3.11, set up the virtual environment, then install requirements and Quantum Metal.
 
-git clone https://github.com/qiskit-community/qiskit-metal.git quantum-metal
-cd quantum-metal
-
-uv python pin 3.11
-uv venv
-source .venv/bin/activate
-
-uv pip install -r requirements.txt
-uv pip install -e .
-```
+- **macOS / Linux (bash):**
+  ```bash
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+  git clone https://github.com/qiskit-community/qiskit-metal.git quantum-metal
+  cd quantum-metal
+  uv python pin 3.11
+  uv venv
+  source .venv/bin/activate
+  uv pip install -r requirements.txt
+  uv pip install -e .
+  ```
+- **Windows (PowerShell):**
+  ```powershell
+  iwr https://astral.sh/uv/install.ps1 -UseBasicParsing | iex
+  git clone https://github.com/qiskit-community/qiskit-metal.git quantum-metal
+  cd quantum-metal
+  uv python pin 3.11
+  uv venv
+  .\.venv\Scripts\Activate.ps1
+  uv pip install -r requirements.txt
+  uv pip install -e .
+  ```
+On Ubuntu you may need system packages for Gmsh/Qt (see CI: `libglu1-mesa`, `libegl1-mesa-dev`), and on Windows/macOS ensure build tools/CLT are present if you add native extensions.
 
 ### Option 2: Conda (best for binary-heavy scientific stacks)
 
