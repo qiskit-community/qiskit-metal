@@ -91,9 +91,11 @@ If you prefer installing from source or contributing, please follow the develope
 
 ### Installing the Current Release (v0.5)
 
-For now, Quantum Metal v0.5 is **not** published on PyPI. The only way to install the updated version is directly **from source**. Clone the repository and install it locally.
+Quantum Metal is now available on PyPI:  
+`pip install quantum-metal`  
+Project page: https://pypi.org/project/quantum-metal/
 
-Continuous integration runs on **Python 3.11 and 3.12** across Linux (Ubuntu 24.04), macOS 15, and Windows, plus separate jobs for lint and docs. Sticking to those versions mirrors the CI-tested setup; on Ubuntu you may need extra system libs for Gmsh (see CI script).
+If you prefer installing from source, clone and install locally (steps below). Continuous integration runs on **Python 3.11 and 3.12** across Linux (Ubuntu 24.04), macOS 15, and Windows, plus separate jobs for lint and docs. Sticking to those versions mirrors the CI-tested setup; on Ubuntu you may need extra system libs for Gmsh (see CI script).
 
 > **Key notes to keep in mind:**
 >

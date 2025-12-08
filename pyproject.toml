@@ -1,0 +1,80 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "quantum-metal"
+version = "0.5.1"
+description = "Quantum Metal (formerly Qiskit Metal): superconducting quantum device design toolkit."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [
+  { name = "Quantum Metal Community", email = "qiskit-metal@qiskit.org" }
+]
+keywords = ["quantum", "hardware", "EDA", "superconducting", "qiskit"]
+classifiers = [
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering"
+]
+
+dependencies = [
+  "numpy>=1.23",
+  "scipy>=1.10",
+  "pandas>=1.5",
+  "shapely>=2.0",
+  "geopandas>=0.13",
+  "networkx>=2.8",
+  "jsonschema",
+  "pyyaml",
+  "matplotlib>=3.7",
+  "cycler",
+  "requests",
+  "jinja2",
+  "addict",
+  "gdstk",
+  "pyqtgraph",
+]
+
+[project.optional-dependencies]
+gui = [
+  "PySide6",
+]
+docs = [
+  "sphinx>=7.0",
+  "sphinx-design",
+  "nbsphinx",
+  "myst-parser",
+  "qiskit-sphinx-theme",
+  "ipykernel",
+  "nbconvert",
+  "graphviz",
+  "pandoc",
+]
+test = [
+  "pytest",
+  "pytest-cov",
+  "tox",
+]
+
+[tool.setuptools]
+packages = { find = { exclude = ["docs*", "tests*", "examples*"] } }
+
+[tool.black]
+line-length = 88
+target-version = ["py310"]
+
+[tool.isort]
+profile = "black"
+
+[tool.pytest.ini_options]
+addopts = "-ra"
+
+[project.urls]
+Homepage = "https://github.com/qiskit-community/qiskit-metal/"
+Documentation = "https://qiskit-community.github.io/qiskit-metal/"
