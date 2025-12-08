@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="FAQ’s" href="faq.html" /><link rel="prev" title="Roadmap" href="workflow.html" />
 
     <!-- Generated with Sphinx 7.4.7 and Furo 2024.01.29 -->
-        <title>Contributing to Qiskit Metal - Quantum Metal 0.5.0</title>
+        <title>Contributing to Qiskit Metal - Quantum Metal 0.5.1</title>
       <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=fe84956c" />
@@ -143,7 +143,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">Quantum Metal 0.5.0</div></a>
+      <a href="index.html"><div class="brand">Quantum Metal 0.5.1</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -170,7 +170,7 @@
     </div>
   </a>
   
-  <span class="sidebar-brand-text">Quantum Metal 0.5.0</span>
+  <span class="sidebar-brand-text">Quantum Metal 0.5.1</span>
 </div><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
@@ -914,6 +914,32 @@ HTML pages incrementally whenever source files change.</p>
 <p>Avoid running the docs build <strong>and</strong> importing <cite>qiskit_metal</cite> at the same time from the same checkout. A legacy guard (<cite>config.is_building_docs()</cite> looks for a <cite>.buildingdocs</cite> file) can skip certain imports when that marker file is present. If you see unexpected import errors while developing and building docs, check for and remove <cite>docs/.buildingdocs</cite> before importing. Longer-term we’ll remove this guard, but for now be mindful of the interaction.</p>
 </div>
 </section>
+<section id="local-release-vs-github-release">
+<h3>Local release vs. GitHub release<a class="headerlink" href="#local-release-vs-github-release" title="Link to this heading">¶</a></h3>
+<p>There are two supported release paths:</p>
+<ul class="simple">
+<li><p><strong>GitHub Actions (automated):</strong> pushing a tag triggers the release workflow to build artifacts and upload to PyPI using the repository’s PyPI token.</p></li>
+<li><p><strong>Local publish (manual):</strong> useful for testing or hotfixes when you need to ship from your workstation.</p></li>
+</ul>
+<p>Local publish steps:</p>
+<ol class="arabic">
+<li><p>Bump the version in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> (e.g., 0.5.0 → 0.5.1).</p></li>
+<li><p>Commit (and optionally tag):</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>commit<span class="w"> </span>-am<span class="w"> </span><span class="s2">&quot;Bump version to 0.5.1&quot;</span>
+git<span class="w"> </span>tag<span class="w"> </span>v0.5.1
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>main<span class="w"> </span>--tags
+</pre></div>
+</div>
+</li>
+<li><p>Build and publish with <code class="docutils literal notranslate"><span class="pre">uv</span></code> (requires a PyPI token, e.g., <code class="docutils literal notranslate"><span class="pre">UV_PYPI_TOKEN</span></code>):</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>build
+uv<span class="w"> </span>publish<span class="w"> </span>--token<span class="w"> </span><span class="nv">$UV_PYPI_TOKEN</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>If you prefer the automated path, just push the tag and let GitHub Actions publish using the configured PyPI secret.</p>
+</section>
 <section id="tutorials">
 <h3>Tutorials<a class="headerlink" href="#tutorials" title="Link to this heading">¶</a></h3>
 <p>Jupyter notebook tutorials showing off features of Qiskit Metal are located in the <cite>_tutorials_</cite>
@@ -1001,6 +1027,7 @@ folder. If you add a new feature, please add a demonstration of its use to a not
 <li><a class="reference internal" href="#contributing-to-documentation">Contributing to Documentation</a><ul>
 <li><a class="reference internal" href="#documentation-structure">Documentation Structure</a></li>
 <li><a class="reference internal" href="#rebuilding-documentation">Rebuilding Documentation</a></li>
+<li><a class="reference internal" href="#local-release-vs-github-release">Local release vs. GitHub release</a></li>
 <li><a class="reference internal" href="#tutorials">Tutorials</a></li>
 </ul>
 </li>
@@ -1017,7 +1044,7 @@ folder. If you add a new feature, please add a demonstration of its use to a not
   </div>
 </div><script src="_static/jquery.js?v=5d32c60e"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="_static/documentation_options.js?v=1dd76d02"></script>
+    <script src="_static/documentation_options.js?v=b9afe91b"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>

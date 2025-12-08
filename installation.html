@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Roadmap" href="workflow.html" /><link rel="prev" title="Quantum Metal (formerly Qiskit Metal)" href="index.html" />
 
     <!-- Generated with Sphinx 7.4.7 and Furo 2024.01.29 -->
-        <title>Installation - Quantum Metal 0.5.0</title>
+        <title>Installation - Quantum Metal 0.5.1</title>
       <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=fe84956c" />
@@ -143,7 +143,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">Quantum Metal 0.5.0</div></a>
+      <a href="index.html"><div class="brand">Quantum Metal 0.5.1</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -170,7 +170,7 @@
     </div>
   </a>
   
-  <span class="sidebar-brand-text">Quantum Metal 0.5.0</span>
+  <span class="sidebar-brand-text">Quantum Metal 0.5.1</span>
 </div><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
@@ -498,11 +498,11 @@
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-text-left sd-bg-light sd-border docutils">
 <div class="sd-card-body docutils">
-<p class="sd-card-text"><strong>Basic Installation</strong></p>
-<p class="sd-card-text">Legacy PyPI package (pre-0.5 only).</p>
+<p class="sd-card-text"><strong>Basic Installation (PyPI)</strong></p>
+<p class="sd-card-text">Install the current Quantum Metal release from PyPI.</p>
 <ul class="simple">
-<li><p class="sd-card-text"><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">qiskit-metal</span></code></p></li>
-<li><p class="sd-card-text">Useful when you need compatibility with older notebooks/tutorials</p></li>
+<li><p class="sd-card-text"><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">quantum-metal</span></code></p></li>
+<li><p class="sd-card-text">For most users; matches CI-tested wheels</p></li>
 </ul>
 </div>
 </div>
@@ -536,13 +536,13 @@
 </section>
 <section id="basic-installation">
 <h2>Basic Installation<a class="headerlink" href="#basic-installation" title="Link to this heading">¶</a></h2>
-<p>During the v0.5 transition to <strong>Quantum Metal</strong>, the PyPI package <code class="docutils literal notranslate"><span class="pre">qiskit-metal</span></code> remains available only in its pre-0.5 archived state. To get the current v0.5 code, use the advanced (from-source) methods below.</p>
-<p>If you specifically need the legacy PyPI build:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">qiskit</span><span class="o">-</span><span class="n">metal</span>
+<p>Quantum Metal v0.5+ is available on PyPI:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">quantum</span><span class="o">-</span><span class="n">metal</span>
 </pre></div>
 </div>
-<p>For the active Quantum Metal v0.5 codebase, clone the repository and follow the advanced installation paths.
-We will have a pip installable package for quantum-metal in a future release.</p>
+<p>Project page: <a class="reference external" href="https://pypi.org/project/quantum-metal/">https://pypi.org/project/quantum-metal/</a></p>
+<p>If you specifically need the legacy pre-0.5 package, install <code class="docutils literal notranslate"><span class="pre">qiskit-metal</span></code> instead. Otherwise, use <code class="docutils literal notranslate"><span class="pre">quantum-metal</span></code> to get the current release.</p>
+<p>For source installs or development, clone the repository and follow the advanced installation paths below.</p>
 </section>
 <section id="advanced-installation">
 <h2>Advanced Installation<a class="headerlink" href="#advanced-installation" title="Link to this heading">¶</a></h2>
@@ -785,7 +785,7 @@ Be sure to select the latest versions of <cite>MSVC</cite> and <cite>Windows SDK
   </div>
 </div><script src="_static/jquery.js?v=5d32c60e"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="_static/documentation_options.js?v=1dd76d02"></script>
+    <script src="_static/documentation_options.js?v=b9afe91b"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>

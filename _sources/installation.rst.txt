@@ -19,12 +19,12 @@ Outline of Installation
       :class-header: sd-bg-secondary sd-text-white
       :text-align: left
 
-      **Basic Installation**
+      **Basic Installation (PyPI)**
 
-      Legacy PyPI package (pre-0.5 only).
+      Install the current Quantum Metal release from PyPI.
 
-      - ``pip install qiskit-metal``
-      - Useful when you need compatibility with older notebooks/tutorials
+      - ``pip install quantum-metal``
+      - For most users; matches CI-tested wheels
 
    .. grid-item-card::
       :class-card: sd-bg-light sd-border
@@ -55,16 +55,17 @@ Outline of Installation
 ~~~~~~~~~~~~~~~~~~
 Basic Installation
 ~~~~~~~~~~~~~~~~~~
-During the v0.5 transition to **Quantum Metal**, the PyPI package ``qiskit-metal`` remains available only in its pre-0.5 archived state. To get the current v0.5 code, use the advanced (from-source) methods below.
-
-If you specifically need the legacy PyPI build:
+Quantum Metal v0.5+ is available on PyPI:
 
 ::
 
-    pip install qiskit-metal
+    pip install quantum-metal
 
-For the active Quantum Metal v0.5 codebase, clone the repository and follow the advanced installation paths.
-We will have a pip installable package for quantum-metal in a future release.
+Project page: https://pypi.org/project/quantum-metal/
+
+If you specifically need the legacy pre-0.5 package, install ``qiskit-metal`` instead. Otherwise, use ``quantum-metal`` to get the current release.
+
+For source installs or development, clone the repository and follow the advanced installation paths below.
 
 ~~~~~~~~~~~~~~~~~~~~~
 Advanced Installation

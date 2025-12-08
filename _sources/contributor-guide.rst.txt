@@ -527,6 +527,34 @@ HTML pages incrementally whenever source files change.
 
    Avoid running the docs build **and** importing `qiskit_metal` at the same time from the same checkout. A legacy guard (`config.is_building_docs()` looks for a `.buildingdocs` file) can skip certain imports when that marker file is present. If you see unexpected import errors while developing and building docs, check for and remove `docs/.buildingdocs` before importing. Longer-term we’ll remove this guard, but for now be mindful of the interaction.
 
+Local release vs. GitHub release
+--------------------------------
+
+There are two supported release paths:
+
+- **GitHub Actions (automated):** pushing a tag triggers the release workflow to build artifacts and upload to PyPI using the repository’s PyPI token.
+- **Local publish (manual):** useful for testing or hotfixes when you need to ship from your workstation.
+
+Local publish steps:
+
+#. Bump the version in ``pyproject.toml`` (e.g., 0.5.0 → 0.5.1).
+#. Commit (and optionally tag):
+
+   .. code-block:: sh
+
+      git commit -am "Bump version to 0.5.1"
+      git tag v0.5.1
+      git push origin main --tags
+
+#. Build and publish with ``uv`` (requires a PyPI token, e.g., ``UV_PYPI_TOKEN``):
+
+   .. code-block:: sh
+
+      uv build
+      uv publish --token $UV_PYPI_TOKEN
+
+If you prefer the automated path, just push the tag and let GitHub Actions publish using the configured PyPI secret.
+
 
 
 Tutorials
