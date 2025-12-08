@@ -251,17 +251,15 @@ The goal of Qiskit Metal is to allow for easy quantum hardware modeling with red
 
     Home<self>
     Installing Qiskit Metal<installation>
-    Frequently Asked Questions<faq>
-    Metal Workflow<workflow>
-
-.. TODO: Add Getting Started With Metal between Metal Workflow and Installing Qiskit Metal
 
 .. toctree::
     :maxdepth: 2
-    :caption: Contributor Guide
+    :caption: Overview
     :hidden:
 
+    Metal Workflow<workflow>
     Contributor Guide<contributor-guide>
+    Frequently Asked Questions<faq>
 
 
 .. toctree::

@@ -11,14 +11,14 @@ community in this goal.
 
 .. _where_things_are:
 
-****************
+
 Where Things Are
 ****************
 
 The code for Qiskit Metal is located in the `Qiskit GitHub organization <https://github.com/Qiskit>`__,
 as part of the larger umbrella of Qiskit projects.
 
-******************************************
+
 Reporting Bugs and Requesting Enhancements
 ******************************************
 
@@ -56,14 +56,14 @@ the repository issue tracker. Opening an issue starts a discussion with the team
 fits in with the project, how it can be implemented, etc.
 
 
-*****************
+
 Contributing Code
 *****************
 
 
 
 Style Guide
-===========
+-----------
 
 To enforce a consistent code style in the project, we use customized `Pylint
 <https://www.pylint.org>`__ for linting and `YAPF`<https://github.com/google/yapf>__ with the `Google style
@@ -72,7 +72,7 @@ To enforce a consistent code style in the project, we use customized `Pylint
 Our CI pipeline will enforce these styles when you make the pull request.
 
 Contributor License Agreement
-=============================
+-----------------------------
 
 Before you can submit any code, all contributors must sign a
 contributor license agreement (CLA). By signing a CLA, you're attesting
@@ -94,7 +94,7 @@ document is available for review as a PDF.
 
 
 Pull Requests
-=============
+-------------
 
 We use `GitHub pull requests
 <https://help.github.com/articles/about-pull-requests>`__ to accept
@@ -119,7 +119,7 @@ WIP status when the code is ready to be fully reviewed for merging.
 
 
 Code Review
-===========
+-----------
 
 Code review is done in the open and is open to anyone. While only maintainers have
 access to merge commits, community feedback on pull requests is extremely valuable.
@@ -128,7 +128,7 @@ view a list of all open pull requests at https://github.com/Qiskit/qiskit-metal/
 
 
 Commit Messages
-===============
+---------------
 
 The content of the commit message describing a change is just as important as the
 change itself. The commit message provides the context for
@@ -201,7 +201,7 @@ understand and review the patch for correctness. Less is not more.
 
 
 Documenting Your Code
-=====================
+---------------------
 
 If you make a change to an element, make sure you update the associated
 *docstrings* and parts of the documentation under ``docs/apidocs`` in the
@@ -218,7 +218,7 @@ that material could be added to the existing docs.
 
 
 Good First Contributions
-========================
+------------------------
 
 If you would like to contribute to Qiskit Metal, but aren't sure
 where to get started, the ``good first issue`` label on issues for a project
@@ -231,7 +231,7 @@ for the issue.
 
 
 Deprecation Policy
-==================
+------------------
 
 Qiskit users need to know if a feature or an API they rely
 upon will continue to be supported by the software tomorrow. Knowing under which conditions
@@ -297,7 +297,7 @@ appropriate.
 
 
 Stable Branch Policy
-====================
+--------------------
 
 The stable branch is intended to be a safe source of fixes for high-impact
 bugs and security issues that have been fixed on master since a
@@ -393,7 +393,7 @@ and that they want the display name of this file to be ``MyQComponent``.
 
 
 
-*****************************
+
 Contributing to Documentation
 *****************************
 
@@ -410,7 +410,7 @@ drawn from code comments in the repositories listed in :ref:`where_things_are`.
 
 
 Documentation Structure
-=======================
+-----------------------
 
 The way documentation is structured in Qiskit Metal is to push as much of the actual
 documentation into the docstrings as possible. This makes it easier for
@@ -505,9 +505,9 @@ We also added -v for verbose output and -T traceback during the build.
    sphinx-build -M html . _build -j auto -v -T -D "exclude_patterns=**/*.ipynb,**/.ipynb_checkpoints,tut/**,circuit-examples/**"
 
 
----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Live Preview with autobuild
----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To get fast, automatic rebuilding of the documentation while you edit it, use
 ``sphinx-autobuild`` together with ``uv`` package manager (you can use conda or v env too).

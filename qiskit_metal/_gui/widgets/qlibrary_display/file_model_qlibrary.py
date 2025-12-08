@@ -87,8 +87,10 @@ class QFileSystemLibraryModel(QFileSystemModel):
                     if relativeFilename in self.nameCache:
                         return self.nameCache[relativeFilename]
                     else:
-                        matches = findProperty(absoluteFilename,
-                                               "\.\. meta::[\r\n]+([^\r\n]+)")
+                        matches = findProperty(
+                            absoluteFilename,
+                            r"\.\. meta::[\r\n]+[ \t]*:description:\s*([^\r\n]+)"
+                        )
                         if matches is not None and len(matches) != 0:
                             displayName = matches[0].lstrip()
                             self.nameCache[relativeFilename] = displayName

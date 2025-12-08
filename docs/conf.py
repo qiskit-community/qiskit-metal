@@ -42,8 +42,6 @@ version = qiskit_metal.__version__
 release = qiskit_metal.__version__
 
 rst_prolog = f"""
-.. raw:: html
-
 .. |version| replace:: {release}
 
 .. role:: rc

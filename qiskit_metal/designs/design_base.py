@@ -26,10 +26,7 @@ from qiskit_metal.designs.net_info import QNet
 from qiskit_metal import Dict, config, logger
 from qiskit_metal.config import DefaultMetalOptions, DefaultOptionsRenderer
 from qiskit_metal.toolbox_metal.exceptions import QiskitMetalDesignError
-
-if not config.is_building_docs():
-    from qiskit_metal.toolbox_metal.import_export import load_metal_design, save_metal
-    from qiskit_metal.toolbox_python._logging import LogStore
+from qiskit_metal.toolbox_python._logging import LogStore
 
 if TYPE_CHECKING:
     # For linting, avoids circular imports.
@@ -781,6 +778,12 @@ class QDesign():
             QDesign: Loaded metal design.
         """
         logger.warning("Loading is a beta feature.")
+        try:
+            from qiskit_metal.toolbox_metal.import_export import load_metal_design
+        except ImportError as exc:
+            raise RuntimeError(
+                "Loading designs requires the import_export utilities. "
+                "Ensure qiskit-metal extras are installed.") from exc
         design = load_metal_design(path)
         return design
 
@@ -810,6 +813,12 @@ class QDesign():
 
         # Do the actual saving
         self.logger.info(f'Saving design to {path}')
+        try:
+            from qiskit_metal.toolbox_metal.import_export import save_metal
+        except ImportError as exc:
+            raise RuntimeError(
+                "Saving designs requires the import_export utilities. "
+                "Ensure qiskit-metal extras are installed.") from exc
         result = save_metal(path, self)
         if result:
             self.logger.info('Saving successful.')
