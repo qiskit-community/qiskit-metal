@@ -112,7 +112,7 @@
     packages          = [ "wheel" ]
     set_env           = { VIRTUAL_ENV = "{envdir}", LANGUAGE = "en_US", QISKIT_METAL_HEADLESS = "1", LC_ALL = "en_US.utf-8" }
     dependency_groups = [ "test" ]
-    commands          = [ [ "python", "-m", "pytest", { replace = "posargs", default = [ "" ], extend = true } ] ]
+    commands          = [ [ "python", "-m", "pytest", { replace = "posargs", default = [  ], extend = true } ] ]
 
 
 [tool.tox.env.lint]
