@@ -53,8 +53,7 @@ jobs:
       #     name: dist
       #     path: dist/*
 
-      ## TODO: Uncomment the lines belowwhen ready to publish
-      # - name: Publish to PyPI
-      #   env:
-      #     UV_PUBLISH_TOKEN: ${{ secrets.UV_PUBLISH_TOKEN }}
-      #   run: uv publish --non-interactive
+      - name: Publish to PyPI
+        env:
+          UV_PUBLISH_TOKEN: ${{ secrets.UV_PUBLISH_TOKEN }}
+        run: uv publish --non-interactive
