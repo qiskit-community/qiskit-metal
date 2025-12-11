@@ -14,8 +14,12 @@
 
 # pylint: disable=wrong-import-order
 # pylint: disable=wrong-import-position
+
+# Get Qiskit Metal version from metadata without importing the package
+from importlib.metadata import version
+
 """Qiskit Metal"""
-__version__ = '0.5.2'
+__version__ = version('qiskit_metal')
 __license__ = "Apache 2.0"
 __copyright__ = 'Copyright IBM 2019-2020'
 __author__ = 'Zlatko Minev, Thomas McConkey, and them IBM Quantum Team'
@@ -23,6 +27,7 @@ __status__ = "Development"
 
 ###########################################################################
 ### Windows OS catch for library geopandas not installed with setup.py
+### TODO: Check if this is still needed with uv_build.
 
 import os
 if os.name == 'nt':
