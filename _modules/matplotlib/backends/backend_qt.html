@@ -4,14 +4,13 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.4.7 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
         <title>matplotlib.backends.backend_qt - Quantum Metal 0.5.1</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/qiskit-sphinx-theme.css?v=fe84956c" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/qiskit-ecosystem.css?v=745c5aa7" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=302659d7" />
     
     
 
@@ -37,57 +36,39 @@
     }
   }
 </style><link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
-<script src="../../../_static/js/web-components/top-nav-bar.js"></script></head>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet"></head>
   <body>
     
-    <script>document.body.dataset.theme = "light";</script>
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
     
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="svg-toc" viewBox="0 0 24 24">
     <title>Contents</title>
-    <svg id="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-      <defs><style>.cls-1{fill:none;}</style></defs>
-      <path d="M28,4H4A2,2,0,0,0,2,6V26a2,2,0,0,0,2,2H28a2,2,0,0,0,2-2V6A2,2,0,0,0,28,4ZM4,6H20V26H4ZM28,26H22V6h6Z"/>
-      <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32"/>
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M14 2H2C1.73478 2 1.48043 2.10536 1.29289 2.29289C1.10536 2.48043 1 2.73478 1 3V13C1 13.2652 1.10536 13.5196 1.29289 13.7071C1.48043 13.8946 1.73478 14 2 14H14C14.2652 14 14.5196 13.8946 14.7071 13.7071C14.8946 13.5196 15 13.2652 15 13V3C15 2.73478 14.8946 2.48043 14.7071 2.29289C14.5196 2.10536 14.2652 2 14 2V2ZM2 3H10V13H2V3ZM14 13H11V3H14V13Z" fill="currentColor"/>
     </svg>
   </symbol>
   <symbol id="svg-menu" viewBox="0 0 24 24">
     <title>Menu</title>
-    <svg id="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-      <defs><style>.cls-1{fill:none;}</style></defs>
-      <rect x="4" y="6" width="24" height="2"/>
-      <rect x="4" y="24" width="24" height="2"/>
-      <rect x="4" y="12" width="24" height="2"/>
-      <rect x="4" y="18" width="24" height="2"/>
-      <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32"/>
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M14 3H2V4H14V3Z" fill="currentColor"/>
+      <path d="M14 12H2V13H14V12Z" fill="currentColor"/>
+      <path d="M14 6H2V7H14V6Z" fill="currentColor"/>
+      <path d="M14 9H2V10H14V9Z" fill="currentColor"/>
     </svg>
   </symbol>
   <symbol id="svg-arrow-right" viewBox="0 0 24 24">
     <title>Expand</title>
-    <svg version="1.1" id="icon" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
-         viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve"><polygon points="22,16 12,26 10.6,24.6 19.2,16 10.6,7.4 12,6 " stroke="currentColor"/>
-      <rect id="_x3C_Transparent_Rectangle_x3E_" fill="none" width="32" height="32"/>
-    </svg>
-  </symbol>
-  <symbol id="svg-new-tab" viewBox="0 0 32 32">
-    <svg id="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-      <defs>
-        <style>
-          .cls-1 {
-            fill: none;
-          }
-        </style>
-      </defs>
-      <path fill="#6929C4" d="M26,28H6a2.0027,2.0027,0,0,1-2-2V6A2.0027,2.0027,0,0,1,6,4H16V6H6V26H26V16h2V26A2.0027,2.0027,0,0,1,26,28Z"/>
-      <polygon fill="#6929C4" points="20 2 20 4 26.586 4 18 12.586 19.414 14 28 5.414 28 12 30 12 30 2 20 2"/>
-      <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32"/>
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11 8L6.00005 13L5.30005 12.3L9.60005 8L5.30005 3.7L6.00005 3L11 8Z" fill="currentColor"/>
     </svg>
   </symbol>
   <symbol id="svg-sun" viewBox="0 0 24 24">
     <title>Light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="1" x2="12" y2="3"></line>
       <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -102,22 +83,56 @@
   <symbol id="svg-moon" viewBox="0 0 24 24">
     <title>Dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
     </svg>
   </symbol>
-  <symbol id="svg-sun-half" viewBox="0 0 24 24">
-    <title>Auto light/dark mode</title>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M13 12h5" />
-      <path d="M13 15h4" />
-      <path d="M13 18h1" />
-      <path d="M13 9h4" />
-      <path d="M13 6h1" />
+      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M15 13H1V14H15V13Z" fill="currentColor"/>
+      <path d="M12.7 4.5C13.1 4.1 13.1 3.5 12.7 3.1L10.9 1.3C10.5 0.9 9.9 0.9 9.5 1.3L2 8.8V12H5.2L12.7 4.5ZM10.2 2L12 3.8L10.5 5.3L8.7 3.5L10.2 2ZM3 11V9.2L8 4.2L9.8 6L4.8 11H3Z" fill="currentColor"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11 13.0002C11.5523 13.0002 12 12.5525 12 12.0002C12 11.4479 11.5523 11.0002 11 11.0002C10.4477 11.0002 10 11.4479 10 12.0002C10 12.5525 10.4477 13.0002 11 13.0002Z" fill="currentColor"/>
+      <path d="M14.8884 11.7394C14.5795 10.9524 14.0464 10.2734 13.3552 9.78646C12.664 9.29954 11.8451 9.02615 11 9.00017C10.1549 9.02615 9.33604 9.29954 8.64484 9.78646C7.95365 10.2734 7.42052 10.9524 7.11155 11.7394L7 12.0002L7.11155 12.2609C7.42052 13.0479 7.95365 13.727 8.64484 14.2139C9.33604 14.7008 10.1549 14.9742 11 15.0002C11.8451 14.9742 12.664 14.7008 13.3552 14.2139C14.0464 13.727 14.5795 13.0479 14.8884 12.2609L15 12.0002L14.8884 11.7394ZM11 14.0002C10.6044 14.0002 10.2178 13.8829 9.88886 13.6631C9.55996 13.4433 9.30362 13.131 9.15224 12.7655C9.00087 12.4001 8.96126 11.998 9.03843 11.61C9.1156 11.222 9.30608 10.8657 9.58579 10.586C9.86549 10.3063 10.2219 10.1158 10.6098 10.0386C10.9978 9.96143 11.3999 10.001 11.7654 10.1524C12.1308 10.3038 12.4432 10.5601 12.6629 10.889C12.8827 11.2179 13 11.6046 13 12.0002C12.9994 12.5304 12.7885 13.0388 12.4136 13.4137C12.0386 13.7887 11.5303 13.9996 11 14.0002Z" fill="currentColor"/>
+      <path d="M6 14.0002H4V2.00017H8V5.00017C8.00077 5.26515 8.10637 5.51906 8.29374 5.70643C8.48111 5.8938 8.73502 5.99941 9 6.00017H12V8.00017H13V5.00017C13.0018 4.93446 12.9893 4.86913 12.9634 4.80871C12.9375 4.74828 12.8988 4.6942 12.85 4.65017L9.35 1.15017C9.30599 1.10134 9.2519 1.06263 9.19147 1.03674C9.13104 1.01084 9.06572 0.998364 9 1.00017H4C3.73502 1.00094 3.48111 1.10654 3.29374 1.29391C3.10637 1.48128 3.00077 1.73519 3 2.00017V14.0002C3.00077 14.2652 3.10637 14.5191 3.29374 14.7064C3.48111 14.8938 3.73502 14.9994 4 15.0002H6V14.0002ZM9 2.20017L11.8 5.00017H9V2.20017Z" fill="currentColor"/>
     </svg>
   </symbol>
 </svg>
@@ -130,6 +145,8 @@
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -148,7 +165,8 @@
       <div class="theme-toggle-container theme-toggle-header">
         <button class="theme-toggle">
           <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
@@ -162,15 +180,13 @@
   <aside class="sidebar-drawer">
     <div class="sidebar-container">
       
-      <div class="sidebar-sticky"><div class="sidebar-brand">
-  <a href="https://www.qiskit.org/ecosystem">
-    <div class="sidebar-logo-container">
-      <img class="sidebar-logo" src="../../../_static/images/ecosystem-logo.svg" alt="Qiskit Ecosystem logo"/>
-    </div>
-  </a>
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
   
   <span class="sidebar-brand-text">Quantum Metal 0.5.1</span>
-</div><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  
+</a>
+<form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
@@ -476,7 +492,8 @@
           <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
@@ -486,7 +503,7 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <h1>Source code for matplotlib.backends.backend_qt</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">functools</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -499,18 +516,19 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.backend_bases</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">_Backend</span><span class="p">,</span> <span class="n">FigureCanvasBase</span><span class="p">,</span> <span class="n">FigureManagerBase</span><span class="p">,</span> <span class="n">NavigationToolbar2</span><span class="p">,</span>
     <span class="n">TimerBase</span><span class="p">,</span> <span class="n">cursors</span><span class="p">,</span> <span class="n">ToolContainerBase</span><span class="p">,</span> <span class="n">MouseButton</span><span class="p">,</span>
-    <span class="n">CloseEvent</span><span class="p">,</span> <span class="n">KeyEvent</span><span class="p">,</span> <span class="n">LocationEvent</span><span class="p">,</span> <span class="n">MouseEvent</span><span class="p">,</span> <span class="n">ResizeEvent</span><span class="p">,</span>
-    <span class="n">_allow_interrupt</span><span class="p">)</span>
+    <span class="n">CloseEvent</span><span class="p">,</span> <span class="n">KeyEvent</span><span class="p">,</span> <span class="n">LocationEvent</span><span class="p">,</span> <span class="n">MouseEvent</span><span class="p">,</span> <span class="n">ResizeEvent</span><span class="p">)</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.backends.qt_editor.figureoptions</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">figureoptions</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">qt_compat</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.qt_compat</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">QtCore</span><span class="p">,</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QtWidgets</span><span class="p">,</span> <span class="n">__version__</span><span class="p">,</span> <span class="n">QT_API</span><span class="p">,</span> <span class="n">_to_int</span><span class="p">,</span> <span class="n">_isdeleted</span><span class="p">)</span>
+    <span class="n">QtCore</span><span class="p">,</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QtWidgets</span><span class="p">,</span> <span class="n">__version__</span><span class="p">,</span> <span class="n">QT_API</span><span class="p">,</span>
+    <span class="n">_enum</span><span class="p">,</span> <span class="n">_to_int</span><span class="p">,</span> <span class="n">_isdeleted</span><span class="p">,</span> <span class="n">_maybe_allow_interrupt</span>
+<span class="p">)</span>
 
 
 <span class="c1"># SPECIAL_KEYS are Qt::Key that do *not* return their Unicode name</span>
 <span class="c1"># instead they have manually specified names.</span>
 <span class="n">SPECIAL_KEYS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="n">_to_int</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Key</span><span class="p">,</span> <span class="n">k</span><span class="p">)):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[</span>
+    <span class="n">_to_int</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">_enum</span><span class="p">(</span><span class="s2">&quot;QtCore.Qt.Key&quot;</span><span class="p">),</span> <span class="n">k</span><span class="p">)):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[</span>
         <span class="p">(</span><span class="s2">&quot;Key_Escape&quot;</span><span class="p">,</span> <span class="s2">&quot;escape&quot;</span><span class="p">),</span>
         <span class="p">(</span><span class="s2">&quot;Key_Tab&quot;</span><span class="p">,</span> <span class="s2">&quot;tab&quot;</span><span class="p">),</span>
         <span class="p">(</span><span class="s2">&quot;Key_Backspace&quot;</span><span class="p">,</span> <span class="s2">&quot;backspace&quot;</span><span class="p">),</span>
@@ -530,7 +548,7 @@
         <span class="p">(</span><span class="s2">&quot;Key_PageUp&quot;</span><span class="p">,</span> <span class="s2">&quot;pageup&quot;</span><span class="p">),</span>
         <span class="p">(</span><span class="s2">&quot;Key_PageDown&quot;</span><span class="p">,</span> <span class="s2">&quot;pagedown&quot;</span><span class="p">),</span>
         <span class="p">(</span><span class="s2">&quot;Key_Shift&quot;</span><span class="p">,</span> <span class="s2">&quot;shift&quot;</span><span class="p">),</span>
-        <span class="c1"># In macOS, the control and super (aka cmd/apple) keys are switched.</span>
+        <span class="c1"># In OSX, the control and super (aka cmd/apple) keys are switched.</span>
         <span class="p">(</span><span class="s2">&quot;Key_Control&quot;</span><span class="p">,</span> <span class="s2">&quot;control&quot;</span> <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">!=</span> <span class="s2">&quot;darwin&quot;</span> <span class="k">else</span> <span class="s2">&quot;cmd&quot;</span><span class="p">),</span>
         <span class="p">(</span><span class="s2">&quot;Key_Meta&quot;</span><span class="p">,</span> <span class="s2">&quot;meta&quot;</span> <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">!=</span> <span class="s2">&quot;darwin&quot;</span> <span class="k">else</span> <span class="s2">&quot;control&quot;</span><span class="p">),</span>
         <span class="p">(</span><span class="s2">&quot;Key_Alt&quot;</span><span class="p">,</span> <span class="s2">&quot;alt&quot;</span><span class="p">),</span>
@@ -555,8 +573,8 @@
 <span class="c1"># Elements are (Qt::KeyboardModifiers, Qt::Key) tuples.</span>
 <span class="c1"># Order determines the modifier order (ctrl+alt+...) reported by Matplotlib.</span>
 <span class="n">_MODIFIER_KEYS</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">(</span><span class="n">_to_int</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">KeyboardModifier</span><span class="p">,</span> <span class="n">mod</span><span class="p">)),</span>
-     <span class="n">_to_int</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Key</span><span class="p">,</span> <span class="n">key</span><span class="p">)))</span>
+    <span class="p">(</span><span class="n">_to_int</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">_enum</span><span class="p">(</span><span class="s2">&quot;QtCore.Qt.KeyboardModifier&quot;</span><span class="p">),</span> <span class="n">mod</span><span class="p">)),</span>
+     <span class="n">_to_int</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">_enum</span><span class="p">(</span><span class="s2">&quot;QtCore.Qt.Key&quot;</span><span class="p">),</span> <span class="n">key</span><span class="p">)))</span>
     <span class="k">for</span> <span class="n">mod</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span>
         <span class="p">(</span><span class="s2">&quot;ControlModifier&quot;</span><span class="p">,</span> <span class="s2">&quot;Key_Control&quot;</span><span class="p">),</span>
         <span class="p">(</span><span class="s2">&quot;AltModifier&quot;</span><span class="p">,</span> <span class="s2">&quot;Key_Alt&quot;</span><span class="p">),</span>
@@ -565,7 +583,7 @@
     <span class="p">]</span>
 <span class="p">]</span>
 <span class="n">cursord</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="n">k</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">CursorShape</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[</span>
+    <span class="n">k</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">_enum</span><span class="p">(</span><span class="s2">&quot;QtCore.Qt.CursorShape&quot;</span><span class="p">),</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[</span>
         <span class="p">(</span><span class="n">cursors</span><span class="o">.</span><span class="n">MOVE</span><span class="p">,</span> <span class="s2">&quot;SizeAllCursor&quot;</span><span class="p">),</span>
         <span class="p">(</span><span class="n">cursors</span><span class="o">.</span><span class="n">HAND</span><span class="p">,</span> <span class="s2">&quot;PointingHandCursor&quot;</span><span class="p">),</span>
         <span class="p">(</span><span class="n">cursors</span><span class="o">.</span><span class="n">POINTER</span><span class="p">,</span> <span class="s2">&quot;ArrowCursor&quot;</span><span class="p">),</span>
@@ -575,6 +593,13 @@
         <span class="p">(</span><span class="n">cursors</span><span class="o">.</span><span class="n">RESIZE_VERTICAL</span><span class="p">,</span> <span class="s2">&quot;SizeVerCursor&quot;</span><span class="p">),</span>
     <span class="p">]</span>
 <span class="p">}</span>
+
+
+<span class="nd">@_api</span><span class="o">.</span><span class="n">caching_module_getattr</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">__getattr__</span><span class="p">:</span>
+    <span class="n">qApp</span> <span class="o">=</span> <span class="n">_api</span><span class="o">.</span><span class="n">deprecated</span><span class="p">(</span>
+        <span class="s2">&quot;3.6&quot;</span><span class="p">,</span> <span class="n">alternative</span><span class="o">=</span><span class="s2">&quot;QtWidgets.QApplication.instance()&quot;</span><span class="p">)(</span>
+            <span class="nb">property</span><span class="p">(</span><span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()))</span>
 
 
 <span class="c1"># lru_cache keeps a reference to the QApplication instance, keeping it from</span>
@@ -629,49 +654,13 @@
             <span class="n">image</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">cbook</span><span class="o">.</span><span class="n">_get_data_path</span><span class="p">(</span><span class="s1">&#39;images/matplotlib.svg&#39;</span><span class="p">))</span>
             <span class="n">icon</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QIcon</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
             <span class="n">app</span><span class="o">.</span><span class="n">setWindowIcon</span><span class="p">(</span><span class="n">icon</span><span class="p">)</span>
-        <span class="n">app</span><span class="o">.</span><span class="n">setQuitOnLastWindowClosed</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">app</span><span class="o">.</span><span class="n">lastWindowClosed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">quit</span><span class="p">)</span>
         <span class="n">cbook</span><span class="o">.</span><span class="n">_setup_new_guiapp</span><span class="p">()</span>
+
         <span class="k">if</span> <span class="n">qt_version</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
             <span class="n">app</span><span class="o">.</span><span class="n">setAttribute</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AA_UseHighDpiPixmaps</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">app</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">_allow_interrupt_qt</span><span class="p">(</span><span class="n">qapp_or_eventloop</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A context manager that allows terminating a plot by sending a SIGINT.&quot;&quot;&quot;</span>
-
-    <span class="c1"># Use QSocketNotifier to read the socketpair while the Qt event loop runs.</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">prepare_notifier</span><span class="p">(</span><span class="n">rsock</span><span class="p">):</span>
-        <span class="n">sn</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QSocketNotifier</span><span class="p">(</span><span class="n">rsock</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QSocketNotifier</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">Read</span><span class="p">)</span>
-
-        <span class="nd">@sn</span><span class="o">.</span><span class="n">activated</span><span class="o">.</span><span class="n">connect</span>
-        <span class="k">def</span><span class="w"> </span><span class="nf">_may_clear_sock</span><span class="p">():</span>
-            <span class="c1"># Running a Python function on socket activation gives the interpreter a</span>
-            <span class="c1"># chance to handle the signal in Python land.  We also need to drain the</span>
-            <span class="c1"># socket with recv() to re-arm it, because it will be written to as part of</span>
-            <span class="c1"># the wakeup.  (We need this in case set_wakeup_fd catches a signal other</span>
-            <span class="c1"># than SIGINT and we shall continue waiting.)</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">rsock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-            <span class="k">except</span> <span class="ne">BlockingIOError</span><span class="p">:</span>
-                <span class="c1"># This may occasionally fire too soon or more than once on Windows, so</span>
-                <span class="c1"># be forgiving about reading an empty socket.</span>
-                <span class="k">pass</span>
-
-        <span class="c1"># We return the QSocketNotifier so that the caller holds a reference, and we</span>
-        <span class="c1"># also explicitly clean it up in handle_sigint(). Without doing both, deletion</span>
-        <span class="c1"># of the socket notifier can happen prematurely or not at all.</span>
-        <span class="k">return</span> <span class="n">sn</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">handle_sigint</span><span class="p">(</span><span class="n">sn</span><span class="p">):</span>
-        <span class="n">sn</span><span class="o">.</span><span class="n">deleteLater</span><span class="p">()</span>
-        <span class="n">QtCore</span><span class="o">.</span><span class="n">QCoreApplication</span><span class="o">.</span><span class="n">sendPostedEvents</span><span class="p">(</span><span class="n">sn</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QEvent</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">DeferredDelete</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">qapp_or_eventloop</span><span class="p">,</span> <span class="s1">&#39;closeAllWindows&#39;</span><span class="p">):</span>
-            <span class="n">qapp_or_eventloop</span><span class="o">.</span><span class="n">closeAllWindows</span><span class="p">()</span>
-        <span class="n">qapp_or_eventloop</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
-
-    <span class="k">return</span> <span class="n">_allow_interrupt</span><span class="p">(</span><span class="n">prepare_notifier</span><span class="p">,</span> <span class="n">handle_sigint</span><span class="p">)</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">TimerQT</span><span class="p">(</span><span class="n">TimerBase</span><span class="p">):</span>
@@ -709,7 +698,7 @@
     <span class="n">manager_class</span> <span class="o">=</span> <span class="n">_api</span><span class="o">.</span><span class="n">classproperty</span><span class="p">(</span><span class="k">lambda</span> <span class="bp">cls</span><span class="p">:</span> <span class="n">FigureManagerQT</span><span class="p">)</span>
 
     <span class="n">buttond</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="nb">getattr</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">MouseButton</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[</span>
+        <span class="nb">getattr</span><span class="p">(</span><span class="n">_enum</span><span class="p">(</span><span class="s2">&quot;QtCore.Qt.MouseButton&quot;</span><span class="p">),</span> <span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[</span>
             <span class="p">(</span><span class="s2">&quot;LeftButton&quot;</span><span class="p">,</span> <span class="n">MouseButton</span><span class="o">.</span><span class="n">LEFT</span><span class="p">),</span>
             <span class="p">(</span><span class="s2">&quot;RightButton&quot;</span><span class="p">,</span> <span class="n">MouseButton</span><span class="o">.</span><span class="n">RIGHT</span><span class="p">),</span>
             <span class="p">(</span><span class="s2">&quot;MiddleButton&quot;</span><span class="p">,</span> <span class="n">MouseButton</span><span class="o">.</span><span class="n">MIDDLE</span><span class="p">),</span>
@@ -727,14 +716,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_draw_rect_callback</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">painter</span><span class="p">:</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_in_resize_event</span> <span class="o">=</span> <span class="kc">False</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">setAttribute</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">WidgetAttribute</span><span class="o">.</span><span class="n">WA_OpaquePaintEvent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setAttribute</span><span class="p">(</span>
+            <span class="n">_enum</span><span class="p">(</span><span class="s2">&quot;QtCore.Qt.WidgetAttribute&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">WA_OpaquePaintEvent</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setMouseTracking</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">get_width_height</span><span class="p">())</span>
 
         <span class="n">palette</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QPalette</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QColor</span><span class="p">(</span><span class="s2">&quot;white&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setPalette</span><span class="p">(</span><span class="n">palette</span><span class="p">)</span>
 
-    <span class="nd">@QtCore</span><span class="o">.</span><span class="n">Slot</span><span class="p">()</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_update_pixel_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_device_pixel_ratio</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">devicePixelRatioF</span><span class="p">()</span> <span class="ow">or</span> <span class="mi">1</span><span class="p">):</span>  <span class="c1"># rarely, devicePixelRatioF=0</span>
@@ -744,7 +733,6 @@
             <span class="n">event</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QResizeEvent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">resizeEvent</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
 
-    <span class="nd">@QtCore</span><span class="o">.</span><span class="n">Slot</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QScreen</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_update_screen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">screen</span><span class="p">):</span>
         <span class="c1"># Handler for changes to a window&#39;s attached screen.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_pixel_ratio</span><span class="p">()</span>
@@ -752,22 +740,12 @@
             <span class="n">screen</span><span class="o">.</span><span class="n">physicalDotsPerInchChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_update_pixel_ratio</span><span class="p">)</span>
             <span class="n">screen</span><span class="o">.</span><span class="n">logicalDotsPerInchChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_update_pixel_ratio</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QEvent</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">DevicePixelRatioChange</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_update_pixel_ratio</span><span class="p">()</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">eventFilter</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
-
     <span class="k">def</span><span class="w"> </span><span class="nf">showEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="c1"># Set up correct pixel ratio, and connect to any signal changes for it,</span>
         <span class="c1"># once the window is shown (and thus has these attributes).</span>
         <span class="n">window</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="p">()</span><span class="o">.</span><span class="n">windowHandle</span><span class="p">()</span>
-        <span class="n">current_version</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">qVersion</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)[:</span><span class="mi">2</span><span class="p">])</span>
-        <span class="k">if</span> <span class="n">current_version</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_update_pixel_ratio</span><span class="p">()</span>
-            <span class="n">window</span><span class="o">.</span><span class="n">installEventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">window</span><span class="o">.</span><span class="n">screenChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_update_screen</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_update_screen</span><span class="p">(</span><span class="n">window</span><span class="o">.</span><span class="n">screen</span><span class="p">())</span>
+        <span class="n">window</span><span class="o">.</span><span class="n">screenChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_update_screen</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_screen</span><span class="p">(</span><span class="n">window</span><span class="o">.</span><span class="n">screen</span><span class="p">())</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">set_cursor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cursor</span><span class="p">):</span>
         <span class="c1"># docstring inherited</span>
@@ -799,8 +777,6 @@
         <span class="c1"># Force querying of the modifiers, as the cached modifier state can</span>
         <span class="c1"># have been invalidated while the window was out of focus.</span>
         <span class="n">mods</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span><span class="o">.</span><span class="n">queryKeyboardModifiers</span><span class="p">()</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span>
         <span class="n">LocationEvent</span><span class="p">(</span><span class="s2">&quot;figure_enter_event&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span>
                       <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">mouseEventCoords</span><span class="p">(</span><span class="n">event</span><span class="p">),</span>
                       <span class="n">modifiers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_mpl_modifiers</span><span class="p">(</span><span class="n">mods</span><span class="p">),</span>
@@ -808,8 +784,6 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">leaveEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QApplication</span><span class="o">.</span><span class="n">restoreOverrideCursor</span><span class="p">()</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span>
         <span class="n">LocationEvent</span><span class="p">(</span><span class="s2">&quot;figure_leave_event&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span>
                       <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">mouseEventCoords</span><span class="p">(),</span>
                       <span class="n">modifiers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_mpl_modifiers</span><span class="p">(),</span>
@@ -817,7 +791,7 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">mousePressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="n">button</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">buttond</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">button</span><span class="p">())</span>
-        <span class="k">if</span> <span class="n">button</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">button</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">MouseEvent</span><span class="p">(</span><span class="s2">&quot;button_press_event&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span>
                        <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">mouseEventCoords</span><span class="p">(</span><span class="n">event</span><span class="p">),</span> <span class="n">button</span><span class="p">,</span>
                        <span class="n">modifiers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_mpl_modifiers</span><span class="p">(),</span>
@@ -825,24 +799,21 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">mouseDoubleClickEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="n">button</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">buttond</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">button</span><span class="p">())</span>
-        <span class="k">if</span> <span class="n">button</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">button</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">MouseEvent</span><span class="p">(</span><span class="s2">&quot;button_press_event&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span>
                        <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">mouseEventCoords</span><span class="p">(</span><span class="n">event</span><span class="p">),</span> <span class="n">button</span><span class="p">,</span> <span class="n">dblclick</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                        <span class="n">modifiers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_mpl_modifiers</span><span class="p">(),</span>
                        <span class="n">guiEvent</span><span class="o">=</span><span class="n">event</span><span class="p">)</span><span class="o">.</span><span class="n">_process</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">mouseMoveEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span>
         <span class="n">MouseEvent</span><span class="p">(</span><span class="s2">&quot;motion_notify_event&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span>
                    <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">mouseEventCoords</span><span class="p">(</span><span class="n">event</span><span class="p">),</span>
-                   <span class="n">buttons</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_mpl_buttons</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">buttons</span><span class="p">()),</span>
                    <span class="n">modifiers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_mpl_modifiers</span><span class="p">(),</span>
                    <span class="n">guiEvent</span><span class="o">=</span><span class="n">event</span><span class="p">)</span><span class="o">.</span><span class="n">_process</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">mouseReleaseEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="n">button</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">buttond</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">button</span><span class="p">())</span>
-        <span class="k">if</span> <span class="n">button</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">button</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">MouseEvent</span><span class="p">(</span><span class="s2">&quot;button_release_event&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span>
                        <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">mouseEventCoords</span><span class="p">(</span><span class="n">event</span><span class="p">),</span> <span class="n">button</span><span class="p">,</span>
                        <span class="n">modifiers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_mpl_modifiers</span><span class="p">(),</span>
@@ -856,7 +827,7 @@
             <span class="n">steps</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">angleDelta</span><span class="p">()</span><span class="o">.</span><span class="n">y</span><span class="p">()</span> <span class="o">/</span> <span class="mi">120</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">steps</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">pixelDelta</span><span class="p">()</span><span class="o">.</span><span class="n">y</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">steps</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">steps</span><span class="p">:</span>
             <span class="n">MouseEvent</span><span class="p">(</span><span class="s2">&quot;scroll_event&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span>
                        <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">mouseEventCoords</span><span class="p">(</span><span class="n">event</span><span class="p">),</span> <span class="n">step</span><span class="o">=</span><span class="n">steps</span><span class="p">,</span>
                        <span class="n">modifiers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_mpl_modifiers</span><span class="p">(),</span>
@@ -864,22 +835,20 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">keyPressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_key</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">KeyEvent</span><span class="p">(</span><span class="s2">&quot;key_press_event&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span>
                      <span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">mouseEventCoords</span><span class="p">(),</span>
                      <span class="n">guiEvent</span><span class="o">=</span><span class="n">event</span><span class="p">)</span><span class="o">.</span><span class="n">_process</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">keyReleaseEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_key</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">KeyEvent</span><span class="p">(</span><span class="s2">&quot;key_release_event&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span>
                      <span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">mouseEventCoords</span><span class="p">(),</span>
                      <span class="n">guiEvent</span><span class="o">=</span><span class="n">event</span><span class="p">)</span><span class="o">.</span><span class="n">_process</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">resizeEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_resize_event</span><span class="p">:</span>  <span class="c1"># Prevent PyQt6 recursion</span>
-            <span class="k">return</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_in_resize_event</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">try</span><span class="p">:</span>
@@ -901,15 +870,8 @@
         <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_width_height</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QSize</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">minimumSizeHint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">minumumSizeHint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QSize</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_mpl_buttons</span><span class="p">(</span><span class="n">buttons</span><span class="p">):</span>
-        <span class="n">buttons</span> <span class="o">=</span> <span class="n">_to_int</span><span class="p">(</span><span class="n">buttons</span><span class="p">)</span>
-        <span class="c1"># State *after* press/release.</span>
-        <span class="k">return</span> <span class="p">{</span><span class="n">button</span> <span class="k">for</span> <span class="n">mask</span><span class="p">,</span> <span class="n">button</span> <span class="ow">in</span> <span class="n">FigureCanvasQT</span><span class="o">.</span><span class="n">buttond</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-                <span class="k">if</span> <span class="n">_to_int</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">buttons</span><span class="p">}</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_mpl_modifiers</span><span class="p">(</span><span class="n">modifiers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -963,7 +925,7 @@
         <span class="k">if</span> <span class="n">timeout</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">_</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QTimer</span><span class="o">.</span><span class="n">singleShot</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">timeout</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">),</span> <span class="n">event_loop</span><span class="o">.</span><span class="n">quit</span><span class="p">)</span>
 
-        <span class="k">with</span> <span class="n">_allow_interrupt_qt</span><span class="p">(</span><span class="n">event_loop</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">_maybe_allow_interrupt</span><span class="p">(</span><span class="n">event_loop</span><span class="p">):</span>
             <span class="n">qt_compat</span><span class="o">.</span><span class="n">_exec</span><span class="p">(</span><span class="n">event_loop</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">stop_event_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -998,7 +960,7 @@
         <span class="k">if</span> <span class="n">bbox</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="p">:</span>
             <span class="n">bbox</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">bbox</span>  <span class="c1"># Blit the entire canvas if bbox is None.</span>
         <span class="c1"># repaint uses logical pixels, not physical pixels like the renderer.</span>
-        <span class="n">l</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">pt</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">device_pixel_ratio</span><span class="p">)</span> <span class="k">for</span> <span class="n">pt</span> <span class="ow">in</span> <span class="n">bbox</span><span class="o">.</span><span class="n">bounds</span><span class="p">)</span>
+        <span class="n">l</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">pt</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">device_pixel_ratio</span><span class="p">)</span> <span class="k">for</span> <span class="n">pt</span> <span class="ow">in</span> <span class="n">bbox</span><span class="o">.</span><span class="n">bounds</span><span class="p">]</span>
         <span class="n">t</span> <span class="o">=</span> <span class="n">b</span> <span class="o">+</span> <span class="n">h</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">repaint</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="p">()</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">-</span> <span class="n">t</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
 
@@ -1007,7 +969,7 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_draw_pending</span><span class="p">:</span>
                 <span class="k">return</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_draw_pending</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="k">if</span> <span class="n">_isdeleted</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">return</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
@@ -1019,7 +981,7 @@
         <span class="c1"># Draw the zoom rectangle to the QPainter.  _draw_rect_callback needs</span>
         <span class="c1"># to be called at the end of paintEvent.</span>
         <span class="k">if</span> <span class="n">rect</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">pt</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">device_pixel_ratio</span><span class="p">)</span> <span class="k">for</span> <span class="n">pt</span> <span class="ow">in</span> <span class="n">rect</span><span class="p">)</span>
+            <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">pt</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">device_pixel_ratio</span><span class="p">)</span> <span class="k">for</span> <span class="n">pt</span> <span class="ow">in</span> <span class="n">rect</span><span class="p">]</span>
             <span class="n">x1</span> <span class="o">=</span> <span class="n">x0</span> <span class="o">+</span> <span class="n">w</span>
             <span class="n">y1</span> <span class="o">=</span> <span class="n">y0</span> <span class="o">+</span> <span class="n">h</span>
             <span class="k">def</span><span class="w"> </span><span class="nf">_draw_rect_callback</span><span class="p">(</span><span class="n">painter</span><span class="p">):</span>
@@ -1106,7 +1068,7 @@
         <span class="c1"># StrongFocus accepts both tab and click to focus and will enable the</span>
         <span class="c1"># canvas to process event without clicking.</span>
         <span class="c1"># https://doc.qt.io/qt-5/qt.html#FocusPolicy-enum</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">setFocusPolicy</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">FocusPolicy</span><span class="o">.</span><span class="n">StrongFocus</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">setFocusPolicy</span><span class="p">(</span><span class="n">_enum</span><span class="p">(</span><span class="s2">&quot;QtCore.Qt.FocusPolicy&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">StrongFocus</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">setFocus</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="o">.</span><span class="n">raise_</span><span class="p">()</span>
@@ -1144,11 +1106,10 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">start_main_loop</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="n">qapp</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">qapp</span><span class="p">:</span>
-            <span class="k">with</span> <span class="n">_allow_interrupt_qt</span><span class="p">(</span><span class="n">qapp</span><span class="p">):</span>
+            <span class="k">with</span> <span class="n">_maybe_allow_interrupt</span><span class="p">(</span><span class="n">qapp</span><span class="p">):</span>
                 <span class="n">qt_compat</span><span class="o">.</span><span class="n">_exec</span><span class="p">(</span><span class="n">qapp</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="o">.</span><span class="n">_destroying</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.raise_window&#39;</span><span class="p">]:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="o">.</span><span class="n">activateWindow</span><span class="p">()</span>
@@ -1173,6 +1134,8 @@
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">NavigationToolbar2QT</span><span class="p">(</span><span class="n">NavigationToolbar2</span><span class="p">,</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QToolBar</span><span class="p">):</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Signal</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+
     <span class="n">toolitems</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="n">NavigationToolbar2</span><span class="o">.</span><span class="n">toolitems</span><span class="p">]</span>
     <span class="n">toolitems</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
         <span class="c1"># Add &#39;customize&#39; action after &#39;subplots&#39;</span>
@@ -1184,8 +1147,9 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;coordinates: should we show the coordinates on the right?&quot;&quot;&quot;</span>
         <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QToolBar</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setAllowedAreas</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ToolBarArea</span><span class="p">(</span>
-            <span class="n">_to_int</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ToolBarArea</span><span class="o">.</span><span class="n">TopToolBarArea</span><span class="p">)</span> <span class="o">|</span>
-            <span class="n">_to_int</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ToolBarArea</span><span class="o">.</span><span class="n">BottomToolBarArea</span><span class="p">)))</span>
+            <span class="n">_to_int</span><span class="p">(</span><span class="n">_enum</span><span class="p">(</span><span class="s2">&quot;QtCore.Qt.ToolBarArea&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">TopToolBarArea</span><span class="p">)</span> <span class="o">|</span>
+            <span class="n">_to_int</span><span class="p">(</span><span class="n">_enum</span><span class="p">(</span><span class="s2">&quot;QtCore.Qt.ToolBarArea&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">BottomToolBarArea</span><span class="p">)))</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span> <span class="o">=</span> <span class="n">coordinates</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_actions</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># mapping of toolitem method names to QActions.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_subplot_dialog</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1194,13 +1158,8 @@
             <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">slot</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
-                <span class="c1"># https://bugreports.qt.io/browse/PYSIDE-2512</span>
-                <span class="n">slot</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">slot</span><span class="p">)(</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">slot</span><span class="p">))</span>
-                <span class="n">slot</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Slot</span><span class="p">()(</span><span class="n">slot</span><span class="p">)</span>
-
                 <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_icon</span><span class="p">(</span><span class="n">image_file</span> <span class="o">+</span> <span class="s1">&#39;.png&#39;</span><span class="p">),</span>
-                                   <span class="n">text</span><span class="p">,</span> <span class="n">slot</span><span class="p">)</span>
+                                   <span class="n">text</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">))</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_actions</span><span class="p">[</span><span class="n">callback</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span>
                 <span class="k">if</span> <span class="n">callback</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;zoom&#39;</span><span class="p">,</span> <span class="s1">&#39;pan&#39;</span><span class="p">]:</span>
                     <span class="n">a</span><span class="o">.</span><span class="n">setCheckable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
@@ -1213,12 +1172,11 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">locLabel</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">locLabel</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="p">(</span>
-                <span class="n">_to_int</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignRight</span><span class="p">)</span> <span class="o">|</span>
-                <span class="n">_to_int</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignVCenter</span><span class="p">)))</span>
-
+                <span class="n">_to_int</span><span class="p">(</span><span class="n">_enum</span><span class="p">(</span><span class="s2">&quot;QtCore.Qt.AlignmentFlag&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">AlignRight</span><span class="p">)</span> <span class="o">|</span>
+                <span class="n">_to_int</span><span class="p">(</span><span class="n">_enum</span><span class="p">(</span><span class="s2">&quot;QtCore.Qt.AlignmentFlag&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">AlignVCenter</span><span class="p">)))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">locLabel</span><span class="o">.</span><span class="n">setSizePolicy</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="p">(</span>
-                <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Policy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">,</span>
-                <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Policy</span><span class="o">.</span><span class="n">Ignored</span><span class="p">,</span>
+                <span class="n">_enum</span><span class="p">(</span><span class="s2">&quot;QtWidgets.QSizePolicy.Policy&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">Expanding</span><span class="p">,</span>
+                <span class="n">_enum</span><span class="p">(</span><span class="s2">&quot;QtWidgets.QSizePolicy.Policy&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">Ignored</span><span class="p">,</span>
             <span class="p">))</span>
             <span class="n">labelAction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">locLabel</span><span class="p">)</span>
             <span class="n">labelAction</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
@@ -1244,7 +1202,7 @@
             <span class="n">icon_color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">palette</span><span class="p">()</span><span class="o">.</span><span class="n">color</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">foregroundRole</span><span class="p">())</span>
             <span class="n">mask</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">createMaskFromColor</span><span class="p">(</span>
                 <span class="n">QtGui</span><span class="o">.</span><span class="n">QColor</span><span class="p">(</span><span class="s1">&#39;black&#39;</span><span class="p">),</span>
-                <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">MaskMode</span><span class="o">.</span><span class="n">MaskOutColor</span><span class="p">)</span>
+                <span class="n">_enum</span><span class="p">(</span><span class="s2">&quot;QtCore.Qt.MaskMode&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">MaskOutColor</span><span class="p">)</span>
             <span class="n">pm</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">icon_color</span><span class="p">)</span>
             <span class="n">pm</span><span class="o">.</span><span class="n">setMask</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QIcon</span><span class="p">(</span><span class="n">pm</span><span class="p">)</span>
@@ -1253,7 +1211,7 @@
         <span class="n">axes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">get_axes</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">axes</span><span class="p">:</span>
             <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">parent</span><span class="p">(),</span> <span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="s2">&quot;There are no Axes to edit.&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">parent</span><span class="p">(),</span> <span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="s2">&quot;There are no axes to edit.&quot;</span><span class="p">)</span>
             <span class="k">return</span>
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">axes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">ax</span><span class="p">,</span> <span class="o">=</span> <span class="n">axes</span>
@@ -1273,7 +1231,7 @@
                     <span class="n">titles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; (id: </span><span class="si">{</span><span class="nb">id</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span><span class="si">:</span><span class="s2">#x</span><span class="si">}</span><span class="s2">)&quot;</span>  <span class="c1"># Deduplicate titles.</span>
             <span class="n">item</span><span class="p">,</span> <span class="n">ok</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QInputDialog</span><span class="o">.</span><span class="n">getItem</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">parent</span><span class="p">(),</span>
-                <span class="s1">&#39;Customize&#39;</span><span class="p">,</span> <span class="s1">&#39;Select Axes:&#39;</span><span class="p">,</span> <span class="n">titles</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+                <span class="s1">&#39;Customize&#39;</span><span class="p">,</span> <span class="s1">&#39;Select axes:&#39;</span><span class="p">,</span> <span class="n">titles</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">ok</span><span class="p">:</span>
                 <span class="k">return</span>
             <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">titles</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">item</span><span class="p">)]</span>
@@ -1295,6 +1253,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_buttons_checked</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">set_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">locLabel</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 
@@ -1315,7 +1274,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">mpl_connect</span><span class="p">(</span>
                 <span class="s2">&quot;close_event&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subplot_dialog</span><span class="o">.</span><span class="n">reject</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_subplot_dialog</span><span class="o">.</span><span class="n">update_from_current_subplotpars</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_subplot_dialog</span><span class="o">.</span><span class="n">setModal</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_subplot_dialog</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subplot_dialog</span>
 
@@ -1330,13 +1288,13 @@
         <span class="n">selectedFilter</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">exts</span> <span class="ow">in</span> <span class="n">sorted_filetypes</span><span class="p">:</span>
             <span class="n">exts_list</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;*.</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">ext</span> <span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="n">exts</span><span class="p">])</span>
-            <span class="nb">filter</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> (</span><span class="si">{</span><span class="n">exts_list</span><span class="si">}</span><span class="s1">)&#39;</span>
+            <span class="nb">filter</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> (</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">exts_list</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">default_filetype</span> <span class="ow">in</span> <span class="n">exts</span><span class="p">:</span>
                 <span class="n">selectedFilter</span> <span class="o">=</span> <span class="nb">filter</span>
             <span class="n">filters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">filter</span><span class="p">)</span>
         <span class="n">filters</span> <span class="o">=</span> <span class="s1">&#39;;;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
 
-        <span class="n">fname</span><span class="p">,</span> <span class="nb">filter</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">getSaveFileName</span><span class="p">(</span>
+        <span class="n">fname</span><span class="p">,</span> <span class="nb">filter</span> <span class="o">=</span> <span class="n">qt_compat</span><span class="o">.</span><span class="n">_getSaveFileName</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">parent</span><span class="p">(),</span> <span class="s2">&quot;Choose a filename to save to&quot;</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span>
             <span class="n">filters</span><span class="p">,</span> <span class="n">selectedFilter</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">fname</span><span class="p">:</span>
@@ -1348,13 +1306,12 @@
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span>
                     <span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Error saving file&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">),</span>
-                    <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">StandardButton</span><span class="o">.</span><span class="n">Ok</span><span class="p">,</span>
-                    <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">StandardButton</span><span class="o">.</span><span class="n">NoButton</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">fname</span>
+                    <span class="n">_enum</span><span class="p">(</span><span class="s2">&quot;QtWidgets.QMessageBox.StandardButton&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">Ok</span><span class="p">,</span>
+                    <span class="n">_enum</span><span class="p">(</span><span class="s2">&quot;QtWidgets.QMessageBox.StandardButton&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">NoButton</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">set_history_buttons</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">can_backward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nav_stack</span><span class="o">.</span><span class="n">_pos</span> <span class="o">&gt;</span> <span class="mi">0</span>
-        <span class="n">can_forward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nav_stack</span><span class="o">.</span><span class="n">_pos</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_nav_stack</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">can_forward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nav_stack</span><span class="o">.</span><span class="n">_pos</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_nav_stack</span><span class="o">.</span><span class="n">_elements</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="s1">&#39;back&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_actions</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_actions</span><span class="p">[</span><span class="s1">&#39;back&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">can_backward</span><span class="p">)</span>
         <span class="k">if</span> <span class="s1">&#39;forward&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_actions</span><span class="p">:</span>
@@ -1363,7 +1320,7 @@
 
 <span class="k">class</span><span class="w"> </span><span class="nc">SubplotToolQt</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QDialog</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">targetfig</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setWindowIcon</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QIcon</span><span class="p">(</span>
             <span class="nb">str</span><span class="p">(</span><span class="n">cbook</span><span class="o">.</span><span class="n">_get_data_path</span><span class="p">(</span><span class="s2">&quot;images/matplotlib.png&quot;</span><span class="p">))))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">&quot;SubplotTool&quot;</span><span class="p">)</span>
@@ -1464,15 +1421,15 @@
         <span class="n">ToolContainerBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">toolmanager</span><span class="p">)</span>
         <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QToolBar</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setAllowedAreas</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ToolBarArea</span><span class="p">(</span>
-            <span class="n">_to_int</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ToolBarArea</span><span class="o">.</span><span class="n">TopToolBarArea</span><span class="p">)</span> <span class="o">|</span>
-            <span class="n">_to_int</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ToolBarArea</span><span class="o">.</span><span class="n">BottomToolBarArea</span><span class="p">)))</span>
+            <span class="n">_to_int</span><span class="p">(</span><span class="n">_enum</span><span class="p">(</span><span class="s2">&quot;QtCore.Qt.ToolBarArea&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">TopToolBarArea</span><span class="p">)</span> <span class="o">|</span>
+            <span class="n">_to_int</span><span class="p">(</span><span class="n">_enum</span><span class="p">(</span><span class="s2">&quot;QtCore.Qt.ToolBarArea&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">BottomToolBarArea</span><span class="p">)))</span>
         <span class="n">message_label</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
         <span class="n">message_label</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="p">(</span>
-            <span class="n">_to_int</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignRight</span><span class="p">)</span> <span class="o">|</span>
-            <span class="n">_to_int</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignVCenter</span><span class="p">)))</span>
+            <span class="n">_to_int</span><span class="p">(</span><span class="n">_enum</span><span class="p">(</span><span class="s2">&quot;QtCore.Qt.AlignmentFlag&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">AlignRight</span><span class="p">)</span> <span class="o">|</span>
+            <span class="n">_to_int</span><span class="p">(</span><span class="n">_enum</span><span class="p">(</span><span class="s2">&quot;QtCore.Qt.AlignmentFlag&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">AlignVCenter</span><span class="p">)))</span>
         <span class="n">message_label</span><span class="o">.</span><span class="n">setSizePolicy</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="p">(</span>
-            <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Policy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">,</span>
-            <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Policy</span><span class="o">.</span><span class="n">Ignored</span><span class="p">,</span>
+            <span class="n">_enum</span><span class="p">(</span><span class="s2">&quot;QtWidgets.QSizePolicy.Policy&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">Expanding</span><span class="p">,</span>
+            <span class="n">_enum</span><span class="p">(</span><span class="s2">&quot;QtWidgets.QSizePolicy.Policy&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">Ignored</span><span class="p">,</span>
         <span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_message_action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">message_label</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_toolitems</span> <span class="o">=</span> <span class="p">{}</span>
@@ -1519,8 +1476,9 @@
             <span class="n">button</span><span class="o">.</span><span class="n">toggled</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">remove_toolitem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">button</span><span class="p">,</span> <span class="n">handler</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_toolitems</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="p">[]):</span>
+        <span class="k">for</span> <span class="n">button</span><span class="p">,</span> <span class="n">handler</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_toolitems</span><span class="p">[</span><span class="n">name</span><span class="p">]:</span>
             <span class="n">button</span><span class="o">.</span><span class="n">setParent</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_toolitems</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">set_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">widgetForAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_message_action</span><span class="p">)</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
@@ -1581,6 +1539,7 @@
         </article>
       </div>
       <footer>
+        
         <div class="related-pages">
           
           
@@ -1594,7 +1553,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2025/12/08</div>
+              Last updated on 2025/12/11</div>
           </div>
           <div class="right-details">
             
@@ -1609,12 +1568,10 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/jquery.js?v=5d32c60e"></script>
-    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../../../_static/documentation_options.js?v=b9afe91b"></script>
-    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+</div><script src="../../../_static/documentation_options.js?v=b9afe91b"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../../_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>
+    <script src="../../../_static/scripts/furo.js?v=5fa4622c"></script>
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     </body>

@@ -4,6 +4,10 @@
 Contributing to Qiskit Metal
 ********************************
 
+
+.. attention::
+   Qiskit Metal is undergoing a major transition to become Quantum Metal. Some of the instructions below might be outdated and will be updated soon. 
+
 Qiskit Metal is an open-source project committed to bringing quantum hardware design to
 people of all backgrounds. This page describes how you can join the Qiskit Metal
 community in this goal.
@@ -60,10 +64,64 @@ fits in with the project, how it can be implemented, etc.
 Contributing Code
 *****************
 
+========================================
+Development Setup for Quantum Metal v0.5+
+========================================
+
+The new version of Qiskit Metal (soon to be Quantum Metal) has transitioned to `uv <https://docs.astral.sh/uv/>`_ for project and dependency management. This guide describes how to set up your local development environment in light of these updates. First, install uv on your system as described by the `instructions here <https://docs.astral.sh/uv/getting-started/installation/>`_.
+
+
+Development (virtual) environments
+++++++++++++++++++++++++++++++++++
+
+The next few paragraphs describe the setup. We recommend reading through it at least once before you start making contributions. Skip to the next section for instructions on how to activate venvs, run tasks, etc.
+
+All development activities should be carried out inside Python virtual environments (venvs). Thankfully, uv can manage all our venvs for us. In addition to this, we can use tox to orchestrate venvs to fit the needs of different development tasks: testing, linting, building docs, etc.
+
+All information about project dependencies can be found in the ``pyproject.toml`` file located in the root directory of this repository. The direct project dependencies are listed in the ``requirements`` section of the ``[project]`` table. These are required to run user code.
+
+Development dependencies are specified in the ``[dependency-groups]`` table. There are four groups available: ``test``, ``lint``, ``docs``, and ``jupyter``. These are used by tox to create a virtual environment with the required dependencies for each task. At the time of writing, the ``jupyter`` group is available for convenience, but unused in tasks.
+See `PEP 735-Dependency Groups in pyproject.toml <https://peps.python.org/pep-0735/>`_ and the `PyPA specification page for dependency groups <https://packaging.python.org/en/latest/specifications/dependency-groups/#dependency-groups>`_ for more information.
+
+The file ``uv.lock`` lists "locked" versions for all dependencies listed in ``pyproject.toml`` across different platforms. This allows uv to create reproducible environments. At present, tox does not create virtual environments using the lockfile, but the `tox-uv <https://github.com/tox-dev/tox-uv>`_ plugin allows for this functionality to be enabled by setting the ``runner`` configuration variable in each tox task, as described `here <https://github.com/tox-dev/tox-uv?tab=readme-ov-file#uvlock-support>`_.
+
+
+Running tests
++++++++++++++
+
+Tox is configured to run tests (using pytest) for Python 3.10–3.12. Use the following command to run tests for all three versions::
+
+   tox -m test
+
+We use the `pytest-rich <https://github.com/nicoddemus/pytest-rich>`_ plugin to provide rich output of testing progress. Tests can be run for specific versions using the following command::
+
+   tox -e py3.12  # replace 3.12 with the version you want to run
+
+Linting and Formatting
+++++++++++++++++++++++
+
+We use `ruff <https://docs.astral.sh/ruff/>`_ for linting and formatting. Our linting configuration is described in ``pyproject.toml`` under the ``[tool.ruff.lint]`` table. Note that this configuration is a work in progress and likely to change until further notice. The linter can be run using the following command::
+
+   tox -e lint
+
+This will show all the linting errors and the location for each. For a summary showing the number of violations of each linting rule, use the following command::
+
+   tox -e lint -- --statistics
+
+Formatting for the whole repository can be performed using the following command::
+
+   tox -e format
+
+Note that we have not yet settled on a formatting configuration other than default options provided by ruff, but this may change.
+
+
 
 
 Style Guide
 -----------
+
+.. attention::
+   The style guide presented below is being deprecated. Quantum Metal v0.5+ uses ruff for linting and formatting. An updated style guide will be added soon.
 
 To enforce a consistent code style in the project, we use customized `Pylint
 <https://www.pylint.org>`__ for linting and `YAPF`<https://github.com/google/yapf>__ with the `Google style
@@ -481,15 +539,15 @@ HTML files by navigating to `/docs/` and running:
 
 .. code-block:: sh
 
-   make html
+   uv run --group docs make html
 
 For a fast, more advanced build that uses parallelization and makes sure we skip
 executing notebooks (which is the default behavior), run (if using uv):
 
 .. code-block:: sh
 
-   uv sphinx-build -M html . _build -j auto
-   uv sphinx-build -M html . _build -j auto -v -T
+   uv run --group docs sphinx-build -M html . _build -j auto
+   uv run --group docs sphinx-build -M html . _build -j auto -v -T
 
 Notes:
 
@@ -498,29 +556,24 @@ Notes:
 - We also added -v for verbose output and -T traceback during the build.
 - Env variable `QISKIT_DOCS_BUILD_TUTORIALS=never` skips executing notebooks during the build (fast; uses stored outputs if present).
 
+For convenience, the first command can be run using tox (from the root directory of the repository) as follows:
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. code-block:: sh
+
+   tox -e docs
+
+
+
 Live Preview with autobuild
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---------------------------
 
-To get fast, automatic rebuilding of the documentation while you edit it, use
-``sphinx-autobuild`` together with ``uv`` package manager (you can use conda or v env too).
+To get fast, automatic rebuilding of the documentation while you edit it, use the `docs-autobuild` tox environment.
 
-First, install the tool into your development environment:
+.. code-block:: sh
 
-::
+   tox -e docs-autobuild
 
-   uv pip install sphinx-autobuild
-
-Then start the live documentation server:
-
-::
-
-   cd docs
-   uv run sphinx-autobuild . _build/html -j auto
-
-This launches a local server (default: http://127.0.0.1:8000) and rebuilds the
-HTML pages incrementally whenever source files change.
+This launches a local server (default: http://127.0.0.1:8000) and rebuilds the HTML pages incrementally whenever source files change.
 
 
 .. warning::
@@ -528,7 +581,7 @@ HTML pages incrementally whenever source files change.
    Avoid running the docs build **and** importing `qiskit_metal` at the same time from the same checkout. A legacy guard (`config.is_building_docs()` looks for a `.buildingdocs` file) can skip certain imports when that marker file is present. If you see unexpected import errors while developing and building docs, check for and remove `docs/.buildingdocs` before importing. Longer-term we’ll remove this guard, but for now be mindful of the interaction.
 
 Local release vs. GitHub release
---------------------------------
+*********************************
 
 There are two supported release paths:
 
@@ -558,7 +611,7 @@ If you prefer the automated path, just push the tag and let GitHub Actions publi
 
 
 Tutorials
----------
+*********
 
 Jupyter notebook tutorials showing off features of Qiskit Metal are located in the `_tutorials_`
 folder. If you add a new feature, please add a demonstration of its use to a notebook or start a new notebook.

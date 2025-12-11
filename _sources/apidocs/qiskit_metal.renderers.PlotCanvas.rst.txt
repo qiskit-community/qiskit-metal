@@ -57,6 +57,8 @@ PlotCanvas
    .. automethod:: PlotCanvas.blit
    .. automethod:: PlotCanvas.blockSignals
    .. automethod:: PlotCanvas.buffer_rgba
+   .. automethod:: PlotCanvas.button_press_event
+   .. automethod:: PlotCanvas.button_release_event
    .. automethod:: PlotCanvas.changeEvent
    .. automethod:: PlotCanvas.childAt
    .. automethod:: PlotCanvas.childEvent
@@ -69,6 +71,7 @@ PlotCanvas
    .. automethod:: PlotCanvas.clear_axis
    .. automethod:: PlotCanvas.close
    .. automethod:: PlotCanvas.closeEvent
+   .. automethod:: PlotCanvas.close_event
    .. automethod:: PlotCanvas.colorCount
    .. automethod:: PlotCanvas.connect
    .. automethod:: PlotCanvas.connectNotify
@@ -97,6 +100,7 @@ PlotCanvas
    .. automethod:: PlotCanvas.dragMoveEvent
    .. automethod:: PlotCanvas.draw
    .. automethod:: PlotCanvas.drawRectangle
+   .. automethod:: PlotCanvas.draw_event
    .. automethod:: PlotCanvas.draw_idle
    .. automethod:: PlotCanvas.dropEvent
    .. automethod:: PlotCanvas.dumpObjectInfo
@@ -107,6 +111,7 @@ PlotCanvas
    .. automethod:: PlotCanvas.encodeMetricF
    .. automethod:: PlotCanvas.ensurePolished
    .. automethod:: PlotCanvas.enterEvent
+   .. automethod:: PlotCanvas.enter_notify_event
    .. automethod:: PlotCanvas.event
    .. automethod:: PlotCanvas.eventFilter
    .. automethod:: PlotCanvas.find
@@ -187,11 +192,14 @@ PlotCanvas
    .. automethod:: PlotCanvas.is_saving
    .. automethod:: PlotCanvas.keyPressEvent
    .. automethod:: PlotCanvas.keyReleaseEvent
+   .. automethod:: PlotCanvas.key_press_event
+   .. automethod:: PlotCanvas.key_release_event
    .. automethod:: PlotCanvas.keyboardGrabber
    .. automethod:: PlotCanvas.killTimer
    .. automethod:: PlotCanvas.layout
    .. automethod:: PlotCanvas.layoutDirection
    .. automethod:: PlotCanvas.leaveEvent
+   .. automethod:: PlotCanvas.leave_notify_event
    .. automethod:: PlotCanvas.locale
    .. automethod:: PlotCanvas.logicalDpiX
    .. automethod:: PlotCanvas.logicalDpiY
@@ -212,6 +220,8 @@ PlotCanvas
    .. automethod:: PlotCanvas.minimumSize
    .. automethod:: PlotCanvas.minimumSizeHint
    .. automethod:: PlotCanvas.minimumWidth
+   .. automethod:: PlotCanvas.minumumSizeHint
+   .. automethod:: PlotCanvas.motion_notify_event
    .. automethod:: PlotCanvas.mouseDoubleClickEvent
    .. automethod:: PlotCanvas.mouseEventCoords
    .. automethod:: PlotCanvas.mouseGrabber
@@ -240,6 +250,8 @@ PlotCanvas
    .. automethod:: PlotCanvas.parentWidget
    .. automethod:: PlotCanvas.physicalDpiX
    .. automethod:: PlotCanvas.physicalDpiY
+   .. automethod:: PlotCanvas.pick
+   .. automethod:: PlotCanvas.pick_event
    .. automethod:: PlotCanvas.plot
    .. automethod:: PlotCanvas.pos
    .. automethod:: PlotCanvas.previousInFocusChain
@@ -269,11 +281,13 @@ PlotCanvas
    .. automethod:: PlotCanvas.repaint
    .. automethod:: PlotCanvas.resize
    .. automethod:: PlotCanvas.resizeEvent
+   .. automethod:: PlotCanvas.resize_event
    .. automethod:: PlotCanvas.restoreGeometry
    .. automethod:: PlotCanvas.restore_region
    .. automethod:: PlotCanvas.saveGeometry
    .. automethod:: PlotCanvas.screen
    .. automethod:: PlotCanvas.scroll
+   .. automethod:: PlotCanvas.scroll_event
    .. automethod:: PlotCanvas.sender
    .. automethod:: PlotCanvas.senderSignalIndex
    .. automethod:: PlotCanvas.setAcceptDrops
@@ -368,6 +382,7 @@ PlotCanvas
    .. automethod:: PlotCanvas.styleSheet
    .. automethod:: PlotCanvas.style_axis
    .. automethod:: PlotCanvas.style_figure
+   .. automethod:: PlotCanvas.switch_backends
    .. automethod:: PlotCanvas.tabletEvent
    .. automethod:: PlotCanvas.testAttribute
    .. automethod:: PlotCanvas.thread
@@ -376,6 +391,7 @@ PlotCanvas
    .. automethod:: PlotCanvas.toolTipDuration
    .. automethod:: PlotCanvas.topLevelWidget
    .. automethod:: PlotCanvas.tostring_argb
+   .. automethod:: PlotCanvas.tostring_rgb
    .. automethod:: PlotCanvas.tr
    .. automethod:: PlotCanvas.underMouse
    .. automethod:: PlotCanvas.ungrabGesture

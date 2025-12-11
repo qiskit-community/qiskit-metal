@@ -5,14 +5,13 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="MplInteraction" href="qiskit_metal.renderers.MplInteraction.html" /><link rel="prev" title="QRendererAnalysis" href="qiskit_metal.renderers.QRendererAnalysis.html" />
 
-    <!-- Generated with Sphinx 7.4.7 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
         <title>PlotCanvas - Quantum Metal 0.5.1</title>
-      <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
+      <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/qiskit-sphinx-theme.css?v=fe84956c" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/qiskit-ecosystem.css?v=745c5aa7" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
     
     
 
@@ -38,57 +37,39 @@
     }
   }
 </style><link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
-<script src="../_static/js/web-components/top-nav-bar.js"></script></head>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet"></head>
   <body>
     
-    <script>document.body.dataset.theme = "light";</script>
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
     
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="svg-toc" viewBox="0 0 24 24">
     <title>Contents</title>
-    <svg id="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-      <defs><style>.cls-1{fill:none;}</style></defs>
-      <path d="M28,4H4A2,2,0,0,0,2,6V26a2,2,0,0,0,2,2H28a2,2,0,0,0,2-2V6A2,2,0,0,0,28,4ZM4,6H20V26H4ZM28,26H22V6h6Z"/>
-      <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32"/>
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M14 2H2C1.73478 2 1.48043 2.10536 1.29289 2.29289C1.10536 2.48043 1 2.73478 1 3V13C1 13.2652 1.10536 13.5196 1.29289 13.7071C1.48043 13.8946 1.73478 14 2 14H14C14.2652 14 14.5196 13.8946 14.7071 13.7071C14.8946 13.5196 15 13.2652 15 13V3C15 2.73478 14.8946 2.48043 14.7071 2.29289C14.5196 2.10536 14.2652 2 14 2V2ZM2 3H10V13H2V3ZM14 13H11V3H14V13Z" fill="currentColor"/>
     </svg>
   </symbol>
   <symbol id="svg-menu" viewBox="0 0 24 24">
     <title>Menu</title>
-    <svg id="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-      <defs><style>.cls-1{fill:none;}</style></defs>
-      <rect x="4" y="6" width="24" height="2"/>
-      <rect x="4" y="24" width="24" height="2"/>
-      <rect x="4" y="12" width="24" height="2"/>
-      <rect x="4" y="18" width="24" height="2"/>
-      <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32"/>
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M14 3H2V4H14V3Z" fill="currentColor"/>
+      <path d="M14 12H2V13H14V12Z" fill="currentColor"/>
+      <path d="M14 6H2V7H14V6Z" fill="currentColor"/>
+      <path d="M14 9H2V10H14V9Z" fill="currentColor"/>
     </svg>
   </symbol>
   <symbol id="svg-arrow-right" viewBox="0 0 24 24">
     <title>Expand</title>
-    <svg version="1.1" id="icon" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
-         viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve"><polygon points="22,16 12,26 10.6,24.6 19.2,16 10.6,7.4 12,6 " stroke="currentColor"/>
-      <rect id="_x3C_Transparent_Rectangle_x3E_" fill="none" width="32" height="32"/>
-    </svg>
-  </symbol>
-  <symbol id="svg-new-tab" viewBox="0 0 32 32">
-    <svg id="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-      <defs>
-        <style>
-          .cls-1 {
-            fill: none;
-          }
-        </style>
-      </defs>
-      <path fill="#6929C4" d="M26,28H6a2.0027,2.0027,0,0,1-2-2V6A2.0027,2.0027,0,0,1,6,4H16V6H6V26H26V16h2V26A2.0027,2.0027,0,0,1,26,28Z"/>
-      <polygon fill="#6929C4" points="20 2 20 4 26.586 4 18 12.586 19.414 14 28 5.414 28 12 30 12 30 2 20 2"/>
-      <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32"/>
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11 8L6.00005 13L5.30005 12.3L9.60005 8L5.30005 3.7L6.00005 3L11 8Z" fill="currentColor"/>
     </svg>
   </symbol>
   <symbol id="svg-sun" viewBox="0 0 24 24">
     <title>Light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="1" x2="12" y2="3"></line>
       <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -103,22 +84,56 @@
   <symbol id="svg-moon" viewBox="0 0 24 24">
     <title>Dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
     </svg>
   </symbol>
-  <symbol id="svg-sun-half" viewBox="0 0 24 24">
-    <title>Auto light/dark mode</title>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M13 12h5" />
-      <path d="M13 15h4" />
-      <path d="M13 18h1" />
-      <path d="M13 9h4" />
-      <path d="M13 6h1" />
+      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M15 13H1V14H15V13Z" fill="currentColor"/>
+      <path d="M12.7 4.5C13.1 4.1 13.1 3.5 12.7 3.1L10.9 1.3C10.5 0.9 9.9 0.9 9.5 1.3L2 8.8V12H5.2L12.7 4.5ZM10.2 2L12 3.8L10.5 5.3L8.7 3.5L10.2 2ZM3 11V9.2L8 4.2L9.8 6L4.8 11H3Z" fill="currentColor"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11 13.0002C11.5523 13.0002 12 12.5525 12 12.0002C12 11.4479 11.5523 11.0002 11 11.0002C10.4477 11.0002 10 11.4479 10 12.0002C10 12.5525 10.4477 13.0002 11 13.0002Z" fill="currentColor"/>
+      <path d="M14.8884 11.7394C14.5795 10.9524 14.0464 10.2734 13.3552 9.78646C12.664 9.29954 11.8451 9.02615 11 9.00017C10.1549 9.02615 9.33604 9.29954 8.64484 9.78646C7.95365 10.2734 7.42052 10.9524 7.11155 11.7394L7 12.0002L7.11155 12.2609C7.42052 13.0479 7.95365 13.727 8.64484 14.2139C9.33604 14.7008 10.1549 14.9742 11 15.0002C11.8451 14.9742 12.664 14.7008 13.3552 14.2139C14.0464 13.727 14.5795 13.0479 14.8884 12.2609L15 12.0002L14.8884 11.7394ZM11 14.0002C10.6044 14.0002 10.2178 13.8829 9.88886 13.6631C9.55996 13.4433 9.30362 13.131 9.15224 12.7655C9.00087 12.4001 8.96126 11.998 9.03843 11.61C9.1156 11.222 9.30608 10.8657 9.58579 10.586C9.86549 10.3063 10.2219 10.1158 10.6098 10.0386C10.9978 9.96143 11.3999 10.001 11.7654 10.1524C12.1308 10.3038 12.4432 10.5601 12.6629 10.889C12.8827 11.2179 13 11.6046 13 12.0002C12.9994 12.5304 12.7885 13.0388 12.4136 13.4137C12.0386 13.7887 11.5303 13.9996 11 14.0002Z" fill="currentColor"/>
+      <path d="M6 14.0002H4V2.00017H8V5.00017C8.00077 5.26515 8.10637 5.51906 8.29374 5.70643C8.48111 5.8938 8.73502 5.99941 9 6.00017H12V8.00017H13V5.00017C13.0018 4.93446 12.9893 4.86913 12.9634 4.80871C12.9375 4.74828 12.8988 4.6942 12.85 4.65017L9.35 1.15017C9.30599 1.10134 9.2519 1.06263 9.19147 1.03674C9.13104 1.01084 9.06572 0.998364 9 1.00017H4C3.73502 1.00094 3.48111 1.10654 3.29374 1.29391C3.10637 1.48128 3.00077 1.73519 3 2.00017V14.0002C3.00077 14.2652 3.10637 14.5191 3.29374 14.7064C3.48111 14.8938 3.73502 14.9994 4 15.0002H6V14.0002ZM9 2.20017L11.8 5.00017H9V2.20017Z" fill="currentColor"/>
     </svg>
   </symbol>
 </svg>
@@ -131,6 +146,8 @@
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -149,7 +166,8 @@
       <div class="theme-toggle-container theme-toggle-header">
         <button class="theme-toggle">
           <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
@@ -163,15 +181,13 @@
   <aside class="sidebar-drawer">
     <div class="sidebar-container">
       
-      <div class="sidebar-sticky"><div class="sidebar-brand">
-  <a href="https://www.qiskit.org/ecosystem">
-    <div class="sidebar-logo-container">
-      <img class="sidebar-logo" src="../_static/images/ecosystem-logo.svg" alt="Qiskit Ecosystem logo"/>
-    </div>
-  </a>
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
   
   <span class="sidebar-brand-text">Quantum Metal 0.5.1</span>
-</div><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  
+</a>
+<form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
@@ -474,11 +490,17 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/apidocs/qiskit_metal.renderers.PlotCanvas.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
 <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
@@ -488,12 +510,12 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section id="plotcanvas">
 <h1>PlotCanvas<a class="headerlink" href="#plotcanvas" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PlotCanvas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">design</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="qiskit_metal.designs.QDesign.html#qiskit_metal.designs.QDesign" title="qiskit_metal.designs.design_base.QDesign"><span class="pre">QDesign</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QMainWindowPlot</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">statusbar_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/renderers/renderer_mpl/mpl_canvas.html#PlotCanvas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PlotCanvas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">design</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="qiskit_metal.designs.QDesign.html#qiskit_metal.designs.QDesign" title="qiskit_metal.designs.design_base.QDesign"><span class="pre">QDesign</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QMainWindowPlot</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">statusbar_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/renderers/renderer_mpl/mpl_canvas.html#PlotCanvas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas" title="Link to this definition">¶</a></dt>
 <dd><p>Main Plot canvas widget.</p>
 <p>This class extends the <cite>FigureCanvas</cite> class.</p>
 <dl class="simple">
@@ -703,6 +725,44 @@ to update the renderer for any subsequent changes to the Figure.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.button_press_event">
+<span class="sig-name descname"><span class="pre">button_press_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">button</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dblclick</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">guiEvent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.button_press_event" title="Link to this definition">¶</a></dt>
+<dd><p>[<em>Deprecated</em>] Callback processing for mouse button press events.</p>
+<p>Backend derived classes should call this function on any mouse
+button press.  (<em>x</em>, <em>y</em>) are the canvas coords ((0, 0) is lower left).
+button and key are as defined in <cite>MouseEvent</cite>.</p>
+<p>This method will call all functions connected to the
+‘button_press_event’ with a <cite>MouseEvent</cite> instance.</p>
+<p class="rubric">Notes</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 3.6: </span>Use callbacks.process(‘button_press_event’, MouseEvent(…)) instead.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.button_release_event">
+<span class="sig-name descname"><span class="pre">button_release_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">button</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">guiEvent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.button_release_event" title="Link to this definition">¶</a></dt>
+<dd><p>[<em>Deprecated</em>] Callback processing for mouse button release events.</p>
+<p>Backend derived classes should call this function on any mouse
+button release.</p>
+<p>This method will call all functions connected to the
+‘button_release_event’ with a <cite>MouseEvent</cite> instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em>) – The canvas coordinates where 0=left.</p></li>
+<li><p><strong>y</strong> (<em>float</em>) – The canvas coordinates where 0=bottom.</p></li>
+<li><p><strong>guiEvent</strong> – The native UI event that generated the Matplotlib event.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 3.6: </span>Use callbacks.process(‘button_release_event’, MouseEvent(…)) instead.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.changeEvent">
 <span class="sig-name descname"><span class="pre">changeEvent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.changeEvent" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -777,13 +837,23 @@ Defaults to None.</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.close_event">
+<span class="sig-name descname"><span class="pre">close_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">guiEvent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.close_event" title="Link to this definition">¶</a></dt>
+<dd><p>[<em>Deprecated</em>] Pass a <cite>CloseEvent</cite> to all functions connected to <code class="docutils literal notranslate"><span class="pre">close_event</span></code>.</p>
+<p class="rubric">Notes</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 3.6: </span>Use callbacks.process(‘close_event’, CloseEvent(…)) instead.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.colorCount">
 <span class="sig-name descname"><span class="pre">colorCount</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.colorCount" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.connect">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.connect" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.connect" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -828,7 +898,7 @@ Defaults to None.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.createWindowContainer">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">createWindowContainer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.createWindowContainer" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">createWindowContainer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.createWindowContainer" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -879,12 +949,12 @@ Defaults to None.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.devicePixelRatioFScale">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">devicePixelRatioFScale</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.devicePixelRatioFScale" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">devicePixelRatioFScale</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.devicePixelRatioFScale" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.disconnect">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">disconnect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.disconnect" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">disconnect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.disconnect" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -917,6 +987,16 @@ Defaults to None.</p>
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.drawRectangle">
 <span class="sig-name descname"><span class="pre">drawRectangle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rect</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.drawRectangle" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.draw_event">
+<span class="sig-name descname"><span class="pre">draw_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">renderer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.draw_event" title="Link to this definition">¶</a></dt>
+<dd><p>[<em>Deprecated</em>] Pass a <cite>DrawEvent</cite> to all functions connected to <code class="docutils literal notranslate"><span class="pre">draw_event</span></code>.</p>
+<p class="rubric">Notes</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 3.6: </span>Use callbacks.process(‘draw_event’, DrawEvent(…)) instead.</p>
+</div>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.draw_idle">
@@ -956,7 +1036,7 @@ Defaults to None.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.encodeMetricF">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">encodeMetricF</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.encodeMetricF" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">encodeMetricF</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.encodeMetricF" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -970,18 +1050,38 @@ Defaults to None.</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.enter_notify_event">
+<span class="sig-name descname"><span class="pre">enter_notify_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">guiEvent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">xy</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.enter_notify_event" title="Link to this definition">¶</a></dt>
+<dd><p>[<em>Deprecated</em>] Callback processing for the mouse cursor entering the canvas.</p>
+<p>Backend derived classes should call this function when entering
+canvas.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>guiEvent</strong> – The native UI event that generated the Matplotlib event.</p></li>
+<li><p><strong>xy</strong> (<em>(</em><em>float</em><em>, </em><em>float</em><em>)</em>) – The coordinate location of the pointer when the canvas is entered.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 3.6: </span>Use callbacks.process(‘enter_notify_event’, LocationEvent(…)) instead.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.event">
 <span class="sig-name descname"><span class="pre">event</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.event" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.eventFilter">
-<span class="sig-name descname"><span class="pre">eventFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.eventFilter" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">eventFilter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.eventFilter" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.find">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">find</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.find" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">find</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.find" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -1105,12 +1205,13 @@ Defaults to None.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.get_default_filename">
 <span class="sig-name descname"><span class="pre">get_default_filename</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.get_default_filename" title="Link to this definition">¶</a></dt>
-<dd><p>Return a suitable default filename, including the extension.</p>
+<dd><p>Return a string, which includes extension, suitable for use as
+a default filename.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.get_default_filetype">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_default_filetype</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.get_default_filetype" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_default_filetype</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.get_default_filetype" title="Link to this definition">¶</a></dt>
 <dd><p>Return the default savefig file format as specified in
 <span class="rc">savefig.format</span>.</p>
 <p>The returned string does not include a period. This method is
@@ -1119,18 +1220,18 @@ overridden in backends that only support a single file type.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.get_renderer">
-<span class="sig-name descname"><span class="pre">get_renderer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.get_renderer" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_renderer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cleared=&lt;deprecated</span> <span class="pre">parameter&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.get_renderer" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.get_supported_filetypes">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_supported_filetypes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.get_supported_filetypes" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_supported_filetypes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.get_supported_filetypes" title="Link to this definition">¶</a></dt>
 <dd><p>Return dict of savefig file formats supported by this backend.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.get_supported_filetypes_grouped">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_supported_filetypes_grouped</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.get_supported_filetypes_grouped" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_supported_filetypes_grouped</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.get_supported_filetypes_grouped" title="Link to this definition">¶</a></dt>
 <dd><p>Return a dict of savefig file formats supported by this backend,
 where the keys are a file type name, such as ‘Joint Photographic
 Experts Group’, and the values are a list of filename extensions used
@@ -1139,7 +1240,7 @@ for that filetype, such as [‘jpg’, ‘jpeg’].</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.get_width_height">
-<span class="sig-name descname"><span class="pre">get_width_height</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">physical</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.get_width_height" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_width_height</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">physical</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.get_width_height" title="Link to this definition">¶</a></dt>
 <dd><p>Return the figure width and height in integral points or pixels.</p>
 <p>When the figure is used on High DPI screens (and the backend supports
 it), the truncation to integers occurs after scaling by the device
@@ -1440,8 +1541,28 @@ to a file, rather than rendering for an on-screen buffer.</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.key_press_event">
+<span class="sig-name descname"><span class="pre">key_press_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">guiEvent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.key_press_event" title="Link to this definition">¶</a></dt>
+<dd><p>[<em>Deprecated</em>] Pass a <cite>KeyEvent</cite> to all functions connected to <code class="docutils literal notranslate"><span class="pre">key_press_event</span></code>.</p>
+<p class="rubric">Notes</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 3.6: </span>Use callbacks.process(‘key_press_event’, KeyEvent(…)) instead.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.key_release_event">
+<span class="sig-name descname"><span class="pre">key_release_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">guiEvent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.key_release_event" title="Link to this definition">¶</a></dt>
+<dd><p>[<em>Deprecated</em>] Pass a <cite>KeyEvent</cite> to all functions connected to <code class="docutils literal notranslate"><span class="pre">key_release_event</span></code>.</p>
+<p class="rubric">Notes</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 3.6: </span>Use callbacks.process(‘key_release_event’, KeyEvent(…)) instead.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.keyboardGrabber">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">keyboardGrabber</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.keyboardGrabber" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">keyboardGrabber</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.keyboardGrabber" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -1463,6 +1584,23 @@ to a file, rather than rendering for an on-screen buffer.</p>
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.leaveEvent">
 <span class="sig-name descname"><span class="pre">leaveEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.leaveEvent" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.leave_notify_event">
+<span class="sig-name descname"><span class="pre">leave_notify_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">guiEvent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.leave_notify_event" title="Link to this definition">¶</a></dt>
+<dd><p>[<em>Deprecated</em>] Callback processing for the mouse cursor leaving the canvas.</p>
+<p>Backend derived classes should call this function when leaving
+canvas.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>guiEvent</strong> – The native UI event that generated the Matplotlib event.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 3.6: </span>Use callbacks.process(‘leave_notify_event’, LocationEvent(…)) instead.</p>
+</div>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.locale">
@@ -1565,6 +1703,34 @@ to a file, rather than rendering for an on-screen buffer.</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.minumumSizeHint">
+<span class="sig-name descname"><span class="pre">minumumSizeHint</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.minumumSizeHint" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.motion_notify_event">
+<span class="sig-name descname"><span class="pre">motion_notify_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">guiEvent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.motion_notify_event" title="Link to this definition">¶</a></dt>
+<dd><p>[<em>Deprecated</em>] Callback processing for mouse movement events.</p>
+<p>Backend derived classes should call this function on any
+motion-notify-event.</p>
+<p>This method will call all functions connected to the
+‘motion_notify_event’ with a <cite>MouseEvent</cite> instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em>) – The canvas coordinates where 0=left.</p></li>
+<li><p><strong>y</strong> (<em>float</em>) – The canvas coordinates where 0=bottom.</p></li>
+<li><p><strong>guiEvent</strong> – The native UI event that generated the Matplotlib event.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 3.6: </span>Use callbacks.process(‘motion_notify_event’, MouseEvent(…)) instead.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.mouseDoubleClickEvent">
 <span class="sig-name descname"><span class="pre">mouseDoubleClickEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.mouseDoubleClickEvent" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -1581,7 +1747,7 @@ all of the down-stream transforms work as expected.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.mouseGrabber">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mouseGrabber</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.mouseGrabber" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mouseGrabber</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.mouseGrabber" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -1702,7 +1868,7 @@ holding a reference to it.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.new_manager">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">new_manager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">figure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.new_manager" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">new_manager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">figure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.new_manager" title="Link to this definition">¶</a></dt>
 <dd><p>Create a new figure manager for <em>figure</em>, using this canvas class.</p>
 <p class="rubric">Notes</p>
 <p>This method should not be reimplemented in subclasses.  If
@@ -1803,6 +1969,30 @@ shown onscreen.</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.pick">
+<span class="sig-name descname"><span class="pre">pick</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mouseevent</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.pick" title="Link to this definition">¶</a></dt>
+<dd><p>[<em>Deprecated</em>]</p>
+<p class="rubric">Notes</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 3.6: </span>Use canvas.figure.pick instead.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.pick_event">
+<span class="sig-name descname"><span class="pre">pick_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mouseevent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">artist</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.pick_event" title="Link to this definition">¶</a></dt>
+<dd><p>[<em>Deprecated</em>] Callback processing for pick events.</p>
+<p>This method will be called by artists who are picked and will
+fire off <cite>PickEvent</cite> callbacks registered listeners.</p>
+<p>Note that artists are not pickable by default (see
+<cite>.Artist.set_picker</cite>).</p>
+<p class="rubric">Notes</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 3.6: </span>Use callbacks.process(‘pick_event’, PickEvent(…)) instead.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.plot">
 <span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_try</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/renderers/renderer_mpl/mpl_canvas.html#PlotCanvas.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.plot" title="Link to this definition">¶</a></dt>
 <dd><p>Render the plot.</p>
@@ -1841,9 +2031,9 @@ hardcopy.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>filename</strong> (<em>str</em><em> or </em><em>path-like</em><em> or </em><em>file-like</em>) – The file where the figure is saved.</p></li>
 <li><p><strong>dpi</strong> (float, default: <span class="rc">savefig.dpi</span>) – The dots per inch to save the figure in.</p></li>
-<li><p><strong>facecolor</strong> (<span class="mpltype">color</span> or ‘auto’, default: <span class="rc">savefig.facecolor</span>) – The facecolor of the figure.  If ‘auto’, use the current figure
+<li><p><strong>facecolor</strong> (color or ‘auto’, default: <span class="rc">savefig.facecolor</span>) – The facecolor of the figure.  If ‘auto’, use the current figure
 facecolor.</p></li>
-<li><p><strong>edgecolor</strong> (<span class="mpltype">color</span> or ‘auto’, default: <span class="rc">savefig.edgecolor</span>) – The edgecolor of the figure.  If ‘auto’, use the current figure
+<li><p><strong>edgecolor</strong> (color or ‘auto’, default: <span class="rc">savefig.edgecolor</span>) – The edgecolor of the figure.  If ‘auto’, use the current figure
 edgecolor.</p></li>
 <li><p><strong>orientation</strong> (<em>{'landscape'</em><em>, </em><em>'portrait'}</em><em>, </em><em>default: 'portrait'</em>) – Only currently applies to PostScript printing.</p></li>
 <li><p><strong>format</strong> (<em>str</em><em>, </em><em>optional</em>) – Force a specific file format. If not given, the format is inferred
@@ -1851,10 +2041,7 @@ from the <em>filename</em> extension, and if that fails from
 <span class="rc">savefig.format</span>.</p></li>
 <li><p><strong>bbox_inches</strong> (‘tight’ or <cite>.Bbox</cite>, default: <span class="rc">savefig.bbox</span>) – Bounding box in inches: only the given portion of the figure is
 saved.  If ‘tight’, try to figure out the tight bbox of the figure.</p></li>
-<li><p><strong>pad_inches</strong> (float or ‘layout’, default: <span class="rc">savefig.pad_inches</span>) – Amount of padding in inches around the figure when bbox_inches is
-‘tight’. If ‘layout’ use the padding from the constrained or
-compressed layout engine; ignored if one of those engines is not in
-use.</p></li>
+<li><p><strong>pad_inches</strong> (float, default: <span class="rc">savefig.pad_inches</span>) – Amount of padding around the figure when <em>bbox_inches</em> is ‘tight’.</p></li>
 <li><p><strong>bbox_extra_artists</strong> (list of <cite>~matplotlib.artist.Artist</cite>, optional) – A list of extra artists that will be considered when the
 tight bbox is calculated.</p></li>
 <li><p><strong>backend</strong> (<em>str</em><em>, </em><em>optional</em>) – Use a non-default backend to render the file, e.g. to render a
@@ -1870,7 +2057,7 @@ file format.  Custom backends can be referenced as “module://…”.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.print_jpeg">
-<span class="sig-name descname"><span class="pre">print_jpeg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename_or_obj</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pil_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.print_jpeg" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">print_jpeg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename_or_obj</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">pil_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.print_jpeg" title="Link to this definition">¶</a></dt>
 <dd><p>Write the figure to a JPEG file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1885,7 +2072,7 @@ file format.  Custom backends can be referenced as “module://…”.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.print_jpg">
-<span class="sig-name descname"><span class="pre">print_jpg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename_or_obj</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pil_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.print_jpg" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">print_jpg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename_or_obj</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">pil_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.print_jpg" title="Link to this definition">¶</a></dt>
 <dd><p>Write the figure to a JPEG file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1900,7 +2087,7 @@ file format.  Custom backends can be referenced as “module://…”.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.print_png">
-<span class="sig-name descname"><span class="pre">print_png</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename_or_obj</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pil_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.print_png" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">print_png</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename_or_obj</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pil_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.print_png" title="Link to this definition">¶</a></dt>
 <dd><p>Write the figure to a PNG file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1942,17 +2129,17 @@ will be used.  This can be removed by setting it to <em>None</em>.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.print_raw">
-<span class="sig-name descname"><span class="pre">print_raw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename_or_obj</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.print_raw" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">print_raw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename_or_obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.print_raw" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.print_rgba">
-<span class="sig-name descname"><span class="pre">print_rgba</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename_or_obj</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.print_rgba" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">print_rgba</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename_or_obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.print_rgba" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.print_tif">
-<span class="sig-name descname"><span class="pre">print_tif</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename_or_obj</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pil_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.print_tif" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">print_tif</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename_or_obj</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">pil_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.print_tif" title="Link to this definition">¶</a></dt>
 <dd><p>Write the figure to a TIFF file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1967,7 +2154,7 @@ will be used.  This can be removed by setting it to <em>None</em>.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.print_tiff">
-<span class="sig-name descname"><span class="pre">print_tiff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename_or_obj</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pil_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.print_tiff" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">print_tiff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename_or_obj</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">pil_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.print_tiff" title="Link to this definition">¶</a></dt>
 <dd><p>Write the figure to a TIFF file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1987,7 +2174,7 @@ will be used.  This can be removed by setting it to <em>None</em>.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.print_webp">
-<span class="sig-name descname"><span class="pre">print_webp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename_or_obj</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pil_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.print_webp" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">print_webp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename_or_obj</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">pil_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.print_webp" title="Link to this definition">¶</a></dt>
 <dd><p>Write the figure to a WebP file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2077,13 +2264,26 @@ doesn’t have the mouse grab currently.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.resize">
-<span class="sig-name descname"><span class="pre">resize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.resize" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.resize" title="Link to this definition">¶</a></dt>
+<dd><p>UNUSED: Set the canvas size in pixels.</p>
+<p>Certain backends may implement a similar method internally, but this is
+not a requirement of, nor is it used by, Matplotlib itself.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.resizeEvent">
 <span class="sig-name descname"><span class="pre">resizeEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.resizeEvent" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.resize_event">
+<span class="sig-name descname"><span class="pre">resize_event</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.resize_event" title="Link to this definition">¶</a></dt>
+<dd><p>[<em>Deprecated</em>] Pass a <cite>ResizeEvent</cite> to all functions connected to <code class="docutils literal notranslate"><span class="pre">resize_event</span></code>.</p>
+<p class="rubric">Notes</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 3.6: </span>Use callbacks.process(‘resize_event’, ResizeEvent(…)) instead.</p>
+</div>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.restoreGeometry">
@@ -2109,6 +2309,21 @@ doesn’t have the mouse grab currently.</p>
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.scroll">
 <span class="sig-name descname"><span class="pre">scroll</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.scroll" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.scroll_event">
+<span class="sig-name descname"><span class="pre">scroll_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">guiEvent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.scroll_event" title="Link to this definition">¶</a></dt>
+<dd><p>[<em>Deprecated</em>] Callback processing for scroll events.</p>
+<p>Backend derived classes should call this function on any
+scroll wheel event.  (<em>x</em>, <em>y</em>) are the canvas coords ((0, 0) is lower
+left).  button and key are as defined in <cite>MouseEvent</cite>.</p>
+<p>This method will call all functions connected to the ‘scroll_event’
+with a <cite>MouseEvent</cite> instance.</p>
+<p class="rubric">Notes</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 3.6: </span>Use callbacks.process(‘scroll_event’, MouseEvent(…)) instead.</p>
+</div>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.sender">
@@ -2362,7 +2577,7 @@ doesn’t have the mouse grab currently.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.setTabOrder">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">setTabOrder</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.setTabOrder" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">setTabOrder</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.setTabOrder" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -2652,6 +2867,16 @@ on <cite>flush_events</cite> being properly implemented.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.switch_backends">
+<span class="sig-name descname"><span class="pre">switch_backends</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">FigureCanvasClass</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.switch_backends" title="Link to this definition">¶</a></dt>
+<dd><p>Instantiate an instance of FigureCanvasClass</p>
+<p>This is used for backend switching, e.g., to instantiate a
+FigureCanvasPS from a FigureCanvasGTK.  Note, deep copying is
+not done, so any changes to one of the instances (e.g., setting
+figure size or line props), will be reflected in the other</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.tabletEvent">
 <span class="sig-name descname"><span class="pre">tabletEvent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.tabletEvent" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -2695,8 +2920,16 @@ to update the renderer for any subsequent changes to the Figure.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.tostring_rgb">
+<span class="sig-name descname"><span class="pre">tostring_rgb</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.tostring_rgb" title="Link to this definition">¶</a></dt>
+<dd><p>Get the image as RGB <cite>bytes</cite>.</p>
+<p><cite>draw</cite> must be called at least once before this function will work and
+to update the renderer for any subsequent changes to the Figure.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.tr">
-<span class="sig-name descname"><span class="pre">tr</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.tr" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tr</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.tr" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -2873,6 +3106,7 @@ values for the bounds of the series as a whole.</p></li>
         </article>
       </div>
       <footer>
+        
         <div class="related-pages">
           <a class="next-page" href="qiskit_metal.renderers.MplInteraction.html">
               <div class="page-info">
@@ -2904,7 +3138,7 @@ values for the bounds of the series as a whole.</p></li>
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2025/12/08</div>
+              Last updated on 2025/12/11</div>
           </div>
           <div class="right-details">
             
@@ -2963,6 +3197,8 @@ values for the bounds of the series as a whole.</p></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.blit"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.blit()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.blockSignals"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.blockSignals()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.buffer_rgba"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.buffer_rgba()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.button_press_event"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.button_press_event()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.button_release_event"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.button_release_event()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.changeEvent"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.changeEvent()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.childAt"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.childAt()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.childEvent"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.childEvent()</span></code></a></li>
@@ -2975,6 +3211,7 @@ values for the bounds of the series as a whole.</p></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.clear_axis"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.clear_axis()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.close"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.close()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.closeEvent"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.closeEvent()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.close_event"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.close_event()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.colorCount"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.colorCount()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.connect"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.connect()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.connectNotify"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.connectNotify()</span></code></a></li>
@@ -3003,6 +3240,7 @@ values for the bounds of the series as a whole.</p></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.dragMoveEvent"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.dragMoveEvent()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.draw"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.draw()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.drawRectangle"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.drawRectangle()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.draw_event"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.draw_event()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.draw_idle"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.draw_idle()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.dropEvent"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.dropEvent()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.dumpObjectInfo"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.dumpObjectInfo()</span></code></a></li>
@@ -3013,6 +3251,7 @@ values for the bounds of the series as a whole.</p></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.encodeMetricF"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.encodeMetricF()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.ensurePolished"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.ensurePolished()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.enterEvent"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.enterEvent()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.enter_notify_event"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.enter_notify_event()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.event"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.event()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.eventFilter"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.eventFilter()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.find"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.find()</span></code></a></li>
@@ -3093,11 +3332,14 @@ values for the bounds of the series as a whole.</p></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.is_saving"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.is_saving()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.keyPressEvent"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.keyPressEvent()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.keyReleaseEvent"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.keyReleaseEvent()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.key_press_event"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.key_press_event()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.key_release_event"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.key_release_event()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.keyboardGrabber"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.keyboardGrabber()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.killTimer"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.killTimer()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.layout"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.layout()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.layoutDirection"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.layoutDirection()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.leaveEvent"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.leaveEvent()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.leave_notify_event"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.leave_notify_event()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.locale"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.locale()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.logicalDpiX"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.logicalDpiX()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.logicalDpiY"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.logicalDpiY()</span></code></a></li>
@@ -3118,6 +3360,8 @@ values for the bounds of the series as a whole.</p></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.minimumSize"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.minimumSize()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.minimumSizeHint"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.minimumSizeHint()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.minimumWidth"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.minimumWidth()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.minumumSizeHint"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.minumumSizeHint()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.motion_notify_event"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.motion_notify_event()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.mouseDoubleClickEvent"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.mouseDoubleClickEvent()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.mouseEventCoords"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.mouseEventCoords()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.mouseGrabber"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.mouseGrabber()</span></code></a></li>
@@ -3146,6 +3390,8 @@ values for the bounds of the series as a whole.</p></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.parentWidget"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.parentWidget()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.physicalDpiX"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.physicalDpiX()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.physicalDpiY"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.physicalDpiY()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.pick"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.pick()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.pick_event"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.pick_event()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.plot"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.plot()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.pos"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.pos()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.previousInFocusChain"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.previousInFocusChain()</span></code></a></li>
@@ -3175,11 +3421,13 @@ values for the bounds of the series as a whole.</p></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.repaint"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.repaint()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.resize"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.resize()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.resizeEvent"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.resizeEvent()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.resize_event"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.resize_event()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.restoreGeometry"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.restoreGeometry()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.restore_region"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.restore_region()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.saveGeometry"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.saveGeometry()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.screen"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.screen()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.scroll"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.scroll()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.scroll_event"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.scroll_event()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.sender"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.sender()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.senderSignalIndex"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.senderSignalIndex()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.setAcceptDrops"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.setAcceptDrops()</span></code></a></li>
@@ -3274,6 +3522,7 @@ values for the bounds of the series as a whole.</p></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.styleSheet"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.styleSheet()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.style_axis"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.style_axis()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.style_figure"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.style_figure()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.switch_backends"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.switch_backends()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.tabletEvent"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.tabletEvent()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.testAttribute"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.testAttribute()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.thread"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.thread()</span></code></a></li>
@@ -3282,6 +3531,7 @@ values for the bounds of the series as a whole.</p></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.toolTipDuration"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.toolTipDuration()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.topLevelWidget"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.topLevelWidget()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.tostring_argb"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.tostring_argb()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.tostring_rgb"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.tostring_rgb()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.tr"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.tr()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.underMouse"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.underMouse()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.ungrabGesture"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.ungrabGesture()</span></code></a></li>
@@ -3327,12 +3577,10 @@ values for the bounds of the series as a whole.</p></li>
       
     </aside>
   </div>
-</div><script src="../_static/jquery.js?v=5d32c60e"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../_static/documentation_options.js?v=b9afe91b"></script>
-    <script src="../_static/doctools.js?v=9a2dae69"></script>
+</div><script src="../_static/documentation_options.js?v=b9afe91b"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     </body>

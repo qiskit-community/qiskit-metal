@@ -5,14 +5,13 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="FAQ’s" href="faq.html" /><link rel="prev" title="Roadmap" href="workflow.html" />
 
-    <!-- Generated with Sphinx 7.4.7 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
         <title>Contributing to Qiskit Metal - Quantum Metal 0.5.1</title>
-      <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
+      <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=fe84956c" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-ecosystem.css?v=745c5aa7" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=302659d7" />
     
     
 
@@ -38,57 +37,39 @@
     }
   }
 </style><link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
-<script src="_static/js/web-components/top-nav-bar.js"></script></head>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet"></head>
   <body>
     
-    <script>document.body.dataset.theme = "light";</script>
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
     
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="svg-toc" viewBox="0 0 24 24">
     <title>Contents</title>
-    <svg id="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-      <defs><style>.cls-1{fill:none;}</style></defs>
-      <path d="M28,4H4A2,2,0,0,0,2,6V26a2,2,0,0,0,2,2H28a2,2,0,0,0,2-2V6A2,2,0,0,0,28,4ZM4,6H20V26H4ZM28,26H22V6h6Z"/>
-      <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32"/>
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M14 2H2C1.73478 2 1.48043 2.10536 1.29289 2.29289C1.10536 2.48043 1 2.73478 1 3V13C1 13.2652 1.10536 13.5196 1.29289 13.7071C1.48043 13.8946 1.73478 14 2 14H14C14.2652 14 14.5196 13.8946 14.7071 13.7071C14.8946 13.5196 15 13.2652 15 13V3C15 2.73478 14.8946 2.48043 14.7071 2.29289C14.5196 2.10536 14.2652 2 14 2V2ZM2 3H10V13H2V3ZM14 13H11V3H14V13Z" fill="currentColor"/>
     </svg>
   </symbol>
   <symbol id="svg-menu" viewBox="0 0 24 24">
     <title>Menu</title>
-    <svg id="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-      <defs><style>.cls-1{fill:none;}</style></defs>
-      <rect x="4" y="6" width="24" height="2"/>
-      <rect x="4" y="24" width="24" height="2"/>
-      <rect x="4" y="12" width="24" height="2"/>
-      <rect x="4" y="18" width="24" height="2"/>
-      <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32"/>
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M14 3H2V4H14V3Z" fill="currentColor"/>
+      <path d="M14 12H2V13H14V12Z" fill="currentColor"/>
+      <path d="M14 6H2V7H14V6Z" fill="currentColor"/>
+      <path d="M14 9H2V10H14V9Z" fill="currentColor"/>
     </svg>
   </symbol>
   <symbol id="svg-arrow-right" viewBox="0 0 24 24">
     <title>Expand</title>
-    <svg version="1.1" id="icon" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
-         viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve"><polygon points="22,16 12,26 10.6,24.6 19.2,16 10.6,7.4 12,6 " stroke="currentColor"/>
-      <rect id="_x3C_Transparent_Rectangle_x3E_" fill="none" width="32" height="32"/>
-    </svg>
-  </symbol>
-  <symbol id="svg-new-tab" viewBox="0 0 32 32">
-    <svg id="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-      <defs>
-        <style>
-          .cls-1 {
-            fill: none;
-          }
-        </style>
-      </defs>
-      <path fill="#6929C4" d="M26,28H6a2.0027,2.0027,0,0,1-2-2V6A2.0027,2.0027,0,0,1,6,4H16V6H6V26H26V16h2V26A2.0027,2.0027,0,0,1,26,28Z"/>
-      <polygon fill="#6929C4" points="20 2 20 4 26.586 4 18 12.586 19.414 14 28 5.414 28 12 30 12 30 2 20 2"/>
-      <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32"/>
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11 8L6.00005 13L5.30005 12.3L9.60005 8L5.30005 3.7L6.00005 3L11 8Z" fill="currentColor"/>
     </svg>
   </symbol>
   <symbol id="svg-sun" viewBox="0 0 24 24">
     <title>Light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="1" x2="12" y2="3"></line>
       <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -103,22 +84,56 @@
   <symbol id="svg-moon" viewBox="0 0 24 24">
     <title>Dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
     </svg>
   </symbol>
-  <symbol id="svg-sun-half" viewBox="0 0 24 24">
-    <title>Auto light/dark mode</title>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M13 12h5" />
-      <path d="M13 15h4" />
-      <path d="M13 18h1" />
-      <path d="M13 9h4" />
-      <path d="M13 6h1" />
+      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M15 13H1V14H15V13Z" fill="currentColor"/>
+      <path d="M12.7 4.5C13.1 4.1 13.1 3.5 12.7 3.1L10.9 1.3C10.5 0.9 9.9 0.9 9.5 1.3L2 8.8V12H5.2L12.7 4.5ZM10.2 2L12 3.8L10.5 5.3L8.7 3.5L10.2 2ZM3 11V9.2L8 4.2L9.8 6L4.8 11H3Z" fill="currentColor"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11 13.0002C11.5523 13.0002 12 12.5525 12 12.0002C12 11.4479 11.5523 11.0002 11 11.0002C10.4477 11.0002 10 11.4479 10 12.0002C10 12.5525 10.4477 13.0002 11 13.0002Z" fill="currentColor"/>
+      <path d="M14.8884 11.7394C14.5795 10.9524 14.0464 10.2734 13.3552 9.78646C12.664 9.29954 11.8451 9.02615 11 9.00017C10.1549 9.02615 9.33604 9.29954 8.64484 9.78646C7.95365 10.2734 7.42052 10.9524 7.11155 11.7394L7 12.0002L7.11155 12.2609C7.42052 13.0479 7.95365 13.727 8.64484 14.2139C9.33604 14.7008 10.1549 14.9742 11 15.0002C11.8451 14.9742 12.664 14.7008 13.3552 14.2139C14.0464 13.727 14.5795 13.0479 14.8884 12.2609L15 12.0002L14.8884 11.7394ZM11 14.0002C10.6044 14.0002 10.2178 13.8829 9.88886 13.6631C9.55996 13.4433 9.30362 13.131 9.15224 12.7655C9.00087 12.4001 8.96126 11.998 9.03843 11.61C9.1156 11.222 9.30608 10.8657 9.58579 10.586C9.86549 10.3063 10.2219 10.1158 10.6098 10.0386C10.9978 9.96143 11.3999 10.001 11.7654 10.1524C12.1308 10.3038 12.4432 10.5601 12.6629 10.889C12.8827 11.2179 13 11.6046 13 12.0002C12.9994 12.5304 12.7885 13.0388 12.4136 13.4137C12.0386 13.7887 11.5303 13.9996 11 14.0002Z" fill="currentColor"/>
+      <path d="M6 14.0002H4V2.00017H8V5.00017C8.00077 5.26515 8.10637 5.51906 8.29374 5.70643C8.48111 5.8938 8.73502 5.99941 9 6.00017H12V8.00017H13V5.00017C13.0018 4.93446 12.9893 4.86913 12.9634 4.80871C12.9375 4.74828 12.8988 4.6942 12.85 4.65017L9.35 1.15017C9.30599 1.10134 9.2519 1.06263 9.19147 1.03674C9.13104 1.01084 9.06572 0.998364 9 1.00017H4C3.73502 1.00094 3.48111 1.10654 3.29374 1.29391C3.10637 1.48128 3.00077 1.73519 3 2.00017V14.0002C3.00077 14.2652 3.10637 14.5191 3.29374 14.7064C3.48111 14.8938 3.73502 14.9994 4 15.0002H6V14.0002ZM9 2.20017L11.8 5.00017H9V2.20017Z" fill="currentColor"/>
     </svg>
   </symbol>
 </svg>
@@ -131,6 +146,8 @@
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -149,7 +166,8 @@
       <div class="theme-toggle-container theme-toggle-header">
         <button class="theme-toggle">
           <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
@@ -163,15 +181,13 @@
   <aside class="sidebar-drawer">
     <div class="sidebar-container">
       
-      <div class="sidebar-sticky"><div class="sidebar-brand">
-  <a href="https://www.qiskit.org/ecosystem">
-    <div class="sidebar-logo-container">
-      <img class="sidebar-logo" src="_static/images/ecosystem-logo.svg" alt="Qiskit Ecosystem logo"/>
-    </div>
-  </a>
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
   
   <span class="sidebar-brand-text">Quantum Metal 0.5.1</span>
-</div><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  
+</a>
+<form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
@@ -474,11 +490,17 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          
+          <div class="view-this-page">
+  <a class="muted-link" href="_sources/contributor-guide.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
 <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
@@ -488,9 +510,13 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section id="contributing-to-qiskit-metal">
 <span id="contributor-guide"></span><h1>Contributing to Qiskit Metal<a class="headerlink" href="#contributing-to-qiskit-metal" title="Link to this heading">¶</a></h1>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Qiskit Metal is undergoing a major transition to become Quantum Metal. Some of the instructions below might be outdated and will be updated soon.</p>
+</div>
 <p>Qiskit Metal is an open-source project committed to bringing quantum hardware design to
 people of all backgrounds. This page describes how you can join the Qiskit Metal
 community in this goal.</p>
@@ -535,14 +561,56 @@ fits in with the project, how it can be implemented, etc.</p>
 </section>
 <section id="contributing-code">
 <h2>Contributing Code<a class="headerlink" href="#contributing-code" title="Link to this heading">¶</a></h2>
+<section id="development-setup-for-quantum-metal-v0-5">
+<h3>Development Setup for Quantum Metal v0.5+<a class="headerlink" href="#development-setup-for-quantum-metal-v0-5" title="Link to this heading">¶</a></h3>
+<p>The new version of Qiskit Metal (soon to be Quantum Metal) has transitioned to <a class="reference external" href="https://docs.astral.sh/uv/">uv</a> for project and dependency management. This guide describes how to set up your local development environment in light of these updates. First, install uv on your system as described by the <a class="reference external" href="https://docs.astral.sh/uv/getting-started/installation/">instructions here</a>.</p>
+<section id="development-virtual-environments">
+<h4>Development (virtual) environments<a class="headerlink" href="#development-virtual-environments" title="Link to this heading">¶</a></h4>
+<p>The next few paragraphs describe the setup. We recommend reading through it at least once before you start making contributions. Skip to the next section for instructions on how to activate venvs, run tasks, etc.</p>
+<p>All development activities should be carried out inside Python virtual environments (venvs). Thankfully, uv can manage all our venvs for us. In addition to this, we can use tox to orchestrate venvs to fit the needs of different development tasks: testing, linting, building docs, etc.</p>
+<p>All information about project dependencies can be found in the <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file located in the root directory of this repository. The direct project dependencies are listed in the <code class="docutils literal notranslate"><span class="pre">requirements</span></code> section of the <code class="docutils literal notranslate"><span class="pre">[project]</span></code> table. These are required to run user code.</p>
+<p>Development dependencies are specified in the <code class="docutils literal notranslate"><span class="pre">[dependency-groups]</span></code> table. There are four groups available: <code class="docutils literal notranslate"><span class="pre">test</span></code>, <code class="docutils literal notranslate"><span class="pre">lint</span></code>, <code class="docutils literal notranslate"><span class="pre">docs</span></code>, and <code class="docutils literal notranslate"><span class="pre">jupyter</span></code>. These are used by tox to create a virtual environment with the required dependencies for each task. At the time of writing, the <code class="docutils literal notranslate"><span class="pre">jupyter</span></code> group is available for convenience, but unused in tasks.
+See <a class="reference external" href="https://peps.python.org/pep-0735/">PEP 735-Dependency Groups in pyproject.toml</a> and the <a class="reference external" href="https://packaging.python.org/en/latest/specifications/dependency-groups/#dependency-groups">PyPA specification page for dependency groups</a> for more information.</p>
+<p>The file <code class="docutils literal notranslate"><span class="pre">uv.lock</span></code> lists “locked” versions for all dependencies listed in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> across different platforms. This allows uv to create reproducible environments. At present, tox does not create virtual environments using the lockfile, but the <a class="reference external" href="https://github.com/tox-dev/tox-uv">tox-uv</a> plugin allows for this functionality to be enabled by setting the <code class="docutils literal notranslate"><span class="pre">runner</span></code> configuration variable in each tox task, as described <a class="reference external" href="https://github.com/tox-dev/tox-uv?tab=readme-ov-file#uvlock-support">here</a>.</p>
+</section>
+<section id="running-tests">
+<h4>Running tests<a class="headerlink" href="#running-tests" title="Link to this heading">¶</a></h4>
+<p>Tox is configured to run tests (using pytest) for Python 3.10–3.12. Use the following command to run tests for all three versions:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tox</span> <span class="o">-</span><span class="n">m</span> <span class="n">test</span>
+</pre></div>
+</div>
+<p>We use the <a class="reference external" href="https://github.com/nicoddemus/pytest-rich">pytest-rich</a> plugin to provide rich output of testing progress. Tests can be run for specific versions using the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tox</span> <span class="o">-</span><span class="n">e</span> <span class="n">py3</span><span class="mf">.12</span>  <span class="c1"># replace 3.12 with the version you want to run</span>
+</pre></div>
+</div>
+</section>
+<section id="linting-and-formatting">
+<h4>Linting and Formatting<a class="headerlink" href="#linting-and-formatting" title="Link to this heading">¶</a></h4>
+<p>We use <a class="reference external" href="https://docs.astral.sh/ruff/">ruff</a> for linting and formatting. Our linting configuration is described in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> under the <code class="docutils literal notranslate"><span class="pre">[tool.ruff.lint]</span></code> table. Note that this configuration is a work in progress and likely to change until further notice. The linter can be run using the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tox</span> <span class="o">-</span><span class="n">e</span> <span class="n">lint</span>
+</pre></div>
+</div>
+<p>This will show all the linting errors and the location for each. For a summary showing the number of violations of each linting rule, use the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tox</span> <span class="o">-</span><span class="n">e</span> <span class="n">lint</span> <span class="o">--</span> <span class="o">--</span><span class="n">statistics</span>
+</pre></div>
+</div>
+<p>Formatting for the whole repository can be performed using the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tox</span> <span class="o">-</span><span class="n">e</span> <span class="nb">format</span>
+</pre></div>
+</div>
+<p>Note that we have not yet settled on a formatting configuration other than default options provided by ruff, but this may change.</p>
 <section id="style-guide">
-<h3>Style Guide<a class="headerlink" href="#style-guide" title="Link to this heading">¶</a></h3>
+<h5>Style Guide<a class="headerlink" href="#style-guide" title="Link to this heading">¶</a></h5>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>The style guide presented below is being deprecated. Quantum Metal v0.5+ uses ruff for linting and formatting. An updated style guide will be added soon.</p>
+</div>
 <p>To enforce a consistent code style in the project, we use customized <a class="reference external" href="https://www.pylint.org">Pylint</a> for linting and <a class="reference external" href="https://google.github.io/styleguide/pyguide.html">YAPF`&lt;https://github.com/google/yapf&gt;__ with the `Google style</a> for auto formatting. The custom
 <cite>.pylintrc</cite> and <cite>.style.yapf</cite> files is located in the root of the repository.
 Our CI pipeline will enforce these styles when you make the pull request.</p>
 </section>
 <section id="contributor-license-agreement">
-<h3>Contributor License Agreement<a class="headerlink" href="#contributor-license-agreement" title="Link to this heading">¶</a></h3>
+<h5>Contributor License Agreement<a class="headerlink" href="#contributor-license-agreement" title="Link to this heading">¶</a></h5>
 <p>Before you can submit any code, all contributors must sign a
 contributor license agreement (CLA). By signing a CLA, you’re attesting
 that you are the author of the contribution, and that you’re freely
@@ -561,7 +629,7 @@ email it to us at &lt;<a class="reference external" href="mailto:qiskit&#37;&#52
 </div>
 </section>
 <section id="pull-requests">
-<h3>Pull Requests<a class="headerlink" href="#pull-requests" title="Link to this heading">¶</a></h3>
+<h5>Pull Requests<a class="headerlink" href="#pull-requests" title="Link to this heading">¶</a></h5>
 <p>We use <a class="reference external" href="https://help.github.com/articles/about-pull-requests">GitHub pull requests</a> to accept
 contributions.</p>
 <p>While not required, opening a new issue about the bug you’re fixing or the
@@ -580,14 +648,14 @@ not merge the commit until it is finished. You or a reviewer can remove the
 WIP status when the code is ready to be fully reviewed for merging.</p>
 </section>
 <section id="code-review">
-<h3>Code Review<a class="headerlink" href="#code-review" title="Link to this heading">¶</a></h3>
+<h5>Code Review<a class="headerlink" href="#code-review" title="Link to this heading">¶</a></h5>
 <p>Code review is done in the open and is open to anyone. While only maintainers have
 access to merge commits, community feedback on pull requests is extremely valuable.
 It is also a good mechanism to learn about the code base. You can
 view a list of all open pull requests at <a class="reference external" href="https://github.com/Qiskit/qiskit-metal/pulls">https://github.com/Qiskit/qiskit-metal/pulls</a></p>
 </section>
 <section id="commit-messages">
-<h3>Commit Messages<a class="headerlink" href="#commit-messages" title="Link to this heading">¶</a></h3>
+<h5>Commit Messages<a class="headerlink" href="#commit-messages" title="Link to this heading">¶</a></h5>
 <p>The content of the commit message describing a change is just as important as the
 change itself. The commit message provides the context for
 not only code review but also the change history in the git log. A detailed
@@ -648,7 +716,7 @@ the commit message. Use the syntax:</p>
 understand and review the patch for correctness. Less is not more.</p>
 </section>
 <section id="documenting-your-code">
-<h3>Documenting Your Code<a class="headerlink" href="#documenting-your-code" title="Link to this heading">¶</a></h3>
+<h5>Documenting Your Code<a class="headerlink" href="#documenting-your-code" title="Link to this heading">¶</a></h5>
 <p>If you make a change to an element, make sure you update the associated
 <em>docstrings</em> and parts of the documentation under <code class="docutils literal notranslate"><span class="pre">docs/apidocs</span></code> in the
 corresponding repo. To locally build the element-specific
@@ -661,7 +729,7 @@ if you see doc bugs, have a new feature that needs to be documented, or think
 that material could be added to the existing docs.</p>
 </section>
 <section id="good-first-contributions">
-<h3>Good First Contributions<a class="headerlink" href="#good-first-contributions" title="Link to this heading">¶</a></h3>
+<h5>Good First Contributions<a class="headerlink" href="#good-first-contributions" title="Link to this heading">¶</a></h5>
 <p>If you would like to contribute to Qiskit Metal, but aren’t sure
 where to get started, the <code class="docutils literal notranslate"><span class="pre">good</span> <span class="pre">first</span> <span class="pre">issue</span></code> label on issues for a project
 highlights items appropriate for people new to the project.
@@ -671,7 +739,7 @@ words, intimate familiarity with Qiskit Metal is not a requirement to develop a 
 for the issue.</p>
 </section>
 <section id="deprecation-policy">
-<h3>Deprecation Policy<a class="headerlink" href="#deprecation-policy" title="Link to this heading">¶</a></h3>
+<h5>Deprecation Policy<a class="headerlink" href="#deprecation-policy" title="Link to this heading">¶</a></h5>
 <p>Qiskit users need to know if a feature or an API they rely
 upon will continue to be supported by the software tomorrow. Knowing under which conditions
 the project can remove (or change in a backwards-incompatible manner) a feature or
@@ -700,7 +768,7 @@ the stable branch policy, deprecation removals can only occur during minor
 version releases; they are not appropriate for backporting.</p>
 </section>
 <section id="deprecation-warnings">
-<h3>Deprecation Warnings<a class="headerlink" href="#deprecation-warnings" title="Link to this heading">¶</a></h3>
+<h5>Deprecation Warnings<a class="headerlink" href="#deprecation-warnings" title="Link to this heading">¶</a></h5>
 <p>The proper way to raise a deprecation warning is to use the <code class="docutils literal notranslate"><span class="pre">warn</span></code> function
 from the <a class="reference external" href="https://docs.python.org/3/library/warnings.html">warnings module</a>
 in the Python standard library. The warning category class
@@ -727,7 +795,7 @@ raised by a private method that only has one caller, <code class="docutils liter
 appropriate.</p>
 </section>
 <section id="stable-branch-policy">
-<h3>Stable Branch Policy<a class="headerlink" href="#stable-branch-policy" title="Link to this heading">¶</a></h3>
+<h5>Stable Branch Policy<a class="headerlink" href="#stable-branch-policy" title="Link to this heading">¶</a></h5>
 <p>The stable branch is intended to be a safe source of fixes for high-impact
 bugs and security issues that have been fixed on master since a
 release. When reviewing a stable branch PR, we must balance the risk
@@ -752,7 +820,7 @@ not make sense on master.</p></li>
 </ul>
 </section>
 <section id="backporting-procedure">
-<h3>Backporting procedure:<a class="headerlink" href="#backporting-procedure" title="Link to this heading">¶</a></h3>
+<h5>Backporting procedure:<a class="headerlink" href="#backporting-procedure" title="Link to this heading">¶</a></h5>
 <p>When backporting a patch from master to stable, we want to keep a
 reference to the change on master. When you create the branch for the
 stable PR, use:</p>
@@ -773,7 +841,7 @@ Please keep Conflicts lines in the commit message to help review of the
 stable patch.</p>
 </section>
 <section id="backport-labels">
-<h3>Backport labels<a class="headerlink" href="#backport-labels" title="Link to this heading">¶</a></h3>
+<h5>Backport labels<a class="headerlink" href="#backport-labels" title="Link to this heading">¶</a></h5>
 <p>Bugs or PRs tagged with <code class="docutils literal notranslate"><span class="pre">stable</span> <span class="pre">backport</span> <span class="pre">potential</span></code> are bugs
 that apply to the stable release too and may be suitable for
 backporting once a fix lands in master. Once the backport has been
@@ -783,7 +851,7 @@ as a sign that setting the target branch as stable was not
 a mistake. Also, reference to the PR number in master that you are
 porting.</p>
 <section id="custom-names-and-images-for-qcomponents">
-<h4>Custom Names and Images for QComponents<a class="headerlink" href="#custom-names-and-images-for-qcomponents" title="Link to this heading">¶</a></h4>
+<h6>Custom Names and Images for QComponents<a class="headerlink" href="#custom-names-and-images-for-qcomponents" title="Link to this heading">¶</a></h6>
 <p>When adding new qcomponents, new images for these components go
 in the following directory:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qiskit</span><span class="o">-</span><span class="n">metal</span><span class="o">/</span><span class="n">qiskit_metal</span><span class="o">/</span><span class="n">_gui</span><span class="o">/</span><span class="n">_imgs</span><span class="o">/</span><span class="n">components</span>
@@ -811,6 +879,8 @@ the qiskit metal application that the image for the qcomponent is named
 </section>
 </section>
 </section>
+</section>
+</section>
 <section id="contributing-to-documentation">
 <h2>Contributing to Documentation<a class="headerlink" href="#contributing-to-documentation" title="Link to this heading">¶</a></h2>
 <p>Qiskit Metal documentation is shaped by the <a class="reference external" href="https://www.writethedocs.org/guide/docs-as-code/">docs as code</a> philosophy, primarily
@@ -818,8 +888,6 @@ drawn from Qiskit Metal code comments in the <a class="reference external" href=
 <p>The documentation is built using <a class="reference external" href="http://www.sphinx-doc.org/en/master/">Sphinx</a>. The majority of documentation, under
 <a class="reference external" href="https://qiskit-community.github.io/qiskit-metal/overview.html">API Reference</a>, is
 drawn from code comments in the repositories listed in <a class="reference internal" href="#where-things-are"><span class="std std-ref">Where Things Are</span></a>.</p>
-<section id="documentation-structure">
-<h3>Documentation Structure<a class="headerlink" href="#documentation-structure" title="Link to this heading">¶</a></h3>
 <p>The way documentation is structured in Qiskit Metal is to push as much of the actual
 documentation into the docstrings as possible. This makes it easier for
 additions and corrections to be made during development, because the majority
@@ -875,18 +943,15 @@ The <a class="reference external" href="https://sphinxcontrib-napoleon.readthedo
 contains a good example of how docstrings should be formatted.</p>
 </dd>
 </dl>
-</section>
-<section id="rebuilding-documentation">
-<h3>Rebuilding Documentation<a class="headerlink" href="#rebuilding-documentation" title="Link to this heading">¶</a></h3>
 <p>As you make changes to your local RST files, you can update your
 HTML files by navigating to <cite>/docs/</cite> and running:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>html
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>--group<span class="w"> </span>docs<span class="w"> </span>make<span class="w"> </span>html
 </pre></div>
 </div>
 <p>For a fast, more advanced build that uses parallelization and makes sure we skip
 executing notebooks (which is the default behavior), run (if using uv):</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>sphinx-build<span class="w"> </span>-M<span class="w"> </span>html<span class="w"> </span>.<span class="w"> </span>_build<span class="w"> </span>-j<span class="w"> </span>auto
-uv<span class="w"> </span>sphinx-build<span class="w"> </span>-M<span class="w"> </span>html<span class="w"> </span>.<span class="w"> </span>_build<span class="w"> </span>-j<span class="w"> </span>auto<span class="w"> </span>-v<span class="w"> </span>-T
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>--group<span class="w"> </span>docs<span class="w"> </span>sphinx-build<span class="w"> </span>-M<span class="w"> </span>html<span class="w"> </span>.<span class="w"> </span>_build<span class="w"> </span>-j<span class="w"> </span>auto
+uv<span class="w"> </span>run<span class="w"> </span>--group<span class="w"> </span>docs<span class="w"> </span>sphinx-build<span class="w"> </span>-M<span class="w"> </span>html<span class="w"> </span>.<span class="w"> </span>_build<span class="w"> </span>-j<span class="w"> </span>auto<span class="w"> </span>-v<span class="w"> </span>-T
 </pre></div>
 </div>
 <p>Notes:</p>
@@ -896,26 +961,22 @@ uv<span class="w"> </span>sphinx-build<span class="w"> </span>-M<span class="w">
 <li><p>We also added -v for verbose output and -T traceback during the build.</p></li>
 <li><p>Env variable <cite>QISKIT_DOCS_BUILD_TUTORIALS=never</cite> skips executing notebooks during the build (fast; uses stored outputs if present).</p></li>
 </ul>
-<p>To get fast, automatic rebuilding of the documentation while you edit it, use
-<code class="docutils literal notranslate"><span class="pre">sphinx-autobuild</span></code> together with <code class="docutils literal notranslate"><span class="pre">uv</span></code> package manager (you can use conda or v env too).</p>
-<p>First, install the tool into your development environment:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">uv</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">sphinx</span><span class="o">-</span><span class="n">autobuild</span>
+<p>For convenience, the first command can be run using tox (from the root directory of the repository) as follows:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>tox<span class="w"> </span>-e<span class="w"> </span>docs
 </pre></div>
 </div>
-<p>Then start the live documentation server:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">docs</span>
-<span class="n">uv</span> <span class="n">run</span> <span class="n">sphinx</span><span class="o">-</span><span class="n">autobuild</span> <span class="o">.</span> <span class="n">_build</span><span class="o">/</span><span class="n">html</span> <span class="o">-</span><span class="n">j</span> <span class="n">auto</span>
+<p>To get fast, automatic rebuilding of the documentation while you edit it, use the <cite>docs-autobuild</cite> tox environment.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>tox<span class="w"> </span>-e<span class="w"> </span>docs-autobuild
 </pre></div>
 </div>
-<p>This launches a local server (default: <a class="reference external" href="http://127.0.0.1:8000">http://127.0.0.1:8000</a>) and rebuilds the
-HTML pages incrementally whenever source files change.</p>
+<p>This launches a local server (default: <a class="reference external" href="http://127.0.0.1:8000">http://127.0.0.1:8000</a>) and rebuilds the HTML pages incrementally whenever source files change.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Avoid running the docs build <strong>and</strong> importing <cite>qiskit_metal</cite> at the same time from the same checkout. A legacy guard (<cite>config.is_building_docs()</cite> looks for a <cite>.buildingdocs</cite> file) can skip certain imports when that marker file is present. If you see unexpected import errors while developing and building docs, check for and remove <cite>docs/.buildingdocs</cite> before importing. Longer-term we’ll remove this guard, but for now be mindful of the interaction.</p>
 </div>
 </section>
 <section id="local-release-vs-github-release">
-<h3>Local release vs. GitHub release<a class="headerlink" href="#local-release-vs-github-release" title="Link to this heading">¶</a></h3>
+<h2>Local release vs. GitHub release<a class="headerlink" href="#local-release-vs-github-release" title="Link to this heading">¶</a></h2>
 <p>There are two supported release paths:</p>
 <ul class="simple">
 <li><p><strong>GitHub Actions (automated):</strong> pushing a tag triggers the release workflow to build artifacts and upload to PyPI using the repository’s PyPI token.</p></li>
@@ -941,16 +1002,16 @@ uv<span class="w"> </span>publish<span class="w"> </span>--token<span class="w">
 <p>If you prefer the automated path, just push the tag and let GitHub Actions publish using the configured PyPI secret.</p>
 </section>
 <section id="tutorials">
-<h3>Tutorials<a class="headerlink" href="#tutorials" title="Link to this heading">¶</a></h3>
+<h2>Tutorials<a class="headerlink" href="#tutorials" title="Link to this heading">¶</a></h2>
 <p>Jupyter notebook tutorials showing off features of Qiskit Metal are located in the <cite>_tutorials_</cite>
 folder. If you add a new feature, please add a demonstration of its use to a notebook or start a new notebook.</p>
-</section>
 </section>
 </section>
 
         </article>
       </div>
       <footer>
+        
         <div class="related-pages">
           <a class="next-page" href="faq.html">
               <div class="page-info">
@@ -982,7 +1043,7 @@ folder. If you add a new feature, please add a demonstration of its use to a not
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2025/12/08</div>
+              Last updated on 2025/12/11</div>
           </div>
           <div class="right-details">
             
@@ -1007,6 +1068,10 @@ folder. If you add a new feature, please add a demonstration of its use to a not
 <li><a class="reference internal" href="#where-things-are">Where Things Are</a></li>
 <li><a class="reference internal" href="#reporting-bugs-and-requesting-enhancements">Reporting Bugs and Requesting Enhancements</a></li>
 <li><a class="reference internal" href="#contributing-code">Contributing Code</a><ul>
+<li><a class="reference internal" href="#development-setup-for-quantum-metal-v0-5">Development Setup for Quantum Metal v0.5+</a><ul>
+<li><a class="reference internal" href="#development-virtual-environments">Development (virtual) environments</a></li>
+<li><a class="reference internal" href="#running-tests">Running tests</a></li>
+<li><a class="reference internal" href="#linting-and-formatting">Linting and Formatting</a><ul>
 <li><a class="reference internal" href="#style-guide">Style Guide</a></li>
 <li><a class="reference internal" href="#contributor-license-agreement">Contributor License Agreement</a></li>
 <li><a class="reference internal" href="#pull-requests">Pull Requests</a></li>
@@ -1024,13 +1089,13 @@ folder. If you add a new feature, please add a demonstration of its use to a not
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#contributing-to-documentation">Contributing to Documentation</a><ul>
-<li><a class="reference internal" href="#documentation-structure">Documentation Structure</a></li>
-<li><a class="reference internal" href="#rebuilding-documentation">Rebuilding Documentation</a></li>
-<li><a class="reference internal" href="#local-release-vs-github-release">Local release vs. GitHub release</a></li>
-<li><a class="reference internal" href="#tutorials">Tutorials</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li><a class="reference internal" href="#contributing-to-documentation">Contributing to Documentation</a></li>
+<li><a class="reference internal" href="#local-release-vs-github-release">Local release vs. GitHub release</a></li>
+<li><a class="reference internal" href="#tutorials">Tutorials</a></li>
 </ul>
 </li>
 </ul>
@@ -1042,12 +1107,10 @@ folder. If you add a new feature, please add a demonstration of its use to a not
       
     </aside>
   </div>
-</div><script src="_static/jquery.js?v=5d32c60e"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="_static/documentation_options.js?v=b9afe91b"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
+</div><script src="_static/documentation_options.js?v=b9afe91b"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>
+    <script src="_static/scripts/furo.js?v=5fa4622c"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     </body>

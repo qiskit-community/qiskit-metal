@@ -5,14 +5,13 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Roadmap" href="workflow.html" /><link rel="prev" title="Quantum Metal (formerly Qiskit Metal)" href="index.html" />
 
-    <!-- Generated with Sphinx 7.4.7 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
         <title>Installation - Quantum Metal 0.5.1</title>
-      <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
+      <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=fe84956c" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-ecosystem.css?v=745c5aa7" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=302659d7" />
     
     
 
@@ -38,57 +37,39 @@
     }
   }
 </style><link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
-<script src="_static/js/web-components/top-nav-bar.js"></script></head>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet"></head>
   <body>
     
-    <script>document.body.dataset.theme = "light";</script>
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
     
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="svg-toc" viewBox="0 0 24 24">
     <title>Contents</title>
-    <svg id="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-      <defs><style>.cls-1{fill:none;}</style></defs>
-      <path d="M28,4H4A2,2,0,0,0,2,6V26a2,2,0,0,0,2,2H28a2,2,0,0,0,2-2V6A2,2,0,0,0,28,4ZM4,6H20V26H4ZM28,26H22V6h6Z"/>
-      <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32"/>
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M14 2H2C1.73478 2 1.48043 2.10536 1.29289 2.29289C1.10536 2.48043 1 2.73478 1 3V13C1 13.2652 1.10536 13.5196 1.29289 13.7071C1.48043 13.8946 1.73478 14 2 14H14C14.2652 14 14.5196 13.8946 14.7071 13.7071C14.8946 13.5196 15 13.2652 15 13V3C15 2.73478 14.8946 2.48043 14.7071 2.29289C14.5196 2.10536 14.2652 2 14 2V2ZM2 3H10V13H2V3ZM14 13H11V3H14V13Z" fill="currentColor"/>
     </svg>
   </symbol>
   <symbol id="svg-menu" viewBox="0 0 24 24">
     <title>Menu</title>
-    <svg id="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-      <defs><style>.cls-1{fill:none;}</style></defs>
-      <rect x="4" y="6" width="24" height="2"/>
-      <rect x="4" y="24" width="24" height="2"/>
-      <rect x="4" y="12" width="24" height="2"/>
-      <rect x="4" y="18" width="24" height="2"/>
-      <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32"/>
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M14 3H2V4H14V3Z" fill="currentColor"/>
+      <path d="M14 12H2V13H14V12Z" fill="currentColor"/>
+      <path d="M14 6H2V7H14V6Z" fill="currentColor"/>
+      <path d="M14 9H2V10H14V9Z" fill="currentColor"/>
     </svg>
   </symbol>
   <symbol id="svg-arrow-right" viewBox="0 0 24 24">
     <title>Expand</title>
-    <svg version="1.1" id="icon" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
-         viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve"><polygon points="22,16 12,26 10.6,24.6 19.2,16 10.6,7.4 12,6 " stroke="currentColor"/>
-      <rect id="_x3C_Transparent_Rectangle_x3E_" fill="none" width="32" height="32"/>
-    </svg>
-  </symbol>
-  <symbol id="svg-new-tab" viewBox="0 0 32 32">
-    <svg id="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-      <defs>
-        <style>
-          .cls-1 {
-            fill: none;
-          }
-        </style>
-      </defs>
-      <path fill="#6929C4" d="M26,28H6a2.0027,2.0027,0,0,1-2-2V6A2.0027,2.0027,0,0,1,6,4H16V6H6V26H26V16h2V26A2.0027,2.0027,0,0,1,26,28Z"/>
-      <polygon fill="#6929C4" points="20 2 20 4 26.586 4 18 12.586 19.414 14 28 5.414 28 12 30 12 30 2 20 2"/>
-      <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32"/>
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11 8L6.00005 13L5.30005 12.3L9.60005 8L5.30005 3.7L6.00005 3L11 8Z" fill="currentColor"/>
     </svg>
   </symbol>
   <symbol id="svg-sun" viewBox="0 0 24 24">
     <title>Light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="1" x2="12" y2="3"></line>
       <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -103,22 +84,56 @@
   <symbol id="svg-moon" viewBox="0 0 24 24">
     <title>Dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
     </svg>
   </symbol>
-  <symbol id="svg-sun-half" viewBox="0 0 24 24">
-    <title>Auto light/dark mode</title>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M13 12h5" />
-      <path d="M13 15h4" />
-      <path d="M13 18h1" />
-      <path d="M13 9h4" />
-      <path d="M13 6h1" />
+      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M15 13H1V14H15V13Z" fill="currentColor"/>
+      <path d="M12.7 4.5C13.1 4.1 13.1 3.5 12.7 3.1L10.9 1.3C10.5 0.9 9.9 0.9 9.5 1.3L2 8.8V12H5.2L12.7 4.5ZM10.2 2L12 3.8L10.5 5.3L8.7 3.5L10.2 2ZM3 11V9.2L8 4.2L9.8 6L4.8 11H3Z" fill="currentColor"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11 13.0002C11.5523 13.0002 12 12.5525 12 12.0002C12 11.4479 11.5523 11.0002 11 11.0002C10.4477 11.0002 10 11.4479 10 12.0002C10 12.5525 10.4477 13.0002 11 13.0002Z" fill="currentColor"/>
+      <path d="M14.8884 11.7394C14.5795 10.9524 14.0464 10.2734 13.3552 9.78646C12.664 9.29954 11.8451 9.02615 11 9.00017C10.1549 9.02615 9.33604 9.29954 8.64484 9.78646C7.95365 10.2734 7.42052 10.9524 7.11155 11.7394L7 12.0002L7.11155 12.2609C7.42052 13.0479 7.95365 13.727 8.64484 14.2139C9.33604 14.7008 10.1549 14.9742 11 15.0002C11.8451 14.9742 12.664 14.7008 13.3552 14.2139C14.0464 13.727 14.5795 13.0479 14.8884 12.2609L15 12.0002L14.8884 11.7394ZM11 14.0002C10.6044 14.0002 10.2178 13.8829 9.88886 13.6631C9.55996 13.4433 9.30362 13.131 9.15224 12.7655C9.00087 12.4001 8.96126 11.998 9.03843 11.61C9.1156 11.222 9.30608 10.8657 9.58579 10.586C9.86549 10.3063 10.2219 10.1158 10.6098 10.0386C10.9978 9.96143 11.3999 10.001 11.7654 10.1524C12.1308 10.3038 12.4432 10.5601 12.6629 10.889C12.8827 11.2179 13 11.6046 13 12.0002C12.9994 12.5304 12.7885 13.0388 12.4136 13.4137C12.0386 13.7887 11.5303 13.9996 11 14.0002Z" fill="currentColor"/>
+      <path d="M6 14.0002H4V2.00017H8V5.00017C8.00077 5.26515 8.10637 5.51906 8.29374 5.70643C8.48111 5.8938 8.73502 5.99941 9 6.00017H12V8.00017H13V5.00017C13.0018 4.93446 12.9893 4.86913 12.9634 4.80871C12.9375 4.74828 12.8988 4.6942 12.85 4.65017L9.35 1.15017C9.30599 1.10134 9.2519 1.06263 9.19147 1.03674C9.13104 1.01084 9.06572 0.998364 9 1.00017H4C3.73502 1.00094 3.48111 1.10654 3.29374 1.29391C3.10637 1.48128 3.00077 1.73519 3 2.00017V14.0002C3.00077 14.2652 3.10637 14.5191 3.29374 14.7064C3.48111 14.8938 3.73502 14.9994 4 15.0002H6V14.0002ZM9 2.20017L11.8 5.00017H9V2.20017Z" fill="currentColor"/>
     </svg>
   </symbol>
 </svg>
@@ -131,6 +146,8 @@
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -149,7 +166,8 @@
       <div class="theme-toggle-container theme-toggle-header">
         <button class="theme-toggle">
           <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
@@ -163,15 +181,13 @@
   <aside class="sidebar-drawer">
     <div class="sidebar-container">
       
-      <div class="sidebar-sticky"><div class="sidebar-brand">
-  <a href="https://www.qiskit.org/ecosystem">
-    <div class="sidebar-logo-container">
-      <img class="sidebar-logo" src="_static/images/ecosystem-logo.svg" alt="Qiskit Ecosystem logo"/>
-    </div>
-  </a>
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
   
   <span class="sidebar-brand-text">Quantum Metal 0.5.1</span>
-</div><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  
+</a>
+<form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
@@ -474,11 +490,17 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          
+          <div class="view-this-page">
+  <a class="muted-link" href="_sources/installation.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
 <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
@@ -488,7 +510,7 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section id="installation">
 <span id="id1"></span><h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h1>
 <section id="outline-of-installation">
@@ -510,12 +532,14 @@
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-text-left sd-bg-light sd-border docutils">
 <div class="sd-card-body docutils">
-<p class="sd-card-text"><strong>Advanced Installation (v0.5)</strong></p>
+<p class="sd-card-text"><strong>Installation from source (v0.5)</strong></p>
 <p class="sd-card-text">Install the active Quantum Metal source tree.</p>
-<p class="sd-card-text"><strong>Options:</strong>
-- <strong>Fast path: uv</strong> (recommended during the v0.5 transition)
-- <strong>Conda environment setup</strong> (best for Windows / binary-heavy stacks)
-- <strong>Without conda</strong> (standard Python <code class="docutils literal notranslate"><span class="pre">venv</span></code>)</p>
+<p class="sd-card-text"><strong>Options:</strong></p>
+<ul class="simple">
+<li><p class="sd-card-text"><strong>Fast path: uv</strong> (recommended during the v0.5 transition)</p></li>
+<li><p class="sd-card-text"><strong>Conda environment setup</strong> (best for Windows / binary-heavy stacks)</p></li>
+<li><p class="sd-card-text"><strong>Without conda</strong> (standard Python <code class="docutils literal notranslate"><span class="pre">venv</span></code>)</p></li>
+</ul>
 </div>
 </div>
 </div>
@@ -527,6 +551,7 @@
 <li><p class="sd-card-text">Optional Jupyter Lab integration</p></li>
 <li><p class="sd-card-text">Installation hints and tips</p></li>
 <li><p class="sd-card-text">Common Issues / FAQ</p></li>
+<li><p class="sd-card-text">Video instructions for legacy package (<code class="docutils literal notranslate"><span class="pre">qiskit-metal&lt;0.5</span></code>)</p></li>
 </ul>
 </div>
 </div>
@@ -536,32 +561,40 @@
 </section>
 <section id="basic-installation">
 <h2>Basic Installation<a class="headerlink" href="#basic-installation" title="Link to this heading">¶</a></h2>
-<p>Quantum Metal v0.5+ is available on PyPI:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">quantum</span><span class="o">-</span><span class="n">metal</span>
+<p>Quantum Metal v0.5+ is available on PyPI (Project page: <a class="reference external" href="https://pypi.org/project/quantum-metal/">https://pypi.org/project/quantum-metal/</a>).</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-0">
+pip install</label><div class="sd-tab-content docutils">
+<p><strong>Note:</strong> If using this method, it is recommended to install inside a virtual environment.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>quantum-metal
 </pre></div>
 </div>
-<p>Project page: <a class="reference external" href="https://pypi.org/project/quantum-metal/">https://pypi.org/project/quantum-metal/</a></p>
+</div>
+<input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-1">
+Add to a uv workspace (recommended)</label><div class="sd-tab-content docutils">
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>add<span class="w"> </span>quantum-metal
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-2" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-2">
+Add to a Pixi workspace</label><div class="sd-tab-content docutils">
+<p><strong>Note:</strong> This method might fail if your Pixi workspace has dependencies that are not compatible with the Quantum Metal dependencies. In such cases, the error messages might not make it obvious.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pixi<span class="w"> </span>add<span class="w"> </span>--pypi<span class="w"> </span>quantum-metal
+</pre></div>
+</div>
+</div>
+</div>
 <p>If you specifically need the legacy pre-0.5 package, install <code class="docutils literal notranslate"><span class="pre">qiskit-metal</span></code> instead. Otherwise, use <code class="docutils literal notranslate"><span class="pre">quantum-metal</span></code> to get the current release.</p>
-<p>For source installs or development, clone the repository and follow the advanced installation paths below.</p>
 </section>
-<section id="advanced-installation">
-<h2>Advanced Installation<a class="headerlink" href="#advanced-installation" title="Link to this heading">¶</a></h2>
-<section id="video-instructions">
-<h3>Video Instructions<a class="headerlink" href="#video-instructions" title="Link to this heading">¶</a></h3>
-<a href="https://www.youtube.com/watch?v=sYVDtnJb-ZM&ab_channel=Qiskit">
-Click for YouTube Video</a><br><br>
-<table>
-    <tr><td width="22%">
-    <a href="https://www.youtube.com/watch?v=sYVDtnJb-ZM&ab_channel=Qiskit">
-            <img src="https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg" width="100">
-    </a>
-    </td><td width="78%"></td></tr>
-</table></section>
-<section id="text-instructions">
-<h3>Text Instructions<a class="headerlink" href="#text-instructions" title="Link to this heading">¶</a></h3>
-<p>We recommend setting up a proper git linkage, which will simplify the retrieval of code updates and the possible contributions back to the source code.</p>
+<section id="installation-from-source">
+<h2>Installation from source<a class="headerlink" href="#installation-from-source" title="Link to this heading">¶</a></h2>
+<p>We recommend setting up a proper git linkage, which will simplify the retrieval of code updates and the possible contributions back to the source code. If you intend to contribute to the project, please also read the <a class="reference internal" href="contributor-guide.html#contributor-guide"><span class="std std-ref">contributor guide</span></a>.</p>
 <p>Clone the repository (command line):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">Qiskit</span><span class="o">/</span><span class="n">qiskit</span><span class="o">-</span><span class="n">metal</span><span class="o">.</span><span class="n">git</span>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/qiskit-community/qiskit-metal.git<span class="w"> </span>quantum-metal
+<span class="nb">cd</span><span class="w"> </span>quantum-metal<span class="w"> </span><span class="c1"># Change to the repository directory</span>
 </pre></div>
 </div>
 <p>Or use the <a class="reference external" href="https://desktop.github.com/">GitHub Desktop GUI</a> (<a class="reference external" href="https://help.github.com/en/desktop/contributing-to-projects/cloning-a-repository-from-github-to-github-desktop">cloning notes</a>).</p>
@@ -571,33 +604,29 @@ Click for YouTube Video</a><br><br>
 <li><p>Read this document before starting; it will save you time.</p></li>
 </ul>
 <section id="choose-an-install-method">
-<h4>Choose an install method<a class="headerlink" href="#choose-an-install-method" title="Link to this heading">¶</a></h4>
+<h3>Choose an install method<a class="headerlink" href="#choose-an-install-method" title="Link to this heading">¶</a></h3>
+<p>Run the following commands in the root of the repository (i.e. the <code class="docutils literal notranslate"><span class="pre">quantum-metal</span></code> directory):</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-0">
+<input checked="checked" id="sd-tab-item-3" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-3">
 uv (recommended)</label><div class="sd-tab-content docutils">
-<p><strong>Why:</strong> Fast, modern resolver/installer; typically the least friction for scientific stacks. Use Python 3.10 or 3.11.</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install uv (see https://docs.astral.sh/uv/)</span>
-curl<span class="w"> </span>-LsSf<span class="w"> </span>https://astral.sh/uv/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh
+<p><strong>Why:</strong> Fast, modern resolver/installer; typically the least friction for scientific stacks. Use Python 3.10, 3.11, or 3.12. <code class="docutils literal notranslate"><span class="pre">uv</span></code> installations instruction are available <a class="reference external" href="https://docs.astral.sh/uv/getting-started/installation/">here</a>.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a new virtual environment</span>
+uv<span class="w"> </span>venv<span class="w"> </span>--python<span class="w"> </span><span class="m">3</span>.11<span class="w">  </span><span class="c1"># could also be 3.10 or 3.12</span>
 
-<span class="c1"># Clone the repo (v0.5 is source-only for now)</span>
-git<span class="w"> </span>clone<span class="w"> </span>https://github.com/qiskit-community/qiskit-metal.git<span class="w"> </span>quantum-metal
-<span class="nb">cd</span><span class="w"> </span>quantum-metal
-
-uv<span class="w"> </span>python<span class="w"> </span>pin<span class="w"> </span><span class="m">3</span>.11<span class="w">          </span><span class="c1"># or 3.10</span>
-uv<span class="w"> </span>venv
-<span class="nb">source</span><span class="w"> </span>.venv/bin/activate<span class="w">   </span><span class="c1"># Windows: .venv\\Scripts\\activate</span>
-
-uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+<span class="c1"># Install the package in editable mode</span>
 uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
 
-<span class="c1"># Optional: dev extras (docs, tests, lint, formatting)</span>
-uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements-dev.txt
+<span class="c1"># Activate the virtual environment</span>
+<span class="nb">source</span><span class="w"> </span>.venv/bin/activate<span class="w">   </span><span class="c1"># Windows: .venv\\Scripts\\activate</span>
+
+<span class="c1"># or run the python shell in the virtual environment</span>
+uv<span class="w"> </span>run<span class="w"> </span>python
 </pre></div>
 </div>
 </div>
-<input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-1">
+<input id="sd-tab-item-4" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-4">
 Conda (robust, esp. Windows)</label><div class="sd-tab-content docutils">
 <p><strong>Why:</strong> Best for binary-heavy dependencies and Windows toolchains.</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a fresh env from environment.yml</span>
@@ -615,25 +644,29 @@ python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </sp
 - Keep the trailing <code class="docutils literal notranslate"><span class="pre">.</span></code> in the editable install command.
 - If conflicts arise, try a new env.</p>
 </div>
-<input id="sd-tab-item-2" name="sd-tab-set-0" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-2">
+<input id="sd-tab-item-5" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-5">
 Python venv (lightweight)</label><div class="sd-tab-content docutils">
 <p><strong>Why:</strong> Simple and familiar if you do not need conda’s binary packages.</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>&lt;virtual_env_path&gt;
+
+<span class="c1"># Activate the virtual environment</span>
 <span class="nb">source</span><span class="w"> </span>&lt;virtual_env_path&gt;/bin/activate<span class="w">     </span><span class="c1"># Windows: &lt;virtual_env_path&gt;\\Scripts\\activate</span>
+
+<span class="c1"># Install the package</span>
 python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>pip
-python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt<span class="w"> </span>-r<span class="w"> </span>requirements-dev.txt<span class="w"> </span>-e<span class="w"> </span>.
+python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
 </pre></div>
 </div>
 <p>Windows note: install the latest MSVC/Windows SDK (Visual C++ Build Tools) to satisfy gdstk.</p>
 </div>
 </div>
 <section id="optional-jupyter-lab">
-<h5>(Optional) Jupyter Lab<a class="headerlink" href="#optional-jupyter-lab" title="Link to this heading">¶</a></h5>
+<h4>(Optional) Jupyter Lab<a class="headerlink" href="#optional-jupyter-lab" title="Link to this heading">¶</a></h4>
 <p>Jupyter works with <strong>any</strong> pathway. Install the kernel from inside the environment you plan to use.</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="sd-tab-item-3" name="sd-tab-set-1" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-3">
+<input checked="checked" id="sd-tab-item-6" name="sd-tab-set-2" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-6">
 uv / venv</label><div class="sd-tab-content docutils">
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>.venv/bin/activate<span class="w">      </span><span class="c1"># adjust to your venv; Windows: .venv\\Scripts\\activate</span>
 python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>jupyterlab<span class="w"> </span>ipykernel
@@ -641,8 +674,8 @@ python<span class="w"> </span>-m<span class="w"> </span>ipykernel<span class="w"
 </pre></div>
 </div>
 </div>
-<input id="sd-tab-item-4" name="sd-tab-set-1" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-4">
+<input id="sd-tab-item-7" name="sd-tab-set-2" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-7">
 conda</label><div class="sd-tab-content docutils">
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>activate<span class="w"> </span>&lt;env_name&gt;
 conda<span class="w"> </span>install<span class="w"> </span>jupyterlab<span class="w"> </span>ipykernel
@@ -659,32 +692,32 @@ python<span class="w"> </span>-m<span class="w"> </span>ipykernel<span class="w"
 </section>
 </section>
 <section id="without-conda-virtual-environment-setup-alternative-setup">
-<h4>Without conda: Virtual environment setup (alternative setup)<a class="headerlink" href="#without-conda-virtual-environment-setup-alternative-setup" title="Link to this heading">¶</a></h4>
+<h3>Without conda: Virtual environment setup (alternative setup)<a class="headerlink" href="#without-conda-virtual-environment-setup-alternative-setup" title="Link to this heading">¶</a></h3>
+<p>Below we provide a detailed explanation of how to set up a virtual environment without conda, using Python venv instead.</p>
 <p><strong>Why:</strong> Lightweight and familiar; use if you prefer the standard venv workflow and do not need conda’s binary packages.</p>
-<p><strong>On Windows, do this first:</strong> It is recommended that you first install <cite>Visual C++ x.0</cite>, required for a successful install of <cite>gdstk</cite>.
-If you do not have <cite>Visual C++ x.0</cite> installed, you will be notified to install it when <cite>gdstk</cite> attempts to install.
+<p><strong>On Windows, do this first:</strong> It is recommended that you first install <code class="docutils literal notranslate"><span class="pre">Visual</span> <span class="pre">C++</span> <span class="pre">x.0</span></code>, required for a successful install of <code class="docutils literal notranslate"><span class="pre">gdstk</span></code>.
+If you do not have <code class="docutils literal notranslate"><span class="pre">Visual</span> <span class="pre">C++</span> <span class="pre">x.0</span></code> installed, you will be notified to install it when <code class="docutils literal notranslate"><span class="pre">gdstk</span></code> attempts to install.
 You can do this by downloading and installing <a class="reference external" href="https://visualstudio.microsoft.com/visual-cpp-build-tools/">C++ Build Tools</a>.
-Be sure to select the latest versions of <cite>MSVC</cite> and <cite>Windows SDK</cite> in the installer as suggested in <a class="reference external" href="https://wiki.python.org/moin/WindowsCompilers">this wiki</a>.</p>
+Be sure to select the latest versions of <code class="docutils literal notranslate"><span class="pre">MSVC</span></code> and <code class="docutils literal notranslate"><span class="pre">Windows</span> <span class="pre">SDK</span></code> in the installer as suggested in <a class="reference external" href="https://wiki.python.org/moin/WindowsCompilers">this wiki</a>.</p>
 <p>To use a Python virtual environment, execute these commands in the top-level of the repository:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">venv</span> <span class="o">&lt;</span><span class="n">virtual_env_path</span><span class="o">&gt;</span>
-<span class="n">source</span> <span class="o">&lt;</span><span class="n">virtual_env_path</span><span class="o">&gt;/</span><span class="nb">bin</span><span class="o">/</span><span class="n">activate</span>
+<span class="n">source</span> <span class="o">&lt;</span><span class="n">virtual_env_path</span><span class="o">&gt;/</span><span class="nb">bin</span><span class="o">/</span><span class="n">activate</span>    <span class="c1"># Windows: &lt;virtual_env_path&gt;\\Scripts\\activate</span>
 <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">pip</span>
-<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">r</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span> <span class="o">-</span><span class="n">r</span> <span class="n">requirements</span><span class="o">-</span><span class="n">dev</span><span class="o">.</span><span class="n">txt</span> <span class="o">-</span><span class="n">e</span> <span class="o">.</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="o">.</span>
 </pre></div>
 </div>
-<p>On Windows, replace <cite>source &lt;virtual_env_path&gt;/bin/activate</cite> with <cite>.&lt;virtual_env_path&gt;Scriptsactivate</cite>.</p>
 </section>
 <section id="installation-hints">
-<h4>Installation hints<a class="headerlink" href="#installation-hints" title="Link to this heading">¶</a></h4>
+<h3>Installation hints<a class="headerlink" href="#installation-hints" title="Link to this heading">¶</a></h3>
 <p>Here are some things to consider when setting up a development environment:</p>
 <ul class="simple">
-<li><p>If using a virtual environment, make sure <cite>pip</cite> is up to date. In initial environment testing, PySide2 is installable with only the latest version of <cite>pip</cite>.</p></li>
+<li><p>If using a virtual environment, make sure <code class="docutils literal notranslate"><span class="pre">pip</span></code> is up to date.</p></li>
 <li><p>Add the path of your qiskit-metal folder to your PATH.</p></li>
-<li><p>Library errors when activating conda environments or initializing Jupyter Notebook/Lab indicate a conflict between Python libraries in the base and sub-environments. Go ahead and manually delete the library from the base environment <cite>site-packages</cite> folder shown in the error message. You might need to reinstall them in the sub-environment or create a new one.</p></li>
+<li><p>Library errors when activating conda environments or initializing Jupyter Notebook/Lab indicate a conflict between Python libraries in the base and sub-environments. Go ahead and manually delete the library from the base environment <code class="docutils literal notranslate"><span class="pre">site-packages</span></code> folder shown in the error message. You might need to reinstall them in the sub-environment or create a new one.</p></li>
 </ul>
 </section>
 <section id="setting-up-precommit-hooks">
-<h4>Setting up precommit hooks<a class="headerlink" href="#setting-up-precommit-hooks" title="Link to this heading">¶</a></h4>
+<h3>Setting up precommit hooks<a class="headerlink" href="#setting-up-precommit-hooks" title="Link to this heading">¶</a></h3>
 <p>If are planning on committing, you can run the following in the root of your project to link the available precommit hooks.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">hook_setup</span>
 </pre></div>
@@ -693,15 +726,30 @@ Be sure to select the latest versions of <cite>MSVC</cite> and <cite>Windows SDK
 </section>
 </section>
 <section id="common-issues">
-<h3>Common Issues<a class="headerlink" href="#common-issues" title="Link to this heading">¶</a></h3>
-<p>If you run into problems, consult the FAQ’s page <a class="reference internal" href="faq.html#faq-setup"><span class="std std-ref">here</span></a>.</p>
+<h2>Common Issues<a class="headerlink" href="#common-issues" title="Link to this heading">¶</a></h2>
+<p>If you run into problems, consult the FAQ’s page <a class="reference internal" href="faq.html#faq-setup"><span class="std std-ref">here</span></a>, or open a <a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/issues">GitHub issue</a>.</p>
 </section>
-</section>
+<section id="video-instructions-for-legacy-package-qiskit-metal-0-5">
+<h2>Video Instructions for Legacy package (qiskit-metal&lt;0.5)<a class="headerlink" href="#video-instructions-for-legacy-package-qiskit-metal-0-5" title="Link to this heading">¶</a></h2>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>The following instructions are for the legacy <code class="docutils literal notranslate"><span class="pre">qiskit-metal&lt;0.5</span></code> release. For the latest release and <code class="docutils literal notranslate"><span class="pre">quantum-metal</span></code> v0.5+, please follow the text instructions above. An updated video tutorial will be added soon.</p>
+</div>
+<a href="https://www.youtube.com/watch?v=sYVDtnJb-ZM&ab_channel=Qiskit">
+Click for YouTube Video</a><br><br>
+<table>
+    <tr><td width="22%">
+    <a href="https://www.youtube.com/watch?v=sYVDtnJb-ZM&ab_channel=Qiskit">
+            <img src="https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg" width="100">
+    </a>
+    </td><td width="78%"></td></tr>
+</table></section>
 </section>
 
         </article>
       </div>
       <footer>
+        
         <div class="related-pages">
           <a class="next-page" href="workflow.html">
               <div class="page-info">
@@ -733,7 +781,7 @@ Be sure to select the latest versions of <cite>MSVC</cite> and <cite>Windows SDK
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2025/12/08</div>
+              Last updated on 2025/12/11</div>
           </div>
           <div class="right-details">
             
@@ -757,9 +805,7 @@ Be sure to select the latest versions of <cite>MSVC</cite> and <cite>Windows SDK
 <li><a class="reference internal" href="#">Installation</a><ul>
 <li><a class="reference internal" href="#outline-of-installation">Outline of Installation</a></li>
 <li><a class="reference internal" href="#basic-installation">Basic Installation</a></li>
-<li><a class="reference internal" href="#advanced-installation">Advanced Installation</a><ul>
-<li><a class="reference internal" href="#video-instructions">Video Instructions</a></li>
-<li><a class="reference internal" href="#text-instructions">Text Instructions</a><ul>
+<li><a class="reference internal" href="#installation-from-source">Installation from source</a><ul>
 <li><a class="reference internal" href="#choose-an-install-method">Choose an install method</a><ul>
 <li><a class="reference internal" href="#optional-jupyter-lab">(Optional) Jupyter Lab</a></li>
 </ul>
@@ -770,8 +816,7 @@ Be sure to select the latest versions of <cite>MSVC</cite> and <cite>Windows SDK
 </ul>
 </li>
 <li><a class="reference internal" href="#common-issues">Common Issues</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#video-instructions-for-legacy-package-qiskit-metal-0-5">Video Instructions for Legacy package (qiskit-metal&lt;0.5)</a></li>
 </ul>
 </li>
 </ul>
@@ -783,12 +828,10 @@ Be sure to select the latest versions of <cite>MSVC</cite> and <cite>Windows SDK
       
     </aside>
   </div>
-</div><script src="_static/jquery.js?v=5d32c60e"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="_static/documentation_options.js?v=b9afe91b"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
+</div><script src="_static/documentation_options.js?v=b9afe91b"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>
+    <script src="_static/scripts/furo.js?v=5fa4622c"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     </body>
