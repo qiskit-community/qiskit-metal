@@ -2951,8 +2951,35 @@ wheels = [
 ]
 
 [[package]]
-name = "qiskit-metal"
-version = "0.5.2.post1"
+name = "qiskit-sphinx-theme"
+version = "2.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "docutils" },
+    { name = "furo" },
+    { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "sphinx", version = "8.2.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/ba/55/b9900b1751e9fc9aacd728304f23f1bba7c62cf35d0aef2bebd4e9e3d45d/qiskit_sphinx_theme-2.0.0.tar.gz", hash = "sha256:3bd305a27a96aff7bab533ec09a546ad3c5c6171f308db474c22c8fb1dd5b342", size = 2402710, upload-time = "2024-08-30T13:16:47.217Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f2/1d/5da0201ffb2ac4087bba0b34a2cdec4f976d3d4dd5c24be571a286c0d177/qiskit_sphinx_theme-2.0.0-py3-none-any.whl", hash = "sha256:30e564c7197fc12754132b37696d86d80221165b471c46bf74b3c0238dbb8956", size = 202020, upload-time = "2024-08-30T13:16:45.967Z" },
+]
+
+[[package]]
+name = "qtpy"
+version = "2.4.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "packaging" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/70/01/392eba83c8e47b946b929d7c46e0f04b35e9671f8bb6fc36b6f7945b4de8/qtpy-2.4.3.tar.gz", hash = "sha256:db744f7832e6d3da90568ba6ccbca3ee2b3b4a890c3d6fbbc63142f6e4cdf5bb", size = 66982, upload-time = "2025-02-11T15:09:25.759Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/69/76/37c0ccd5ab968a6a438f9c623aeecc84c202ab2fabc6a8fd927580c15b5a/QtPy-2.4.3-py3-none-any.whl", hash = "sha256:72095afe13673e017946cc258b8d5da43314197b741ed2890e563cf384b51aa1", size = 95045, upload-time = "2025-02-11T15:09:24.162Z" },
+]
+
+[[package]]
+name = "quantum-metal"
+version = "0.5.2.post2"
 source = { editable = "." }
 dependencies = [
     { name = "addict" },
@@ -3049,33 +3076,6 @@ test = [
     { name = "pytest", specifier = ">=8.4.1" },
     { name = "pytest-cov", specifier = ">=7.0.0" },
     { name = "pytest-rich", specifier = ">=0.2.0" },
-]
-
-[[package]]
-name = "qiskit-sphinx-theme"
-version = "2.0.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "docutils" },
-    { name = "furo" },
-    { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
-    { name = "sphinx", version = "8.2.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/ba/55/b9900b1751e9fc9aacd728304f23f1bba7c62cf35d0aef2bebd4e9e3d45d/qiskit_sphinx_theme-2.0.0.tar.gz", hash = "sha256:3bd305a27a96aff7bab533ec09a546ad3c5c6171f308db474c22c8fb1dd5b342", size = 2402710, upload-time = "2024-08-30T13:16:47.217Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/f2/1d/5da0201ffb2ac4087bba0b34a2cdec4f976d3d4dd5c24be571a286c0d177/qiskit_sphinx_theme-2.0.0-py3-none-any.whl", hash = "sha256:30e564c7197fc12754132b37696d86d80221165b471c46bf74b3c0238dbb8956", size = 202020, upload-time = "2024-08-30T13:16:45.967Z" },
-]
-
-[[package]]
-name = "qtpy"
-version = "2.4.3"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "packaging" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/70/01/392eba83c8e47b946b929d7c46e0f04b35e9671f8bb6fc36b6f7945b4de8/qtpy-2.4.3.tar.gz", hash = "sha256:db744f7832e6d3da90568ba6ccbca3ee2b3b4a890c3d6fbbc63142f6e4cdf5bb", size = 66982, upload-time = "2025-02-11T15:09:25.759Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/69/76/37c0ccd5ab968a6a438f9c623aeecc84c202ab2fabc6a8fd927580c15b5a/QtPy-2.4.3-py3-none-any.whl", hash = "sha256:72095afe13673e017946cc258b8d5da43314197b741ed2890e563cf384b51aa1", size = 95045, upload-time = "2025-02-11T15:09:24.162Z" },
 ]
 
 [[package]]
