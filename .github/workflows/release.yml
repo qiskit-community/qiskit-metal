@@ -1,4 +1,4 @@
-name: Release Artifacts
+name: Publish to PyPI
 
 on:
   push:
@@ -7,41 +7,51 @@ on:
 
 jobs:
   wheel-build:
-    name: Build and Publish Release Artifacts
+    name: Build and Publish to PyPI
     runs-on: ubuntu-24.04
+    env:
+      FORCE_COLOR: "1"
+      UV_MANAGED_PYTHON: "True"
+      UV_PYTHON: "3.11"
 
     permissions:
       contents: read
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
 
       - name: Install uv
         uses: astral-sh/setup-uv@v7
         with:
           # optional but nice to pin
-          # version: "0.9.16"
+          version: "0.9.17"
           enable-cache: true
-
-      - name: Install Python
-        run: uv python install 3.12
 
       - name: Build distributions
         run: uv build
 
-      # Optional: simple sanity check that the built dists are valid
-      - name: Check distributions
+      - name: Install additional dependencies for testing
         run: |
-          python -m pip install --upgrade pip
-          pip install twine
-          twine check dist/*
+           sudo apt-get update && sudo apt-get upgrade -y
+           sudo apt-get install -y libglu1-mesa libglu1-mesa-dev libegl1-mesa-dev
+      # Optional: simple sanity check that the built dists are valid
+      - name: Check distributions with twine
+        run: uvx -v --with twine twine check dist/*
+      - name: Test import (wheel)
+        run: uv run -v --isolated --no-project --with dist/*.whl python -c "import qiskit_metal; print(qiskit_metal.about())"
+      - name: Test import (sdist)
+        run: uv run -v --isolated --no-project --with dist/*.tar.gz python -c "import qiskit_metal; print(qiskit_metal.about())"
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist
-          path: dist/*
+
+      ## TODO: Remove if not needed
+      # - name: Upload artifacts
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: dist
+      #     path: dist/*
 
       - name: Publish to PyPI
         env:

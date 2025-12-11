@@ -1,5 +1,75 @@
 # Qiskit Metal For Developers
 
+
+## Development Setup for version 0.5+
+
+The new version of Qiskit Metal (soon to be Quantum Metal) has transitioned to [uv](https://docs.astral.sh/uv/) for project/dependency management. This guide describes how to set up your local development environment in light of these updates. First, you should install uv on your system, as described by the [instructions here](https://docs.astral.sh/uv/getting-started/installation/).
+
+
+### Development (virtual) environments
+
+The next few paragraphs describe the setup. We recommend reading through it at least once before you start making contributions. Skip to the next section for instructions on how to activate venvs, run tasks, etc. 
+
+All development activities should be carried out inside Python virtual environments (venvs). Thankfully, uv can manage all our venvs for us. In addition to this, we can use tox to orchestrate venvs to fit the needs of different development tasks: testing, linting, building docs, etc. 
+
+All information about project dependencies can be found in the `pyproject.toml` file located in the root directory of this repository. The direct project dependencies are listed in the `requirements` section of the `[project]` table. These are required to run user code. 
+
+Development dependencies are specified in the `[dependency-groups]` table.There are four groups available: `test`, `lint`, `docs`, and `jupyter`. These are used by tox to create a virtual environment with the required dependencies for each task. At the time of writing, the `jupyter` group is available for convenience, but unused in tasks. 
+ See [PEP 735-Dependency Groups in pyproject.toml](https://peps.python.org/pep-0735/) and the [PyPA specification page for dependency groups](https://packaging.python.org/en/latest/specifications/dependency-groups/#dependency-groups) for more information. 
+
+ The file `uv.lock` lists "locked" versions for all dependencies listed in `pyproject.toml` across different platforms. This allows uv to create reproducible environments. At present, tox does not create virtual environments using the lockfile, but the [tox-uv](https://github.com/tox-dev/tox-uv) plugin allows for this functionality to be enabled by setting the `runner` configuration variable in each tox task [as described here](https://github.com/tox-dev/tox-uv?tab=readme-ov-file#uvlock-support).
+
+
+### Running tests
+
+Tox is configured to run tests (using pytest) for Python 3.10-3.12. Use the following command to run tests for all three versions:
+
+```
+tox -m test
+```
+
+We use the pytest-rich(https://github.com/nicoddemus/pytest-rich) to provide rich output of testing progress. Tests can be run for specific versions using the following command
+
+```
+tox -e py3.12 # replace 3.12 with the version you want to run
+```
+
+### Linting and Formatting
+
+We use [ruff](https://docs.astral.sh/ruff/) for linting and formatting. Our linting configuration is described in `pyproject.toml` under the `[tool.ruff.lint]` table. Note that this configuration is a work in progress and likely to change until further notice. The linter can be run using the following command:
+
+```
+tox -e lint
+```
+
+This will show all the linting errors and the location for each. For a summary showing the number of violations of each linting rule, use the following command:
+
+```
+tox -e lint -- --statistics
+```
+
+Formatting for the whole repository can be performed using the following command:
+
+```
+tox -e format
+```
+
+Note that we have not yet settled on a formatting configuration other than default options provided by ruff, but this may change. 
+
+
+### Building docs
+
+Documentation is built using Sphinx. Please refer to the guide presented in the [package documentation](https://qiskit-community.github.io/qiskit-metal/contributor-guide.html#contributing-to-documentation) for an extensive description. Briefly, docs can be built using tox with the following command: 
+
+```
+tox -e docs
+```
+
+
+## Old Instructions
+
+**NOTE**: The following instructions are from 2020 and might be used for the `qiskit-metal<0.5`.  
+
 [![Quick install tutorial](https://img.shields.io/badge/youtube-Quick_Install_Video-red.svg?logo=youtube)](https://www.youtube.com/watch?v=sYVDtnJb-ZM&ab_channel=Qiskit)
 ### Retrieve the code from GitHub
 

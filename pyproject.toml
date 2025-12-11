@@ -1,0 +1,211 @@
+[project]
+    name = "qiskit_metal"
+    description = "Qiskit Metal | for quantum device design & analysis"
+    authors = [
+        { name = "Qiskit Metal Development Team", email = "qiskit@us.ibm.com" },
+    ]
+    classifiers = [
+        "Intended Audience :: Developers",
+        "Intended Audience :: Science/Research",
+        "License :: OSI Approved :: Apache Software License",
+        "Operating System :: MacOS",
+        "Operating System :: Microsoft :: Windows",
+        "Operating System :: POSIX :: Linux",
+        "Programming Language :: Python :: 3 :: Only",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Topic :: Scientific/Engineering",
+    ]
+    keywords = [ "eda", "qiskit", "quantum", "sdk" ]
+    license = "Apache-2.0"
+    license-files = [ "LICENSE.txt" ]
+    readme = { file = "README.md", content-type = "text/markdown" }
+    requires-python = ">=3.10,<3.13"
+    urls = { bugtracker = "https://github.com/Qiskit/qiskit-metal/issues", documentation = "https://qiskit-community.github.io/qiskit-metal/", source = "https://github.com/Qiskit/qiskit-metal" }
+    version = "0.5.1"
+    dependencies = [
+        "addict>=2.4.0",
+        "gdstk~=0.9",
+        "geopandas>=0.12.2",
+        "matplotlib~=3.7.0",
+        "numpy>=1.24.2,<2",
+        "pandas==1.5.3",
+        "pint~=0.20",
+        "pyEPR-quantum>=0.9.0",
+        "pygments~=2.14",
+        "pyside6~=6.8",
+        "qdarkstyle~=3.1",
+        "qutip~=4.7.1",
+        "scipy>=1.10.0",
+        "shapely~=2.0.1",
+        "scqubits~=3.1.0",
+        "gmsh~=4.11.1",
+        "pyaedt~=0.21",
+        "pyyaml~=6.0",
+        "cython<3.0.0",
+        "descartes~=1.1.0",
+    ]
+
+[build-system]
+    requires      = [ "uv_build>=0.9.17,<0.10.0" ]
+    build-backend = "uv_build"
+
+# Accounting for flat layout
+[tool.uv.build-backend]
+    module-name = "qiskit_metal"
+    module-root = ""
+
+[dependency-groups]
+    jupyter = [
+ "ipywidgets>=8.1.8",
+ "jupyter>=1.0.0",
+ "jupyterlab>=3.6.1",
+]
+    docs = [
+        "nbsphinx>=0.8.6",
+        "numpydoc>=1.5.0",
+        "qiskit-sphinx-theme>=1.16.0",
+        "sphinx>=6.0.0",
+        "sphinx-intl~=2.1.0",
+        "sphinx-design~=0.6.0",
+        "sphinx-autobuild>=2024.10.3",
+]
+    lint = [ "ruff>=0.14.2" ]
+    test = [
+        "pytest>=8.4.1",
+        "pytest-cov>=7.0.0",
+        "pytest-rich>=0.2.0",
+    ]
+
+
+[tool.pytest.ini_options]
+    minversion = "6.0"
+    addopts    = "--rich"
+    testpaths  = [ "qiskit_metal/tests/" ]
+
+
+[tool.ruff.lint]
+    ignore = [ "E402", "F401", "F841", "E731", "F403", "E712", "E722", "E741", "F821" ]
+    # Ruff ignore codes:
+    # To be sorted out in the future.
+    # E402: module level import not at top of file
+    # F401: module imported but unused
+    # F841: local variable is assigned to but never used
+    # E731: do not assign a lambda expression, use a def
+    # F403: import * only allowed to namespace packages
+    # E712: use "if cond:" instead of "if cond" in comparisons to True or False
+    # E722: do not use bare except 
+    # E741: do not use ambiguous variable names
+    # F821 Undefined names. Mostly used for type hints.
+    per-file-ignores = { "**.ipynb" = [ "F811", "E703" ] }
+    # F811: redefinition of unused name
+    # E703: unnecessary semicolons
+
+[tool.tox]
+    requires = [ "tox>=4", "tox-uv>=1.29" ]
+    env_list = [ "py3.12", "py3.11", "py3.10", "lint", "format", "docs", "gettext" ]
+    labels   = { test = [ "py3.12", "py3.11", "py3.10" ] }
+
+
+[tool.tox.env_run_base]
+    description       = "Run tests against the wheel using pytest"
+    packages          = [ "wheel" ]
+    set_env           = { VIRTUAL_ENV = "{envdir}", LANGUAGE = "en_US", QISKIT_METAL_HEADLESS = "1", LC_ALL = "en_US.utf-8" }
+    dependency_groups = [ "test" ]
+    commands          = [ [ "python", "-m", "pytest", { replace = "posargs", default = [  ], extend = true } ] ]
+
+
+[tool.tox.env.lint]
+    base_python = [ "py3.12" ]
+    skip_install = true
+    dependency_groups = [ "lint" ]
+    commands = [
+        [ "ruff", "check", { replace = "posargs", default = [  ], extend = true }, "qiskit_metal" ],
+    ]
+
+[tool.tox.env.format]
+    base_python = [ "py3.12" ]
+    skip_install = true
+    dependency_groups = [ "lint" ]
+    commands = [
+        [ "ruff", "format", { replace = "posargs", default = [  ], extend = true }, "qiskit_metal" ],
+    ]
+
+
+[tool.tox.env.docs]
+    description = "Build the documentation using sphinx"
+    base_python = [ "py3.12" ]
+    pass_env = [ "DOCS_FROM_MASTER", "QISKIT_DOCS_BUILD_TUTORIALS" ]
+    dependency_groups = [ "docs" ]
+    commands = [
+        [
+            "sphinx-build",
+            "--builder",
+            "html",
+            "--jobs",
+            "auto",
+            { replace = "posargs", default = [ ], extend = true },
+            "{toxinidir}/docs/",
+            "{toxinidir}/docs/_build/html",
+        ],
+    ]
+
+
+[tool.tox.env.docs-autobuild]
+    description = "Build the documentation using sphinx"
+    base_python = [ "py3.12" ]
+    pass_env = [ "DOCS_FROM_MASTER", "QISKIT_DOCS_BUILD_TUTORIALS" ]
+    dependency_groups = [ "docs" ]
+    commands = [
+        [
+            "sphinx-autobuild",
+            "--builder",
+            "html",
+            "--jobs",
+            "auto",
+            { replace = "posargs", default = [ ], extend = true },
+            "{toxinidir}/docs/",
+            "{toxinidir}/docs/_build/html",
+        ],
+    ]
+
+
+[tool.tox.env.gettext]
+    description = "Build the documentation using sphinx"
+    base_python = [ "py3.12" ]
+    dependency_groups = [ "docs" ]
+    commands = [
+        [
+            "sphinx-build",
+            "--builder",
+            "gettext",
+            "--jobs",
+            "auto",
+            { replace = "posargs", default = [ ], extend = true },
+            "{toxinidir}/docs/",
+            "{toxinidir}/docs/_build/gettext",
+        ],
+        [
+            "sphinx-intl",
+            "--conf-dir",
+            "{toxinidir}/docs/conf.py",
+            "update",
+            "--jobs",
+            "0",
+            "--pot-dir",
+            "{toxinidir}/docs/_build/gettext",
+            "--language",
+            "en",
+            "--locale-dir",
+            "{toxinidir}/docs/locale",
+        ],
+    ]
+
+[tool.tox.env.docs-clean]
+    description = "Clean the documentation build"
+    skip_install = true
+    allowlist_externals = [ "rm" ]
+    commands = [
+        [ "rm", "-rf", "{toxinidir}/docs/stubs/", "{toxinidir}/docs/_build/" ],
+    ]
