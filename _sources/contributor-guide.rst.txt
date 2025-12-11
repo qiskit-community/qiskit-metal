@@ -6,7 +6,7 @@ Contributing to Qiskit Metal
 
 
 .. attention::
-   Qiskit Metal is undergoing a major transition to become Quantum Metal. Some of the instructions below might be outdated and will be updated soon. 
+   Qiskit Metal is undergoing a major transition to become Quantum Metal. Some of the instructions below might be outdated and will be updated soon.
 
 Qiskit Metal is an open-source project committed to bringing quantum hardware design to
 people of all backgrounds. This page describes how you can join the Qiskit Metal
@@ -590,7 +590,17 @@ There are two supported release paths:
 
 Local publish steps:
 
-#. Bump the version in ``pyproject.toml`` (e.g., 0.5.0 → 0.5.1).
+#. Bump the version in ``pyproject.toml`` (e.g., 0.5.0 → 0.5.1) and in `__init__.py` in the
+   ``qiskit_metal`` folder.
+
+   .. code-block:: sh
+
+      # In pyproject.toml
+      [project]
+      version = "0.5.1"
+
+      # In qiskit_metal/__init__.py
+      __version__ = "0.5.1"
 #. Commit (and optionally tag):
 
    .. code-block:: sh

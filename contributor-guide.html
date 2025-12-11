@@ -984,7 +984,17 @@ uv<span class="w"> </span>run<span class="w"> </span>--group<span class="w"> </s
 </ul>
 <p>Local publish steps:</p>
 <ol class="arabic">
-<li><p>Bump the version in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> (e.g., 0.5.0 → 0.5.1).</p></li>
+<li><p>Bump the version in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> (e.g., 0.5.0 → 0.5.1) and in <cite>__init__.py</cite> in the
+<code class="docutils literal notranslate"><span class="pre">qiskit_metal</span></code> folder.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># In pyproject.toml</span>
+<span class="o">[</span>project<span class="o">]</span>
+<span class="nv">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;0.5.1&quot;</span>
+
+<span class="c1"># In qiskit_metal/__init__.py</span>
+<span class="nv">__version__</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;0.5.1&quot;</span>
+</pre></div>
+</div>
+</li>
 <li><p>Commit (and optionally tag):</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>commit<span class="w"> </span>-am<span class="w"> </span><span class="s2">&quot;Bump version to 0.5.1&quot;</span>
 git<span class="w"> </span>tag<span class="w"> </span>v0.5.1
