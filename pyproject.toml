@@ -69,7 +69,8 @@
         "sphinx>=6.0.0",
         "sphinx-intl~=2.1.0",
         "sphinx-design~=0.6.0",
-    ]
+        "sphinx-autobuild>=2024.10.3",
+]
     lint = [ "ruff>=0.14.2" ]
     test = [
         "pytest>=8.4.1",
@@ -120,7 +121,7 @@
     skip_install = true
     dependency_groups = [ "lint" ]
     commands = [
-        [ "ruff", "check", "qiskit_metal" ],
+        [ "ruff", "check", { replace = "posargs", default = [  ], extend = true }, "qiskit_metal" ],
     ]
 
 [tool.tox.env.format]
@@ -128,7 +129,7 @@
     skip_install = true
     dependency_groups = [ "lint" ]
     commands = [
-        [ "ruff", "format", "qiskit_metal" ],
+        [ "ruff", "format", { replace = "posargs", default = [  ], extend = true }, "qiskit_metal" ],
     ]
 
 
@@ -140,6 +141,25 @@
     commands = [
         [
             "sphinx-build",
+            "--builder",
+            "html",
+            "--jobs",
+            "auto",
+            { replace = "posargs", default = [ ], extend = true },
+            "{toxinidir}/docs/",
+            "{toxinidir}/docs/_build/html",
+        ],
+    ]
+
+
+[tool.tox.env.docs-autobuild]
+    description = "Build the documentation using sphinx"
+    base_python = [ "py3.12" ]
+    pass_env = [ "DOCS_FROM_MASTER", "QISKIT_DOCS_BUILD_TUTORIALS" ]
+    dependency_groups = [ "docs" ]
+    commands = [
+        [
+            "sphinx-autobuild",
             "--builder",
             "html",
             "--jobs",

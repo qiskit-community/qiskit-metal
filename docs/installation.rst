@@ -4,9 +4,9 @@
 Installation
 ************
 
-~~~~~~~~~~~~~~~~~~~~~~~
+==================================================
 Outline of Installation
-~~~~~~~~~~~~~~~~~~~~~~~
+==================================================
 
 
 
@@ -31,11 +31,12 @@ Outline of Installation
       :class-header: sd-bg-primary sd-text-white
       :text-align: left
 
-      **Advanced Installation (v0.5)**
+      **Installation from source (v0.5)**
 
       Install the active Quantum Metal source tree.
 
       **Options:**
+
       - **Fast path: uv** (recommended during the v0.5 transition)
       - **Conda environment setup** (best for Windows / binary-heavy stacks)
       - **Without conda** (standard Python ``venv``)
@@ -50,53 +51,59 @@ Outline of Installation
       - Optional Jupyter Lab integration
       - Installation hints and tips
       - Common Issues / FAQ
+      - Video instructions for legacy package (``qiskit-metal<0.5``)
 
 
-~~~~~~~~~~~~~~~~~~
+==================================================
 Basic Installation
-~~~~~~~~~~~~~~~~~~
-Quantum Metal v0.5+ is available on PyPI:
+==================================================
+Quantum Metal v0.5+ is available on PyPI (Project page: https://pypi.org/project/quantum-metal/).
 
-::
 
-    pip install quantum-metal
+.. tab-set::
+   .. tab-item:: pip install
 
-Project page: https://pypi.org/project/quantum-metal/
+
+      **Note:** If using this method, it is recommended to install inside a virtual environment. 
+
+      .. code-block:: sh
+
+         pip install quantum-metal
+
+   .. tab-item:: Add to a uv workspace (recommended)
+
+      .. code-block:: sh
+
+         uv add quantum-metal
+
+   .. tab-item:: Add to a Pixi workspace
+
+      **Note:** This method might fail if your Pixi workspace has dependencies that are not compatible with the Quantum Metal dependencies. In such cases, the error messages might not make it obvious.
+
+      .. code-block:: sh
+
+         pixi add --pypi quantum-metal
+
+
+
+
 
 If you specifically need the legacy pre-0.5 package, install ``qiskit-metal`` instead. Otherwise, use ``quantum-metal`` to get the current release.
 
-For source installs or development, clone the repository and follow the advanced installation paths below.
+.. For source installs or development, clone the repository and follow the advanced installation paths below.  
 
-~~~~~~~~~~~~~~~~~~~~~
-Advanced Installation
-~~~~~~~~~~~~~~~~~~~~~
+==================================================
+Installation from source
+==================================================
 
-==================
-Video Instructions
-==================
-
-.. raw:: html
-
-    <a href="https://www.youtube.com/watch?v=sYVDtnJb-ZM&ab_channel=Qiskit">
-    Click for YouTube Video</a><br><br>
-    <table>
-        <tr><td width="22%">
-        <a href="https://www.youtube.com/watch?v=sYVDtnJb-ZM&ab_channel=Qiskit">
-	        <img src="https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg" width="100">
-        </a>
-        </td><td width="78%"></td></tr>
-    </table>
-
-=================
-Text Instructions
-=================
-We recommend setting up a proper git linkage, which will simplify the retrieval of code updates and the possible contributions back to the source code.
+We recommend setting up a proper git linkage, which will simplify the retrieval of code updates and the possible contributions back to the source code. If you intend to contribute to the project, please also read the :ref:`contributor guide <contributor_guide>`.
 
 Clone the repository (command line):
 
-::
+.. code-block:: sh
 
-    git clone https://github.com/Qiskit/qiskit-metal.git
+    git clone https://github.com/qiskit-community/qiskit-metal.git quantum-metal
+    cd quantum-metal # Change to the repository directory
 
 Or use the `GitHub Desktop GUI <https://desktop.github.com/>`_ (`cloning notes <https://help.github.com/en/desktop/contributing-to-projects/cloning-a-repository-from-github-to-github-desktop>`_).
 
@@ -109,30 +116,27 @@ Notes:
 Choose an install method
 ------------------------
 
+Run the following commands in the root of the repository (i.e. the ``quantum-metal`` directory):
+
 .. tab-set::
 
    .. tab-item:: uv (recommended)
 
-      **Why:** Fast, modern resolver/installer; typically the least friction for scientific stacks. Use Python 3.10 or 3.11.
+      **Why:** Fast, modern resolver/installer; typically the least friction for scientific stacks. Use Python 3.10, 3.11, or 3.12. ``uv`` installations instruction are available `here <https://docs.astral.sh/uv/getting-started/installation/>`_.
 
       .. code-block:: sh
 
-         # Install uv (see https://docs.astral.sh/uv/)
-         curl -LsSf https://astral.sh/uv/install.sh | sh
+         # Create a new virtual environment
+         uv venv --python 3.11  # could also be 3.10 or 3.12
 
-         # Clone the repo (v0.5 is source-only for now)
-         git clone https://github.com/qiskit-community/qiskit-metal.git quantum-metal
-         cd quantum-metal
-
-         uv python pin 3.11          # or 3.10
-         uv venv
-         source .venv/bin/activate   # Windows: .venv\\Scripts\\activate
-
-         uv pip install -r requirements.txt
+         # Install the package in editable mode
          uv pip install -e .
 
-         # Optional: dev extras (docs, tests, lint, formatting)
-         uv pip install -r requirements-dev.txt
+         # Activate the virtual environment
+         source .venv/bin/activate   # Windows: .venv\\Scripts\\activate
+
+         # or run the python shell in the virtual environment
+         uv run python
 
    .. tab-item:: Conda (robust, esp. Windows)
 
@@ -161,9 +165,13 @@ Choose an install method
       .. code-block:: sh
 
          python -m venv <virtual_env_path>
+
+         # Activate the virtual environment
          source <virtual_env_path>/bin/activate     # Windows: <virtual_env_path>\\Scripts\\activate
+
+         # Install the package
          python -m pip install -U pip
-         python -m pip install -r requirements.txt -r requirements-dev.txt -e .
+         python -m pip install -e .
 
       Windows note: install the latest MSVC/Windows SDK (Visual C++ Build Tools) to satisfy gdstk.
 
@@ -205,23 +213,24 @@ Then pick the matching kernel via **Kernel → Change Kernel**.
 ------------------------------------------------------------
 Without conda: Virtual environment setup (alternative setup)
 ------------------------------------------------------------
+Below we provide a detailed explanation of how to set up a virtual environment without conda, using Python venv instead. 
+
 **Why:** Lightweight and familiar; use if you prefer the standard venv workflow and do not need conda’s binary packages.
 
-**On Windows, do this first:** It is recommended that you first install `Visual C++ x.0`, required for a successful install of `gdstk`.
-If you do not have `Visual C++ x.0` installed, you will be notified to install it when `gdstk` attempts to install.
+**On Windows, do this first:** It is recommended that you first install ``Visual C++ x.0``, required for a successful install of ``gdstk``.
+If you do not have ``Visual C++ x.0`` installed, you will be notified to install it when ``gdstk`` attempts to install.
 You can do this by downloading and installing `C++ Build Tools <https://visualstudio.microsoft.com/visual-cpp-build-tools/>`_.
-Be sure to select the latest versions of `MSVC` and `Windows SDK` in the installer as suggested in `this wiki <https://wiki.python.org/moin/WindowsCompilers>`_.
+Be sure to select the latest versions of ``MSVC`` and ``Windows SDK`` in the installer as suggested in `this wiki <https://wiki.python.org/moin/WindowsCompilers>`_.
 
 To use a Python virtual environment, execute these commands in the top-level of the repository:
 
 ::
 
     python -m venv <virtual_env_path>
-    source <virtual_env_path>/bin/activate
+    source <virtual_env_path>/bin/activate    # Windows: <virtual_env_path>\\Scripts\\activate
     python -m pip install -U pip
-    python -m pip install -r requirements.txt -r requirements-dev.txt -e .
+    python -m pip install -e .
 
-On Windows, replace `source <virtual_env_path>/bin/activate` with `.<virtual_env_path>\Scripts\activate`.
 
 ------------------
 Installation hints
@@ -229,11 +238,11 @@ Installation hints
 
 Here are some things to consider when setting up a development environment:
 
-* If using a virtual environment, make sure `pip` is up to date. In initial environment testing, PySide2 is installable with only the latest version of `pip`.
+* If using a virtual environment, make sure ``pip`` is up to date. 
 
 * Add the path of your qiskit-metal folder to your PATH.
 
-* Library errors when activating conda environments or initializing Jupyter Notebook/Lab indicate a conflict between Python libraries in the base and sub-environments. Go ahead and manually delete the library from the base environment `site-packages` folder shown in the error message. You might need to reinstall them in the sub-environment or create a new one.
+* Library errors when activating conda environments or initializing Jupyter Notebook/Lab indicate a conflict between Python libraries in the base and sub-environments. Go ahead and manually delete the library from the base environment ``site-packages`` folder shown in the error message. You might need to reinstall them in the sub-environment or create a new one.
 
 --------------------------
 Setting up precommit hooks
@@ -250,4 +259,25 @@ Please make sure the command is run from the same shell you plan on using to com
 Common Issues
 =============
 
-If you run into problems, consult the FAQ's page :ref:`here <faq_setup>`.
+If you run into problems, consult the FAQ's page :ref:`here <faq_setup>`, or open a `GitHub issue <https://github.com/qiskit-community/qiskit-metal/issues>`_.
+
+
+============================================================
+Video Instructions for Legacy package (qiskit-metal<0.5)
+============================================================
+
+.. attention::
+
+   The following instructions are for the legacy ``qiskit-metal<0.5`` release. For the latest release and ``quantum-metal`` v0.5+, please follow the text instructions above. An updated video tutorial will be added soon.
+
+.. raw:: html
+
+    <a href="https://www.youtube.com/watch?v=sYVDtnJb-ZM&ab_channel=Qiskit">
+    Click for YouTube Video</a><br><br>
+    <table>
+        <tr><td width="22%">
+        <a href="https://www.youtube.com/watch?v=sYVDtnJb-ZM&ab_channel=Qiskit">
+	        <img src="https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg" width="100">
+        </a>
+        </td><td width="78%"></td></tr>
+    </table>

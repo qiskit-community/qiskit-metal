@@ -6,6 +6,20 @@ For the offical user-facing changelog for a particular release can be found in t
 
 The changelog for all releases can be found in the release page: [![Releases](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)
 
+## In Progress
+
+- We have adopted uv as a project/dependency management tool. 
+- Tasks are still run using tox, but with the tox-uv plugin. 
+- We adopted ruff for linting and formatting. We have a good starting configuration for linting, but it needs some work before it could be considered stable. 
+- The GitHub actions workflows have been updates with these changes. 
+    - Python 3.12 is the slowest to build wheels in CI, partly because qutip and pandas take a very long time to build on this version. This needs to be investigated. 
+- New developer onboarding instuctions added to `README_developers.md`. The old instructions in`README_developers.md` have been retained with a note for usage on older versions of `qiskit-metal`. 
+- Development install instructions have been added to documentation in the "Contributor Guide". 
+- Installation instructions have been updates. More updates to come. 
+
+
+
+
 ## QISKIT METAL v0.5 (2025)
 
 ### Major Updates
