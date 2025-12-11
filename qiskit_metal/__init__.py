@@ -15,7 +15,7 @@
 # pylint: disable=wrong-import-order
 # pylint: disable=wrong-import-position
 """Qiskit Metal"""
-__version__ = '0.5.1'
+__version__ = '0.5.2'
 __license__ = "Apache 2.0"
 __copyright__ = 'Copyright IBM 2019-2020'
 __author__ = 'Zlatko Minev, Thomas McConkey, and them IBM Quantum Team'
@@ -38,7 +38,7 @@ if os.name == 'nt':
             >>>>>>>> Before you can use Qiskit Metal, please install geopandas. <<<<<<<<\n \
             >>>> For more information, you can follow the instructions on this FAQ <<<<<\n \
             >>>>>>>>>>>>> https://qiskit-community.github.io/qiskit-metal/faq.html <<<<<<<<<<<<<<\n"
-             )
+              )
         raise
 
 

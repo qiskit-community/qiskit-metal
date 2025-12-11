@@ -23,7 +23,7 @@
     readme = { file = "README.md", content-type = "text/markdown" }
     requires-python = ">=3.10,<3.13"
     urls = { bugtracker = "https://github.com/Qiskit/qiskit-metal/issues", documentation = "https://qiskit-community.github.io/qiskit-metal/", source = "https://github.com/Qiskit/qiskit-metal" }
-    version = "0.5.1"
+    version = "0.5.2"
     dependencies = [
         "addict>=2.4.0",
         "gdstk~=0.9",
@@ -95,7 +95,7 @@
     # E731: do not assign a lambda expression, use a def
     # F403: import * only allowed to namespace packages
     # E712: use "if cond:" instead of "if cond" in comparisons to True or False
-    # E722: do not use bare except 
+    # E722: do not use bare except
     # E741: do not use ambiguous variable names
     # F821 Undefined names. Mostly used for type hints.
     per-file-ignores = { "**.ipynb" = [ "F811", "E703" ] }
