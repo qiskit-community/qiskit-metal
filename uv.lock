@@ -2952,7 +2952,7 @@ wheels = [
 
 [[package]]
 name = "qiskit-metal"
-version = "0.5.2"
+version = "0.5.2.post1"
 source = { editable = "." }
 dependencies = [
     { name = "addict" },
