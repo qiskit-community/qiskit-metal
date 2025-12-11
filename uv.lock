@@ -2979,7 +2979,7 @@ wheels = [
 
 [[package]]
 name = "quantum-metal"
-version = "0.5.2.post2"
+version = "0.5.2.post3"
 source = { editable = "." }
 dependencies = [
     { name = "addict" },
