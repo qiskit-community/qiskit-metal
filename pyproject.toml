@@ -1,6 +1,6 @@
 [project]
-    name = "qiskit_metal"
-    description = "Qiskit Metal | for quantum device design & analysis"
+    name = "quantum_metal"
+    description = "Quantum Metal (formerly Qiskit Metal) | for quantum device design & analysis"
     authors = [
         { name = "Qiskit Metal Development Team", email = "qiskit@us.ibm.com" },
     ]
