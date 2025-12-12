@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="FAQ’s" href="faq.html" /><link rel="prev" title="Roadmap" href="workflow.html" />
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
-        <title>Contributing to Qiskit Metal - Quantum Metal 0.5.2</title>
+        <title>Contributing to Qiskit Metal - Quantum Metal 0.5.2.post4</title>
       <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
@@ -160,7 +160,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">Quantum Metal 0.5.2</div></a>
+      <a href="index.html"><div class="brand">Quantum Metal 0.5.2.post4</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -184,7 +184,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">Quantum Metal 0.5.2</span>
+  <span class="sidebar-brand-text">Quantum Metal 0.5.2.post4</span>
   
 </a>
 <form class="sidebar-search-container" method="get" action="search.html" role="search">
@@ -984,20 +984,18 @@ uv<span class="w"> </span>run<span class="w"> </span>--group<span class="w"> </s
 </ul>
 <p>Local publish steps:</p>
 <ol class="arabic">
-<li><p>Bump the version in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> (e.g., 0.5.0 → 0.5.1) and in <cite>__init__.py</cite> in the
-<code class="docutils literal notranslate"><span class="pre">qiskit_metal</span></code> folder.</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># In pyproject.toml</span>
-<span class="o">[</span>project<span class="o">]</span>
-<span class="nv">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;0.5.1&quot;</span>
-
-<span class="c1"># In qiskit_metal/__init__.py</span>
-<span class="nv">__version__</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;0.5.1&quot;</span>
+<li><p>Bump the version in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> (e.g., 0.5.1 → 0.5.2) using uv.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the version directly</span>
+uv<span class="w"> </span>version<span class="w"> </span><span class="m">0</span>.5.2
+<span class="c1"># Alternatively, bump the version with the --bump flag</span>
+<span class="c1"># The --bump flag can be used to bump the version to the next major, minor, or patch version</span>
+uv<span class="w"> </span>version<span class="w"> </span>--bump<span class="w"> </span>patch
 </pre></div>
 </div>
 </li>
-<li><p>Commit (and optionally tag):</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>commit<span class="w"> </span>-am<span class="w"> </span><span class="s2">&quot;Bump version to 0.5.1&quot;</span>
-git<span class="w"> </span>tag<span class="w"> </span>v0.5.1
+<li><p>Commit (and optionally tag) using the version manually:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>commit<span class="w"> </span>-am<span class="w"> </span><span class="s2">&quot;Bump version to 0.5.2&quot;</span>
+git<span class="w"> </span>tag<span class="w"> </span>v0.5.2
 git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>main<span class="w"> </span>--tags
 </pre></div>
 </div>
@@ -1053,7 +1051,7 @@ folder. If you add a new feature, please add a demonstration of its use to a not
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2025/12/11</div>
+              Last updated on 2025/12/12</div>
           </div>
           <div class="right-details">
             
@@ -1117,7 +1115,7 @@ folder. If you add a new feature, please add a demonstration of its use to a not
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=8e576371"></script>
+</div><script src="_static/documentation_options.js?v=f20ee9a7"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=5fa4622c"></script>

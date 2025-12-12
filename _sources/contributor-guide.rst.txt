@@ -590,23 +590,23 @@ There are two supported release paths:
 
 Local publish steps:
 
-#. Bump the version in ``pyproject.toml`` (e.g., 0.5.0 → 0.5.1) and in `__init__.py` in the
-   ``qiskit_metal`` folder.
+#. Bump the version in ``pyproject.toml`` (e.g., 0.5.1 → 0.5.2) using uv.
 
    .. code-block:: sh
 
-      # In pyproject.toml
-      [project]
-      version = "0.5.1"
+      # Set the version directly
+      uv version 0.5.2
+      # Alternatively, bump the version with the --bump flag
+      # The --bump flag can be used to bump the version to the next major, minor, or patch version
+      uv version --bump patch
 
-      # In qiskit_metal/__init__.py
-      __version__ = "0.5.1"
-#. Commit (and optionally tag):
+
+#. Commit (and optionally tag) using the version manually:
 
    .. code-block:: sh
 
-      git commit -am "Bump version to 0.5.1"
-      git tag v0.5.1
+      git commit -am "Bump version to 0.5.2"
+      git tag v0.5.2
       git push origin main --tags
 
 #. Build and publish with ``uv`` (requires a PyPI token, e.g., ``UV_PYPI_TOKEN``):
