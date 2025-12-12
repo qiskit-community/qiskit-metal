@@ -22,8 +22,8 @@
     license-files = [ "LICENSE.txt" ]
     readme = { file = "README.md", content-type = "text/markdown" }
     requires-python = ">=3.10,<3.13"
-    urls = { bugtracker = "https://github.com/Qiskit/qiskit-metal/issues", documentation = "https://qiskit-community.github.io/qiskit-metal/", source = "https://github.com/Qiskit/qiskit-metal" }
-    version = "0.5.2.post3"
+    urls = { bugtracker = "https://github.com/qiskit-community/qiskit-metal/issues", documentation = "https://qiskit-community.github.io/qiskit-metal/", source = "https://github.com/qiskit-community/qiskit-metal" }
+    version = "0.5.2.post4"
     dependencies = [
         "addict>=2.4.0",
         "gdstk~=0.9",

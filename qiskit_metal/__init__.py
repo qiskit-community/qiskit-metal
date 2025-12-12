@@ -19,7 +19,7 @@
 from importlib.metadata import version
 
 """Qiskit Metal"""
-__version__ = version('qiskit_metal')
+__version__ = version('quantum-metal')
 __license__ = "Apache 2.0"
 __copyright__ = 'Copyright IBM 2019-2020'
 __author__ = 'Zlatko Minev, Thomas McConkey, and them IBM Quantum Team'
