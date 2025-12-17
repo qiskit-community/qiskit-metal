@@ -487,21 +487,25 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(_options['cross_length'], '200um')
         self.assertEqual(_options['cross_gap'], '20um')
 
-        self.assertEqual(len(_options['_default_connection_pads']), 8)
+        self.assertEqual(len(_options['_default_connection_pads']), 10)
         self.assertEqual(_options['_default_connection_pads']['connector_type'],
                          '0')
         self.assertEqual(_options['_default_connection_pads']['claw_length'],
                          '30um')
         self.assertEqual(_options['_default_connection_pads']['ground_spacing'],
                          '5um')
+        self.assertEqual(
+            _options['_default_connection_pads']['ground_spacing_back'], None)
         self.assertEqual(_options['_default_connection_pads']['claw_width'],
                          '10um')
+        self.assertEqual(
+            _options['_default_connection_pads']['claw_width_back'], None)
         self.assertEqual(_options['_default_connection_pads']['claw_gap'],
-                         '6um')
+                         'cpw_gap')
         self.assertEqual(
             _options['_default_connection_pads']['claw_cpw_length'], '40um')
         self.assertEqual(_options['_default_connection_pads']['claw_cpw_width'],
-                         '10um')
+                         'cpw_width')
         self.assertEqual(
             _options['_default_connection_pads']['connector_location'], '0')
 
