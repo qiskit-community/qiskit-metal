@@ -6,7 +6,14 @@ For the offical user-facing changelog for a particular release can be found in t
 
 The changelog for all releases can be found in the release page: [![Releases](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)
 
-## Qiskit Metal v0.5.2 (2025)
+## Unreleased
+
+- Various dependency updates. 
+  - Removed descartes and cython (unused).
+  - pandas, geopandas, scqubits and qutip updates to latest major version. Should fix [#1027](Ihttps://github.com/qiskit-community/qiskit-metal/issues/1027).
+
+
+## Quantum Metal v0.5.2 (Dec 11, 2025)
 
 - We have adopted uv as a project/dependency management tool. 
 - Tasks are still run using tox, but with the tox-uv plugin. 

@@ -26,25 +26,23 @@
     version = "0.5.2.post4"
     dependencies = [
         "addict>=2.4.0",
-        "gdstk~=0.9",
-        "geopandas>=0.12.2",
-        "matplotlib~=3.7.0",
+        "gdstk>=0.9",
+        "geopandas>=1.0",
+        "matplotlib>=3.7.0",
         "numpy>=1.24.2,<2",
-        "pandas==1.5.3",
-        "pint~=0.20",
+        "pandas>=2.1.1",
+        "pint>=0.21.0",
         "pyEPR-quantum>=0.9.0",
-        "pygments~=2.14",
-        "pyside6~=6.8",
-        "qdarkstyle~=3.1",
-        "qutip~=4.7.1",
+        "pygments>=2.14.0", # Needed for docs and GUI widgets.
+        "pyside6>=6.8",
+        "qdarkstyle>=3.1", # Needed for GUI styling.
+        "qutip>=5.0.0",
         "scipy>=1.10.0",
-        "shapely~=2.0.1",
-        "scqubits~=3.1.0",
-        "gmsh~=4.11.1",
-        "pyaedt~=0.21",
-        "pyyaml~=6.0",
-        "cython<3.0.0",
-        "descartes~=1.1.0",
+        "shapely>=2.0.1",
+        "scqubits>=4.1.0",
+        "gmsh>=4.11.1",
+        "pyaedt>=0.21",
+        "pyyaml>=6.0", # Used for the Elmer runner. 
     ]
 
 [build-system]
@@ -58,9 +56,10 @@
 
 [dependency-groups]
     jupyter = [
- "ipywidgets>=8.1.8",
- "jupyter>=1.0.0",
- "jupyterlab>=3.6.1",
+        "ipympl>=0.9.8",
+        "ipywidgets>=8.1.8",
+        "jupyter>=1.0.0",
+        "jupyterlab>=3.6.1",
 ]
     docs = [
         "nbsphinx>=0.8.6",
