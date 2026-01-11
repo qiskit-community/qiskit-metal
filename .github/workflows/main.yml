@@ -5,6 +5,7 @@ on:
     branches: [main, "stable/*"]
   pull_request:
     branches: [main, "stable/*"]
+  workflow_dispatch:
   
 jobs:
   # OLD NOTE: The ubuntu-24.04 and macos-latest tests have been separated out because ubuntu
@@ -39,7 +40,7 @@ jobs:
       - uses: astral-sh/setup-uv@v7
         with:
           # Install a specific version of uv.
-          version: "0.9.17"
+          version: "0.9.24"
           enable-cache: true
       # Install OS dependencies 
       - name: Install Gmsh dependencies for Ubuntu
