@@ -110,7 +110,6 @@ ENV/
 /site
 
 # temporary, installs and results
-src/
 .vs
 tutorials/**/*.png
 tutorials/**/*.jpg

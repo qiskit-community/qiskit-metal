@@ -1,0 +1,48 @@
+#!/bin/bash
+
+RED='\033[1;34m'
+NC='\033[0m' # No Color
+#  Set the current active path to the path where this bash file is
+cd "$(dirname "$0")"
+echo -e "Present working directory: ${RED}${PWD}${NC}"
+
+# Define conversion
+ui_to_py=pyside6-uic
+rc_to_py=pyside6-rcc
+# pyside6-uic
+#     -o : The Python code generated is written to the file <FILE>.
+#     -i : Resource modules are imported using
+#          from <PACKAGE> import ... rather than a simple import ....
+#      --from-imports (pyside)  --import-from (pyqt)
+
+
+# ensure if there are no .ui files present, for loop won't take *.ui as string literal
+shopt -s nullglob
+for f in $(find . -name '*.ui' -or -name '*.doc')
+do
+    echo "Processing $f"
+    echo "${f%.ui}.py"
+    "${ui_to_py}"   --from-imports "$f"  --output="${f%.ui}.py"
+done
+
+#qrc
+# ensure if there are no .ui files present, for loop won't take *.ui as string literal
+shopt -s nullglob
+for f in $(find . -name '*.qrc' -or -name '*.doc');
+do
+    echo "Processing $f"
+    "${rc_to_py}"  -o "${f%.qrc}_rc.py"  "$f"
+done
+
+
+
+# Zlatko:
+# Qt Designer doesn't seem to know that in python you can't use self.raise
+# since raise is a reserved word.
+# Instead, the function is called self.raise_
+# Here I used sed on mac to replace it:
+#         .raise)    --->    .raise_)
+# for the whole file
+sed -i '.original' 's/.raise)/.raise_)/g'  main_window_ui.py
+ # Remove backup files
+rm  main_window_ui.py.original
