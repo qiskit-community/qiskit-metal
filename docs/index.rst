@@ -287,7 +287,7 @@ The goal of Qiskit Metal is to allow for easy quantum hardware modeling with red
     QDesigns<apidocs/designs>
     QComponents<apidocs/qlibrary>
     Analyses<apidocs/analyses>
-    QRenderes<apidocs/renderers>
+    QRenderers<apidocs/renderers>
     Toolbox<apidocs/toolbox_metal>
     QGeometry<apidocs/qgeometries>
     GUI<apidocs/gui>
