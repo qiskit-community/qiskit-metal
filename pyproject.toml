@@ -2,7 +2,10 @@
     name = "quantum-metal"
     description = "Quantum Metal (formerly Qiskit Metal) | for quantum device design & analysis"
     authors = [
-        { name = "Qiskit Metal Development Team", email = "qiskit@us.ibm.com" },
+        { name = "Zlatko Minev" },
+        { name = "Thomas McConkey" },
+        { name = "IBM Quantum Team" },
+        { name = "Quantum Device Consortium (QDC)" },
     ]
     classifiers = [
         "Intended Audience :: Developers",
@@ -46,7 +49,7 @@
     ]
 
 [build-system]
-    requires      = [ "uv_build>=0.9.17,<0.10.0" ]
+    requires      = [ "uv_build>=0.9.23,<0.10.0" ]
     build-backend = "uv_build"
 
 # Accounting for old package name
