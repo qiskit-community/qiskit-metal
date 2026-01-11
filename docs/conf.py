@@ -110,7 +110,7 @@ nbsphinx_epilog = """
 # -- Project information -----------------------------------------------------
 project = 'Quantum Metal'  # {version}
 copyright = 'Quantum Metal Community; 2019-2025 Qiskit Development Team'  # pylint: disable=redefined-builtin
-author = 'Quantum Metal Community Team'
+author = qiskit_metal.__authors__
 # -- General configuration ---------------------------------------------------
 
 extensions = [
