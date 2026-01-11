@@ -1,33 +1,34 @@
 .. _contributor_guide:
 
 ********************************
-Contributing to Qiskit Metal
+Contributing to Quantum Metal
 ********************************
 
 
 .. attention::
-   Qiskit Metal is undergoing a major transition to become Quantum Metal. Some of the instructions below might be outdated and will be updated soon.
+   Quantum Metal is undergoing a major transition to become Quantum Metal. Some of the instructions below might be outdated and will be updated soon.
 
-Qiskit Metal is an open-source project committed to bringing quantum hardware design to
-people of all backgrounds. This page describes how you can join the Qiskit Metal
+Quantum Metal is an open-source project committed to bringing quantum hardware design to
+people of all backgrounds. This page describes how you can join the Quantum Metal
 community in this goal.
 
 
 .. _where_things_are:
 
-
+=================
 Where Things Are
-****************
+=================
 
-The code for Qiskit Metal is located in the `Qiskit GitHub organization <https://github.com/Qiskit>`__,
-as part of the larger umbrella of Qiskit projects.
+The source code for Quantum Metal is currently located in the `Quantum Community GitHub organization <https://github.com/Quantum-community>`__,
+as part of the larger umbrella of community-driven Quantum projects. This repository will change ownership in the future. 
 
 
+==========================================
 Reporting Bugs and Requesting Enhancements
-******************************************
+==========================================
 
 When you encounter a problem, please open an issue in the
-issue tracker: https://github.com/Qiskit/qiskit-metal/issues
+issue tracker: https://github.com/Quantum/Quantum-metal/issues
 
 When reporting an issue, please follow this template::
 
@@ -60,19 +61,19 @@ the repository issue tracker. Opening an issue starts a discussion with the team
 fits in with the project, how it can be implemented, etc.
 
 
-
+=========================================
 Contributing Code
-*****************
+=========================================
 
-========================================
+
 Development Setup for Quantum Metal v0.5+
-========================================
+-----------------------------------------
 
-The new version of Qiskit Metal (soon to be Quantum Metal) has transitioned to `uv <https://docs.astral.sh/uv/>`_ for project and dependency management. This guide describes how to set up your local development environment in light of these updates. First, install uv on your system as described by the `instructions here <https://docs.astral.sh/uv/getting-started/installation/>`_.
+Quantum Metal uses `uv <https://docs.astral.sh/uv/>`_ for project and dependency management. This guide describes how to set up your local development environment. First, install uv on your system as described by the `instructions here <https://docs.astral.sh/uv/getting-started/installation/>`_.
 
 
 Development (virtual) environments
-++++++++++++++++++++++++++++++++++
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The next few paragraphs describe the setup. We recommend reading through it at least once before you start making contributions. Skip to the next section for instructions on how to activate venvs, run tasks, etc.
 
@@ -87,7 +88,7 @@ The file ``uv.lock`` lists "locked" versions for all dependencies listed in ``py
 
 
 Running tests
-+++++++++++++
+^^^^^^^^^^^^^
 
 Tox is configured to run tests (using pytest) for Python 3.10–3.12. Use the following command to run tests for all three versions::
 
@@ -98,7 +99,7 @@ We use the `pytest-rich <https://github.com/nicoddemus/pytest-rich>`_ plugin to 
    tox -e py3.12  # replace 3.12 with the version you want to run
 
 Linting and Formatting
-++++++++++++++++++++++
+^^^^^^^^^^^^^^^^^^^^^^^
 
 We use `ruff <https://docs.astral.sh/ruff/>`_ for linting and formatting. Our linting configuration is described in ``pyproject.toml`` under the ``[tool.ruff.lint]`` table. Note that this configuration is a work in progress and likely to change until further notice. The linter can be run using the following command::
 
@@ -137,17 +138,17 @@ contributor license agreement (CLA). By signing a CLA, you're attesting
 that you are the author of the contribution, and that you're freely
 contributing it under the terms of the Apache-2.0 license.
 
-When you contribute to the Qiskit project with a new pull request,
+When you contribute to Quantum Metal with a new pull request,
 a bot will evaluate whether you have signed the CLA. If required, the
 bot will comment on the pull request, including a link to accept the
-agreement. The `individual CLA <https://qiskit.org/license/qiskit-cla.pdf>`__
+agreement. The `individual CLA <https://Qiskit.org/license/Qiskit-cla.pdf>`__
 document is available for review as a PDF.
 
 .. note::
    If your contribution is part of your employment or your contribution
    is the property of your employer, then you will more than likely need to sign a
-   `corporate CLA <https://qiskit.org/license/qiskit-corporate-cla.pdf>`__ too and
-   email it to us at <qiskit@us.ibm.com>.
+   `corporate CLA <https://Qiskit.org/license/Qiskit-corporate-cla.pdf>`__ too and
+   email it to us at <Qiskit@us.ibm.com>.
 
 
 
@@ -182,7 +183,7 @@ Code Review
 Code review is done in the open and is open to anyone. While only maintainers have
 access to merge commits, community feedback on pull requests is extremely valuable.
 It is also a good mechanism to learn about the code base. You can
-view a list of all open pull requests at https://github.com/Qiskit/qiskit-metal/pulls
+view a list of all open pull requests at https://github.com/qiskit-community/qiskit-metal/pulls
 
 
 Commit Messages
@@ -264,10 +265,9 @@ Documenting Your Code
 If you make a change to an element, make sure you update the associated
 *docstrings* and parts of the documentation under ``docs/apidocs`` in the
 corresponding repo. To locally build the element-specific
-documentation, run ``tox -edocs`` to compile and build the
+documentation, run ``tox -e docs`` to compile and build the
 documentation locally and save the output to ``docs/_build/html``.
-Additionally, the Docs CI job on azure pipelines will run this and host a zip
-file of the output that you can download and view locally.
+Additionally, the Docs CI job on GitHub Actions will run this and deploy to Github Pages.
 
 You can open a `documentation issue <https://github.com/qiskit-community/qiskit-metal/issues/new/choose>`__
 if you see doc bugs, have a new feature that needs to be documented, or think
@@ -278,12 +278,12 @@ that material could be added to the existing docs.
 Good First Contributions
 ------------------------
 
-If you would like to contribute to Qiskit Metal, but aren't sure
+If you would like to contribute to Quantum Metal, but aren't sure
 where to get started, the ``good first issue`` label on issues for a project
 highlights items appropriate for people new to the project.
 These are all issues that have been reviewed and tagged by contributors
 as something a new contributor should be able to work on. In other
-words, intimate familiarity with Qiskit Metal is not a requirement to develop a fix
+words, intimate familiarity with Quantum Metal is not a requirement to develop a fix
 for the issue.
 
 
@@ -291,11 +291,11 @@ for the issue.
 Deprecation Policy
 ------------------
 
-Qiskit users need to know if a feature or an API they rely
+Quantum Metal users need to know if a feature or an API they rely
 upon will continue to be supported by the software tomorrow. Knowing under which conditions
 the project can remove (or change in a backwards-incompatible manner) a feature or
 API is important to the user. To manage expectations, the following policy is how API
-and feature deprecation/removal is handled by Qiskit:
+and feature deprecation/removal is handled by Quantum Metal:
 
 1. Features, APIs, or configuration options are marked deprecated in the code.
 Appropriate ``DeprecationWarning`` class warnings will be sent to the user. The
@@ -335,9 +335,9 @@ should be a ``DeprecationWarning``. An example would be::
  import warnings
 
  def foo(input):
-     warnings.warn('The qiskit.foo() function is deprecated as of 0.9.0, and '
+     warnings.warn('The Quantum.foo() function is deprecated as of 0.9.0, and '
                    'will be removed no earlier than 3 months after that '
-                   'release date. You should use the qiskit.bar() function '
+                   'release date. You should use the Quantum.bar() function '
                    'instead.', DeprecationWarning, stacklevel=2)
 
 One thing to note here is the ``stack_level`` kwarg on the warn() call. This
@@ -385,16 +385,16 @@ Backporting procedure:
 ----------------------
 
 When backporting a patch from master to stable, we want to keep a
-reference to the change on master. When you create the branch for the
+reference to the change on main. When you create the branch for the
 stable PR, use::
 
-    $ git cherry-pick -x $master_commit_id
+    $ git cherry-pick -x $main_commit_id
 
-However, this only works for small self-contained patches from master.
+However, this only works for small self-contained patches from main.
 If you need to backport a subset of a larger commit (from a squashed PR,
-for example) from master, do this manually. In these cases, add::
+for example) from main, do this manually. In these cases, add::
 
-    Backported from: #master pr number
+    Backported from: #main pr number
 
 so that we can track the source of the change subset, even if
 a strict cherry-pick doesn\'t make sense.
@@ -407,22 +407,22 @@ stable patch.
 
 
 Backport labels
----------------
+^^^^^^^^^^^^^^^
 
 Bugs or PRs tagged with ``stable backport potential`` are bugs
 that apply to the stable release too and may be suitable for
-backporting once a fix lands in master. Once the backport has been
+backporting once a fix lands in main. Once the backport has been
 proposed, the tag should be removed.
 
 Include ``[Stable]`` in the title of the PR against the stable branch,
 as a sign that setting the target branch as stable was not
-a mistake. Also, reference to the PR number in master that you are
+a mistake. Also, reference to the PR number in main that you are
 porting.
 
 
 
 Custom Names and Images for QComponents
-=======================================
+----------------------------------------
 
 When adding new qcomponents, new images for these components go
 in the following directory::
@@ -442,7 +442,7 @@ The meta attribute can used to add a custom display name to the file::
         MyQComponent
 
 If you had a file with the previous two attributes, the user is telling
-the qiskit metal application that the image for the qcomponent is named
+the Quantum metal application that the image for the qcomponent is named
 ``myqcomponent.png`` and is located in::
 
    qiskit-metal/qiskit_metal/_gui/_imgs/components/myqcomponent.png
@@ -451,26 +451,24 @@ and that they want the display name of this file to be ``MyQComponent``.
 
 
 
-
+==============================
 Contributing to Documentation
-*****************************
+==============================
 
-Qiskit Metal documentation is shaped by the `docs as code
+Quantum Metal documentation is shaped by the `docs as code
 <https://www.writethedocs.org/guide/docs-as-code/>`__ philosophy, primarily
-drawn from Qiskit Metal code comments in the `style of API documentation
+drawn from Quantum Metal code comments in the `style of API documentation
 <https://alistapart.com/article/the-ten-essentials-for-good-api-documentation/>`__.
 
 The documentation is built using `Sphinx
 <http://www.sphinx-doc.org/en/master/>`__. The majority of documentation, under
-`API Reference <https://qiskit-community.github.io/qiskit-metal/overview.html>`__, is
+`API Reference <https://Quantum-community.github.io/Quantum-metal/overview.html>`__, is
 drawn from code comments in the repositories listed in :ref:`where_things_are`.
 
-
-
 Documentation Structure
------------------------
+--------------------------------
 
-The way documentation is structured in Qiskit Metal is to push as much of the actual
+The way documentation is structured in Quantum Metal is to push as much of the actual
 documentation into the docstrings as possible. This makes it easier for
 additions and corrections to be made during development, because the majority
 of the documentation lives near the code being changed. There are three levels in
@@ -486,8 +484,13 @@ The ``.rst`` files in the ``docs/apidocs``
    used to parse the
    module docstrings from a specified import path. For example, the analyses.rst
    file contains
+   
+   .. code-block:: rst
 
-   .. image:: images/contributer-example-1.jpg
+      .. automodule:: qiskit_metal.analyses
+         :no-members:
+         :no-inherited-members:
+         :no-special-members:
 
    If you're adding a new ``.rst`` file for a new module's documentation, make
    sure to add it to the `toctree <https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#table-of-contents>`__
@@ -503,7 +506,7 @@ The module-level docstring
    functions of the public API that are contained in that module. This is typically
    done using the `autosummary directive <https://www.sphinx-doc.org/en/master/usage/extensions/autosummary.html>`__
    (or `autodoc directives <http://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html>`__
-   directly if the module is simple, such as in the case of ``qiskit.execute``). The
+   directly if the module is simple, such as in the case of ``Quantum.execute``). The
    autosummary directive is used to autodoc a list of different Python elements
    (classes, functions, etc.) directly without having to manually call out the
    autodoc directives for each one. The module-level docstring is where to
@@ -512,10 +515,30 @@ The module-level docstring
    components of the public API together into multiple subsections.
 
    For example, as in the previous dagcircuit module example, the
-   contents of the module docstring for ``qiskit/analyses/__init__.py`` would
+   contents of the module docstring for ``Quantum/analyses/__init__.py`` would
    be
 
-   .. image:: images/contributer-example-2.jpg
+   .. code-block:: python3
+      
+      """
+      Analyses (:mod:`qiskit_metal.analyses`)
+      =======================================
+
+      .. currentmodule:: qiskit_metal.analyses
+
+      Module containing all Qiskit Metal analyses.
+
+      Submodules
+      ----------
+
+      .. autosummary::
+         :toctree:
+
+         em.cpw_calculations
+         quantization.lumped_capacitive
+      """
+
+
 
    .. note::
 
@@ -554,7 +577,7 @@ Notes:
 - `-j auto` enables parallel Sphinx workers to speed up the build on multi-core machines.
 - The HTML output is written to `/docs/_build/html/`. Use `open _build/html/index.html` (macOS) or `python -m http.server 8000 -d _build/html` to preview locally.
 - We also added -v for verbose output and -T traceback during the build.
-- Env variable `QISKIT_DOCS_BUILD_TUTORIALS=never` skips executing notebooks during the build (fast; uses stored outputs if present).
+- Env variable `Quantum_DOCS_BUILD_TUTORIALS=never` skips executing notebooks during the build (fast; uses stored outputs if present).
 
 For convenience, the first command can be run using tox (from the root directory of the repository) as follows:
 
@@ -578,10 +601,12 @@ This launches a local server (default: http://127.0.0.1:8000) and rebuilds the H
 
 .. warning::
 
-   Avoid running the docs build **and** importing `qiskit_metal` at the same time from the same checkout. A legacy guard (`config.is_building_docs()` looks for a `.buildingdocs` file) can skip certain imports when that marker file is present. If you see unexpected import errors while developing and building docs, check for and remove `docs/.buildingdocs` before importing. Longer-term we’ll remove this guard, but for now be mindful of the interaction.
+   Avoid running the docs build **and** importing `Quantum_metal` at the same time from the same checkout. A legacy guard (`config.is_building_docs()` looks for a `.buildingdocs` file) can skip certain imports when that marker file is present. If you see unexpected import errors while developing and building docs, check for and remove `docs/.buildingdocs` before importing. Longer-term we’ll remove this guard, but for now be mindful of the interaction.
 
+
+=================================
 Local release vs. GitHub release
-*********************************
+=================================
 
 There are two supported release paths:
 
@@ -619,9 +644,9 @@ Local publish steps:
 If you prefer the automated path, just push the tag and let GitHub Actions publish using the configured PyPI secret.
 
 
-
+=================================
 Tutorials
-*********
+=================================
 
-Jupyter notebook tutorials showing off features of Qiskit Metal are located in the `_tutorials_`
+Jupyter notebook tutorials showing off features of Quantum Metal are located in the `_tutorials_`
 folder. If you add a new feature, please add a demonstration of its use to a notebook or start a new notebook.
