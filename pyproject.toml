@@ -49,10 +49,9 @@
     requires      = [ "uv_build>=0.9.17,<0.10.0" ]
     build-backend = "uv_build"
 
-# Accounting for flat layout
+# Accounting for old package name
 [tool.uv.build-backend]
     module-name = "qiskit_metal"
-    module-root = ""
 
 [dependency-groups]
     jupyter = [
@@ -81,7 +80,7 @@
 [tool.pytest.ini_options]
     minversion = "6.0"
     addopts    = "--rich"
-    testpaths  = [ "qiskit_metal/tests/" ]
+    testpaths  = [ "tests/" ]
 
 
 [tool.ruff.lint]
