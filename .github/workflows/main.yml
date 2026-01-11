@@ -46,7 +46,7 @@ jobs:
       - name: Install Gmsh dependencies for Ubuntu
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
         run: |
-          sudo apt-get update && sudo apt-get upgrade -y
+          sudo apt-get update
           sudo apt-get install -y libglu1-mesa libglu1-mesa-dev libegl1-mesa-dev
       - name: Run Tests
         run: uvx --with tox-uv tox -vv -e py

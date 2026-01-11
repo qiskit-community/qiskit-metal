@@ -36,7 +36,7 @@ jobs:
 
       - name: Install additional dependencies for testing
         run: |
-           sudo apt-get update && sudo apt-get upgrade -y
+           sudo apt-get update
            sudo apt-get install -y libglu1-mesa libglu1-mesa-dev libegl1-mesa-dev
       # Optional: simple sanity check that the built dists are valid
       - name: Check distributions with twine
