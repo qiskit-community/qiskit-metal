@@ -26,14 +26,11 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 import os
-import sys
 
 # Let Metal know we are building the docs.
 # Environment variables are per-process, not global
 os.environ["QISKIT_METAL_DOCS_BUILD"] = "1"
 
-# Import Metal so that we can get the version
-sys.path.insert(0, os.path.abspath('..'))
 
 import qiskit_metal
 import qiskit_sphinx_theme
