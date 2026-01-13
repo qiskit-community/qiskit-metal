@@ -146,7 +146,7 @@ nbsphinx_execute = os.getenv("QISKIT_DOCS_BUILD_TUTORIALS", "never")
 
 # Let Sphinx/nbsphinx choose the appropriate parser for each suffix.
 # source_suffix = ['.rst', '.ipynb']
-source_suffix = [".rst"]
+source_suffix = {'.rst': 'restructuredtext'}
 
 suppress_warnings = ["ref.ref"]
 
