@@ -28,7 +28,7 @@ Reporting Bugs and Requesting Enhancements
 ==========================================
 
 When you encounter a problem, please open an issue in the
-issue tracker: https://github.com/Quantum/Quantum-metal/issues
+`issue tracker <https://github.com/qiskit-community/qiskit-metal/issues>`_.
 
 When reporting an issue, please follow this template::
 
@@ -125,7 +125,7 @@ Style Guide
    The style guide presented below is being deprecated. Quantum Metal v0.5+ uses ruff for linting and formatting. An updated style guide will be added soon.
 
 To enforce a consistent code style in the project, we use customized `Pylint
-<https://www.pylint.org>`__ for linting and `YAPF`<https://github.com/google/yapf>__ with the `Google style
+<https://www.pylint.org>`__ for linting and `YAPF <https://github.com/google/yapf>`_ with the `Google style
 <https://google.github.io/styleguide/pyguide.html>`__ for auto formatting. The custom
 `.pylintrc` and `.style.yapf` files is located in the root of the repository.
 Our CI pipeline will enforce these styles when you make the pull request.
@@ -574,10 +574,10 @@ executing notebooks (which is the default behavior), run (if using uv):
 
 Notes:
 
-- `-j auto` enables parallel Sphinx workers to speed up the build on multi-core machines.
-- The HTML output is written to `/docs/_build/html/`. Use `open _build/html/index.html` (macOS) or `python -m http.server 8000 -d _build/html` to preview locally.
-- We also added -v for verbose output and -T traceback during the build.
-- Env variable `Quantum_DOCS_BUILD_TUTORIALS=never` skips executing notebooks during the build (fast; uses stored outputs if present).
+- ``-j auto`` enables parallel Sphinx workers to speed up the build on multi-core machines.
+- The HTML output is written to ``/docs/_build/html/``. Use ``open _build/html/index.html`` (macOS) or ``python -m http.server 8000 -d _build/html`` to preview locally.
+- We also added ``-v`` for verbose output and ``-T`` traceback during the build.
+- Env variable ``Quantum_DOCS_BUILD_TUTORIALS=never`` skips executing notebooks during the build (fast; uses stored outputs if present).
 
 For convenience, the first command can be run using tox (from the root directory of the repository) as follows:
 
@@ -648,5 +648,5 @@ If you prefer the automated path, just push the tag and let GitHub Actions publi
 Tutorials
 =================================
 
-Jupyter notebook tutorials showing off features of Quantum Metal are located in the `_tutorials_`
+Jupyter notebook tutorials showing off features of Quantum Metal are located in the `tutorials`
 folder. If you add a new feature, please add a demonstration of its use to a notebook or start a new notebook.

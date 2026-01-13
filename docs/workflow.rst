@@ -18,12 +18,14 @@ Roadmap
    project’s development. This version is still in beta, and is still being tested and validated,
    but it is updated with more modern packages and package managements, and fixes a number of issues.
 
+   **Breaking changes should be expected at least until v0.6.** Thereafter, patch version updates (v0.6.x) will maintain compatibility with the previous version. Minor version updates (v0.x.y) will add new features with potential breaking changes. We will switch to `SemVer <https://semver.org>`_ or `EffVer <https://jacobtomlinson.dev/effver/>`_ for versioning after v1.0 (release date TBD).
+
    Ongoing work is carried out by the **Quantum Device Consortium (QDC)**, the broader community, and
    active maintainers, in close collaboration with Zlatko Minev and the
    contributors across QDW/QDC who are shaping this new chapter.
 
 
-   - QDC website & governance: https://qdc-qcsa.vercel.app — Discord: `discord.gg/kaZ3UFuq <https://discord.gg/kaZ3UFuq>`_
+   - QDC website & governance: https://qdc-qcsa.org — Discord: `discord.gg/kaZ3UFuq <https://discord.gg/kaZ3UFuq>`_
    - QDW (annual workshop): https://qdw-ucla.squarespace.com/ — sign for 2026: https://qdw-ucla.squarespace.com/qdw2026
    - Slack (`#metal <https://qiskit.slack.com/archives/C01R8KP5WP7>`_) remains available but will phase out in favor of Discord.
 

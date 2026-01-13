@@ -12,8 +12,9 @@ Quantum Device Design & Analysis (Q-EDA)
     **v0.5 transition in progress.** Qiskit Metal is officially becoming **Quantum Metal**.
     The Python import path remains ``qiskit_metal`` for now; a follow-up release will update it.
     The PyPI package ``qiskit-metal`` stays archived at the pre-0.5 state—install v0.5 **from source**
-    via the :doc:`installation </installation>` guide.
-    For details on the transition and the roadmap, see the :doc:`Roadmap </workflow>`.
+    via the :doc:`installation </installation>` guide. For details on the transition and the roadmap, see the :doc:`Roadmap </workflow>`. 
+    
+    **Breaking changes should be expected at least until v0.6.** Thereafter, patch version updates (v0.6.x) will maintain compatibility with the previous version. Minor version updates (v0.x.y) will add new features with potential breaking changes. We will switch to `SemVer <https://semver.org>`_ or `EffVer <https://jacobtomlinson.dev/effver/>`_ for versioning after v1.0 (release date TBD).
 
 .. hint::
     **Community support?**
