@@ -6,11 +6,15 @@ For the offical user-facing changelog for a particular release can be found in t
 
 The changelog for all releases can be found in the release page: [![Releases](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)
 
-## Unreleased
+## Quantum Metal v0.5.3 (Jan 12, 2026)
 
 - Various dependency updates. 
-  - Removed descartes and cython (unused).
-  - pandas, geopandas, scqubits and qutip updates to latest major version. Should fix [#1027](Ihttps://github.com/qiskit-community/qiskit-metal/issues/1027).
+- Removed descartes and cython dependencies (unused).
+- pandas, geopandas, scqubits and qutip updates to latest major version. Should fix [#1027](Ihttps://github.com/qiskit-community/qiskit-metal/issues/1027).
+- Updates to contributor guide to fix inconsistent headline levels. Also convert example images to rst source code blocks. 
+- Update various parts in the docs to indicate near-term versioning updates. 
+- Update uv version to 0.9.24 in CI. Remove step to upgrade runner packages in CI for workflows speedup. 
+- Convert package from [flat layout to src layout](https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/#src-layout-vs-flat-layout). This is a forward looking change that will help decouple source code from docs and tests. In this configurations, the any package code must be imported using the package name, instead of relative imports as before. This also requires installing the package in the virtual environment (either as editable or via the wheel) to import it, which we already support in our uv-based workflows. 
 
 
 ## Quantum Metal v0.5.2 (Dec 11, 2025)
