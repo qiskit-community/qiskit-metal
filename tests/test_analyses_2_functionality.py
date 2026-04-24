@@ -18,19 +18,20 @@
 # pylint: disable-msg=too-many-public-methods
 """Qiskit Metal unit tests analyses functionality."""
 
-from pathlib import Path
 import unittest
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
-from qiskit_metal.analyses.quantization import lumped_capacitive
-from qiskit_metal.analyses.hamiltonian.transmon_charge_basis import Hcpb
-from qiskit_metal.analyses.hamiltonian.HO_wavefunctions import wavefunction
-from qiskit_metal.analyses.em import cpw_calculations, kappa_calculation
-from qiskit_metal.analyses.sweep_and_optimize.sweeper import Sweeper
-from .assertions import AssertionsMixin
 from qiskit_metal import designs
+from qiskit_metal.analyses.em import cpw_calculations, kappa_calculation
+from qiskit_metal.analyses.hamiltonian.HO_wavefunctions import wavefunction
+from qiskit_metal.analyses.hamiltonian.transmon_charge_basis import Hcpb
+from qiskit_metal.analyses.quantization import lumped_capacitive
+from qiskit_metal.analyses.sweep_and_optimize.sweeper import Sweeper
+
+from .assertions import AssertionsMixin
 
 TEST_DATA = Path(__file__).parent / "test_data"
 
@@ -546,8 +547,8 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
                     'Q1_bus_Q2_connector_pad', 'Q1_pad_bot', 'Q1_pad_top1',
                     'Q1_readout_connector_pad'
             ]:
-                self.assertAlmostEqual(test_a_df_cmat_expected[j][i],
-                                       test_a_df_cmat_result[j][i],
+                self.assertAlmostEqual(test_a_df_cmat_expected[j].iloc[i],
+                                       test_a_df_cmat_result[j].iloc[i],
                                        places=3)
 
         data_points = test_a_df_cond_expected['ground_plane'].size
@@ -557,8 +558,8 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
                     'Q1_bus_Q2_connector_pad', 'Q1_pad_bot', 'Q1_pad_top1',
                     'Q1_readout_connector_pad'
             ]:
-                self.assertAlmostEqual(test_a_df_cond_expected[j][i],
-                                       test_a_df_cond_result[j][i],
+                self.assertAlmostEqual(test_a_df_cond_expected[j].iloc[i],
+                                       test_a_df_cond_result[j].iloc[i],
                                        places=3)
 
         data_points = test_b_df_cmat_expected['ground_plane'].size
@@ -568,8 +569,8 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
                     'Q1_bus_Q2_connector_pad', 'Q1_pad_bot', 'Q1_pad_top1',
                     'Q1_readout_connector_pad'
             ]:
-                self.assertAlmostEqual(test_b_df_cmat_expected[j][i],
-                                       test_b_df_cmat_result[j][i],
+                self.assertAlmostEqual(test_b_df_cmat_expected[j].iloc[i],
+                                       test_b_df_cmat_result[j].iloc[i],
                                        places=3)
 
         data_points = test_b_df_cond_expected['ground_plane'].size
@@ -579,8 +580,8 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
                     'Q1_bus_Q2_connector_pad', 'Q1_pad_bot', 'Q1_pad_top1',
                     'Q1_readout_connector_pad'
             ]:
-                self.assertAlmostEqual(test_b_df_cond_expected[j][i],
-                                       test_b_df_cond_result[j][i],
+                self.assertAlmostEqual(test_b_df_cond_expected[j].iloc[i],
+                                       test_b_df_cond_result[j].iloc[i],
                                        places=3)
 
     def test_analyses_lumped_move_index_to(self):
@@ -777,6 +778,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
     def test_analysis_sweeper_option_value(self):
         """Test the option_value function in the Sweeper class"""
         from abc import ABC
+
         from qiskit_metal.analyses.core.base import QAnalysis
         sweeper = Sweeper(QAnalysis)
 

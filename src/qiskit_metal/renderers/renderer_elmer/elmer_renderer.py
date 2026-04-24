@@ -1,11 +1,12 @@
-from typing import Union, Optional
 import os
+from typing import Optional, Union
+
 import pandas as pd
 
 from qiskit_metal import Dict, draw
 from qiskit_metal.renderers.renderer_base import QRendererAnalysis
-from qiskit_metal.renderers.renderer_gmsh.gmsh_renderer import QGmshRenderer
 from qiskit_metal.renderers.renderer_elmer.elmer_runner import ElmerRunner
+from qiskit_metal.renderers.renderer_gmsh.gmsh_renderer import QGmshRenderer
 
 
 def load_capacitance_matrix_from_file(filename: str) -> pd.DataFrame:
@@ -17,7 +18,7 @@ def load_capacitance_matrix_from_file(filename: str) -> pd.DataFrame:
     Returns:
         pd.DataFrame:: Table containing capacitance matrix.
     """
-    return pd.read_csv(filename, delimiter=' ', index_col=0)
+    return pd.read_csv(filename, delimiter=" ", index_col=0)
 
 
 class QElmerRenderer(QRendererAnalysis):
@@ -102,7 +103,6 @@ class QElmerRenderer(QRendererAnalysis):
             Linear_System_Iterative_Method="BiCGStab",
             BiCGstabl_polynomial_degree=2,
         ),
-
         # TODO: Update this later when working on eigenmode setup
         eigenmode=Dict(),
         materials=["vacuum", "silicon"],
@@ -115,11 +115,13 @@ class QElmerRenderer(QRendererAnalysis):
     name = "elmer"
     """Name"""
 
-    def __init__(self,
-                 design: 'MultiPlanar',
-                 layer_types: Union[dict, None] = None,
-                 initiate=True,
-                 options: Dict = None):
+    def __init__(
+        self,
+        design: "MultiPlanar",
+        layer_types: Union[dict, None] = None,
+        initiate=True,
+        options: Dict = None,
+    ):
         """
         Args:
             design ('MultiPlanar'): The design.
@@ -137,16 +139,16 @@ class QElmerRenderer(QRendererAnalysis):
     @property
     def initialized(self):
         """Abstract method. Must be implemented by the subclass.
-            Is renderer ready to be used?
-            Implementation must return boolean True if successful. False otherwise.
+        Is renderer ready to be used?
+        Implementation must return boolean True if successful. False otherwise.
         """
-        return (hasattr(self, "_elmer_runner") and self.gmsh.initialized)
+        return hasattr(self, "_elmer_runner") and self.gmsh.initialized
 
     def initialize_renderer(self):
         """Initializes the Gmsh and Elmer renderer.
         NOTE TO USER: this should be used when using
         the QElmerRenderer through design.renderers.elmer instance.
-        
+
         Example: To change one of the options exposed by QGmshRenderer,
         one has to first initiate the QElmerRenderer using this method
         and then change the property like so,
@@ -215,14 +217,16 @@ class QElmerRenderer(QRendererAnalysis):
         if not self.initialized:
             self._initiate_renderer()
 
-        self.gmsh.render_design(selection=selection,
-                                open_pins=open_pins,
-                                box_plus_buffer=box_plus_buffer,
-                                draw_sample_holder=draw_sample_holder,
-                                skip_junctions=skip_junctions,
-                                mesh_geoms=mesh_geoms,
-                                ignore_metal_volume=ignore_metal_volume,
-                                omit_ground_for_layers=omit_ground_for_layers)
+        self.gmsh.render_design(
+            selection=selection,
+            open_pins=open_pins,
+            box_plus_buffer=box_plus_buffer,
+            draw_sample_holder=draw_sample_holder,
+            skip_junctions=skip_junctions,
+            mesh_geoms=mesh_geoms,
+            ignore_metal_volume=ignore_metal_volume,
+            omit_ground_for_layers=omit_ground_for_layers,
+        )
 
         self.qcomp_geom_table = self.get_qgeometry_table()
         self.nets = self.assign_nets(open_pins=open_pins)
@@ -248,31 +252,31 @@ class QElmerRenderer(QRendererAnalysis):
 
         metal_layers = self.layer_types["metal"]
 
-        mask = lambda table: table["component"].isin(qcomp_ids) & ~table[
-            "subtract"] & table["layer"].isin(metal_layers)
+        mask = lambda table: (
+            table["component"].isin(qcomp_ids)
+            & ~table["subtract"]
+            & table["layer"].isin(metal_layers)
+        )
 
         min_z = lambda layer: min(
             sum(self.gmsh.get_thickness_zcoord_for_layer_datatype(layer)),
-            self.gmsh.get_thickness_zcoord_for_layer_datatype(layer)[1])
+            self.gmsh.get_thickness_zcoord_for_layer_datatype(layer)[1],
+        )
 
         path_table = self.design.qgeometry.tables["path"]
         poly_table = self.design.qgeometry.tables["poly"]
         qcomp_paths = path_table[mask(table=path_table)]
         qcomp_polys = poly_table[mask(table=poly_table)]
-        qcomp_geom_table = pd.concat([qcomp_paths, qcomp_polys],
-                                     ignore_index=True)
+        qcomp_geom_table = pd.concat([qcomp_paths, qcomp_polys], ignore_index=True)
 
-        qcomp_geom_table['min_z'] = qcomp_geom_table['layer'].apply(min_z)
-        qcomp_geom_table.sort_values(by=['min_z'],
-                                     inplace=True,
-                                     ignore_index=True)
+        qcomp_geom_table["min_z"] = qcomp_geom_table["layer"].apply(min_z)
+        qcomp_geom_table = qcomp_geom_table.sort_values(by=["min_z"], ignore_index=True)
 
         return qcomp_geom_table
 
     def assign_nets(
-        self,
-        open_pins: Union[list,
-                         None] = None) -> dict[Union[str, int], list[str]]:
+        self, open_pins: Union[list, None] = None
+    ) -> dict[Union[str, int], list[str]]:
         """Assigns a netlist number to each galvanically connected metal region,
         and returns a dictionary with each net as a key, and the corresponding list of
         geometries associated with that net as values.
@@ -295,7 +299,7 @@ class QElmerRenderer(QRendererAnalysis):
             for i in self.qcomp_geom_table["component"]
         ]
         phys_grps = [
-            s1 + '_' + s2 for s1, s2 in zip(qcomp_names_for_qgeom, qgeom_names)
+            s1 + "_" + s2 for s1, s2 in zip(qcomp_names_for_qgeom, qgeom_names)
         ]
         qgeom_idxs = list(range(len(self.qcomp_geom_table)))
         id_net_dict = {k: -1 for k in phys_grps}
@@ -306,21 +310,29 @@ class QElmerRenderer(QRendererAnalysis):
             chip_i = self.qcomp_geom_table.iloc[[i]]["chip"][i]
             layer_i = self.qcomp_geom_table.iloc[[i]]["layer"][i]
             thick_i, z_coord_i = self.gmsh.get_thickness_zcoord_for_layer_datatype(
-                layer_i)
-            id_net_dict[phys_grps[i]] = netlist_id if (
-                id_net_dict[phys_grps[i]] == -1) else id_net_dict[phys_grps[i]]
+                layer_i
+            )
+            id_net_dict[phys_grps[i]] = (
+                netlist_id
+                if (id_net_dict[phys_grps[i]] == -1)
+                else id_net_dict[phys_grps[i]]
+            )
             for j in qgeom_idxs:
                 shape_j = self.qcomp_geom_table.iloc[[j]]["geometry"][j]
                 chip_j = self.qcomp_geom_table.iloc[[j]]["chip"][j]
                 layer_j = self.qcomp_geom_table.iloc[[j]]["layer"][j]
                 thick_j, z_coord_j = self.gmsh.get_thickness_zcoord_for_layer_datatype(
-                    layer_j)
+                    layer_j
+                )
                 dist = shape_i.distance(shape_j)
 
                 layers_touch = False
-                if (layer_i == layer_j or z_coord_j == z_coord_i or
-                        z_coord_i + thick_i == z_coord_j or
-                        z_coord_j + thick_j == z_coord_i):
+                if (
+                    layer_i == layer_j
+                    or z_coord_j == z_coord_i
+                    or z_coord_i + thick_i == z_coord_j
+                    or z_coord_j + thick_j == z_coord_i
+                ):
                     layers_touch = True
 
                 if dist == 0.0 and chip_i == chip_j and layers_touch:
@@ -338,29 +350,28 @@ class QElmerRenderer(QRendererAnalysis):
             netlist_id = max(list(id_net_dict.values())) + 1
 
         gnd_phys_grps = self.get_gnd_qgeoms(open_pins)
-        gnd_netlist = list({
-            net for (name, net) in id_net_dict.items()
-            if (name in gnd_phys_grps)
-        })
+        gnd_netlist = list(
+            {net for (name, net) in id_net_dict.items() if (name in gnd_phys_grps)}
+        )
 
-        netlists['gnd'] = list()
+        netlists["gnd"] = list()
         for k, v in id_net_dict.items():
             if v in gnd_netlist:
-                netlists['gnd'].append(k)
+                netlists["gnd"].append(k)
             else:
                 if v not in netlists.keys():
                     netlists[v] = list()
                 netlists[v].append(k)
 
         netlists = {
-            (i - 1 if (k != 'gnd') else k): v
+            (i - 1 if (k != "gnd") else k): v
             for i, (k, v) in enumerate(netlists.items())
         }
 
         return netlists
 
     def get_gnd_qgeoms(self, open_pins: Union[list, None] = None) -> list[str]:
-        """ Obtain a list of qgeometry names associated with pins shorted to ground.
+        """Obtain a list of qgeometry names associated with pins shorted to ground.
 
         Args:
             open_pins (Union[list, None], optional): List of tuples of pins that are open.
@@ -397,20 +408,21 @@ class QElmerRenderer(QRendererAnalysis):
 
             if pin_qcomp_id in list(self.qcomp_geom_table["component"]):
                 pin_qcomp_geom_table = self.qcomp_geom_table[
-                    self.qcomp_geom_table["component"] == pin_qcomp_id]
+                    self.qcomp_geom_table["component"] == pin_qcomp_id
+                ]
                 pin_point = draw.Point(
-                    self.design.components[qcomp_name].pins[qcomp_pin]
-                    ['middle'])
+                    self.design.components[qcomp_name].pins[qcomp_pin]["middle"]
+                )
 
                 for _, qgeom_row in pin_qcomp_geom_table.iterrows():
                     if pin_point.intersects(qgeom_row["geometry"]):
-                        gnd_qgeoms.add(qcomp_name + '_' + qgeom_row["name"])
+                        gnd_qgeoms.add(qcomp_name + "_" + qgeom_row["name"])
 
         return list(gnd_qgeoms)
 
-    def run(self,
-            sim_type: str,
-            display_cap_matrix: bool = False) -> Union[None, pd.DataFrame]:
+    def run(
+        self, sim_type: str, display_cap_matrix: bool = False
+    ) -> Union[None, pd.DataFrame]:
         """Runs ElmerFEM analysis.
 
         Args:
@@ -428,8 +440,9 @@ class QElmerRenderer(QRendererAnalysis):
         meshfile = self._options["mesh_file"]
         sif_name = self._options["simulation_input_file"]
         if sim_type == "capacitance":
-            cap_matrix_file = os.path.join(self._options["simulation_dir"],
-                                           setup["Capacitance_Matrix_Filename"])
+            cap_matrix_file = os.path.join(
+                self._options["simulation_dir"], setup["Capacitance_Matrix_Filename"]
+            )
 
         self.logger.info("Running ElmerGrid on input mesh from Gmsh...")
         self._elmer_runner.run_elmergrid(sim_dir, meshfile)
@@ -446,7 +459,7 @@ class QElmerRenderer(QRendererAnalysis):
         Args:
             path (str): path where capacitance matrix should be saved.
         """
-        self.capacitance_matrix.to_csv(path, sep=' ', header=True)
+        self.capacitance_matrix.to_csv(path, sep=" ", header=True)
 
     def _get_capacitance_matrix(self, filename: str) -> pd.DataFrame:
         """Reads SPICE capacitance matrix file generated by ElmerFEM, converts
@@ -462,7 +475,7 @@ class QElmerRenderer(QRendererAnalysis):
             lines = f.readlines()
             f.close()
 
-        new_lines = [(l.replace("  ", " ").strip() + '\n') for l in lines]
+        new_lines = [(l.replace("  ", " ").strip() + "\n") for l in lines]
 
         with open(filename, "w", encoding="utf-8") as f:
             f.writelines(new_lines)
@@ -477,13 +490,12 @@ class QElmerRenderer(QRendererAnalysis):
             df2[i][i] = -s
 
         name_cap = {k: v[-1] for k, v in self.nets.items() if k != "gnd"}
-        df2.rename(index=name_cap, columns=name_cap, inplace=True)
+        df2 = df2.rename(index=name_cap, columns=name_cap)
 
         gnd_caps = -1 * df2.sum(axis=0)
         df2.loc["ground_plane"] = gnd_caps
         df2["ground_plane"] = gnd_caps
-        df2 = df2.multiply(
-            self.default_setup["constants"]["Permittivity_of_Vacuum"])
+        df2 = df2.multiply(self.default_setup["constants"]["Permittivity_of_Vacuum"])
 
         # dummy value set to high as it's shorted to ground
         df2["ground_plane"]["ground_plane"] = 300
@@ -507,8 +519,7 @@ class QElmerRenderer(QRendererAnalysis):
         """
         setup = self.default_setup
         cap_setup = {
-            k.replace('_', ' '): v
-            for k, v in self.default_setup[sim_name].items()
+            k.replace("_", " "): v for k, v in self.default_setup[sim_name].items()
         }
 
         # Load simulation
@@ -517,7 +528,7 @@ class QElmerRenderer(QRendererAnalysis):
         # Load constants
         constants = self.default_setup["constants"]
         for k in constants.keys():
-            const_str = k.replace('_', ' ')
+            const_str = k.replace("_", " ")
             self._elmer_runner.add_constant(const_str, 1)
 
         # Load solvers
@@ -540,17 +551,20 @@ class QElmerRenderer(QRendererAnalysis):
             self.logger.warning(
                 "WARNING: No capacitance bodies added to the model other "
                 "than those connected to ground. ElmerFEM cannot run a "
-                "capacitance extraction analysis without any bodies. ")
+                "capacitance extraction analysis without any bodies. "
+            )
 
         # Update capacitance bodies in solver
         self._elmer_runner.solver["capacitance"].update(
-            {"Capacitance Bodies": cap_body - 1})
+            {"Capacitance Bodies": cap_body - 1}
+        )
 
         # Write the simulation input file (SIF)
         self.write_sif()
 
-    def define_bodies(self, setup: dict, equation: int,
-                      materials: list[int]) -> list[list]:
+    def define_bodies(
+        self, setup: dict, equation: int, materials: list[int]
+    ) -> list[list]:
         """Assigns bodies to simulation model.
 
         Args:
@@ -568,7 +582,9 @@ class QElmerRenderer(QRendererAnalysis):
                     self._elmer_runner.add_body(
                         "vacuum_box",
                         [self.gmsh.physical_groups["global"]["vacuum_box"]],
-                        equation, materials[i])
+                        equation,
+                        materials[i],
+                    )
                 ]
             if material == "silicon":
                 substrate_geoms = dict()
@@ -584,8 +600,7 @@ class QElmerRenderer(QRendererAnalysis):
                     substrate_geoms.update(sub)
 
                 bodies += [
-                    self._elmer_runner.add_body(name, [body], equation,
-                                                materials[i])
+                    self._elmer_runner.add_body(name, [body], equation, materials[i])
                     for name, body in substrate_geoms.items()
                 ]
 
@@ -617,9 +632,7 @@ class QElmerRenderer(QRendererAnalysis):
             phys_grps_dict.update(ph_geoms)
 
         for net, geom_names in self.nets.items():
-            geom_id_list = [
-                phys_grps_dict[f"{name}_sfs"] for name in geom_names
-            ]
+            geom_id_list = [phys_grps_dict[f"{name}_sfs"] for name in geom_names]
 
             if net == "gnd":
                 ground_planes += geom_id_list
@@ -628,16 +641,20 @@ class QElmerRenderer(QRendererAnalysis):
                     self._elmer_runner.add_boundary_condition(
                         geom_names[-1],
                         geom_id_list,
-                        options={"Capacitance Body": cap_body})
+                        options={"Capacitance Body": cap_body},
+                    )
                 ]
                 cap_body += 1
 
         self._elmer_runner.add_boundary_condition(
-            "ground_plane", ground_planes, options={"Capacitance Body": 0})
+            "ground_plane", ground_planes, options={"Capacitance Body": 0}
+        )
 
         self._elmer_runner.add_boundary_condition(
-            "FarField", [self.gmsh.physical_groups["global"]["vacuum_box_sfs"]],
-            options={"Electric Infinity BC": True})
+            "FarField",
+            [self.gmsh.physical_groups["global"]["vacuum_box_sfs"]],
+            options={"Electric Infinity BC": True},
+        )
 
         return boundaries, cap_body
 
@@ -645,13 +662,14 @@ class QElmerRenderer(QRendererAnalysis):
         """Write sif (simulation input file) used by ElmerFEM to run analysis"""
         filename = self._options["simulation_input_file"]
         sim_dir = self._options["simulation_dir"]
-        self._elmer_runner.write_startinfo_and_sif(filename=filename,
-                                                   sim_dir=sim_dir)
+        self._elmer_runner.write_startinfo_and_sif(filename=filename, sim_dir=sim_dir)
 
-    def render_chips(self,
-                     chips: Union[str, list[str]] = [],
-                     draw_sample_holder: bool = True,
-                     box_plus_buffer: bool = True):
+    def render_chips(
+        self,
+        chips: Union[str, list[str]] = [],
+        draw_sample_holder: bool = True,
+        box_plus_buffer: bool = True,
+    ):
         """Abstract method. Must be implemented by the subclass.
         Render all chips of the design.
         Calls render_chip for each chip.
@@ -667,10 +685,12 @@ class QElmerRenderer(QRendererAnalysis):
         """
         pass
 
-    def render_layers(self,
-                      draw_sample_holder: bool = True,
-                      layers: Union[list[int], None] = None,
-                      box_plus_buffer: bool = True):
+    def render_layers(
+        self,
+        draw_sample_holder: bool = True,
+        layers: Union[list[int], None] = None,
+        box_plus_buffer: bool = True,
+    ):
         """Abstract method. Must be implemented by the subclass.
         Render all layers of the design.
         Calls render_layer for each layer.
@@ -741,7 +761,7 @@ class QElmerRenderer(QRendererAnalysis):
         """
         self.gmsh.render_element_poly(poly)
 
-    def save_screenshot(self, path: str = None, show: bool = True):
+    def save_screenshot(self, path: Optional[str] = None, show: bool = True):
         """Save the screenshot.
 
         Args:
@@ -754,18 +774,16 @@ class QElmerRenderer(QRendererAnalysis):
         self.gmsh.save_screenshot(path, show)
 
     def launch_gmsh_gui(self):
-        """Launch Gmsh GUI for viewing the model.
-        """
+        """Launch Gmsh GUI for viewing the model."""
         self.gmsh.launch_gui()
 
     def export_mesh(self):
-        """Export Gmsh mesh
-        """
+        """Export Gmsh mesh"""
         self.gmsh.export_mesh(self._options["mesh_file"])
 
     def display_post_processing_data(self):
-        """Import data given by ElmerFEM for Post-Processing in Gmsh
-        """
-        postprocessing_file = os.path.join(self._options["simulation_dir"],
-                                           self._options["postprocessing_file"])
+        """Import data given by ElmerFEM for Post-Processing in Gmsh"""
+        postprocessing_file = os.path.join(
+            self._options["simulation_dir"], self._options["postprocessing_file"]
+        )
         self.gmsh.import_post_processing_data(postprocessing_file)
