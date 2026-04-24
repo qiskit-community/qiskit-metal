@@ -13,7 +13,7 @@
 # that they have been altered from the originals.
 """ Sweep a qcomponent option, and get results of analysis."""
 # pylint: disable=too-many-lines
-from typing import Tuple, Union
+from typing import Optional, Tuple
 import pandas as pd
 
 from qiskit_metal import Dict
@@ -51,7 +51,7 @@ class Sweeping():
         return value
 
     def error_check_sweep_input(self, qcomp_name: str, option_name: str,
-                                option_sweep: list) -> Tuple[list, Dict, int]:
+                                option_sweep: list) -> Tuple[Optional[list], Optional[Dict], int]:
         """ Implement error checking of data for sweeping.
 
         Args:
@@ -443,7 +443,7 @@ class Sweeping():
             endcaps_render: list,
             ignored_jjs_render: list,
             box_plus_buffer_render: bool = True,
-            setup_args: Dict = None,
+            setup_args: Optional[Dict] = None,
             leave_last_design: bool = True,
             design_name: str = "Sweep_Eigenmode") -> Tuple[Dict, int]:
         """
@@ -576,8 +576,8 @@ class Sweeping():
     def hfss_em_get_convergence(
         self,
         a_hfss: 'QHFSSRenderer',
-        variation: str = None
-    ) -> Tuple[pd.core.frame.DataFrame, pd.core.frame.DataFrame, str, bool]:
+        variation: Optional[str] = None
+    ) -> Tuple[pd.DataFrame, pd.DataFrame, str, bool]:
         """Use QHFSSRenderer to get convergence data from Ansys for eigenmode.
 
         Args:
@@ -633,7 +633,7 @@ class Sweeping():
     def hfss_dm_get_convergence(
             self,
             a_hfss: 'QHFSSRenderer',
-            variation: str = None) -> Tuple[pd.core.frame.DataFrame, str, bool]:
+            variation: Optional[str] = None) -> Tuple[pd.DataFrame, str, bool]:
         """Use QHFSSRenderer to get convergence data from Ansys for drivenmodal.
 
         Args:
@@ -660,7 +660,7 @@ class Sweeping():
             option_sweep: list,
             dm_render_args: Dict,
             dm_add_sweep_args: Dict,
-            setup_args: Dict = None,
+            setup_args: Optional[Dict] = None,
             leave_last_design: bool = True,
             design_name: str = "Sweep_DrivenModal") -> Tuple[Dict, int]:
         """
@@ -976,8 +976,8 @@ class Sweeping():
 
     def get_quality_factor(
             self,
-            freqs: Union[list, None] = None,
-            kappa_over_2pis: Union[list, None] = None) -> Union[list, None]:
+            freqs: Optional[list] = None,
+            kappa_over_2pis: Optional[list] = None) -> Optional[list]:
         """Calculate Quality Factor = freqs/kappa_over_2pis.  Before division,
         some error checking.
 
@@ -1015,7 +1015,7 @@ class Sweeping():
             option_sweep: list,
             qcomp_render: list,
             endcaps_render: list,
-            setup_args: Dict = None,
+            setup_args: Optional[Dict] = None,
             leave_last_design: bool = True,
             design_name: str = "Sweep_Capacitance") -> Tuple[Dict, int]:
         """Ansys must be open with an inserted project.  A design,
@@ -1147,7 +1147,7 @@ class Sweeping():
 
     @classmethod
     def _test_if_q3d_analysis_converged(cls, target: float, current: float,
-                                        passes_min: int) -> Union[bool, None]:
+                                        passes_min: int) -> Optional[bool]:
         """Use solution-data from Ansys-Q3d to determine if converged.
 
         Args:
@@ -1173,7 +1173,7 @@ class Sweeping():
 
     def _parse_text_from_q3d_convergence(
             self,
-            gui_text: str) -> Tuple[Union[None, float], Union[None, float]]:
+            gui_text: str) -> Tuple[Optional[float], Optional[float]]:
         """Parse gui_text using a priori known formatting. Ansys-Q3D
         solution-data provides gui_text.
 
@@ -1231,7 +1231,7 @@ class Sweeping():
                 'Force Minimum Number of Passes to be None.')
         return min_num_of_passes
 
-    def _extract_target_delta(self, target_all: list) -> Union[None, float]:
+    def _extract_target_delta(self, target_all: list) -> Optional[float]:
         """Given a pre-formatted list, search and return the target-delta
         percentage for convergence.
 
@@ -1258,7 +1258,7 @@ class Sweeping():
                 'entries in text. Force Target Delta to be None.')
         return target
 
-    def _extract_current_delta(self, current_all: list) -> Union[None, float]:
+    def _extract_current_delta(self, current_all: list) -> Optional[float]:
         """Given a pre-formatted list, search and return the current-delta
         percentage for convergence.
 

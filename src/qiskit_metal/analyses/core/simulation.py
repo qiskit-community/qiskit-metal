@@ -13,6 +13,7 @@
 # that they have been altered from the originals.
 
 from abc import abstractmethod
+from typing import Optional
 from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
 from qiskit_metal import Dict
 from qiskit_metal import config
@@ -42,8 +43,8 @@ class QSimulation(QAnalysis):
     """Default data labels."""
 
     def __init__(self,
-                 design: 'QDesign' = None,
-                 renderer_name: str = None,
+                 design: Optional['QDesign'] = None,
+                 renderer_name: Optional[str] = None,
                  *args,
                  **kwargs):
         """Variables and method needed from all those Analysis types that need a renderer.
@@ -85,7 +86,7 @@ class QSimulation(QAnalysis):
             if self.design is None:
                 # we want to setup a renderer from scratch
 
-                # renderer_ref will be {} id renderer_name does not exist
+                # renderer_ref will be {} if renderer_name does not exist
                 renderer_ref = config.renderers_to_load[renderer_name]
                 if not renderer_ref:
                     raise KeyError  #needed because this is a Dict, not a dict

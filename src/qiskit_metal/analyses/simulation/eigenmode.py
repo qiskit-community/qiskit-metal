@@ -12,7 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from typing import Union, Tuple
+from typing import Tuple, Optional
 import pandas as pd
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -60,7 +60,7 @@ class EigenmodeSim(QSimulation):
     data_labels = ['convergence_t', 'convergence_f']
     """Default data labels."""
 
-    def __init__(self, design: 'QDesign' = None, renderer_name: str = 'hfss'):
+    def __init__(self, design: Optional['QDesign'] = None, renderer_name: str = 'hfss'):
         """Compute eigenmode, then derive from it using the epr method.
 
         Args:
@@ -83,12 +83,12 @@ class EigenmodeSim(QSimulation):
 
     def run_sim(  # pylint: disable=arguments-differ
             self,
-            name: str = None,
-            components: Union[list, None] = None,
-            open_terminations: Union[list, None] = None,
-            port_list: Union[list, None] = None,
-            jj_to_port: Union[list, None] = None,
-            ignored_jjs: Union[list, None] = None,
+            name: Optional[str] = None,
+            components: Optional[list] = None,
+            open_terminations: Optional[list] = None,
+            port_list: Optional[list] = None,
+            jj_to_port: Optional[list] = None,
+            ignored_jjs: Optional[list] = None,
             box_plus_buffer: bool = True) -> Tuple[str, str]:
         """Executes the entire eigenmode analysis and convergence result export.
         First it makes sure the tool is running. Then it does what's necessary to render the design.
@@ -187,7 +187,7 @@ class EigenmodeSim(QSimulation):
             return
         self.set_data('convergence_t', data)
 
-    def compute_convergences(self, variation: str = None):
+    def compute_convergences(self, variation: Optional[str] = None):
         """Convergence plots are computed as part of run(). However, in special cases
         you might need to recalculate them using a different variation.
 
@@ -199,8 +199,8 @@ class EigenmodeSim(QSimulation):
             variation)
 
     def plot_convergences(self,
-                          convergence_t: pd.DataFrame = None,
-                          convergence_f: pd.DataFrame = None,
+                          convergence_t: Optional[pd.DataFrame] = None,
+                          convergence_f: Optional[pd.DataFrame] = None,
                           fig: mpl.figure.Figure = None,
                           _display: bool = True):
         """Creates 3 plots, useful to determin the convergence achieved by the renderer:
@@ -263,7 +263,7 @@ class EigenmodeSim(QSimulation):
                                          **kwargs,
                                          object_name=object_name)
 
-    def clear_fields(self, names: list = None):
+    def clear_fields(self, names: Optional[list] = None):
         """
         Delete field plots from renderer.
 

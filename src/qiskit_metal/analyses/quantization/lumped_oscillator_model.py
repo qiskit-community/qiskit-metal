@@ -14,6 +14,7 @@
 
 import pandas as pd
 from pint import UnitRegistry
+from typing import Optional
 
 from pyEPR.calcs.convert import Convert
 
@@ -53,7 +54,7 @@ class LOManalysis(QAnalysis):
     data_labels = ['lumped_oscillator', 'lumped_oscillator_all']
     """Default data labels."""
 
-    def __init__(self, design: 'QDesign' = None, renderer_name: str = None):
+    def __init__(self, design: Optional['QDesign'] = None, renderer_name: Optional[str] = None):
         """Initialize the Lumped Oscillator Model analysis.
 
         Args:
@@ -181,8 +182,8 @@ class LOManalysis(QAnalysis):
             all_res[idx_cmat] = res
         self.lumped_oscillator = all_res[len(self.sim.capacitance_all_passes)]
         all_res = pd.DataFrame(all_res).transpose()
-        all_res['χr MHz'] = abs(all_res['chi_in_MHz'].apply(lambda x: x[0]))
-        all_res['gr MHz'] = abs(all_res['gbus'].apply(lambda x: x[0]))
+        all_res['χr MHz'] = abs(all_res['chi_in_MHz'].apply(lambda x: x.iloc[0]))
+        all_res['gr MHz'] = abs(all_res['gbus'].apply(lambda x: x.iloc[0]))
         self.lumped_oscillator_all = all_res
         return self.lumped_oscillator_all
 

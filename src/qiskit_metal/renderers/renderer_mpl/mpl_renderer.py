@@ -14,48 +14,24 @@
 """MPL Renderer."""
 
 import logging
-import random
-import sys
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING, Optional
 
-import matplotlib as mpl
-import matplotlib.patches as patches
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from cycler import cycler
-from IPython.display import display
 from matplotlib.axes import Axes
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.cbook import _OrderedSet
 from matplotlib.collections import LineCollection, PatchCollection
-from matplotlib.figure import Figure
-from matplotlib.transforms import Bbox
 from shapely.geometry import CAP_STYLE, JOIN_STYLE, LineString
 
 from qiskit_metal import Dict, config
 from qiskit_metal.designs import QDesign
-from qiskit_metal.renderers.renderer_mpl.mpl_interaction import (
-    MplInteraction,
-    PanAndZoom,
-)
-from qiskit_metal.renderers.renderer_mpl.mpl_toolbox import (
-    _axis_set_watermark_img,
-    clear_axis,
-    get_prop_cycle,
-)
 from qiskit_metal.renderers.renderer_mpl.patch import PolygonPatch
 
 if not config.is_building_docs():
     from qiskit_metal.toolbox_python.utility_functions import bad_fillet_idxs
 
-    from ...toolbox_python.utility_functions import log_error_easy
-
 if TYPE_CHECKING:
     from qiskit_metal.elements.elements_handler import QGeometryTables
 
-    from ..._gui.main_window import MetalGUI
-    from ..._gui.widgets.plot_widget.plot_window import QMainWindowPlot
     from .mpl_canvas import PlotCanvas
 
 __all__ = ["QMplRenderer"]
@@ -187,7 +163,7 @@ class QMplRenderer:
 
         return ~mask  # not
 
-    def _render_poly_array(self, ax: Axes, poly_array: np.array, mpl_kw: dict):
+    def _render_poly_array(self, ax: Axes, poly_array: np.ndarray, mpl_kw: dict):
         """Render the poly array.
         Args:
             ax (Axes): The axis
@@ -277,7 +253,7 @@ class QMplRenderer:
         table: pd.DataFrame,
         ax: Axes,
         subtracted: bool = False,
-        extra_kw: dict = None,
+        extra_kw: Optional[dict] = None,
     ):
         """Render a table of junction geometry.
         A junction is basically drawn like a path with finite width and no fillet.
@@ -290,8 +266,8 @@ class QMplRenderer:
             mask = (table.width == 0) | table.width.isna()
             table1 = table[~mask]
             if len(table1) > 0:
-                table1.geometry = table1[["geometry", "width"]].apply(
-                    lambda x: x[0].buffer(
+                table1["geometry"] = table1[["geometry", "width"]].apply(
+                    lambda x: x.iloc[0].buffer(
                         distance=float(x[1]) / 2.0,
                         cap_style=CAP_STYLE.flat,
                         join_style=JOIN_STYLE.mitre,
@@ -312,7 +288,7 @@ class QMplRenderer:
         table: pd.DataFrame,
         ax: Axes,
         subtracted: bool = False,
-        extra_kw: dict = None,
+        extra_kw: Optional[dict] = None,
     ):
         """Render a table of poly geometry.
         Args:
@@ -461,7 +437,7 @@ class QMplRenderer:
         table: pd.DataFrame,
         ax: Axes,
         subtracted: bool = False,
-        extra_kw: dict = None,
+        extra_kw: Optional[dict] = None,
     ):
         """Render a table of path geometry.
         Args:
@@ -490,7 +466,7 @@ class QMplRenderer:
             table1.loc[index, "geometry"] = self.fillet_path(row)
 
         if len(table1) > 0:
-            table1.geometry = table1[["geometry", "width"]].apply(
+            table1["geometry"] = table1[["geometry", "width"]].apply(
                 lambda x: x.iloc[0].buffer(
                     distance=float(x.iloc[1]) / 2.0,
                     cap_style=CAP_STYLE.flat,
