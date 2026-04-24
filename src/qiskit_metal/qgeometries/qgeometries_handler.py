@@ -543,7 +543,6 @@ class QGeometryTables(object):
             ignore_index=True,
             sort=False,
             verify_integrity=False,
-            copy=False,
         )
 
     def check_lengths(

@@ -271,7 +271,7 @@ class QMplRenderer:
                         distance=float(x[1]) / 2.0,
                         cap_style=CAP_STYLE.flat,
                         join_style=JOIN_STYLE.mitre,
-                        resolution=int(self.options["resolution"]),
+                        quad_segs=int(self.options["resolution"]),
                     ),
                     axis=1,
                 )
@@ -471,7 +471,7 @@ class QMplRenderer:
                     distance=float(x.iloc[1]) / 2.0,
                     cap_style=CAP_STYLE.flat,
                     join_style=JOIN_STYLE.mitre,
-                    resolution=int(self.options["resolution"]),
+                    quad_segs=int(self.options["resolution"]),
                 ),
                 axis=1,
             )

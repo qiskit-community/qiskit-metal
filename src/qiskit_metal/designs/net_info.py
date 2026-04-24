@@ -150,7 +150,6 @@ class QNet:
             ignore_index=True,
             sort=False,
             verify_integrity=False,
-            copy=False,
         )
 
         return net_id
