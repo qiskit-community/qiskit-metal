@@ -502,53 +502,36 @@
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
 <span class="sd">&quot;&quot;&quot;MPL Renderer.&quot;&quot;&quot;</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">List</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpl</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">patches</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Optional</span>
+
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">cycler</span><span class="w"> </span><span class="kn">import</span> <span class="n">cycler</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_mpl.patch</span><span class="w"> </span><span class="kn">import</span> <span class="n">PolygonPatch</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.axes</span><span class="w"> </span><span class="kn">import</span> <span class="n">Axes</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.backends.backend_qt5agg</span><span class="w"> </span><span class="kn">import</span> \
-    <span class="n">FigureCanvasQTAgg</span> <span class="k">as</span> <span class="n">FigureCanvas</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.cbook</span><span class="w"> </span><span class="kn">import</span> <span class="n">_OrderedSet</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">LineCollection</span><span class="p">,</span> <span class="n">PatchCollection</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.figure</span><span class="w"> </span><span class="kn">import</span> <span class="n">Figure</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.transforms</span><span class="w"> </span><span class="kn">import</span> <span class="n">Bbox</span>
-
 <span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">CAP_STYLE</span><span class="p">,</span> <span class="n">JOIN_STYLE</span><span class="p">,</span> <span class="n">LineString</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">config</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.designs</span><span class="w"> </span><span class="kn">import</span> <span class="n">QDesign</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_mpl.mpl_interaction</span><span class="w"> </span><span class="kn">import</span> <span class="n">MplInteraction</span><span class="p">,</span> <span class="n">PanAndZoom</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_mpl.mpl_toolbox</span><span class="w"> </span><span class="kn">import</span> <span class="n">_axis_set_watermark_img</span><span class="p">,</span> <span class="n">clear_axis</span><span class="p">,</span> <span class="n">get_prop_cycle</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_mpl.patch</span><span class="w"> </span><span class="kn">import</span> <span class="n">PolygonPatch</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
 <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">is_building_docs</span><span class="p">():</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">...toolbox_python.utility_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">log_error_easy</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.toolbox_python.utility_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">bad_fillet_idxs</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">..._gui.main_window</span><span class="w"> </span><span class="kn">import</span> <span class="n">MetalGUI</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">..._gui.widgets.plot_widget.plot_window</span><span class="w"> </span><span class="kn">import</span> <span class="n">QMainWindowPlot</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">.mpl_canvas</span><span class="w"> </span><span class="kn">import</span> <span class="n">PlotCanvas</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.elements.elements_handler</span><span class="w"> </span><span class="kn">import</span> <span class="n">QGeometryTables</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;QMplRenderer&#39;</span><span class="p">]</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.mpl_canvas</span><span class="w"> </span><span class="kn">import</span> <span class="n">PlotCanvas</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;QMplRenderer&quot;</span><span class="p">]</span>
 
 <span class="n">to_poly_patch</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">PolygonPatch</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="QMplRenderer">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QMplRenderer.html#qiskit_metal.renderers.QMplRenderer">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">QMplRenderer</span><span class="p">():</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">QMplRenderer</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Matplotlib renderer for Metal designs.</span>
 
 <span class="sd">    Notes:</span>
@@ -556,8 +539,7 @@
 <span class="sd">        in the ``render`` method.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">canvas</span><span class="p">:</span> <span class="s1">&#39;PlotCanvas&#39;</span><span class="p">,</span> <span class="n">design</span><span class="p">:</span> <span class="n">QDesign</span><span class="p">,</span>
-                 <span class="n">logger</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">canvas</span><span class="p">:</span> <span class="s2">&quot;PlotCanvas&quot;</span><span class="p">,</span> <span class="n">design</span><span class="p">:</span> <span class="n">QDesign</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Args:</span>
 <span class="sd">            canvas (PlotCanvas): The canvas</span>
@@ -569,7 +551,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span> <span class="o">=</span> <span class="n">canvas</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">design</span> <span class="o">=</span> <span class="n">design</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">resolution</span><span class="o">=</span><span class="s1">&#39;16&#39;</span><span class="p">,)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+            <span class="n">resolution</span><span class="o">=</span><span class="s2">&quot;16&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="c1"># Filter view options</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hidden_layers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
@@ -578,8 +562,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_hidden_components</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">colors</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s1">&#39;#1f77b4&#39;</span><span class="p">,</span> <span class="s1">&#39;#ff7f0e&#39;</span><span class="p">,</span> <span class="s1">&#39;#2ca02c&#39;</span><span class="p">,</span> <span class="s1">&#39;#d62728&#39;</span><span class="p">,</span> <span class="s1">&#39;#9467bd&#39;</span><span class="p">,</span> <span class="s1">&#39;#8c564b&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;#e377c2&#39;</span><span class="p">,</span> <span class="s1">&#39;#7f7f7f&#39;</span><span class="p">,</span> <span class="s1">&#39;#bcbd22&#39;</span><span class="p">,</span> <span class="s1">&#39;#17becf&#39;</span>
+            <span class="s2">&quot;#1f77b4&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#ff7f0e&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#2ca02c&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#d62728&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#9467bd&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#8c564b&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#e377c2&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#7f7f7f&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#bcbd22&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#17becf&quot;</span><span class="p">,</span>
         <span class="p">]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">set_design</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
@@ -666,7 +658,7 @@
 <span class="sd">            ax (matplotlib.axes.Axes): mpl axis to draw on</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Rendering element tables to plot window.&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Rendering element tables to plot window.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">render_tables</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span></div>
 
 
@@ -690,7 +682,7 @@
         <span class="k">return</span> <span class="o">~</span><span class="n">mask</span>  <span class="c1"># not</span></div>
 
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_render_poly_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">:</span> <span class="n">Axes</span><span class="p">,</span> <span class="n">poly_array</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">mpl_kw</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_render_poly_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">:</span> <span class="n">Axes</span><span class="p">,</span> <span class="n">poly_array</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">mpl_kw</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Render the poly array.</span>
 <span class="sd">        Args:</span>
 <span class="sd">            ax (Axes): The axis</span>
@@ -702,38 +694,33 @@
             <span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">PatchCollection</span><span class="p">(</span><span class="n">poly_array</span><span class="p">,</span> <span class="o">**</span><span class="n">mpl_kw</span><span class="p">))</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">qgeometry</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;QGeometryTables&#39;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">qgeometry</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;QGeometryTables&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the qgeometry of the design.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span>
 
     <span class="c1"># TODO: move to some config and user input also make widget</span>
     <span class="n">styles</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;base&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
-            <span class="s1">&#39;subtracted&#39;</span><span class="p">:</span>
-                <span class="nb">dict</span><span class="p">(),</span>  <span class="c1"># linestyle=&#39;--&#39;, edgecolors=&#39;k&#39;, color=&#39;gray&#39;),</span>
-            <span class="s1">&#39;non-subtracted&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;base&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
+            <span class="s2">&quot;subtracted&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(),</span>  <span class="c1"># linestyle=&#39;--&#39;, edgecolors=&#39;k&#39;, color=&#39;gray&#39;),</span>
+            <span class="s2">&quot;non-subtracted&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(),</span>
         <span class="p">},</span>
-        <span class="s1">&#39;poly&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;base&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">),</span>
-            <span class="s1">&#39;subtracted&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">),</span>
-            <span class="s1">&#39;non-subtracted&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="s2">&quot;poly&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;base&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;subtracted&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;non-subtracted&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(),</span>
         <span class="p">},</span>
-        <span class="s1">&#39;JJ&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;base&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">),</span>
-            <span class="s1">&#39;subtracted&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">),</span>
-            <span class="s1">&#39;non-subtracted&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">()</span>
-        <span class="p">}</span>
+        <span class="s2">&quot;JJ&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;base&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;subtracted&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;non-subtracted&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(),</span>
+        <span class="p">},</span>
     <span class="p">}</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Styles&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="QMplRenderer.get_style">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QMplRenderer.html#qiskit_metal.renderers.QMplRenderer.get_style">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_style</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                  <span class="n">element_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                  <span class="n">subtracted</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                  <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                  <span class="n">extra</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_style</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subtracted</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the style.</span>
 <span class="sd">        Args:</span>
 <span class="sd">            element_type (str): The type of element.</span>
@@ -746,12 +733,12 @@
         <span class="c1"># element_type - poly path</span>
         <span class="n">extra</span> <span class="o">=</span> <span class="n">extra</span> <span class="ow">or</span> <span class="p">{}</span>
 
-        <span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;subtracted&#39;</span> <span class="k">if</span> <span class="n">subtracted</span> <span class="k">else</span> <span class="s1">&#39;non-subtracted&#39;</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;subtracted&quot;</span> <span class="k">if</span> <span class="n">subtracted</span> <span class="k">else</span> <span class="s2">&quot;non-subtracted&quot;</span>
 
         <span class="n">kw</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">styles</span><span class="p">[</span><span class="n">element_type</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;base&#39;</span><span class="p">,</span> <span class="p">{}),</span>
+            <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">styles</span><span class="p">[</span><span class="n">element_type</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;base&quot;</span><span class="p">,</span> <span class="p">{}),</span>
             <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">styles</span><span class="p">[</span><span class="n">element_type</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">{}),</span>
-            <span class="o">**</span><span class="n">extra</span>
+            <span class="o">**</span><span class="n">extra</span><span class="p">,</span>
         <span class="p">}</span>
 
         <span class="c1"># TODO: maybe pop keys that are invalid for line etc.</span>
@@ -772,8 +759,8 @@
             <span class="n">table</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_mask</span><span class="p">(</span><span class="n">table</span><span class="p">)]</span>
 
             <span class="c1"># subtracted</span>
-            <span class="n">mask</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="s1">&#39;subtract&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span>
-            <span class="n">render_func</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;render_</span><span class="si">{</span><span class="n">element_type</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="s2">&quot;subtract&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span>
+            <span class="n">render_func</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;render_</span><span class="si">{</span><span class="n">element_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">render_func</span><span class="p">(</span><span class="n">table</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span> <span class="n">ax</span><span class="p">,</span> <span class="n">subtracted</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
             <span class="c1"># non-subtracted</span>
@@ -782,17 +769,19 @@
             <span class="c1"># self.get_color_num()</span>
 
             <span class="c1"># TODO: Check that the function exists</span>
-            <span class="n">render_func</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;render_</span><span class="si">{</span><span class="n">element_type</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">render_func</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;render_</span><span class="si">{</span><span class="n">element_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">render_func</span><span class="p">(</span><span class="n">table1</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">subtracted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QMplRenderer.render_junction">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QMplRenderer.html#qiskit_metal.renderers.QMplRenderer.render_junction">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">render_junction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                        <span class="n">table</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
-                        <span class="n">ax</span><span class="p">:</span> <span class="n">Axes</span><span class="p">,</span>
-                        <span class="n">subtracted</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-                        <span class="n">extra_kw</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">render_junction</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">table</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+        <span class="n">ax</span><span class="p">:</span> <span class="n">Axes</span><span class="p">,</span>
+        <span class="n">subtracted</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">extra_kw</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Render a table of junction geometry.</span>
 <span class="sd">        A junction is basically drawn like a path with finite width and no fillet.</span>
 <span class="sd">        Args:</span>
@@ -804,29 +793,33 @@
             <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">width</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">|</span> <span class="n">table</span><span class="o">.</span><span class="n">width</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span>
             <span class="n">table1</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="o">~</span><span class="n">mask</span><span class="p">]</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">table1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">table1</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="n">table1</span><span class="p">[[</span><span class="s1">&#39;geometry&#39;</span><span class="p">,</span> <span class="s1">&#39;width&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
-                    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="n">distance</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">,</span>
-                                          <span class="n">cap_style</span><span class="o">=</span><span class="n">CAP_STYLE</span><span class="o">.</span><span class="n">flat</span><span class="p">,</span>
-                                          <span class="n">join_style</span><span class="o">=</span><span class="n">JOIN_STYLE</span><span class="o">.</span><span class="n">mitre</span><span class="p">,</span>
-                                          <span class="n">resolution</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span>
-                                              <span class="s1">&#39;resolution&#39;</span><span class="p">])),</span>
-                    <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-                <span class="n">kw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_style</span><span class="p">(</span><span class="s1">&#39;JJ&#39;</span><span class="p">,</span> <span class="n">subtracted</span><span class="o">=</span><span class="n">subtracted</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="n">extra_kw</span><span class="p">)</span>
+                <span class="n">table1</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">table1</span><span class="p">[[</span><span class="s2">&quot;geometry&quot;</span><span class="p">,</span> <span class="s2">&quot;width&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+                    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span>
+                        <span class="n">distance</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+                        <span class="n">cap_style</span><span class="o">=</span><span class="n">CAP_STYLE</span><span class="o">.</span><span class="n">flat</span><span class="p">,</span>
+                        <span class="n">join_style</span><span class="o">=</span><span class="n">JOIN_STYLE</span><span class="o">.</span><span class="n">mitre</span><span class="p">,</span>
+                        <span class="n">quad_segs</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;resolution&quot;</span><span class="p">]),</span>
+                    <span class="p">),</span>
+                    <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">kw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_style</span><span class="p">(</span><span class="s2">&quot;JJ&quot;</span><span class="p">,</span> <span class="n">subtracted</span><span class="o">=</span><span class="n">subtracted</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="n">extra_kw</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">render_poly</span><span class="p">(</span><span class="n">table1</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">subtracted</span><span class="o">=</span><span class="n">subtracted</span><span class="p">,</span> <span class="n">extra_kw</span><span class="o">=</span><span class="n">kw</span><span class="p">)</span>
             <span class="n">table1</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">table1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="s1">&#39;One or more junctions have zero width. Consider changing this.&#39;</span>
+                    <span class="s2">&quot;One or more junctions have zero width. Consider changing this.&quot;</span>
                 <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QMplRenderer.render_poly">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QMplRenderer.html#qiskit_metal.renderers.QMplRenderer.render_poly">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">render_poly</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                    <span class="n">table</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
-                    <span class="n">ax</span><span class="p">:</span> <span class="n">Axes</span><span class="p">,</span>
-                    <span class="n">subtracted</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-                    <span class="n">extra_kw</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">render_poly</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">table</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+        <span class="n">ax</span><span class="p">:</span> <span class="n">Axes</span><span class="p">,</span>
+        <span class="n">subtracted</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">extra_kw</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Render a table of poly geometry.</span>
 <span class="sd">        Args:</span>
 <span class="sd">            table (DataFrame): Element table</span>
@@ -836,7 +829,7 @@
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span>
 
-        <span class="n">kw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_style</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="n">subtracted</span><span class="o">=</span><span class="n">subtracted</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="n">extra_kw</span><span class="p">)</span>
+        <span class="n">kw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_style</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">subtracted</span><span class="o">=</span><span class="n">subtracted</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="n">extra_kw</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_render_poly_array</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span> <span class="n">kw</span><span class="p">)</span></div>
 
 
@@ -849,7 +842,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            DataFrame table with geometry field updated with a polygon filleted path.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">table</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fillet_path</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">table</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fillet_path</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">table</span></div>
 
 
@@ -868,18 +861,22 @@
         <span class="n">newpath</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">path</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
 
         <span class="c1"># Get list of vertices that can&#39;t be filleted</span>
-        <span class="n">no_fillet</span> <span class="o">=</span> <span class="n">bad_fillet_idxs</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;fillet&quot;</span><span class="p">],</span>
-                                    <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">template_options</span><span class="o">.</span><span class="n">PRECISION</span><span class="p">)</span>
+        <span class="n">no_fillet</span> <span class="o">=</span> <span class="n">bad_fillet_idxs</span><span class="p">(</span>
+            <span class="n">path</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;fillet&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">template_options</span><span class="o">.</span><span class="n">PRECISION</span>
+        <span class="p">)</span>
 
         <span class="c1"># Iterate through every three-vertex corner</span>
-        <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">corner</span><span class="p">,</span> <span class="n">end</span><span class="p">))</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">path</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span>
-                                                       <span class="n">path</span><span class="p">[</span><span class="mi">2</span><span class="p">:])):</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">corner</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">path</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">path</span><span class="p">[</span><span class="mi">2</span><span class="p">:])):</span>
             <span class="k">if</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="ow">in</span> <span class="n">no_fillet</span><span class="p">:</span>  <span class="c1"># don&#39;t fillet this corner</span>
                 <span class="n">newpath</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">newpath</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">corner</span><span class="p">])))</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">fillet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_fillet</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">start</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">corner</span><span class="p">),</span>
-                                           <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">end</span><span class="p">),</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;fillet&quot;</span><span class="p">],</span>
-                                           <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;resolution&#39;</span><span class="p">]))</span>
+                <span class="n">fillet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_fillet</span><span class="p">(</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">start</span><span class="p">),</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">corner</span><span class="p">),</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">end</span><span class="p">),</span>
+                    <span class="n">row</span><span class="p">[</span><span class="s2">&quot;fillet&quot;</span><span class="p">],</span>
+                    <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;resolution&quot;</span><span class="p">]),</span>
+                <span class="p">)</span>
                 <span class="k">if</span> <span class="n">fillet</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">False</span><span class="p">:</span>
                     <span class="n">newpath</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">newpath</span><span class="p">,</span> <span class="n">fillet</span><span class="p">))</span>
                 <span class="k">else</span><span class="p">:</span>
@@ -888,12 +885,7 @@
         <span class="k">return</span> <span class="n">LineString</span><span class="p">(</span><span class="n">newpath</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_calc_fillet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                     <span class="n">vertex_start</span><span class="p">,</span>
-                     <span class="n">vertex_corner</span><span class="p">,</span>
-                     <span class="n">vertex_end</span><span class="p">,</span>
-                     <span class="n">radius</span><span class="p">,</span>
-                     <span class="n">points</span><span class="o">=</span><span class="mi">16</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_calc_fillet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex_start</span><span class="p">,</span> <span class="n">vertex_corner</span><span class="p">,</span> <span class="n">vertex_end</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="mi">16</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the filleted path based on the start, corner, and end</span>
 <span class="sd">        vertices and the fillet radius.</span>
 <span class="sd">        Args:</span>
@@ -905,7 +897,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Start, corner, and end vertices must be distinct</span>
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">vertex_start</span><span class="p">,</span> <span class="n">vertex_corner</span><span class="p">)</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span>
-                <span class="n">vertex_end</span><span class="p">,</span> <span class="n">vertex_corner</span><span class="p">):</span>
+            <span class="n">vertex_end</span><span class="p">,</span> <span class="n">vertex_corner</span>
+        <span class="p">):</span>
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="c1"># Vectors pointing from corner to start and end vertices, respectively</span>
@@ -932,8 +925,7 @@
         <span class="n">net_uvec</span> <span class="o">=</span> <span class="p">(</span><span class="n">sc_uvec</span> <span class="o">+</span> <span class="n">ec_uvec</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">sc_uvec</span> <span class="o">+</span> <span class="n">ec_uvec</span><span class="p">)</span>
 
         <span class="c1"># Coordinates of center of fillet circle</span>
-        <span class="n">circle_center</span> <span class="o">=</span> <span class="n">vertex_corner</span> <span class="o">+</span> <span class="n">net_uvec</span> <span class="o">*</span> <span class="n">radius</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span>
-            <span class="n">end_angle</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">circle_center</span> <span class="o">=</span> <span class="n">vertex_corner</span> <span class="o">+</span> <span class="n">net_uvec</span> <span class="o">*</span> <span class="n">radius</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">end_angle</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
 
         <span class="c1"># Deltas represent displacement from corner vertex to circle center</span>
         <span class="c1"># Midpoint angle from circle center to corner, wrt to horizontal extending from former</span>
@@ -950,34 +942,42 @@
         <span class="n">theta_start</span> <span class="o">=</span> <span class="n">theta_mid</span> <span class="o">-</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">end_angle</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
         <span class="n">theta_end</span> <span class="o">=</span> <span class="n">theta_mid</span> <span class="o">+</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">end_angle</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
         <span class="n">p1</span> <span class="o">=</span> <span class="n">circle_center</span> <span class="o">+</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-            <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta_start</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta_start</span><span class="p">)])</span>
-        <span class="n">p2</span> <span class="o">=</span> <span class="n">circle_center</span> <span class="o">+</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-            <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta_end</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta_end</span><span class="p">)])</span>
-        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vertex_start</span> <span class="o">-</span> <span class="n">p2</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vertex_start</span> <span class="o">-</span>
-                                                              <span class="n">p1</span><span class="p">):</span>
+            <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta_start</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta_start</span><span class="p">)]</span>
+        <span class="p">)</span>
+        <span class="n">p2</span> <span class="o">=</span> <span class="n">circle_center</span> <span class="o">+</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta_end</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta_end</span><span class="p">)])</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vertex_start</span> <span class="o">-</span> <span class="n">p2</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vertex_start</span> <span class="o">-</span> <span class="n">p1</span><span class="p">):</span>
             <span class="n">theta_start</span><span class="p">,</span> <span class="n">theta_end</span> <span class="o">=</span> <span class="n">theta_end</span><span class="p">,</span> <span class="n">theta_start</span>
 
         <span class="c1"># Populate the fillet corner, skipping the start point since it&#39;s already added</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
-            <span class="n">circle_center</span> <span class="o">+</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-                <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta_start</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta_start</span><span class="p">)])</span>
-        <span class="p">])</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">circle_center</span>
+                <span class="o">+</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta_start</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta_start</span><span class="p">)])</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
         <span class="k">for</span> <span class="n">theta</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">theta_start</span><span class="p">,</span> <span class="n">theta_end</span><span class="p">,</span> <span class="n">points</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]:</span>
             <span class="n">path</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
-                <span class="p">(</span><span class="n">path</span><span class="p">,</span>
-                 <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
-                     <span class="n">circle_center</span> <span class="o">+</span> <span class="n">radius</span> <span class="o">*</span>
-                     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)])</span>
-                 <span class="p">])))</span>
+                <span class="p">(</span>
+                    <span class="n">path</span><span class="p">,</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                        <span class="p">[</span>
+                            <span class="n">circle_center</span>
+                            <span class="o">+</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)])</span>
+                        <span class="p">]</span>
+                    <span class="p">),</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="n">path</span>
 
 <div class="viewcode-block" id="QMplRenderer.render_path">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QMplRenderer.html#qiskit_metal.renderers.QMplRenderer.render_path">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">render_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                    <span class="n">table</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
-                    <span class="n">ax</span><span class="p">:</span> <span class="n">Axes</span><span class="p">,</span>
-                    <span class="n">subtracted</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-                    <span class="n">extra_kw</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">render_path</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">table</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+        <span class="n">ax</span><span class="p">:</span> <span class="n">Axes</span><span class="p">,</span>
+        <span class="n">subtracted</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">extra_kw</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Render a table of path geometry.</span>
 <span class="sd">        Args:</span>
 <span class="sd">            table (DataFrame): Element table</span>
@@ -997,22 +997,25 @@
         <span class="c1"># convert to polys - handle non zero width</span>
         <span class="n">table1</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="o">~</span><span class="n">mask</span><span class="p">]</span>
 
-        <span class="n">mask2</span> <span class="o">=</span> <span class="p">(</span><span class="n">table1</span><span class="o">.</span><span class="n">fillet</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">mask2</span> <span class="o">=</span> <span class="n">table1</span><span class="o">.</span><span class="n">fillet</span> <span class="o">==</span> <span class="mi">0</span>
 
         <span class="n">table2</span> <span class="o">=</span> <span class="n">table1</span><span class="p">[</span><span class="o">~</span><span class="n">mask2</span><span class="p">]</span>
 
         <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table2</span><span class="p">[</span><span class="n">table2</span><span class="o">.</span><span class="n">fillet</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-            <span class="n">table1</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="s1">&#39;geometry&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fillet_path</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+            <span class="n">table1</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="s2">&quot;geometry&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fillet_path</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">table1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">table1</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="n">table1</span><span class="p">[[</span><span class="s1">&#39;geometry&#39;</span><span class="p">,</span> <span class="s1">&#39;width&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span>
-                <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="n">distance</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">,</span>
-                          <span class="n">cap_style</span><span class="o">=</span><span class="n">CAP_STYLE</span><span class="o">.</span><span class="n">flat</span><span class="p">,</span>
-                          <span class="n">join_style</span><span class="o">=</span><span class="n">JOIN_STYLE</span><span class="o">.</span><span class="n">mitre</span><span class="p">,</span>
-                          <span class="n">resolution</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;resolution&#39;</span><span class="p">])),</span>
-                                                                  <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">table1</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">table1</span><span class="p">[[</span><span class="s2">&quot;geometry&quot;</span><span class="p">,</span> <span class="s2">&quot;width&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span>
+                    <span class="n">distance</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+                    <span class="n">cap_style</span><span class="o">=</span><span class="n">CAP_STYLE</span><span class="o">.</span><span class="n">flat</span><span class="p">,</span>
+                    <span class="n">join_style</span><span class="o">=</span><span class="n">JOIN_STYLE</span><span class="o">.</span><span class="n">mitre</span><span class="p">,</span>
+                    <span class="n">quad_segs</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;resolution&quot;</span><span class="p">]),</span>
+                <span class="p">),</span>
+                <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="p">)</span>
 
-            <span class="n">kw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_style</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="n">subtracted</span><span class="o">=</span><span class="n">subtracted</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="n">extra_kw</span><span class="p">)</span>
+            <span class="n">kw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_style</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">subtracted</span><span class="o">=</span><span class="n">subtracted</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="n">extra_kw</span><span class="p">)</span>
 
             <span class="c1"># render components</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">render_poly</span><span class="p">(</span><span class="n">table1</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">subtracted</span><span class="o">=</span><span class="n">subtracted</span><span class="p">,</span> <span class="n">extra_kw</span><span class="o">=</span><span class="n">kw</span><span class="p">)</span>
@@ -1022,7 +1025,7 @@
         <span class="c1"># best way to plot?</span>
         <span class="c1"># TODO: speed and vectorize?</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">table1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">kw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_style</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="n">subtracted</span><span class="o">=</span><span class="n">subtracted</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="n">extra_kw</span><span class="p">)</span>
+            <span class="n">kw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_style</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">subtracted</span><span class="o">=</span><span class="n">subtracted</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="n">extra_kw</span><span class="p">)</span>
             <span class="n">line_segments</span> <span class="o">=</span> <span class="n">LineCollection</span><span class="p">(</span><span class="n">table1</span><span class="o">.</span><span class="n">geometry</span><span class="p">)</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">line_segments</span><span class="p">)</span></div>
 </div>
@@ -1091,7 +1094,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/01/24</div>
+              Last updated on 2026/04/24</div>
           </div>
           <div class="right-details">
             

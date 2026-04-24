@@ -513,24 +513,35 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">opt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pint</span><span class="w"> </span><span class="kn">import</span> <span class="n">UnitRegistry</span>
-
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyEPR.calcs.convert</span><span class="w"> </span><span class="kn">import</span> <span class="n">Convert</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.quantization.constants</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">hbar</span><span class="p">,</span> <span class="n">phinot</span><span class="p">,</span> <span class="n">phi0</span><span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.quantization.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">e</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">hbar</span><span class="p">,</span> <span class="n">phi0</span><span class="p">,</span> <span class="n">phinot</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;Ic_from_Lj&#39;</span><span class="p">,</span> <span class="s1">&#39;Ic_from_Ej&#39;</span><span class="p">,</span> <span class="s1">&#39;Cs_from_Ec&#39;</span><span class="p">,</span> <span class="s1">&#39;transmon_props&#39;</span><span class="p">,</span> <span class="s1">&#39;chi&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;extract_transmon_coupled_Noscillator&#39;</span><span class="p">,</span> <span class="s1">&#39;levels_vs_ng_real_units&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;get_C_and_Ic&#39;</span><span class="p">,</span> <span class="s1">&#39;cos_to_mega_and_delta&#39;</span><span class="p">,</span> <span class="s1">&#39;chargeline_T1&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;readin_q3d_matrix&#39;</span><span class="p">,</span> <span class="s1">&#39;readin_q3d_matrix_m&#39;</span><span class="p">,</span> <span class="s1">&#39;load_q3d_capacitance_matrix&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;df_cmat_style_print&#39;</span><span class="p">,</span> <span class="s1">&#39;move_index_to&#39;</span><span class="p">,</span> <span class="s1">&#39;df_reorder_matrix_basis&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;lumped_oscillator_from_path&#39;</span>
+    <span class="s2">&quot;Ic_from_Lj&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Ic_from_Ej&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Cs_from_Ec&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;transmon_props&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;chi&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;extract_transmon_coupled_Noscillator&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;levels_vs_ng_real_units&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_C_and_Ic&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cos_to_mega_and_delta&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;chargeline_T1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;readin_q3d_matrix&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;readin_q3d_matrix_m&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;load_q3d_capacitance_matrix&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;df_cmat_style_print&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;move_index_to&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;df_reorder_matrix_basis&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;lumped_oscillator_from_path&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -602,8 +613,13 @@
     <span class="n">wq</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">LJ</span> <span class="o">*</span> <span class="n">Cq</span><span class="p">)</span> <span class="o">-</span> <span class="n">EC</span>
 
     <span class="c1"># charge dispersion</span>
-    <span class="n">eps1</span> <span class="o">=</span> <span class="n">EC</span> <span class="o">*</span> <span class="mi">2</span><span class="o">**</span><span class="mi">9</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span> <span class="o">*</span> \
-        <span class="p">(</span><span class="n">EJ</span><span class="o">/</span><span class="mi">2</span><span class="o">/</span><span class="n">EC</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mf">1.25</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">8</span><span class="o">*</span><span class="n">EJ</span><span class="o">/</span><span class="n">EC</span><span class="p">))</span>
+    <span class="n">eps1</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">EC</span>
+        <span class="o">*</span> <span class="mi">2</span><span class="o">**</span><span class="mi">9</span>
+        <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span>
+        <span class="o">*</span> <span class="p">(</span><span class="n">EJ</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">EC</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mf">1.25</span><span class="p">)</span>
+        <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">8</span> <span class="o">*</span> <span class="n">EJ</span> <span class="o">/</span> <span class="n">EC</span><span class="p">))</span>
+    <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">LJ</span><span class="p">,</span> <span class="n">EJ</span><span class="p">,</span> <span class="n">Zqp</span><span class="p">,</span> <span class="n">EC</span><span class="p">,</span> <span class="n">wq</span><span class="p">,</span> <span class="n">wq0</span><span class="p">,</span> <span class="n">eps1</span></div>
 
@@ -643,8 +659,9 @@
 
     <span class="c1"># shift of the 1 state</span>
     <span class="c1"># the g of the levels scales rougly as sqrt(n), so the 2 for the 2 / (w12 - wr)</span>
-    <span class="n">chibus_1</span> <span class="o">=</span> <span class="n">g</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">w01</span> <span class="o">-</span> <span class="n">wr</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">w12</span> <span class="o">-</span> <span class="n">wr</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">w01</span> <span class="o">+</span> <span class="n">wr</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">/</span>
-                       <span class="p">(</span><span class="n">w12</span> <span class="o">+</span> <span class="n">wr</span><span class="p">))</span>
+    <span class="n">chibus_1</span> <span class="o">=</span> <span class="n">g</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span>
+        <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">w01</span> <span class="o">-</span> <span class="n">wr</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">w12</span> <span class="o">-</span> <span class="n">wr</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">w01</span> <span class="o">+</span> <span class="n">wr</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">w12</span> <span class="o">+</span> <span class="n">wr</span><span class="p">)</span>
+    <span class="p">)</span>
 
     <span class="k">return</span> <span class="p">(</span><span class="n">chibus_1</span> <span class="o">-</span> <span class="n">chibus_0</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>  <span class="c1"># Koch Eq. (3.9)</span></div>
 
@@ -652,15 +669,17 @@
 
 <div class="viewcode-block" id="extract_transmon_coupled_Noscillator">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.lumped_capacitive.html#qiskit_metal.analyses.lumped_capacitive.extract_transmon_coupled_Noscillator">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">extract_transmon_coupled_Noscillator</span><span class="p">(</span><span class="n">capMatrix</span><span class="p">,</span>
-                                         <span class="n">Ic</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                                         <span class="n">CJ</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                                         <span class="n">N</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-                                         <span class="n">fb</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
-                                         <span class="n">fr</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                                         <span class="n">res_L4_corr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                                         <span class="n">g_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
-                                         <span class="n">print_info</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_transmon_coupled_Noscillator</span><span class="p">(</span>
+    <span class="n">capMatrix</span><span class="p">,</span>
+    <span class="n">Ic</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">CJ</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">N</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">fb</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+    <span class="n">fr</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">res_L4_corr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">g_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">print_info</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Primary analysis function called by the user for lumped-element mode</span>
 <span class="sd">    (LOM) analysis. Uses a Maxwell capacitance matrix generated by a capacitive</span>
 <span class="sd">    extractor, such as Q3D. Additionally takes more values to determine many</span>
@@ -700,9 +719,9 @@
 
     <span class="c1"># Error checks</span>
     <span class="k">if</span> <span class="n">N</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;N must positive&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;N must positive&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">capMatrix</span><span class="p">)</span> <span class="o">!=</span> <span class="p">(</span><span class="n">N</span> <span class="o">+</span> <span class="mi">3</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Capacitance matrix is not the right size&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Capacitance matrix is not the right size&quot;</span><span class="p">)</span>
 
     <span class="c1"># make list of angular frequencies of resonators</span>
     <span class="n">wr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>  <span class="c1"># angular freq of resonators (GHz-rad)</span>
@@ -727,7 +746,7 @@
     <span class="c1"># half the L/2 case (and likewise the Lr is twice) at the</span>
     <span class="c1"># same resonance frequency</span>
     <span class="c1"># DCM (I think from numerics)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">res_L4_corr</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">res_L4_corr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">res_L4_corr</span><span class="p">)):</span>
             <span class="k">if</span> <span class="n">res_L4_corr</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
                 <span class="n">Cr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/=</span> <span class="mf">2.0</span>
@@ -748,7 +767,7 @@
     <span class="c1"># Cg list of qubit pads to ground</span>
     <span class="n">Cg</span> <span class="o">=</span> <span class="p">[</span>
         <span class="o">-</span><span class="n">capMatrix</span><span class="p">[</span><span class="n">qubit_index</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ground_index</span><span class="p">],</span>
-        <span class="o">-</span><span class="n">capMatrix</span><span class="p">[</span><span class="n">qubit_index</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ground_index</span><span class="p">]</span>
+        <span class="o">-</span><span class="n">capMatrix</span><span class="p">[</span><span class="n">qubit_index</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ground_index</span><span class="p">],</span>
     <span class="p">]</span>
 
     <span class="c1"># Cs qubit pads to each other</span>
@@ -770,12 +789,8 @@
 
     <span class="c1"># sum of capacitances from each pad to ground</span>
     <span class="c1"># this assumes the bus couplers are at &quot;ground&quot;</span>
-    <span class="n">C1S</span> <span class="o">=</span> <span class="n">Cg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Cbus</span><span class="p">[</span>
-        <span class="mi">0</span><span class="p">,</span>
-    <span class="p">])</span>
-    <span class="n">C2S</span> <span class="o">=</span> <span class="n">Cg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Cbus</span><span class="p">[</span>
-        <span class="mi">1</span><span class="p">,</span>
-    <span class="p">])</span>
+    <span class="n">C1S</span> <span class="o">=</span> <span class="n">Cg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Cbus</span><span class="p">[</span><span class="mi">0</span><span class="p">,])</span>
+    <span class="n">C2S</span> <span class="o">=</span> <span class="n">Cg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Cbus</span><span class="p">[</span><span class="mi">1</span><span class="p">,])</span>
 
     <span class="c1"># total capacitance between pads</span>
     <span class="n">tCSq</span> <span class="o">=</span> <span class="n">Cs</span> <span class="o">+</span> <span class="n">C1S</span> <span class="o">*</span> <span class="n">C2S</span> <span class="o">/</span> <span class="p">(</span><span class="n">C1S</span> <span class="o">+</span> <span class="n">C2S</span><span class="p">)</span>  <span class="c1"># Key equation</span>
@@ -784,29 +799,26 @@
     <span class="c1"># Note the + in the squared term below !!!</span>
     <span class="n">tCSbus</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
-        <span class="n">tCSbus</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="n">Cr</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">Cbus</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">ii</span><span class="p">]</span><span class="o">+</span><span class="n">Cbus</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">ii</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> \
-            <span class="p">(</span><span class="n">C1S</span><span class="o">+</span><span class="n">C2S</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Cbus</span><span class="p">[:,</span> <span class="n">ii</span><span class="p">])</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Cbusbus</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span> <span class="p">:])</span>
+        <span class="n">tCSbus</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">Cr</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
+            <span class="o">-</span> <span class="p">(</span><span class="n">Cbus</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">ii</span><span class="p">]</span> <span class="o">+</span> <span class="n">Cbus</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">ii</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">C1S</span> <span class="o">+</span> <span class="n">C2S</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Cbus</span><span class="p">[:,</span> <span class="n">ii</span><span class="p">])</span>
+            <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Cbusbus</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span> <span class="p">:])</span>
+        <span class="p">)</span>
 
     <span class="c1"># qubit to coupling pad capacitance</span>
-    <span class="n">tCqbus</span> <span class="o">=</span> <span class="p">(</span><span class="n">C2S</span> <span class="o">*</span> <span class="n">Cbus</span><span class="p">[</span>
-        <span class="mi">0</span><span class="p">,</span>
-    <span class="p">]</span> <span class="o">-</span> <span class="n">Cbus</span><span class="p">[</span>
-        <span class="mi">1</span><span class="p">,</span>
-    <span class="p">]</span> <span class="o">*</span> <span class="n">C1S</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">C1S</span> <span class="o">+</span> <span class="n">C2S</span><span class="p">)</span>
+    <span class="n">tCqbus</span> <span class="o">=</span> <span class="p">(</span><span class="n">C2S</span> <span class="o">*</span> <span class="n">Cbus</span><span class="p">[</span><span class="mi">0</span><span class="p">,]</span> <span class="o">-</span> <span class="n">Cbus</span><span class="p">[</span><span class="mi">1</span><span class="p">,]</span> <span class="o">*</span> <span class="n">C1S</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">C1S</span> <span class="o">+</span> <span class="n">C2S</span><span class="p">)</span>
 
     <span class="c1"># coupling pad to coupling pad capacitance</span>
     <span class="n">tCqbusbus</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">])</span>
     <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">jj</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
-            <span class="n">tCqbusbus</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span> <span class="n">jj</span><span class="p">]</span> <span class="o">=</span> <span class="n">Cbusbus</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span> <span class="n">jj</span><span class="p">]</span> <span class="o">+</span> \
-                <span class="p">(</span><span class="n">Cbus</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">ii</span><span class="p">]</span><span class="o">+</span><span class="n">Cbus</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">ii</span><span class="p">])</span><span class="o">*</span><span class="p">(</span><span class="n">Cbus</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">jj</span><span class="p">]</span><span class="o">+</span><span class="n">Cbus</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">jj</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="n">C1S</span><span class="o">+</span><span class="n">C2S</span><span class="p">)</span>
+            <span class="n">tCqbusbus</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span> <span class="n">jj</span><span class="p">]</span> <span class="o">=</span> <span class="n">Cbusbus</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span> <span class="n">jj</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">Cbus</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">ii</span><span class="p">]</span> <span class="o">+</span> <span class="n">Cbus</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">ii</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span>
+                <span class="n">Cbus</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">jj</span><span class="p">]</span> <span class="o">+</span> <span class="n">Cbus</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">jj</span><span class="p">]</span>
+            <span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">C1S</span> <span class="o">+</span> <span class="n">C2S</span><span class="p">)</span>
 
     <span class="c1"># voltage division ratio</span>
-    <span class="n">bbus</span> <span class="o">=</span> <span class="p">(</span><span class="n">C2S</span> <span class="o">*</span> <span class="n">Cbus</span><span class="p">[</span>
-        <span class="mi">0</span><span class="p">,</span>
-    <span class="p">]</span> <span class="o">-</span> <span class="n">Cbus</span><span class="p">[</span>
-        <span class="mi">1</span><span class="p">,</span>
-    <span class="p">]</span> <span class="o">*</span> <span class="n">C1S</span><span class="p">)</span> <span class="o">/</span> <span class="p">((</span><span class="n">C1S</span> <span class="o">+</span> <span class="n">C2S</span><span class="p">)</span> <span class="o">*</span> <span class="n">Cs</span> <span class="o">+</span> <span class="n">C1S</span> <span class="o">*</span> <span class="n">C2S</span><span class="p">)</span>
+    <span class="n">bbus</span> <span class="o">=</span> <span class="p">(</span><span class="n">C2S</span> <span class="o">*</span> <span class="n">Cbus</span><span class="p">[</span><span class="mi">0</span><span class="p">,]</span> <span class="o">-</span> <span class="n">Cbus</span><span class="p">[</span><span class="mi">1</span><span class="p">,]</span> <span class="o">*</span> <span class="n">C1S</span><span class="p">)</span> <span class="o">/</span> <span class="p">((</span><span class="n">C1S</span> <span class="o">+</span> <span class="n">C2S</span><span class="p">)</span> <span class="o">*</span> <span class="n">Cs</span> <span class="o">+</span> <span class="n">C1S</span> <span class="o">*</span> <span class="n">C2S</span><span class="p">)</span>
 
     <span class="c1"># total qubit capacitance (including junction capacitance)</span>
     <span class="n">Cq</span> <span class="o">=</span> <span class="n">tCSq</span> <span class="o">+</span> <span class="n">CJ</span>
@@ -818,9 +830,7 @@
     <span class="n">LJ</span><span class="p">,</span> <span class="n">EJ</span><span class="p">,</span> <span class="n">Zqp</span><span class="p">,</span> <span class="n">EC</span><span class="p">,</span> <span class="n">wq</span><span class="p">,</span> <span class="n">wq0</span><span class="p">,</span> <span class="n">eps1</span> <span class="o">=</span> <span class="n">transmon_props</span><span class="p">(</span><span class="n">Ic</span><span class="p">,</span> <span class="n">Cq</span><span class="p">)</span>
 
     <span class="c1"># get numerical properties</span>
-    <span class="n">fq</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">disp</span><span class="p">,</span> <span class="n">tphi_ms</span> <span class="o">=</span> <span class="n">levels_vs_ng_real_units</span><span class="p">(</span><span class="n">Cq</span> <span class="o">/</span> <span class="mf">1e-15</span><span class="p">,</span>
-                                                       <span class="n">Ic</span> <span class="o">/</span> <span class="mf">1e-9</span><span class="p">,</span>
-                                                       <span class="n">N</span><span class="o">=</span><span class="mi">51</span><span class="p">)</span>
+    <span class="n">fq</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">disp</span><span class="p">,</span> <span class="n">tphi_ms</span> <span class="o">=</span> <span class="n">levels_vs_ng_real_units</span><span class="p">(</span><span class="n">Cq</span> <span class="o">/</span> <span class="mf">1e-15</span><span class="p">,</span> <span class="n">Ic</span> <span class="o">/</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">51</span><span class="p">)</span>
     <span class="n">wq</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">fq</span> <span class="o">*</span> <span class="mf">1e9</span>
 
     <span class="c1"># effective impedances of the coupling pads (?)</span>
@@ -841,15 +851,14 @@
 
     <span class="c1"># g&#39;s from the qubit</span>
     <span class="n">gqbus</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">wr</span> <span class="o">*</span> <span class="n">bbus</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">Zbus</span> <span class="o">/</span> <span class="n">Zqp</span><span class="p">)</span> <span class="o">*</span> <span class="n">g_scale</span>
-    <span class="c1">#gbus = bbus*wr*np.sqrt(Zbus)*e*(EJ/8/EC)**(1/4)/np.sqrt(hbar)</span>
+    <span class="c1"># gbus = bbus*wr*np.sqrt(Zbus)*e*(EJ/8/EC)**(1/4)/np.sqrt(hbar)</span>
     <span class="n">gbus_in_MHz</span> <span class="o">=</span> <span class="n">gqbus</span> <span class="o">/</span> <span class="mf">1e6</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
 
     <span class="c1"># g&#39;s between pads</span>
     <span class="n">gbusbus</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">])</span>
     <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">jj</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
-            <span class="n">gbusbus</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span>
-                    <span class="n">jj</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.01</span><span class="p">)</span> <span class="o">*</span> <span class="n">tCqbusbus</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span> <span class="n">jj</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">tCSbus</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">*</span> <span class="n">tCSbus</span><span class="p">[</span><span class="n">jj</span><span class="p">])</span>
+            <span class="n">gbusbus</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span> <span class="n">jj</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.01</span><span class="p">)</span> <span class="o">*</span> <span class="n">tCqbusbus</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span> <span class="n">jj</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">tCSbus</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">*</span> <span class="n">tCSbus</span><span class="p">[</span><span class="n">jj</span><span class="p">])</span>
 
     <span class="c1">########################################################</span>
     <span class="c1">##### Purcell, Qs, dissipative</span>
@@ -868,7 +877,7 @@
     <span class="n">kbus</span> <span class="o">=</span> <span class="n">wr</span> <span class="o">/</span> <span class="n">Qbus</span>
 
     <span class="c1"># purcell due to each coupling bus</span>
-    <span class="n">T1bus</span> <span class="o">=</span> <span class="p">(</span><span class="n">wr</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">wq</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">kbus</span> <span class="o">*</span> <span class="n">gqbus</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">wq</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">T1bus</span> <span class="o">=</span> <span class="p">(</span><span class="n">wr</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">wq</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">kbus</span> <span class="o">*</span> <span class="n">gqbus</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">wq</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 
     <span class="c1"># total T1</span>
     <span class="k">if</span> <span class="n">N</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -880,50 +889,51 @@
     <span class="c1">##### Transmon properties and final summary</span>
 
     <span class="c1"># chi&#39;s</span>
-    <span class="c1">#d = -EC</span>
+    <span class="c1"># d = -EC</span>
     <span class="n">d</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mf">1e6</span>
-    <span class="n">Chi_in_MHz</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">chi</span><span class="p">(</span><span class="n">gqbus</span><span class="p">,</span> <span class="n">wr</span><span class="p">,</span> <span class="n">wq</span><span class="p">,</span>
-                         <span class="n">d</span> <span class="o">+</span> <span class="n">wq</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">1e6</span>  <span class="c1"># Total chi in MHz</span>
+    <span class="n">Chi_in_MHz</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">chi</span><span class="p">(</span><span class="n">gqbus</span><span class="p">,</span> <span class="n">wr</span><span class="p">,</span> <span class="n">wq</span><span class="p">,</span> <span class="n">d</span> <span class="o">+</span> <span class="n">wq</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">1e6</span>  <span class="c1"># Total chi in MHz</span>
 
     <span class="n">ham_dict</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">ham_dict</span><span class="p">[</span><span class="s1">&#39;fQ&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wq</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">1E9</span>
-    <span class="n">ham_dict</span><span class="p">[</span><span class="s1">&#39;EC&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">EC</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">1E6</span>
-    <span class="n">ham_dict</span><span class="p">[</span><span class="s1">&#39;EJ&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">EJ</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">1E9</span>
+    <span class="n">ham_dict</span><span class="p">[</span><span class="s2">&quot;fQ&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wq</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">1e9</span>
+    <span class="n">ham_dict</span><span class="p">[</span><span class="s2">&quot;EC&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">EC</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">1e6</span>
+    <span class="n">ham_dict</span><span class="p">[</span><span class="s2">&quot;EJ&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">EJ</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">1e9</span>
     <span class="c1"># correction to the anharmonicity (from eq 52 of solgun et al.)</span>
-    <span class="c1">#ham_dict[&#39;alpha&#39;] = ((wq0/wq)**2*ham_dict[&#39;EC&#39;])</span>
-    <span class="n">ham_dict</span><span class="p">[</span><span class="s1">&#39;alpha&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">alpha</span>
-    <span class="n">ham_dict</span><span class="p">[</span><span class="s1">&#39;dispersion&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">disp</span> <span class="o">/</span> <span class="mf">1e3</span>
-    <span class="n">ham_dict</span><span class="p">[</span><span class="s1">&#39;gbus&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gbus_in_MHz</span>
-    <span class="n">ham_dict</span><span class="p">[</span><span class="s1">&#39;chi_in_MHz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Chi_in_MHz</span>
+    <span class="c1"># ham_dict[&#39;alpha&#39;] = ((wq0/wq)**2*ham_dict[&#39;EC&#39;])</span>
+    <span class="n">ham_dict</span><span class="p">[</span><span class="s2">&quot;alpha&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">alpha</span>
+    <span class="n">ham_dict</span><span class="p">[</span><span class="s2">&quot;dispersion&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">disp</span> <span class="o">/</span> <span class="mf">1e3</span>
+    <span class="n">ham_dict</span><span class="p">[</span><span class="s2">&quot;gbus&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gbus_in_MHz</span>
+    <span class="n">ham_dict</span><span class="p">[</span><span class="s2">&quot;chi_in_MHz&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Chi_in_MHz</span>
 
     <span class="k">if</span> <span class="n">print_info</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">qubit_index</span><span class="p">,</span> <span class="n">bus_index</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Predicted Values&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Transmon Properties&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;f_Q </span><span class="si">%f</span><span class="s1"> [GHz]&#39;</span> <span class="o">%</span> <span class="n">ham_dict</span><span class="p">[</span><span class="s1">&#39;fQ&#39;</span><span class="p">])</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;EC </span><span class="si">%f</span><span class="s1"> [MHz]&#39;</span> <span class="o">%</span> <span class="n">ham_dict</span><span class="p">[</span><span class="s1">&#39;EC&#39;</span><span class="p">])</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;EJ </span><span class="si">%f</span><span class="s1"> [GHz]&#39;</span> <span class="o">%</span> <span class="n">ham_dict</span><span class="p">[</span><span class="s1">&#39;EJ&#39;</span><span class="p">])</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;alpha </span><span class="si">%f</span><span class="s1"> [MHz]&#39;</span> <span class="o">%</span> <span class="n">ham_dict</span><span class="p">[</span><span class="s1">&#39;alpha&#39;</span><span class="p">])</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;dispersion </span><span class="si">%f</span><span class="s1"> [KHz]&#39;</span> <span class="o">%</span> <span class="n">ham_dict</span><span class="p">[</span><span class="s1">&#39;dispersion&#39;</span><span class="p">])</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Lq </span><span class="si">%f</span><span class="s1"> [nH]&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">phi0</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">hbar</span> <span class="o">*</span> <span class="n">EJ</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1e-9</span><span class="p">))</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Cq </span><span class="si">%f</span><span class="s1"> [fF]&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">Cq</span> <span class="o">/</span> <span class="mf">1e-15</span><span class="p">))</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;T1 </span><span class="si">%f</span><span class="s1"> [us]&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">T1</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1e-6</span><span class="p">)))</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Predicted Values&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Transmon Properties&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;f_Q </span><span class="si">%f</span><span class="s2"> [GHz]&quot;</span> <span class="o">%</span> <span class="n">ham_dict</span><span class="p">[</span><span class="s2">&quot;fQ&quot;</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;EC </span><span class="si">%f</span><span class="s2"> [MHz]&quot;</span> <span class="o">%</span> <span class="n">ham_dict</span><span class="p">[</span><span class="s2">&quot;EC&quot;</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;EJ </span><span class="si">%f</span><span class="s2"> [GHz]&quot;</span> <span class="o">%</span> <span class="n">ham_dict</span><span class="p">[</span><span class="s2">&quot;EJ&quot;</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;alpha </span><span class="si">%f</span><span class="s2"> [MHz]&quot;</span> <span class="o">%</span> <span class="n">ham_dict</span><span class="p">[</span><span class="s2">&quot;alpha&quot;</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;dispersion </span><span class="si">%f</span><span class="s2"> [KHz]&quot;</span> <span class="o">%</span> <span class="n">ham_dict</span><span class="p">[</span><span class="s2">&quot;dispersion&quot;</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Lq </span><span class="si">%f</span><span class="s2"> [nH]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">phi0</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">hbar</span> <span class="o">*</span> <span class="n">EJ</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1e-9</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cq </span><span class="si">%f</span><span class="s2"> [fF]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">Cq</span> <span class="o">/</span> <span class="mf">1e-15</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;T1 </span><span class="si">%f</span><span class="s2"> [us]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">T1</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1e-6</span><span class="p">)))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;**Coupling Properties**&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;**Coupling Properties**&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">tCqbus</span><span class="si">%d</span><span class="s1"> </span><span class="si">%f</span><span class="s1"> [fF]&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tCqbus</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1e-15</span><span class="p">)))</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;gbus</span><span class="si">%d</span><span class="s1">_in_MHz </span><span class="si">%f</span><span class="s1"> [MHz]&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ham_dict</span><span class="p">[</span><span class="s1">&#39;gbus&#39;</span><span class="p">][</span><span class="n">ii</span><span class="p">]))</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;χ_bus</span><span class="si">%d</span><span class="s1"> </span><span class="si">%f</span><span class="s1"> [MHz]&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">Chi_in_MHz</span><span class="p">[</span><span class="n">ii</span><span class="p">]))</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;1/T1bus</span><span class="si">%d</span><span class="s1"> </span><span class="si">%f</span><span class="s1"> [Hz]&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">T1bus</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)))</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;T1bus</span><span class="si">%d</span><span class="s1"> </span><span class="si">%f</span><span class="s1"> [us]&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">T1bus</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1e-6</span><span class="p">)))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">tCqbus</span><span class="si">%d</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> [fF]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tCqbus</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1e-15</span><span class="p">)))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;gbus</span><span class="si">%d</span><span class="s2">_in_MHz </span><span class="si">%f</span><span class="s2"> [MHz]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ham_dict</span><span class="p">[</span><span class="s2">&quot;gbus&quot;</span><span class="p">][</span><span class="n">ii</span><span class="p">]))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;χ_bus</span><span class="si">%d</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> [MHz]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">Chi_in_MHz</span><span class="p">[</span><span class="n">ii</span><span class="p">]))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;1/T1bus</span><span class="si">%d</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> [Hz]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">T1bus</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;T1bus</span><span class="si">%d</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> [us]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">T1bus</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1e-6</span><span class="p">)))</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Bus-Bus Couplings&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Bus-Bus Couplings&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">jj</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;gbus</span><span class="si">%d</span><span class="s1">_</span><span class="si">%d</span><span class="s1"> </span><span class="si">%f</span><span class="s1"> [MHz]&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">jj</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">gbusbus</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span> <span class="n">jj</span><span class="p">]</span> <span class="o">/</span>
-                                              <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">)))</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="s2">&quot;gbus</span><span class="si">%d</span><span class="s2">_</span><span class="si">%d</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> [MHz]&quot;</span>
+                    <span class="o">%</span> <span class="p">(</span><span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">jj</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">gbusbus</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span> <span class="n">jj</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">))</span>
+                <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">ham_dict</span></div>
 
@@ -957,7 +967,7 @@
     <span class="n">dim</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">nmax</span> <span class="o">+</span> <span class="mi">1</span>
     <span class="n">nmat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">dim</span><span class="p">,</span> <span class="n">dim</span><span class="p">])</span>
     <span class="n">V</span> <span class="o">=</span> <span class="n">nmat</span>
-    <span class="n">charge</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+    <span class="n">charge</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
 
     <span class="c1"># KE</span>
     <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">):</span>
@@ -965,7 +975,7 @@
 
     <span class="c1"># PE</span>
     <span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">([</span><span class="n">dim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]),</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">V</span> <span class="o">=</span> <span class="p">(</span><span class="n">V</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">V</span><span class="p">)))</span>
+    <span class="n">V</span> <span class="o">=</span> <span class="n">V</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">V</span><span class="p">))</span>
 
     <span class="n">varphi</span> <span class="o">=</span> <span class="n">hbar</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">e</span>
     <span class="n">EJ</span> <span class="o">=</span> <span class="n">IC</span> <span class="o">*</span> <span class="n">varphi</span>
@@ -975,100 +985,92 @@
     <span class="k">for</span> <span class="n">iindex</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
         <span class="n">ng</span> <span class="o">=</span> <span class="n">charge</span><span class="p">[</span><span class="n">iindex</span><span class="p">]</span>
 
-        <span class="n">H</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">Ec</span> <span class="o">*</span> <span class="p">(</span><span class="n">nmat</span> <span class="o">-</span> <span class="n">ng</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">dim</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">EJ</span> <span class="o">*</span> <span class="n">V</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">Ec</span> <span class="o">*</span> <span class="p">(</span><span class="n">nmat</span> <span class="o">-</span> <span class="n">ng</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">dim</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">EJ</span> <span class="o">*</span> <span class="n">V</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">H</span><span class="p">)))):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Matrix is not Hermitian&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">H</span><span class="p">))):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Matrix is not Hermitian&quot;</span><span class="p">)</span>
 
         <span class="p">[</span><span class="n">d</span><span class="p">,</span> <span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">H</span><span class="p">)</span>
         <span class="n">sortIX</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
         <span class="n">sorted_d</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="n">sortIX</span><span class="p">]</span>
 
-        <span class="n">elvls</span><span class="p">[:,</span> <span class="n">iindex</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">sorted_d</span> <span class="o">-</span> <span class="n">sorted_d</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">elvls</span><span class="p">[:,</span> <span class="n">iindex</span><span class="p">]</span> <span class="o">=</span> <span class="n">sorted_d</span> <span class="o">-</span> <span class="n">sorted_d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="n">do_plots</span><span class="p">:</span>
-
         <span class="c1"># plot using matplotlib (might need to clean this up)</span>
 
         <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">charge</span><span class="p">,</span>
-                 <span class="n">elvls</span><span class="p">[</span>
-                     <span class="mi">0</span><span class="p">,</span>
-                 <span class="p">]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">,</span>
-                 <span class="s1">&#39;k&#39;</span><span class="p">,</span>
-                 <span class="n">charge</span><span class="p">,</span>
-                 <span class="n">elvls</span><span class="p">[</span>
-                     <span class="mi">1</span><span class="p">,</span>
-                 <span class="p">]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">,</span>
-                 <span class="s1">&#39;b&#39;</span><span class="p">,</span>
-                 <span class="n">charge</span><span class="p">,</span>
-                 <span class="n">elvls</span><span class="p">[</span>
-                     <span class="mi">2</span><span class="p">,</span>
-                 <span class="p">]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">,</span>
-                 <span class="s1">&#39;r&#39;</span><span class="p">,</span>
-                 <span class="n">charge</span><span class="p">,</span>
-                 <span class="n">elvls</span><span class="p">[</span>
-                     <span class="mi">3</span><span class="p">,</span>
-                 <span class="p">]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">,</span>
-                 <span class="s1">&#39;g&#39;</span><span class="p">,</span>
-                 <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Gate charge, n_g [2e]&#39;</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Energy, E_n [GHz]&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">charge</span><span class="p">,</span>
+            <span class="n">elvls</span><span class="p">[</span><span class="mi">0</span><span class="p">,]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">,</span>
+            <span class="s2">&quot;k&quot;</span><span class="p">,</span>
+            <span class="n">charge</span><span class="p">,</span>
+            <span class="n">elvls</span><span class="p">[</span><span class="mi">1</span><span class="p">,]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">,</span>
+            <span class="s2">&quot;b&quot;</span><span class="p">,</span>
+            <span class="n">charge</span><span class="p">,</span>
+            <span class="n">elvls</span><span class="p">[</span><span class="mi">2</span><span class="p">,]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">,</span>
+            <span class="s2">&quot;r&quot;</span><span class="p">,</span>
+            <span class="n">charge</span><span class="p">,</span>
+            <span class="n">elvls</span><span class="p">[</span><span class="mi">3</span><span class="p">,]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">,</span>
+            <span class="s2">&quot;g&quot;</span><span class="p">,</span>
+            <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Gate charge, n_g [2e]&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Energy, E_n [GHz]&quot;</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">charge</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="n">elvls</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">+</span> <span class="n">elvls</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">h</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1e3</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Gate charge, n_g [2e]&#39;</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Energy [kHz], &#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">charge</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="n">elvls</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">+</span> <span class="n">elvls</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">h</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1e3</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Gate charge, n_g [2e]&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Energy [kHz], &quot;</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
         <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-            <span class="n">charge</span><span class="p">,</span> <span class="mi">1000</span> <span class="o">*</span> <span class="p">(</span><span class="n">elvls</span><span class="p">[</span>
-                <span class="mi">2</span><span class="p">,</span>
-            <span class="p">]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span> <span class="o">-</span> <span class="n">elvls</span><span class="p">[</span>
-                <span class="mi">0</span><span class="p">,</span>
-            <span class="p">]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">elvls</span><span class="p">[</span>
-                <span class="mi">1</span><span class="p">,</span>
-            <span class="p">]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span> <span class="o">-</span> <span class="n">elvls</span><span class="p">[</span>
-                <span class="mi">0</span><span class="p">,</span>
-            <span class="p">]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">),</span> <span class="n">charge</span><span class="p">,</span> <span class="o">-</span><span class="n">charge</span> <span class="o">*</span> <span class="mi">0</span> <span class="o">-</span> <span class="mi">1000</span> <span class="o">*</span> <span class="n">Ec</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Gate charge, n_g [2e]&#39;</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;delta [MHZ] green theory, blue numerics &#39;</span><span class="p">)</span>
+            <span class="n">charge</span><span class="p">,</span>
+            <span class="mi">1000</span>
+            <span class="o">*</span> <span class="p">(</span>
+                <span class="n">elvls</span><span class="p">[</span><span class="mi">2</span><span class="p">,]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span>
+                <span class="o">-</span> <span class="n">elvls</span><span class="p">[</span><span class="mi">0</span><span class="p">,]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span>
+                <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">elvls</span><span class="p">[</span><span class="mi">1</span><span class="p">,]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span>
+                <span class="o">-</span> <span class="n">elvls</span><span class="p">[</span><span class="mi">0</span><span class="p">,]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span>
+            <span class="p">),</span>
+            <span class="n">charge</span><span class="p">,</span>
+            <span class="o">-</span><span class="n">charge</span> <span class="o">*</span> <span class="mi">0</span> <span class="o">-</span> <span class="mi">1000</span> <span class="o">*</span> <span class="n">Ec</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Gate charge, n_g [2e]&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;delta [MHZ] green theory, blue numerics &quot;</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">charge</span><span class="p">,</span> <span class="n">elvls</span><span class="p">[</span>
-            <span class="mi">1</span><span class="p">,</span>
-        <span class="p">]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span> <span class="o">-</span> <span class="n">elvls</span><span class="p">[</span>
-            <span class="mi">0</span><span class="p">,</span>
-        <span class="p">]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">,</span> <span class="n">charge</span><span class="p">,</span> <span class="n">charge</span> <span class="o">*</span> <span class="mi">0</span> <span class="o">+</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">8</span> <span class="o">*</span> <span class="n">EJ</span> <span class="o">*</span> <span class="n">Ec</span><span class="p">)</span> <span class="o">-</span> <span class="n">Ec</span><span class="p">)</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Gate charge, n_g [2e]&#39;</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;F01 [GHZ] green theory, blue numerics &#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">charge</span><span class="p">,</span>
+            <span class="n">elvls</span><span class="p">[</span><span class="mi">1</span><span class="p">,]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span> <span class="o">-</span> <span class="n">elvls</span><span class="p">[</span><span class="mi">0</span><span class="p">,]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">,</span>
+            <span class="n">charge</span><span class="p">,</span>
+            <span class="n">charge</span> <span class="o">*</span> <span class="mi">0</span> <span class="o">+</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">8</span> <span class="o">*</span> <span class="n">EJ</span> <span class="o">*</span> <span class="n">Ec</span><span class="p">)</span> <span class="o">-</span> <span class="n">Ec</span><span class="p">)</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Gate charge, n_g [2e]&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;F01 [GHZ] green theory, blue numerics &quot;</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
-    <span class="n">fqubitGHz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">elvls</span><span class="p">[</span>
-        <span class="mi">1</span><span class="p">,</span>
-    <span class="p">]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">)</span>
-    <span class="n">anharMHz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">1000</span> <span class="o">*</span> <span class="p">(</span><span class="n">elvls</span><span class="p">[</span>
-        <span class="mi">2</span><span class="p">,</span>
-    <span class="p">]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span> <span class="o">-</span> <span class="n">elvls</span><span class="p">[</span>
-        <span class="mi">0</span><span class="p">,</span>
-    <span class="p">]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">elvls</span><span class="p">[</span>
-        <span class="mi">1</span><span class="p">,</span>
-    <span class="p">]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span> <span class="o">-</span> <span class="n">elvls</span><span class="p">[</span>
-        <span class="mi">0</span><span class="p">,</span>
-    <span class="p">]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">))</span>
+    <span class="n">fqubitGHz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">elvls</span><span class="p">[</span><span class="mi">1</span><span class="p">,]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">)</span>
+    <span class="n">anharMHz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span>
+        <span class="mi">1000</span>
+        <span class="o">*</span> <span class="p">(</span>
+            <span class="n">elvls</span><span class="p">[</span><span class="mi">2</span><span class="p">,]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span>
+            <span class="o">-</span> <span class="n">elvls</span><span class="p">[</span><span class="mi">0</span><span class="p">,]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span>
+            <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">elvls</span><span class="p">[</span><span class="mi">1</span><span class="p">,]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span>
+            <span class="o">-</span> <span class="n">elvls</span><span class="p">[</span><span class="mi">0</span><span class="p">,]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
 
-    <span class="n">disp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="o">-</span><span class="n">elvls</span><span class="p">[</span>
-        <span class="mi">1</span><span class="p">,</span>
-    <span class="p">]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">+</span> <span class="n">elvls</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">h</span><span class="p">)</span>
+    <span class="n">disp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="o">-</span><span class="n">elvls</span><span class="p">[</span><span class="mi">1</span><span class="p">,]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">+</span> <span class="n">elvls</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">h</span><span class="p">)</span>
     <span class="n">tphi_ms</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">disp</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mf">1e-4</span> <span class="o">*</span> <span class="mf">1e-3</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">do_disp</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Mean Frequency </span><span class="si">%f</span><span class="s1"> [GHz]&#39;</span> <span class="o">%</span> <span class="n">fqubitGHz</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Anharmonicity </span><span class="si">%f</span><span class="s1"> [MHz]&#39;</span> <span class="o">%</span> <span class="n">anharMHz</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;EC </span><span class="si">%f</span><span class="s1"> [GHz]&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">Ec</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">))</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Charge Dispersion </span><span class="si">%f</span><span class="s1"> [kHz]&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">disp</span> <span class="o">/</span> <span class="mf">1e3</span><span class="p">))</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Dephasing Time </span><span class="si">%f</span><span class="s1"> [ms]&#39;</span> <span class="o">%</span> <span class="n">tphi_ms</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mean Frequency </span><span class="si">%f</span><span class="s2"> [GHz]&quot;</span> <span class="o">%</span> <span class="n">fqubitGHz</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Anharmonicity </span><span class="si">%f</span><span class="s2"> [MHz]&quot;</span> <span class="o">%</span> <span class="n">anharMHz</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;EC </span><span class="si">%f</span><span class="s2"> [GHz]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">Ec</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Charge Dispersion </span><span class="si">%f</span><span class="s2"> [kHz]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">disp</span> <span class="o">/</span> <span class="mf">1e3</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Dephasing Time </span><span class="si">%f</span><span class="s2"> [ms]&quot;</span> <span class="o">%</span> <span class="n">tphi_ms</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">fqubitGHz</span><span class="p">,</span> <span class="n">anharMHz</span><span class="p">,</span> <span class="n">disp</span><span class="p">,</span> <span class="n">tphi_ms</span></div>
 
@@ -1091,13 +1093,12 @@
 <span class="sd">        specified frequency and anharmonicity</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">xrr</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">cos_to_mega_and_delta</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">f01</span><span class="p">,</span> <span class="n">f02on2</span><span class="p">),</span>
-                       <span class="p">[</span><span class="n">Cin_est</span><span class="p">,</span> <span class="n">Icin_est</span><span class="p">],</span>
-                       <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
-                       <span class="n">options</span><span class="o">=</span><span class="p">{</span>
-                           <span class="s1">&#39;maxiter&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
-                           <span class="s1">&#39;disp&#39;</span><span class="p">:</span> <span class="kc">True</span>
-                       <span class="p">})</span>
+    <span class="n">xrr</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">cos_to_mega_and_delta</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">f01</span><span class="p">,</span> <span class="n">f02on2</span><span class="p">),</span>
+        <span class="p">[</span><span class="n">Cin_est</span><span class="p">,</span> <span class="n">Icin_est</span><span class="p">],</span>
+        <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
+        <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;maxiter&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">&quot;disp&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+    <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">xrr</span><span class="o">.</span><span class="n">x</span></div>
 
@@ -1126,12 +1127,11 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        float: Calculated value</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">fqubitGHz</span><span class="p">,</span> <span class="n">anharMHz</span><span class="p">,</span> <span class="n">disp</span><span class="p">,</span> <span class="n">tphi_ms</span> <span class="o">=</span> <span class="n">levels_vs_ng_real_units</span><span class="p">(</span><span class="n">Cin</span><span class="p">,</span>
-                                                                 <span class="n">ICin</span><span class="p">,</span>
-                                                                 <span class="n">N</span><span class="o">=</span><span class="mi">51</span><span class="p">)</span>
+    <span class="n">fqubitGHz</span><span class="p">,</span> <span class="n">anharMHz</span><span class="p">,</span> <span class="n">disp</span><span class="p">,</span> <span class="n">tphi_ms</span> <span class="o">=</span> <span class="n">levels_vs_ng_real_units</span><span class="p">(</span><span class="n">Cin</span><span class="p">,</span> <span class="n">ICin</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">51</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="p">((</span><span class="n">fqubitGHz</span> <span class="o">-</span> <span class="n">f01</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span>
-            <span class="p">(</span><span class="n">fqubitGHz</span> <span class="o">+</span> <span class="n">anharMHz</span> <span class="o">/</span> <span class="mf">2.</span> <span class="o">/</span> <span class="mf">1e3</span> <span class="o">-</span> <span class="n">f02on2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span></div>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">fqubitGHz</span> <span class="o">-</span> <span class="n">f01</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">fqubitGHz</span> <span class="o">+</span> <span class="n">anharMHz</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">/</span> <span class="mf">1e3</span> <span class="o">-</span> <span class="n">f02on2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span></div>
 
 
 
@@ -1152,7 +1152,7 @@
 <span class="sd">        float: Calculated chargeline T1</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">return</span> <span class="n">Cq</span> <span class="o">/</span> <span class="p">(</span><span class="n">Ccharge</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="mf">50.</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">f01</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">Cq</span> <span class="o">/</span> <span class="p">(</span><span class="n">Ccharge</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="mf">50.0</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">f01</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span></div>
 
 
 
@@ -1161,7 +1161,7 @@
 
 <div class="viewcode-block" id="readin_q3d_matrix">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.lumped_capacitive.html#qiskit_metal.analyses.lumped_capacitive.readin_q3d_matrix">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">readin_q3d_matrix</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">delim_whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">readin_q3d_matrix</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">delim_whitespace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Read in the txt file created from q3d export as CSV and output the</span>
 <span class="sd">    capacitance matrix file exported by Ansys Q3D.</span>
 
@@ -1205,34 +1205,37 @@
 
     <span class="n">text</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
 
-    <span class="n">s1</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;Capacitance Matrix&#39;</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Copuld not split text to `Capacitance Matrix`&quot;</span>
+    <span class="n">s1</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;Capacitance Matrix&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Could not split text to `Capacitance Matrix`&quot;</span>
 
-    <span class="n">s2</span> <span class="o">=</span> <span class="n">s1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;Conductance Matrix&#39;</span><span class="p">)</span>
+    <span class="n">s2</span> <span class="o">=</span> <span class="n">s1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;Conductance Matrix&quot;</span><span class="p">)</span>
 
-    <span class="n">df_cmat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">s2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()),</span>
-                          <span class="n">delim_whitespace</span><span class="o">=</span><span class="n">delim_whitespace</span><span class="p">,</span>
-                          <span class="n">skipinitialspace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                          <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">delim_whitespace</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">sep</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;\s+&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sep</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">df_cmat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+        <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">s2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()),</span> <span class="n">sep</span><span class="o">=</span><span class="n">sep</span><span class="p">,</span> <span class="n">skipinitialspace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span>
+    <span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">s2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">df_cond</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">s2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()),</span>
-                              <span class="n">delim_whitespace</span><span class="o">=</span><span class="n">delim_whitespace</span><span class="p">,</span>
-                              <span class="n">skipinitialspace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                              <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">df_cond</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+            <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">s2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()),</span> <span class="n">sep</span><span class="o">=</span><span class="n">sep</span><span class="p">,</span> <span class="n">skipinitialspace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span>
+        <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">df_cond</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">if</span> <span class="n">delim_whitespace</span> <span class="o">==</span> <span class="kc">False</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_cmat</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">delim_whitespace</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_cmat</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
         <span class="n">df_cmat</span> <span class="o">=</span> <span class="n">df_cmat</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">df_cmat</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-    <span class="n">units</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;C Units:(.*?),&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">design_variation</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;DesignVariation:(.*?)\n&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="n">units</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;C Units:(.*?),&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">design_variation</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;DesignVariation:(.*?)\n&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">design_variation</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">design_variation</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Design Variation:(.*?)\n&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+        <span class="n">design_variation</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Design Variation:(.*?)\n&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">design_variation</span><span class="p">:</span>
             <span class="n">design_variation</span> <span class="o">=</span> <span class="n">design_variation</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">design_variation</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="n">design_variation</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">design_variation</span> <span class="o">=</span> <span class="n">design_variation</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
@@ -1252,12 +1255,10 @@
 <span class="sd">        pd.DataFrame of cap matrix, with no names of columns.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">text</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
-    <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;capMatrix (.*?)]&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
+    <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;capMatrix (.*?)]&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
-        <span class="n">match</span> <span class="o">=</span> <span class="n">match</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;= [&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="n">dfC</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">match</span><span class="p">),</span>
-                          <span class="n">skipinitialspace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                          <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">match</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;= [&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;]&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">dfC</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">match</span><span class="p">),</span> <span class="n">skipinitialspace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">dfC</span></div>
 
 
@@ -1267,7 +1268,7 @@
 
 <div class="viewcode-block" id="load_q3d_capacitance_matrix">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.lumped_capacitive.html#qiskit_metal.analyses.lumped_capacitive.load_q3d_capacitance_matrix">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">load_q3d_capacitance_matrix</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">user_units</span><span class="o">=</span><span class="s1">&#39;fF&#39;</span><span class="p">,</span> <span class="n">_disp</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_q3d_capacitance_matrix</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">user_units</span><span class="o">=</span><span class="s2">&quot;fF&quot;</span><span class="p">,</span> <span class="n">_disp</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Load Q3D capcitance file exported as Maxwell matrix. Do not export</span>
 <span class="sd">    conductance. Units are read in automatically and converted to user units.</span>
 
@@ -1290,7 +1291,9 @@
     <span class="k">if</span> <span class="n">_disp</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span>
             <span class="s2">&quot;Imported capacitance matrix with UNITS: [</span><span class="si">%s</span><span class="s2">] now converted to USER UNITS:[</span><span class="si">%s</span><span class="s2">] </span><span class="se">\</span>
-<span class="s2">                from file:</span><span class="se">\n\t</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">Cunits</span><span class="p">,</span> <span class="n">user_units</span><span class="p">,</span> <span class="n">path</span><span class="p">))</span>
+<span class="s2">                from file:</span><span class="se">\n\t</span><span class="si">%s</span><span class="s2">&quot;</span>
+            <span class="o">%</span> <span class="p">(</span><span class="n">Cunits</span><span class="p">,</span> <span class="n">user_units</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+        <span class="p">)</span>
         <span class="n">df_cmat_style_print</span><span class="p">(</span><span class="n">df_cmat</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">df_cmat</span><span class="p">,</span> <span class="n">user_units</span><span class="p">,</span> <span class="n">design_variation</span><span class="p">,</span> <span class="n">df_cond</span></div>
@@ -1299,9 +1302,14 @@
 
 <div class="viewcode-block" id="lumped_oscillator_from_path">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.lumped_capacitive.html#qiskit_metal.analyses.lumped_capacitive.lumped_oscillator_from_path">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">lumped_oscillator_from_path</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Lj_nH</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">Cj_fF</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">N</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-                                <span class="n">fr</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
-                                <span class="n">fb</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">lumped_oscillator_from_path</span><span class="p">(</span>
+    <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">Lj_nH</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">Cj_fF</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">N</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">fr</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">fb</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Obtain a single result dataframe from a Q3D capacitance file pointed to by path.</span>
 <span class="sd">    Similar to member method lumped_oscillator_vs_passes() of QQ3DRenderer but for a user</span>
 <span class="sd">    provided capacitance matrix file.</span>
@@ -1321,26 +1329,26 @@
 <span class="sd">        dict: A single dataframe corresponding to a single capacitance matrix</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">ureg</span> <span class="o">=</span> <span class="n">UnitRegistry</span><span class="p">()</span>
-    <span class="n">IC_Amps</span> <span class="o">=</span> <span class="n">Convert</span><span class="o">.</span><span class="n">Ic_from_Lj</span><span class="p">(</span><span class="n">Lj_nH</span><span class="p">,</span> <span class="s1">&#39;nH&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">)</span>
-    <span class="n">CJ</span> <span class="o">=</span> <span class="n">ureg</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">Cj_fF</span><span class="si">}</span><span class="s1"> fF&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;farad&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
-    <span class="n">fr</span> <span class="o">=</span> <span class="n">ureg</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">fr</span><span class="si">}</span><span class="s1"> GHz&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;GHz&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
-    <span class="n">fb</span> <span class="o">=</span> <span class="p">[</span><span class="n">ureg</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">freq</span><span class="si">}</span><span class="s1"> GHz&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;GHz&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="k">for</span> <span class="n">freq</span> <span class="ow">in</span> <span class="n">fb</span><span class="p">]</span>
+    <span class="n">IC_Amps</span> <span class="o">=</span> <span class="n">Convert</span><span class="o">.</span><span class="n">Ic_from_Lj</span><span class="p">(</span><span class="n">Lj_nH</span><span class="p">,</span> <span class="s2">&quot;nH&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">)</span>
+    <span class="n">CJ</span> <span class="o">=</span> <span class="n">ureg</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">Cj_fF</span><span class="si">}</span><span class="s2"> fF&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;farad&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+    <span class="n">fr</span> <span class="o">=</span> <span class="n">ureg</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fr</span><span class="si">}</span><span class="s2"> GHz&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;GHz&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+    <span class="n">fb</span> <span class="o">=</span> <span class="p">[</span><span class="n">ureg</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">freq</span><span class="si">}</span><span class="s2"> GHz&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;GHz&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="k">for</span> <span class="n">freq</span> <span class="ow">in</span> <span class="n">fb</span><span class="p">]</span>
 
-    <span class="n">df_cmat</span><span class="p">,</span> <span class="n">user_units</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="o">=</span> <span class="n">load_q3d_capacitance_matrix</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-    <span class="n">c_units</span> <span class="o">=</span> <span class="n">ureg</span><span class="p">(</span><span class="n">user_units</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;farads&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+    <span class="p">(</span>
+        <span class="n">df_cmat</span><span class="p">,</span>
+        <span class="n">user_units</span><span class="p">,</span>
+        <span class="n">_</span><span class="p">,</span>
+        <span class="n">_</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">=</span> <span class="n">load_q3d_capacitance_matrix</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">c_units</span> <span class="o">=</span> <span class="n">ureg</span><span class="p">(</span><span class="n">user_units</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;farads&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
 
-    <span class="n">RES</span> <span class="o">=</span> <span class="n">extract_transmon_coupled_Noscillator</span><span class="p">(</span><span class="n">df_cmat</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">c_units</span><span class="p">,</span>
-                                               <span class="n">IC_Amps</span><span class="p">,</span>
-                                               <span class="n">CJ</span><span class="p">,</span>
-                                               <span class="n">N</span><span class="p">,</span>
-                                               <span class="n">fb</span><span class="p">,</span>
-                                               <span class="n">fr</span><span class="p">,</span>
-                                               <span class="n">g_scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                                               <span class="n">print_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">RES</span> <span class="o">=</span> <span class="n">extract_transmon_coupled_Noscillator</span><span class="p">(</span>
+        <span class="n">df_cmat</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">c_units</span><span class="p">,</span> <span class="n">IC_Amps</span><span class="p">,</span> <span class="n">CJ</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">fb</span><span class="p">,</span> <span class="n">fr</span><span class="p">,</span> <span class="n">g_scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">print_info</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
 
     <span class="n">RES</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">RES</span><span class="p">])</span>
-    <span class="n">RES</span><span class="p">[</span><span class="s1">&#39;χr MHz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">RES</span><span class="p">[</span><span class="s1">&#39;chi_in_MHz&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
-    <span class="n">RES</span><span class="p">[</span><span class="s1">&#39;gr MHz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">RES</span><span class="p">[</span><span class="s1">&#39;gbus&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">RES</span><span class="p">[</span><span class="s2">&quot;χr MHz&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">RES</span><span class="p">[</span><span class="s2">&quot;chi_in_MHz&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">RES</span><span class="p">[</span><span class="s2">&quot;gr MHz&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">RES</span><span class="p">[</span><span class="s2">&quot;gbus&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
     <span class="k">return</span> <span class="n">RES</span></div>
 
 
@@ -1354,7 +1362,8 @@
 <span class="sd">        df_cmat (dataframe): Dataframe to display</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span>
-    <span class="n">display</span><span class="p">(</span><span class="n">df_cmat</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;#5fba7d&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">))</span></div>
+
+    <span class="n">display</span><span class="p">(</span><span class="n">df_cmat</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;#5fba7d&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">))</span></div>
 
 
 
@@ -1421,7 +1430,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/01/24</div>
+              Last updated on 2026/04/24</div>
           </div>
           <div class="right-details">
             

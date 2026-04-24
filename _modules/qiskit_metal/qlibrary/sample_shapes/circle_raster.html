@@ -503,10 +503,11 @@
 <span class="c1"># that they have been altered from the originals.</span>
 <span class="sd">&quot;&quot;&quot;This is the CircleCaterpillar module.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">draw</span><span class="p">,</span> <span class="n">Dict</span>  <span class="c1"># , QComponent</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">QComponent</span>
-<span class="c1">#from qiskit_metal import is_true</span>
+<span class="c1"># from qiskit_metal import is_true</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">CAP_STYLE</span><span class="p">,</span> <span class="n">JOIN_STYLE</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">draw</span>  <span class="c1"># , QComponent</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">QComponent</span>
 
 
 <div class="viewcode-block" id="CircleRaster">
@@ -531,13 +532,14 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">default_options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-        <span class="n">radius</span><span class="o">=</span><span class="s1">&#39;300um&#39;</span><span class="p">,</span>
-        <span class="n">resolution</span><span class="o">=</span><span class="s1">&#39;16&#39;</span><span class="p">,</span>
-        <span class="n">cap_style</span><span class="o">=</span><span class="s1">&#39;round&#39;</span><span class="p">,</span>  <span class="c1"># round, flat, square</span>
+        <span class="n">radius</span><span class="o">=</span><span class="s2">&quot;300um&quot;</span><span class="p">,</span>
+        <span class="n">resolution</span><span class="o">=</span><span class="s2">&quot;16&quot;</span><span class="p">,</span>
+        <span class="n">cap_style</span><span class="o">=</span><span class="s2">&quot;round&quot;</span><span class="p">,</span>  <span class="c1"># round, flat, square</span>
         <span class="c1"># join_style = &#39;round&#39;, # round, mitre, bevel</span>
         <span class="c1"># General</span>
-        <span class="n">subtract</span><span class="o">=</span><span class="s1">&#39;False&#39;</span><span class="p">,</span>
-        <span class="n">helper</span><span class="o">=</span><span class="s1">&#39;False&#39;</span><span class="p">)</span>
+        <span class="n">subtract</span><span class="o">=</span><span class="s2">&quot;False&quot;</span><span class="p">,</span>
+        <span class="n">helper</span><span class="o">=</span><span class="s2">&quot;False&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Default drawing options&quot;&quot;&quot;</span>
 
     <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A single configurable circle&quot;&quot;&quot;</span>
@@ -555,17 +557,20 @@
         <span class="c1"># create the geometry</span>
         <span class="n">circle</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pos_x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_y</span><span class="p">)</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span>
             <span class="n">p</span><span class="o">.</span><span class="n">radius</span><span class="p">,</span>
-            <span class="n">resolution</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">resolution</span><span class="p">),</span>
+            <span class="n">quad_segs</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">resolution</span><span class="p">),</span>
             <span class="n">cap_style</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">CAP_STYLE</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">cap_style</span><span class="p">),</span>
-            <span class="c1">#join_style = getattr(JOIN_STYLE, p.join_style)</span>
+            <span class="c1"># join_style = getattr(JOIN_STYLE, p.join_style)</span>
         <span class="p">)</span>
 
         <span class="c1"># add qgeometry</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;circle&#39;</span><span class="p">:</span> <span class="n">circle</span><span class="p">},</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">subtract</span><span class="p">,</span>
-                           <span class="n">helper</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">helper</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">chip</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">chip</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;poly&quot;</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">&quot;circle&quot;</span><span class="p">:</span> <span class="n">circle</span><span class="p">},</span>
+            <span class="n">subtract</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">subtract</span><span class="p">,</span>
+            <span class="n">helper</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">helper</span><span class="p">,</span>
+            <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
+            <span class="n">chip</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">chip</span><span class="p">,</span>
+        <span class="p">)</span></div>
 </div>
 
 </pre></div>
@@ -586,7 +591,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/01/24</div>
+              Last updated on 2026/04/24</div>
           </div>
           <div class="right-details">
             
