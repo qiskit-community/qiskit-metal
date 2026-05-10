@@ -18,19 +18,22 @@
 # pylint: disable-msg=too-many-public-methods
 """Qiskit Metal unit tests analyses functionality."""
 
-from pathlib import Path
 import unittest
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
-from qiskit_metal.analyses.quantization import lumped_capacitive
-from qiskit_metal.analyses.hamiltonian.transmon_charge_basis import Hcpb
-from qiskit_metal.analyses.hamiltonian.HO_wavefunctions import wavefunction
-from qiskit_metal.analyses.em import cpw_calculations, kappa_calculation
-from qiskit_metal.analyses.sweep_and_optimize.sweeper import Sweeper
-from .assertions import AssertionsMixin
 from qiskit_metal import designs
+from qiskit_metal.analyses.em import cpw_calculations, kappa_calculation
+from qiskit_metal.analyses.hamiltonian.HO_wavefunctions import wavefunction
+from qiskit_metal.analyses.hamiltonian.states_energies import (basis_state_on,
+                                                               extract_energies)
+from qiskit_metal.analyses.hamiltonian.transmon_charge_basis import Hcpb
+from qiskit_metal.analyses.quantization import lumped_capacitive
+from qiskit_metal.analyses.sweep_and_optimize.sweeper import Sweeper
+
+from .assertions import AssertionsMixin
 
 TEST_DATA = Path(__file__).parent / "test_data"
 
@@ -546,8 +549,8 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
                     'Q1_bus_Q2_connector_pad', 'Q1_pad_bot', 'Q1_pad_top1',
                     'Q1_readout_connector_pad'
             ]:
-                self.assertAlmostEqual(test_a_df_cmat_expected[j][i],
-                                       test_a_df_cmat_result[j][i],
+                self.assertAlmostEqual(test_a_df_cmat_expected[j].iloc[i],
+                                       test_a_df_cmat_result[j].iloc[i],
                                        places=3)
 
         data_points = test_a_df_cond_expected['ground_plane'].size
@@ -557,8 +560,8 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
                     'Q1_bus_Q2_connector_pad', 'Q1_pad_bot', 'Q1_pad_top1',
                     'Q1_readout_connector_pad'
             ]:
-                self.assertAlmostEqual(test_a_df_cond_expected[j][i],
-                                       test_a_df_cond_result[j][i],
+                self.assertAlmostEqual(test_a_df_cond_expected[j].iloc[i],
+                                       test_a_df_cond_result[j].iloc[i],
                                        places=3)
 
         data_points = test_b_df_cmat_expected['ground_plane'].size
@@ -568,8 +571,8 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
                     'Q1_bus_Q2_connector_pad', 'Q1_pad_bot', 'Q1_pad_top1',
                     'Q1_readout_connector_pad'
             ]:
-                self.assertAlmostEqual(test_b_df_cmat_expected[j][i],
-                                       test_b_df_cmat_result[j][i],
+                self.assertAlmostEqual(test_b_df_cmat_expected[j].iloc[i],
+                                       test_b_df_cmat_result[j].iloc[i],
                                        places=3)
 
         data_points = test_b_df_cond_expected['ground_plane'].size
@@ -579,8 +582,8 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
                     'Q1_bus_Q2_connector_pad', 'Q1_pad_bot', 'Q1_pad_top1',
                     'Q1_readout_connector_pad'
             ]:
-                self.assertAlmostEqual(test_b_df_cond_expected[j][i],
-                                       test_b_df_cond_result[j][i],
+                self.assertAlmostEqual(test_b_df_cond_expected[j].iloc[i],
+                                       test_b_df_cond_result[j].iloc[i],
                                        places=3)
 
     def test_analyses_lumped_move_index_to(self):
@@ -768,6 +771,141 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         hcpb = Hcpb(nlevels=15, Ej=13971.3, Ec=295.2, ng=0.001)
         self.assertAlmostEqual(hcpb.n_ij(1, 2), 1.4670047579229986)
 
+    def test_analysis_transmon_charge_basis_h0_to_qutip(self):
+        """Test the h0_to_qutip function in the Hcpb class returns a qutip Qobj
+        whose diagonal is the eigenvalues, zeroed at the ground state."""
+        import qutip
+        hcpb = Hcpb(nlevels=15, Ej=13971.3, Ec=295.2, ng=0.001)
+        n = 4
+        h0 = hcpb.h0_to_qutip(n)
+
+        self.assertIsInstance(h0, qutip.Qobj)
+        self.assertEqual(h0.shape, (n, n))
+        self.assertEqual(h0.dims, [[n], [n]])
+        self.assertTrue(h0.isherm)
+
+        diag = np.diag(h0.full()).real
+        # Ground state must be zero (the method subtracts evals[0]).
+        self.assertAlmostEqual(diag[0], 0.0)
+        # The remaining diagonal entries must equal hcpb.fij(0, k).
+        for k in range(1, n):
+            self.assertAlmostEqualRel(diag[k],
+                                      hcpb.fij(0, k),
+                                      rel_tol=1e-10)
+        # Off-diagonal entries must be zero.
+        full = h0.full()
+        for i in range(n):
+            for j in range(n):
+                if i != j:
+                    self.assertAlmostEqual(full[i, j], 0.0)
+
+    def test_analysis_transmon_charge_basis_n_to_qutip(self):
+        """Test the n_to_qutip function in the Hcpb class returns a qutip Qobj
+        of the number operator in the energy eigen-basis."""
+        import qutip
+        hcpb = Hcpb(nlevels=15, Ej=13971.3, Ec=295.2, ng=0.001)
+        n = 3
+        n_op = hcpb.n_to_qutip(n)
+
+        self.assertIsInstance(n_op, qutip.Qobj)
+        self.assertEqual(n_op.shape, (n, n))
+        self.assertEqual(n_op.dims, [[n], [n]])
+
+        full = n_op.full()
+        # Diagonal entries are zeroed by construction.
+        for k in range(n):
+            self.assertAlmostEqual(full[k, k], 0.0)
+        # Off-diagonal magnitudes match hcpb.n_ij(i, j).
+        for i in range(n):
+            for j in range(n):
+                if i != j:
+                    self.assertAlmostEqualRel(abs(full[i, j]),
+                                              hcpb.n_ij(i, j),
+                                              rel_tol=1e-10)
+
+    def test_analysis_transmon_charge_basis_n_to_qutip_thresh(self):
+        """Test the n_to_qutip thresh argument zeroes small entries."""
+        hcpb = Hcpb(nlevels=15, Ej=13971.3, Ec=295.2, ng=0.001)
+        # Use a threshold larger than the |0><2| element (~1e-7) but smaller
+        # than the |0><1| element (~1.07).
+        n_op = hcpb.n_to_qutip(3, thresh=0.5).full()
+        self.assertAlmostEqual(n_op[0, 2], 0.0)
+        self.assertAlmostEqual(n_op[2, 0], 0.0)
+        self.assertGreater(abs(n_op[0, 1]), 0.5)
+
+    def test_analysis_states_energies_basis_state_on(self):
+        """Test basis_state_on returns the correct qutip tensor product."""
+        import qutip
+        # Two modes of size 3, with 1 photon in mode 0 and 2 photons in mode 1.
+        state = basis_state_on([3, 3], {0: 1, 1: 2})
+
+        self.assertIsInstance(state, qutip.Qobj)
+        self.assertEqual(state.shape, (9, 1))
+        # qutip 4 used dims [[3, 3], [1]], qutip 5 uses [[3, 3], [1, 1]];
+        # accept either to keep this test backwards compatible.
+        self.assertIn(state.dims, ([[3, 3], [1, 1]], [[3, 3], [1]]))
+        self.assertAlmostEqualRel(state.norm(), 1.0, rel_tol=1e-12)
+
+        # The only non-zero amplitude must be at index 1*3 + 2 = 5.
+        vec = state.full().flatten()
+        self.assertAlmostEqual(abs(vec[5]), 1.0)
+        for k, amp in enumerate(vec):
+            if k != 5:
+                self.assertAlmostEqual(amp, 0.0)
+
+    def test_analysis_states_energies_basis_state_on_default_ground(self):
+        """Test basis_state_on defaults missing modes to 0 photons."""
+        # Mode 0 gets 1 photon; mode 1 is omitted from the dict (defaults to 0).
+        state = basis_state_on([2, 2], {0: 1})
+        vec = state.full().flatten()
+        # |1, 0> sits at index 1*2 + 0 = 2.
+        self.assertAlmostEqual(abs(vec[2]), 1.0)
+        for k, amp in enumerate(vec):
+            if k != 2:
+                self.assertAlmostEqual(amp, 0.0)
+
+    def test_analysis_states_energies_extract_energies(self):
+        """Test extract_energies on a synthetic two-mode diagonal Hamiltonian.
+
+        Build a diagonal Hamiltonian H = sum_i w_i n_i + sum_{i<=j} chi_ij n_i n_j
+        on two 3-level modes; extract_energies should recover the {w_i} and
+        {chi_ij}.
+        """
+        import qutip
+        N1, N2 = 3, 3
+        w = [5.0, 7.0]
+        chi_self = [-0.30, -0.25]  # self-Kerr per mode
+        chi_cross = -0.10  # cross-Kerr
+
+        ham_diag = []
+        for i in range(N1):
+            for j in range(N2):
+                ham_diag.append(w[0] * i + w[1] * j + chi_self[0] * i *
+                                (i - 1) / 2 + chi_self[1] * j *
+                                (j - 1) / 2 + chi_cross * i * j)
+        ham = qutip.Qobj(np.diag(ham_diag), dims=[[N1, N2], [N1, N2]])
+        evals, evecs = ham.eigenstates()
+
+        esys = np.empty(2, dtype=object)
+        esys[0] = np.array(evals)
+        esys[1] = evecs
+
+        freqs, chis = extract_energies(esys, [N1, N2])
+
+        # The recovered |1, 0> and |0, 1> excitation energies must equal w.
+        self.assertAlmostEqualRel(freqs[0], w[0], rel_tol=1e-10)
+        self.assertAlmostEqualRel(freqs[1], w[1], rel_tol=1e-10)
+
+        # Chi matrix shape and symmetry.
+        self.assertEqual(chis.shape, (2, 2))
+        self.assertAlmostEqual(chis[0, 1], chis[1, 0])
+
+        # Diagonal chi entries are the self-Kerrs.
+        self.assertAlmostEqualRel(chis[0, 0], chi_self[0], rel_tol=1e-10)
+        self.assertAlmostEqualRel(chis[1, 1], chi_self[1], rel_tol=1e-10)
+        # Off-diagonal chi entry is the cross-Kerr.
+        self.assertAlmostEqualRel(chis[0, 1], chi_cross, rel_tol=1e-10)
+
     def test_analysis_kappa_calculation_kappa_in(self):
         """Test the kappa_in function in kappa_calculation.py."""
         self.assertAlmostEqual(
@@ -777,6 +915,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
     def test_analysis_sweeper_option_value(self):
         """Test the option_value function in the Sweeper class"""
         from abc import ABC
+
         from qiskit_metal.analyses.core.base import QAnalysis
         sweeper = Sweeper(QAnalysis)
 

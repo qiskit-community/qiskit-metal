@@ -79,9 +79,11 @@ def extract_energies(esys_array: np.ndarray,
     chis = np.empty((N, N))
 
     # Reformat the set of eigenvectors as a matrix where each row of the matrix
-    # is the hermitian conjugate of the original eigenvector
+    # is the hermitian conjugate of the original eigenvector. Calling `.full()`
+    # before stacking is required for qutip>=5, where `np.array([Qobj, ...])`
+    # produces an object-dtype ndarray instead of stacking the underlying data.
     evecs_dag_mat = np.squeeze(
-        np.array([evecs[ii].dag() for ii in range(evecs.size)]))
+        np.array([evecs[ii].dag().full() for ii in range(evecs.size)]))
 
     single_excitation_states = [state_on({i: 1}) for i in range(N)]
 
@@ -104,22 +106,24 @@ def extract_energies(esys_array: np.ndarray,
 
     single_excitation_states_mat = np.squeeze(
         np.array([
-            single_excitation_states[ii]
+            single_excitation_states[ii].full()
             for ii in range(len(single_excitation_states))
         ])).T
 
     double_excitation_states_mat = np.squeeze(
         np.array([
-            double_excitation_states[ii]
+            double_excitation_states[ii].full()
             for ii in range(len(double_excitation_states))
         ])).T
 
     # Find the inner product of each of the target state with each of the
-    # eigenvector; hence overlap has dimension of number of eigenvectors x number of target states
+    # eigenvector; hence overlap has dimension of number of eigenvectors x
+    # number of target states. `.full()` converts the Qobj product to a numpy
+    # array; required for qutip>=5 where Qobj no longer supports np.absolute.
     overlap_single = np.absolute(
-        np.array((Qobj(evecs_dag_mat) * Qobj(single_excitation_states_mat))))
+        (Qobj(evecs_dag_mat) * Qobj(single_excitation_states_mat)).full())
     overlap_double = np.absolute(
-        np.array((Qobj(evecs_dag_mat) * Qobj(double_excitation_states_mat))))
+        (Qobj(evecs_dag_mat) * Qobj(double_excitation_states_mat)).full())
 
     # find the index of the eigenvector that is closest to each target state
     # hence evec_idx has shape of (number of target states, )

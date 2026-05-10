@@ -12,7 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from typing import Union, Tuple
+from typing import Optional, Tuple
 import pandas as pd
 
 from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
@@ -72,7 +72,7 @@ class ScatteringImpedanceSim(QSimulation):
     data_labels = ['sweep_name', 'params_z', 'params_y', 'params_s']
     """Default data labels."""
 
-    def __init__(self, design: 'QDesign' = None, renderer_name: str = 'hfss'):
+    def __init__(self, design: Optional['QDesign'] = None, renderer_name: str = 'hfss'):
         """Compute drivenmodal and then extracts impedance, admittance and scattering paramters.
 
         Args:
@@ -126,12 +126,12 @@ class ScatteringImpedanceSim(QSimulation):
 
     def run_sim(  # pylint: disable=arguments-differ
             self,
-            name: str = None,
-            components: Union[list, None] = None,
-            open_terminations: Union[list, None] = None,
-            port_list: Union[list, None] = None,
-            jj_to_port: Union[list, None] = None,
-            ignored_jjs: Union[list, None] = None,
+            name: Optional[str] = None,
+            components: Optional[list] = None,
+            open_terminations: Optional[list] = None,
+            port_list: Optional[list] = None,
+            jj_to_port: Optional[list] = None,
+            ignored_jjs: Optional[list] = None,
             box_plus_buffer: bool = True) -> Tuple[str, str]:
         """Executes the entire drivenmodal analysis and convergence result export.
         First it makes sure the tool is running. Then it does what's necessary to render the design.

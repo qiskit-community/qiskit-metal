@@ -12,7 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from typing import Union, Tuple
+from typing import Optional, Tuple
 import pandas as pd
 from pyEPR.ansys import ureg
 from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
@@ -62,7 +62,7 @@ class LumpedElementsSim(QSimulation):
     data_labels = ['cap_matrix', 'cap_all_passes', 'units', 'is_converged']
     """Default data labels."""
 
-    def __init__(self, design: 'QDesign' = None, renderer_name: str = 'q3d'):
+    def __init__(self, design: Optional['QDesign'] = None, renderer_name: str = 'q3d'):
         """Initialize the class to extract the capacitance matrix.
 
         Args:
@@ -104,9 +104,9 @@ class LumpedElementsSim(QSimulation):
 
     def run_sim(  # pylint: disable=arguments-differ
             self,
-            name: str = None,
-            components: Union[list, None] = None,
-            open_terminations: Union[list, None] = None,
+            name: Optional[str] = None,
+            components: Optional[list] = None,
+            open_terminations: Optional[list] = None,
             box_plus_buffer: bool = True) -> Tuple[str, str]:
         """Executes the capacitance matrix extraction.
         First it makes sure the tool is running. Then it does the necessary to render the design.

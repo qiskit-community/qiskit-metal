@@ -15,7 +15,7 @@
 
 import importlib
 from datetime import datetime
-from typing import Any, Dict as Dict_, Iterable, List, TYPE_CHECKING, Union
+from typing import Any, Dict as Dict_, Iterable, List, TYPE_CHECKING, Optional, Union
 
 import pandas as pd
 
@@ -103,7 +103,7 @@ class QDesign():
     __i_am_design__ = True
 
     def __init__(self,
-                 metadata: dict = None,
+                 metadata: Optional[dict] = None,
                  overwrite_enabled: bool = False,
                  enable_renderers: bool = True):
         """Create a new Metal QDesign.
@@ -164,7 +164,7 @@ class QDesign():
         if metadata:
             self.update_metadata(metadata)
 
-        self.save_path = None  # type: str
+        self.save_path: Optional[str] = None
 
         self.logger = logger  # type: logging.Logger
         self.build_logs = LogStore("Build Logs", 30)
@@ -729,7 +729,7 @@ class QDesign():
         self,
         original_qcomponent: 'QComponent',
         new_component_name: str,
-        options_superimpose: dict = dict()) -> Union['QComponent', None]:
+        options_superimpose: dict = dict()) -> Optional['QComponent']:
         """Copy a qcomponent in QDesign and
         add it to QDesign._components using
         options_overwrite.
@@ -787,7 +787,7 @@ class QDesign():
         design = load_metal_design(path)
         return design
 
-    def save_design(self, path: str = None):
+    def save_design(self, path: Optional[str] = None):
         """Save the metal design to a Metal file. If no path is given, then
         tried to use self.save_path if it is set.
 

@@ -17,9 +17,8 @@
 
 from collections import defaultdict
 from pathlib import Path
-from typing import Union, Tuple
+from typing import Optional, Tuple
 
-import logging
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
@@ -31,6 +30,8 @@ from qiskit_metal import Dict
 from qiskit_metal.draw.utility import to_vec3D
 from qiskit_metal.renderers.renderer_ansys.ansys_renderer import (
     QAnsysRenderer, get_clean_name)
+from qiskit_metal.renderers.renderer_ansys.solution_types import (
+    is_drivenmodal, is_eigenmode)
 
 
 class QHFSSRenderer(QAnsysRenderer):
@@ -59,7 +60,7 @@ class QHFSSRenderer(QAnsysRenderer):
     )
     """HFSS Options"""
 
-    def __init__(self, design: 'QDesign', initiate=True, options: Dict = None):
+    def __init__(self, design: 'QDesign', initiate=True, options: Optional[Dict] = None):
         """Create a QRenderer for HFSS simulations, subclassed from QAnsysRenderer.
 
         Args:
@@ -74,11 +75,11 @@ class QHFSSRenderer(QAnsysRenderer):
         QHFSSRenderer.load()
 
     def render_design(self,
-                      selection: Union[list, None] = None,
-                      open_pins: Union[list, None] = None,
-                      port_list: Union[list, None] = None,
-                      jj_to_port: Union[list, None] = None,
-                      ignored_jjs: Union[list, None] = None,
+                      selection: Optional[list] = None,
+                      open_pins: Optional[list] = None,
+                      port_list: Optional[list] = None,
+                      jj_to_port: Optional[list] = None,
+                      ignored_jjs: Optional[list] = None,
                       box_plus_buffer: bool = True):
         """Initiate rendering of components in design contained in selection,
         assuming they're valid. Components are rendered before the chips they
@@ -141,15 +142,15 @@ class QHFSSRenderer(QAnsysRenderer):
         or even falling outside its boundaries.
 
         Args:
-            selection (Union[list, None], optional): List of components to
+            selection (Optional[list], optional): List of components to
                                         render. Defaults to None.
-            open_pins (Union[list, None], optional): List of tuples of pins
+            open_pins (Optional[list], optional): List of tuples of pins
                                         that are open. Defaults to None.
-            port_list (Union[list, None], optional): List of tuples of pins to
+            port_list (Optional[list], optional): List of tuples of pins to
                                         be rendered as ports. Defaults to None.
-            jj_to_port (Union[list, None], optional): List of tuples of jj's to
+            jj_to_port (Optional[list], optional): List of tuples of jj's to
                                         be rendered as ports. Defaults to None.
-            ignored_jjs (Union[list, None], optional): List of tuples of jj's
+            ignored_jjs (Optional[list], optional): List of tuples of jj's
                                         that shouldn't be rendered.
                                         Defaults to None.
             box_plus_buffer (bool): Either calculate a bounding box based on
@@ -227,7 +228,7 @@ class QHFSSRenderer(QAnsysRenderer):
                                                        y_max - y_min, 0,
                                                        **dict(transparency=0.0))
             axis = 'x' if abs(x1 - x0) > abs(y1 - y0) else 'y'
-            if self.pinfo.design.solution_type != 'Eigenmode':
+            if not is_eigenmode(self.pinfo.design.solution_type):
                 poly_ansys.make_lumped_port(axis,
                                             z0=str(impedance) + 'ohm',
                                             name=f'LumpPort_{qcomp}_{pin}')
@@ -424,7 +425,7 @@ class QHFSSRenderer(QAnsysRenderer):
         )
         self.activate_ansys_design(name, 'drivenmodal')
 
-    def activate_drivenmodal_setup(self, setup_name_activate: str = None):
+    def activate_drivenmodal_setup(self, setup_name_activate: Optional[str] = None):
         """
         (deprecated) use activate_ansys_setup()
         """
@@ -434,14 +435,14 @@ class QHFSSRenderer(QAnsysRenderer):
         self.activate_ansys_setup(setup_name_activate)
 
     def add_drivenmodal_setup(self,
-                              name: str = None,
-                              freq_ghz: int = None,
-                              max_delta_s: float = None,
-                              max_passes: int = None,
-                              min_passes: int = None,
-                              min_converged: int = None,
-                              pct_refinement: int = None,
-                              basis_order: int = None,
+                              name: Optional[str] = None,
+                              freq_ghz: Optional[int] = None,
+                              max_delta_s: Optional[float] = None,
+                              max_passes: Optional[int] = None,
+                              min_passes: Optional[int] = None,
+                              min_converged: Optional[int] = None,
+                              pct_refinement: Optional[int] = None,
+                              basis_order: Optional[int] = None,
                               *args,
                               **kwargs):
         """Create a solution setup in Ansys HFSS Driven Modal. If user does
@@ -506,7 +507,7 @@ class QHFSSRenderer(QAnsysRenderer):
         )
         self.activate_ansys_design(name, 'eigenmode')
 
-    def activate_eigenmode_setup(self, setup_name_activate: str = None):
+    def activate_eigenmode_setup(self, setup_name_activate: Optional[str] = None):
         """
         (deprecated) use activate_ansys_setup()
         """
@@ -516,15 +517,15 @@ class QHFSSRenderer(QAnsysRenderer):
         self.activate_ansys_setup(setup_name_activate)
 
     def add_eigenmode_setup(self,
-                            name: str = None,
-                            min_freq_ghz: int = None,
-                            n_modes: int = None,
-                            max_delta_f: float = None,
-                            max_passes: int = None,
-                            min_passes: int = None,
-                            min_converged: int = None,
-                            pct_refinement: int = None,
-                            basis_order: int = None,
+                            name: Optional[str] = None,
+                            min_freq_ghz: Optional[int] = None,
+                            n_modes: Optional[int] = None,
+                            max_delta_f: Optional[float] = None,
+                            max_passes: Optional[int] = None,
+                            min_passes: Optional[int] = None,
+                            min_converged: Optional[int] = None,
+                            pct_refinement: Optional[int] = None,
+                            basis_order: Optional[int] = None,
                             *args,
                             **kwargs):
         """Create a solution setup in Ansys HFSS Eigenmode.  If user does not
@@ -600,7 +601,7 @@ class QHFSSRenderer(QAnsysRenderer):
         if self.pinfo:
             if self.pinfo.project:
                 if self.pinfo.design:
-                    if self.pinfo.design.solution_type == 'Eigenmode':
+                    if is_eigenmode(self.pinfo.design.solution_type):
                         if self.pinfo.setup_name != setup_args.name:
                             self.design.logger.warning(
                                 f'The name of active setup={self.pinfo.setup_name} does not match'
@@ -713,7 +714,7 @@ class QHFSSRenderer(QAnsysRenderer):
         if self.pinfo:
             if self.pinfo.project:
                 if self.pinfo.design:
-                    if self.pinfo.design.solution_type == 'DrivenModal':
+                    if is_drivenmodal(self.pinfo.design.solution_type):
                         if self.pinfo.setup_name != setup_args.name:
                             self.design.logger.warning(
                                 f'The name of active setup={self.pinfo.setup_name} does not match'
@@ -798,7 +799,12 @@ class QHFSSRenderer(QAnsysRenderer):
                     o_project = o_desktop.SetActiveProject(
                         self.pinfo.project_name)
                     o_design = o_project.GetActiveDesign()
-                    if o_design.GetSolutionType() == 'Eigenmode':
+                    # GetSolutionType() is the raw HFSS COM call; unlike
+                    # pinfo.design.solution_type this is NOT normalised by
+                    # pyEPR, so on HFSS 2024.1+ it can return
+                    # 'HFSS Modal Network' etc. is_eigenmode() handles all
+                    # aliases — see solution_types.py.
+                    if is_eigenmode(o_design.GetSolutionType()):
                         # The set_mode() method is in HfssEMDesignSolutions
                         #  class in pyEPR.
                         # The class HfssEMDesignSolutions is instantiated by
@@ -894,11 +900,11 @@ class QHFSSRenderer(QAnsysRenderer):
             sweep.analyze_sweep()
             self.current_sweep = sweep
 
-    def get_params(self, param_name: Union[list, None] = None):
+    def get_params(self, param_name: Optional[list] = None):
         """Get one or more parameters (S, Y, or Z) as a function of frequency.
 
         Args:
-            param_name (Union[list, None], optional): Parameters to obtain. Defaults to None.
+            param_name (Optional[list], optional): Parameters to obtain. Defaults to None.
         """
         if self.current_sweep:
 
@@ -910,9 +916,9 @@ class QHFSSRenderer(QAnsysRenderer):
 
     # yapf: disable
     def get_all_Pparms_matrices(self, matrix_size: int) -> Tuple[
-            Union[pd.core.frame.DataFrame, None],
-            Union[pd.core.frame.DataFrame, None],
-            Union[pd.core.frame.DataFrame, None]]:
+            Optional[pd.DataFrame],
+            Optional[pd.DataFrame],
+            Optional[pd.DataFrame]]:
         #yapf: enable
         '''
         S = scattering matrix, Y = Admittance, Z= impedance.
@@ -939,12 +945,12 @@ class QHFSSRenderer(QAnsysRenderer):
 
         return S_Pparams, Y_Pparams, Z_Pparams
 
-    def plot_params(self, param_name: Union[list, None] = None):
+    def plot_params(self, param_name: Optional[list] = None):
         """Plot one or more parameters (S, Y, or Z) as a function of frequency.
         S = scattering matrix, Y = Admittance, Z= impedance.
 
         Args:
-            param_name (Union[list, None], optional): Parameters to plot. Defaults to None.
+            param_name (Optional[list], optional): Parameters to plot. Defaults to None.
         """
         freqs, Pcurves, Pparams = self.get_params(param_name)
         if Pparams is not None:
@@ -973,7 +979,7 @@ class QHFSSRenderer(QAnsysRenderer):
         if self.pinfo:
             return epr.DistributedAnalysis(self.pinfo)
 
-    def get_convergences(self, variation: str = None):
+    def get_convergences(self, variation: Optional[str] = None):
         """Get convergence for convergence_t, convergence_f, and text from GUI for solution data.
 
         Args:
@@ -992,7 +998,7 @@ class QHFSSRenderer(QAnsysRenderer):
             return convergence_t, convergence_f, text
 
     def plot_convergences(self,
-                          variation: str = None,
+                          variation: Optional[str] = None,
                           fig: mpl.figure.Figure = None):
         """
         (deprecated) use EPRanalysis.plot_convergences()
@@ -1002,7 +1008,7 @@ class QHFSSRenderer(QAnsysRenderer):
             'plot_convergence() that has been moved inside the EPRanalysis class.'
         )
 
-    def get_f_convergence(self, variation: str = None, save_csv: bool = True):
+    def get_f_convergence(self, variation: Optional[str] = None, save_csv: bool = True):
         """Create a report inside HFSS to plot the converge of frequency and
         style it. Saves report to csv file.
 
@@ -1026,7 +1032,7 @@ class QHFSSRenderer(QAnsysRenderer):
             o_design = self.pinfo.design
             setup = self.pinfo.setup
 
-            if not o_design.solution_type == 'Eigenmode':
+            if not is_eigenmode(o_design.solution_type):
                 return None
 
             report = o_design._reporter  # reporter OModule for Ansys
