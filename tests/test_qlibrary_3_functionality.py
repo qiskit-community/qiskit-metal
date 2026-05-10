@@ -501,10 +501,10 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         self.assertEqual(len(expected), len(actual))
         length = len(expected)
         for x in range(length):
-            self.assertEqual(len(expected[x]), len(actual[x].bounds))
+            self.assertEqual(len(expected[x]), len(actual.iloc[x].bounds))
             sub_length = len(expected[x])
             for y in range(sub_length):
-                self.assertEqual(actual[x].bounds[y], expected[x][y])
+                self.assertEqual(actual.iloc[x].bounds[y], expected[x][y])
 
     def test_qlibrary_rename_component(self):
         """Test rename_component in element_handler.py."""

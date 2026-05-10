@@ -23,6 +23,7 @@ from pyEPR.reports import _plot_q3d_convergence_main, _plot_q3d_convergence_chi_
 from pyEPR.calcs.convert import Convert
 from qiskit_metal import Dict
 from qiskit_metal.renderers.renderer_ansys.ansys_renderer import QAnsysRenderer
+from qiskit_metal.renderers.renderer_ansys.solution_types import is_q3d
 from qiskit_metal.toolbox_metal.parsing import is_true
 
 from qiskit_metal import config
@@ -281,7 +282,7 @@ class QQ3DRenderer(QAnsysRenderer):
         if self.pinfo:
             if self.pinfo.project:
                 if self.pinfo.design:
-                    if self.pinfo.design.solution_type == 'Q3D':
+                    if is_q3d(self.pinfo.design.solution_type):
                         if self.pinfo.setup_name != setup_args.name:
                             self.design.logger.warning(
                                 f'The name of active setup={self.pinfo.setup_name} does not match'

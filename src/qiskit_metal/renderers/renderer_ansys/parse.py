@@ -12,8 +12,9 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from pyEPR.hfss import parse_units as __parse_units_hfss__
-from pyEPR.hfss import \
+# `pyEPR.hfss` was removed in pyEPR 0.9; these symbols now live in `pyEPR.ansys`.
+from pyEPR.ansys import parse_units as __parse_units_hfss__
+from pyEPR.ansys import \
     unparse_units  # not used here, but in imports of this file
 
 # See also: is_variable_name, is_numeric_possible

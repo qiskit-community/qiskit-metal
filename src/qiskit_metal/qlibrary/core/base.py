@@ -22,7 +22,7 @@ import logging
 import inspect
 import random
 from copy import deepcopy
-from typing import TYPE_CHECKING, Any, Iterable, List, Union, Tuple, Dict as Dict_
+from typing import TYPE_CHECKING, Any, Iterable, List, Union, Tuple, Dict as Dict_, Optional
 from datetime import datetime
 import pandas as pd
 import numpy as np
@@ -142,10 +142,10 @@ class QComponent():
 
     def __init__(self,
                  design: 'QDesign',
-                 name: str = None,
-                 options: Dict = None,
+                 name: Optional[str] = None,
+                 options: Optional[Dict] = None,
                  make=True,
-                 component_template: Dict = None) -> Union[None, str]:
+                 component_template: Optional[Dict] = None):
         """Create a new Metal component and adds it's default_options to the
         design.
 
@@ -437,9 +437,9 @@ class QComponent():
     @classmethod
     def get_template_options(cls,
                              design: 'QDesign',
-                             component_template: Dict = None,
-                             logger_: logging.Logger = None,
-                             template_key: str = None) -> Dict:
+                             component_template: Optional[Dict] = None,
+                             logger_: Optional[logging.Logger] = None,
+                             template_key: Optional[str] = None) -> Dict:
         """Creates template options for the Metal Component class required for
         the class to function, based on the design template; i.e., be created,
         made, and rendered. Provides the blank option structure required.
@@ -487,7 +487,7 @@ class QComponent():
 
         return template_options
 
-    def _delete_evaluation(self, check_name: str = None):
+    def _delete_evaluation(self, check_name: Optional[str] = None):
         """When design.overwrite_enabled, the user is allowed to delete an
         existing component within the design if the name is being used.
 
@@ -612,7 +612,7 @@ gui = MetalGUI(design)
         params = dict()
         str_params = ""
         for _, param in class_signature.parameters.items():
-            if not param.name in to_ignore:
+            if param.name not in to_ignore:
                 param_name = param.name
                 if param_name in self.__dict__:
                     param_name = param.name
@@ -655,7 +655,7 @@ gui = MetalGUI(design)
             if "-" in strname:
                 strname = strname.replace("-", "")
             if not strname.isidentifier():
-                strname = cls + str(random.randint(1000))
+                strname = cls + str(random.randrange(1001))
 
         other_args = ""
         if str_options != "":
@@ -781,7 +781,7 @@ name='{strname}'{other_args}
         """
         return self.design.parse_value(value)
 
-    def parse_options(self, options: Dict = None) -> Dict:
+    def parse_options(self, options: Optional[Dict] = None) -> Dict:
         """Parse the options, converting string into interpreted values. Parses
         units, variables, strings, lists, and dictionaries. Explained by
         example below.
@@ -830,8 +830,8 @@ name='{strname}'{other_args}
             points: np.ndarray,
             width: float,
             input_as_norm: bool = False,
-            chip: str = None,
-            gap: float = None):  # gap defaults to 0.6 * width
+            chip: Optional[str] = None,
+            gap: Optional[float] = None):  # gap defaults to 0.6 * width
         """Adds a pin from two points which are normal/tangent to the intended
         plane of the pin. The normal should 'point' in the direction of
         intended connection. Adds the new pin as a subdictionary to parent
@@ -1076,8 +1076,8 @@ name='{strname}'{other_args}
             geometry: dict,
             subtract: bool = False,
             helper: bool = False,
-            layer: Union[int, str] = None,  # chip will be here
-            chip: str = None,
+            layer: Union[int, str, None] = None,  # chip will be here
+            chip: Optional[str] = None,
             **kwargs):
         r"""Add QGeometry.
 
@@ -1294,7 +1294,7 @@ name='{strname}'{other_args}
 
     def qgeometry_plot(self,
                        ax: 'matplotlib.axes.Axes' = None,
-                       plot_kw: dict = None) -> List:
+                       plot_kw: Optional[dict] = None) -> List:
         """Draw all the qgeometry of the component (polys and path etc.)
 
         Args:

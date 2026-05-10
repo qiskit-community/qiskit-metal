@@ -58,9 +58,9 @@ instance/
 .scrapy
 _sandbox_/
 _debug/
-qiskit_metal/qlibrary/user_components/*
-!qiskit_metal/qlibrary/user_components/__init__.py
-!qiskit_metal/qlibrary/user_components/my_qcomponent.py
+src/qiskit_metal/qlibrary/user_components/*
+!src/qiskit_metal/qlibrary/user_components/__init__.py
+!src/qiskit_metal/qlibrary/user_components/my_qcomponent.py
 
 # Sphinx documentation
 docs/build
@@ -130,5 +130,4 @@ settings.json
 
 # others
 Qiskit-Metal.code-workspace
-qiskit_metal/.pylintrc
 launch.json

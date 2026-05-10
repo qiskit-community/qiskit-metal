@@ -13,10 +13,11 @@
 # that they have been altered from the originals.
 """This is the CircleCaterpillar module."""
 
-from qiskit_metal import draw, Dict  # , QComponent
-from qiskit_metal.qlibrary.core import QComponent
-#from qiskit_metal import is_true
+# from qiskit_metal import is_true
 from shapely.geometry import CAP_STYLE, JOIN_STYLE
+
+from qiskit_metal import Dict, draw  # , QComponent
+from qiskit_metal.qlibrary.core import QComponent
 
 
 class CircleRaster(QComponent):
@@ -39,13 +40,14 @@ class CircleRaster(QComponent):
     """
 
     default_options = dict(
-        radius='300um',
-        resolution='16',
-        cap_style='round',  # round, flat, square
+        radius="300um",
+        resolution="16",
+        cap_style="round",  # round, flat, square
         # join_style = 'round', # round, mitre, bevel
         # General
-        subtract='False',
-        helper='False')
+        subtract="False",
+        helper="False",
+    )
     """Default drawing options"""
 
     TOOLTIP = """A single configurable circle"""
@@ -61,14 +63,17 @@ class CircleRaster(QComponent):
         # create the geometry
         circle = draw.Point(p.pos_x, p.pos_y).buffer(
             p.radius,
-            resolution=int(p.resolution),
+            quad_segs=int(p.resolution),
             cap_style=getattr(CAP_STYLE, p.cap_style),
-            #join_style = getattr(JOIN_STYLE, p.join_style)
+            # join_style = getattr(JOIN_STYLE, p.join_style)
         )
 
         # add qgeometry
-        self.add_qgeometry('poly', {'circle': circle},
-                           subtract=p.subtract,
-                           helper=p.helper,
-                           layer=p.layer,
-                           chip=p.chip)
+        self.add_qgeometry(
+            "poly",
+            {"circle": circle},
+            subtract=p.subtract,
+            helper=p.helper,
+            layer=p.layer,
+            chip=p.chip,
+        )

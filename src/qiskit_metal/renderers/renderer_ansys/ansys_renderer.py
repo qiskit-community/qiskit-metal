@@ -32,6 +32,8 @@ import pyEPR as epr
 from pyEPR.ansys import parse_units, HfssApp, release
 
 from qiskit_metal.draw.utility import to_vec3D
+from qiskit_metal.renderers.renderer_ansys.solution_types import (
+    canonical_kind, is_drivenmodal, is_eigenmode, is_q3d)
 from qiskit_metal.draw.basic import is_rectangle
 from qiskit_metal.renderers.renderer_base import QRendererAnalysis
 from qiskit_metal.toolbox_metal.parsing import is_true
@@ -826,10 +828,21 @@ class QAnsysRenderer(QRendererAnalysis):
                     oProject = oDesktop.SetActiveProject(
                         self.pinfo.project_name)
                     oDesign = oProject.SetActiveDesign(design_name)
-                    current_solution_type = self.pinfo.design.solution_type.lower(
-                    )
-                    if current_solution_type == "q3d":
-                        current_solution_type = "capacitive"
+                    raw_solution_type = self.pinfo.design.solution_type
+                    kind = canonical_kind(raw_solution_type)
+                    # Metal exposes 'capacitive' as the user-facing alias for
+                    # the Q3D solver; keep that mapping. For everything else
+                    # the canonical kind ('eigenmode', 'drivenmodal', ...)
+                    # already matches the values callers pass in. If the
+                    # solution_type is unrecognised, fall back to lowercasing
+                    # whatever HFSS reported so the warning below is still
+                    # informative.
+                    if kind == 'q3d':
+                        current_solution_type = 'capacitive'
+                    elif kind is not None:
+                        current_solution_type = kind
+                    else:
+                        current_solution_type = (raw_solution_type or '').lower()
                     if (current_solution_type != solution_type and
                             solution_type is not None):
                         self.logger.warning(
@@ -880,11 +893,11 @@ class QAnsysRenderer(QRendererAnalysis):
                         # delete_setup will check if setup exists, before deleting.
                         self.pinfo.design.delete_setup(name)
 
-                if self.pinfo.design.solution_type == "Eigenmode":
+                if is_eigenmode(self.pinfo.design.solution_type):
                     setup = self.add_eigenmode_setup(name, **other_setup)
-                elif self.pinfo.design.solution_type == "DrivenModal":
+                elif is_drivenmodal(self.pinfo.design.solution_type):
                     setup = self.add_drivenmodal_setup(name, **other_setup)
-                elif self.pinfo.design.solution_type == "Q3D":
+                elif is_q3d(self.pinfo.design.solution_type):
                     setup = self.add_q3d_setup(name, **other_setup)
         return setup
 
