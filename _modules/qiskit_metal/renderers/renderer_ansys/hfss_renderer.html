@@ -520,6 +520,8 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.draw.utility</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_vec3D</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_ansys.ansys_renderer</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">QAnsysRenderer</span><span class="p">,</span> <span class="n">get_clean_name</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_ansys.solution_types</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">is_drivenmodal</span><span class="p">,</span> <span class="n">is_eigenmode</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="QHFSSRenderer">
@@ -723,7 +725,7 @@
                                                        <span class="n">y_max</span> <span class="o">-</span> <span class="n">y_min</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
                                                        <span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="n">transparency</span><span class="o">=</span><span class="mf">0.0</span><span class="p">))</span>
             <span class="n">axis</span> <span class="o">=</span> <span class="s1">&#39;x&#39;</span> <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y1</span> <span class="o">-</span> <span class="n">y0</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;y&#39;</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">solution_type</span> <span class="o">!=</span> <span class="s1">&#39;Eigenmode&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_eigenmode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">solution_type</span><span class="p">):</span>
                 <span class="n">poly_ansys</span><span class="o">.</span><span class="n">make_lumped_port</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span>
                                             <span class="n">z0</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">impedance</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;ohm&#39;</span><span class="p">,</span>
                                             <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;LumpPort_</span><span class="si">{</span><span class="n">qcomp</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">pin</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -1135,7 +1137,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">project</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">solution_type</span> <span class="o">==</span> <span class="s1">&#39;Eigenmode&#39;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">is_eigenmode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">solution_type</span><span class="p">):</span>
                         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup_name</span> <span class="o">!=</span> <span class="n">setup_args</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
                                 <span class="sa">f</span><span class="s1">&#39;The name of active setup=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup_name</span><span class="si">}</span><span class="s1"> does not match&#39;</span>
@@ -1251,7 +1253,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">project</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">solution_type</span> <span class="o">==</span> <span class="s1">&#39;DrivenModal&#39;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">is_drivenmodal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">solution_type</span><span class="p">):</span>
                         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup_name</span> <span class="o">!=</span> <span class="n">setup_args</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
                                 <span class="sa">f</span><span class="s1">&#39;The name of active setup=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup_name</span><span class="si">}</span><span class="s1"> does not match&#39;</span>
@@ -1339,7 +1341,12 @@
                     <span class="n">o_project</span> <span class="o">=</span> <span class="n">o_desktop</span><span class="o">.</span><span class="n">SetActiveProject</span><span class="p">(</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">project_name</span><span class="p">)</span>
                     <span class="n">o_design</span> <span class="o">=</span> <span class="n">o_project</span><span class="o">.</span><span class="n">GetActiveDesign</span><span class="p">()</span>
-                    <span class="k">if</span> <span class="n">o_design</span><span class="o">.</span><span class="n">GetSolutionType</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;Eigenmode&#39;</span><span class="p">:</span>
+                    <span class="c1"># GetSolutionType() is the raw HFSS COM call; unlike</span>
+                    <span class="c1"># pinfo.design.solution_type this is NOT normalised by</span>
+                    <span class="c1"># pyEPR, so on HFSS 2024.1+ it can return</span>
+                    <span class="c1"># &#39;HFSS Modal Network&#39; etc. is_eigenmode() handles all</span>
+                    <span class="c1"># aliases — see solution_types.py.</span>
+                    <span class="k">if</span> <span class="n">is_eigenmode</span><span class="p">(</span><span class="n">o_design</span><span class="o">.</span><span class="n">GetSolutionType</span><span class="p">()):</span>
                         <span class="c1"># The set_mode() method is in HfssEMDesignSolutions</span>
                         <span class="c1">#  class in pyEPR.</span>
                         <span class="c1"># The class HfssEMDesignSolutions is instantiated by</span>
@@ -1597,7 +1604,7 @@
             <span class="n">o_design</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design</span>
             <span class="n">setup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup</span>
 
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">o_design</span><span class="o">.</span><span class="n">solution_type</span> <span class="o">==</span> <span class="s1">&#39;Eigenmode&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_eigenmode</span><span class="p">(</span><span class="n">o_design</span><span class="o">.</span><span class="n">solution_type</span><span class="p">):</span>
                 <span class="k">return</span> <span class="kc">None</span>
 
             <span class="n">report</span> <span class="o">=</span> <span class="n">o_design</span><span class="o">.</span><span class="n">_reporter</span>  <span class="c1"># reporter OModule for Ansys</span>

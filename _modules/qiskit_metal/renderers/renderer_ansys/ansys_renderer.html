@@ -522,6 +522,8 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyEPR.ansys</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_units</span><span class="p">,</span> <span class="n">HfssApp</span><span class="p">,</span> <span class="n">release</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.draw.utility</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_vec3D</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_ansys.solution_types</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">canonical_kind</span><span class="p">,</span> <span class="n">is_drivenmodal</span><span class="p">,</span> <span class="n">is_eigenmode</span><span class="p">,</span> <span class="n">is_q3d</span><span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.draw.basic</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_rectangle</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_base</span><span class="w"> </span><span class="kn">import</span> <span class="n">QRendererAnalysis</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.toolbox_metal.parsing</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_true</span>
@@ -1365,10 +1367,21 @@
                     <span class="n">oProject</span> <span class="o">=</span> <span class="n">oDesktop</span><span class="o">.</span><span class="n">SetActiveProject</span><span class="p">(</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">project_name</span><span class="p">)</span>
                     <span class="n">oDesign</span> <span class="o">=</span> <span class="n">oProject</span><span class="o">.</span><span class="n">SetActiveDesign</span><span class="p">(</span><span class="n">design_name</span><span class="p">)</span>
-                    <span class="n">current_solution_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">solution_type</span><span class="o">.</span><span class="n">lower</span><span class="p">(</span>
-                    <span class="p">)</span>
-                    <span class="k">if</span> <span class="n">current_solution_type</span> <span class="o">==</span> <span class="s2">&quot;q3d&quot;</span><span class="p">:</span>
-                        <span class="n">current_solution_type</span> <span class="o">=</span> <span class="s2">&quot;capacitive&quot;</span>
+                    <span class="n">raw_solution_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">solution_type</span>
+                    <span class="n">kind</span> <span class="o">=</span> <span class="n">canonical_kind</span><span class="p">(</span><span class="n">raw_solution_type</span><span class="p">)</span>
+                    <span class="c1"># Metal exposes &#39;capacitive&#39; as the user-facing alias for</span>
+                    <span class="c1"># the Q3D solver; keep that mapping. For everything else</span>
+                    <span class="c1"># the canonical kind (&#39;eigenmode&#39;, &#39;drivenmodal&#39;, ...)</span>
+                    <span class="c1"># already matches the values callers pass in. If the</span>
+                    <span class="c1"># solution_type is unrecognised, fall back to lowercasing</span>
+                    <span class="c1"># whatever HFSS reported so the warning below is still</span>
+                    <span class="c1"># informative.</span>
+                    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;q3d&#39;</span><span class="p">:</span>
+                        <span class="n">current_solution_type</span> <span class="o">=</span> <span class="s1">&#39;capacitive&#39;</span>
+                    <span class="k">elif</span> <span class="n">kind</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">current_solution_type</span> <span class="o">=</span> <span class="n">kind</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">current_solution_type</span> <span class="o">=</span> <span class="p">(</span><span class="n">raw_solution_type</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
                     <span class="k">if</span> <span class="p">(</span><span class="n">current_solution_type</span> <span class="o">!=</span> <span class="n">solution_type</span> <span class="ow">and</span>
                             <span class="n">solution_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
@@ -1422,11 +1435,11 @@
                         <span class="c1"># delete_setup will check if setup exists, before deleting.</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">delete_setup</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">solution_type</span> <span class="o">==</span> <span class="s2">&quot;Eigenmode&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">is_eigenmode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">solution_type</span><span class="p">):</span>
                     <span class="n">setup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_eigenmode_setup</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">other_setup</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">solution_type</span> <span class="o">==</span> <span class="s2">&quot;DrivenModal&quot;</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">is_drivenmodal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">solution_type</span><span class="p">):</span>
                     <span class="n">setup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_drivenmodal_setup</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">other_setup</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">solution_type</span> <span class="o">==</span> <span class="s2">&quot;Q3D&quot;</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">is_q3d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">solution_type</span><span class="p">):</span>
                     <span class="n">setup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_q3d_setup</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">other_setup</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">setup</span></div>
 

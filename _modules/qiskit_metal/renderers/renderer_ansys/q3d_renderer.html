@@ -513,6 +513,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyEPR.calcs.convert</span><span class="w"> </span><span class="kn">import</span> <span class="n">Convert</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_ansys.ansys_renderer</span><span class="w"> </span><span class="kn">import</span> <span class="n">QAnsysRenderer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_ansys.solution_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_q3d</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.toolbox_metal.parsing</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_true</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
@@ -790,7 +791,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">project</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">solution_type</span> <span class="o">==</span> <span class="s1">&#39;Q3D&#39;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">is_q3d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">solution_type</span><span class="p">):</span>
                         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup_name</span> <span class="o">!=</span> <span class="n">setup_args</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
                                 <span class="sa">f</span><span class="s1">&#39;The name of active setup=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup_name</span><span class="si">}</span><span class="s1"> does not match&#39;</span>
