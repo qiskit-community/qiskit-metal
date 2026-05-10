@@ -196,9 +196,12 @@ class RouteAnchors(QRoute):
                 np.array([xmax, ymin]),
                 np.array([xmax, ymax])
             ]
+            x0,y0 = segment[0][0], segment[0][1]
+            x1,y1 = segment[1][0], segment[1][1]
+            segment_in_box = (x0 >= xmin and x0 <= xmax and y0 >= ymin and y0 <= ymax) and (x1 >= xmin and x1 <= xmax and y1 >= ymin and y1 <= ymax)
             if any(
                     intersecting(segment[0], segment[1], k, l)
-                    for k, l in [(p, q), (p, r), (r, s), (q, s)]):
+                    for k, l in [(p, q), (p, r), (r, s), (q, s)]) or segment_in_box:
                 # At least 1 intersection with the component bounding box. Check the actual contour.
                 if not self.unobstructed_close_up(segment, component):
                     # At least 1 intersection with the actual component contour; do not proceed!
