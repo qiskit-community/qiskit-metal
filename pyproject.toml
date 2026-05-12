@@ -44,7 +44,7 @@
         "shapely>=2.0.1",
         "scqubits>=4.1.0",
         "gmsh>=4.11.1",
-        "pyaedt>=0.21,<0.24", # pyaedt 0.24 has some bugs (Jan 23, 2026)
+        "pyaedt>=0.21,<0.24", # pyaedt 0.24 has compatibility issues with qiskit-metal renderers (Jan 23, 2026). See changelog for details.
         "pyyaml>=6.0", # Used for the Elmer runner. 
     ]
 

@@ -7,7 +7,28 @@ For the offical user-facing changelog for a particular release can be found in t
 The changelog for all releases can be found in the release page: [![Releases](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)
 
 ## Quantum Metal v0.5.3.post1 (Jan 23, 2026)
-- Pinned pyaedt to less than v0.24 due to bugs. 
+
+### PyAEDT Version Constraint
+
+**What changed:** Pinned pyaedt dependency to `>=0.21,<0.24` (previously `~=0.21`)
+
+**When:** January 23, 2026
+
+**Why:** During testing of pyaedt v0.24.0 (released January 2026), compatibility issues were discovered with Quantum Metal's Ansys renderer integration. The team found that version 0.24.0 introduced regressions that affected the stability and reliability of simulations.
+
+**Specific issues identified:**
+- Compatibility problems with the existing Ansys HFSS, Q3D, and Eigenmode renderer implementations
+- Potential breaking changes in pyaedt's API that would require significant refactoring
+- The pyaedt v0.24.0 release includes major internal restructuring and new features that need thorough testing before adoption
+
+**Resolution plan:** The constraint will be evaluated and potentially relaxed once:
+1. The pyaedt v0.24.x series stabilizes with bug fixes
+2. Quantum Metal's renderer code is updated to accommodate any API changes
+3. Comprehensive testing is performed across all renderer types
+
+**Note for users:** If you need features from pyaedt v0.24+, please open an issue describing your use case. For now, pyaedt versions 0.21.x through 0.23.x are fully supported and recommended.
+
+### Other Changes
 - Updated gmsh dependency 4.11.1 → 4.15.0
 
 ## Quantum Metal v0.5.3 (Jan 17, 2026)

@@ -21,7 +21,7 @@ dependencies:
   - cython<3.0.0
   - pip
   - pip:
-      - pyaedt~=0.21
+      - pyaedt>=0.21,<0.24 # See pyproject.toml and changelog for version constraint rationale
       - gmsh>=4.11.1
       - gdstk~=0.9 # Used to be gdspy>=1.6.12
       - pyside6~=6.8 # Critical to building gui, can causes lots of problems, careful.
