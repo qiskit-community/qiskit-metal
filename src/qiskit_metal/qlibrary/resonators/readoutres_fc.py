@@ -28,33 +28,37 @@ class ReadoutResFC(QComponent):
     - Adjust resonator frequency by varying ``readout_l5``.
     """
 
-    default_options = Dict(pos_x='0 um',
-                           pos_y='0 um',
-                           readout_radius='50 um',
-                           readout_cpw_width='5 um',
-                           readout_cpw_gap='5 um',
-                           readout_cpw_turnradius='50 um',
-                           readout_l1='400 um',
-                           readout_l2='400 um',
-                           readout_l3='400 um',
-                           readout_l4='250 um',
-                           readout_l5='400 um',
-                           arc_step='1 um',
-                           orientation='0',
-                           layer='1',
-                           layer_subtract='2',
-                           subtract=True,
-                           chip='main',
-                           _default_connection_pads=Dict())
-    ''' Default drawing options ?? '''
-    component_metadata = Dict(short_name='readoutresfc',
-                              _qgeometry_table_poly='True',
-                              _qgeometry_table_junction='False')
-    ''' Component metadata '''
+    default_options = Dict(
+        pos_x="0 um",
+        pos_y="0 um",
+        readout_radius="50 um",
+        readout_cpw_width="5 um",
+        readout_cpw_gap="5 um",
+        readout_cpw_turnradius="50 um",
+        readout_l1="400 um",
+        readout_l2="400 um",
+        readout_l3="400 um",
+        readout_l4="250 um",
+        readout_l5="400 um",
+        arc_step="1 um",
+        orientation="0",
+        layer="1",
+        layer_subtract="2",
+        subtract=True,
+        chip="main",
+        _default_connection_pads=Dict(),
+    )
+    """ Default drawing options ?? """
+    component_metadata = Dict(
+        short_name="readoutresfc",
+        _qgeometry_table_poly="True",
+        _qgeometry_table_junction="False",
+    )
+    """ Component metadata """
 
     ##########################
     def make(self):
-        ''' Make the head for readout res'''
+        """Make the head for readout res"""
         self.make_ro()
 
     ##########################
@@ -88,11 +92,14 @@ class ReadoutResFC(QComponent):
         # create the extended arm
         ## useful coordinates
         x_1, y_1 = l_1 * np.cos(np.pi / 4), -l_1 * np.sin(np.pi / 4)
-        x_2, y_2 = x_1 + turnradius * (
-            1 - np.cos(np.pi / 4)), y_1 - turnradius * np.sin(np.pi / 4)
+        x_2, y_2 = (
+            x_1 + turnradius * (1 - np.cos(np.pi / 4)),
+            y_1 - turnradius * np.sin(np.pi / 4),
+        )
         coord_init = draw.Point(x_1, y_1)
-        coord_center = draw.Point(x_1 - turnradius * np.cos(np.pi / 4),
-                                  y_1 - turnradius * np.sin(np.pi / 4))
+        coord_center = draw.Point(
+            x_1 - turnradius * np.cos(np.pi / 4), y_1 - turnradius * np.sin(np.pi / 4)
+        )
         x_3, y_3 = x_2, y_2
         x_4, y_4 = x_3, y_3 - l_2
         x_5, y_5 = x_4 + turnradius, y_4
@@ -118,22 +125,27 @@ class ReadoutResFC(QComponent):
         arc4 = self.arc(coord_init4, coord_center4, np.pi)
         ## line containing the 45deg line, 45 deg arc,
         ## and a short straight segment for smooth subtraction
-        cparm_line = draw.shapely.ops.unary_union([
-            draw.LineString([(0, 0), coord_init]),
-            self.arc(coord_init, coord_center, -np.pi / 4),
-            draw.LineString([(x_3, y_3), (x_4, y_4)]),
-            self.arc(coord_init1, coord_center1, np.pi / 2),
-            draw.LineString([(x_6, y_6), (x_7, y_7)]),
-            self.arc(coord_init2, coord_center2, np.pi),
-            draw.LineString([(x_9, y_9), (x_10, y_10)]), arc3, line12, arc4,
-            draw.translate(line12, 0, 2 * turnradius),
-            draw.translate(arc3, 0, 4 * turnradius),
-            draw.translate(line12, 0, 4 * turnradius),
-            draw.translate(arc4, 0, 4 * turnradius),
-            draw.translate(line12, 0, 6 * turnradius),
-            draw.translate(arc3, 0, 8 * turnradius),
-            draw.translate(line12, 0, 8 * turnradius)
-        ])
+        cparm_line = draw.shapely.ops.unary_union(
+            [
+                draw.LineString([(0, 0), coord_init]),
+                self.arc(coord_init, coord_center, -np.pi / 4),
+                draw.LineString([(x_3, y_3), (x_4, y_4)]),
+                self.arc(coord_init1, coord_center1, np.pi / 2),
+                draw.LineString([(x_6, y_6), (x_7, y_7)]),
+                self.arc(coord_init2, coord_center2, np.pi),
+                draw.LineString([(x_9, y_9), (x_10, y_10)]),
+                arc3,
+                line12,
+                arc4,
+                draw.translate(line12, 0, 2 * turnradius),
+                draw.translate(arc3, 0, 4 * turnradius),
+                draw.translate(line12, 0, 4 * turnradius),
+                draw.translate(arc4, 0, 4 * turnradius),
+                draw.translate(line12, 0, 6 * turnradius),
+                draw.translate(arc3, 0, 8 * turnradius),
+                draw.translate(line12, 0, 8 * turnradius),
+            ]
+        )
         cparm = cparm_line.buffer(w / 2, cap_style=2, join_style=1)
         ## fix the gap resulting from buffer
         eps = 1e-3
@@ -145,11 +157,10 @@ class ReadoutResFC(QComponent):
         ro_etch = ro.buffer(g, cap_style=2, join_style=2)
         x_15, y_15 = x_14, y_14 + 7 * turnradius
         x_16, y_16 = x_15 + g / 2, y_15
-        port_line = draw.LineString([(x_15, y_15 + w / 2),
-                                     (x_15, y_15 - w / 2)])
-        subtract_patch = draw.LineString([(x_16, y_16 - w / 2 - g - eps),
-                                          (x_16, y_16 + w / 2 + g + eps)
-                                         ]).buffer(g / 2, cap_style=2)
+        port_line = draw.LineString([(x_15, y_15 + w / 2), (x_15, y_15 - w / 2)])
+        subtract_patch = draw.LineString(
+            [(x_16, y_16 - w / 2 - g - eps), (x_16, y_16 + w / 2 + g + eps)]
+        ).buffer(g / 2, cap_style=2)
         ro_etch = ro_etch.difference(subtract_patch)
 
         # rotate and translate
@@ -161,24 +172,26 @@ class ReadoutResFC(QComponent):
         [ro, ro_etch, port_line] = polys
 
         # generate QGeometry
-        self.add_qgeometry('poly', dict(ro=ro), chip=chip, layer=p.layer)
-        self.add_qgeometry('poly',
-                           dict(ro_etch=ro_etch),
-                           chip=chip,
-                           layer=p.layer_subtract,
-                           subtract=p.subtract)
+        self.add_qgeometry("poly", dict(ro=ro), chip=chip, layer=p.layer)
+        self.add_qgeometry(
+            "poly",
+            dict(ro_etch=ro_etch),
+            chip=chip,
+            layer=p.layer_subtract,
+            subtract=p.subtract,
+        )
 
         # generate pins
-        self.add_pin('readout', port_line.coords, width=w, gap=g, chip=chip)
+        self.add_pin("readout", port_line.coords, width=w, gap=g, chip=chip)
 
     def arc(self, coord_init, coord_center, angle):
-        '''
+        """
         Generate x,y coordinates (in terms of shapely.geometry.Point()) of an arc with:
         a specified initial point, rotation center, and
         rotation direction (specified by angle in radian (float or integer), positive is ccw).
 
         coord_init, and coord_center should be shapely.geometry.Point object
-        '''
+        """
         # access to parse values from the user option
         p = self.p
 
@@ -189,23 +202,21 @@ class ReadoutResFC(QComponent):
         # determine step number
         step_angle = step / r if angle >= 0 else -step / r
         step_N = abs(int(angle / step_angle))
-        #laststep_flag = True if angle % step_angle != 0 else False
+        # laststep_flag = True if angle % step_angle != 0 else False
         laststep_flag = bool(angle % step_angle != 0)
 
         # generate coordinate
         coord = [coord_init]
         point = coord_init
         for i in range(step_N):
-            point = draw.rotate(point,
-                                step_angle,
-                                origin=coord_center,
-                                use_radians=True)
+            point = draw.rotate(
+                point, step_angle, origin=coord_center, use_radians=True
+            )
             coord.append(point)
         if laststep_flag:
-            point = draw.rotate(coord_init,
-                                angle,
-                                origin=coord_center,
-                                use_radians=True)
+            point = draw.rotate(
+                coord_init, angle, origin=coord_center, use_radians=True
+            )
             coord.append(point)
         coord = draw.LineString(coord)
         return coord

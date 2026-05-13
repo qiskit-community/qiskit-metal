@@ -19,7 +19,7 @@
 
 import numpy as np
 
-__all__ = ['set_decimal_precision', 'dot', 'cross', 'round']
+__all__ = ["set_decimal_precision", "dot", "cross", "round"]
 
 DECIMAL_PRECISION = 10
 
@@ -83,8 +83,7 @@ def aligned_pts(points: list) -> bool:
         bool: True if they are aligned. False otherwise
     """
     if len(points) != 3:
-        raise Exception(
-            "Ambiguous. You can only pass exactly 3 points to this method")
+        raise Exception("Ambiguous. You can only pass exactly 3 points to this method")
     v1 = points[1] - points[0]
     v1_dir = v1 / np.linalg.norm(v1)
     v2 = points[2] - points[1]

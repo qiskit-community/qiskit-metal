@@ -45,7 +45,8 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
         self.filter_text = ""
 
     def filterAcceptsColumn(
-            self, source_column: int, source_parent: QModelIndex) -> bool:  #pylint: disable=unused-argument
+        self, source_column: int, source_parent: QModelIndex
+    ) -> bool:  # pylint: disable=unused-argument
         """
         Filters out unwanted file information in display
         Args:
@@ -61,8 +62,7 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
             return False
         return True
 
-    def filterAcceptsRow(
-            self, source_row: int, source_parent: QModelIndex) -> bool:  #pylint: disable=unused-argument
+    def filterAcceptsRow(self, source_row: int, source_parent: QModelIndex) -> bool:  # pylint: disable=unused-argument
         """
         Filters out unwanted file information in display
         Args:
@@ -77,22 +77,22 @@ class LibraryFileProxyModel(QSortFilterProxyModel):
 
         index = source_model.index(source_row, 0, source_parent)
         relativeFilename = index.data(QFileSystemModel.FileNameRole)
-        displayName = nameCache[
-            relativeFilename] if relativeFilename in nameCache else None
-        #fi = source_model.fileInfo(index)
+        displayName = (
+            nameCache[relativeFilename] if relativeFilename in nameCache else None
+        )
+        # fi = source_model.fileInfo(index)
 
         if displayName is not None:
-            found = (self.filter_text in relativeFilename) or (self.filter_text
-                                                               in displayName)
+            found = (self.filter_text in relativeFilename) or (
+                self.filter_text in displayName
+            )
         else:
             found = self.filter_text in relativeFilename
 
         accept = (not relativeFilename.startswith("_")) and found
         return accept
 
-    def data(self,
-             index: QModelIndex,
-             role: int = Qt.DisplayRole) -> typing.Any:
+    def data(self, index: QModelIndex, role: int = Qt.DisplayRole) -> typing.Any:
         """
         Sets standard size hint for indexes and allows
         Args:

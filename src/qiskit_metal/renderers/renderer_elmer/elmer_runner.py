@@ -8,12 +8,17 @@ import platform
 import yaml
 
 from qiskit_metal import Dict
-from qiskit_metal.renderers.renderer_elmer.elmer_configs import materials, simulations, solvers
+from qiskit_metal.renderers.renderer_elmer.elmer_configs import (
+    materials,
+    simulations,
+    solvers,
+)
 
 
 @dataclass
 class Body:
-    """ Class for storing data for ElmerFEM Body """
+    """Class for storing data for ElmerFEM Body"""
+
     target_bodies: list[int]
     equation: int
     material: int
@@ -23,7 +28,8 @@ class Body:
 
 @dataclass
 class Boundary:
-    """ Class for storing data for ElmerFEM boundary """
+    """Class for storing data for ElmerFEM boundary"""
+
     target_boundaries: list[int]
     other_opts: dict
 
@@ -101,7 +107,7 @@ class ElmerRunner:
             new_opt (dict[str, Any]): user-modified parameters from the
                                         QElmerRenderer setup.
         """
-        modified_new_opt = {k.replace(' ', '_'): v for k, v in new_opt.items()}
+        modified_new_opt = {k.replace(" ", "_"): v for k, v in new_opt.items()}
         setup_param.update(modified_new_opt)
 
     def init_simulation(self, name: str, options: dict):
@@ -112,8 +118,7 @@ class ElmerRunner:
             options (dict): Simulation options.
         """
         if len(self.simulation.keys()) > 1:
-            raise RuntimeError(
-                "There can only be one simulation instance at a time.")
+            raise RuntimeError("There can only be one simulation instance at a time.")
 
         self.simulation.update({name: options})
 
@@ -165,13 +170,15 @@ class ElmerRunner:
         self.material.update({name: options})
         return len(self.material)
 
-    def add_body(self,
-                 name: str,
-                 target_bodies: list[int],
-                 equation: int,
-                 material: int,
-                 body_force: Union[int, None] = None,
-                 initial_condition: Union[int, None] = None) -> int:
+    def add_body(
+        self,
+        name: str,
+        target_bodies: list[int],
+        equation: int,
+        material: int,
+        body_force: Union[int, None] = None,
+        initial_condition: Union[int, None] = None,
+    ) -> int:
         """Function to add a Body in the simulation.
 
         Args:
@@ -185,8 +192,9 @@ class ElmerRunner:
         Returns:
             int: Body ID in the simulation.
         """
-        sim_body = Body(target_bodies, equation, material, body_force,
-                        initial_condition)
+        sim_body = Body(
+            target_bodies, equation, material, body_force, initial_condition
+        )
         self.body.update({name: sim_body})
         return len(self.body)
 
@@ -203,8 +211,9 @@ class ElmerRunner:
         self.body_force.update({name: options})
         return len(self.material)
 
-    def add_boundary_condition(self, name: str, target_boundaries: list[int],
-                               options: dict) -> int:
+    def add_boundary_condition(
+        self, name: str, target_boundaries: list[int], options: dict
+    ) -> int:
         """Function to add a boundary condition in the simulation.
 
         Args:
@@ -232,8 +241,9 @@ class ElmerRunner:
         self.initial_condition.update({name: options})
         return len(self.initial_condition)
 
-    def _update_solver_setup(self, yaml_setup_dict: dict,
-                             new_setup_params: dict) -> dict:
+    def _update_solver_setup(
+        self, yaml_setup_dict: dict, new_setup_params: dict
+    ) -> dict:
         """Function to update the solver setup from QElmerRenderer
         default setup.
 
@@ -279,12 +289,13 @@ class ElmerRunner:
             raise ValueError(
                 "Simulation not defined in the provided config file. "
                 "Either add it to your config file, or use `init_simulation` "
-                "to manually add new simulation to the configuration.")
+                "to manually add new simulation to the configuration."
+            )
         self.init_simulation(name=name, options=opts[name])
 
-    def load_solvers(self,
-                     solver_names: list[str],
-                     config_file: str = None) -> list[int]:
+    def load_solvers(
+        self, solver_names: list[str], config_file: str = None
+    ) -> list[int]:
         """Function to load the solvers (from YAML configutation if specidifed).
 
         Args:
@@ -305,14 +316,15 @@ class ElmerRunner:
                 raise ValueError(
                     "Solver not defined in the provided config file. "
                     "Either add it to your config file, or use `add_solver` "
-                    "to manually add new solver to the simulation.")
+                    "to manually add new solver to the simulation."
+                )
             self.add_solver(name=name, options=opts[name])
 
         return [i + 1 for i in range(len(self.solver))]
 
-    def load_materials(self,
-                       material_names: list[str],
-                       config_file: str = None) -> list[int]:
+    def load_materials(
+        self, material_names: list[str], config_file: str = None
+    ) -> list[int]:
         """Function to load the materials (from YAML configuration if specified).
 
         Args:
@@ -333,7 +345,8 @@ class ElmerRunner:
                 raise ValueError(
                     "Material not defined in the provided config file. "
                     "Either add it to your config file, or use `add_material` "
-                    "to manually add new material to the simulation.")
+                    "to manually add new material to the simulation."
+                )
             self.add_material(name=name, options=opts[name])
 
         return [i + 1 for i in range(len(self.material))]
@@ -380,18 +393,18 @@ class ElmerRunner:
         if len(self.equation) > 0:
             for i, k in enumerate(self.equation):
                 section_string += f"! {k}\n"
-                section_string += f"Equation {i+1}\n"
-                solvers = [
-                    list(self.solver.keys())[i - 1] for i in self.equation[k]
-                ]
+                section_string += f"Equation {i + 1}\n"
+                solvers = [list(self.solver.keys())[i - 1] for i in self.equation[k]]
                 active_solvers = ""
                 for i, solver in enumerate(solvers):
-                    section_string += f"  ! {i+1}: {solver}\n"
-                    active_solvers += f" {i+1}"
+                    section_string += f"  ! {i + 1}: {solver}\n"
+                    active_solvers += f" {i + 1}"
 
-                section_string += f"  Active Solvers({len(solvers)}) =" + active_solvers + '\n'
+                section_string += (
+                    f"  Active Solvers({len(solvers)}) =" + active_solvers + "\n"
+                )
                 section_string += "End\n\n"
-            section_string += '\n'
+            section_string += "\n"
         return section_string
 
     def _write_sif_solver(self) -> str:
@@ -405,11 +418,11 @@ class ElmerRunner:
         if len(self.solver) > 0:
             for i, k in enumerate(self.solver):
                 section_string += f"! {k}\n"
-                section_string += f"Solver {i+1}\n"
+                section_string += f"Solver {i + 1}\n"
                 for key, val in self.solver[k].items():
                     section_string += f"  {key} = {val}\n"
                 section_string += "End\n\n"
-            section_string += '\n'
+            section_string += "\n"
         return section_string
 
     def _write_sif_material(self) -> str:
@@ -423,11 +436,11 @@ class ElmerRunner:
         if len(self.material) > 0:
             for i, k in enumerate(self.material):
                 section_string += f"! {k}\n"
-                section_string += f"Material {i+1}\n"
+                section_string += f"Material {i + 1}\n"
                 for key, val in self.material[k].items():
                     section_string += f"  {key} = {val}\n"
                 section_string += "End\n\n"
-            section_string += '\n'
+            section_string += "\n"
         return section_string
 
     def _write_sif_body(self) -> str:
@@ -441,26 +454,30 @@ class ElmerRunner:
         if len(self.body) > 0:
             for i, k in enumerate(self.body):
                 section_string += f"! {k}\n"
-                section_string += f"Body {i+1}\n"
+                section_string += f"Body {i + 1}\n"
                 body_obj = self.body[k]
                 trgt_bds = ""
                 for tb in body_obj.target_bodies:
                     trgt_bds += f" {tb}"
-                section_string += f"  Target Bodies({len(body_obj.target_bodies)}) =" + trgt_bds + '\n'
-                section_string += f"  Equation = {body_obj.equation} ! {list(self.equation.items())[body_obj.equation-1][0]}\n"
-                section_string += f"  Material = {body_obj.material} ! {list(self.material.items())[body_obj.material-1][0]}\n"
+                section_string += (
+                    f"  Target Bodies({len(body_obj.target_bodies)}) ="
+                    + trgt_bds
+                    + "\n"
+                )
+                section_string += f"  Equation = {body_obj.equation} ! {list(self.equation.items())[body_obj.equation - 1][0]}\n"
+                section_string += f"  Material = {body_obj.material} ! {list(self.material.items())[body_obj.material - 1][0]}\n"
                 if body_obj.body_force is not None:
                     section_string += (
                         f"  Body Force = {body_obj.body_force}"
-                        f" ! {list(self.body_force.items())[body_obj.body_force-1][0]}\n"
+                        f" ! {list(self.body_force.items())[body_obj.body_force - 1][0]}\n"
                     )
                 if body_obj.initial_condition is not None:
                     section_string += (
                         f"  Initial Condition = {body_obj.initial_condition}"
-                        f" ! {list(self.initial_condition.items())[body_obj.initial_condition-1][0]}\n"
+                        f" ! {list(self.initial_condition.items())[body_obj.initial_condition - 1][0]}\n"
                     )
                 section_string += "End\n\n"
-            section_string += '\n'
+            section_string += "\n"
         return section_string
 
     def _write_sif_boundary_condition(self) -> str:
@@ -474,16 +491,20 @@ class ElmerRunner:
         if len(self.boundary_condition) > 0:
             for i, k in enumerate(self.boundary_condition):
                 section_string += f"! {k}\n"
-                section_string += f"Boundary Condition {i+1}\n"
+                section_string += f"Boundary Condition {i + 1}\n"
                 bdry_obj = self.boundary_condition[k]
                 trgt_bds = ""
                 for tb in bdry_obj.target_boundaries:
                     trgt_bds += f" {tb}"
-                section_string += f"  Target Boundaries({len(bdry_obj.target_boundaries)}) =" + trgt_bds + '\n'
+                section_string += (
+                    f"  Target Boundaries({len(bdry_obj.target_boundaries)}) ="
+                    + trgt_bds
+                    + "\n"
+                )
                 for k, v in bdry_obj.other_opts.items():
                     section_string += f"  {k} = {v}\n"
                 section_string += "End\n\n"
-            section_string += '\n'
+            section_string += "\n"
         return section_string
 
     def _write_sif_initial_condition(self) -> str:
@@ -497,11 +518,11 @@ class ElmerRunner:
         if len(self.initial_condition) > 0:
             for i, k in enumerate(self.initial_condition):
                 section_string += f"! {k}\n"
-                section_string += f"Initial Condition {i+1}\n"
+                section_string += f"Initial Condition {i + 1}\n"
                 for key, val in self.initial_condition[k].items():
                     section_string += f"  {key} = {val}\n"
                 section_string += "End\n\n"
-            section_string += '\n'
+            section_string += "\n"
         return section_string
 
     def write_startinfo_and_sif(self, filename: str, sim_dir: str):
@@ -535,11 +556,9 @@ class ElmerRunner:
             sif.write(sif_data)
             sif.close()
 
-    def run_elmergrid(self,
-                      sim_dir: str,
-                      meshfile: str,
-                      elmergrid: str = None,
-                      options: list = []):
+    def run_elmergrid(
+        self, sim_dir: str, meshfile: str, elmergrid: str = None, options: list = []
+    ):
         """Function to run ElmerGrid executable in the system for transforming
         Gmsh style mesh to ElmerFEM style mesh.
 
@@ -554,16 +573,15 @@ class ElmerRunner:
         if elmergrid is None:
             # On Windows ElmerGrid.exe is not found once gmsh.initialize() was executed.
             # Try to use abs-path instead.
-            if os_platform == 'Windows' and os.path.exists(
-                    "C:/Program Files/Elmer 9.0-Release/bin/ElmerGrid.exe"):
+            if os_platform == "Windows" and os.path.exists(
+                "C:/Program Files/Elmer 9.0-Release/bin/ElmerGrid.exe"
+            ):
                 elmergrid = "C:/Program Files/Elmer 9.0-Release/bin/ElmerGrid.exe"
             else:
                 elmergrid = "ElmerGrid"
 
         args = [elmergrid, "14", "2", os.path.join("..", meshfile)] + options
-        with open(os.path.join(sim_dir, "elmergrid.log"),
-                  "w+",
-                  encoding="utf-8") as f:
+        with open(os.path.join(sim_dir, "elmergrid.log"), "w+", encoding="utf-8") as f:
             subprocess.run(args, cwd=sim_dir, stdout=f, stderr=f)
 
         mesh_dir = meshfile.split(".")[-2]
@@ -579,12 +597,13 @@ class ElmerRunner:
         shutil.rmtree(mesh_dir)
 
     def run_elmersolver(
-            self,
-            sim_dir: str,
-            sif_file: str,
-            # out_files: ty.List[str],
-            elmersolver: str = None,
-            options: list = []):
+        self,
+        sim_dir: str,
+        sif_file: str,
+        # out_files: ty.List[str],
+        elmersolver: str = None,
+        options: list = [],
+    ):
         """Function to run ElmerSolver executable in the system
         running the FEM simulation.
 
@@ -599,16 +618,17 @@ class ElmerRunner:
         if elmersolver is None:
             # On Windows ElmerSolver.exe is not found once gmsh.initialize() was executed.
             # Try to use abs-path instead.
-            if os_platform == 'Windows' and os.path.exists(
-                    "C:/Program Files/Elmer 9.0-Release/bin/ElmerSolver.exe"):
+            if os_platform == "Windows" and os.path.exists(
+                "C:/Program Files/Elmer 9.0-Release/bin/ElmerSolver.exe"
+            ):
                 elmersolver = "C:/Program Files/Elmer 9.0-Release/bin/ElmerSolver.exe"
             else:
                 elmersolver = "ElmerSolver"
 
             args = [elmersolver, sif_file] + options
-            with open(os.path.join(sim_dir, "elmersolver.log"),
-                      "w+",
-                      encoding="utf=8") as f:
+            with open(
+                os.path.join(sim_dir, "elmersolver.log"), "w+", encoding="utf=8"
+            ) as f:
                 subprocess.run(args, cwd=sim_dir, stdout=f, stderr=f)
 
             # for f in out_files:

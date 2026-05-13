@@ -32,10 +32,11 @@ class ShortToGround(QComponent):
 
     Values (unless noted) are strings with units included, (e.g., '30um')
     """
-    component_metadata = Dict(short_name='term')
+
+    component_metadata = Dict(short_name="term")
     """Component metadata"""
 
-    default_options = Dict(width='10um')
+    default_options = Dict(width="10um")
     """Default connector options"""
 
     TOOLTIP = """A basic short to ground termination"""
@@ -52,5 +53,5 @@ class ShortToGround(QComponent):
 
         port_points = list(draw.shapely.geometry.shape(port_line).coords)
 
-        #Generates the pin
-        self.add_pin('short', port_points, p.width)
+        # Generates the pin
+        self.add_pin("short", port_points, p.width)

@@ -21,7 +21,7 @@ class DynamicList(QStandardItemModel):
     """Create a dynamic checklist that gets updated when the data source is
     modified or a new one is introduced."""
 
-    def __init__(self, orig_design: 'QDesign'):
+    def __init__(self, orig_design: "QDesign"):
         """Set the original design source and populate list.
 
         Args:
@@ -36,7 +36,7 @@ class DynamicList(QStandardItemModel):
         """Return the data source."""
         return self._design
 
-    def update_src(self, new_design: 'QDesign'):
+    def update_src(self, new_design: "QDesign"):
         """Change the data source to a new one.
 
         Args:

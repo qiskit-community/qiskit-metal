@@ -12,8 +12,8 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-#pylint: disable-msg=import-error
-#pylint: disable-msg=consider-using-enumerate
+# pylint: disable-msg=import-error
+# pylint: disable-msg=consider-using-enumerate
 """
 This code calculates the energy eigenvalues of the transmon qubit cooper pair box
 as a function of the offset charge and plots the corresponding results.
@@ -28,7 +28,7 @@ from scipy.special import mathieu_a
 import numpy as np
 import matplotlib.pyplot as plt
 
-__all__ = ['kidx_raw', 'kidx', 'transmon_eigenvalue', 'plot_eigenvalues']
+__all__ = ["kidx_raw", "kidx", "transmon_eigenvalue", "plot_eigenvalues"]
 
 
 def kidx_raw(m, my_ng):
@@ -46,8 +46,12 @@ def kidx_raw(m, my_ng):
     if my_ng == 0:
         return m + 1.0 - ((m + 1.0) % 2.0)
 
-    return m + 1.0 - ((m + 1.0) % 2.0) + 2.0 * my_ng * (
-        (-1.0)**(m - 0.5 * (np.sign(my_ng) - 1.0)))
+    return (
+        m
+        + 1.0
+        - ((m + 1.0) % 2.0)
+        + 2.0 * my_ng * ((-1.0) ** (m - 0.5 * (np.sign(my_ng) - 1.0)))
+    )
 
 
 def kidx(m, my_ng):
@@ -145,9 +149,9 @@ def plot_eigenvalues():
         A plot of the eigenvalues as a function of offset charge.
     """
     # plot the PERIODIC eigen energies between (-2.0, 2.0)
-    plt.plot(ng_periodic, E0_periodic, 'k')  # m=0
-    plt.plot(ng_periodic, E1_periodic, 'r')  # m=1
-    plt.plot(ng_periodic, E2_periodic, 'b')  # m=2
-    plt.plot(ng_periodic, E3_periodic, 'm')  # m=3
+    plt.plot(ng_periodic, E0_periodic, "k")  # m=0
+    plt.plot(ng_periodic, E1_periodic, "r")  # m=1
+    plt.plot(ng_periodic, E2_periodic, "b")  # m=2
+    plt.plot(ng_periodic, E3_periodic, "m")  # m=3
     plt.xlabel("Offset Charge [ng]")
     plt.ylabel("Energy E_m[ng]")

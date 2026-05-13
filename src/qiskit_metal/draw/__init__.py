@@ -27,6 +27,17 @@ from qiskit_metal.draw import mpl
 
 # Useful functions
 from qiskit_metal.draw.utility import get_poly_pts, Vector
-from qiskit_metal.draw.basic import rectangle, is_rectangle, flip_merge, rotate, translate, scale, buffer,\
-    rotate_position, _iter_func_geom_, union, subtract
+from qiskit_metal.draw.basic import (
+    rectangle,
+    is_rectangle,
+    flip_merge,
+    rotate,
+    translate,
+    scale,
+    buffer,
+    rotate_position,
+    _iter_func_geom_,
+    union,
+    subtract,
+)
 from qiskit_metal.draw.mpl import render, figure_spawn

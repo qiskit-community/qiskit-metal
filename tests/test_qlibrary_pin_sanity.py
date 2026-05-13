@@ -35,8 +35,7 @@ import unittest
 import numpy as np
 
 from qiskit_metal import Dict, designs
-from qiskit_metal.qlibrary.couplers.cap_n_interdigital_tee import (
-    CapNInterdigitalTee)
+from qiskit_metal.qlibrary.couplers.cap_n_interdigital_tee import CapNInterdigitalTee
 from qiskit_metal.qlibrary.couplers.coupled_line_tee import CoupledLineTee
 from qiskit_metal.qlibrary.couplers.line_tee import LineTee
 from qiskit_metal.qlibrary.lumped.cap_3_interdigital import Cap3Interdigital
@@ -52,9 +51,11 @@ from qiskit_metal.qlibrary.qubits.transmon_pocket_cl import TransmonPocketCL
 from qiskit_metal.qlibrary.sample_shapes.n_square_spiral import NSquareSpiral
 from qiskit_metal.qlibrary.terminations.launchpad_wb import LaunchpadWirebond
 from qiskit_metal.qlibrary.terminations.launchpad_wb_coupled import (
-    LaunchpadWirebondCoupled)
+    LaunchpadWirebondCoupled,
+)
 from qiskit_metal.qlibrary.terminations.launchpad_wb_driven import (
-    LaunchpadWirebondDriven)
+    LaunchpadWirebondDriven,
+)
 from qiskit_metal.qlibrary.terminations.open_to_ground import OpenToGround
 from qiskit_metal.qlibrary.terminations.short_to_ground import ShortToGround
 
@@ -104,15 +105,16 @@ class TestQComponentPinSanity(unittest.TestCase):
         for component_cls, options in COMPONENTS_WITH_PINS:
             with self.subTest(component=component_cls.__name__):
                 design = designs.DesignPlanar()
-                component = component_cls(design,
-                                          f"test_{component_cls.__name__}",
-                                          options=options)
+                component = component_cls(
+                    design, f"test_{component_cls.__name__}", options=options
+                )
                 if not component.pins:
                     self.fail(
                         f"{component_cls.__name__} produced no pins with "
                         f"the test's configured options — update the "
                         f"options dict if the component's pin trigger "
-                        f"changed.")
+                        f"changed."
+                    )
                 for pin_name, pin in component.pins.items():
                     self._check_pin(component_cls.__name__, pin_name, pin)
 
@@ -162,9 +164,9 @@ class TestQComponentPinSanity(unittest.TestCase):
         for component_cls, options in COMPONENTS_WITH_PINS:
             with self.subTest(component=component_cls.__name__):
                 design = designs.DesignPlanar()
-                component = component_cls(design,
-                                          f"test_{component_cls.__name__}",
-                                          options=options)
+                component = component_cls(
+                    design, f"test_{component_cls.__name__}", options=options
+                )
                 if not component.pins:
                     continue
                 centroid = self._component_centroid(component)
@@ -174,12 +176,12 @@ class TestQComponentPinSanity(unittest.TestCase):
                     # for anything in the test list.
                     continue
                 for pin_name, pin in component.pins.items():
-                    if (component_cls.__name__, pin_name) in \
-                            self.KNOWN_INWARD_PINS:
+                    if (component_cls.__name__, pin_name) in self.KNOWN_INWARD_PINS:
                         # Known bug — skip the assertion but log.
                         continue
                     self._check_pin_points_outward(
-                        component_cls.__name__, pin_name, pin, centroid)
+                        component_cls.__name__, pin_name, pin, centroid
+                    )
 
     @staticmethod
     def _component_centroid(component):
@@ -195,30 +197,32 @@ class TestQComponentPinSanity(unittest.TestCase):
         # shapely ``unary_union`` then centroid would be more accurate;
         # the average of per-polygon centroids is good enough for the
         # outward-vs-inward sign check and a lot cheaper.
-        centroids = np.array([(g.centroid.x, g.centroid.y)
-                              for g in rows.geometry])
+        centroids = np.array([(g.centroid.x, g.centroid.y) for g in rows.geometry])
         return centroids.mean(axis=0)
 
-    def _check_pin_points_outward(self, component_name: str, pin_name: str,
-                                  pin: dict, centroid: np.ndarray):
+    def _check_pin_points_outward(
+        self, component_name: str, pin_name: str, pin: dict, centroid: np.ndarray
+    ):
         ref = f"{component_name}.{pin_name}"
         middle = np.asarray(pin["middle"], dtype=float)
         normal = np.asarray(pin["normal"], dtype=float)
         outward_dot = float(np.dot(middle - centroid, normal))
         self.assertGreater(
-            outward_dot, 0.0,
+            outward_dot,
+            0.0,
             f"{ref}: pin normal points INWARD relative to component "
             f"centroid. (middle - centroid) . normal = {outward_dot:.6f}. "
             f"This is the HFSS silent-failure mode: the port plane "
-            f"will end up inside the conductor.")
+            f"will end up inside the conductor.",
+        )
 
     def _check_pin(self, component_name: str, pin_name: str, pin: dict):
         ref = f"{component_name}.{pin_name}"
 
         # Width must be strictly positive — zero-width ports break HFSS.
         self.assertGreater(
-            pin["width"], 0.0,
-            f"{ref}: pin width must be > 0, got {pin['width']}")
+            pin["width"], 0.0, f"{ref}: pin width must be > 0, got {pin['width']}"
+        )
 
         normal = np.asarray(pin["normal"], dtype=float)
         tangent = np.asarray(pin["tangent"], dtype=float)
@@ -228,34 +232,40 @@ class TestQComponentPinSanity(unittest.TestCase):
         # anything that's drifted into "this clearly isn't normalised"
         # territory.
         self.assertAlmostEqual(
-            float(np.linalg.norm(normal)), 1.0, delta=self.UNIT_TOLERANCE,
-            msg=f"{ref}: ||normal|| != 1; got {normal}")
+            float(np.linalg.norm(normal)),
+            1.0,
+            delta=self.UNIT_TOLERANCE,
+            msg=f"{ref}: ||normal|| != 1; got {normal}",
+        )
         self.assertAlmostEqual(
-            float(np.linalg.norm(tangent)), 1.0, delta=self.UNIT_TOLERANCE,
-            msg=f"{ref}: ||tangent|| != 1; got {tangent}")
+            float(np.linalg.norm(tangent)),
+            1.0,
+            delta=self.UNIT_TOLERANCE,
+            msg=f"{ref}: ||tangent|| != 1; got {tangent}",
+        )
 
         # Perpendicularity. A port plane that isn't square produces
         # silent geometry errors at solve time.
         self.assertLess(
             abs(float(np.dot(normal, tangent))),
             self.PERPENDICULAR_TOLERANCE,
-            f"{ref}: normal . tangent != 0; "
-            f"normal={normal}, tangent={tangent}")
+            f"{ref}: normal . tangent != 0; normal={normal}, tangent={tangent}",
+        )
 
         # ``middle`` must equal the average of ``points``. If it
         # doesn't, downstream renderers place the port off-center.
         points = np.asarray(pin["points"], dtype=float)
         self.assertEqual(
-            points.shape[0], 2,
-            f"{ref}: expected 2 points, got shape {points.shape}")
+            points.shape[0], 2, f"{ref}: expected 2 points, got shape {points.shape}"
+        )
         expected_middle = points.mean(axis=0)
         actual_middle = np.asarray(pin["middle"], dtype=float)
         # add_pin rounds to design.template_options.PRECISION; allow
         # a generous tolerance here.
         self.assertTrue(
             np.allclose(actual_middle, expected_middle, atol=1e-6),
-            f"{ref}: middle {actual_middle} != mean(points) "
-            f"{expected_middle}")
+            f"{ref}: middle {actual_middle} != mean(points) {expected_middle}",
+        )
 
 
 if __name__ == "__main__":

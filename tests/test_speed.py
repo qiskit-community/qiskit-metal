@@ -43,5 +43,5 @@ class TestSpeed(unittest.TestCase):
         self.assertEqual(4, 2 + 2)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main(verbosity=2)

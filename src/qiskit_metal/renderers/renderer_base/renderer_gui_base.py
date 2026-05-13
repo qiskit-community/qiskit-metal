@@ -18,7 +18,7 @@ from qiskit_metal.qgeometries import QGeometryTables
 
 from qiskit_metal.renderers.renderer_base import QRenderer
 
-__all__ = ['QRendererGui']
+__all__ = ["QRendererGui"]
 
 
 class QRendererGui(QRenderer):
@@ -27,7 +27,7 @@ class QRendererGui(QRenderer):
     Extends `QRenderer`. An interface class.
     """
 
-    name = 'guibase'  # overwrite this!
+    name = "guibase"  # overwrite this!
     """Name"""
 
     def __init__(self, gui, design: QDesign, initiate=True, fig=None, ax=None):

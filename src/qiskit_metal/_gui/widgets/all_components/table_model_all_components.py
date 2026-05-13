@@ -41,13 +41,12 @@ class QTableModel_AllComponents(QAbstractTableModel):
         index = model.index(1,0)
         model.data(index)
     """
+
     __timer_interval = 500  # ms
 
-    def __init__(self,
-                 gui,
-                 logger,
-                 parent=None,
-                 tableView: 'QTableView_AllComponents' = None):
+    def __init__(
+        self, gui, logger, parent=None, tableView: "QTableView_AllComponents" = None
+    ):
         """
         Args:
             gui (MetalGUI): The GUI.  Defaults to None.
@@ -58,10 +57,15 @@ class QTableModel_AllComponents(QAbstractTableModel):
         super().__init__(parent=parent)
         self.logger = logger
         self.gui = gui
-        self._tableView = tableView  # the view used to preview this model, used to refresh
+        self._tableView = (
+            tableView  # the view used to preview this model, used to refresh
+        )
         self.columns = [
-            'Name', 'QComponent class', 'QComponent module', 'Build status',
-            'id'
+            "Name",
+            "QComponent class",
+            "QComponent module",
+            "Build status",
+            "id",
         ]
         self._row_count = -1
 
@@ -104,7 +108,6 @@ class QTableModel_AllComponents(QAbstractTableModel):
             # Wrap the reset logic in beginResetModel and endResetModel
             self.beginResetModel()
             try:
-
                 # When a model is reset it should be considered that all
                 # information previously retrieved from it is invalid.
                 # This includes but is not limited to the rowCount() and
@@ -156,10 +159,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
         """
         return len(self.columns)
 
-    def headerData(self,
-                   section,
-                   orientation: Qt.Orientation,
-                   role=Qt.DisplayRole):
+    def headerData(self, section, orientation: Qt.Orientation, role=Qt.DisplayRole):
         """Set the headers to be displayed.
 
         Args:
@@ -198,8 +198,8 @@ class QTableModel_AllComponents(QAbstractTableModel):
             return Qt.ItemIsEnabled
 
         return Qt.ItemFlags(
-            QAbstractTableModel.flags(self, index) |
-            Qt.ItemIsSelectable)  # | Qt.ToolTip)  # ItemIsEditable
+            QAbstractTableModel.flags(self, index) | Qt.ItemIsSelectable
+        )  # | Qt.ToolTip)  # ItemIsEditable
 
     # @slot_catch_error()
     def data(self, index: QModelIndex, role: int = Qt.DisplayRole):
@@ -216,15 +216,12 @@ class QTableModel_AllComponents(QAbstractTableModel):
         component_name = list(self.design.components.keys())[index.row()]
 
         if role == Qt.DisplayRole:
-
             if index.column() == 0:
                 return str(component_name)
             elif index.column() == 1:
-                return str(
-                    self.design.components[component_name].__class__.__name__)
+                return str(self.design.components[component_name].__class__.__name__)
             elif index.column() == 2:
-                return str(
-                    self.design.components[component_name].__class__.__module__)
+                return str(self.design.components[component_name].__class__.__module__)
             elif index.column() == 3:
                 return str(self.design.components[component_name].status)
             elif index.column() == 4:
@@ -238,27 +235,27 @@ class QTableModel_AllComponents(QAbstractTableModel):
                 return font
 
         elif role == Qt.BackgroundRole:
-
             component = self.design.components[component_name]
-            if component.status != 'good':  # Did the component fail the build
+            if component.status != "good":  # Did the component fail the build
                 #    and index.column()==0:
                 if not self._tableView:
-                    return QBrush(QColor('#FF0000'))
+                    return QBrush(QColor("#FF0000"))
                 table = self._tableView
                 color = table.palette().color(table.backgroundRole())
-                color = blend_colors(color, QColor('#FF0000'), r=0.6)
+                color = blend_colors(color, QColor("#FF0000"), r=0.6)
                 return QBrush(color)
 
         elif role == Qt.DecorationRole:
-
             if index.column() == 0:
                 component = self.design.components[component_name]
-                if component.status != 'good':  # Did the component fail the build
+                if component.status != "good":  # Did the component fail the build
                     return QIcon(":/sample_shapes/warning")
 
         elif role == Qt.ToolTipRole or role == Qt.StatusTipRole:
             component = self.design.components[component_name]
-            text = f"""Component name= "{component.name}" instance of """\
-                f"""class "{component.__class__.__name__}" from module""" \
-                    f"""{component.__class__.__module__}" """
+            text = (
+                f"""Component name= "{component.name}" instance of """
+                f"""class "{component.__class__.__name__}" from module"""
+                f"""{component.__class__.__module__}" """
+            )
             return text

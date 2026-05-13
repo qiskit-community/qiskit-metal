@@ -26,6 +26,7 @@ import io
 import unittest
 
 import matplotlib
+
 matplotlib.use("Agg")  # noqa: E402  must run before pyplot import below
 
 import matplotlib.pyplot as plt
@@ -40,8 +41,7 @@ from qiskit_metal.renderers.renderer_mpl.mpl_renderer import QMplRenderer
 
 def _make_design_with_two_components():
     design = designs.DesignPlanar()
-    TransmonPocket(design, "Q1",
-                   options=Dict(connection_pads=Dict(a=Dict())))
+    TransmonPocket(design, "Q1", options=Dict(connection_pads=Dict(a=Dict())))
     OpenToGround(design, "G1")
     return design
 
@@ -77,8 +77,7 @@ class TestViewerStandalone(unittest.TestCase):
         returned = view(design, ax=ax)
         n_after = len(plt.get_fignums())
         self.assertIs(returned, fig)
-        self.assertEqual(n_before, n_after,
-                         "view(ax=...) must not create a new Figure")
+        self.assertEqual(n_before, n_after, "view(ax=...) must not create a new Figure")
 
     def test_view_respects_figsize(self):
         """The new Figure is created at the requested size."""
@@ -103,8 +102,9 @@ class TestViewerStandalone(unittest.TestCase):
         ax = fig.axes[0]
         # matplotlib returns 'equal' or a float for the data aspect.
         aspect = ax.get_aspect()
-        self.assertTrue(aspect == "equal" or aspect == 1.0,
-                        f"Expected equal aspect, got {aspect!r}")
+        self.assertTrue(
+            aspect == "equal" or aspect == 1.0, f"Expected equal aspect, got {aspect!r}"
+        )
 
     def test_view_filters_to_named_components(self):
         """``components=[name]`` must hide all components not in the
@@ -117,11 +117,14 @@ class TestViewerStandalone(unittest.TestCase):
         design = _make_design_with_two_components()
         png_all = _render_to_png_bytes(view(design, figsize=(4, 4)))
         png_filtered = _render_to_png_bytes(
-            view(design, components=["Q1"], figsize=(4, 4)))
+            view(design, components=["Q1"], figsize=(4, 4))
+        )
         self.assertNotEqual(
-            png_all, png_filtered,
+            png_all,
+            png_filtered,
             "Filtering to one component should produce a different "
-            "image than rendering all components.")
+            "image than rendering all components.",
+        )
 
     def test_view_filters_with_unknown_component_name(self):
         """An unknown name in ``components`` shouldn't crash — it just
@@ -141,11 +144,14 @@ class TestViewerStandalone(unittest.TestCase):
         design = _make_design_with_two_components()
         png_all = _render_to_png_bytes(view(design, figsize=(4, 4)))
         png_hidden = _render_to_png_bytes(
-            view(design, hidden_layers={1}, figsize=(4, 4)))
+            view(design, hidden_layers={1}, figsize=(4, 4))
+        )
         self.assertNotEqual(
-            png_all, png_hidden,
+            png_all,
+            png_hidden,
             "Hiding layer 1 should produce a different image than "
-            "rendering with all layers visible.")
+            "rendering with all layers visible.",
+        )
 
     def test_view_sets_title_when_given(self):
         design = _make_design_with_two_components()
@@ -211,6 +217,7 @@ class TestAboutNoQt(unittest.TestCase):
         real ImportError branch; in the full venv it exercises the
         success path but still confirms about() doesn't raise."""
         from qiskit_metal.toolbox_metal import about as about_module
+
         text = about_module.about()
         self.assertIsInstance(text, str)
         # The summary always reports something for these fields,
