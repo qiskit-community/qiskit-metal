@@ -19,14 +19,14 @@ import builtins
 import json
 import queue
 from collections import OrderedDict
-from typing import Union, TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Union
 
 import numpy as np
+from addict import Dict
 from PySide6 import QtCore
-from PySide6.QtCore import QAbstractItemModel, QModelIndex, QTimer, Qt
+from PySide6.QtCore import QAbstractItemModel, QModelIndex, Qt, QTimer
 from PySide6.QtGui import QFont
 from PySide6.QtWidgets import QComboBox, QTreeView, QWidget
-from addict import Dict
 
 if TYPE_CHECKING:
     from qiskit_metal.designs.design_base import QDesign
@@ -323,8 +323,8 @@ class LeafNode(Node):
             return val
 
         cur_type = getattr(builtins, self.type)
-        if cur_type == bool:  # pylint: disable=simplifiable-if-statement
-            if self.value.lower() in "true":  # pylint: disable=simplifiable-if-statement
+        if cur_type is bool:
+            if self.value.lower() in "true":
                 value = True
             else:
                 value = False

@@ -17,7 +17,6 @@ Contain functions to report more detailed information to orient a user,
 used for debug purposes.
 """
 
-import getpass
 import inspect
 import os
 import platform

@@ -20,8 +20,8 @@ P. Krantz, et al. Physical Review Applied 6, 021318 (2019)
 https://aip.scitation.org/doi/10.1063/1.5089550
 """
 
-import numpy as np
 from math import pi
+
 from scipy.special import ellipk
 
 __all__ = ["kappa_in"]

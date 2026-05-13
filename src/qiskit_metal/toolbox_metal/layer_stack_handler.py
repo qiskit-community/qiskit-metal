@@ -3,7 +3,7 @@
 import logging
 import os
 from re import search
-from typing import List, Tuple, Union
+from typing import List, Optional, Tuple, Union
 
 import pandas as pd
 from addict import Dict
@@ -30,7 +30,7 @@ class LayerStackHandler:
     ]
 
     def __init__(
-        self, multi_planar_design: "MultiPlanar", fname: Union["str", None] = None
+        self, multi_planar_design: "MultiPlanar", fname: Optional[str] = None
     ) -> None:
         """Use the information in MultiPlanar design to parse_value
         and get the name of filename for layer stack.
@@ -88,7 +88,7 @@ class LayerStackHandler:
             # enter very basic default data for pandas table.
             self.ls_df = pd.DataFrame(data=self.layer_stack_default)
 
-    def get_layer_datatype_when_fill_is_true(self) -> Union[dict, None]:
+    def get_layer_datatype_when_fill_is_true(self) -> Optional[dict]:
         """Return layer/datatype rows where ``fill`` is True.
 
         Returns:
@@ -136,7 +136,7 @@ class LayerStackHandler:
 
     def get_properties_for_layer_datatype(
         self, properties: List[str], layer_number: int, datatype: int = 0
-    ) -> Union[Tuple[Union[float, str, bool]], None]:
+    ) -> Optional[Tuple[Union[float, str, bool]]]:
         """When user provides a layer and datatype, they can get properties
          from the layer_stack file. The allowed options for properties must
          be in Col_Names.  If any of the properties are not in Col_Names,
@@ -151,7 +151,7 @@ class LayerStackHandler:
                                     by datatype. Defaults to 0.
 
         Returns:
-            Union[Tuple[Union[float, str, bool]], None]: If the search data provided
+            Optional[Tuple[Union[float, str, bool]]]: If the search data provided
                             in the arguments are not in the layer_stack file,
                             None will be returned.  If the search values are found in
                             layer_stack file, then a Tuple will be returned with the
