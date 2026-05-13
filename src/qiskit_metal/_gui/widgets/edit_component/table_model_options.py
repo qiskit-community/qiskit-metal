@@ -288,7 +288,7 @@ def parse_param_from_str(text):
     try:  # crude way to handle list and values
         value = ast.literal_eval(text)
         used_ast = True
-    except Exception as exception:
+    except Exception:
         pass
         # print(exception)
     return value, used_ast

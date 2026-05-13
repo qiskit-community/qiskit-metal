@@ -84,7 +84,7 @@ class QQ3DPyaedt(QPyaedt):
         )
 
         # QRenderer has a "cls" method called load()
-        if_registered_in_design = QQ3DPyaedt.load()
+        if_registered_in_design = QQ3DPyaedt.load()  # noqa: F841
 
         # make a class to read in pandas table.
         self.tables = None
@@ -338,8 +338,6 @@ class QQ3DPyaedt(QPyaedt):
             self.subtract_from_ground(layer_num, data_type=data_type)
         # self.current_app.modeler.sheet_names
 
-        a = 5
-
     # commenting this out for now.
     # def get_data(self):
     #     self.current_app.post.get_solution_data()
@@ -387,7 +385,7 @@ class QQ3DPyaedt(QPyaedt):
     # c2.sim.capacitance_matrix
 
     def get_capacitance_matrix(self):
-        a = 5
+        pass
 
     def get_capacitance_all_passes(self, setup_name: str) -> Union[dict, None]:
         """ASSUME analyze_setup() has already happened.
@@ -428,7 +426,7 @@ class QQ3DPyaedt(QPyaedt):
             variations={"Pass": ["All"]},
         )
 
-        c1_units = cap_data.units_data
+        c1_units = cap_data.units_data  # noqa: F841
 
         all_cap_data_magnitude = []
         all_cap_data_magnitude_freqs = {}

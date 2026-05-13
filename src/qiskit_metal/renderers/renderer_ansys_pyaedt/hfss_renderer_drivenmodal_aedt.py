@@ -629,7 +629,7 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
             pin_dict = self.design.components[comp_name].pins[pin_name]
             width, gap = parse_entry([pin_dict["width"], pin_dict["gap"]])
             mid, normal = parse_entry(pin_dict["middle"]), pin_dict["normal"]
-            chip_name = self.design.components[comp_name].options.chip
+            chip_name = self.design.components[comp_name].options.chip  # noqa: F841
             result = self.design.ls.get_properties_for_layer_datatype(
                 ["thickness", "z_coord", "material", "fill"], layer_num
             )
@@ -656,7 +656,7 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
             poly_port.show_arrow = True
             poly_port.color = (128, 0, 128)
 
-            lumped_port = self.current_app.create_lumped_port_to_sheet(
+            lumped_port = self.current_app.create_lumped_port_to_sheet(  # noqa: F841
                 sheet_name=poly_port.name,
                 # Name is under excitation folder, so can reuse.
                 portname=poly_port.name,
@@ -664,7 +664,5 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
                 impedance=impedance,
             )
 
-            a = 5
-
     def add_mesh(self):
-        a = 5
+        pass

@@ -132,7 +132,7 @@ class QMplRenderer:
         Args:
             name (str): Component name
         """
-        comp_id = self.design.components[name].id
+        comp_id = self.design.components[name].id  # noqa: F841
         self._hidden_components.discard(name)
 
     def hide_layer(self, name):

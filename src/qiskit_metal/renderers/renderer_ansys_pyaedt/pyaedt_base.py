@@ -223,7 +223,6 @@ class QPyaedt(QRendererAnalysis):
         # Render all chips of the design.
         # Calls render_chip for each chip.
 
-        a = 5
         pass
 
         chip_list = self.get_chip_names()
@@ -254,7 +253,6 @@ class QPyaedt(QRendererAnalysis):
 
         # This is for HFSS, will do later.  Also, we may want to do just once, BUT
         # not for every chip.
-        a = 5
         pass
 
     def render_components(
@@ -326,7 +324,7 @@ class QPyaedt(QRendererAnalysis):
 
         layer = int(qgeom.layer)
         datatype = 0
-        chip_name = str(qgeom.chip)
+        chip_name = str(qgeom.chip)  # noqa: F841
         result = self.design.ls.get_properties_for_layer_datatype(
             ["thickness", "z_coord", "material", "fill"], layer, datatype
         )
@@ -369,7 +367,7 @@ class QPyaedt(QRendererAnalysis):
             a_polyline_wider = self.add_linestring_width(
                 qc_width, a_polyline, points_3d, material=material
             )
-            a_name = a_polyline_wider.name
+            a_name = a_polyline_wider.name  # noqa: F841
             a_polyline_width_thickened = self.current_app.modeler.thicken_sheet(
                 a_polyline_wider.id, thickness=thickness, bBothSides=True
             )
@@ -405,14 +403,14 @@ class QPyaedt(QRendererAnalysis):
             qgeom (pd.Series): GeoSeries of element properties.
         """
         # super().render_element_poly(qgeom)
-        ansys_options = dict(transparency=0.0)
+        ansys_options = dict(transparency=0.0)  # noqa: F841
         qc_name = self.design._components[qgeom["component"]].name
         qc_elt = get_clean_name(qgeom["name"])
 
         qc_shapely = qgeom.geometry  # shapely geom
         layer = int(qgeom.layer)
         datatype = 0
-        chip_name = str(qgeom.chip)
+        chip_name = str(qgeom.chip)  # noqa: F841
         subtract = qgeom["subtract"]  # expect a bool
         # qgeom.helper is ignored since the material for each layer is
         # obtained from the layer_stack.
@@ -436,7 +434,7 @@ class QPyaedt(QRendererAnalysis):
             return
 
         # still need to deal with fillet for polygons?????
-        qc_fillet = round(qgeom.fillet, 7)
+        qc_fillet = round(qgeom.fillet, 7)  # noqa: F841
 
         name = f"{qc_elt}{QPyaedt.NAME_DELIM}{qc_name}"
 
@@ -498,8 +496,6 @@ class QPyaedt(QRendererAnalysis):
             #     self.chip_subtract_dict[chip_name][layer] = set()
 
             # self.chip_subtract_dict[chip_name][layer].add(name)
-
-        a = 5
 
     def _initiate_renderer(self):
         """
@@ -716,7 +712,7 @@ class QPyaedt(QRendererAnalysis):
         pin_dict = self.design.components[comp_name].pins[pin_name]
         width, gap = parse_entry([pin_dict["width"], pin_dict["gap"]])
         mid, normal = parse_entry(pin_dict["middle"]), pin_dict["normal"]
-        chip_name = self.design.components[comp_name].options.chip
+        chip_name = self.design.components[comp_name].options.chip  # noqa: F841
         result = self.design.ls.get_properties_for_layer_datatype(
             ["thickness", "z_coord", "material", "fill"], layer
         )
@@ -926,7 +922,7 @@ class QPyaedt(QRendererAnalysis):
         #                     material="pec",
         #                     solve_inside=False,
         #                 )
-        a = 5
+        pass
 
     def get_chip_names(self) -> List[str]:
         """

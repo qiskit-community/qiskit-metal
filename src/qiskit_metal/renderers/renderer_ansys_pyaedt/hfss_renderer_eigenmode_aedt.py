@@ -271,7 +271,7 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
         return
 
     def add_mesh(self):
-        a = 5
+        pass
 
     def should_render_junction(
         self,

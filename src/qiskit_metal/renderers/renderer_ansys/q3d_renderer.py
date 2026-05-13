@@ -133,7 +133,7 @@ class QQ3DRenderer(QAnsysRenderer):
         self.assign_perfE = []
         self.assign_mesh = []
 
-        chip_list = self.get_chip_names()
+        chip_list = self.get_chip_names()  # noqa: F841
 
         self.render_tables(skip_junction=True)
         self.add_endcaps(open_pins)
