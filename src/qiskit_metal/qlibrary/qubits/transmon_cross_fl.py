@@ -81,7 +81,7 @@ class TransmonCrossFL(TransmonCross):
         """Define the way the options are turned into QGeometry."""
         super().make()
 
-        if self.options.make_fl == True:
+        if self.options.make_fl:
             self.make_flux_line()
 
     #####################################################################

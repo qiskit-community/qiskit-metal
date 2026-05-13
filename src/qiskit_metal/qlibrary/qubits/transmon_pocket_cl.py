@@ -123,7 +123,7 @@ class TransmonPocketCL(TransmonPocket):
         """Define the way the options are turned into QGeometry."""
         super().make()
 
-        if self.options.make_CL == True:
+        if self.options.make_CL:
             self.make_charge_line()
 
     #####################################################################

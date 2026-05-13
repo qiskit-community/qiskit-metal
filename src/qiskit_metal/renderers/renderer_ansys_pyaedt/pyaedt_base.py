@@ -887,8 +887,8 @@ class QPyaedt(QRendererAnalysis):
         # wb_offset = parse_units(self._options["wb_offset"])
 
         # # selecting only the qgeometry which meet criteria
-        # wb_table = table.loc[table["hfss_wire_bonds"] == True]
-        # wb_table2 = wb_table.loc[wb_table["subtract"] == True]
+        # wb_table = table.loc[table["hfss_wire_bonds"]]
+        # wb_table2 = wb_table.loc[wb_table["subtract"]]
 
         # # looping through each qgeometry
         # for _, row in wb_table2.iterrows():
