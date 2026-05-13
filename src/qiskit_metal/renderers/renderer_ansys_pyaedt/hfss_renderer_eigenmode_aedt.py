@@ -330,7 +330,7 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
         Returns:
             dict: ``self.epr_quantum_analysis.data`` with all EPR results.
         """
-        if print_result == None:
+        if print_result is None:
             print_result = self.default_pyepr_options.print_result
 
         # Sets ANSYS to project associated with self.design
@@ -418,7 +418,7 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
 
         """
         # Check for default values
-        if dielectric_layers == None:
+        if dielectric_layers is None:
             dielectric_layers = self.default_pyepr_options.ansys.dielectric_layers
 
         # Check if layerstack (self.design.ls) is uniquely specified
@@ -449,11 +449,11 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
             fock_trunc (int, optional): Truncation of the fock. Defaults to self.default_pyepr_options.
             print (boo, optional): Print results of EPR analysis. Defaults to self.default_pyepr_options.
         """
-        if cos_trunc == None:
+        if cos_trunc is None:
             cos_trunc = self.default_pyepr_options.hamiltonian.cos_trunc
-        if fock_trunc == None:
+        if fock_trunc is None:
             fock_trunc = self.default_pyepr_options.hamiltonian.fock_trunc
-        if print_result == None:
+        if print_result is None:
             print_result = self.default_pyepr_options.print_result
 
         self.epr_quantum_analysis = epr.QuantumAnalysis(
@@ -469,7 +469,7 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
         Args:
             numeric (bool, optional): Use numerical diagonalization. Defaults to self.default_pyepr_options.
         """
-        if numeric == None:
+        if numeric is None:
             numeric = self.default_pyepr_options.hamiltonian.numeric
 
         self.epr_quantum_analysis.plot_hamiltonian_results()

@@ -1053,9 +1053,6 @@ class QAnsysRenderer(QRendererAnalysis):
         self.subtract_from_ground()
         self.add_mesh()
 
-    def render_chip(self):
-        pass
-
     def render_component(self):
         pass
 

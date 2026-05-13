@@ -12,18 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# pylint: disable-msg=too-many-return-statements
-# pylint: disable-msg=no-else-return
-# pylint: disable-msg=inconsistent-return-statements
-# pylint: disable-msg=attribute-defined-outside-init
-# pylint: disable-msg=broad-except
-# pylint: disable-msg=import-outside-toplevel
-# pylint: disable-msg=relative-beyond-top-level
-# pylint: disable-msg=import-error
-# pylint: disable-msg=too-few-public-methods
-# pylint: disable-msg=too-many-instance-attributes
-# pylint: disable-msg=invalid-name
-# pylint: disable-msg=no-name-in-module
+
 """
 Parameter Entry Window for displaying parameters for QComponent instantiation from GUI's
 QLibrary tab
@@ -38,28 +27,27 @@ from collections import OrderedDict
 from collections.abc import Callable
 from inspect import signature
 from pathlib import Path
-from typing import TYPE_CHECKING, Union, Type
+from typing import TYPE_CHECKING, Type, Union
 
 import numpy as np
 from PySide6 import QtGui, QtWidgets
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QDockWidget, QWidget
-from PySide6.QtWidgets import QMainWindow, QMessageBox
+from PySide6.QtWidgets import QDockWidget, QMainWindow, QMessageBox, QWidget
 
 from qiskit_metal import designs
-from qiskit_metal.qlibrary.core import QComponent
-from qiskit_metal.toolbox_python.attr_dict import Dict
 from qiskit_metal._gui.widgets.create_component_window.model_view.tree_delegate_param_entry import (
     ParamDelegate,
 )
 from qiskit_metal._gui.widgets.create_component_window.model_view.tree_model_param_entry import (
-    TreeModelParamEntry,
     LeafNode,
     Node,
+    TreeModelParamEntry,
 )
 from qiskit_metal._gui.widgets.create_component_window.parameter_entry_window_ui import (
     Ui_MainWindow,
 )
+from qiskit_metal.qlibrary.core import QComponent
+from qiskit_metal.toolbox_python.attr_dict import Dict
 
 if TYPE_CHECKING:
     from ...main_window import MetalGUI
@@ -539,15 +527,15 @@ def create_default_from_type(my_t: type, param_name: str = None):
     """
     if param_name is not None:
         return param_name + "-" + str(random.randint(0, 1000))
-    if my_t == int:
+    if my_t is int:
         return 0
-    elif my_t == float:
+    elif my_t is float:
         return 0.0
-    elif my_t == str:
+    elif my_t is str:
         return "fake-param-" + str(random.randint(0, 1000))
-    elif my_t == bool:
+    elif my_t is bool:
         return True
-    elif my_t == dict:
+    elif my_t is dict:
         return {
             "fake-param-" + str(random.randint(0, 1000)): "fake-param"
         }  # can't have empty branch nodes
