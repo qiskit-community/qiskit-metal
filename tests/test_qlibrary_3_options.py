@@ -12,8 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# pylint: disable-msg=unnecessary-pass
-# pylint: disable-msg=too-many-public-methods
 """Qiskit Metal unit tests components functionality."""
 
 import unittest
@@ -57,7 +55,6 @@ from qiskit_metal.qlibrary.couplers.tunable_coupler_01 import TunableCoupler01
 from qiskit_metal.qlibrary import _template
 from .assertions import AssertionsMixin
 
-# pylint: disable-msg=line-too-long
 from qiskit_metal.qlibrary.lumped.resonator_coil_rect import ResonatorCoilRect
 
 

@@ -12,10 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# pylint: disable-msg=unnecessary-pass
-# pylint: disable-msg=broad-except
-# pylint: disable-msg=import-outside-toplevel
-# pylint: disable-msg=import-error
 """Qiskit Metal unit tests analyses functionality."""
 
 import unittest
@@ -90,7 +86,6 @@ class TestElements(unittest.TestCase):
         self.assertEqual(e_c["junction"]["width"], float)
         self.assertEqual(e_c["junction"]["__renderers__"], dict())
 
-    # pylint: disable-msg=unused-variable
     def test_qgeometry_true_bools(self):
         """Test that TRUE_BOOLS was not accidentally changed in
         element_handler.py."""

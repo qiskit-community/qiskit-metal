@@ -16,7 +16,7 @@ from qiskit_metal import draw, Dict
 from qiskit_metal.qlibrary.core import BaseQubit
 
 
-class TransmonCross(BaseQubit):  # pylint: disable=invalid-name
+class TransmonCross(BaseQubit):
     """The base `TransmonCross` class.
 
     Inherits `BaseQubit` class.

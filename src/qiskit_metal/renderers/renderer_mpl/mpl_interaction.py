@@ -438,7 +438,6 @@ class PanAndZoom(ZoomOnWheel):
 
         fig = self.figure
         imgs_path = self.imgs_path
-        # pylint: disable=attribute-defined-outside-init
         toolbar = self.toolbar = fig.canvas.manager.toolbar
 
         # Get tool manager
@@ -594,7 +593,6 @@ class PanAndZoom(ZoomOnWheel):
         """
         if event.name == "button_press_event":  # begin drag
             self._event = event
-            # pylint: disable=attribute-defined-outside-init
             self._patch = _plt.Rectangle(
                 xy=(event.xdata, event.ydata),
                 width=0,

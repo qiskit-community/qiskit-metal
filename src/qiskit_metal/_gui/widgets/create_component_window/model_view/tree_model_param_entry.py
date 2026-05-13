@@ -63,7 +63,7 @@ def get_nested_dict_item(dic: dict, key_list: list):
     return dic
 
 
-class Node:  # pylint: disable=too-few-public-methods
+class Node:
     """
     This class was made for type hints (instead of having to union BranchNode and LeafNode)"
     """
@@ -129,12 +129,12 @@ class BranchNode(Node):
             for btn in self.branch_type_names:
                 self.addItem(btn)
 
-        def getType(self):  # pylint: disable=invalid-name disable=inconsistent-return-statements
+        def getType(self):
             """Return Type"""
             if self.currentText() in self.type_dictionary:
                 return self.type_dictionary[self.currentText()]
 
-        def getTypeName(self):  # pylint: disable=invalid-name
+        def getTypeName(self):
             """Return Name"""
             return self.currentText()
 
@@ -161,7 +161,7 @@ class BranchNode(Node):
 
         return mystr
 
-    def childAtRow(self, row: int):  # pylint: disable=invalid-name disable=inconsistent-return-statements
+    def childAtRow(self, row: int):
         """Gets the child at the given row
 
         Args:
@@ -173,7 +173,7 @@ class BranchNode(Node):
         if 0 <= row < len(self.children):
             return self.children[row][self.NODE]
 
-    def rowOfChild(self, child):  # pylint: disable=invalid-name
+    def rowOfChild(self, child):
         """Gets the row of the given child
 
         Args:
@@ -187,7 +187,7 @@ class BranchNode(Node):
                 return i
         return -1
 
-    def childWithKey(self, key: str):  # pylint: disable=invalid-name
+    def childWithKey(self, key: str):
         """Gets the child with the given key
 
         Args:
@@ -202,7 +202,7 @@ class BranchNode(Node):
                 return childnode
         return None
 
-    def insertChild(self, child):  # pylint: disable=invalid-name
+    def insertChild(self, child):
         """
         Insert the given child
 
@@ -217,7 +217,7 @@ class BranchNode(Node):
         row = self.rowOfChild(child_node)
         self.children[row] = (child_node.name, child_node)
 
-    def hasLeaves(self):  # pylint: disable=invalid-name
+    def hasLeaves(self):
         """Do I have leaves?
 
         Returns:
@@ -232,7 +232,7 @@ class NpEncoder(json.JSONEncoder):
     """Helper Class for data transfer"""
 
     # https://docs.python.org/3/library/json.html
-    def default(self, obj):  # pylint: disable=arguments-differ
+    def default(self, obj):
         """Returns default"""
         if isinstance(obj, np.integer):
             return int(obj)
@@ -278,7 +278,7 @@ class LeafNode(Node):
         pylist = "list"
         customFromStringItems = {
             npArr: lambda a: np.array(json.loads(a)),
-            pylist: lambda a: json.loads(a),  # pylint: disable=unnecessary-lambda
+            pylist: lambda a: json.loads(a),
         }
         customToStringItems = {
             npArr: lambda a: json.dumps(a, cls=NpEncoder),
@@ -298,14 +298,14 @@ class LeafNode(Node):
             self.addItem(self.pylist)
             self.np_enc = NpEncoder
 
-        def getType(self):  # pylint: disable=invalid-name
+        def getType(self):
             """Return type"""
             if self.currentText() in self.customFromStringItems:
                 return self.customFromStringItems[self.currentText()]
 
             return getattr(builtins, self.currentText())
 
-        def getTypeName(self):  # pylint: disable=invalid-name
+        def getTypeName(self):
             """Return name"""
             return self.currentText()
 
@@ -379,7 +379,7 @@ class TreeModelParamEntry(QAbstractItemModel):
             design (QDesign): Current design using the model
         """
         super().__init__(parent=parent)
-        self._row_count = -1  # pylint: disable=invalid-name
+        self._row_count = -1
         self.root = BranchNode("")
         self.view = view
         self._design = design
@@ -497,7 +497,7 @@ class TreeModelParamEntry(QAbstractItemModel):
         completely rebuild the model and tree.
         """
         # TODO: Check if new nodes have been added; if so, rebuild model.
-        new_row_count = self.rowCount(self.createIndex(0, 0))  # pylint: disable=invalid-name
+        new_row_count = self.rowCount(self.createIndex(0, 0))
         if self._row_count != new_row_count:
             # Wrap the reset logic in beginResetModel and endResetModel
             self.beginResetModel()
@@ -513,7 +513,7 @@ class TreeModelParamEntry(QAbstractItemModel):
             finally:
                 self.endResetModel()
 
-    def getPaths(self, curdict: OrderedDict, curpath: list):  # pylint: disable=invalid-name
+    def getPaths(self, curdict: OrderedDict, curpath: list):
         """Recursively finds and saves all root-to-leaf paths in model"""
 
         for k, v in curdict.items():
@@ -586,7 +586,7 @@ class TreeModelParamEntry(QAbstractItemModel):
 
         return len(node)
 
-    def columnCount(self, parent: QModelIndex = None):  # pylint: disable=unused-argument
+    def columnCount(self, parent: QModelIndex = None):
         """Get the number of columns
 
         Args:
@@ -597,7 +597,7 @@ class TreeModelParamEntry(QAbstractItemModel):
         """
         return len(self.headers)
 
-    def data(self, index: QModelIndex, role: Qt.ItemDataRole = Qt.DisplayRole):  # pylint: disable=too-many-return-statements,too-many-branches
+    def data(self, index: QModelIndex, role: Qt.ItemDataRole = Qt.DisplayRole):
         """Gets the node data
 
         Args:
@@ -650,7 +650,7 @@ class TreeModelParamEntry(QAbstractItemModel):
         return None
 
     def setData(
-        self,  # pylint: disable=too-many-return-statements
+        self,
         index: QModelIndex,
         value: Any,
         role: Qt.ItemDataRole = Qt.EditRole,
@@ -685,9 +685,7 @@ class TreeModelParamEntry(QAbstractItemModel):
                             return False
 
                         # Set the value of an option when the new value is different
-                        node.value = (
-                            value  # # pylint: disable=attribute-defined-outside-init
-                        )
+                        node.value = value
                         return True  # why doesn't this require a self.init_load()?
 
                 elif (
@@ -729,7 +727,7 @@ class TreeModelParamEntry(QAbstractItemModel):
                     return True
 
             return False
-        except Exception as e:  # pylint: disable=broad-except
+        except Exception as e:
             self._design.logger.error(f"Unable to parse tree information: {e}")
             return False
 
@@ -748,8 +746,8 @@ class TreeModelParamEntry(QAbstractItemModel):
 
     def expand_items_in_paths(self, expanded_nodes):
         """Expand all nodes that were previously saved in expanded_nodes"""
-        INDEX = 0  # pylint: disable=invalid-name
-        NODE = 1  # pylint: disable=invalid-name
+        INDEX = 0
+        NODE = 1
         cur_index = QModelIndex()
         node = self.nodeFromIndex(cur_index)
         discovered_queue = queue.Queue()
@@ -847,7 +845,7 @@ class TreeModelParamEntry(QAbstractItemModel):
         assert row != -1
         return self.createIndex(row, 0, parent)
 
-    def nodeFromIndex(self, index: QModelIndex) -> Union[BranchNode, LeafNode]:  # pylint: disable=invalid-name
+    def nodeFromIndex(self, index: QModelIndex) -> Union[BranchNode, LeafNode]:
         """Utility method we define to get the node from the index.
 
         Args:
@@ -880,7 +878,7 @@ class TreeModelParamEntry(QAbstractItemModel):
 
         return flags
 
-    def node_str(self, node: Node):  # pylint: disable=no-self-use
+    def node_str(self, node: Node):
         """Node to string"""
         if Node is None:
             return "None"

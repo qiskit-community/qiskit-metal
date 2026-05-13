@@ -72,7 +72,6 @@ def _render_poly_zkm(poly: Polygon, ax, kw=None, kw_hole=None):
     kw_hole = {**style_config.poly.interior, **kw}
 
     if not poly.exterior == LinearRing():  # not empty - better check?
-        # pylint: disable=protected-access
         # Exterior
         coords = np.array(poly.exterior.coords)
         mpl_poly = mpl.patches.Polygon(coords)
@@ -345,7 +344,6 @@ def figure_spawn(fig_kw=None):
     ax_draw.set_xlabel("X position (mm)")
     ax_draw.set_ylabel("Y position (mm)")
 
-    # pylint: disable=import-outside-toplevel
     def clear_me():
         plt.sca(ax_draw)
         # from pyEPR.toolbox_plotting import plt_cla
@@ -385,7 +383,6 @@ def _axis_set_watermark_img(ax: plt.Axes, file: str, size: float = 0.25):
     # im[:, :, -1] = 0.5  # set the alpha channel
 
     # window aspect
-    # pylint: disable=invalid-name
     b = ax.get_window_extent()
     b = abs(b.height / b.width)
     # b = ax.get_tightbbox(ax.get_figure().canvas.get_renderer())
@@ -410,4 +407,3 @@ def clear_axis(ax: plt.Axes):
         ax (plt.Axes): MPL axis to clear
     """
     ax.clear()
-    # pylint: disable=protected-access

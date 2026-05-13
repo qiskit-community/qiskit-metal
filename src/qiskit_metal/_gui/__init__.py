@@ -33,7 +33,6 @@ Main Window
     MetalGUI
 
 """
-# pylint: disable=invalid-name
 
 import logging
 from qiskit_metal import __version__

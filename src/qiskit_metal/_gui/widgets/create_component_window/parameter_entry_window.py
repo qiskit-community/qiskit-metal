@@ -207,7 +207,6 @@ class ParameterEntryWindow(QMainWindow):
         my_help.setHtml(text)
         self.ui.tab_help.layout().addWidget(my_help)
 
-    # pylint: disable-msg=no-self-use
     @QComponentParameterEntryExceptionDecorators.entry_exception_pop_up_warning
     def format_docstr(self, doc: Union[str, None]) -> str:
         """Format a docstring

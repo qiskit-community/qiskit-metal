@@ -23,7 +23,6 @@ Pocket "axis"
 
 Child of 'standard' transmon pocket.
 """
-# pylint: disable=invalid-name
 # Modification of Transmon Pocket Object to include a charge line (would be better to just make as a child)
 
 import numpy as np
@@ -31,7 +30,7 @@ from qiskit_metal import draw, Dict
 from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 
 
-class TransmonPocketCL(TransmonPocket):  # pylint: disable=invalid-name
+class TransmonPocketCL(TransmonPocket):
     """The base `TransmonPocketCL` class.
 
     Inherits `TransmonPocket` class.

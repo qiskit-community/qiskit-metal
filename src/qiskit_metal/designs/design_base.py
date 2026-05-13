@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# pylint: disable=too-many-lines, cyclic-import
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -95,8 +94,6 @@ class QDesign:
     - Renderer enablement can be toggled at construction (``enable_renderers``)
       to speed up geometry-only workflows.
     """
-
-    # pylint: disable=too-many-instance-attributes, too-many-public-methods
 
     # Dummy private attribute used to check if an instantiated object is
     # indeed a QDesign class. The problem is that the `isinstance`
@@ -302,7 +299,6 @@ class QDesign:
         Returns:
             pd.DataFrame: copy of net_info table.
         """
-        # pylint: disable=protected-access
         return self._qnet._net_info.copy(deep=True)
 
     #########Proxy properties##################################################
@@ -368,7 +364,6 @@ class QDesign:
         Returns:
             QNet: QNet with all pins removed
         """
-        # pylint: disable=protected-access
         df_net_info = self._qnet._net_info
         for _, _, comp_id, pin_name in df_net_info.itertuples():
             self._components[comp_id].pins[pin_name].net_id = 0
@@ -515,7 +510,7 @@ class QDesign:
 
     def rebuild(self) -> None:  # remake_all_components
         """Remakes all components with their current parameters."""
-        for _, obj in self._components.items():  # pylint: disable=unused-variable
+        for _, obj in self._components.items():
             obj.rebuild()
 
     def rename_component(self, component_id: int, new_component_name: str):
@@ -575,7 +570,6 @@ class QDesign:
             self.name_to_id[new_component_name] = a_component.id
 
             # do rename
-            # pylint: disable=protected-access
             self._components[component_id]._name = new_component_name
 
             return True
@@ -586,7 +580,6 @@ class QDesign:
         return -3
 
     def delete_component(self, component_name: str, force: bool = False) -> bool:
-        # pylint: disable=unused-argument
         """Deletes component and pins attached to said component.
 
         If no component by that name is present, then just return True
@@ -685,7 +678,7 @@ class QDesign:
 
         return return_response
 
-    def copy_multiple_qcomponents(  # pylint: disable=dangerous-default-value
+    def copy_multiple_qcomponents(
         self,
         original_qcomponents: list,
         new_component_names: list,
@@ -734,7 +727,7 @@ class QDesign:
 
         return copied_info
 
-    def copy_qcomponent(  # pylint: disable=dangerous-default-value, inconsistent-return-statements
+    def copy_qcomponent(
         self,
         original_qcomponent: "QComponent",
         new_component_name: str,

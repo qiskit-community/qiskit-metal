@@ -12,7 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """Dict tree base."""
-# pylint: disable=invalid-name
 
 import ast
 from typing import Union, TYPE_CHECKING
@@ -368,7 +367,7 @@ class QTreeModel_Base(QAbstractItemModel):
             return 0
         return len(node)
 
-    def columnCount(self, parent: QModelIndex):  # pylint: disable=unused-argument
+    def columnCount(self, parent: QModelIndex):
         """Get the number of columns.
 
         Args:

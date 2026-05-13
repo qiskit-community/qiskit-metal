@@ -591,7 +591,6 @@ class PlotCanvas(FigureCanvas):
         """The GUI displays a message to let users know they are using Qiskit
         Metal."""
 
-        # pylint: disable=attribute-defined-outside-init
         self._welcome_text = AnimatedText(
             self.axes[0],
             "Welcome to Quantum Metal!",
@@ -710,7 +709,6 @@ class PlotCanvas(FigureCanvas):
         self.clear_annotation()
 
         component_id_list = self.design.components.get_list_ints(component_names)
-        # pylint: disable=protected-access
         for component_id in component_id_list:
             component_id = int(component_id)
 

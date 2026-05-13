@@ -12,8 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# pylint: disable=wrong-import-order
-# pylint: disable=wrong-import-position
 
 # Get Qiskit Metal version from metadata without importing the package
 from importlib.metadata import metadata, version
@@ -83,7 +81,6 @@ def setup_qt_backend():
     non-empty value to skip the matplotlib-backend switch (useful in
     test runners and CI).
     """
-    # pylint: disable=import-outside-toplevel,global-statement
     global _qt_backend_initialized
     if _qt_backend_initialized:
         return
@@ -163,14 +160,12 @@ from qiskit_metal import (
 # only trigger the heavy import on first use.
 
 
-def __getattr__(name):  # pylint: disable=inconsistent-return-statements
+def __getattr__(name):
     if name == "MetalGUI":
-        # pylint: disable=import-outside-toplevel
         from qiskit_metal._gui.main_window import MetalGUI
 
         return MetalGUI
     if name == "plt":
-        # pylint: disable=import-outside-toplevel
         from qiskit_metal.renderers.renderer_mpl import mpl_toolbox
 
         return mpl_toolbox

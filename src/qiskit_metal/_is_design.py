@@ -12,8 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# pylint: disable=wrong-import-order
-# pylint: disable=wrong-import-position
 """File contains utility functions for check for object types."""
 
 from qiskit_metal import Dict

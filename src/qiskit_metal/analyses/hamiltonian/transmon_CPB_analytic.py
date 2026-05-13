@@ -17,7 +17,6 @@ and calculate the exact (analytic) solutions
 
 @author: Nick Lanzillo (IBM)
 """
-# pylint: disable=invalid-name
 
 import numpy as np
 from scipy.special import mathieu_a

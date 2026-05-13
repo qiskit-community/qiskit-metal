@@ -18,7 +18,6 @@ get the Ej, Ec or use input Ej, Ec to find the spectrum of the Cooper Pair Box.
 
 @author: Christopher Warren (Chalmers University of Technology), updated by Zlatko K. Minev (IBM Quantum)
 """
-# pylint: disable=invalid-name
 
 import numpy as np
 import qutip as qt

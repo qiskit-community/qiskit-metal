@@ -204,7 +204,6 @@ class QQ3DPyaedt(QPyaedt):
         new_setup.props.pop("DC", None)
         new_setup.update()
 
-    # pylint: disable=arguments-differ
     def render_design(
         self,
         selection: Union[list, None] = None,

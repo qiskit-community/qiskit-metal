@@ -12,7 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# pylint: disable=invalid-name
 # Configuration file for the Sphinx documentation builder.
 #
 # This file does only contain a selection of the most common options. For a
@@ -119,7 +118,7 @@ nbsphinx_epilog = """
 
 # -- Project information -----------------------------------------------------
 project = "Quantum Metal"  # {version}
-copyright = "Quantum Metal Community; 2019-2025 Qiskit Development Team"  # pylint: disable=redefined-builtin
+copyright = "Quantum Metal Community; 2019-2025 Qiskit Development Team"
 author = qiskit_metal.__author__
 # -- General configuration ---------------------------------------------------
 

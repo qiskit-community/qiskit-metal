@@ -14,7 +14,7 @@
 
 from abc import abstractmethod
 from typing import Optional
-from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
+from qiskit_metal.designs import QDesign
 from qiskit_metal import Dict
 from qiskit_metal import config
 

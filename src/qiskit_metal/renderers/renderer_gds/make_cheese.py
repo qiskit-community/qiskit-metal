@@ -24,11 +24,6 @@ import shapely
 class Cheesing:
     """Create a cheese cell based on input of no-cheese locations."""
 
-    # pylint: disable=too-many-instance-attributes
-    # pylint: disable=too-many-arguments
-    # pylint: disable=too-many-locals
-    # pylint: disable=too-few-public-methods
-
     # To be used by QGDSRenderer only.
     # Number of instance attributes is acceptable for this case.
 

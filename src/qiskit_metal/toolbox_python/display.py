@@ -29,7 +29,7 @@ class MetalTutorialMagics(Magics):
     """A class of status magic functions."""
 
     @line_magic
-    def metal_print(self, line="", cell=None):  # pylint: disable=unused-argument
+    def metal_print(self, line="", cell=None):
         """Print an HTML formatted message."""
         return display(
             HTML(f"""
@@ -50,7 +50,7 @@ class MetalTutorialMagics(Magics):
         )
 
     @line_magic
-    def metal_heading(self, line="", cell=None):  # pylint: disable=unused-argument
+    def metal_heading(self, line="", cell=None):
         """Print an HTML formatted message."""
         return display(
             HTML(f"""

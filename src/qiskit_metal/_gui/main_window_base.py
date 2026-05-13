@@ -12,7 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """GUI front-end interface for Qiskit Metal in PySide2."""
-# pylint: disable=invalid-name
 
 import logging
 import os
@@ -265,7 +264,7 @@ class QMainWindowBaseHandler:
     _stylesheet_default = "default"
 
     @staticmethod
-    def __UI__() -> QMainWindow:  # pylint: disable=invalid-name
+    def __UI__() -> QMainWindow:
         """Abstract, replace with UI class."""
         return None
 

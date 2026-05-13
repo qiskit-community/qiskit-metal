@@ -12,8 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# pylint: disable-msg=import-error
-# pylint: disable-msg=consider-using-enumerate
 """
 This code calculates the energy eigenvalues of the transmon qubit cooper pair box
 as a function of the offset charge and plots the corresponding results.

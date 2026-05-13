@@ -18,7 +18,6 @@ using the Duffing model. Typical input is the capacitance matrix calculated from
 
 Each function prints out the parameters and outputs a dictionary.
 """
-# pylint: disable=invalid-name
 
 import io
 import re
