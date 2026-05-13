@@ -121,7 +121,7 @@ class AnimatedText:
                 try:
                     # remove text from axis
                     self.text.remove()
-                except ValueError as e:
+                except ValueError:
                     # could raise ValueError: list.remove(x): x not in list
                     pass
 

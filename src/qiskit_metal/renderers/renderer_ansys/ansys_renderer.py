@@ -831,7 +831,7 @@ class QAnsysRenderer(QRendererAnalysis):
                         self.pinfo.design.parent.parent._desktop
                     )  # self.pinfo.design does not work
                     oProject = oDesktop.SetActiveProject(self.pinfo.project_name)
-                    oDesign = oProject.SetActiveDesign(design_name)
+                    oDesign = oProject.SetActiveDesign(design_name)  # noqa: F841
                     raw_solution_type = self.pinfo.design.solution_type
                     kind = canonical_kind(raw_solution_type)
                     # Metal exposes 'capacitive' as the user-facing alias for
@@ -865,7 +865,7 @@ class QAnsysRenderer(QRendererAnalysis):
                         "A new design will be added to the project.  "
                     )
                     if solution_type is not None:
-                        adesign = self.new_ansys_design(
+                        adesign = self.new_ansys_design(  # noqa: F841
                             design_name=design_name,
                             solution_type=solution_type,
                             connect=True,
@@ -1143,7 +1143,7 @@ class QAnsysRenderer(QRendererAnalysis):
             qc_chip_z,
             **ansys_options,
         )
-        axis = "x" if abs(x1 - x0) > abs(y1 - y0) else "y"
+        # axis = "x" if abs(x1 - x0) > abs(y1 - y0) else "y"
         self.modeler.rename_obj(poly_ansys, "JJ_rect_" + name)
         self.assign_mesh.append("JJ_rect_" + name)
 
@@ -1527,7 +1527,7 @@ class QAnsysRenderer(QRendererAnalysis):
             cw_x = cc_x_right - cc_x_left
             cw_y = cc_y_right - cc_y_left
 
-            vacuum_box = self.modeler.draw_box_center(
+            vacuum_box = self.modeler.draw_box_center(  # noqa: F841
                 [cc_x, cc_y, (vac_height[0] - vac_height[1]) / 2],
                 [cw_x, cw_y, sum(vac_height)],
                 name="sample_holder",
@@ -1545,7 +1545,7 @@ class QAnsysRenderer(QRendererAnalysis):
         ops = self.design._chips[chip_name]
         p = self.design.get_chip_size(chip_name)
         z_coord, height = parse_units([p["center_z"], p["size_z"]])
-        plane = self.modeler.draw_rect_center(
+        plane = self.modeler.draw_rect_center(  # noqa: F841
             [self.cc_x[chip_name], self.cc_y[chip_name], z_coord],
             x_size=self.cw_x[chip_name],
             y_size=self.cw_y[chip_name],
@@ -1553,7 +1553,7 @@ class QAnsysRenderer(QRendererAnalysis):
             name=f"ground_{chip_name}_plane",
             **ansys_options,
         )
-        whole_chip = self.modeler.draw_box_center(
+        whole_chip = self.modeler.draw_box_center(  # noqa: F841
             [self.cc_x[chip_name], self.cc_y[chip_name], z_coord + height / 2],
             [self.cw_x[chip_name], self.cw_y[chip_name], -height],
             name=chip_name,

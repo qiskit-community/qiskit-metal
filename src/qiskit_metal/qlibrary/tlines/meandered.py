@@ -77,7 +77,7 @@ class RouteMeander(QRoute):
         qcomponent.add_qgeometry(...), adding in extra needed information, such
         as layer, subtract, etc."""
         # parsed options
-        snap = is_true(self.p.snap)
+        # snap = is_true(self.p.snap)
 
         # Set the CPW pins and add the points/directions to the lead-in/out arrays
         self.set_pin("start")
@@ -134,11 +134,11 @@ class RouteMeander(QRoute):
         prevent_short_edges = is_true(self.p.prevent_short_edges)
 
         # take care of anchors (do not have set directions)
-        anchor_lead = 0
+        # anchor_lead = 0
         if end_pt.direction is None:
             # end_direction originates strictly from endpoint + leadout (NOT intermediate stopping anchors)
             self.assign_direction_to_anchor(start_pt, end_pt)
-            anchor_lead = spacing
+            # anchor_lead = spacing
 
         # Meander length
         length_meander = self._length_segment
@@ -155,12 +155,12 @@ class RouteMeander(QRoute):
             length_direct = abs(
                 norm(mao.dot(dist, forward))
             )  # in the vertical direction
-            length_sideways = abs(
-                norm(mao.dot(dist, sideways))
-            )  # in the orthogonal direction
+            # length_sideways = abs(
+            #     norm(mao.dot(dist, sideways))
+            # )  # in the orthogonal direction
         else:
             length_direct = norm(dist)
-            length_sideways = 0
+            # length_sideways = 0
 
         # Breakup into sections
         meander_number = np.floor(length_direct / spacing)

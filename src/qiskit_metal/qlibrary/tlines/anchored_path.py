@@ -408,7 +408,7 @@ class RouteAnchors(QRoute):
         self.set_pin("end")
 
         # Align the lead-in/out to the input options set from the user
-        start_point = self.set_lead("start")
+        start_point = self.set_lead("start")  # noqa: F841
         end_point = self.set_lead("end")
 
         self.intermediate_pts = OrderedDict()

@@ -128,7 +128,7 @@ class QHFSSPyaedt(QPyaedt):
         self.ignored_jjs = []
 
         # QRenderer has a "cls" method called load()
-        if_registered_in_design = QHFSSPyaedt.load()
+        if_registered_in_design = QHFSSPyaedt.load()  # noqa: F841
 
         # make a class to read in pandas table.
         self.tables = None
@@ -231,7 +231,7 @@ class QHFSSPyaedt(QPyaedt):
 
         # Every time one chooses to render, we have to get the chip names since the
         # qgeometry tables can be updated between each render_design().
-        chip_list = self.get_chip_names()
+        chip_list = self.get_chip_names()  # noqa: F841
 
         if not self.valid_input_arguments(
             open_pins, port_list, jj_to_port, ignored_jjs
@@ -606,7 +606,7 @@ class QHFSSPyaedt(QPyaedt):
                 impedance = self.jj_to_port_dict[search_junction]
                 jj_name_port = "JJ_rect_" + "R_" + str(
                     qgeom["component"]) + "_" + str(qgeom['name'])
-                jj_to_port_boundary = self.current_app.create_lumped_port_to_sheet(
+                jj_to_port_boundary = self.current_app.create_lumped_port_to_sheet(  # noqa: F841
                     sheet_name=poly_sheet.name,
                     portname=jj_name_port,
                     axisdir=endpoints_3d,
@@ -618,7 +618,7 @@ class QHFSSPyaedt(QPyaedt):
             Lvalue = parse_entry(jj_of_interest['aedt_hfss_inductance'][0])
             Cvalue = parse_entry(jj_of_interest['aedt_hfss_capacitance'][0])
 
-            lumped_rlc_boundary = self.current_app.assign_lumped_rlc_to_sheet(
+            lumped_rlc_boundary = self.current_app.assign_lumped_rlc_to_sheet(  # noqa: F841
                 sheet_name=poly_sheet.name,
                 sourcename=f'rlc_{poly_sheet.name}',
                 axisdir=endpoints_3d,

@@ -542,7 +542,7 @@ class QElmerRenderer(QRendererAnalysis):
         eqn = self._elmer_runner.add_equation(equation_name, solvers=solvers)
 
         # Add bodies
-        bodies = self.define_bodies(setup, eqn, materials)
+        bodies = self.define_bodies(setup, eqn, materials)  # noqa: F841
 
         # Add boundary conditions
         boundaries, cap_body = self.define_boundaries()
