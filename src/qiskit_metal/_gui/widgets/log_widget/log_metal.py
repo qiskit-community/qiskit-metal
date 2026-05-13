@@ -333,7 +333,7 @@ class QTextEditLogger(QTextEdit):
         cursor.insertBlock()  # add a new block, which makes a new line
 
         # add message
-        if format_as_html == True:
+        if format_as_html is True:
             if not self.action_show_times.isChecked():
                 # remove the timestamp -- assumes that this has been formatted
                 # with pre tag by LogHandler_for_QTextLog

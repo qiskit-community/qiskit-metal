@@ -267,7 +267,7 @@ class QMplRenderer:
             table = table[self.get_mask(table)]
 
             # subtracted
-            mask = table["subtract"] == True
+            mask = table["subtract"]
             render_func = getattr(self, f"render_{element_type}")
             render_func(table[mask], ax, subtracted=True)
 

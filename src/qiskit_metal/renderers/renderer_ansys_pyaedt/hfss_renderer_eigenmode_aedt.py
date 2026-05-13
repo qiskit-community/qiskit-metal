@@ -423,7 +423,7 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
 
         # Check if layerstack (self.design.ls) is uniquely specified
         ls_unique = self.design.ls.is_layer_data_unique()
-        if ls_unique != True:
+        if not ls_unique:
             raise ValueError("Layer data in `MultiPlanar` design is not unique")
 
         dielectric_names = []

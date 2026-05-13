@@ -267,7 +267,7 @@ def fit_transmission(
     del_freq = freq - freq[0]
 
     fit_delay_init, fit_poly_mag = None, None
-    if detrend == True:
+    if detrend:
         s21_detrended, fit_delay_init, fit_poly_mag = _detrend_transmission(
             del_freq, s21, detrend_order, detrend_points_init, detrend_points_final
         )
@@ -317,7 +317,7 @@ def fit_transmission(
 
     plots = []
 
-    if plot == True:
+    if plot:
         # Generating the fit values
         fit_s21 = _lorentz_func(
             np.hstack((freq, freq)),
@@ -332,7 +332,7 @@ def fit_transmission(
 
         fit_s21 = fit_s21[: len(freq)] + 1.0j * fit_s21[len(freq) :]
 
-        if detrend == True:
+        if detrend:
             fit_s21_mag, fit_s21_phas = _retrend_transmission(
                 del_freq, fit_s21, fit_delay_init, fit_poly_mag
             )

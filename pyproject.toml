@@ -121,14 +121,13 @@
 
 
 [tool.ruff.lint]
-    ignore = [ "E402", "F401", "F841", "E731", "E712", "E722", "E741", "F821" ]
+    ignore = [ "E402", "F401", "F841", "E731", "E722", "E741", "F821" ]
     # Ruff ignore codes:
     # To be sorted out in the future.
     # E402: module level import not at top of file
     # F401: module imported but unused
     # F841: local variable is assigned to but never used
     # E731: do not assign a lambda expression, use a def
-    # E712: use "if cond:" instead of "if cond" in comparisons to True or False
     # E722: do not use bare except
     # E741: do not use ambiguous variable names
     # F821 Undefined names. Mostly used for type hints.

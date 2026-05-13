@@ -389,9 +389,9 @@ class QGDSRenderer(QRenderer):
             table_name (str): Name for "table".  Example is "poly", and "path".
             table (geopandas.GeoSeries): Table with similar qgeometries.
         """
-        subtract_true = table[table["subtract"] == True]
+        subtract_true = table[table["subtract"]]
 
-        subtract_false = table[table["subtract"] == False]
+        subtract_false = table[~table["subtract"]]
 
         setattr(self, f"{chip_name}_{table_name}_subtract_true", subtract_true)
         setattr(self, f"{chip_name}_{table_name}_subtract_false", subtract_false)

@@ -705,7 +705,7 @@ class QHFSSPyaedt(QPyaedt):
         if open_pins:
             self.open_pins_is_valid = self.confirm_open_pins_are_valid_names(
                 open_pins, pair_used)
-            if self.open_pins_is_valid == False:
+            if not self.open_pins_is_valid:
                 self.logger.error('Arguments are not in Design for open_pins.')
         else:
             self.open_pins_is_valid = True
@@ -713,30 +713,30 @@ class QHFSSPyaedt(QPyaedt):
         if port_list:
             self.port_list_is_valid = self.confirm_port_list_have_valid_request(
                 port_list, pair_used)
-            if self.port_list_is_valid == False:
+            if not self.port_list_is_valid:
                 self.logger.error('Arguments are not in Design for port_list.')
         else:
-            self.port_list_is_valid == True
+            self.port_list_is_valid
 
         if jj_to_port:
             self.jj_to_port_is_valid = self.confirm_jj_to_port_has_valid_request(
                 jj_to_port, pair_used)
-            if self.jj_to_port_is_valid == False:
+            if not self.jj_to_port_is_valid:
                 self.logger.error(
                     'Arguments are not in Design for jj_to_port.')
         else:
-            self.jj_to_port_is_valid == True
+            self.jj_to_port_is_valid
 
         if ignored_jjs:
             self.ignored_jjs_is_valid = self.confirm_ignored_jjs_has_valid_request(
                 ignored_jjs, pair_used)
-            if self.ignored_jjs_is_valid == False:
+            if not self.ignored_jjs_is_valid:
                 self.logger.error(
                     'Arguments are not in Design for ignored_jjs.')
         else:
             self.ignored_jjs_is_valid = True
 
-        if self.open_pins_is_valid == False or self.port_list_is_valid == False or self.jj_to_port_is_valid == False or self.ignored_jjs_is_valid == False:
+        if not self.open_pins_is_valid or not self.port_list_is_valid or not self.jj_to_port_is_valid or not self.ignored_jjs_is_valid:
             return False
         else:
             return True

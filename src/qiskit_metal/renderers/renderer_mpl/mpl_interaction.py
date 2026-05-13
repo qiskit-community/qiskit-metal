@@ -400,7 +400,7 @@ class PanAndZoom(ZoomOnWheel):
             from ... import _gui
 
             imgs_path = Path(_gui.__file__).parent / "_imgs"
-            if imgs_path.is_dir() == False:
+            if not imgs_path.is_dir():
                 print(f"Bad File path for images! {imgs_path}")
                 imgs_path = None
         except Exception as e:
