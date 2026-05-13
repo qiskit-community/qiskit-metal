@@ -29,4 +29,8 @@ QGeometryTables
     QGeometryTables
 
 """
-from qiskit_metal.qgeometries.qgeometries_handler import is_qgeometry_table, QGeometryTables  # , QGeometry Types
+
+from qiskit_metal.qgeometries.qgeometries_handler import (
+    is_qgeometry_table,
+    QGeometryTables,
+)  # , QGeometry Types

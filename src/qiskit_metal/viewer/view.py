@@ -108,8 +108,7 @@ def view(
         # ``design.components`` maps name -> QComponent. Hide every
         # component whose name isn't in the requested set.
         hidden_ids = {
-            c.id for name, c in design.components.items()
-            if name not in requested
+            c.id for name, c in design.components.items() if name not in requested
         }
         renderer._hidden_components = hidden_ids
 

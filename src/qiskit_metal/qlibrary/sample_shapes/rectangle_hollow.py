@@ -39,15 +39,19 @@ class RectangleHollow(QComponent):
             * orientation: '15'
     """
 
-    default_options = Dict(width='500um',
-                           height='300um',
-                           subtract='False',
-                           helper='False',
-                           inner=dict(width='250um',
-                                      height='100um',
-                                      offset_x='40um',
-                                      offset_y='-20um',
-                                      orientation='15'))
+    default_options = Dict(
+        width="500um",
+        height="300um",
+        subtract="False",
+        helper="False",
+        inner=dict(
+            width="250um",
+            height="100um",
+            offset_x="40um",
+            offset_y="-20um",
+            orientation="15",
+        ),
+    )
     """Default drawing options"""
 
     TOOLTIP = """A single configurable square"""
@@ -62,16 +66,22 @@ class RectangleHollow(QComponent):
 
         # create the geometry
         rect = draw.rectangle(p.width, p.height, p.pos_x, p.pos_y)
-        rec1 = draw.rectangle(p.inner.width, p.inner.height,
-                              p.pos_x + p.inner.offset_x,
-                              p.pos_y + p.inner.offset_y)
+        rec1 = draw.rectangle(
+            p.inner.width,
+            p.inner.height,
+            p.pos_x + p.inner.offset_x,
+            p.pos_y + p.inner.offset_y,
+        )
         rec1 = draw.rotate(rec1, p.inner.orientation)
         rect = draw.subtract(rect, rec1)
         rect = draw.rotate(rect, p.orientation)
 
         # add qgeometry
-        self.add_qgeometry('poly', {'rect': rect},
-                           subtract=p.subtract,
-                           helper=p.helper,
-                           layer=p.layer,
-                           chip=p.chip)
+        self.add_qgeometry(
+            "poly",
+            {"rect": rect},
+            subtract=p.subtract,
+            helper=p.helper,
+            layer=p.layer,
+            chip=p.chip,
+        )

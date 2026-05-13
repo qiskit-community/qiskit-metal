@@ -29,7 +29,8 @@ simulations = dict(
         "Solver Input File": "case.sif",
         "Post File": "case.ep",
         "Output File": "case.result",
-    })
+    }
+)
 
 # Dictionary containing valid ElmerFEM solvers and their correspoding
 # settings (e.g. StatElecSolver, ResultOutputSolve, etc.).

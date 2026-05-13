@@ -34,7 +34,7 @@ class SmileyFace(QComponent):
         * orientation: 0
     """
 
-    component_metadata = Dict(short_name='Smile')
+    component_metadata = Dict(short_name="Smile")
     """Component metadata"""
 
     default_options = Dict(happy=True, wink=False, orientation=0)
@@ -55,8 +55,7 @@ class SmileyFace(QComponent):
 
         frown = draw.rotate(smile, 180)
         frown = draw.translate(frown, 0, 0.3)
-        frown = draw.subtract(frown,
-                              draw.shapely.geometry.Point(0, -0.8).buffer(0.7))
+        frown = draw.subtract(frown, draw.shapely.geometry.Point(0, -0.8).buffer(0.7))
 
         face = draw.subtract(face, eye_l)
 
@@ -68,11 +67,11 @@ class SmileyFace(QComponent):
         if self.p.wink:
             face = draw.subtract(
                 face,
-                draw.shapely.geometry.LineString([(0.2, 0.4),
-                                                  (0.6, 0.4)]).buffer(0.02))
+                draw.shapely.geometry.LineString([(0.2, 0.4), (0.6, 0.4)]).buffer(0.02),
+            )
         else:
             face = draw.subtract(face, eye_r)
 
         face = draw.rotate(face, self.p.orientation, origin=(0, 0))
 
-        self.add_qgeometry('poly', {'Smiley': face})
+        self.add_qgeometry("poly", {"Smiley": face})

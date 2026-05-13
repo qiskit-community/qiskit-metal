@@ -38,10 +38,7 @@ class NGon(QComponent):
         * helper: 'False'
     """
 
-    default_options = Dict(n='3',
-                           radius='30um',
-                           subtract='False',
-                           helper='False')
+    default_options = Dict(n="3", radius="30um", subtract="False", helper="False")
     """Default drawing options"""
 
     TOOLTIP = """A n-gon polygon"""
@@ -56,8 +53,10 @@ class NGon(QComponent):
         n = int(p.n)
         # Create the geometry
         # Generates a list of points
-        n_polygon = [(p.radius * np.cos(2 * np.pi * x / n),
-                      p.radius * np.sin(2 * np.pi * x / n)) for x in range(n)]
+        n_polygon = [
+            (p.radius * np.cos(2 * np.pi * x / n), p.radius * np.sin(2 * np.pi * x / n))
+            for x in range(n)
+        ]
         # Converts said list into a shapely polygon
         n_polygon = draw.Polygon(n_polygon)
 
@@ -66,8 +65,11 @@ class NGon(QComponent):
 
         ##############################################
         # add qgeometry
-        self.add_qgeometry('poly', {'n_polygon': n_polygon},
-                           subtract=p.subtract,
-                           helper=p.helper,
-                           layer=p.layer,
-                           chip=p.chip)
+        self.add_qgeometry(
+            "poly",
+            {"n_polygon": n_polygon},
+            subtract=p.subtract,
+            helper=p.helper,
+            layer=p.layer,
+            chip=p.chip,
+        )

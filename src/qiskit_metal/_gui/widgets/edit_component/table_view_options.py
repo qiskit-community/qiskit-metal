@@ -19,7 +19,9 @@ from PySide6 import QtCore, QtWidgets
 from PySide6.QtCore import Qt, QTimer
 from PySide6.QtWidgets import QTableView, QAbstractItemView
 
-from qiskit_metal._gui.widgets.bases.QWidget_PlaceholderText import QWidget_PlaceholderText
+from qiskit_metal._gui.widgets.bases.QWidget_PlaceholderText import (
+    QWidget_PlaceholderText,
+)
 
 if TYPE_CHECKING:
     from ...main_window import MetalGUI
@@ -38,11 +40,12 @@ class QTableView_Options(QTableView, QWidget_PlaceholderText):
             parent (QtWidgets.QWidget): parent widget
         """
         QTableView.__init__(self, parent)
-        QWidget_PlaceholderText.__init__(self, "Select a QComponent to edit"\
-            "\n\nfrom the QComponents window", self)
+        QWidget_PlaceholderText.__init__(
+            self, "Select a QComponent to edit\n\nfrom the QComponents window", self
+        )
         QTimer.singleShot(
-            200,
-            self.style_me)  # not sure whu the ui isnt unpdating these here.
+            200, self.style_me
+        )  # not sure whu the ui isnt unpdating these here.
 
     def style_me(self):
         """Style the widget."""
@@ -53,7 +56,7 @@ class QTableView_Options(QTableView, QWidget_PlaceholderText):
         self.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
         self.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
 
-    #TODO: Maybe move to base class of utilty, along with the show template message
+    # TODO: Maybe move to base class of utilty, along with the show template message
     def autoresize_columns(self, max_width: int = 200):
         """Rezie columsn to contents with maximim.
 

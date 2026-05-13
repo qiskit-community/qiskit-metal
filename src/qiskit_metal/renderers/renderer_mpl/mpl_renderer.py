@@ -77,8 +77,11 @@ class QMplRenderer:
                 logger if ``None``.
         """
         super().__init__()
-        self.logger = logger if logger is not None else logging.getLogger(
-            "qiskit_metal.renderer_mpl")
+        self.logger = (
+            logger
+            if logger is not None
+            else logging.getLogger("qiskit_metal.renderer_mpl")
+        )
         self.canvas = canvas
         self.ax = None
         self.design = design
@@ -186,8 +189,9 @@ class QMplRenderer:
         # rebuilt ``mask`` from scratch on the second line, silently
         # discarding the ``hidden_layers`` filter — visible from the
         # Qt GUI only when a user hid both at once.
-        mask = (table.layer.isin(self.hidden_layers)
-                | table.component.isin(self._hidden_components))
+        mask = table.layer.isin(self.hidden_layers) | table.component.isin(
+            self._hidden_components
+        )
 
         return ~mask  # not
 

@@ -16,15 +16,15 @@
 # pylint: disable=wrong-import-position
 
 # Get Qiskit Metal version from metadata without importing the package
-from importlib.metadata import version, metadata
+from importlib.metadata import metadata, version
 
-metal_metadata = metadata('quantum-metal')
+metal_metadata = metadata("quantum-metal")
 
 """Qiskit Metal"""
-__version__ = metal_metadata['Version']
-__license__ = metal_metadata['License-Expression']
-__author__ = metal_metadata['Author']
-__copyright__ = 'Copyright IBM 2019-2020'
+__version__ = metal_metadata["Version"]
+__license__ = metal_metadata["License-Expression"]
+__author__ = metal_metadata["Author"]
+__copyright__ = "Copyright IBM 2019-2020"
 __status__ = "Development"
 
 ###########################################################################
@@ -32,11 +32,13 @@ __status__ = "Development"
 ### TODO: Check if this is still needed with uv_build.
 
 import os
-if os.name == 'nt':
+
+if os.name == "nt":
     try:
         import geopandas
     except ImportError:
-        print(" \
+        print(
+            " \
             QISKIT METAL INFORMATION: >>>>>>>>>> One last installation step. <<<<<<<<<<<\n \
             >>>>>> Packages fiona and gdal have a known install issue on Windows. <<<<<<\n \
             >>>>>>>>>> geopandas depends on fiona, and fiona depends on gdal. <<<<<<<<<<\n \
@@ -45,7 +47,7 @@ if os.name == 'nt':
             >>>>>>>> Before you can use Qiskit Metal, please install geopandas. <<<<<<<<\n \
             >>>> For more information, you can follow the instructions on this FAQ <<<<<\n \
             >>>>>>>>>>>>> https://qiskit-community.github.io/qiskit-metal/faq.html <<<<<<<<<<<<<<\n"
-              )
+        )
         raise
 
 
@@ -90,7 +92,7 @@ def setup_qt_backend():
     # next line out, "os.environ["QT_API"] = "pyside2""
     os.environ["QT_API"] = "pyside6"
 
-    from PySide6 import QtCore  #, QtWidgets
+    from PySide6 import QtCore  # , QtWidgets
     from PySide6.QtCore import Qt
 
     def set_attribute(name: str, value=True):
@@ -104,26 +106,28 @@ def setup_qt_backend():
     if QtCore.QCoreApplication.instance() is None:
         # No application launched yet — set the global attributes
         # before the first QApplication is constructed.
-        set_attribute('AA_ShareOpenGLContexts')
-        set_attribute('AA_EnableHighDpiScaling')
-        set_attribute('AA_UseHighDpiPixmaps')
+        set_attribute("AA_ShareOpenGLContexts")
+        set_attribute("AA_EnableHighDpiScaling")
+        set_attribute("AA_UseHighDpiPixmaps")
 
-    if not os.getenv('QISKIT_METAL_HEADLESS', None):
+    if not os.getenv("QISKIT_METAL_HEADLESS", None):
         import matplotlib as mpl
+
         mpl.use("QtAgg")
         import matplotlib.pyplot as plt
+
         plt.ion()  # interactive
 
     _qt_backend_initialized = True
+
 
 ## Setup logging
 from qiskit_metal import config
 from qiskit_metal.toolbox_python._logging import setup_logger
 
-logger = setup_logger('metal',
-                      config.log.format,
-                      config.log.datefmt,
-                      capture_warnings=True)  # type: logging.Logger
+logger = setup_logger(
+    "metal", config.log.format, config.log.datefmt, capture_warnings=True
+)  # type: logging.Logger
 del setup_logger
 
 ###########################################################################
@@ -133,18 +137,20 @@ del setup_logger
 from qiskit_metal.toolbox_python.attr_dict import Dict
 
 # Due to order of imports
-from qiskit_metal._is_design import is_design, is_component
+from qiskit_metal._is_design import is_component, is_design
 
 # Core modules for user to use
 from qiskit_metal.toolbox_metal.parsing import is_true
-from qiskit_metal import qlibrary
-from qiskit_metal import designs
-from qiskit_metal import draw
-from qiskit_metal import renderers
-from qiskit_metal import qgeometries
-from qiskit_metal import analyses
-from qiskit_metal import toolbox_python
-from qiskit_metal import toolbox_metal
+from qiskit_metal import (
+    analyses,
+    designs,
+    draw,
+    qgeometries,
+    qlibrary,
+    renderers,
+    toolbox_metal,
+    toolbox_python,
+)
 
 # Metal GUI and the matplotlib plotting helper are lazy attributes —
 # importing them eagerly pulls in PySide6 (via ``_gui.main_window``)
@@ -161,21 +167,24 @@ def __getattr__(name):  # pylint: disable=inconsistent-return-statements
     if name == "MetalGUI":
         # pylint: disable=import-outside-toplevel
         from qiskit_metal._gui.main_window import MetalGUI
+
         return MetalGUI
     if name == "plt":
         # pylint: disable=import-outside-toplevel
         from qiskit_metal.renderers.renderer_mpl import mpl_toolbox
+
         return mpl_toolbox
     raise AttributeError(f"module 'qiskit_metal' has no attribute {name!r}")
+
 
 # Utility functions
 from qiskit_metal.toolbox_python.display import Headings
 
-# Import default renderers
-from qiskit_metal.renderers import setup_renderers
-
 # Common-use
 from qiskit_metal.qlibrary import QComponent
+
+# Import default renderers
+from qiskit_metal.renderers import setup_renderers
 from qiskit_metal.toolbox_metal.about import about, open_docs
 
 # Headless matplotlib viewer (``qm.view(design)``) — no Qt required.

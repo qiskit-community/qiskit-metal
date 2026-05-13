@@ -54,8 +54,7 @@ import unittest
 from typing import Set
 
 from qiskit_metal import designs
-from qiskit_metal.qlibrary.couplers.cap_n_interdigital_tee import (
-    CapNInterdigitalTee)
+from qiskit_metal.qlibrary.couplers.cap_n_interdigital_tee import CapNInterdigitalTee
 from qiskit_metal.qlibrary.couplers.coupled_line_tee import CoupledLineTee
 from qiskit_metal.qlibrary.couplers.line_tee import LineTee
 from qiskit_metal.qlibrary.lumped.cap_3_interdigital import Cap3Interdigital
@@ -71,34 +70,52 @@ from qiskit_metal.qlibrary.qubits.transmon_cross_fl import TransmonCrossFL
 from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 from qiskit_metal.qlibrary.qubits.transmon_pocket_6 import TransmonPocket6
 from qiskit_metal.qlibrary.qubits.transmon_pocket_cl import TransmonPocketCL
-from qiskit_metal.qlibrary.qubits.transmon_pocket_teeth import (
-    TransmonPocketTeeth)
-from qiskit_metal.qlibrary.sample_shapes.circle_caterpillar import (
-    CircleCaterpillar)
+from qiskit_metal.qlibrary.qubits.transmon_pocket_teeth import TransmonPocketTeeth
+from qiskit_metal.qlibrary.sample_shapes.circle_caterpillar import CircleCaterpillar
 from qiskit_metal.qlibrary.sample_shapes.circle_raster import CircleRaster
 from qiskit_metal.qlibrary.sample_shapes.n_gon import NGon
 from qiskit_metal.qlibrary.sample_shapes.n_square_spiral import NSquareSpiral
 from qiskit_metal.qlibrary.sample_shapes.rectangle import Rectangle
-from qiskit_metal.qlibrary.sample_shapes.rectangle_hollow import (
-    RectangleHollow)
+from qiskit_metal.qlibrary.sample_shapes.rectangle_hollow import RectangleHollow
 from qiskit_metal.qlibrary.terminations.launchpad_wb import LaunchpadWirebond
 from qiskit_metal.qlibrary.terminations.launchpad_wb_coupled import (
-    LaunchpadWirebondCoupled)
+    LaunchpadWirebondCoupled,
+)
 from qiskit_metal.qlibrary.terminations.launchpad_wb_driven import (
-    LaunchpadWirebondDriven)
+    LaunchpadWirebondDriven,
+)
 from qiskit_metal.qlibrary.terminations.open_to_ground import OpenToGround
 from qiskit_metal.qlibrary.terminations.short_to_ground import ShortToGround
 
 COMPONENTS_UNDER_TEST = [
-    Rectangle, RectangleHollow, NGon, NSquareSpiral,
-    CircleRaster, CircleCaterpillar,
-    OpenToGround, ShortToGround,
-    LaunchpadWirebond, LaunchpadWirebondCoupled, LaunchpadWirebondDriven,
-    TransmonConcentric, TransmonPocket, TransmonPocketCL, TransmonPocket6,
-    TransmonPocketTeeth, TransmonCross, TransmonCrossFL, StarQubit, SQUID_LOOP,
-    jj_dolan, jj_manhattan,
-    CapNInterdigital, Cap3Interdigital, ResonatorCoilRect,
-    LineTee, CapNInterdigitalTee, CoupledLineTee,
+    Rectangle,
+    RectangleHollow,
+    NGon,
+    NSquareSpiral,
+    CircleRaster,
+    CircleCaterpillar,
+    OpenToGround,
+    ShortToGround,
+    LaunchpadWirebond,
+    LaunchpadWirebondCoupled,
+    LaunchpadWirebondDriven,
+    TransmonConcentric,
+    TransmonPocket,
+    TransmonPocketCL,
+    TransmonPocket6,
+    TransmonPocketTeeth,
+    TransmonCross,
+    TransmonCrossFL,
+    StarQubit,
+    SQUID_LOOP,
+    jj_dolan,
+    jj_manhattan,
+    CapNInterdigital,
+    Cap3Interdigital,
+    ResonatorCoilRect,
+    LineTee,
+    CapNInterdigitalTee,
+    CoupledLineTee,
 ]
 
 
@@ -116,8 +133,7 @@ class _OptionsAccessCollector(ast.NodeVisitor):
     def __init__(self):
         self.keys: Set[str] = set()
         # Local variable aliases: name -> "options" | "p"
-        self._aliases: dict[str, str] = {"self.options": "options",
-                                         "self.p": "p"}
+        self._aliases: dict[str, str] = {"self.options": "options", "self.p": "p"}
 
     # --- helpers ---------------------------------------------------
 
@@ -152,7 +168,7 @@ class _OptionsAccessCollector(ast.NodeVisitor):
 
     def visit_Assign(self, node: ast.Assign):
         # Track aliases like ``p = self.p`` and ``o = self.options``.
-        if (len(node.targets) == 1 and isinstance(node.targets[0], ast.Name)):
+        if len(node.targets) == 1 and isinstance(node.targets[0], ast.Name):
             target_name = node.targets[0].id
             value_str = self._expr_to_str(node.value)
             if value_str == "self.p":
@@ -210,10 +226,23 @@ class TestDefaultOptionsCompleteness(unittest.TestCase):
     # signal real.
     FALSE_POSITIVE_NAMES = {
         # addict.Dict / dict methods
-        "update", "get", "keys", "values", "items", "pop", "copy",
-        "to_dict", "setdefault", "clear", "fromkeys", "popitem",
+        "update",
+        "get",
+        "keys",
+        "values",
+        "items",
+        "pop",
+        "copy",
+        "to_dict",
+        "setdefault",
+        "clear",
+        "fromkeys",
+        "popitem",
         # Common Python protocol methods
-        "__init__", "__call__", "__getitem__", "__setitem__",
+        "__init__",
+        "__call__",
+        "__getitem__",
+        "__setitem__",
         # ParsedDynamicAttributes_Component internal API surface
         "_parent",
     }
@@ -230,13 +259,15 @@ class TestDefaultOptionsCompleteness(unittest.TestCase):
 
                 missing = accessed - merged_keys
                 self.assertEqual(
-                    missing, set(),
+                    missing,
+                    set(),
                     f"{cls.__name__}.make() (or a helper) references "
                     f"option key(s) {sorted(missing)} that are not in "
                     f"the merged default_options "
                     f"(have: {sorted(merged_keys)}). "
                     f"This raises KeyError at runtime when the component "
-                    f"is instantiated without explicit override.")
+                    f"is instantiated without explicit override.",
+                )
 
 
 if __name__ == "__main__":

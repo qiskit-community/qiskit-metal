@@ -15,5 +15,3 @@
 # pylint: disable-msg=relative-beyond-top-level
 # pylint: disable-msg=import-error
 """Unit tests"""
-
-
