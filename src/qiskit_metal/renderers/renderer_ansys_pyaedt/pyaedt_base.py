@@ -201,7 +201,6 @@ class QPyaedt(QRendererAnalysis):
         """
         return True
 
-    # pylint: disable=arguments-renamed
     def render_component(self, component):
         """Abstract method. Must be implemented by the subclass.
         Render the specified component.
@@ -308,7 +307,6 @@ class QPyaedt(QRendererAnalysis):
         # Use the method in the child class.
         pass
 
-    # pylint: disable=arguments-renamed
     def render_element_path(self, qgeom: pd.Series):
         """Render one row from the qgeometry table.
 
@@ -400,7 +398,6 @@ class QPyaedt(QRendererAnalysis):
             # self.chip_subtract_dict[layer].append(
             #     self.q3d.modeler.object_id_dict[name])
 
-    # pylint: disable=arguments-renamed
     def render_element_poly(self, qgeom: pd.Series):
         """Render a closed polygon.
 
@@ -409,7 +406,6 @@ class QPyaedt(QRendererAnalysis):
         """
         # super().render_element_poly(qgeom)
         ansys_options = dict(transparency=0.0)
-        # pylint: disable=protected-access
         qc_name = self.design._components[qgeom["component"]].name
         qc_elt = get_clean_name(qgeom["name"])
 
@@ -585,7 +581,6 @@ class QPyaedt(QRendererAnalysis):
         """
         pass
 
-    # pylint: disable=arguments-differ
     def render_design(
         self, selection: Union[List, None] = None, box_plus_buffer: bool = True
     ):
@@ -594,7 +589,6 @@ class QPyaedt(QRendererAnalysis):
         Renders all design chips and components.
         Note: This needs to be extended with additional logic for Q3D and HFSS.
         """
-        # pylint: disable=attribute-defined-outside-init
         # # They are reset for each time render_design happens.
         self.box_plus_buffer = box_plus_buffer
 

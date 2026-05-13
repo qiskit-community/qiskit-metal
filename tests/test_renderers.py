@@ -12,11 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# pylint: disable-msg=unnecessary-pass
-# pylint: disable-msg=broad-except
-# pylint: disable-msg=too-many-public-methods
-# pylint: disable-msg=import-error
-# pylint: disable-msg=protected-access
+
 """Qiskit Metal unit tests analyses functionality."""
 
 import unittest
@@ -554,7 +550,6 @@ class TestRenderers(unittest.TestCase):
         self.assertEqual(actual[0], 15.0)
         self.assertEqual(actual[1], 22.5)
 
-    # pylint: disable-msg=unused-variable
     def test_renderer_gdsrenderer_check_qcomps(self):
         """Test check_qcomps in gds_renderer.py."""
         design = designs.DesignPlanar()

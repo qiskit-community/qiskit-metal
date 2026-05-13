@@ -12,7 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """This is a utility module used for qt."""
-# pylint: disable=invalid-name
 
 from types import MethodType
 

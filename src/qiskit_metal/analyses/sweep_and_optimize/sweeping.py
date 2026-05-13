@@ -13,13 +13,11 @@
 # that they have been altered from the originals.
 """Sweep a qcomponent option, and get results of analysis."""
 
-# pylint: disable=too-many-lines
 from typing import Optional, Tuple
 import pandas as pd
 
 from qiskit_metal import Dict
 
-# pylint: disable=unused-import
 # QHFSSRenderer used to describe types in arguments.
 from qiskit_metal.renderers.renderer_ansys.hfss_renderer import QHFSSRenderer
 
@@ -137,8 +135,6 @@ class Sweeping:
                 * 2 Look at warning message, a key in setup_args that was
                   not expected.
         """
-        # pylint: disable=too-many-branches
-        # pylint: disable=too-many-return-statements
 
         a_hfss = self.design.renderers.hfss
         setup_args.name = "Sweep_dm_setup"
@@ -232,8 +228,6 @@ class Sweeping:
                 * 2 Look at warning message, a key in setup_args that was
                   not expected.
         """
-        # pylint: disable=too-many-branches
-        # pylint: disable=too-many-return-statements
 
         a_hfss = self.design.renderers.hfss
         setup_args.name = "Sweep_em_setup"
@@ -356,9 +350,6 @@ class Sweeping:
                 * 2 Look at warning message, a key in setup_args that was not
                         expected.
         """
-        # pylint: disable=too-many-statements
-        # pylint: disable=too-many-branches
-        # pylint: disable=too-many-return-statements
 
         a_q3d = self.design.renderers.q3d
         setup_args.name = "Sweep_q3d_setup"
@@ -506,8 +497,6 @@ class Sweeping:
             * 7 design not in app
             * 8 setup not implement, check the setup_args.
         """
-        # pylint: disable=too-many-locals
-        # pylint: disable=too-many-arguments
 
         # Dict of all swept information.
         all_sweep = Dict()
@@ -761,8 +750,6 @@ class Sweeping:
             * 8 setup not implement, check the setup_args.
             * 9 dm_render_args is missing keys in the Dict.
         """
-        # pylint: disable=too-many-locals
-        # pylint: disable=too-many-arguments
 
         # Dict of all swept information.
         all_sweep = Dict()
@@ -868,7 +855,6 @@ class Sweeping:
             sweep_values["z_matrix"] = None
         else:
             a_hfss.analyze_sweep(dm_add_sweep_args.name, setup_args.name)
-            # pylint: disable=invalid-name
             s_Pparms, y_Pparams, z_Pparams = a_hfss.get_all_Pparms_matrices(matrix_size)
 
             convergence_t, dummy_text_list, convergence = self.hfss_dm_get_convergence(
@@ -960,12 +946,11 @@ class Sweeping:
                 "dm_add_sweep_args Dict before using it. "
             )
 
-        # pylint: disable=protected-access
         all_sweep_names = a_hfss.pinfo.setup._setup_module.GetSweeps(setup_name)
         if dm_add_sweep_args.name not in all_sweep_names:
             a_hfss.add_sweep(setup_name=setup_name, **dm_add_sweep_args)
 
-    def error_check_render_design_args(self, dm_render_args: Dict) -> int:  # pylint: disable=too-many-return-statements
+    def error_check_render_design_args(self, dm_render_args: Dict) -> int:
         """To render to Ansys, we need every argument in render_design.
         This method confirms all arguments are present.
 
@@ -1098,8 +1083,6 @@ class Sweeping:
             * 8 setup not implement, check the setup_args.
 
         """
-        # pylint: disable=too-many-arguments
-        # pylint: disable=too-many-locals
 
         # Dict of all swept information.
         all_sweep = Dict()

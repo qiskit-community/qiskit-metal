@@ -12,9 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# pylint: disable-msg=unnecessary-pass
-# pylint: disable-msg=invalid-name
-# pylint: disable-msg=bad-continuation
 """Custom assertion for unit tests."""
 
 from itertools import zip_longest

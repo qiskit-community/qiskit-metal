@@ -15,7 +15,7 @@
 from typing import Optional, Tuple
 import pandas as pd
 from pyEPR.ansys import ureg
-from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
+from qiskit_metal.designs import QDesign
 from qiskit_metal import Dict
 from qiskit_metal.analyses.core import QSimulation
 
@@ -81,7 +81,6 @@ class LumpedElementsSim(QSimulation):
         to prepare for the capacitance calculation, then it executes it.
         Finally it calls _get_results_from_renderer to recovers the simulation output.
         """
-        # pylint: disable=attribute-defined-outside-init
         self.sim_setup_name = self.renderer.initialize_cap_extract(**self.setup)
         self.renderer.analyze_setup(self.sim_setup_name)
         self._get_results_from_renderer()
@@ -89,7 +88,6 @@ class LumpedElementsSim(QSimulation):
     def _get_results_from_renderer(self):
         """Recovers the output of the analysis and stores it in self.capacitance_matrix"""
         if self.renderer_initialized:
-            # pylint: disable=attribute-defined-outside-init
             # extract main (latest) capacitance matrix
             self.capacitance_matrix, self.units = self.renderer.get_capacitance_matrix()
             # extract the capacitance matrices for all passes
@@ -103,7 +101,7 @@ class LumpedElementsSim(QSimulation):
                 " if you did not already connect qiskit-metal to the renderer."
             )
 
-    def run_sim(  # pylint: disable=arguments-differ
+    def run_sim(
         self,
         name: Optional[str] = None,
         components: Optional[list] = None,

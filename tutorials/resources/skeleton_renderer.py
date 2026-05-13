@@ -25,7 +25,7 @@ if not config.is_building_docs():
     from qiskit_metal.toolbox_python.utility_functions import can_write_to_path
     from qiskit_metal.toolbox_python.utility_functions import (
         get_range_of_vertex_to_not_fillet,
-    )  # pylint: disable=unused-import
+    )
 
 if TYPE_CHECKING:
     # For linting typechecking, import modules that can't be loaded here under normal conditions.
@@ -132,7 +132,7 @@ class QSkeletonRenderer(QRenderer):
         Returns:
             int: 1 if access is allowed. Else returns 0, if access not given.
         """
-        status, directory_name = can_write_to_path(file)  # pylint: disable=possibly-used-before-assignment
+        status, directory_name = can_write_to_path(file)
         if status:
             return 1
 
@@ -175,7 +175,7 @@ class QSkeletonRenderer(QRenderer):
         # If list is subset of chip, then caluclate a
         # custom bounding box and scale it.
 
-        if len(unique_qcomponents) == len(self.design._components):  # pylint: disable=protected-access
+        if len(unique_qcomponents) == len(self.design._components):
             # Since user wants all of the chip to be rendered, use the design.planar bounding box.
             unique_qcomponents[:] = []
 

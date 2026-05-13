@@ -17,6 +17,4 @@ class.
 We use the `addict` package `Dict` class.
 """
 
-# pylint: disable=unused-import
-
 from addict import Dict

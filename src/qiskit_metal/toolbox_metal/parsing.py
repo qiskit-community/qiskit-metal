@@ -12,10 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# pylint: disable-msg=broad-except
-# pylint: disable-msg=relative-beyond-top-level
-# pylint: disable-msg=import-error
-# pylint: disable-msg=line-too-long
+
 """Parsing module Qiskit Metal.
 
 The main function in this module is `parse_value`, and it explains what
@@ -326,8 +323,6 @@ def is_numeric_possible(test_str: str):
     # look into pyparsing
 
 
-# pylint: disable-msg=too-many-branches
-# pylint: disable-msg=too-many-return-statements
 def parse_value(value: str, variable_dict: dict):
     """Parse a string, mappable (dict, Dict), iterable (list, tuple) to account
     for units conversion, some basic arithmetic, and design variables. This is
@@ -498,7 +493,6 @@ def extract_value_unit(expr, units):
     :type units: str
     :return: float
     """
-    # pylint: disable=broad-except
     try:
         return Q(expr).to(units).magnitude
     except Exception:

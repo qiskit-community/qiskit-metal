@@ -10,7 +10,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# pylint: disable-msg=import-error
 """Reports a summary of information on Qiskit Metal and dependencies.
 
 Contain functions to report more detailed information to orient a user,
@@ -33,9 +32,6 @@ from qiskit_metal.toolbox_python.display import Color, style_colon_list
 __all__ = ["about", "open_docs", "get_platform_info", "get_module_doc_page"]
 
 
-# pylint: disable-msg=invalid-name
-# pylint: disable-msg=import-outside-toplevel
-# pylint: disable-msg=bare-except
 def about():
     """Reports a summary of information on Qiskit Metal and dependencies.
 

@@ -12,9 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# pylint: disable=protected-access
-# pylint: disable-msg=relative-beyond-top-level
-# pylint: disable-msg=broad-except
 """Saving and load metal data."""
 
 import pickle
@@ -65,7 +62,6 @@ def save_metal(filename: str, design):
     return result
 
 
-# pylint: disable-msg=import-outside-toplevel
 def load_metal_design(filename: str):
     """Load metal design.
 

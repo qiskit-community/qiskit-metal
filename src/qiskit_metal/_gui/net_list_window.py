@@ -167,7 +167,7 @@ class NetListTableModel(QAbstractTableModel):
             finally:
                 self.endResetModel()
 
-    def rowCount(self, parent: QModelIndex = None):  # pylint: disable=unused-argument
+    def rowCount(self, parent: QModelIndex = None):
         """Counts all the rows.
 
         Args:
@@ -180,7 +180,7 @@ class NetListTableModel(QAbstractTableModel):
             return 0
         return self.net_info.shape[0]
 
-    def columnCount(self, parent: QModelIndex = None):  # pylint: disable=unused-argument
+    def columnCount(self, parent: QModelIndex = None):
         """Counts all the columns.
 
         Args:

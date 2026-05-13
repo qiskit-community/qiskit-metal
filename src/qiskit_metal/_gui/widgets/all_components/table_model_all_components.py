@@ -12,7 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# pylint: disable=invalid-name
 
 from PySide6 import QtCore
 from PySide6.QtCore import QAbstractTableModel, QModelIndex, Qt
@@ -128,7 +127,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
         if self._tableView:
             self._tableView.resizeColumnsToContents()
 
-    def rowCount(self, parent: QModelIndex = None):  # pylint: disable=unused-argument
+    def rowCount(self, parent: QModelIndex = None):
         """Returns the number of rows.
 
         Args:
@@ -148,7 +147,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
             self._tableView.show_placeholder_text()
             return 0
 
-    def columnCount(self, parent: QModelIndex = None):  # pylint: disable=unused-argument
+    def columnCount(self, parent: QModelIndex = None):
         """Returns the number of columns.
 
         Args:

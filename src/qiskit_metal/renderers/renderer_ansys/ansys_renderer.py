@@ -11,7 +11,6 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-# pylint: disable=too-many-lines
 
 import math
 import os
@@ -422,7 +421,7 @@ class QAnsysRenderer(QRendererAnalysis):
                 if not design_name
                 else design_name,
             )
-        except pythoncom.com_error as error:  # pylint: disable=no-member
+        except pythoncom.com_error as error:
             print("com_error: ", error)
             hr, msg, exc, arg = error.args
             if (

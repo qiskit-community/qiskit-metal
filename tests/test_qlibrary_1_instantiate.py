@@ -12,10 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# pylint: disable-msg=unnecessary-pass
-# pylint: disable-msg=too-many-public-methods
-# pylint: disable-msg=broad-except
-# pylint: disable-msg=import-error
 """Qiskit Metal unit tests components functionality."""
 
 import unittest
@@ -65,7 +61,6 @@ from qiskit_metal import designs
 from qiskit_metal.qlibrary._template import MyQComponent
 from .assertions import AssertionsMixin
 
-# pylint: disable-msg=line-too-long
 from qiskit_metal.qlibrary.lumped.resonator_coil_rect import ResonatorCoilRect
 
 

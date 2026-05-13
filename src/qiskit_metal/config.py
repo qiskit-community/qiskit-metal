@@ -12,8 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# pylint: disable=invalid-name
-# pylint: disable=unused-import
 """File contains some config definitions.
 
 Mostly internal.
@@ -157,7 +155,7 @@ def is_building_docs() -> bool:
     # Returns:
     #     bool: True if .buildingdocs exists
     # """
-    # from pathlib import Path  # pylint: disable=import-outside-toplevel
+    # from pathlib import Path
     # build_docs_file = Path(__file__).parent.parent / "docs" / ".buildingdocs"
     # return Path.exists(build_docs_file)
 

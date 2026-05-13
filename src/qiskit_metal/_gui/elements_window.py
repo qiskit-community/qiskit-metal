@@ -213,7 +213,7 @@ class ElementTableModel(QAbstractTableModel):
             return 0
         return self.table.shape[0]
 
-    def columnCount(self, parent: QModelIndex = None):  # pylint: disable=unused-argument
+    def columnCount(self, parent: QModelIndex = None):
         """Counts all the columns.
 
         Args:

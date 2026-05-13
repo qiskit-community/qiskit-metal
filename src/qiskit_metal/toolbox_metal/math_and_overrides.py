@@ -12,9 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# pylint: disable=protected-access
-# pylint: disable=global-statement
-# pylint: disable=import-error
 """Math and override functions."""
 
 import numpy as np
@@ -47,7 +44,6 @@ def dot(vector_1: np.array, vector_2: np.array) -> float:
     return round(np.dot(vector_1, vector_2))
 
 
-# pylint: disable=redefined-builtin
 def round(value) -> float:
     """Numpy rounding with decimal_precision.
 

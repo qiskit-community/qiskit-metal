@@ -13,7 +13,6 @@
 # that they have been altered from the originals.
 """Child of transmon cross, adds a flux line (galvanic T) to the arm with the
 DC SQUID."""
-# pylint: disable=invalid-name
 # Modification of Transmon Pocket Object to include a charge line (would be better to just make as a child)
 
 import numpy as np
@@ -21,7 +20,7 @@ from qiskit_metal import draw, Dict
 from qiskit_metal.qlibrary.qubits.transmon_cross import TransmonCross
 
 
-class TransmonCrossFL(TransmonCross):  # pylint: disable=invalid-name
+class TransmonCrossFL(TransmonCross):
     """The base `TransmonCrossFL` class.
 
     Inherits `TransmonCross` class

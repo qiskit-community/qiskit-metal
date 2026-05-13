@@ -20,7 +20,7 @@ from PySide6.QtWidgets import QItemDelegate, QStyleOptionViewItem, QWidget
 
 from qiskit_metal._gui.widgets.create_component_window.model_view.tree_model_param_entry import (
     TreeModelParamEntry,
-)  # pylint: disable=line-too-long
+)
 
 
 class ParamDelegate(QItemDelegate):

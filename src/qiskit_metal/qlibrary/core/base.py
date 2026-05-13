@@ -16,7 +16,6 @@
 To see the docstring of QComponent in Jupyter notebook, use:
 >> ?QComponent
 """
-# pylint: disable=too-many-lines, too-many-public-methods
 
 import inspect
 import logging
@@ -127,8 +126,6 @@ class QComponent:
         >> {'a': 10, 'b': 20, 'c': {'d': 30, 'e': 4, 'f': {'g': 6, 'h': 70}}, 'z': 33}
     """
 
-    # pylint: disable=too-many-instance-attributes
-
     default_options = Dict(
         pos_x="0.0um", pos_y="0.0um", orientation="0.0", chip="main", layer="1"
     )
@@ -209,7 +206,6 @@ class QComponent:
             )
 
         self._design = design  # reference to parent
-        # pylint: disable=literal-comparison
         if self._delete_evaluation(name) == "NameInUse":
             raise ValueError(
                 f"{name} already exists! Please choose a different name for your new QComponent"
@@ -430,7 +426,6 @@ class QComponent:
         return set(self.pins.keys())
 
     @property
-    # pylint: disable=invalid-name
     def id(self) -> int:
         """The unique id of component within a design.
 
@@ -445,7 +440,6 @@ class QComponent:
         Method will obtain an unique id for the component within a
         design, THEN add itself to design.
         """
-        # pylint: disable=protected-access
         self.design._components[self.id] = self
         self.design.name_to_id[self.name] = self._id
 
@@ -725,7 +719,6 @@ name='{strname}'{other_args}
             if self._made:  # already made, just remaking
                 self.design.qgeometry.delete_component_id(self.id)
 
-                # pylint: disable=protected-access
                 self.design._delete_all_pins_for_component(self.id)
 
             self.make()
@@ -992,7 +985,6 @@ name='{strname}'{other_args}
             str: Status test, or None
         """
         # Add check for if user inputs nonsense?
-        # pylint: disable=protected-access
         false_component = False
         false_pin = False
         pin_in_use = False
@@ -1050,7 +1042,6 @@ name='{strname}'{other_args}
         Returns:
             int: A unique net_id for the connection.
         """
-        # pylint: disable=protected-access
 
         net_id_rtn = 0
 
@@ -1232,7 +1223,6 @@ name='{strname}'{other_args}
     ######################################
 
     def __repr__(self, *args):
-        # pylint: disable=invalid-name
 
         b = "\033[95m\033[1m"
         b1 = "\033[94m\033[1m"
@@ -1263,9 +1253,7 @@ name='{strname}'{other_args}
         """
         return self.design.qgeometry.get_element_types()
 
-    def qgeometry_dict(  # pylint: disable=inconsistent-return-statements
-        self, element_type: str
-    ) -> Dict_[str, BaseGeometry]:
+    def qgeometry_dict(self, element_type: str) -> Dict_[str, BaseGeometry]:
         """Returns a dict of element qgeometry (shapely geometry) of the
         component as a python dict, where the dict keys are the names of the
         qgeometry and the corresponding values are the shapely geometries.
@@ -1285,9 +1273,7 @@ name='{strname}'{other_args}
                 self.name, element_type
             )
 
-    def qgeometry_list(  # pylint: disable=inconsistent-return-statements
-        self, element_type: str = "all"
-    ) -> List[BaseGeometry]:
+    def qgeometry_list(self, element_type: str = "all") -> List[BaseGeometry]:
         """Returns a list of element qgeometry (shapely geometry) of the
         component as a python list of shapely geometries.
 
@@ -1307,9 +1293,7 @@ name='{strname}'{other_args}
                 self.name, element_type
             )
 
-    def qgeometry_table(  # pylint: disable=inconsistent-return-statements
-        self, element_type: str
-    ) -> pd.DataFrame:
+    def qgeometry_table(self, element_type: str) -> pd.DataFrame:
         """Returns the entire element table for the component.
 
         Args:

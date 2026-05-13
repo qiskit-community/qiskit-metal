@@ -12,10 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# pylint: disable-msg=unnecessary-pass
-# pylint: disable-msg=too-many-public-methods
-# pylint: disable-msg=protected-access
-# pylint: disable-msg=import-error
+
 """Qiskit Metal unit tests components functionality."""
 
 import unittest
@@ -53,7 +50,7 @@ from qiskit_metal.qlibrary.qubits.SQUID_loop import SQUID_LOOP
 from qiskit_metal.qlibrary.couplers import tunable_coupler_01
 from .assertions import AssertionsMixin
 
-# pylint: disable-msg=line-too-long
+
 from qiskit_metal.qlibrary.lumped.resonator_coil_rect import ResonatorCoilRect
 
 
@@ -103,7 +100,6 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         my_qcomponent_local.name = "another-name"
         self.assertEqual(my_qcomponent_local.name, "another-name")
 
-    # pylint: disable-msg=too-many-statements
     def test_qlibrary_qcomponent_add_pins(self):
         """Test pin addition."""
         design = designs.DesignPlanar()

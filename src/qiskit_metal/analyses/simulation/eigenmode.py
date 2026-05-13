@@ -22,7 +22,7 @@ from pyEPR.reports import (
     plot_convergence_maxdf_vs_sol,
     plot_convergence_solved_elem,
 )
-from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
+from qiskit_metal.designs import QDesign
 
 from qiskit_metal import Dict
 from qiskit_metal.analyses.core import QSimulation
@@ -87,7 +87,7 @@ class EigenmodeSim(QSimulation):
         self.renderer.analyze_setup(self.sim_setup_name)
         self.compute_convergences()
 
-    def run_sim(  # pylint: disable=arguments-differ
+    def run_sim(
         self,
         name: Optional[str] = None,
         components: Optional[list] = None,
@@ -256,9 +256,7 @@ class EigenmodeSim(QSimulation):
 
     ##### Below methods are related to EPR
 
-    def plot_fields(  # pylint: disable=keyword-arg-before-vararg
-        self, object_name, eigenmode: int = 1, *args, **kwargs
-    ):
+    def plot_fields(self, object_name, eigenmode: int = 1, *args, **kwargs):
         """Plots electro(magnetic) fields in the renderer.
         Accepts as args everything parameter accepted by the homonymous renderer method.
 

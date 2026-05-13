@@ -109,7 +109,7 @@ def do_debug(msg, name="info"):
     #         try:
     #             stack = inspect.stack()[i]
     #             callers += [f'{stack.function}[{stack.lineno}]']
-    #         except Exception as e:  # pylint: disable=broad-except
+    #         except Exception as e:
     #             print("Exception during do_debug exception handling: " +
     #                   e.__repr__())
     #     callers = reversed(callers)
@@ -140,12 +140,12 @@ def slot_catch_error(*args, catch=Exception, on_exception_emit=None):
     def slot_decorator(func):
 
         @wraps(func)
-        def wrapper(*args, **kwargs):  # pylint: disable=unused-argument
+        def wrapper(*args, **kwargs):
 
             try:
                 func(*args)
 
-            except catch as e:  # pylint: disable=invalid-name,broad-except
+            except catch as e:
                 message = traceback.format_exc()
                 message += (
                     "\n\nERROR in call by Metal GUI (see traceback above)\n"

@@ -12,10 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# pylint: disable-msg=unnecessary-pass
-# pylint: disable-msg=broad-except
-# pylint: disable-msg=import-error
-# pylint: disable-msg=too-many-public-methods
 """Qiskit Metal unit tests analyses functionality."""
 
 import unittest
@@ -532,7 +528,6 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         ]:
             self.assertIterableAlmostEqual(df_cond_expected[j], df_cond_result[j])
 
-    # pylint: disable-msg=too-many-locals
     def test_analyses_lumped_load_q3d_capacitance_matrix(self):
         """Test the functionality of load_q3d_capacitance_matrix in
         lumped_capacitives.py."""

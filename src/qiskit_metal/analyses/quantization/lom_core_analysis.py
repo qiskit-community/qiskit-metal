@@ -12,7 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """LOM analysis based on https://arxiv.org/pdf/2103.10344.pdf"""
-# pylint: disable=invalid-name
 
 # monkey patch to temporarily mock h5py dependency required by scqubits, which conflicts with
 # geopandas
@@ -21,8 +20,6 @@ import sys
 from scipy.fftpack import hilbert
 
 
-# pylint: disable=wrong-import-position
-# pylint: disable=too-few-public-methods
 class DummyH5py:
     @property
     def Group(self):
@@ -945,8 +942,6 @@ class TransmonBuilder(QuantumBuilder):
     system_type = "TRANSMON"
     default_opts = {"ng": 0.001, "ncut": 22, "truncated_dim": 10}
 
-    # pylint: disable=protected-access
-    # pylint: disable=no-member
     @set_builder_options
     def make_quantum(self, subsystem: Subsystem):
         """concrete building function for the builder to build the quantum
@@ -1000,8 +995,6 @@ class FluxoniumBuilder(QuantumBuilder):
     system_type = "FLUXONIUM"
     default_opts = {"cutoff": 110, "truncated_dim": 10}
 
-    # pylint: disable=protected-access
-    # pylint: disable=no-member
     @set_builder_options
     def make_quantum(self, subsystem: Subsystem):
         """concrete building function for the builder to build the quantum
@@ -1070,8 +1063,6 @@ class TLResonatorBuilder(QuantumBuilder):
         "other_end_shorted": False,
     }
 
-    # pylint: disable=protected-access
-    # pylint: disable=no-member
     @set_builder_options
     def make_quantum(self, subsystem: Subsystem):
         """concrete building function for the builder to build the quantum
@@ -1154,8 +1145,6 @@ class LumpedResonatorBuilder(QuantumBuilder):
     system_type = "LUMPED_RESONATOR"
     default_opts = {"truncated_dim": 3}
 
-    # pylint: disable=protected-access
-    # pylint: disable=no-member
     @set_builder_options
     def make_quantum(self, subsystem: Subsystem):
         """concrete building function for the builder to build the quantum

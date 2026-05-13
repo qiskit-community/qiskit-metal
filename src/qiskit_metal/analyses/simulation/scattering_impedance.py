@@ -15,7 +15,7 @@
 from typing import Optional, Tuple
 import pandas as pd
 
-from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
+from qiskit_metal.designs import QDesign
 
 from qiskit_metal import Dict
 from qiskit_metal.analyses.core import QSimulation
@@ -130,7 +130,7 @@ class ScatteringImpedanceSim(QSimulation):
         # TODO: move the plot in this analysis module. Renderer should recover the entire data
         return self.renderer.plot_params(param_name)
 
-    def run_sim(  # pylint: disable=arguments-differ
+    def run_sim(
         self,
         name: Optional[str] = None,
         components: Optional[list] = None,

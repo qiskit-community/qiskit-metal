@@ -10,7 +10,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """GUI front-end interface for Qiskit Metal in PySide2."""
-# pylint: disable=invalid-name
 
 import logging
 import os
@@ -71,7 +70,7 @@ if not config.is_building_docs():
     pass
 
 if TYPE_CHECKING:
-    from ..renderers.renderer_mpl.mpl_canvas import PlotCanvas  # pylint: disable=syntax-error
+    from ..renderers.renderer_mpl.mpl_canvas import PlotCanvas
 
 
 class QMainWindowExtension(QMainWindowExtensionBase):
@@ -545,7 +544,7 @@ class MetalGUI(QMainWindowBaseHandler):
             icon.addPixmap(QPixmap(iconName), QIcon.Normal, QIcon.Off)
 
             # Function call & monkey patch class instance ala Monkey Patch
-            dock.doShow = doShowHighlighWidget.__get__(dock, type(dock))  # pylint: disable=assignment-from-no-return, no-value-for-parameter
+            dock.doShow = doShowHighlighWidget.__get__(dock, type(dock))
 
             # QT Action with trigger, embed in toolbar
             action = QAction("", dock, triggered=dock.doShow)
@@ -590,7 +589,7 @@ class MetalGUI(QMainWindowBaseHandler):
 
         # add highlight function ala Monkey Patch
         obj = self.ui.mainViewTab
-        obj.doShow = doShowHighlighWidget.__get__(obj, type(obj))  # pylint: disable=assignment-from-no-return, no-value-for-parameter
+        obj.doShow = doShowHighlighWidget.__get__(obj, type(obj))
 
         # Move the dock
         self._move_dock_to_new_parent(self.ui.dockLog, self.plot_win)

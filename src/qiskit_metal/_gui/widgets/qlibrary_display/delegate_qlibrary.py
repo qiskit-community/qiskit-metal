@@ -49,7 +49,7 @@ class LibraryDelegate(QItemDelegate):
         #  the source model for that Proxy Model(s) should be a QFileSystemLibraryModel
         self.source_model_type = QFileSystemLibraryModel
 
-    def get_source_model(self, model: QAbstractItemModel, source_type: type):  # pylint: disable=R0201, no-self-use
+    def get_source_model(self, model: QAbstractItemModel, source_type: type):
         """
         The Delegate may belong to a view using a ProxyModel. However,
         the source model for that Proxy Model(s) should be a QFileSystemLibraryModel

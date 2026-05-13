@@ -228,7 +228,7 @@ class QRenderer(ABC):
             if hasattr(child, "default_options"):
                 options_from_children = {
                     **options_from_children,
-                    **child.default_options,  # pylint: disable=no-member
+                    **child.default_options,
                 }
         return options_from_children
 
