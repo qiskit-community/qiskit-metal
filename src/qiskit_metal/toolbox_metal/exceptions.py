@@ -16,8 +16,6 @@
 # pylint: disable=unused-import
 """Custom Exceptions."""
 
-from sys import prefix
-
 
 class QiskitMetalExceptions(Exception):
     """Custom Exception super-class. Every Exception raised by qiskit-metal

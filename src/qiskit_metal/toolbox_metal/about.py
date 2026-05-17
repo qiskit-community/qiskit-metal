@@ -32,8 +32,7 @@ import qutip
 from qiskit_metal.toolbox_python.display import Color, style_colon_list
 
 __all__ = [
-    'about', 'open_docs', 'orient_me', 'get_platform_info',
-    'get_module_doc_page'
+    'about', 'open_docs', 'get_platform_info', 'get_module_doc_page'
 ]
 
 
