@@ -31,6 +31,15 @@ import os
 # Environment variables are per-process, not global
 os.environ["QISKIT_METAL_DOCS_BUILD"] = "1"
 
+# In docs-build mode, ``renderers/__init__.py`` imports the Qt-coupled
+# ``mpl_canvas`` module, which transitively  pulls
+# ``matplotlib.backends.backend_qt5agg``. Without a hint, matplotlib's
+# qt_compat probes for PyQt5 / PySide2 and fails on environments
+# (RTD, Colab) that only have PySide6 — the project's actual Qt
+# binding. Telling matplotlib to use PySide6 makes the legacy
+# qt5agg alias resolve to the modern Qt-agnostic backend_qtagg.
+os.environ.setdefault("QT_API", "pyside6")
+
 
 import qiskit_metal
 import qiskit_sphinx_theme
@@ -134,6 +143,7 @@ exclude_patterns = [
     "build",
     "**.ipynb_checkpoints",
     "_utility",  # '*.ipynb',
+    "_archive",  # archived configs / configs kept for revival
     "stubs/**",  # autosummary stub files are generated but not included in any toctree
 ]
 
