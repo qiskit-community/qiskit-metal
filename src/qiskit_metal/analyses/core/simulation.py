@@ -73,7 +73,7 @@ class QSimulation(QAnalysis):
             self.renderer = self.select_renderer(renderer_name)
 
     def select_renderer(self, renderer_name: str):
-        """Makes sure the renderer exists in qiskit-metal. If yes it sets the analysis 
+        """Makes sure the renderer exists in qiskit-metal. If yes it sets the analysis
         class variables to be able to reach it easily. Else it throws an error.
 
         Args:

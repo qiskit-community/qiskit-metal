@@ -63,7 +63,7 @@ def rectangle(w: float, h: float, xoff: float = 0, yoff: float = 0):
                         {-w/2} {+h/2},
                         {-w/2} {-h/2}))"""  # last  point has to close on self
 
-    if xoff is 0 and yoff is 0:
+    if xoff == 0 and yoff == 0:
         return Polygon(shapely.wkt.loads(pad))  # My Polygon class
     else:
         return shapely.affinity.translate(Polygon(shapely.wkt.loads(pad)),
@@ -131,9 +131,9 @@ def union(*polys):
     # union() is an expensive way to find the cumulative union of
     # many objects.
     # See shapely.ops.unary_union() for a more effective method.
-    if len(polys) is 2:
+    if len(polys) == 2:
         return polys[0].union(polys[1])
-    elif len(polys) is 1:  # assume that it is a list
+    elif len(polys) == 1:  # assume that it is a list
         polys = polys[0]
     return shapely.ops.unary_union(polys)
 

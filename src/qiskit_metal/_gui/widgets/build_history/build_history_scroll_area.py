@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import (QLabel, QScrollArea, QVBoxLayout, QLabel,
+from PySide6.QtWidgets import (QScrollArea, QVBoxLayout, QLabel,
                                QGroupBox)
 from typing import List
 from qiskit_metal._gui.widgets.build_history.build_history_scroll_area_ui import Ui_BuildHistory

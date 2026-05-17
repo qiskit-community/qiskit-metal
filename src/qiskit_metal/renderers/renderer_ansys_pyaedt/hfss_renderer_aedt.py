@@ -226,7 +226,7 @@ class QHFSSPyaedt(QPyaedt):
         if not self.valid_input_arguments(open_pins, port_list, jj_to_port,
                                           ignored_jjs):
             self.logger.error(
-                f'Check the arguments to render_design, invalid name was probably used.'
+                'Check the arguments to render_design, invalid name was probably used.'
             )
         else:
             # Ansys default units is 'mm'?????, but metal using 'meter'.
@@ -679,7 +679,7 @@ class QHFSSPyaedt(QPyaedt):
             self.open_pins_is_valid = self.confirm_open_pins_are_valid_names(
                 open_pins, pair_used)
             if self.open_pins_is_valid == False:
-                self.logger.error(f'Arguments are not in Design for open_pins.')
+                self.logger.error('Arguments are not in Design for open_pins.')
         else:
             self.open_pins_is_valid = True
 
@@ -687,7 +687,7 @@ class QHFSSPyaedt(QPyaedt):
             self.port_list_is_valid = self.confirm_port_list_have_valid_request(
                 port_list, pair_used)
             if self.port_list_is_valid == False:
-                self.logger.error(f'Arguments are not in Design for port_list.')
+                self.logger.error('Arguments are not in Design for port_list.')
         else:
             self.port_list_is_valid == True
 
@@ -696,7 +696,7 @@ class QHFSSPyaedt(QPyaedt):
                 jj_to_port, pair_used)
             if self.jj_to_port_is_valid == False:
                 self.logger.error(
-                    f'Arguments are not in Design for jj_to_port.')
+                    'Arguments are not in Design for jj_to_port.')
         else:
             self.jj_to_port_is_valid == True
 
@@ -705,7 +705,7 @@ class QHFSSPyaedt(QPyaedt):
                 ignored_jjs, pair_used)
             if self.ignored_jjs_is_valid == False:
                 self.logger.error(
-                    f'Arguments are not in Design for ignored_jjs.')
+                    'Arguments are not in Design for ignored_jjs.')
         else:
             self.ignored_jjs_is_valid = True
 
@@ -743,8 +743,8 @@ class QHFSSPyaedt(QPyaedt):
         for component_name, element_name, impedance in jj_to_port:
             if self.qcomp_ids:
                 # User wants to render a subset, ensure part of selection.
-                if not self.design.components[
-                        component_name].id in self.qcomp_ids:
+                if self.design.components[
+                        component_name].id not in self.qcomp_ids:
                     self.design.logger.error(
                         f'You entered the component_name='
                         f'{self.design.components[component_name].name} and the corresponding'
@@ -798,8 +798,8 @@ class QHFSSPyaedt(QPyaedt):
             component_name, element_name = item
             if self.qcomp_ids:
                 # User wants to render a subset, ensure part of selection.
-                if not self.design.components[
-                        component_name].id in self.qcomp_ids:
+                if self.design.components[
+                        component_name].id not in self.qcomp_ids:
                     self.design.logger.error(
                         f'You entered the component_name='
                         f'{self.design.components[component_name].name} and the corresponding'
@@ -843,7 +843,7 @@ class QHFSSPyaedt(QPyaedt):
         for comp_name, pin, impedance in port_list:
             if self.qcomp_ids:
                 # User wants to render a subset, ensure part of selection.
-                if not self.design.components[comp_name].id in self.qcomp_ids:
+                if self.design.components[comp_name].id not in self.qcomp_ids:
                     self.design.logger.error(
                         f'You entered the component_name='
                         f'{self.design.components[comp_name].name} and the corresponding'
@@ -901,7 +901,7 @@ class QHFSSPyaedt(QPyaedt):
         Args:
             name (str): Name of variable.
             value (str): Amount and unit associated w/ variable.
-                
+
         """
         variable_manager = self.current_app._variable_manager
         variable_manager[name] = value

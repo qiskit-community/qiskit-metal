@@ -319,7 +319,7 @@ class ComponentWidget(QTabWidget):
 
         text = Path(filepath).read_text()
 
-        if not (highlight is None):
+        if highlight is not None:
             lexer = get_lexer_by_name("python", stripall=True)
             formatter = HtmlFormatter(linenos='inline')
             self._html_css_lex = formatter.get_style_defs('.highlight')
@@ -340,7 +340,7 @@ class ComponentWidget(QTabWidget):
             bg_color = bg_color_2 if len(bg_color_2) < len(
                 bg_color_1) else bg_color_1
             self.ui.textSource.setStyleSheet(f"""
-            background-color: {bg_color}; 
+            background-color: {bg_color};
             color: #000000;
             """)
 

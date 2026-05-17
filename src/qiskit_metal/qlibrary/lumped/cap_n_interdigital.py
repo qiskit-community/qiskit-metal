@@ -47,10 +47,10 @@ class CapNInterdigital(QComponent):
 
     .. image::
         CapNInterdigital.png
-    
+
     .. meta::
         :description: Cap N Interdigital
-    
+
     Options:
         * north_width: '10um' -- The width of the 'north' portion of the CPW transmission line
         * north_gap: '6um' -- The dielectric gap of the 'north' portion of the CPW transmission line
@@ -84,8 +84,8 @@ class CapNInterdigital(QComponent):
     """Default connector options"""
 
     TOOLTIP = """Generates a two pin (+) structure
-     comprised of a north CPW transmission line, 
-     and a south transmission line, coupled 
+     comprised of a north CPW transmission line,
+     and a south transmission line, coupled
      together via a finger capacitor."""
 
     def make(self):

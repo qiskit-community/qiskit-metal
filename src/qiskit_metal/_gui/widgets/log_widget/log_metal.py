@@ -231,7 +231,7 @@ class QTextEditLogger(QTextEdit):
                 f'Log  (filter >= {self._level_name})')
         else:
             self.dock_window.setWindowTitle(
-                f'Log (right click log for options)')
+                'Log (right click log for options)')
         return self._level_name
 
     def add_logger(self, name: str, handler: logging.Handler):

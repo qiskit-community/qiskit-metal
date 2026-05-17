@@ -271,7 +271,7 @@ class ParameterEntryWindow(QMainWindow):
         bg_color = bg_color_2 if len(bg_color_2) < len(
             bg_color_1) else bg_color_1
         text_source.setStyleSheet(f"""
-        background-color: {bg_color}; 
+        background-color: {bg_color};
         color: #000000;
         """)
 

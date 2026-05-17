@@ -90,7 +90,7 @@ class QRoute(QComponent):
             jogs[3] = ["L", '500um']
             jogs[4] = ["R", '200um']
             jogs_other = ....
-            
+
             options = {'lead': {
                 'start_straight': '0.3mm',
                 'end_straight': '0.3mm',

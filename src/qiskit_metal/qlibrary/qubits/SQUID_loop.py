@@ -14,7 +14,7 @@
 """SQUID_loop.
 
 .. code-block:
-:      
+:
     |                                                   |
     |                                                   |
     |-----seg a-----|JJ|-- seg b-------|                |
@@ -37,12 +37,12 @@ class SQUID_LOOP(QComponent):
 
     This creates a simple SQUID loop consisting of two Josephson
     junctions (JJs) located on opposite sides of a rectangular loop.
-    The design consists of eight separate rectangles: plate1, 
+    The design consists of eight separate rectangles: plate1,
     segment a (and segment a lower), segment b (and segment b lower),
     segment c, segment d and plate 2. The two JJs are located between
     segments and a and b (and also between segments a lower and b
-    lower.) 
-    
+    lower.)
+
     .. image::
         SQUID_LOOP.png
 
@@ -50,19 +50,19 @@ class SQUID_LOOP(QComponent):
         :description: Squid Loop
 
     Default Options:
-        * plate1_width: '5.5um' -- width of plate1 (left)  
+        * plate1_width: '5.5um' -- width of plate1 (left)
         * plate1_height: '40um' -- height of plate1 (left)
         * plate1_pos_x: '0' -- origin of the plate1 (left)
-        * plate1_pos_y: '0' -- origin of the plate1 (left) 
+        * plate1_pos_y: '0' -- origin of the plate1 (left)
         * squid_gap: '10um' -- space between 'seg a' and 'seg a lower'
         * segment_a_length: '10um' -- length of seg a
-        * segment_a_width: '1um' -- width of seg a 
+        * segment_a_width: '1um' -- width of seg a
         * JJ_gap: '0.5um' -- space between seg a and seg b
         * segment_b_length: '5um' -- length of seg b
         * segment_b_width: '1um' -- width of seg b
         * segment_c_width: '10um' -- length of seg c
         * segment_d_length: '10um' -- length of seg d
-        * segment_d_width: '2um' -- width of seg d 
+        * segment_d_width: '2um' -- width of seg d
         * plate2_width: '6um' -- width of plate 2 (right)
         * plate2_height: '30um' -- height of plate 2 (right)
     """

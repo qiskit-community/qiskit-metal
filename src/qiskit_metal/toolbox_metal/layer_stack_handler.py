@@ -302,5 +302,5 @@ class LayerStackHandler():
         """ The handler will return None if incorrect arguments are passed.
         """
         self.logger.error(
-            f'User is not using LayerStackHandler.get_properties_for_chip_layer_datatype correctly.'
+            'User is not using LayerStackHandler.get_properties_for_chip_layer_datatype correctly.'
         )

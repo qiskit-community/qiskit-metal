@@ -130,7 +130,7 @@ class QRendererAnalysis(QRenderer):
             show (bool, optional): Whether or not to display the screenshot.  Defaults to True.
 
         Returns:
-            pathlib.WindowsPath: path to png formatted screenshot. 
+            pathlib.WindowsPath: path to png formatted screenshot.
         """
         pass
 

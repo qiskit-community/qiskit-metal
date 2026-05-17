@@ -19,7 +19,7 @@ from qiskit_metal.qlibrary import QRoute
 class RouteStraight(QRoute):
     """
     Draw a straight Route connecting two pins.
-    
+
     .. meta::
         :description: Route Straight
     """

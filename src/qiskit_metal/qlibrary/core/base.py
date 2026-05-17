@@ -844,7 +844,7 @@ name='{strname}'{other_args}
             * input_as_norm (bool): Indicates if the points are tangent or normal to the pin plane.
               Defaults to False.. Make True for normal.
             * parent (Union[int,]): The id of the parent component.
-            * chip (str): the name of the chip the pin is located on. Defaults to None, which is 
+            * chip (str): the name of the chip the pin is located on. Defaults to None, which is
             converted to self.options.chip.
             * gap (float): the dielectric gap of the pin for the purpose of representing as a port
               for simulations.  Defaults to None which is converted to 0.6 * width.
@@ -1095,7 +1095,7 @@ name='{strname}'{other_args}
                            Defaults to False.
             layer (int, str): The layer to which the set of QGeometry will belong
                               Defaults to None, which is converted to self.options.chip.
-            chip (str): Chip name. Defaults to None, which is converted to 
+            chip (str): Chip name. Defaults to None, which is converted to
             self.options.chip.
             kwargs (dict): Parameters dictionary
 

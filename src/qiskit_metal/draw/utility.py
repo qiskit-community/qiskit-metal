@@ -327,7 +327,7 @@ def vec_unit_planar(vector: np.array):
         _norm = norm(vector)
 
         if not bool(_norm):  # zero length vector
-            logger.debug(f'Warning: zero vector length')
+            logger.debug('Warning: zero vector length')
             return vector
 
         return vector / _norm
@@ -611,7 +611,7 @@ class Vector:
 
         if Vector.is_zero(distance_vec):
             logger.debug(
-                f'Function `two_points_described` encountered a zero vector'
+                'Function `two_points_described` encountered a zero vector'
                 ' length. The two points should not be the same.')
 
         return distance_vec, unit_vec, tangent_vec

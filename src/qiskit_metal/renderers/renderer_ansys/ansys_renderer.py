@@ -973,7 +973,7 @@ class QAnsysRenderer(QRendererAnalysis):
                             self.pinfo.setup = self.new_ansys_setup(
                                 name=setup_name)
                     else:
-                        self.logger.warning(f"Please specify a setup_name.")
+                        self.logger.warning("Please specify a setup_name.")
                 else:
                     self.logger.warning(
                         "Design not found in selected project, have you opened a design?"

@@ -91,7 +91,7 @@ class Vec3DArray:
                     vecs.append(np.array([xyz[0], xyz[1], layer_z]))
                 else:
                     raise TypeError(
-                        f"Expected a layer_z value for 2D geometry, found NoneType."
+                        "Expected a layer_z value for 2D geometry, found NoneType."
                     )
             else:
                 raise ValueError(

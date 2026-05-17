@@ -57,7 +57,6 @@ How do I make my custom QComponent
     2-From-components-to-chip/2.3*
 
 
-#########
 Renderers
 =========
 
