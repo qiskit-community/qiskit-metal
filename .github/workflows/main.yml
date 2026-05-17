@@ -81,6 +81,88 @@ jobs:
       - name: Check environment.yml against pyproject.toml
         run: uv run --quiet scripts/check_env_consistency.py
 
+  tests-lite:
+    # Exercises the "lite" install path — no PySide6, no pyaedt, no
+    # gmsh. Catches accidental top-level Qt/Ansys/FEM imports that
+    # would break Colab / Binder / cloud Jupyter users.
+    #
+    # Once v0.7.0 flips the default install to lite, this matrix entry
+    # becomes the canonical test runner; until then it's a focused
+    # gate.
+    name: tests-lite
+    runs-on: ubuntu-24.04
+    env:
+      FORCE_COLOR: "1"
+      QISKIT_METAL_HEADLESS: "1"
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.9.24"
+          enable-cache: true
+      - name: Install lite dependency set (no PySide6, pyaedt, gmsh)
+        # Build a venv that has every core dep EXCEPT the GUI / Ansys
+        # / FEM extras. Uses ``--no-deps`` for our package then
+        # explicitly installs core deps so we can omit the heavy ones.
+        # Bypasses ``pyproject.toml``'s base deps so we get a true
+        # lite install regardless of what's in [project.dependencies].
+        run: |
+          uv venv --python 3.12
+          uv pip install \
+            'addict>=2.4.0' \
+            'gdstk>=0.9' \
+            'geopandas>=1.0' \
+            'matplotlib>=3.7.0' \
+            'numpy>=1.24.2,<2' \
+            'pandas>=2.1.1' \
+            'pint>=0.21.0' \
+            'pyEPR-quantum>=0.9.5' \
+            'pygments>=2.14.0' \
+            'qutip>=5.0.0' \
+            'scipy>=1.10.0' \
+            'shapely>=2.0.1' \
+            'scqubits>=4.1.0' \
+            'pyyaml>=6.0' \
+            'pytest>=8.4.1' \
+            'pytest-rich>=0.2.0'
+          uv pip install --no-deps -e .
+      - name: Confirm PySide6 is NOT installed
+        run: |
+          if uv pip show pyside6 2>/dev/null; then
+            echo "::error::PySide6 is installed in the lite venv — test setup is wrong"
+            exit 1
+          fi
+          echo "OK: PySide6 absent from lite venv"
+      - name: Smoke test — import qiskit_metal + qm.view()
+        # This is the critical assertion: import + view must work
+        # with PySide6 absent. Failure here means someone added a
+        # top-level Qt import to a non-GUI module.
+        run: |
+          uv run python -c "
+          import qiskit_metal as qm
+          from qiskit_metal.designs import DesignPlanar
+          from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
+          design = DesignPlanar()
+          TransmonPocket(design, 'Q1',
+                         options={'connection_pads': {'a': {}}})
+          fig = qm.view(design)
+          assert fig is not None, 'qm.view returned None'
+          print('OK: qm.view(design) returned', type(fig).__name__)
+          "
+      - name: Run no-Qt test files
+        # Tests that don't need Qt — viewer, idempotency, pin sanity.
+        # If any of these reach for PySide6 they'll fail and we'll
+        # know we have unintentional Qt coupling.
+        run: |
+          uv run pytest \
+            tests/test_viewer.py \
+            tests/test_qlibrary_idempotency.py \
+            tests/test_qlibrary_pin_sanity.py \
+            tests/test_solution_types.py \
+            -v
+
   coverage:
     name: coverage
     runs-on: ubuntu-24.04
