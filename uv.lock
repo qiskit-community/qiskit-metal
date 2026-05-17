@@ -2773,6 +2773,26 @@ dependencies = [
     { name = "shapely" },
 ]
 
+[package.optional-dependencies]
+ansys = [
+    { name = "pyaedt" },
+    { name = "pyepr-quantum" },
+]
+fem = [
+    { name = "gmsh" },
+]
+full = [
+    { name = "gmsh" },
+    { name = "pyaedt" },
+    { name = "pyepr-quantum" },
+    { name = "pyside6" },
+    { name = "qdarkstyle" },
+]
+gui = [
+    { name = "pyside6" },
+    { name = "qdarkstyle" },
+]
+
 [package.dev-dependencies]
 docs = [
     { name = "nbsphinx" },
@@ -2806,21 +2826,32 @@ requires-dist = [
     { name = "gdstk", specifier = ">=0.9" },
     { name = "geopandas", specifier = ">=1.0" },
     { name = "gmsh", specifier = ">=4.11.1" },
+    { name = "gmsh", marker = "extra == 'fem'", specifier = ">=4.11.1" },
+    { name = "gmsh", marker = "extra == 'full'", specifier = ">=4.11.1" },
     { name = "matplotlib", specifier = ">=3.7.0" },
     { name = "numpy", specifier = ">=1.24.2,<2" },
     { name = "pandas", specifier = ">=2.1.1" },
     { name = "pint", specifier = ">=0.21.0" },
     { name = "pyaedt", specifier = ">=0.21,<0.24" },
+    { name = "pyaedt", marker = "extra == 'ansys'", specifier = ">=0.21,<0.24" },
+    { name = "pyaedt", marker = "extra == 'full'", specifier = ">=0.21,<0.24" },
     { name = "pyepr-quantum", specifier = ">=0.9.5" },
+    { name = "pyepr-quantum", marker = "extra == 'ansys'", specifier = ">=0.9.5" },
+    { name = "pyepr-quantum", marker = "extra == 'full'", specifier = ">=0.9.5" },
     { name = "pygments", specifier = ">=2.14.0" },
     { name = "pyside6", specifier = ">=6.8" },
+    { name = "pyside6", marker = "extra == 'full'", specifier = ">=6.8" },
+    { name = "pyside6", marker = "extra == 'gui'", specifier = ">=6.8" },
     { name = "pyyaml", specifier = ">=6.0" },
     { name = "qdarkstyle", specifier = ">=3.1" },
+    { name = "qdarkstyle", marker = "extra == 'full'", specifier = ">=3.1" },
+    { name = "qdarkstyle", marker = "extra == 'gui'", specifier = ">=3.1" },
     { name = "qutip", specifier = ">=5.0.0" },
     { name = "scipy", specifier = ">=1.10.0" },
     { name = "scqubits", specifier = ">=4.1.0" },
     { name = "shapely", specifier = ">=2.0.1" },
 ]
+provides-extras = ["gui", "ansys", "fem", "full"]
 
 [package.metadata.requires-dev]
 docs = [
