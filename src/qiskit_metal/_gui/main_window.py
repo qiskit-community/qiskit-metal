@@ -64,7 +64,8 @@ class QMainWindowExtension(QMainWindowExtensionBase):
 
     This class extends the `QMainWindowExtensionBase` class.
 
-    To access the GUI Handler above this, call:
+    To access the GUI Handler above this, call::
+
         self.handler = gui
 
     Args:
