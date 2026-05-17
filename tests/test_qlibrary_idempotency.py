@@ -21,45 +21,88 @@ silent bugs (component reads from internal state instead of
 order, etc.) that would silently break HFSS/Q3D analyses by perturbing
 geometry between runs.
 
-These tests parametrize via ``subTest`` over a small but representative
-subset of ``qlibrary``:
-
-* every transmon family
-* both terminations
-* one lumped coupler
-* one sample shape
-
-Routes are intentionally skipped — they require pre-existing pin
-connections; an idempotency test for them is a separate piece of
+These tests parametrize via ``subTest`` over every ``qlibrary``
+component that instantiates cleanly on ``DesignPlanar`` with default
+options. Routes are intentionally excluded — they require pre-existing
+pin connections; an idempotency test for them is a separate piece of
 plumbing.
 """
 
 import unittest
 
 from qiskit_metal import designs
+from qiskit_metal.qlibrary.couplers.cap_n_interdigital_tee import (
+    CapNInterdigitalTee)
+from qiskit_metal.qlibrary.couplers.coupled_line_tee import CoupledLineTee
+from qiskit_metal.qlibrary.couplers.line_tee import LineTee
+from qiskit_metal.qlibrary.lumped.cap_3_interdigital import Cap3Interdigital
 from qiskit_metal.qlibrary.lumped.cap_n_interdigital import CapNInterdigital
+from qiskit_metal.qlibrary.lumped.resonator_coil_rect import ResonatorCoilRect
+from qiskit_metal.qlibrary.qubits.JJ_Dolan import jj_dolan
+from qiskit_metal.qlibrary.qubits.JJ_Manhattan import jj_manhattan
+from qiskit_metal.qlibrary.qubits.SQUID_loop import SQUID_LOOP
+from qiskit_metal.qlibrary.qubits.star_qubit import StarQubit
+from qiskit_metal.qlibrary.qubits.transmon_concentric import TransmonConcentric
 from qiskit_metal.qlibrary.qubits.transmon_cross import TransmonCross
 from qiskit_metal.qlibrary.qubits.transmon_cross_fl import TransmonCrossFL
 from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 from qiskit_metal.qlibrary.qubits.transmon_pocket_6 import TransmonPocket6
 from qiskit_metal.qlibrary.qubits.transmon_pocket_cl import TransmonPocketCL
+from qiskit_metal.qlibrary.qubits.transmon_pocket_teeth import (
+    TransmonPocketTeeth)
+from qiskit_metal.qlibrary.sample_shapes.circle_caterpillar import (
+    CircleCaterpillar)
+from qiskit_metal.qlibrary.sample_shapes.circle_raster import CircleRaster
+from qiskit_metal.qlibrary.sample_shapes.n_gon import NGon
+from qiskit_metal.qlibrary.sample_shapes.n_square_spiral import NSquareSpiral
 from qiskit_metal.qlibrary.sample_shapes.rectangle import Rectangle
+from qiskit_metal.qlibrary.sample_shapes.rectangle_hollow import (
+    RectangleHollow)
+from qiskit_metal.qlibrary.terminations.launchpad_wb import LaunchpadWirebond
+from qiskit_metal.qlibrary.terminations.launchpad_wb_coupled import (
+    LaunchpadWirebondCoupled)
+from qiskit_metal.qlibrary.terminations.launchpad_wb_driven import (
+    LaunchpadWirebondDriven)
 from qiskit_metal.qlibrary.terminations.open_to_ground import OpenToGround
 from qiskit_metal.qlibrary.terminations.short_to_ground import ShortToGround
 
-# Components to exercise. Each is instantiated with ``(design, name)``
-# and default options; ``make=True`` is the default so rebuild() runs
-# via __init__.
+# Every component that instantiates cleanly on DesignPlanar with
+# (design, name) and no extra options. Routes are excluded — they need
+# pin connections that aren't available in default options.
 COMPONENTS_UNDER_TEST = [
+    # Sample shapes
+    Rectangle,
+    RectangleHollow,
+    NGon,
+    NSquareSpiral,
+    CircleRaster,
+    CircleCaterpillar,
+    # Terminations
+    OpenToGround,
+    ShortToGround,
+    LaunchpadWirebond,
+    LaunchpadWirebondCoupled,
+    LaunchpadWirebondDriven,
+    # Qubit family
+    TransmonConcentric,
     TransmonPocket,
     TransmonPocketCL,
     TransmonPocket6,
+    TransmonPocketTeeth,
     TransmonCross,
     TransmonCrossFL,
-    OpenToGround,
-    ShortToGround,
-    Rectangle,
+    StarQubit,
+    SQUID_LOOP,
+    jj_dolan,
+    jj_manhattan,
+    # Lumped
     CapNInterdigital,
+    Cap3Interdigital,
+    ResonatorCoilRect,
+    # Couplers
+    LineTee,
+    CapNInterdigitalTee,
+    CoupledLineTee,
 ]
 
 
