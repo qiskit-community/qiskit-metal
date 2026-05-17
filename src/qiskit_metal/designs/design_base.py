@@ -105,7 +105,7 @@ class QDesign():
     def __init__(self,
                  metadata: Optional[dict] = None,
                  overwrite_enabled: bool = False,
-                 enable_renderers: bool = True):
+                 enable_renderers: bool = True) -> None:
         """Create a new Metal QDesign.
 
         Args:
@@ -471,7 +471,7 @@ class QDesign():
 
         return all_net_id_removed
 
-    def delete_all_components(self):
+    def delete_all_components(self) -> None:
         """Clear all components in the design dictionary.
 
         Also clears all pins and netlist.
@@ -508,7 +508,7 @@ class QDesign():
 
         return self._qcomponent_latest_name_id[prefix]
 
-    def rebuild(self):  # remake_all_components
+    def rebuild(self) -> None:  # remake_all_components
         """Remakes all components with their current parameters."""
         for _, obj in self._components.items():  # pylint: disable=unused-variable
             obj.rebuild()
