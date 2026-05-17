@@ -65,5 +65,21 @@ jobs:
           ## TODO: Remove --exit-zero once linting is finalized.
           args: "check --exit-zero"
 
+  env-consistency:
+    name: env.yml ↔ pyproject.toml drift
+    runs-on: ubuntu-24.04
+    env:
+      FORCE_COLOR: "1"
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.9.24"
+          enable-cache: true
+      - name: Check environment.yml against pyproject.toml
+        run: uv run --quiet scripts/check_env_consistency.py
+
 
 
