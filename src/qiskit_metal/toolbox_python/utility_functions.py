@@ -80,10 +80,10 @@ def dict_start_with(my_dict, start_with, as_=list):
         my_dict = {'name': 'Klauss', 'age': 26, 'Date of birth': '15th july'}
         dict_start_with(my_dict, 'Date')
     """
-    if as_ == list:
+    if as_ is list:
         # start_with in k]
         return [v for k, v in my_dict.items() if k.startswith(start_with)]
-    elif as_ == dict:
+    elif as_ is dict:
         return {k: v for k, v in my_dict.items() if k.startswith(start_with)}
 
 
