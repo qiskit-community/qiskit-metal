@@ -144,8 +144,8 @@ class QComponent():
                  design: 'QDesign',
                  name: Optional[str] = None,
                  options: Optional[Dict] = None,
-                 make=True,
-                 component_template: Optional[Dict] = None):
+                 make: bool = True,
+                 component_template: Optional[Dict] = None) -> None:
         """Create a new Metal component and adds it's default_options to the
         design.
 
@@ -512,7 +512,7 @@ class QComponent():
             return 'NameInUse'
         return None
 
-    def make(self):
+    def make(self) -> None:
         """The make function implements the logic that creates the geometry
         (poly, path, etc.) from the qcomponent.options dictionary of
         parameters, and the adds them to the design, using
@@ -678,7 +678,7 @@ name='{strname}'{other_args}
 
         return full_import, body
 
-    def rebuild(self):
+    def rebuild(self) -> None:
         """Builds the QComponent.
 
         This is the main action function of a
@@ -723,7 +723,7 @@ name='{strname}'{other_args}
             )
             raise error
 
-    def delete(self):
+    def delete(self) -> None:
         """Delete the QComponent.
 
         Removes QGeometry, QPins, etc. from the design.
@@ -831,7 +831,7 @@ name='{strname}'{other_args}
             width: float,
             input_as_norm: bool = False,
             chip: Optional[str] = None,
-            gap: Optional[float] = None):  # gap defaults to 0.6 * width
+            gap: Optional[float] = None) -> None:  # gap defaults to 0.6 * width
         """Adds a pin from two points which are normal/tangent to the intended
         plane of the pin. The normal should 'point' in the direction of
         intended connection. Adds the new pin as a subdictionary to parent
@@ -1078,7 +1078,7 @@ name='{strname}'{other_args}
             helper: bool = False,
             layer: Union[int, str, None] = None,  # chip will be here
             chip: Optional[str] = None,
-            **kwargs):
+            **kwargs) -> None:
         r"""Add QGeometry.
 
         Takes any additional options in options.

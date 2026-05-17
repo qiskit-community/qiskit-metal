@@ -353,7 +353,7 @@ class QRenderer(ABC):
                     self.logger.warning(
                         f'col_value={col_value} not added to QDesign')
 
-    def start(self, force=False):
+    def start(self, force: bool = False) -> bool:
         """
         Call any initialization (single run) step required to setup the renderer for the first execution,
         such as connecting to some API or COM, or importing the correct material libraries, etc.
@@ -379,7 +379,7 @@ class QRenderer(ABC):
 
         return self.initiated
 
-    def stop(self):
+    def stop(self) -> bool:
         """
         Any calls that one may want to make after a rendering is complete.
         """
@@ -440,7 +440,7 @@ class QRenderer(ABC):
                ], 0  # Subset selected
 
     @abstractmethod
-    def render_design(self):
+    def render_design(self) -> None:
         """Abstract method. Must be implemented by the subclass.
         Renders all design chips and components.
         """
