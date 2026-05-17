@@ -1,0 +1,59 @@
+# ARCHIVED — see README.md in this directory.
+#
+# This config produced a green build on RTD in PR #1069 but was
+# not adopted. Docs publishing currently lives on GitHub Pages
+# via .github/workflows/docs.yml. To revive this config, move it
+# back to .readthedocs.yaml at the repo root and follow the
+# revive checklist in README.md.
+#
+# Read the Docs build configuration for Quantum Metal.
+# https://docs.readthedocs.com/platform/stable/config-file/v2.html
+#
+# Build pipeline:
+#   1. Install graphviz + pandoc via apt (nbsphinx needs pandoc;
+#      graphviz is used by the qiskit-sphinx-theme).
+#   2. Install ``uv`` via asdf, create the venv at the path RTD
+#      expects, sync the project with the ``docs`` dependency
+#      group (PEP 735, declared in pyproject.toml's
+#      ``[dependency-groups]`` — not a PEP 631 extra).
+#   3. RTD runs ``python -m sphinx`` against ``docs/conf.py``.
+#
+# The package is installed editable so autodoc can introspect
+# ``qiskit_metal`` and ``conf.py`` can read ``qiskit_metal.__version__``.
+
+version: 2
+
+build:
+  os: ubuntu-24.04
+  tools:
+    python: "3.12"
+  apt_packages:
+    - graphviz
+    - pandoc
+    # gmsh is a base project dep. ``import gmsh`` dlopens
+    # libGLU.so.1 (and X11 libs for its GUI mode) at module load
+    # time, which renderers/__init__.py triggers during docs build
+    # via ``if config.is_building_docs():``. GH Actions runners
+    # ship these libraries by default; RTD's image is more minimal
+    # and needs them declared.
+    - libglu1-mesa
+    - libxcursor1
+    - libxft2
+    - libxinerama1
+    - libxrender1
+    - libfontconfig1
+  jobs:
+    create_environment:
+      - asdf plugin add uv
+      - asdf install uv latest
+      - asdf global uv latest
+      - uv venv "${READTHEDOCS_VIRTUALENV_PATH}"
+    install:
+      - UV_PROJECT_ENVIRONMENT="${READTHEDOCS_VIRTUALENV_PATH}" uv sync --group docs
+
+sphinx:
+  configuration: docs/conf.py
+  fail_on_warning: false
+
+formats:
+  - htmlzip
