@@ -41,14 +41,16 @@ Leverages existing EDA stacks, automates tedious workflows, and keeps best pract
 .. note::
     **You don't need the Qt GUI to use Quantum Metal.** The full API
     — designs, components, renderers, analyses — works headlessly in a
-    plain Python interpreter or a Jupyter notebook.  The ``MetalGUI``
-    desktop app is optional and exists for interactive design work; if
-    you're scripting designs, running parameter sweeps, or working in
-    a cloud notebook environment, you can ignore it entirely.
+    plain Python interpreter or a Jupyter notebook. Use
+    ``qm.view(design)`` to render a design to a matplotlib figure
+    inline, without spinning up ``MetalGUI``::
 
-    A no-Qt, in-notebook viewer is under active development as part of
-    the Jupyter / cloud workflow track. See the
-    :doc:`workflow <workflow>` roadmap for status.
+        import qiskit_metal as qm
+        fig = qm.view(design)
+        fig.savefig("design.png")
+
+    See :doc:`headless-usage` for the full Qt-free workflow, what
+    works without PySide6, and the migration to the lite install.
 
 .. grid:: 1 2 2 2
    :gutter: 1
@@ -264,6 +266,7 @@ The goal of Qiskit Metal is to allow for easy quantum hardware modeling with red
 
     About<self>
     Installing Qiskit Metal<installation>
+    Using Quantum Metal without the Qt GUI<headless-usage>
 
 .. toctree::
     :maxdepth: 2
