@@ -23,9 +23,9 @@ mis-renders that only surface during an Ansys solve:
 * ``normal`` not perpendicular to ``tangent`` -> port plane is skewed
 * ``middle`` not at the midpoint of ``points`` -> port offset
 
-These tests catch all four by walking ``component.pins`` on a small
-set of representative components. The transmon family is the highest
-priority because that's where coupler pins live; routes are skipped
+These tests catch all four by walking ``component.pins`` on every
+``qlibrary`` component that emits at least one pin under either
+default options or a minimal pin-trigger config. Routes are skipped
 because their pin layout depends on pin_inputs that aren't available
 in default options.
 """
@@ -35,11 +35,28 @@ import unittest
 import numpy as np
 
 from qiskit_metal import Dict, designs
+from qiskit_metal.qlibrary.couplers.cap_n_interdigital_tee import (
+    CapNInterdigitalTee)
+from qiskit_metal.qlibrary.couplers.coupled_line_tee import CoupledLineTee
+from qiskit_metal.qlibrary.couplers.line_tee import LineTee
+from qiskit_metal.qlibrary.lumped.cap_3_interdigital import Cap3Interdigital
 from qiskit_metal.qlibrary.lumped.cap_n_interdigital import CapNInterdigital
+from qiskit_metal.qlibrary.lumped.resonator_coil_rect import ResonatorCoilRect
+from qiskit_metal.qlibrary.qubits.star_qubit import StarQubit
+from qiskit_metal.qlibrary.qubits.transmon_concentric import TransmonConcentric
 from qiskit_metal.qlibrary.qubits.transmon_cross import TransmonCross
+from qiskit_metal.qlibrary.qubits.transmon_cross_fl import TransmonCrossFL
 from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 from qiskit_metal.qlibrary.qubits.transmon_pocket_6 import TransmonPocket6
 from qiskit_metal.qlibrary.qubits.transmon_pocket_cl import TransmonPocketCL
+from qiskit_metal.qlibrary.sample_shapes.n_square_spiral import NSquareSpiral
+from qiskit_metal.qlibrary.terminations.launchpad_wb import LaunchpadWirebond
+from qiskit_metal.qlibrary.terminations.launchpad_wb_coupled import (
+    LaunchpadWirebondCoupled)
+from qiskit_metal.qlibrary.terminations.launchpad_wb_driven import (
+    LaunchpadWirebondDriven)
+from qiskit_metal.qlibrary.terminations.open_to_ground import OpenToGround
+from qiskit_metal.qlibrary.terminations.short_to_ground import ShortToGround
 
 # (component_class, options) — options force at least one pin to be
 # emitted under what would otherwise be a pin-less default config.
@@ -47,12 +64,30 @@ from qiskit_metal.qlibrary.qubits.transmon_pocket_cl import TransmonPocketCL
 # sub-dict falls back to ``_default_connection_pads`` for the per-pad
 # values.
 _PIN_KW = Dict(connection_pads=Dict(a=Dict()))
+_NONE = Dict()
+
 COMPONENTS_WITH_PINS = [
+    # Trigger transmon connection pads explicitly.
     (TransmonPocket, _PIN_KW),
     (TransmonPocketCL, _PIN_KW),
     (TransmonPocket6, _PIN_KW),
     (TransmonCross, _PIN_KW),
-    (CapNInterdigital, Dict()),  # adds two pins by default
+    # The following components emit at least one pin under default options.
+    (TransmonConcentric, _NONE),
+    (TransmonCrossFL, _NONE),
+    (StarQubit, _NONE),
+    (NSquareSpiral, _NONE),
+    (OpenToGround, _NONE),
+    (ShortToGround, _NONE),
+    (LaunchpadWirebond, _NONE),
+    (LaunchpadWirebondCoupled, _NONE),
+    (LaunchpadWirebondDriven, _NONE),
+    (CapNInterdigital, _NONE),
+    (Cap3Interdigital, _NONE),
+    (ResonatorCoilRect, _NONE),
+    (LineTee, _NONE),
+    (CapNInterdigitalTee, _NONE),
+    (CoupledLineTee, _NONE),
 ]
 
 
