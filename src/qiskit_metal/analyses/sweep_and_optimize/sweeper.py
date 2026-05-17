@@ -25,14 +25,14 @@ class Sweeper():
             self.design = None
 
     def run_sweep(self, *args, **kwarg) -> Tuple[Dict, int]:
-        """Ansys will be opened, if not already open, with an inserted project.  
-        A design will be inserted by this method. 
+        """Ansys will be opened, if not already open, with an inserted project.
+        A design will be inserted by this method.
 
-        There are two ways to pass arguments.  You can use the previous run or 
-        use updated arguments.  With both scenarios, qcomp_name, option_name, and 
+        There are two ways to pass arguments.  You can use the previous run or
+        use updated arguments.  With both scenarios, qcomp_name, option_name, and
         option_sweep must be passed.
 
-        For the previous run, the arguments are all but the three required.  
+        For the previous run, the arguments are all but the three required.
 
         Args:
             qcomp_name (str): A component that contains the option to be swept.
@@ -68,7 +68,7 @@ class Sweeper():
             * 2 option_name is empty.
             * 3 option_name is not found as key in Dict.
             * 4 option_sweep is empty, need at least one entry.
-            * 5 last key in option_name is not in Dict. 
+            * 5 last key in option_name is not in Dict.
             * 6 need to have at least three arguments
         """
         #Dict of all swept information.
@@ -128,14 +128,14 @@ class Sweeper():
     def iterate_option_sweep(self, args: list, all_dicts: Dict,
                              option_path: list, a_value: Dict,
                              all_sweep: Dict) -> Tuple[Dict, int]:
-        """Iterate through the values that user gave in option_sweep.  
+        """Iterate through the values that user gave in option_sweep.
 
         Args:
             args (Dict): Holds the three mandatory arguments in an expected sequence.
-            all_dicts (Dict): User arguments manipulated to account for using previous_run. 
+            all_dicts (Dict): User arguments manipulated to account for using previous_run.
             option_path (list):  The list has traversed the option Dict.
             a_value (Dict): Has the value from the dictionary of the searched key.
-            all_sweep (Dict): Will be populated during the iteration. 
+            all_sweep (Dict): Will be populated during the iteration.
 
         Returns:
             Tuple[Dict, int]: The dict key is each value of option_sweep, the
@@ -144,7 +144,7 @@ class Sweeper():
             defined below.
 
                 * 0 Have list of capacitance matrix.
-                * 5 last key in option_name is not in Dict. 
+                * 5 last key in option_name is not in Dict.
         """
 
         for _, item in enumerate(args[2]):
@@ -174,7 +174,7 @@ class Sweeper():
 
     # #######  Populate all_sweep
     def populate_all_sweep(self, all_sweep: Dict, item: str, option_name: str):
-        """Populate the Dict passed in all_sweep from QAnalysis.  
+        """Populate the Dict passed in all_sweep from QAnalysis.
 
         Args:
             all_sweep (Dict): Reference to hold each item which corresponds

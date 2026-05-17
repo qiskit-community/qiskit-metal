@@ -31,7 +31,7 @@ class Boundary:
 class ElmerRunner:
     """Class for generating the Simulation Input File (SIF) for ElmerFEM to run the simulation.
 
-    Attributes: 
+    Attributes:
         header: Header information for the SIF
         simulation: Simulation information for the SIF
         constant: Constants for the SIF

@@ -134,10 +134,10 @@ def render(
     kw = kw or {}
     ax = ax or plt.gca()
 
-    if labels is 'auto':
+    if labels == 'auto':
         labels = list(map(str, range(len(components))))
 
-    if not labels is None:
+    if labels is not None:
         kw = {**dict(label=labels[_iteration]), **kw}
 
     # Handle itterables
@@ -243,7 +243,7 @@ def style_axis_simple(ax, labels=None):
     # ax.autoscale() # for gui
 
     # Labels
-    if not labels is None:
+    if labels is not None:
         font_p = mpl.font_manager.FontProperties()
         font_p.set_size('small')
         ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), prop=font_p)

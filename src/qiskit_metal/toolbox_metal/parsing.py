@@ -438,7 +438,7 @@ def parse_options(params: dict, parse_names: str, variable_dict=None):
         )  # remove trailing and leading white spaces in the name
 
         # is the name in the options at all?
-        if not name in params:
+        if name not in params:
             logger.warning(
                 f'Missing key {name} from params {params}. Skipping ...\n')
             continue

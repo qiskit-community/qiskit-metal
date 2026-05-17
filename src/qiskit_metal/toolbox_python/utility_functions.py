@@ -197,7 +197,7 @@ def print_traceback_easy(start=26):
                      Defaults to 26. Assumes runs from Jupyter notebooks.
                      In general set to zero.
     """
-    print(f"\n")
+    print("\n")
     print('\n'.join(map(repr, traceback.extract_stack()[start:])))
     print('\n')
 

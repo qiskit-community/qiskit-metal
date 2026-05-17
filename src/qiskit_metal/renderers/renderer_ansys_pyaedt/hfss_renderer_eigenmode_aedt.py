@@ -160,8 +160,8 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
 
         if setup_name not in self.current_app.setup_names:
             self.logger.warning(
-                f'Since the setup_name is not in the project/design which was used to start HFSS DrivenModal, '
-                f'a new setup will be added to design with default settings for HFSS DrivenModal.'
+                'Since the setup_name is not in the project/design which was used to start HFSS DrivenModal, '
+                'a new setup will be added to design with default settings for HFSS DrivenModal.'
             )
             self.add_hfss_dm_setup(setup_name)
 
@@ -228,7 +228,7 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
         # jj_to_port SHOULD not bew in eigenmode solution type. So will give error
         if jj_to_port or port_list:
             self.design.logger.error(
-                f'In eigenmode solution, there should NOT be any values for jj_to_port or port_list.'
+                'In eigenmode solution, there should NOT be any values for jj_to_port or port_list.'
             )
             return
 
@@ -384,7 +384,7 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
 
     def setup_dielectric_for_epr(self, dielectric_layers=None):
         """
-        Find name of dielectric layer rendered in ANSYS, then 
+        Find name of dielectric layer rendered in ANSYS, then
         define it as a dissipative dielectric surface for pyEPR.
 
         Args:

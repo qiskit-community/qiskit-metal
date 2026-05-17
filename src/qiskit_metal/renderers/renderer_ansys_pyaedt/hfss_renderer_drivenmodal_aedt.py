@@ -103,9 +103,9 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
             BasisOrder (int, optional): Basis order. Defaults to self.default_setup.
             MultipleAdaptiveFreqsSetup (dict, optional): Frequencies and their associated MaxDeltaS.
                                     Defaults to self.default_setup.
-            BroadbandLowFreq (float, optional): Minimum frequency for Broadband SolveType in GHz. 
+            BroadbandLowFreq (float, optional): Minimum frequency for Broadband SolveType in GHz.
                                     Defaults to self.default_setup.
-            BroadbandHighFreq (float, optional): Maximum frequency for Broadband SolveType in GHz. 
+            BroadbandHighFreq (float, optional): Maximum frequency for Broadband SolveType in GHz.
                                     Defaults to self.default_setup.
 
         Returns:
@@ -214,10 +214,10 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
                                 and "Discrete". Defaults to "Fast".
             save_fields (bool, optional): Whether or not to save fields.
                                 Defaults to False.
-            interpolation_tol (float, optional): Error tolerance threshold 
+            interpolation_tol (float, optional): Error tolerance threshold
                                      for the interpolation type sweep. Defaults to 0.5.
             interpolation_max_solutions (int, optional): Maximum number of solutions
-                                     evaluted for the interpolation process. 
+                                     evaluted for the interpolation process.
                                      Defaults to 250.
 
         Returns:

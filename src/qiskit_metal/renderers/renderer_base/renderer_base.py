@@ -134,12 +134,12 @@ class QRenderer(ABC):
         Returns:
             QRenderer: Renderer with the given name
         """
-        if not name in QRenderer.__loaded_renderers__:
+        if name not in QRenderer.__loaded_renderers__:
             print(
                 'ERROR: The renderer {name} has not yet been loaded. Please use the load function!'
             )
 
-        if not name in QRenderer.__instantiated_renderers__:
+        if name not in QRenderer.__instantiated_renderers__:
             print(
                 'ERROR: The renderer {name} has not yet been instantiated. Please instantiate the class!'
             )

@@ -16,7 +16,7 @@
 # pylint: disable=wrong-import-position
 
 # Get Qiskit Metal version from metadata without importing the package
-from importlib.metadata import version, metadata    
+from importlib.metadata import version, metadata
 
 metal_metadata = metadata('quantum-metal')
 

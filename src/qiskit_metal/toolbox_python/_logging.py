@@ -16,7 +16,8 @@
 Mostly internal.
 """
 
-import logging, collections
+import logging
+import collections
 from typing import List
 
 __all__ = ['setup_logger', 'LogStore']

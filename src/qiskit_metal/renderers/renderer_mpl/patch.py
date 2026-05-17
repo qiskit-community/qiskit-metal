@@ -99,7 +99,7 @@ def PolygonPath(polygon: Polygon):
 
 def PolygonPatch(polygon: Polygon, **kwargs):
     """Constructs a matplotlib patch from a geometric object
-    
+
     The `polygon` may be a Shapely or GeoJSON-like object with or without holes.
     The `kwargs` are those supported by the matplotlib.patches.Polygon class
     constructor. Returns an instance of matplotlib.patches.PathPatch.

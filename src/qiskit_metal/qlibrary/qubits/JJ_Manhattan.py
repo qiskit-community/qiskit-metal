@@ -22,7 +22,7 @@ from qiskit_metal.qlibrary.core.base import QComponent
 class jj_manhattan(QComponent):
     """
     The base "JJ_Manhattan" inherits the "QComponent" class.
-    
+
     NOTE TO USER: Please be aware that when designing with this
     qcomponent, one must take care in accounting for the junction
     qgeometry when exporting to to GDS and/or to a simulator. This
