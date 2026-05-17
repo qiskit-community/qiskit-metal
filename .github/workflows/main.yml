@@ -129,6 +129,10 @@ jobs:
             'pytest-rich>=0.2.0'
           uv pip install --no-deps -e .
       - name: Confirm PySide6 is NOT installed
+        # ``uv pip show`` queries the venv directly without
+        # triggering a sync. ``uv run`` would auto-sync to match
+        # pyproject.toml deps and silently undo our lite install, so
+        # all subsequent steps invoke ``.venv/bin/python`` directly.
         run: |
           if uv pip show pyside6 2>/dev/null; then
             echo "::error::PySide6 is installed in the lite venv — test setup is wrong"
@@ -139,8 +143,13 @@ jobs:
         # This is the critical assertion: import + view must work
         # with PySide6 absent. Failure here means someone added a
         # top-level Qt import to a non-GUI module.
+        #
+        # ``.venv/bin/python`` instead of ``uv run python`` —
+        # ``uv run`` would auto-sync the venv to match
+        # pyproject.toml's full dependency set, defeating the
+        # lite-install premise.
         run: |
-          uv run python -c "
+          .venv/bin/python -c "
           import qiskit_metal as qm
           from qiskit_metal.designs import DesignPlanar
           from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
@@ -152,11 +161,11 @@ jobs:
           print('OK: qm.view(design) returned', type(fig).__name__)
           "
       - name: Run no-Qt test files
-        # Tests that don't need Qt — viewer, idempotency, pin sanity.
-        # If any of these reach for PySide6 they'll fail and we'll
-        # know we have unintentional Qt coupling.
+        # Same rationale as above — direct venv python invocation to
+        # avoid uv auto-sync. Tests must work without Qt; failure
+        # here means we have unintentional Qt coupling somewhere.
         run: |
-          uv run pytest \
+          .venv/bin/python -m pytest \
             tests/test_viewer.py \
             tests/test_qlibrary_idempotency.py \
             tests/test_qlibrary_pin_sanity.py \
