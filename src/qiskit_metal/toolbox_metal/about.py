@@ -46,19 +46,21 @@ def about():
         str: About message
     """
     import qiskit_metal
-    from PySide6.QtCore import __version__ as QT_VERSION_STR
-    from PySide6 import __version__ as PYSIDE_VERSION_STR
 
+    # PySide6 is an optional extra (``quantum-metal[gui]``) — the lite
+    # install path omits it, so about() must not require it.
     try:
-        import matplotlib
-        #matplotlib_ver = matplotlib.__version__
-    except:
-        #matplotlib_ver = 'None'
-        pass
+        from PySide6.QtCore import __version__ as QT_VERSION_STR
+        from PySide6 import __version__ as PYSIDE_VERSION_STR
+    except ImportError:
+        QT_VERSION_STR = 'Not installed'
+        PYSIDE_VERSION_STR = 'Not installed'
+
+    import matplotlib
 
     try:
         from sip import SIP_VERSION_STR
-    except:
+    except ImportError:
         SIP_VERSION_STR = 'Not installed'
     # Riverbank: SIP is a tool for quickly writing Python modules that interface with
     # C++ and C libraries.
