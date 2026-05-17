@@ -169,3 +169,6 @@ from qiskit_metal.renderers import setup_renderers
 # Common-use
 from qiskit_metal.qlibrary import QComponent
 from qiskit_metal.toolbox_metal.about import about, open_docs
+
+# Headless matplotlib viewer (``qm.view(design)``) — no Qt required.
+from qiskit_metal.viewer import view
