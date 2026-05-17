@@ -5,7 +5,7 @@
    "metadata": {},
    "source": [
     "# QComponent - 3-fingers capacitor\n",
-    "#### Standard imports"
+    "## Standard imports"
    ]
   },
   {
@@ -27,7 +27,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "#### Define design object from design_planar and start GUI"
+    "## Define design object from design_planar and start GUI"
    ]
   },
   {
@@ -47,7 +47,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "#### Import the device and inspect the default options"
+    "## Import the device and inspect the default options"
    ]
   },
   {
@@ -82,7 +82,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "#### Instanciate the capacitive device"
+    "## Instanciate the capacitive device"
    ]
   },
   {
@@ -101,7 +101,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "#### Change something about it"
+    "## Change something about it"
    ]
   },
   {

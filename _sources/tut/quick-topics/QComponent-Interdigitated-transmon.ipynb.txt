@@ -15,7 +15,7 @@
    "source": [
     "This demo notebook goes over how to use the interdigitated transmon component, similar to those describedin Gambetta et. al., IEEE Trans. on Superconductivity Vol. 27, No. 1 (2007). \n",
     "\n",
-    "#### Preparation\n",
+    "## Preparation\n",
     "First, let's import the key libraries for qiskit metal: "
    ]
   },
@@ -55,7 +55,7 @@
    "id": "continuing-tourism",
    "metadata": {},
    "source": [
-    "#### Create the design\n",
+    "## Create the design\n",
     "Next, let's fire up the GUI: "
    ]
   },

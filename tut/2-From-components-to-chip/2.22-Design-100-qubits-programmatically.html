@@ -504,8 +504,9 @@
 <section id="Prerequisite">
 <h2>Prerequisite<a class="headerlink" href="#Prerequisite" title="Link to this heading">¶</a></h2>
 <p>A working local installation of Ansys</p>
+</section>
 <section id="N_x-by-N_y-grid-of-qubits">
-<h3>N_x by N_y grid of qubits<a class="headerlink" href="#N_x-by-N_y-grid-of-qubits" title="Link to this heading">¶</a></h3>
+<h2>N_x by N_y grid of qubits<a class="headerlink" href="#N_x-by-N_y-grid-of-qubits" title="Link to this heading">¶</a></h2>
 <p>A simple example of generating a large grid of qubits.</p>
 <p>Using TransmonPocket and RouteMeander, we can generate a large, varied grid array of qubits. This is not a practical design given the lack of readouts or control lines to the qubits, just an example for how to make a design algorithmically.</p>
 <div class="nbinput nblast docutils container">
@@ -555,7 +556,7 @@
 </div>
 </section>
 <section id="Design">
-<h3>Design<a class="headerlink" href="#Design" title="Link to this heading">¶</a></h3>
+<h2>Design<a class="headerlink" href="#Design" title="Link to this heading">¶</a></h2>
 <p>We can vary how big we want the grid to be by changing N_x/N_y (number of qubits along the x/y axis). Be careful as very large arrays can take a fair bit of time to generate. We modify the chip size so it contains all of the qubits.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
@@ -663,7 +664,7 @@
 </div>
 </section>
 <section id="Analysis">
-<h3>Analysis<a class="headerlink" href="#Analysis" title="Link to this heading">¶</a></h3>
+<h2>Analysis<a class="headerlink" href="#Analysis" title="Link to this heading">¶</a></h2>
 <p>We can quickly check if we have designed the qubits well with an LOM analysis. First we select the design that we want to analyse and the tool to use for any simulation.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
@@ -1007,7 +1008,7 @@ gbus3_4 16.145313 [MHz]
 </div>
 </section>
 <section id="GDS-Render">
-<h3>GDS Render<a class="headerlink" href="#GDS-Render" title="Link to this heading">¶</a></h3>
+<h2>GDS Render<a class="headerlink" href="#GDS-Render" title="Link to this heading">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
@@ -1060,7 +1061,6 @@ gbus3_4 16.145313 [MHz]
 True
 </pre></div></div>
 </div>
-</section>
 </section>
 </section>
 <br><br>
@@ -1149,13 +1149,11 @@ True
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Design 100 qubits programmatically</a><ul>
-<li><a class="reference internal" href="#Prerequisite">Prerequisite</a><ul>
+<li><a class="reference internal" href="#Prerequisite">Prerequisite</a></li>
 <li><a class="reference internal" href="#N_x-by-N_y-grid-of-qubits">N_x by N_y grid of qubits</a></li>
 <li><a class="reference internal" href="#Design">Design</a></li>
 <li><a class="reference internal" href="#Analysis">Analysis</a></li>
 <li><a class="reference internal" href="#GDS-Render">GDS Render</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>

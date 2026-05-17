@@ -720,7 +720,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid_input_arguments</span><span class="p">(</span><span class="n">open_pins</span><span class="p">,</span> <span class="n">port_list</span><span class="p">,</span> <span class="n">jj_to_port</span><span class="p">,</span>
                                           <span class="n">ignored_jjs</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;Check the arguments to render_design, invalid name was probably used.&#39;</span>
+                <span class="s1">&#39;Check the arguments to render_design, invalid name was probably used.&#39;</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Ansys default units is &#39;mm&#39;?????, but metal using &#39;meter&#39;.</span>
@@ -1209,7 +1209,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">open_pins_is_valid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">confirm_open_pins_are_valid_names</span><span class="p">(</span>
                 <span class="n">open_pins</span><span class="p">,</span> <span class="n">pair_used</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_pins_is_valid</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Arguments are not in Design for open_pins.&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Arguments are not in Design for open_pins.&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">open_pins_is_valid</span> <span class="o">=</span> <span class="kc">True</span>
 
@@ -1217,7 +1217,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">port_list_is_valid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">confirm_port_list_have_valid_request</span><span class="p">(</span>
                 <span class="n">port_list</span><span class="p">,</span> <span class="n">pair_used</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">port_list_is_valid</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Arguments are not in Design for port_list.&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Arguments are not in Design for port_list.&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">port_list_is_valid</span> <span class="o">==</span> <span class="kc">True</span>
 
@@ -1226,7 +1226,7 @@
                 <span class="n">jj_to_port</span><span class="p">,</span> <span class="n">pair_used</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">jj_to_port_is_valid</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s1">&#39;Arguments are not in Design for jj_to_port.&#39;</span><span class="p">)</span>
+                    <span class="s1">&#39;Arguments are not in Design for jj_to_port.&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">jj_to_port_is_valid</span> <span class="o">==</span> <span class="kc">True</span>
 
@@ -1235,7 +1235,7 @@
                 <span class="n">ignored_jjs</span><span class="p">,</span> <span class="n">pair_used</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ignored_jjs_is_valid</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s1">&#39;Arguments are not in Design for ignored_jjs.&#39;</span><span class="p">)</span>
+                    <span class="s1">&#39;Arguments are not in Design for ignored_jjs.&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ignored_jjs_is_valid</span> <span class="o">=</span> <span class="kc">True</span>
 
@@ -1279,8 +1279,8 @@
         <span class="k">for</span> <span class="n">component_name</span><span class="p">,</span> <span class="n">element_name</span><span class="p">,</span> <span class="n">impedance</span> <span class="ow">in</span> <span class="n">jj_to_port</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">qcomp_ids</span><span class="p">:</span>
                 <span class="c1"># User wants to render a subset, ensure part of selection.</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span>
-                        <span class="n">component_name</span><span class="p">]</span><span class="o">.</span><span class="n">id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">qcomp_ids</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span>
+                        <span class="n">component_name</span><span class="p">]</span><span class="o">.</span><span class="n">id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">qcomp_ids</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s1">&#39;You entered the component_name=&#39;</span>
                         <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">component_name</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> and the corresponding&#39;</span>
@@ -1337,8 +1337,8 @@
             <span class="n">component_name</span><span class="p">,</span> <span class="n">element_name</span> <span class="o">=</span> <span class="n">item</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">qcomp_ids</span><span class="p">:</span>
                 <span class="c1"># User wants to render a subset, ensure part of selection.</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span>
-                        <span class="n">component_name</span><span class="p">]</span><span class="o">.</span><span class="n">id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">qcomp_ids</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span>
+                        <span class="n">component_name</span><span class="p">]</span><span class="o">.</span><span class="n">id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">qcomp_ids</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s1">&#39;You entered the component_name=&#39;</span>
                         <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">component_name</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> and the corresponding&#39;</span>
@@ -1385,7 +1385,7 @@
         <span class="k">for</span> <span class="n">comp_name</span><span class="p">,</span> <span class="n">pin</span><span class="p">,</span> <span class="n">impedance</span> <span class="ow">in</span> <span class="n">port_list</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">qcomp_ids</span><span class="p">:</span>
                 <span class="c1"># User wants to render a subset, ensure part of selection.</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">comp_name</span><span class="p">]</span><span class="o">.</span><span class="n">id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">qcomp_ids</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">comp_name</span><span class="p">]</span><span class="o">.</span><span class="n">id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">qcomp_ids</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s1">&#39;You entered the component_name=&#39;</span>
                         <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">comp_name</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> and the corresponding&#39;</span>
@@ -1452,7 +1452,7 @@
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): Name of variable.</span>
 <span class="sd">            value (str): Amount and unit associated w/ variable.</span>
-<span class="sd">                </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">variable_manager</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">_variable_manager</span>
         <span class="n">variable_manager</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>

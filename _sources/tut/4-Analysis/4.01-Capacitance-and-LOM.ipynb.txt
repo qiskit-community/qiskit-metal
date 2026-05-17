@@ -5,7 +5,7 @@
    "metadata": {},
    "source": [
     "# Capacitance matrix and LOM analysis\n",
-    "### Prerequisite\n",
+    "## Prerequisite\n",
     "You need to have a working local installation of Ansys."
    ]
   },
@@ -947,7 +947,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "##### Prepare and run a collection of predefined setups\n",
+    "### Prepare and run a collection of predefined setups\n",
     "\n",
     "This is equivalent to going to the Project Manager panel in Ansys, right clicking on Analysis within the active Q3D design, selecting \"Add Solution Setup...\", and choosing/entering default values in the resulting popup window. You might want to do this to keep track of different solution setups, giving each of them a different/specific name."
    ]
@@ -990,7 +990,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "##### Get the capactiance matrix at a different pass\n",
+    "### Get the capactiance matrix at a different pass\n",
     "\n",
     "You might want to use this if you intend to know what was the matrix at a different pass of the simulation."
    ]
@@ -1060,7 +1060,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "##### Close the renderer"
+    "#### Close the renderer"
    ]
   },
   {

@@ -83,7 +83,7 @@
     "design = designs.DesignPlanar()\n",
     "```\n",
     "\n",
-    "##### Interactively view, edit, and simulate QDesign: Metal GUI\n",
+    "### Interactively view, edit, and simulate QDesign: Metal GUI\n",
     "\n",
     "To launch the qiskit metal GUI, use the method `MetalGUI`.\n",
     "```python \n",
@@ -1830,7 +1830,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "####  NGon"
+    "###  NGon"
    ]
   },
   {

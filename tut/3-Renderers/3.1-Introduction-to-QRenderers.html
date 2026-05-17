@@ -973,8 +973,9 @@
 1
 </pre></div></div>
 </div>
+</section>
 <section id="How-to-%22execute%22-exporting-an-QRenderer-from-GUI-vs-notebook?">
-<h3>How to “execute” exporting an QRenderer from GUI vs notebook?<a class="headerlink" href="#How-to-%22execute%22-exporting-an-QRenderer-from-GUI-vs-notebook?" title="Link to this heading">¶</a></h3>
+<h2>How to “execute” exporting an QRenderer from GUI vs notebook?<a class="headerlink" href="#How-to-%22execute%22-exporting-an-QRenderer-from-GUI-vs-notebook?" title="Link to this heading">¶</a></h2>
 <p>Within the GUI, there are icons: GDS, HFSS and Q3D.</p>
 <p>Example for GDS: Select the components that you want to export from QGeometry Tables. Select the path/file_name and the same thing should happen as the cells above.</p>
 <div class="nbinput docutils container">
@@ -991,16 +992,14 @@
 <div class="output_area rendered_html docutils container">
 <h1 style="         background-color: #d4418e;         background-image: linear-gradient(315deg, #d4418e 0%, #0652c5 74%);         margin-top: 50px;         border-style: outset;         padding-top:100px;         padding-bottom:50px;         padding-left:25px;         color: white;     "> QUESTION:  Where is the geometry of a QComponent placed? <h1></div>
 </div>
-</section>
-</section>
 <section id="Answer:-QGeometry-tables!">
-<h2>Answer: QGeometry tables!<a class="headerlink" href="#Answer:-QGeometry-tables!" title="Link to this heading">¶</a></h2>
+<h3>Answer: QGeometry tables!<a class="headerlink" href="#Answer:-QGeometry-tables!" title="Link to this heading">¶</a></h3>
+</section>
+</section>
 <section id="What-is-QGeometry?">
-<h3>What is QGeometry?<a class="headerlink" href="#What-is-QGeometry?" title="Link to this heading">¶</a></h3>
-</section>
-</section>
+<h2>What is QGeometry?<a class="headerlink" href="#What-is-QGeometry?" title="Link to this heading">¶</a></h2>
 <section id="All-QRenderers-use-the-QGeometry-tables-to-export-from-QDesign.-Each-table-is-a-Pandas-DataFrame.">
-<h2>All QRenderers use the QGeometry tables to export from QDesign. Each table is a Pandas DataFrame.<a class="headerlink" href="#All-QRenderers-use-the-QGeometry-tables-to-export-from-QDesign.-Each-table-is-a-Pandas-DataFrame." title="Link to this heading">¶</a></h2>
+<h3>All QRenderers use the QGeometry tables to export from QDesign. Each table is a Pandas DataFrame.<a class="headerlink" href="#All-QRenderers-use-the-QGeometry-tables-to-export-from-QDesign.-Each-table-is-a-Pandas-DataFrame." title="Link to this heading">¶</a></h3>
 <p>We can get all the QGeometry of a QComponent. There are several kinds, such as <code class="docutils literal notranslate"><span class="pre">path</span></code>, <code class="docutils literal notranslate"><span class="pre">poly</span></code> and, <code class="docutils literal notranslate"><span class="pre">junction</span></code>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
@@ -1152,7 +1151,7 @@
 </div>
 </section>
 <section id="Let-us-look-at-all-the-polygons-used-to-create-qubit-q1">
-<h2>Let us look at all the polygons used to create qubit <code class="docutils literal notranslate"><span class="pre">q1</span></code><a class="headerlink" href="#Let-us-look-at-all-the-polygons-used-to-create-qubit-q1" title="Link to this heading">¶</a></h2>
+<h3>Let us look at all the polygons used to create qubit <code class="docutils literal notranslate"><span class="pre">q1</span></code><a class="headerlink" href="#Let-us-look-at-all-the-polygons-used-to-create-qubit-q1" title="Link to this heading">¶</a></h3>
 <p>Poly table hold the polygons identified from QComponents.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
@@ -1441,10 +1440,10 @@
 </div>
 </section>
 <section id="The-junction-table-is-handled-differently-by-each-QRenderer.">
-<h2>The junction table is handled differently by each QRenderer.<a class="headerlink" href="#The-junction-table-is-handled-differently-by-each-QRenderer." title="Link to this heading">¶</a></h2>
+<h3>The junction table is handled differently by each QRenderer.<a class="headerlink" href="#The-junction-table-is-handled-differently-by-each-QRenderer." title="Link to this heading">¶</a></h3>
 </section>
 <section id="What-does-GDS-do-with-%22junction%22-table?">
-<h2>What does GDS do with “junction” table?<a class="headerlink" href="#What-does-GDS-do-with-%22junction%22-table?" title="Link to this heading">¶</a></h2>
+<h3>What does GDS do with “junction” table?<a class="headerlink" href="#What-does-GDS-do-with-%22junction%22-table?" title="Link to this heading">¶</a></h3>
 <p>This is better explained in folder 5 All QRenderers/5.2 GDS/GDS QRenderer notebook.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
@@ -1523,7 +1522,7 @@
 </div>
 </section>
 <section id="Geometric-boundary-of-a-QComponent?">
-<h2>Geometric boundary of a QComponent?<a class="headerlink" href="#Geometric-boundary-of-a-QComponent?" title="Link to this heading">¶</a></h2>
+<h3>Geometric boundary of a QComponent?<a class="headerlink" href="#Geometric-boundary-of-a-QComponent?" title="Link to this heading">¶</a></h3>
 <div class="line-block">
 <div class="line">Return the boundry box of the geometry, for example: <code class="docutils literal notranslate"><span class="pre">q1.qgeometry_bounds()</span></code>.</div>
 <div class="line">The function returns a tuple containing (minx, miny, maxx, maxy) bound values for the bounds of the component as a whole.</div>
@@ -1554,7 +1553,7 @@ cpw4       : [0.22       0.07576603 2.125      0.54423397]
 </div>
 </section>
 <section id="Qiskit-Metal-Version">
-<h2>Qiskit Metal Version<a class="headerlink" href="#Qiskit-Metal-Version" title="Link to this heading">¶</a></h2>
+<h3>Qiskit Metal Version<a class="headerlink" href="#Qiskit-Metal-Version" title="Link to this heading">¶</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
@@ -1603,6 +1602,7 @@ IBM Quantum Team
 </pre></div>
 </div>
 </div>
+</section>
 </section>
 </section>
 <br><br>
@@ -1699,20 +1699,20 @@ IBM Quantum Team
 </ul>
 </li>
 <li><a class="reference internal" href="#Note:">Note:</a><ul>
-<li><a class="reference internal" href="#To-make-the-junction-table-work-correctly,-GDS-Renderer-needs-the-correct-path-to-the-gds-file-which-has-cells">To make the junction table work correctly, GDS Renderer needs the correct path to the gds file which has cells</a><ul>
-<li><a class="reference internal" href="#How-to-%22execute%22-exporting-an-QRenderer-from-GUI-vs-notebook?">How to “execute” exporting an QRenderer from GUI vs notebook?</a></li>
+<li><a class="reference internal" href="#To-make-the-junction-table-work-correctly,-GDS-Renderer-needs-the-correct-path-to-the-gds-file-which-has-cells">To make the junction table work correctly, GDS Renderer needs the correct path to the gds file which has cells</a></li>
+<li><a class="reference internal" href="#How-to-%22execute%22-exporting-an-QRenderer-from-GUI-vs-notebook?">How to “execute” exporting an QRenderer from GUI vs notebook?</a><ul>
+<li><a class="reference internal" href="#Answer:-QGeometry-tables!">Answer: QGeometry tables!</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#Answer:-QGeometry-tables!">Answer: QGeometry tables!</a><ul>
-<li><a class="reference internal" href="#What-is-QGeometry?">What is QGeometry?</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#What-is-QGeometry?">What is QGeometry?</a><ul>
 <li><a class="reference internal" href="#All-QRenderers-use-the-QGeometry-tables-to-export-from-QDesign.-Each-table-is-a-Pandas-DataFrame.">All QRenderers use the QGeometry tables to export from QDesign. Each table is a Pandas DataFrame.</a></li>
 <li><a class="reference internal" href="#Let-us-look-at-all-the-polygons-used-to-create-qubit-q1">Let us look at all the polygons used to create qubit <code class="docutils literal notranslate"><span class="pre">q1</span></code></a></li>
 <li><a class="reference internal" href="#The-junction-table-is-handled-differently-by-each-QRenderer.">The junction table is handled differently by each QRenderer.</a></li>
 <li><a class="reference internal" href="#What-does-GDS-do-with-%22junction%22-table?">What does GDS do with “junction” table?</a></li>
 <li><a class="reference internal" href="#Geometric-boundary-of-a-QComponent?">Geometric boundary of a QComponent?</a></li>
 <li><a class="reference internal" href="#Qiskit-Metal-Version">Qiskit Metal Version</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

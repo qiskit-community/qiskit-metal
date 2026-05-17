@@ -504,8 +504,9 @@
 <section id="Prerequisite">
 <h2>Prerequisite<a class="headerlink" href="#Prerequisite" title="Link to this heading">¶</a></h2>
 <p>You need to have a working local installation of Ansys.</p>
+</section>
 <section id="1.-Create-the-design-in-Metal">
-<h3>1. Create the design in Metal<a class="headerlink" href="#1.-Create-the-design-in-Metal" title="Link to this heading">¶</a></h3>
+<h2>1. Create the design in Metal<a class="headerlink" href="#1.-Create-the-design-in-Metal" title="Link to this heading">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -546,10 +547,8 @@
 </pre></div>
 </div>
 </div>
-</section>
-</section>
 <section id="In-this-example,-the-design-consists-of-4-qubits-and-4-CPWs">
-<h2>In this example, the design consists of 4 qubits and 4 CPWs<a class="headerlink" href="#In-this-example,-the-design-consists-of-4-qubits-and-4-CPWs" title="Link to this heading">¶</a></h2>
+<h3>In this example, the design consists of 4 qubits and 4 CPWs<a class="headerlink" href="#In-this-example,-the-design-consists-of-4-qubits-and-4-CPWs" title="Link to this heading">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
@@ -636,12 +635,12 @@
 <img alt="../../_images/tut_4-Analysis_4.01-Capacitance-and-LOM_8_0.png" class="no-scaled-link" src="../../_images/tut_4-Analysis_4.01-Capacitance-and-LOM_8_0.png" style="width: 500px;" />
 </div>
 </div>
+</section>
+</section>
 <section id="2.-Capacitance-Analysis-and-LOM-derivation-using-the-analysis-package---most-users">
-<h3>2. Capacitance Analysis and LOM derivation using the analysis package - most users<a class="headerlink" href="#2.-Capacitance-Analysis-and-LOM-derivation-using-the-analysis-package---most-users" title="Link to this heading">¶</a></h3>
-</section>
-</section>
+<h2>2. Capacitance Analysis and LOM derivation using the analysis package - most users<a class="headerlink" href="#2.-Capacitance-Analysis-and-LOM-derivation-using-the-analysis-package---most-users" title="Link to this heading">¶</a></h2>
 <section id="Capacitance-Analysis">
-<h2>Capacitance Analysis<a class="headerlink" href="#Capacitance-Analysis" title="Link to this heading">¶</a></h2>
+<h3>Capacitance Analysis<a class="headerlink" href="#Capacitance-Analysis" title="Link to this heading">¶</a></h3>
 <p>Select the analysis you intend to run from the <code class="docutils literal notranslate"><span class="pre">qiskit_metal.analyses</span></code> collection. Select the design to analyze and the tool to use for any external simulation</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
@@ -1004,7 +1003,7 @@ pandas.core.frame.DataFrame
 </div>
 </section>
 <section id="Lumped-oscillator-model-(LOM)">
-<h2>Lumped oscillator model (LOM)<a class="headerlink" href="#Lumped-oscillator-model-(LOM)" title="Link to this heading">¶</a></h2>
+<h3>Lumped oscillator model (LOM)<a class="headerlink" href="#Lumped-oscillator-model-(LOM)" title="Link to this heading">¶</a></h3>
 <p>Using capacitance matrices obtained from each pass, save the many parameters of the Hamiltonian of the system. <code class="docutils literal notranslate"><span class="pre">get_lumped_oscillator()</span></code> operates on 4 setup parameters: Lj: float Cj: float fr: Union[list, float] fb: Union[list, float]</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
@@ -1209,8 +1208,10 @@ INFO 08:34AM [hfss_report_full_convergence]: Creating report for variation 0
 </pre></div>
 </div>
 </div>
+</section>
+</section>
 <section id="3.-Directly-access-the-renderer-to-modify-other-parameters">
-<h3>3. Directly access the renderer to modify other parameters<a class="headerlink" href="#3.-Directly-access-the-renderer-to-modify-other-parameters" title="Link to this heading">¶</a></h3>
+<h2>3. Directly access the renderer to modify other parameters<a class="headerlink" href="#3.-Directly-access-the-renderer-to-modify-other-parameters" title="Link to this heading">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
@@ -1249,7 +1250,7 @@ INFO 08:34AM [connect]:         Connected to project &#34;Project22&#34; and des
 </div>
 <p>Every renderer will have its own collection of methods. Below an example with q3d</p>
 <section id="Prepare-and-run-a-collection-of-predefined-setups">
-<h4>Prepare and run a collection of predefined setups<a class="headerlink" href="#Prepare-and-run-a-collection-of-predefined-setups" title="Link to this heading">¶</a></h4>
+<h3>Prepare and run a collection of predefined setups<a class="headerlink" href="#Prepare-and-run-a-collection-of-predefined-setups" title="Link to this heading">¶</a></h3>
 <p>This is equivalent to going to the Project Manager panel in Ansys, right clicking on Analysis within the active Q3D design, selecting “Add Solution Setup…”, and choosing/entering default values in the resulting popup window. You might want to do this to keep track of different solution setups, giving each of them a different/specific name.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
@@ -1279,7 +1280,7 @@ INFO 08:34AM [analyze]: Analyzing setup Setup_demo
 </div>
 </section>
 <section id="Get-the-capactiance-matrix-at-a-different-pass">
-<h4>Get the capactiance matrix at a different pass<a class="headerlink" href="#Get-the-capactiance-matrix-at-a-different-pass" title="Link to this heading">¶</a></h4>
+<h3>Get the capactiance matrix at a different pass<a class="headerlink" href="#Get-the-capactiance-matrix-at-a-different-pass" title="Link to this heading">¶</a></h3>
 <p>You might want to use this if you intend to know what was the matrix at a different pass of the simulation.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
@@ -1331,12 +1332,12 @@ INFO 08:34AM [get_matrix]: Exporting matrix data to (C:\Temp\tmp3caa8vjk.txt, C,
 </pre></div></div>
 </div>
 </section>
-</section>
-</section>
 <section id="Code-to-swap-rows-and-columns-in-capacitance-matrix">
-<h2>Code to swap rows and columns in capacitance matrix<a class="headerlink" href="#Code-to-swap-rows-and-columns-in-capacitance-matrix" title="Link to this heading">¶</a></h2>
+<h3>Code to swap rows and columns in capacitance matrix<a class="headerlink" href="#Code-to-swap-rows-and-columns-in-capacitance-matrix" title="Link to this heading">¶</a></h3>
 <p>from qiskit_metal.analyses.quantization.lumped_capacitive import df_reorder_matrix_basis</p>
 <p>df_reorder_matrix_basis(fourq_q3d.get_capacitance_matrix(), 1, 2)</p>
+<section id="Close-the-renderer">
+<h4>Close the renderer<a class="headerlink" href="#Close-the-renderer" title="Link to this heading">¶</a></h4>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
@@ -1345,6 +1346,8 @@ INFO 08:34AM [get_matrix]: Exporting matrix data to (C:\Temp\tmp3caa8vjk.txt, C,
 </pre></div>
 </div>
 </div>
+</section>
+</section>
 </section>
 </section>
 <br><br>
@@ -1433,24 +1436,25 @@ INFO 08:34AM [get_matrix]: Exporting matrix data to (C:\Temp\tmp3caa8vjk.txt, C,
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Capacitance matrix and LOM analysis</a><ul>
-<li><a class="reference internal" href="#Prerequisite">Prerequisite</a><ul>
-<li><a class="reference internal" href="#1.-Create-the-design-in-Metal">1. Create the design in Metal</a></li>
+<li><a class="reference internal" href="#Prerequisite">Prerequisite</a></li>
+<li><a class="reference internal" href="#1.-Create-the-design-in-Metal">1. Create the design in Metal</a><ul>
+<li><a class="reference internal" href="#In-this-example,-the-design-consists-of-4-qubits-and-4-CPWs">In this example, the design consists of 4 qubits and 4 CPWs</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#In-this-example,-the-design-consists-of-4-qubits-and-4-CPWs">In this example, the design consists of 4 qubits and 4 CPWs</a><ul>
-<li><a class="reference internal" href="#2.-Capacitance-Analysis-and-LOM-derivation-using-the-analysis-package---most-users">2. Capacitance Analysis and LOM derivation using the analysis package - most users</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#2.-Capacitance-Analysis-and-LOM-derivation-using-the-analysis-package---most-users">2. Capacitance Analysis and LOM derivation using the analysis package - most users</a><ul>
 <li><a class="reference internal" href="#Capacitance-Analysis">Capacitance Analysis</a></li>
-<li><a class="reference internal" href="#Lumped-oscillator-model-(LOM)">Lumped oscillator model (LOM)</a><ul>
+<li><a class="reference internal" href="#Lumped-oscillator-model-(LOM)">Lumped oscillator model (LOM)</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#3.-Directly-access-the-renderer-to-modify-other-parameters">3. Directly access the renderer to modify other parameters</a><ul>
 <li><a class="reference internal" href="#Prepare-and-run-a-collection-of-predefined-setups">Prepare and run a collection of predefined setups</a></li>
 <li><a class="reference internal" href="#Get-the-capactiance-matrix-at-a-different-pass">Get the capactiance matrix at a different pass</a></li>
+<li><a class="reference internal" href="#Code-to-swap-rows-and-columns-in-capacitance-matrix">Code to swap rows and columns in capacitance matrix</a><ul>
+<li><a class="reference internal" href="#Close-the-renderer">Close the renderer</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#Code-to-swap-rows-and-columns-in-capacitance-matrix">Code to swap rows and columns in capacitance matrix</a></li>
 </ul>
 </li>
 </ul>

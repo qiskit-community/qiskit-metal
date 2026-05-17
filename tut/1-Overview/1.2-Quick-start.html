@@ -607,6 +607,8 @@
 </section>
 <section id="My-First-Quantum-Component-(QComponent)">
 <h2>My First Quantum Component (QComponent)<a class="headerlink" href="#My-First-Quantum-Component-(QComponent)" title="Link to this heading">¶</a></h2>
+<section id="A-transmon-qubit">
+<h3>A transmon qubit<a class="headerlink" href="#A-transmon-qubit" title="Link to this heading">¶</a></h3>
 <p>We can create a ready-made and optimized transmon qubit from the QLibrary of components. Qubit qcomponents are stored in the library <code class="docutils literal notranslate"><span class="pre">qiskit_metal.qlibrary.qubits</span></code>. The file that contains the transmon pocket is called <code class="docutils literal notranslate"><span class="pre">transmon_pocket</span></code>, and the <code class="docutils literal notranslate"><span class="pre">QComponent</span></code> class inside it is <code class="docutils literal notranslate"><span class="pre">TransmonPocket</span></code>.</p>
 <ul class="simple">
 <li><p>Let’s create a new qubit by creating an object of this class.</p></li>
@@ -688,6 +690,8 @@
 </pre></div></div>
 </div>
 <p>Parsed view of options</p>
+<section id="What-are-the-default-options?">
+<h4>What are the default options?<a class="headerlink" href="#What-are-the-default-options?" title="Link to this heading">¶</a></h4>
 <p>The QComponent comes with some default options. The options are used in the <code class="docutils literal notranslate"><span class="pre">make</span></code> function of the QComponent to create the QGeometry you see in the plot above.</p>
 <ul class="simple">
 <li><p>Options are parsed by Qiskit Metal.</p></li>
@@ -752,6 +756,10 @@
 <img alt="../../_images/tut_1-Overview_1.2-Quick-start_19_0.png" class="no-scaled-link" src="../../_images/tut_1-Overview_1.2-Quick-start_19_0.png" style="width: 500px;" />
 </div>
 </div>
+</section>
+</section>
+<section id="Where-are-the-QComponents-stored?">
+<h3>Where are the QComponents stored?<a class="headerlink" href="#Where-are-the-QComponents-stored?" title="Link to this heading">¶</a></h3>
 <p>They are stored in <code class="docutils literal notranslate"><span class="pre">design.components</span></code>. It can be accessed as a dictionary (<code class="docutils literal notranslate"><span class="pre">design.components['Q1']</span></code>) or object (<code class="docutils literal notranslate"><span class="pre">design.components.Q1</span></code>).</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
@@ -904,6 +912,8 @@
     How do I work with units? <br><br> (parse options and values)
 </div></div>
 </div>
+<section id="Parsing-strings-into-floats">
+<h4>Parsing strings into floats<a class="headerlink" href="#Parsing-strings-into-floats" title="Link to this heading">¶</a></h4>
 <p>Use the <code class="docutils literal notranslate"><span class="pre">design.parse_value</span></code> or <code class="docutils literal notranslate"><span class="pre">QComponent.parse_value</span></code> (such as <code class="docutils literal notranslate"><span class="pre">q1.parse_value</span></code>). The two functions serve the same purpose.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
@@ -934,6 +944,9 @@ Example parse dict: {&#39;key_in_cm&#39;: 12.0, &#39;key_in_microns&#39;: 0.05}
 Example parse list: [1000.0, 1, 0.001, 1.0000000000000002e-06]
 </pre></div></div>
 </div>
+</section>
+<section id="Some-basic-arithmetic-and-parsing">
+<h4>Some basic arithmetic and parsing<a class="headerlink" href="#Some-basic-arithmetic-and-parsing" title="Link to this heading">¶</a></h4>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
@@ -1043,6 +1056,10 @@ Example parse list: [1000.0, 1, 0.001, 1.0000000000000002e-06]
 </table>
 </div></div>
 </div>
+</section>
+</section>
+<section id="Advanced:-parse-into-arrays,-list,-etc.">
+<h3>Advanced: parse into arrays, list, etc.<a class="headerlink" href="#Advanced:-parse-into-arrays,-list,-etc." title="Link to this heading">¶</a></h3>
 <p>Can use python syntax inside options. Parse uses pythonic <code class="docutils literal notranslate"><span class="pre">ast_eval</span></code>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -1091,6 +1108,7 @@ Parsed output:
 </pre></div></div>
 </div>
 </section>
+</section>
 <section id="How-do-I-overwrite-QComponents?">
 <h2>How do I overwrite QComponents?<a class="headerlink" href="#How-do-I-overwrite-QComponents?" title="Link to this heading">¶</a></h2>
 <p>To enable component overwrite of components with the same name, use the following cell</p>
@@ -1126,6 +1144,8 @@ Parsed output:
     color: white;
 "> Quantum pins: QPins! <h1></div>
 </div>
+<section id="QPins:-The-dynamic-way-to-connect-qcomponents">
+<h3>QPins: The dynamic way to connect qcomponents<a class="headerlink" href="#QPins:-The-dynamic-way-to-connect-qcomponents" title="Link to this heading">¶</a></h3>
 <p>The component designer can define pins. Pins can be used to link components together. For example, two transmons can each have a pin. The two pins can be connected by CPWs, as we will show below.</p>
 <p>First, let us add pins to the transmon. We will add 4 pins called <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, <code class="docutils literal notranslate"><span class="pre">c</span></code>, and <code class="docutils literal notranslate"><span class="pre">d</span></code>. Each pin will be at a different location (corner of the transmon), defined by the options <code class="docutils literal notranslate"><span class="pre">loc_W</span></code> and <code class="docutils literal notranslate"><span class="pre">loc_H</span></code>.</p>
 <div class="nbinput nblast docutils container">
@@ -1200,6 +1220,9 @@ Parsed output:
  &#39;length&#39;: 0}
 </pre></div></div>
 </div>
+</section>
+<section id="How-do-I-edit-the-component-source-code-and-see-changes-immidietly?">
+<h3>How do I edit the component source code and see changes immidietly?<a class="headerlink" href="#How-do-I-edit-the-component-source-code-and-see-changes-immidietly?" title="Link to this heading">¶</a></h3>
 <p>If you have selected a QComponent, you can call the button that says edit source in the GUI. Once selected, you could also call the same function from the code.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
@@ -1237,6 +1260,7 @@ Parsed output:
     color: white;
 "> My first quantum chip <h1></div>
 </div>
+</section>
 </section>
 <section id="Creating-a-whole-chip-of-qubit-with-connectors">
 <h2>Creating a whole chip of qubit with connectors<a class="headerlink" href="#Creating-a-whole-chip-of-qubit-with-connectors" title="Link to this heading">¶</a></h2>
@@ -1842,6 +1866,8 @@ Parsed output:
 <img alt="../../_images/tut_1-Overview_1.2-Quick-start_87_0.png" class="no-scaled-link" src="../../_images/tut_1-Overview_1.2-Quick-start_87_0.png" style="width: 500px;" />
 </div>
 </div>
+<section id="NGon">
+<h3>NGon<a class="headerlink" href="#NGon" title="Link to this heading">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[54]:
 </pre></div>
@@ -2036,6 +2062,9 @@ Parsed output:
     color: white;
 "> The geometry of QComponent: QGeometry <h1></div>
 </div>
+</section>
+<section id="Geometric-boundary-of-a-qcomponent?">
+<h3>Geometric boundary of a qcomponent?<a class="headerlink" href="#Geometric-boundary-of-a-qcomponent?" title="Link to this heading">¶</a></h3>
 <div class="line-block">
 <div class="line">Return the boundry box of the geometry, for example: <code class="docutils literal notranslate"><span class="pre">q1.qgeometry_bounds()</span></code>.</div>
 <div class="line">The function returns a tuple containing (minx, miny, maxx, maxy) bound values for the bounds of the component as a whole.</div>
@@ -2071,6 +2100,9 @@ CircleRaster : [-1.8  1.7 -1.2  2.3]
 RectangleHollow : [-2.55  1.85 -2.05  2.15]
 </pre></div></div>
 </div>
+</section>
+<section id="What-is-QGeometry?">
+<h3>What is QGeometry?<a class="headerlink" href="#What-is-QGeometry?" title="Link to this heading">¶</a></h3>
 <p>We can get all the QGeometry of a QComponent. There are several kinds, such as <code class="docutils literal notranslate"><span class="pre">path</span></code> and <code class="docutils literal notranslate"><span class="pre">poly</span></code>. Let us look at all the polygons used to create qubit <code class="docutils literal notranslate"><span class="pre">q1</span></code></p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[63]:
@@ -2508,6 +2540,7 @@ IBM Quantum Team
 </div>
 </section>
 </section>
+</section>
 <br><br>
 <h3>For more information, review the <b>Introduction to Quantum Computing and Quantum Hardware</b> lectures below</h3>
 <div style="border:solid 1 px #990000;">
@@ -2599,11 +2632,32 @@ IBM Quantum Team
 <li><a class="reference internal" href="#Interactively-view,-edit,-and-simulate-QDesign:-Metal-GUI">Interactively view, edit, and simulate QDesign: Metal GUI</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#My-First-Quantum-Component-(QComponent)">My First Quantum Component (QComponent)</a></li>
-<li><a class="reference internal" href="#How-do-I-overwrite-QComponents?">How do I overwrite QComponents?</a></li>
+<li><a class="reference internal" href="#My-First-Quantum-Component-(QComponent)">My First Quantum Component (QComponent)</a><ul>
+<li><a class="reference internal" href="#A-transmon-qubit">A transmon qubit</a><ul>
+<li><a class="reference internal" href="#What-are-the-default-options?">What are the default options?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Where-are-the-QComponents-stored?">Where are the QComponents stored?</a><ul>
+<li><a class="reference internal" href="#Parsing-strings-into-floats">Parsing strings into floats</a></li>
+<li><a class="reference internal" href="#Some-basic-arithmetic-and-parsing">Some basic arithmetic and parsing</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Advanced:-parse-into-arrays,-list,-etc.">Advanced: parse into arrays, list, etc.</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#How-do-I-overwrite-QComponents?">How do I overwrite QComponents?</a><ul>
+<li><a class="reference internal" href="#QPins:-The-dynamic-way-to-connect-qcomponents">QPins: The dynamic way to connect qcomponents</a></li>
+<li><a class="reference internal" href="#How-do-I-edit-the-component-source-code-and-see-changes-immidietly?">How do I edit the component source code and see changes immidietly?</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#Creating-a-whole-chip-of-qubit-with-connectors">Creating a whole chip of qubit with connectors</a></li>
 <li><a class="reference internal" href="#Variables">Variables</a></li>
-<li><a class="reference internal" href="#gds.options.path_filename">gds.options.path_filename</a></li>
+<li><a class="reference internal" href="#gds.options.path_filename">gds.options.path_filename</a><ul>
+<li><a class="reference internal" href="#NGon">NGon</a></li>
+<li><a class="reference internal" href="#Geometric-boundary-of-a-qcomponent?">Geometric boundary of a qcomponent?</a></li>
+<li><a class="reference internal" href="#What-is-QGeometry?">What is QGeometry?</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

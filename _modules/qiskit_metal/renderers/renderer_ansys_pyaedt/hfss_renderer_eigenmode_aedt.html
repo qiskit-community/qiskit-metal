@@ -657,8 +657,8 @@
 
         <span class="k">if</span> <span class="n">setup_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">setup_names</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;Since the setup_name is not in the project/design which was used to start HFSS DrivenModal, &#39;</span>
-                <span class="sa">f</span><span class="s1">&#39;a new setup will be added to design with default settings for HFSS DrivenModal.&#39;</span>
+                <span class="s1">&#39;Since the setup_name is not in the project/design which was used to start HFSS DrivenModal, &#39;</span>
+                <span class="s1">&#39;a new setup will be added to design with default settings for HFSS DrivenModal.&#39;</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_hfss_dm_setup</span><span class="p">(</span><span class="n">setup_name</span><span class="p">)</span>
 
@@ -728,7 +728,7 @@
         <span class="c1"># jj_to_port SHOULD not bew in eigenmode solution type. So will give error</span>
         <span class="k">if</span> <span class="n">jj_to_port</span> <span class="ow">or</span> <span class="n">port_list</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;In eigenmode solution, there should NOT be any values for jj_to_port or port_list.&#39;</span>
+                <span class="s1">&#39;In eigenmode solution, there should NOT be any values for jj_to_port or port_list.&#39;</span>
             <span class="p">)</span>
             <span class="k">return</span>
 
@@ -899,7 +899,7 @@
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSEigenmodePyaedt.html#qiskit_metal.renderers.QHFSSEigenmodePyaedt.setup_dielectric_for_epr">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">setup_dielectric_for_epr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dielectric_layers</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Find name of dielectric layer rendered in ANSYS, then </span>
+<span class="sd">        Find name of dielectric layer rendered in ANSYS, then</span>
 <span class="sd">        define it as a dissipative dielectric surface for pyEPR.</span>
 
 <span class="sd">        Args:</span>

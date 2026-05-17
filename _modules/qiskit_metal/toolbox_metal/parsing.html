@@ -945,7 +945,7 @@
         <span class="p">)</span>  <span class="c1"># remove trailing and leading white spaces in the name</span>
 
         <span class="c1"># is the name in the options at all?</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s1">&#39;Missing key </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> from params </span><span class="si">{</span><span class="n">params</span><span class="si">}</span><span class="s1">. Skipping ...</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="k">continue</span>

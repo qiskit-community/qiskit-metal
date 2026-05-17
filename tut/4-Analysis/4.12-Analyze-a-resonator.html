@@ -515,8 +515,9 @@
 <li><p>Display EM fields to inspect quality of the setup.</p></li>
 <li><p>Calculate EPR of substrate.</p></li>
 </ol>
+</section>
 <section id="Prerequisite">
-<h3>Prerequisite<a class="headerlink" href="#Prerequisite" title="Link to this heading">¶</a></h3>
+<h2>Prerequisite<a class="headerlink" href="#Prerequisite" title="Link to this heading">¶</a></h2>
 <p>You need to have a working local installation of Ansys. Also you will need the following directives and inports.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -534,7 +535,7 @@
 </div>
 </section>
 <section id="1.-Create-the-Resonator-design">
-<h3>1. Create the Resonator design<a class="headerlink" href="#1.-Create-the-Resonator-design" title="Link to this heading">¶</a></h3>
+<h2>1. Create the Resonator design<a class="headerlink" href="#1.-Create-the-Resonator-design" title="Link to this heading">¶</a></h2>
 <p>Fix the design dimensions that you intend to reflect in the design rendering. Note that the design size extends from the origin into the first quadrant.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -577,12 +578,12 @@
 </div>
 </section>
 <section id="2.-Analyze-the-resonator-using-the-Eigenmode-EPR-method">
-<h3>2. Analyze the resonator using the Eigenmode-EPR method<a class="headerlink" href="#2.-Analyze-the-resonator-using-the-Eigenmode-EPR-method" title="Link to this heading">¶</a></h3>
+<h2>2. Analyze the resonator using the Eigenmode-EPR method<a class="headerlink" href="#2.-Analyze-the-resonator-using-the-Eigenmode-EPR-method" title="Link to this heading">¶</a></h2>
 <p>In this section we will use a semi-manual (advanced) analysis flow. Please refer to tutorial 4.2 for the <code class="docutils literal notranslate"><span class="pre">suggested</span></code> method. As illustrated, the methods are equivalent, but the advanced method allows you to directly override some renderer-specific settings.</p>
-</section>
-</section>
 <section id="Finite-Element-Eigenmode-Analysis">
-<h2>Finite Element Eigenmode Analysis<a class="headerlink" href="#Finite-Element-Eigenmode-Analysis" title="Link to this heading">¶</a></h2>
+<h3>Finite Element Eigenmode Analysis<a class="headerlink" href="#Finite-Element-Eigenmode-Analysis" title="Link to this heading">¶</a></h3>
+<section id="Setup">
+<h4>Setup<a class="headerlink" href="#Setup" title="Link to this heading">¶</a></h4>
 <p>Select the analysis you intend to run from the <code class="docutils literal notranslate"><span class="pre">qiskit_metal.analyses</span></code> collection. Select the design to analyze and the tool to use for any external simulation.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
@@ -676,6 +677,9 @@ True
 </pre></div>
 </div>
 </div>
+</section>
+<section id="Execute-simulation-and-verify-convergence">
+<h4>Execute simulation and verify convergence<a class="headerlink" href="#Execute-simulation-and-verify-convergence" title="Link to this heading">¶</a></h4>
 <p>Create and activate an eigenmode design called “Readout”.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
@@ -778,6 +782,9 @@ Convergence freq max delta percent diff  = 0.1
 09:22AM 17s INFO [get_f_convergence]: Saved convergences to C:\workspace\qiskit-metal\docs\tut\4-Analysis\hfss_eig_f_convergence.csv
 </pre></div></div>
 </div>
+</section>
+<section id="Refine-the-resonator-design,-rerun-simulation-and-verify-convergence">
+<h4>Refine the resonator design, rerun simulation and verify convergence<a class="headerlink" href="#Refine-the-resonator-design,-rerun-simulation-and-verify-convergence" title="Link to this heading">¶</a></h4>
 <p>Next, we change the length of the resonator and see how the eigen frequency changes.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
@@ -899,6 +906,9 @@ Convergence freq max delta percent diff  = 0.1
 </pre></div></div>
 </div>
 <p>From the above analyses we observe that for a total length of 6 mm for the resonator, the Eigen Frequency was close to 4.9 GHz. However, for a total length of 9 mm, this frequency is close to 3.3 GHz. Similar analysis can be performed by the user for matching a particular frequency of interest.</p>
+</section>
+<section id="Plot-the-EM-field-for-inspection">
+<h4>Plot the EM field for inspection<a class="headerlink" href="#Plot-the-EM-field-for-inspection" title="Link to this heading">¶</a></h4>
 <p>Display the Ansys modeler window and plot the E-field on the chip’s surface.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
@@ -952,8 +962,9 @@ WindowsPath(&#39;C:/workspace/qiskit-metal/docs/tut/4-Analysis/ansys.png&#39;)
 </pre></div></div>
 </div>
 </section>
+</section>
 <section id="EPR-Analysis">
-<h2>EPR Analysis<a class="headerlink" href="#EPR-Analysis" title="Link to this heading">¶</a></h2>
+<h3>EPR Analysis<a class="headerlink" href="#EPR-Analysis" title="Link to this heading">¶</a></h3>
 <p>In the <code class="docutils literal notranslate"><span class="pre">suggested</span></code> (tutorial 4.2) flow, we would now prepare the setup using <code class="docutils literal notranslate"><span class="pre">eig_res.setup</span></code> and run the analysis with <code class="docutils literal notranslate"><span class="pre">eig_res.run_epr()</span></code>. Notice that this method requires previous set of the <code class="docutils literal notranslate"><span class="pre">eig_res</span></code> variables <code class="docutils literal notranslate"><span class="pre">convergence_t</span></code> and <code class="docutils literal notranslate"><span class="pre">convergence_f</span></code> like we did a thee cells earlier.</p>
 <p>However we here exemplify the advanced approach, which is Ansys-specific since it uses the pyEPR module methods directly. #### Execute the energy distribution analysis</p>
 <p>First initialize epr for non-junction analysis. This will set the ground plain to ‘main’.</p>
@@ -1046,6 +1057,7 @@ EPR of substrate = 91.0%
 </div>
 </section>
 </section>
+</section>
 <br><br>
 <h3>For more information, review the <b>Introduction to Quantum Computing and Quantum Hardware</b> lectures below</h3>
 <div style="border:solid 1 px #990000;">
@@ -1133,14 +1145,20 @@ EPR of substrate = 91.0%
             <ul>
 <li><a class="reference internal" href="#">Analyzing and tuning a resonator</a><ul>
 <li><a class="reference internal" href="#Resonator-design">Resonator design</a></li>
-<li><a class="reference internal" href="#Resonator-analysis-using-EPR-method">Resonator analysis using EPR method</a><ul>
+<li><a class="reference internal" href="#Resonator-analysis-using-EPR-method">Resonator analysis using EPR method</a></li>
 <li><a class="reference internal" href="#Prerequisite">Prerequisite</a></li>
 <li><a class="reference internal" href="#1.-Create-the-Resonator-design">1. Create the Resonator design</a></li>
-<li><a class="reference internal" href="#2.-Analyze-the-resonator-using-the-Eigenmode-EPR-method">2. Analyze the resonator using the Eigenmode-EPR method</a></li>
+<li><a class="reference internal" href="#2.-Analyze-the-resonator-using-the-Eigenmode-EPR-method">2. Analyze the resonator using the Eigenmode-EPR method</a><ul>
+<li><a class="reference internal" href="#Finite-Element-Eigenmode-Analysis">Finite Element Eigenmode Analysis</a><ul>
+<li><a class="reference internal" href="#Setup">Setup</a></li>
+<li><a class="reference internal" href="#Execute-simulation-and-verify-convergence">Execute simulation and verify convergence</a></li>
+<li><a class="reference internal" href="#Refine-the-resonator-design,-rerun-simulation-and-verify-convergence">Refine the resonator design, rerun simulation and verify convergence</a></li>
+<li><a class="reference internal" href="#Plot-the-EM-field-for-inspection">Plot the EM field for inspection</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#Finite-Element-Eigenmode-Analysis">Finite Element Eigenmode Analysis</a></li>
 <li><a class="reference internal" href="#EPR-Analysis">EPR Analysis</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

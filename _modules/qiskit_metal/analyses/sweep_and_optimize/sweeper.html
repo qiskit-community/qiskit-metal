@@ -519,14 +519,14 @@
 <div class="viewcode-block" id="Sweeper.run_sweep">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.Sweeper.html#qiskit_metal.analyses.Sweeper.run_sweep">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">run_sweep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwarg</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Ansys will be opened, if not already open, with an inserted project.  </span>
-<span class="sd">        A design will be inserted by this method. </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Ansys will be opened, if not already open, with an inserted project.</span>
+<span class="sd">        A design will be inserted by this method.</span>
 
-<span class="sd">        There are two ways to pass arguments.  You can use the previous run or </span>
-<span class="sd">        use updated arguments.  With both scenarios, qcomp_name, option_name, and </span>
+<span class="sd">        There are two ways to pass arguments.  You can use the previous run or</span>
+<span class="sd">        use updated arguments.  With both scenarios, qcomp_name, option_name, and</span>
 <span class="sd">        option_sweep must be passed.</span>
 
-<span class="sd">        For the previous run, the arguments are all but the three required.  </span>
+<span class="sd">        For the previous run, the arguments are all but the three required.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            qcomp_name (str): A component that contains the option to be swept.</span>
@@ -562,7 +562,7 @@
 <span class="sd">            * 2 option_name is empty.</span>
 <span class="sd">            * 3 option_name is not found as key in Dict.</span>
 <span class="sd">            * 4 option_sweep is empty, need at least one entry.</span>
-<span class="sd">            * 5 last key in option_name is not in Dict. </span>
+<span class="sd">            * 5 last key in option_name is not in Dict.</span>
 <span class="sd">            * 6 need to have at least three arguments</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1">#Dict of all swept information.</span>
@@ -625,14 +625,14 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">iterate_option_sweep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">all_dicts</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
                              <span class="n">option_path</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">a_value</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
                              <span class="n">all_sweep</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterate through the values that user gave in option_sweep.  </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterate through the values that user gave in option_sweep.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            args (Dict): Holds the three mandatory arguments in an expected sequence.</span>
-<span class="sd">            all_dicts (Dict): User arguments manipulated to account for using previous_run. </span>
+<span class="sd">            all_dicts (Dict): User arguments manipulated to account for using previous_run.</span>
 <span class="sd">            option_path (list):  The list has traversed the option Dict.</span>
 <span class="sd">            a_value (Dict): Has the value from the dictionary of the searched key.</span>
-<span class="sd">            all_sweep (Dict): Will be populated during the iteration. </span>
+<span class="sd">            all_sweep (Dict): Will be populated during the iteration.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Tuple[Dict, int]: The dict key is each value of option_sweep, the</span>
@@ -641,7 +641,7 @@
 <span class="sd">            defined below.</span>
 
 <span class="sd">                * 0 Have list of capacitance matrix.</span>
-<span class="sd">                * 5 last key in option_name is not in Dict. </span>
+<span class="sd">                * 5 last key in option_name is not in Dict.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
@@ -674,7 +674,7 @@
 <div class="viewcode-block" id="Sweeper.populate_all_sweep">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.Sweeper.html#qiskit_metal.analyses.Sweeper.populate_all_sweep">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">populate_all_sweep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">all_sweep</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">option_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Populate the Dict passed in all_sweep from QAnalysis.  </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Populate the Dict passed in all_sweep from QAnalysis.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            all_sweep (Dict): Reference to hold each item which corresponds</span>

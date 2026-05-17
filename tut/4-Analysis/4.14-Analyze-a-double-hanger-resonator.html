@@ -518,8 +518,9 @@
 </pre></div>
 </div>
 </div>
+</section>
 <section id="Create-the-design-in-Metal">
-<h3>Create the design in Metal<a class="headerlink" href="#Create-the-design-in-Metal" title="Link to this heading">¶</a></h3>
+<h2>Create the design in Metal<a class="headerlink" href="#Create-the-design-in-Metal" title="Link to this heading">¶</a></h2>
 <p>Set up a design of a given dimension. Dimensions will be respected in the design rendering. Note the chip design is centered at origin (0,0).</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -697,10 +698,10 @@
 </div>
 </section>
 <section id="2.-Eigenmode-and-Impedance-analysis-using-the-advanced-flow">
-<h3>2. Eigenmode and Impedance analysis using the <code class="docutils literal notranslate"><span class="pre">advanced</span></code> flow<a class="headerlink" href="#2.-Eigenmode-and-Impedance-analysis-using-the-advanced-flow" title="Link to this heading">¶</a></h3>
+<h2>2. Eigenmode and Impedance analysis using the <code class="docutils literal notranslate"><span class="pre">advanced</span></code> flow<a class="headerlink" href="#2.-Eigenmode-and-Impedance-analysis-using-the-advanced-flow" title="Link to this heading">¶</a></h2>
 <p>If you are interested in the <code class="docutils literal notranslate"><span class="pre">recommended</span></code> flow, please check the tutorial notebook 4.3. In this section we will use the advanced flow, which directly operates on the simulator thorugh the renderer commands.</p>
 <section id="Setup">
-<h4>Setup<a class="headerlink" href="#Setup" title="Link to this heading">¶</a></h4>
+<h3>Setup<a class="headerlink" href="#Setup" title="Link to this heading">¶</a></h3>
 <p>Select the analysis you intend to run from the <code class="docutils literal notranslate"><span class="pre">qiskit_metal.analyses.simulation</span></code> collection. Select the design to analyze and the tool to use for any external simulation.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
@@ -761,7 +762,7 @@ True
 </div>
 </section>
 <section id="Execute-simulation-and-verify-convergence">
-<h4>Execute simulation and verify convergence<a class="headerlink" href="#Execute-simulation-and-verify-convergence" title="Link to this heading">¶</a></h4>
+<h3>Execute simulation and verify convergence<a class="headerlink" href="#Execute-simulation-and-verify-convergence" title="Link to this heading">¶</a></h3>
 <p>Create and activate an eigenmode design called “HangingResonators”.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
@@ -797,7 +798,7 @@ INFO 06:21AM [get_setup]:       Opened setup `Setup`  (&lt;class &#39;pyEPR.ansy
 </div>
 </section>
 <section id="Execute-simulation-and-observe-the-Impedence">
-<h4>Execute simulation and observe the Impedence<a class="headerlink" href="#Execute-simulation-and-observe-the-Impedence" title="Link to this heading">¶</a></h4>
+<h3>Execute simulation and observe the Impedence<a class="headerlink" href="#Execute-simulation-and-observe-the-Impedence" title="Link to this heading">¶</a></h3>
 <p>Assign lumped ports on the two cpw terminations. Then observe the impedance plots.</p>
 <p>Here, pins cpw_openRight_end and cpw_openLeft_end are converted into lumped ports with an impedance of 50 Ohms. Neither of the junctions in Q1 or Q2 are rendered.</p>
 <div class="nbinput nblast docutils container">
@@ -992,7 +993,6 @@ INFO 06:23AM [analyze]: Analyzing setup Setup : Sweep
 </section>
 </section>
 </section>
-</section>
 <br><br>
 <h3>For more information, review the <b>Introduction to Quantum Computing and Quantum Hardware</b> lectures below</h3>
 <div style="border:solid 1 px #990000;">
@@ -1079,14 +1079,12 @@ INFO 06:23AM [analyze]: Analyzing setup Setup : Sweep
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Analyzing a double hanger resonator (S Param)</a><ul>
-<li><a class="reference internal" href="#Prerequisite">Prerequisite</a><ul>
+<li><a class="reference internal" href="#Prerequisite">Prerequisite</a></li>
 <li><a class="reference internal" href="#Create-the-design-in-Metal">Create the design in Metal</a></li>
 <li><a class="reference internal" href="#2.-Eigenmode-and-Impedance-analysis-using-the-advanced-flow">2. Eigenmode and Impedance analysis using the <code class="docutils literal notranslate"><span class="pre">advanced</span></code> flow</a><ul>
 <li><a class="reference internal" href="#Setup">Setup</a></li>
 <li><a class="reference internal" href="#Execute-simulation-and-verify-convergence">Execute simulation and verify convergence</a></li>
 <li><a class="reference internal" href="#Execute-simulation-and-observe-the-Impedence">Execute simulation and observe the Impedence</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>

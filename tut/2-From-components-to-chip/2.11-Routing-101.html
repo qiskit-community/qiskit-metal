@@ -576,8 +576,9 @@
 </pre></div>
 </div>
 </div>
+</section>
 <section id="Example-1:-Straight-routing-between-two-pins">
-<h3>Example 1: Straight routing between two pins<a class="headerlink" href="#Example-1:-Straight-routing-between-two-pins" title="Link to this heading">¶</a></h3>
+<h2>Example 1: Straight routing between two pins<a class="headerlink" href="#Example-1:-Straight-routing-between-two-pins" title="Link to this heading">¶</a></h2>
 <p>First, we make sure our design contains two pins to connect to.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
@@ -609,7 +610,7 @@
 </div>
 </section>
 <section id="Example-2:-Any-direction">
-<h3>Example 2: Any direction<a class="headerlink" href="#Example-2:-Any-direction" title="Link to this heading">¶</a></h3>
+<h2>Example 2: Any direction<a class="headerlink" href="#Example-2:-Any-direction" title="Link to this heading">¶</a></h2>
 <p>Let’s add a few pins that we can use to connect in pairs. We here align them following a variety of orientations.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
@@ -649,7 +650,7 @@
 </div>
 </section>
 <section id="Example-3:-Angles-and-leads">
-<h3>Example 3: Angles and leads<a class="headerlink" href="#Example-3:-Angles-and-leads" title="Link to this heading">¶</a></h3>
+<h2>Example 3: Angles and leads<a class="headerlink" href="#Example-3:-Angles-and-leads" title="Link to this heading">¶</a></h2>
 <p>If the two pins to connect are not facing each other, the router will create the necessary jogs. Here is a simple example that shows 45° jogs.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">RouteStraight</span></code> will use a single straight line in any orientation to connect the two pins. Feel free to try using other algorithms, by replacing the class to any other <code class="docutils literal notranslate"><span class="pre">QRoute</span></code> subclass (image at the start of this notebook).</p>
 <div class="nbinput nblast docutils container">
@@ -692,7 +693,7 @@
 </div>
 </section>
 <section id="Example-4:-90°-angles">
-<h3>Example 4: 90° angles<a class="headerlink" href="#Example-4:-90°-angles" title="Link to this heading">¶</a></h3>
+<h2>Example 4: 90° angles<a class="headerlink" href="#Example-4:-90°-angles" title="Link to this heading">¶</a></h2>
 <p>In most applications, you might want to limit the jogs to 90° angles. In the following example we use the same <code class="docutils literal notranslate"><span class="pre">pin_opts</span></code> of the previous example, but we replace <code class="docutils literal notranslate"><span class="pre">RouteStraight</span></code> with <code class="docutils literal notranslate"><span class="pre">RouteFramed</span></code>. You will notice that our route now has only one 90° jog.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
@@ -775,7 +776,7 @@
 </div>
 </section>
 <section id="Example-5:-Tight-control-on-leads-and-angles">
-<h3>Example 5: Tight control on leads and angles<a class="headerlink" href="#Example-5:-Tight-control-on-leads-and-angles" title="Link to this heading">¶</a></h3>
+<h2>Example 5: Tight control on leads and angles<a class="headerlink" href="#Example-5:-Tight-control-on-leads-and-angles" title="Link to this heading">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">QRouteLeads</span></code> are a “stack” of points that describe in detail the “last-mile” to the pins where the route terminates. These stacks are seeded with the pin coordinates and direction and build incrementally.</p>
 <p>In the previous examples we controlled the QRouteLead points by utilizing the <code class="docutils literal notranslate"><span class="pre">lead</span></code> options inside the <code class="docutils literal notranslate"><span class="pre">pin_opt</span></code> construct. Specifically, we utilized <code class="docutils literal notranslate"><span class="pre">start_straight</span></code> and <code class="docutils literal notranslate"><span class="pre">end_straight</span></code>, which add one point to the respective leads, at the specified distance in the direction specified by the pins (outwards from the QComponent that has the pin).</p>
 <p>We are however not limited to a single aligned extension point. Utilizing the <code class="docutils literal notranslate"><span class="pre">start_jogged_extension</span></code> and <code class="docutils literal notranslate"><span class="pre">end_jogged_extension</span></code>, we can specify any number of points to add to the lead stacks. The points are computed by providing a OrderedDict() of <strong>steps</strong>, expressed as <code class="docutils literal notranslate"><span class="pre">[angle,distance]</span></code> pairs.</p>
@@ -862,7 +863,6 @@
 </pre></div>
 </div>
 </div>
-</section>
 </section>
 </section>
 <br><br>
@@ -952,14 +952,12 @@
             <ul>
 <li><a class="reference internal" href="#">Routing 101</a><ul>
 <li><a class="reference internal" href="#Introduction">Introduction</a></li>
-<li><a class="reference internal" href="#Prerequisite">Prerequisite</a><ul>
+<li><a class="reference internal" href="#Prerequisite">Prerequisite</a></li>
 <li><a class="reference internal" href="#Example-1:-Straight-routing-between-two-pins">Example 1: Straight routing between two pins</a></li>
 <li><a class="reference internal" href="#Example-2:-Any-direction">Example 2: Any direction</a></li>
 <li><a class="reference internal" href="#Example-3:-Angles-and-leads">Example 3: Angles and leads</a></li>
 <li><a class="reference internal" href="#Example-4:-90°-angles">Example 4: 90° angles</a></li>
 <li><a class="reference internal" href="#Example-5:-Tight-control-on-leads-and-angles">Example 5: Tight control on leads and angles</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>

@@ -587,8 +587,10 @@
 <section id="2.-Analyze-the-transmon-using-the-Eigenmode-EPR-method">
 <h2>2. Analyze the transmon using the Eigenmode-EPR method<a class="headerlink" href="#2.-Analyze-the-transmon-using-the-Eigenmode-EPR-method" title="Link to this heading">¶</a></h2>
 <p>In this section we will use a semi-manual (advanced) analysis flow. Please refer to tutorial 4.2 for the <code class="docutils literal notranslate"><span class="pre">suggested</span></code> method. As illustrated, the methods are equivalent, but the advanced method allows you to directly override some renderer-specific settings.</p>
+<section id="Finite-Element-Eigenmode-Analysis">
+<h3>Finite Element Eigenmode Analysis<a class="headerlink" href="#Finite-Element-Eigenmode-Analysis" title="Link to this heading">¶</a></h3>
 <section id="Setup">
-<h3>Setup<a class="headerlink" href="#Setup" title="Link to this heading">¶</a></h3>
+<h4>Setup<a class="headerlink" href="#Setup" title="Link to this heading">¶</a></h4>
 <p>Select the analysis you intend to run from the <code class="docutils literal notranslate"><span class="pre">qiskit_metal.analyses</span></code> collection. Select the design to analyze and the tool to use for any external simulation.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
@@ -684,7 +686,7 @@ True
 </div>
 </section>
 <section id="Execute-simulation-and-verify-convergence">
-<h3>Execute simulation and verify convergence<a class="headerlink" href="#Execute-simulation-and-verify-convergence" title="Link to this heading">¶</a></h3>
+<h4>Execute simulation and verify convergence<a class="headerlink" href="#Execute-simulation-and-verify-convergence" title="Link to this heading">¶</a></h4>
 <p>Create and activate an eigenmode design called “TransmonQubit”.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
@@ -787,7 +789,7 @@ Convergence freq max delta percent diff  = 0.1
 </div>
 </section>
 <section id="Plot-the-EM-field-for-inspection">
-<h3>Plot the EM field for inspection<a class="headerlink" href="#Plot-the-EM-field-for-inspection" title="Link to this heading">¶</a></h3>
+<h4>Plot the EM field for inspection<a class="headerlink" href="#Plot-the-EM-field-for-inspection" title="Link to this heading">¶</a></h4>
 <p>Display the Ansys modeler window and plot the E-field on the chip’s surface.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
@@ -832,8 +834,10 @@ WindowsPath(&#39;C:/workspace/qiskit-metal/docs/tut/4-Analysis/ansys.png&#39;)
 09:15AM 44s WARNING [plot_ansys_delete]: This method is deprecated. Change your scripts to use clear_fields()
 </pre></div></div>
 </div>
+</section>
+</section>
 <section id="EPR-Analysis">
-<h4>EPR Analysis<a class="headerlink" href="#EPR-Analysis" title="Link to this heading">¶</a></h4>
+<h3>EPR Analysis<a class="headerlink" href="#EPR-Analysis" title="Link to this heading">¶</a></h3>
 <p>In the <code class="docutils literal notranslate"><span class="pre">suggested</span></code> (tutorial 4.2) flow, we would now prepare the setup using <code class="docutils literal notranslate"><span class="pre">eig_qb.setup</span></code> and run the analysis with <code class="docutils literal notranslate"><span class="pre">eig_qb.run_epr()</span></code>. Notice that this method requires previous set of the <code class="docutils literal notranslate"><span class="pre">eig_qb</span></code> variables <code class="docutils literal notranslate"><span class="pre">convergence_t</span></code> and <code class="docutils literal notranslate"><span class="pre">convergence_f</span></code> like we did a thee cells earlier.</p>
 <p>However we here exemplify the advanced approach, which is Ansys-specific since it uses the pyEPR module methods directly. #### Setup Identify the non-linear (Josephson) junctions in the model. You will need to list the junctions in the epr setup.</p>
 <p>In this case there’s only one junction, namely ‘jj’. Let’s see what we need to change in the default setup.</p>
@@ -849,10 +853,8 @@ WindowsPath(&#39;C:/workspace/qiskit-metal/docs/tut/4-Analysis/ansys.png&#39;)
 </pre></div>
 </div>
 </div>
-</section>
-</section>
 <section id="Execute-the-energy-distribution-analysis">
-<h3>Execute the energy distribution analysis<a class="headerlink" href="#Execute-the-energy-distribution-analysis" title="Link to this heading">¶</a></h3>
+<h4>Execute the energy distribution analysis<a class="headerlink" href="#Execute-the-energy-distribution-analysis" title="Link to this heading">¶</a></h4>
 <p>Execute microwave analysis on eigenmode solutions.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
@@ -907,7 +909,7 @@ EPR of substrate = 92.1%
 </div>
 </section>
 <section id="Run-the-EPR-analysis">
-<h3>Run the EPR analysis<a class="headerlink" href="#Run-the-EPR-analysis" title="Link to this heading">¶</a></h3>
+<h4>Run the EPR analysis<a class="headerlink" href="#Run-the-EPR-analysis" title="Link to this heading">¶</a></h4>
 <p>Perform EPR analysis for all modes and variations.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
@@ -1021,7 +1023,7 @@ Index: [0]
 </div>
 <div class="output_area docutils container">
 <section id="Mode-frequencies-(MHz)">
-<h4>Mode frequencies (MHz)<a class="headerlink" href="#Mode-frequencies-(MHz)" title="Link to this heading">¶</a></h4>
+<h5>Mode frequencies (MHz)<a class="headerlink" href="#Mode-frequencies-(MHz)" title="Link to this heading">¶</a></h5>
 </section>
 </div>
 </div>
@@ -1075,7 +1077,7 @@ Index: [0]
 </div>
 <div class="output_area docutils container">
 <section id="Kerr-Non-linear-coefficient-table-(MHz)">
-<h4>Kerr Non-linear coefficient table (MHz)<a class="headerlink" href="#Kerr-Non-linear-coefficient-table-(MHz)" title="Link to this heading">¶</a></h4>
+<h5>Kerr Non-linear coefficient table (MHz)<a class="headerlink" href="#Kerr-Non-linear-coefficient-table-(MHz)" title="Link to this heading">¶</a></h5>
 </section>
 </div>
 </div>
@@ -1138,11 +1140,14 @@ Index: [0]
 </div>
 </section>
 </section>
+</section>
 <section id="3.-Analyze-the-transmon-using-the-LOM-method">
 <h2>3. Analyze the transmon using the LOM method<a class="headerlink" href="#3.-Analyze-the-transmon-using-the-LOM-method" title="Link to this heading">¶</a></h2>
 <p>In this section we will use a semi-manual (advanced) analysis flow. Please refer to tutorial 4.1 for the <code class="docutils literal notranslate"><span class="pre">suggested</span></code> method. As illustrated, the methods are equivalent, but the advanced method allows you to directly override some renderer-specific settings.</p>
+<section id="Capacitance-matrix-extraction">
+<h3>Capacitance matrix extraction<a class="headerlink" href="#Capacitance-matrix-extraction" title="Link to this heading">¶</a></h3>
 <section id="id2">
-<h3>Setup<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
+<h4>Setup<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h4>
 <p>Select the analysis you intend to run from the <code class="docutils literal notranslate"><span class="pre">qiskit_metal.analyses</span></code> collection. Select the design to analyze and the tool to use for any external simulation.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
@@ -1207,7 +1212,7 @@ True
 <p>If the simulator is already open, the line above will simply connect to the open session, project and design.</p>
 </section>
 <section id="id3">
-<h3>Execute simulation and verify convergence<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
+<h4>Execute simulation and verify convergence<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h4>
 <p>Create and activate a q3d design called “TransmonQubit_q3d”.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
@@ -1349,8 +1354,10 @@ INFO 09:16AM [get_matrix]: Exporting matrix data to (C:\Temp\tmpzhx0_ygi.txt, C,
 </table>
 </div></div>
 </div>
+</section>
+</section>
 <section id="LOM-Analysis">
-<h4>LOM Analysis<a class="headerlink" href="#LOM-Analysis" title="Link to this heading">¶</a></h4>
+<h3>LOM Analysis<a class="headerlink" href="#LOM-Analysis" title="Link to this heading">¶</a></h3>
 <p>Now we provide the junction lumped element values, and complete the analysis by plotting the convergence. This is the same steps used in the <code class="docutils literal notranslate"><span class="pre">suggested</span></code> flow from tutorial 4.1.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
@@ -1589,7 +1596,6 @@ INFO 09:16AM [hfss_report_full_convergence]: Creating report for variation 0
 </section>
 </section>
 </section>
-</section>
 <br><br>
 <h3>For more information, review the <b>Introduction to Quantum Computing and Quantum Hardware</b> lectures below</h3>
 <div style="border:solid 1 px #990000;">
@@ -1687,22 +1693,26 @@ INFO 09:16AM [hfss_report_full_convergence]: Creating report for variation 0
 </li>
 <li><a class="reference internal" href="#1.-Create-the-Qbit-design">1. Create the Qbit design</a><ul>
 <li><a class="reference internal" href="#2.-Analyze-the-transmon-using-the-Eigenmode-EPR-method">2. Analyze the transmon using the Eigenmode-EPR method</a><ul>
+<li><a class="reference internal" href="#Finite-Element-Eigenmode-Analysis">Finite Element Eigenmode Analysis</a><ul>
 <li><a class="reference internal" href="#Setup">Setup</a></li>
 <li><a class="reference internal" href="#Execute-simulation-and-verify-convergence">Execute simulation and verify convergence</a></li>
-<li><a class="reference internal" href="#Plot-the-EM-field-for-inspection">Plot the EM field for inspection</a><ul>
-<li><a class="reference internal" href="#EPR-Analysis">EPR Analysis</a></li>
+<li><a class="reference internal" href="#Plot-the-EM-field-for-inspection">Plot the EM field for inspection</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#EPR-Analysis">EPR Analysis</a><ul>
 <li><a class="reference internal" href="#Execute-the-energy-distribution-analysis">Execute the energy distribution analysis</a></li>
 <li><a class="reference internal" href="#Run-the-EPR-analysis">Run the EPR analysis</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#3.-Analyze-the-transmon-using-the-LOM-method">3. Analyze the transmon using the LOM method</a><ul>
-<li><a class="reference internal" href="#id2">Setup</a></li>
-<li><a class="reference internal" href="#id3">Execute simulation and verify convergence</a><ul>
-<li><a class="reference internal" href="#LOM-Analysis">LOM Analysis</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#3.-Analyze-the-transmon-using-the-LOM-method">3. Analyze the transmon using the LOM method</a><ul>
+<li><a class="reference internal" href="#Capacitance-matrix-extraction">Capacitance matrix extraction</a><ul>
+<li><a class="reference internal" href="#id2">Setup</a></li>
+<li><a class="reference internal" href="#id3">Execute simulation and verify convergence</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#LOM-Analysis">LOM Analysis</a></li>
 </ul>
 </li>
 </ul>

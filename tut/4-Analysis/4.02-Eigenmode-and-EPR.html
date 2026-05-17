@@ -504,12 +504,11 @@
 <section id="Prerequisite">
 <h2>Prerequisite<a class="headerlink" href="#Prerequisite" title="Link to this heading">¶</a></h2>
 <p>You need to have a working local installation of Ansys.</p>
+</section>
 <section id="Sections">
-<h3>Sections<a class="headerlink" href="#Sections" title="Link to this heading">¶</a></h3>
-</section>
-</section>
+<h2>Sections<a class="headerlink" href="#Sections" title="Link to this heading">¶</a></h2>
 <section id="I.-Transmon-only">
-<h2>I. Transmon only<a class="headerlink" href="#I.-Transmon-only" title="Link to this heading">¶</a></h2>
+<h3>I. Transmon only<a class="headerlink" href="#I.-Transmon-only" title="Link to this heading">¶</a></h3>
 <ol class="arabic simple">
 <li><p>Prepare the layout in qiskit-metal.</p></li>
 <li><p>Run finite element eigenmode analysis.</p></li>
@@ -522,7 +521,7 @@
 </ol>
 </section>
 <section id="II.-Resonator-only">
-<h2>II. Resonator only<a class="headerlink" href="#II.-Resonator-only" title="Link to this heading">¶</a></h2>
+<h3>II. Resonator only<a class="headerlink" href="#II.-Resonator-only" title="Link to this heading">¶</a></h3>
 <ol class="arabic simple">
 <li><p>Update the layout in qiskit-metal.</p></li>
 <li><p>Run finite element eigenmode analysis.</p></li>
@@ -531,7 +530,7 @@
 </ol>
 </section>
 <section id="III.-Transmon-&amp;-resonator">
-<h2>III. Transmon &amp; resonator<a class="headerlink" href="#III.-Transmon-&-resonator" title="Link to this heading">¶</a></h2>
+<h3>III. Transmon &amp; resonator<a class="headerlink" href="#III.-Transmon-&-resonator" title="Link to this heading">¶</a></h3>
 <ol class="arabic simple">
 <li><p>Update the layout in qiskit-metal.</p></li>
 <li><p>Run finite element eigenmode analysis.</p></li>
@@ -542,7 +541,7 @@
 </ol>
 </section>
 <section id="IV.-Analyze-a-coupled-2-transmon-system.">
-<h2>IV. Analyze a coupled 2 transmon system.<a class="headerlink" href="#IV.-Analyze-a-coupled-2-transmon-system." title="Link to this heading">¶</a></h2>
+<h3>IV. Analyze a coupled 2 transmon system.<a class="headerlink" href="#IV.-Analyze-a-coupled-2-transmon-system." title="Link to this heading">¶</a></h3>
 <ol class="arabic simple">
 <li><p>Finite Element Eigenmode Analysis</p></li>
 <li><p>Identify the mode you want. The mode can inclusively be from 1 to setup.n_modes.</p></li>
@@ -567,13 +566,13 @@
 </pre></div>
 </div>
 </div>
+</section>
+</section>
 <section id="1.-Analyze-the-transmon-qubit-by-itself">
-<h3>1. Analyze the transmon qubit by itself<a class="headerlink" href="#1.-Analyze-the-transmon-qubit-by-itself" title="Link to this heading">¶</a></h3>
+<h2>1. Analyze the transmon qubit by itself<a class="headerlink" href="#1.-Analyze-the-transmon-qubit-by-itself" title="Link to this heading">¶</a></h2>
 <p>We will use the analysis package - applicable to most users. Advanced users might want to expand the package, or directly interact with the renderer. The renderer is one of the properties of the analysis class.</p>
-</section>
-</section>
 <section id="Create-the-Qbit-design">
-<h2>Create the Qbit design<a class="headerlink" href="#Create-the-Qbit-design" title="Link to this heading">¶</a></h2>
+<h3>Create the Qbit design<a class="headerlink" href="#Create-the-Qbit-design" title="Link to this heading">¶</a></h3>
 <p>Setup a design of a given dimension. Dimensions will be respected in the design rendering. Note that the design size extends from the origin into the first quadrant.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -610,7 +609,9 @@
 </div>
 </section>
 <section id="Finite-Element-Eigenmode-Analysis">
-<h2>Finite Element Eigenmode Analysis<a class="headerlink" href="#Finite-Element-Eigenmode-Analysis" title="Link to this heading">¶</a></h2>
+<h3>Finite Element Eigenmode Analysis<a class="headerlink" href="#Finite-Element-Eigenmode-Analysis" title="Link to this heading">¶</a></h3>
+<section id="Setup">
+<h4>Setup<a class="headerlink" href="#Setup" title="Link to this heading">¶</a></h4>
 <p>Select the analysis you intend to run from the <code class="docutils literal notranslate"><span class="pre">qiskit_metal.analyses</span></code> collection. Select the design to analyze and the tool to use for any external simulation.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
@@ -689,6 +690,9 @@
  &#39;vars&#39;: {&#39;Lj&#39;: &#39;11 nH&#39;, &#39;Cj&#39;: &#39;0 fF&#39;}}
 </pre></div></div>
 </div>
+</section>
+<section id="Execute-simulation-and-verify-convergence-and-EM-field">
+<h4>Execute simulation and verify convergence and EM field<a class="headerlink" href="#Execute-simulation-and-verify-convergence-and-EM-field" title="Link to this heading">¶</a></h4>
 <p>Analyze a single qubit with shorted terminations. Then observe the frequency convergence plot. If not converging, you might want to increase the min_passes value to force the renderer to increase accuracy.</p>
 <p>You can use the method <code class="docutils literal notranslate"><span class="pre">run()</span></code> instead of <code class="docutils literal notranslate"><span class="pre">sim.run()</span></code> in the following cell if you want to run both eigenmode and epr analysis in a single step. If so, make sure to also tweak the setup for the epr analysis. The input parameters are otherwise the same for the two methods.</p>
 <div class="nbinput docutils container">
@@ -951,8 +955,11 @@ WindowsPath(&#39;C:/_code_ibmq/qiskit-metal-public/docs/tut/4-Analysis/ansys.png
 </div>
 </div>
 </section>
+</section>
 <section id="EPR-Analysis">
-<h2>EPR Analysis<a class="headerlink" href="#EPR-Analysis" title="Link to this heading">¶</a></h2>
+<h3>EPR Analysis<a class="headerlink" href="#EPR-Analysis" title="Link to this heading">¶</a></h3>
+<section id="id2">
+<h4>Setup<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h4>
 <p>Identify the non-linear (Josephson) junctions in the model. You will need to list the junctions in the epr setup.</p>
 <p>In this case there’s only one junction, namely ‘jj’. Let’s see what we need to change in the default setup.</p>
 <div class="nbinput docutils container">
@@ -1138,7 +1145,7 @@ Index: [0]
 </div>
 <div class="output_area docutils container">
 <section id="Mode-frequencies-(MHz)">
-<h3>Mode frequencies (MHz)<a class="headerlink" href="#Mode-frequencies-(MHz)" title="Link to this heading">¶</a></h3>
+<h5>Mode frequencies (MHz)<a class="headerlink" href="#Mode-frequencies-(MHz)" title="Link to this heading">¶</a></h5>
 </section>
 </div>
 </div>
@@ -1192,7 +1199,7 @@ Index: [0]
 </div>
 <div class="output_area docutils container">
 <section id="Kerr-Non-linear-coefficient-table-(MHz)">
-<h3>Kerr Non-linear coefficient table (MHz)<a class="headerlink" href="#Kerr-Non-linear-coefficient-table-(MHz)" title="Link to this heading">¶</a></h3>
+<h5>Kerr Non-linear coefficient table (MHz)<a class="headerlink" href="#Kerr-Non-linear-coefficient-table-(MHz)" title="Link to this heading">¶</a></h5>
 </section>
 </div>
 </div>
@@ -1244,12 +1251,13 @@ Index: [0]
 </table>
 </div></div>
 </div>
+</section>
+</section>
+</section>
 <section id="2.-Analyze-the-CPW-resonator-by-itself">
-<h3>2. Analyze the CPW resonator by itself<a class="headerlink" href="#2.-Analyze-the-CPW-resonator-by-itself" title="Link to this heading">¶</a></h3>
-</section>
-</section>
+<h2>2. Analyze the CPW resonator by itself<a class="headerlink" href="#2.-Analyze-the-CPW-resonator-by-itself" title="Link to this heading">¶</a></h2>
 <section id="Update-the-design-in-Metal">
-<h2>Update the design in Metal<a class="headerlink" href="#Update-the-design-in-Metal" title="Link to this heading">¶</a></h2>
+<h3>Update the design in Metal<a class="headerlink" href="#Update-the-design-in-Metal" title="Link to this heading">¶</a></h3>
 <p>Connect the transmon to a CPW. The other end of the CPW connects to an open to ground termination.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
@@ -1273,8 +1281,10 @@ Index: [0]
 </div>
 </div>
 </section>
-<section id="id2">
-<h2>Finite Element Eigenmode Analysis<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
+<section id="id3">
+<h3>Finite Element Eigenmode Analysis<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
+<section id="id4">
+<h4>Setup<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
 <p>Create a separate analysis object, dedicated to the readout. This allows to retain the Qubit session active, in case we will later need to tweak the design and repeat the simulation. When different renderers are available you could even consider using different more appopriate ones for each simulation steps of this notebook, but for now we will be using the same one.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
@@ -1285,6 +1295,9 @@ Index: [0]
 </div>
 </div>
 <p>For the resonator analysis we will use the default setup. Youn can feel free to edit it the same way we did in section 1.</p>
+</section>
+<section id="id5">
+<h4>Execute simulation and verify convergence and EM field<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h4>
 <p>Analyze the readout in isolation. Select the readout and terminate it with an open on both ends. Note that we are selecting for this analysis both the <code class="docutils literal notranslate"><span class="pre">readout</span></code> component and the <code class="docutils literal notranslate"><span class="pre">open_to_ground</span></code> component. The <code class="docutils literal notranslate"><span class="pre">open_to_ground</span></code> component might feel redundant because we are specifying in that open in the <code class="docutils literal notranslate"><span class="pre">open_terminations</span></code>, and the end converging result is indeed the same. However the <code class="docutils literal notranslate"><span class="pre">open_to_ground</span></code> appears to help the system to converge faster, so we keep it in there.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
@@ -1437,6 +1450,9 @@ INFO 10:38PM [get_setup]:       Opened setup `Setup1`  (&lt;class &#39;pyEPR.ans
 WindowsPath(&#39;C:/_code_ibmq/qiskit-metal-public/docs/tut/4-Analysis/ansys.png&#39;)
 </pre></div></div>
 </div>
+</section>
+<section id="Refine">
+<h4>Refine<a class="headerlink" href="#Refine" title="Link to this heading">¶</a></h4>
 <p>If convergence is not complete, or the EM field is unclear, update the number of passes and re-run the flow (below repeated for convenience)</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
@@ -1493,8 +1509,9 @@ WindowsPath(&#39;C:/_code_ibmq/qiskit-metal-public/docs/tut/4-Analysis/ansys.png
 </pre></div></div>
 </div>
 </section>
-<section id="id3">
-<h2>EPR Analysis<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h2>
+</section>
+<section id="id6">
+<h3>EPR Analysis<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h3>
 <p>Find the electric and magnetic energy stored in the readout system.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
@@ -1525,12 +1542,14 @@ Design &#34;Readout_hfss&#34; info:
 
 </pre></div></div>
 </div>
+</section>
+</section>
 <section id="3.-Analyze-the-combined-transmon-+-CPW-resonator-system">
-<h3>3. Analyze the combined transmon + CPW resonator system<a class="headerlink" href="#3.-Analyze-the-combined-transmon-+-CPW-resonator-system" title="Link to this heading">¶</a></h3>
-</section>
-</section>
-<section id="id4">
-<h2>Finite Element Eigenmode Analysis<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h2>
+<h2>3. Analyze the combined transmon + CPW resonator system<a class="headerlink" href="#3.-Analyze-the-combined-transmon-+-CPW-resonator-system" title="Link to this heading">¶</a></h2>
+<section id="id7">
+<h3>Finite Element Eigenmode Analysis<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h3>
+<section id="id8">
+<h4>Setup<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h4>
 <p>Create a separate analysis object for the combined qbit+readout.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
@@ -1569,6 +1588,9 @@ Design &#34;Readout_hfss&#34; info:
  &#39;vars&#39;: {&#39;Lj&#39;: &#39;10 nH&#39;, &#39;Cj&#39;: &#39;0 fF&#39;}}
 </pre></div></div>
 </div>
+</section>
+<section id="id9">
+<h4>Execute simulation and verify convergence and EM field<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h4>
 <p>Analyze the qubit+readout. Select the qubit and the readout, then finalize with open termination on the other pins.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
@@ -1655,8 +1677,9 @@ WindowsPath(&#39;C:/_code_ibmq/qiskit-metal-public/docs/tut/4-Analysis/ansys.png
 </pre></div></div>
 </div>
 </section>
-<section id="id5">
-<h2>EPR Analysis<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h2>
+</section>
+<section id="id10">
+<h3>EPR Analysis<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h3>
 <p>Similarly to section 1, we need to pass to the renderer the names of the shapes that identify the junction (<code class="docutils literal notranslate"><span class="pre">rect</span></code> and <code class="docutils literal notranslate"><span class="pre">line</span></code>). These should be the same as in section 1, or you can look again for those in the renderer.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
@@ -1830,8 +1853,8 @@ Index: [0, 1]
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<section id="id6">
-<h3>Mode frequencies (MHz)<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h3>
+<section id="id11">
+<h4>Mode frequencies (MHz)<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h4>
 </section>
 </div>
 </div>
@@ -1888,8 +1911,8 @@ Index: [0, 1]
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<section id="id7">
-<h3>Kerr Non-linear coefficient table (MHz)<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h3>
+<section id="id12">
+<h4>Kerr Non-linear coefficient table (MHz)<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h4>
 </section>
 </div>
 </div>
@@ -1974,12 +1997,12 @@ Index: [0, 1]
 </pre></div>
 </div>
 </div>
+</section>
+</section>
 <section id="4.-Analyze-a-coupled-2-transmon-system">
-<h3>4. Analyze a coupled 2-transmon system<a class="headerlink" href="#4.-Analyze-a-coupled-2-transmon-system" title="Link to this heading">¶</a></h3>
-</section>
-</section>
+<h2>4. Analyze a coupled 2-transmon system<a class="headerlink" href="#4.-Analyze-a-coupled-2-transmon-system" title="Link to this heading">¶</a></h2>
 <section id="Create-the-design">
-<h2>Create the design<a class="headerlink" href="#Create-the-design" title="Link to this heading">¶</a></h2>
+<h3>Create the design<a class="headerlink" href="#Create-the-design" title="Link to this heading">¶</a></h3>
 <p>This is a different system than the one analyzed in sections 1,2,3. Therefore, let’s start by deleting the design currntly in the Qiskit Metal GUI (if any).</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
@@ -2137,8 +2160,10 @@ observe the change by re-executing the cell above.</p>
 </div>
 </div>
 </section>
-<section id="id8">
-<h2>Finite Element Eigenmode Analysis<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h2>
+<section id="id13">
+<h3>Finite Element Eigenmode Analysis<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h3>
+<section id="id14">
+<h4>Setup<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h4>
 <p>Let’s start the analysis by creating the appropriate analysis object.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
@@ -2337,8 +2362,11 @@ WindowsPath(&#39;C:/_code_ibmq/qiskit-metal-public/docs/tut/4-Analysis/ansys.png
 </pre></div></div>
 </div>
 </section>
-<section id="id9">
-<h2>EPR Analysis<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h2>
+</section>
+<section id="id15">
+<h3>EPR Analysis<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h3>
+<section id="id16">
+<h4>Setup<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h4>
 <p>Identify the non-linear (Josephson) junctions in the model. in this case there are 2 junctions, which we will refer to as <code class="docutils literal notranslate"><span class="pre">jj1</span></code> and <code class="docutils literal notranslate"><span class="pre">jj2</span></code>. Also define the dissipative reference shapes. Remove the default junction and create the two.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
@@ -2533,8 +2561,8 @@ INFO 10:53PM [__del__]: Disconnected from Ansys HFSS
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<section id="id10">
-<h3>Mode frequencies (MHz)<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h3>
+<section id="id17">
+<h5>Mode frequencies (MHz)<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h5>
 </section>
 </div>
 </div>
@@ -2591,8 +2619,8 @@ INFO 10:53PM [__del__]: Disconnected from Ansys HFSS
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<section id="id11">
-<h3>Kerr Non-linear coefficient table (MHz)<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h3>
+<section id="id18">
+<h5>Kerr Non-linear coefficient table (MHz)<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h5>
 </section>
 </div>
 </div>
@@ -2670,6 +2698,8 @@ INFO 10:53PM [__del__]: Disconnected from Ansys HFSS
 </pre></div>
 </div>
 </div>
+</section>
+</section>
 </section>
 </section>
 <br><br>
@@ -2758,37 +2788,59 @@ INFO 10:53PM [__del__]: Disconnected from Ansys HFSS
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Eigenmode and EPR analysis</a><ul>
-<li><a class="reference internal" href="#Prerequisite">Prerequisite</a><ul>
-<li><a class="reference internal" href="#Sections">Sections</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#Prerequisite">Prerequisite</a></li>
+<li><a class="reference internal" href="#Sections">Sections</a><ul>
 <li><a class="reference internal" href="#I.-Transmon-only">I. Transmon only</a></li>
 <li><a class="reference internal" href="#II.-Resonator-only">II. Resonator only</a></li>
 <li><a class="reference internal" href="#III.-Transmon-&amp;-resonator">III. Transmon &amp; resonator</a></li>
-<li><a class="reference internal" href="#IV.-Analyze-a-coupled-2-transmon-system.">IV. Analyze a coupled 2 transmon system.</a><ul>
-<li><a class="reference internal" href="#1.-Analyze-the-transmon-qubit-by-itself">1. Analyze the transmon qubit by itself</a></li>
+<li><a class="reference internal" href="#IV.-Analyze-a-coupled-2-transmon-system.">IV. Analyze a coupled 2 transmon system.</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#1.-Analyze-the-transmon-qubit-by-itself">1. Analyze the transmon qubit by itself</a><ul>
 <li><a class="reference internal" href="#Create-the-Qbit-design">Create the Qbit design</a></li>
-<li><a class="reference internal" href="#Finite-Element-Eigenmode-Analysis">Finite Element Eigenmode Analysis</a></li>
+<li><a class="reference internal" href="#Finite-Element-Eigenmode-Analysis">Finite Element Eigenmode Analysis</a><ul>
+<li><a class="reference internal" href="#Setup">Setup</a></li>
+<li><a class="reference internal" href="#Execute-simulation-and-verify-convergence-and-EM-field">Execute simulation and verify convergence and EM field</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#EPR-Analysis">EPR Analysis</a><ul>
-<li><a class="reference internal" href="#2.-Analyze-the-CPW-resonator-by-itself">2. Analyze the CPW resonator by itself</a></li>
+<li><a class="reference internal" href="#id2">Setup</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li><a class="reference internal" href="#2.-Analyze-the-CPW-resonator-by-itself">2. Analyze the CPW resonator by itself</a><ul>
 <li><a class="reference internal" href="#Update-the-design-in-Metal">Update the design in Metal</a></li>
-<li><a class="reference internal" href="#id2">Finite Element Eigenmode Analysis</a></li>
-<li><a class="reference internal" href="#id3">EPR Analysis</a><ul>
-<li><a class="reference internal" href="#3.-Analyze-the-combined-transmon-+-CPW-resonator-system">3. Analyze the combined transmon + CPW resonator system</a></li>
+<li><a class="reference internal" href="#id3">Finite Element Eigenmode Analysis</a><ul>
+<li><a class="reference internal" href="#id4">Setup</a></li>
+<li><a class="reference internal" href="#id5">Execute simulation and verify convergence and EM field</a></li>
+<li><a class="reference internal" href="#Refine">Refine</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id4">Finite Element Eigenmode Analysis</a></li>
-<li><a class="reference internal" href="#id5">EPR Analysis</a><ul>
-<li><a class="reference internal" href="#4.-Analyze-a-coupled-2-transmon-system">4. Analyze a coupled 2-transmon system</a></li>
+<li><a class="reference internal" href="#id6">EPR Analysis</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#3.-Analyze-the-combined-transmon-+-CPW-resonator-system">3. Analyze the combined transmon + CPW resonator system</a><ul>
+<li><a class="reference internal" href="#id7">Finite Element Eigenmode Analysis</a><ul>
+<li><a class="reference internal" href="#id8">Setup</a></li>
+<li><a class="reference internal" href="#id9">Execute simulation and verify convergence and EM field</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id10">EPR Analysis</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#4.-Analyze-a-coupled-2-transmon-system">4. Analyze a coupled 2-transmon system</a><ul>
 <li><a class="reference internal" href="#Create-the-design">Create the design</a></li>
-<li><a class="reference internal" href="#id8">Finite Element Eigenmode Analysis</a></li>
-<li><a class="reference internal" href="#id9">EPR Analysis</a></li>
+<li><a class="reference internal" href="#id13">Finite Element Eigenmode Analysis</a><ul>
+<li><a class="reference internal" href="#id14">Setup</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id15">EPR Analysis</a><ul>
+<li><a class="reference internal" href="#id16">Setup</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

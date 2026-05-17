@@ -527,10 +527,11 @@
 </pre></div>
 </div>
 </div>
+</section>
 <section id="Managing-a-QComponent">
-<h3>Managing a QComponent<a class="headerlink" href="#Managing-a-QComponent" title="Link to this heading">¶</a></h3>
+<h2>Managing a QComponent<a class="headerlink" href="#Managing-a-QComponent" title="Link to this heading">¶</a></h2>
 <section id="Create-an-instance">
-<h4>Create an instance<a class="headerlink" href="#Create-an-instance" title="Link to this heading">¶</a></h4>
+<h3>Create an instance<a class="headerlink" href="#Create-an-instance" title="Link to this heading">¶</a></h3>
 <p>Create an instance of <code class="docutils literal notranslate"><span class="pre">TransmonPocket</span></code>. Notice the import needs to use the absolute path. This is to minimize the dynamic memory footprint of Qiskit Metal and to prevent QComponent sub-class naming conflicts that might occur if user creates custom ones.</p>
 <p>Observe how, at time of creation, we define some basic options of the TransmonPocket, being the number/name of connection pads(<code class="docutils literal notranslate"><span class="pre">a</span></code>-&gt;<code class="docutils literal notranslate"><span class="pre">d</span></code>). Most options can be defined/updated also after the creation of the QComponent instance, as we will show later in this section.</p>
 <div class="nbinput nblast docutils container">
@@ -565,7 +566,7 @@
 </div>
 </section>
 <section id="Controlling-the-instance-using-its-interface-parameters">
-<h4>Controlling the instance using its interface parameters<a class="headerlink" href="#Controlling-the-instance-using-its-interface-parameters" title="Link to this heading">¶</a></h4>
+<h3>Controlling the instance using its interface parameters<a class="headerlink" href="#Controlling-the-instance-using-its-interface-parameters" title="Link to this heading">¶</a></h3>
 <p>Now we can also change the options of the component <code class="docutils literal notranslate"><span class="pre">q1</span></code> before we re-run the make.</p>
 <p>QComponent classes can have parameterized <code class="docutils literal notranslate"><span class="pre">make()</span></code>. That means that the final shapes will be the result of a combination of input parameters. Said parameters and their defaults are described in the QComponent <code class="docutils literal notranslate"><span class="pre">default_options</span></code>.</p>
 <div class="nbinput docutils container">
@@ -695,7 +696,7 @@
 <p>These options can be modified at creation, using the <code class="docutils literal notranslate"><span class="pre">options</span></code> parameter of the QComponent init method. See <code class="docutils literal notranslate"><span class="pre">q1options</span></code> in the above cells. Later i this notebook, we will show how to update options at a later time (After creation).</p>
 </section>
 <section id="QComponent-name-changes">
-<h4>QComponent name changes<a class="headerlink" href="#QComponent-name-changes" title="Link to this heading">¶</a></h4>
+<h3>QComponent name changes<a class="headerlink" href="#QComponent-name-changes" title="Link to this heading">¶</a></h3>
 <p>The previously created TransmonPocket instance, was named <code class="docutils literal notranslate"><span class="pre">Pocket_1</span></code> by default (see in GUI or by executing <code class="docutils literal notranslate"><span class="pre">q1.name</span></code>). The first part of the name is defined in the QComponent class <code class="docutils literal notranslate"><span class="pre">component_metadata</span> <span class="pre">-&gt;</span> <span class="pre">short</span> <span class="pre">name</span></code> as we will see later, while the suffix is an incremental integer resulting from a QComponent class-specific counter.</p>
 <p>Instead of using the default name, we can assign the QComponent instance name at creation, for example: <code class="docutils literal notranslate"><span class="pre">q1</span> <span class="pre">=</span> <span class="pre">TransmonPocket(design,</span> <span class="pre">name</span> <span class="pre">=</span> <span class="pre">&quot;Q1&quot;,</span> <span class="pre">options</span> <span class="pre">=</span> <span class="pre">q1options)</span></code>. We can also rename it like this:</p>
 <div class="nbinput docutils container">
@@ -718,7 +719,7 @@ True
 </section>
 </section>
 <section id="Connecting-two-QComponents---Nets">
-<h3>Connecting two QComponents - Nets<a class="headerlink" href="#Connecting-two-QComponents---Nets" title="Link to this heading">¶</a></h3>
+<h2>Connecting two QComponents - Nets<a class="headerlink" href="#Connecting-two-QComponents---Nets" title="Link to this heading">¶</a></h2>
 <p>Let’s demonstrate how to update the options of a component after creation by updating <code class="docutils literal notranslate"><span class="pre">pos_x</span></code> to move <code class="docutils literal notranslate"><span class="pre">Q1</span></code> towards the left. let’s go ahead and create also an identical TransmonPocket (<code class="docutils literal notranslate"><span class="pre">Q2</span></code>) to its right.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
@@ -844,9 +845,9 @@ True
 </div>
 </section>
 <section id="Creating-a-custom-component-from-scratch">
-<h3>Creating a custom component from scratch<a class="headerlink" href="#Creating-a-custom-component-from-scratch" title="Link to this heading">¶</a></h3>
+<h2>Creating a custom component from scratch<a class="headerlink" href="#Creating-a-custom-component-from-scratch" title="Link to this heading">¶</a></h2>
 <section id="The-QComponent-blueprint">
-<h4>The QComponent blueprint<a class="headerlink" href="#The-QComponent-blueprint" title="Link to this heading">¶</a></h4>
+<h3>The QComponent blueprint<a class="headerlink" href="#The-QComponent-blueprint" title="Link to this heading">¶</a></h3>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>class SomeComponent(QComponent):
     default_options = Dict(…)
     def make(self):
@@ -858,7 +859,7 @@ True
 <p><code class="docutils literal notranslate"><span class="pre">SomeComponent</span></code> = The name of the new QComponent class, which should alway inherit from <code class="docutils literal notranslate"><span class="pre">QComponent</span></code>. <code class="docutils literal notranslate"><span class="pre">default_options</span></code> = The interface for parameters that influence the shape generation of the <code class="docutils literal notranslate"><span class="pre">make()</span></code>. <code class="docutils literal notranslate"><span class="pre">make()</span></code> = Math to generate the shapes implementing the QComponent instance. <code class="docutils literal notranslate"><span class="pre">add_qgeometry()</span></code> = Method to create <code class="docutils literal notranslate"><span class="pre">path</span></code>, <code class="docutils literal notranslate"><span class="pre">poly</span></code> and <code class="docutils literal notranslate"><span class="pre">junction</span></code> in the QGeometry table. <code class="docutils literal notranslate"><span class="pre">add_pin()</span></code> = Method to create the pins to connect the QComponent through QRoute components.</p>
 </section>
 <section id="Building-from-that-blueprint">
-<h4>Building from that blueprint<a class="headerlink" href="#Building-from-that-blueprint" title="Link to this heading">¶</a></h4>
+<h3>Building from that blueprint<a class="headerlink" href="#Building-from-that-blueprint" title="Link to this heading">¶</a></h3>
 <p>First, let’s free up space in the layout we just compoese in the previous section. Specifically let’s eliminate the cpw and Q2 instances (We will reuse Q1).</p>
 <p>Note in the following cell I am intentionally using two different methods to delete a component, just to illustrate them. YOu can use only one of the two methods in your notebooks.</p>
 <div class="nbinput nblast docutils container">
@@ -1082,7 +1083,6 @@ True
 </section>
 </section>
 </section>
-</section>
 <br><br>
 <h3>For more information, review the <b>Introduction to Quantum Computing and Quantum Hardware</b> lectures below</h3>
 <div style="border:solid 1 px #990000;">
@@ -1169,7 +1169,7 @@ True
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Add my QComponent to a reusable python file</a><ul>
-<li><a class="reference internal" href="#Preparations">Preparations</a><ul>
+<li><a class="reference internal" href="#Preparations">Preparations</a></li>
 <li><a class="reference internal" href="#Managing-a-QComponent">Managing a QComponent</a><ul>
 <li><a class="reference internal" href="#Create-an-instance">Create an instance</a></li>
 <li><a class="reference internal" href="#Controlling-the-instance-using-its-interface-parameters">Controlling the instance using its interface parameters</a></li>
@@ -1180,8 +1180,6 @@ True
 <li><a class="reference internal" href="#Creating-a-custom-component-from-scratch">Creating a custom component from scratch</a><ul>
 <li><a class="reference internal" href="#The-QComponent-blueprint">The QComponent blueprint</a></li>
 <li><a class="reference internal" href="#Building-from-that-blueprint">Building from that blueprint</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
