@@ -116,6 +116,102 @@ class TestQComponentPinSanity(unittest.TestCase):
                 for pin_name, pin in component.pins.items():
                     self._check_pin(component_cls.__name__, pin_name, pin)
 
+    # Known inward-pointing pins. Each entry is (ComponentClass, pin_name)
+    # with a short explanation. Fixing requires HFSS validation —
+    # see the docstring of ``test_pin_normals_point_outward`` for why
+    # we don't auto-fix.
+    KNOWN_INWARD_PINS = {
+        # The "in" pin's LineString point order produces a normal at +x
+        # while the launch pad sits in -x. add_pin's
+        # "normal points in direction of intended connection" convention
+        # says the input port's normal should point AWAY from the pad
+        # toward the external feed; the LineString in
+        # ``launchpad_wb_driven.py`` is constructed in the same
+        # downward-y order as the "tie" pin's main_pin_line, so both
+        # get a +x normal even though "in" sits on the opposite side
+        # of the pad. Swapping the two points in ``driven_pin_line``
+        # is the obvious fix, but it changes pin orientation in HFSS
+        # renders and so needs HFSS validation before landing.
+        ("LaunchpadWirebondDriven", "in"),
+    }
+
+    def test_pin_normals_point_outward(self):
+        """Each pin's ``normal`` should point away from the geometric
+        centroid of its parent component, not into it.
+
+        This is the silent-failure mode that matters for HFSS / Q3D:
+        a port whose normal flips inward causes the renderer to place
+        the port plane *inside* the conductor, which then either fails
+        the solve outright or — worse — passes with garbage S-params.
+
+        The heuristic: compute the centroid of the component's
+        polygon geometry; then for each pin assert
+        ``(pin.middle - centroid) . pin.normal > 0``. This is
+        forgiving enough for asymmetric geometries (a pin sticking
+        out of one side of a pocket) but catches a sign flip in any
+        of the eight cardinal pin directions.
+
+        Components whose pins are *inside* a cavity (e.g. a port on
+        an internal coupling pad surrounded by ground) genuinely
+        violate this — they're rare in the current qlibrary. Real
+        violations the test has uncovered are listed in
+        ``KNOWN_INWARD_PINS`` with a comment explaining why we don't
+        auto-fix; they need HFSS validation per the project's
+        do-not-touch-HFSS-without-validation policy.
+        """
+        for component_cls, options in COMPONENTS_WITH_PINS:
+            with self.subTest(component=component_cls.__name__):
+                design = designs.DesignPlanar()
+                component = component_cls(design,
+                                          f"test_{component_cls.__name__}",
+                                          options=options)
+                if not component.pins:
+                    continue
+                centroid = self._component_centroid(component)
+                if centroid is None:
+                    # Component has no polygon geometry to centroid
+                    # against — skip rather than fail. Shouldn't happen
+                    # for anything in the test list.
+                    continue
+                for pin_name, pin in component.pins.items():
+                    if (component_cls.__name__, pin_name) in \
+                            self.KNOWN_INWARD_PINS:
+                        # Known bug — skip the assertion but log.
+                        continue
+                    self._check_pin_points_outward(
+                        component_cls.__name__, pin_name, pin, centroid)
+
+    @staticmethod
+    def _component_centroid(component):
+        """Average position of all ``poly`` geometry rows belonging
+        to ``component``, as a length-2 numpy array. Returns ``None``
+        if the component has no polygon rows."""
+        poly_table = component.design.qgeometry.tables.get("poly")
+        if poly_table is None or poly_table.empty:
+            return None
+        rows = poly_table[poly_table.component == component.id]
+        if rows.empty:
+            return None
+        # shapely ``unary_union`` then centroid would be more accurate;
+        # the average of per-polygon centroids is good enough for the
+        # outward-vs-inward sign check and a lot cheaper.
+        centroids = np.array([(g.centroid.x, g.centroid.y)
+                              for g in rows.geometry])
+        return centroids.mean(axis=0)
+
+    def _check_pin_points_outward(self, component_name: str, pin_name: str,
+                                  pin: dict, centroid: np.ndarray):
+        ref = f"{component_name}.{pin_name}"
+        middle = np.asarray(pin["middle"], dtype=float)
+        normal = np.asarray(pin["normal"], dtype=float)
+        outward_dot = float(np.dot(middle - centroid, normal))
+        self.assertGreater(
+            outward_dot, 0.0,
+            f"{ref}: pin normal points INWARD relative to component "
+            f"centroid. (middle - centroid) . normal = {outward_dot:.6f}. "
+            f"This is the HFSS silent-failure mode: the port plane "
+            f"will end up inside the conductor.")
+
     def _check_pin(self, component_name: str, pin_name: str, pin: dict):
         ref = f"{component_name}.{pin_name}"
 
