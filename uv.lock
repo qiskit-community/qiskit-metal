@@ -2321,7 +2321,7 @@ wheels = [
 
 [[package]]
 name = "pyepr-quantum"
-version = "0.9.4"
+version = "0.9.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "addict" },
@@ -2340,9 +2340,9 @@ dependencies = [
     { name = "xarray", version = "2025.6.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "xarray", version = "2025.12.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/07/50/3b0c3825a883038eb62651fb19264c73058b0aaf1003367c52637dc68af4/pyepr_quantum-0.9.4.tar.gz", hash = "sha256:69c4ac847d520e3bc8974d9a5391fe39e251b0adc6388c671c4f227332fc6c32", size = 112207, upload-time = "2026-05-17T01:07:28.621Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/0a/d9/9c0c048e29f7c34c3a628e31d8a4c4054906bda0bd76c57031961af48e38/pyepr_quantum-0.9.5.tar.gz", hash = "sha256:6648bf86760846750b969db86db928748115467fa52b4277eb4e147b36493724", size = 127842, upload-time = "2026-05-17T04:15:43.456Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f6/cc/bd6aa3c72b529c5669b53ff73aea7ba61fb9f3bc64ee5d5ff72131100718/pyepr_quantum-0.9.4-py3-none-any.whl", hash = "sha256:30cf886a7857d43f6ba3303359c7912b8b192316ce4ff4cda8c032478cfb9974", size = 105007, upload-time = "2026-05-17T01:07:26.593Z" },
+    { url = "https://files.pythonhosted.org/packages/c4/15/cb22a4efe6f1f5dcb22ad7b98465e47a2e129d77e4e0a3e715b1e09a4676/pyepr_quantum-0.9.5-py3-none-any.whl", hash = "sha256:12644117cf0b208b164645638cf9d6c46b387d4bbc2fb45e5c96485c6f5b151b", size = 114090, upload-time = "2026-05-17T04:15:41.311Z" },
 ]
 
 [[package]]
@@ -2811,7 +2811,7 @@ requires-dist = [
     { name = "pandas", specifier = ">=2.1.1" },
     { name = "pint", specifier = ">=0.21.0" },
     { name = "pyaedt", specifier = ">=0.21,<0.24" },
-    { name = "pyepr-quantum", specifier = ">=0.9.4" },
+    { name = "pyepr-quantum", specifier = ">=0.9.5" },
     { name = "pygments", specifier = ">=2.14.0" },
     { name = "pyside6", specifier = ">=6.8" },
     { name = "pyyaml", specifier = ">=6.0" },
