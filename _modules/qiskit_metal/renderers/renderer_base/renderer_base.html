@@ -195,6 +195,7 @@
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installing Qiskit Metal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../headless-usage.html">Using Quantum Metal without the Qt GUI</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
 <ul>
@@ -1075,7 +1076,7 @@
 
 <div class="viewcode-block" id="QRenderer.start">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QRenderer.html#qiskit_metal.renderers.QRenderer.start">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Call any initialization (single run) step required to setup the renderer for the first execution,</span>
 <span class="sd">        such as connecting to some API or COM, or importing the correct material libraries, etc.</span>
@@ -1104,7 +1105,7 @@
 
 <div class="viewcode-block" id="QRenderer.stop">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QRenderer.html#qiskit_metal.renderers.QRenderer.stop">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Any calls that one may want to make after a rendering is complete.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1171,7 +1172,7 @@
 <div class="viewcode-block" id="QRenderer.render_design">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QRenderer.html#qiskit_metal.renderers.QRenderer.render_design">[docs]</a>
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">render_design</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">render_design</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Abstract method. Must be implemented by the subclass.</span>
 <span class="sd">        Renders all design chips and components.</span>
 <span class="sd">        &quot;&quot;&quot;</span></div>

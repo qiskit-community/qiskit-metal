@@ -196,6 +196,7 @@
   <ul class="current">
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installing Qiskit Metal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="headless-usage.html">Using Quantum Metal without the Qt GUI</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
 <ul>
@@ -734,13 +735,16 @@ Leverages existing EDA stacks, automates tedious workflows, and keeps best pract
 <p class="admonition-title">Note</p>
 <p><strong>You don’t need the Qt GUI to use Quantum Metal.</strong> The full API
 — designs, components, renderers, analyses — works headlessly in a
-plain Python interpreter or a Jupyter notebook.  The <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code>
-desktop app is optional and exists for interactive design work; if
-you’re scripting designs, running parameter sweeps, or working in
-a cloud notebook environment, you can ignore it entirely.</p>
-<p>A no-Qt, in-notebook viewer is under active development as part of
-the Jupyter / cloud workflow track. See the
-<a class="reference internal" href="workflow.html"><span class="doc">workflow</span></a> roadmap for status.</p>
+plain Python interpreter or a Jupyter notebook. Use
+<code class="docutils literal notranslate"><span class="pre">qm.view(design)</span></code> to render a design to a matplotlib figure
+inline, without spinning up <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qm</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">qm</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;design.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="headless-usage.html"><span class="doc">Using Quantum Metal without the Qt GUI</span></a> for the full Qt-free workflow, what
+works without PySide6, and the migration to the lite install.</p>
 </div>
 <div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
 <div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-2 sd-row-cols-lg-2 sd-g-1 sd-g-xs-1 sd-g-sm-1 sd-g-md-1 sd-g-lg-1 docutils">

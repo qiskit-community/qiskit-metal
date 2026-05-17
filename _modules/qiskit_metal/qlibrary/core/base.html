@@ -195,6 +195,7 @@
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installing Qiskit Metal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../headless-usage.html">Using Quantum Metal without the Qt GUI</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
 <ul>
@@ -843,8 +844,8 @@
                  <span class="n">design</span><span class="p">:</span> <span class="s1">&#39;QDesign&#39;</span><span class="p">,</span>
                  <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">make</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                 <span class="n">component_template</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+                 <span class="n">make</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                 <span class="n">component_template</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new Metal component and adds it&#39;s default_options to the</span>
 <span class="sd">        design.</span>
 
@@ -1216,7 +1217,7 @@
 
 <div class="viewcode-block" id="QComponent.make">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.QComponent.html#qiskit_metal.qlibrary.QComponent.make">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The make function implements the logic that creates the geometry</span>
 <span class="sd">        (poly, path, etc.) from the qcomponent.options dictionary of</span>
 <span class="sd">        parameters, and the adds them to the design, using</span>
@@ -1388,7 +1389,7 @@
 
 <div class="viewcode-block" id="QComponent.rebuild">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.QComponent.html#qiskit_metal.qlibrary.QComponent.rebuild">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">rebuild</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rebuild</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Builds the QComponent.</span>
 
 <span class="sd">        This is the main action function of a</span>
@@ -1436,7 +1437,7 @@
 
 <div class="viewcode-block" id="QComponent.delete">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.QComponent.html#qiskit_metal.qlibrary.QComponent.delete">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete the QComponent.</span>
 
 <span class="sd">        Removes QGeometry, QPins, etc. from the design.</span>
@@ -1553,7 +1554,7 @@
             <span class="n">width</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
             <span class="n">input_as_norm</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
             <span class="n">chip</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">gap</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>  <span class="c1"># gap defaults to 0.6 * width</span>
+            <span class="n">gap</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># gap defaults to 0.6 * width</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds a pin from two points which are normal/tangent to the intended</span>
 <span class="sd">        plane of the pin. The normal should &#39;point&#39; in the direction of</span>
 <span class="sd">        intended connection. Adds the new pin as a subdictionary to parent</span>
@@ -1812,7 +1813,7 @@
             <span class="n">helper</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
             <span class="n">layer</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># chip will be here</span>
             <span class="n">chip</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Add QGeometry.</span>
 
 <span class="sd">        Takes any additional options in options.</span>

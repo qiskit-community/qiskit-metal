@@ -195,6 +195,7 @@
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installing Qiskit Metal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../headless-usage.html">Using Quantum Metal without the Qt GUI</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
 <ul>
@@ -804,7 +805,7 @@
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">metadata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">overwrite_enabled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-                 <span class="n">enable_renderers</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+                 <span class="n">enable_renderers</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new Metal QDesign.</span>
 
 <span class="sd">        Args:</span>
@@ -1196,7 +1197,7 @@
 
 <div class="viewcode-block" id="QDesign.delete_all_components">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.designs.QDesign.html#qiskit_metal.designs.QDesign.delete_all_components">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">delete_all_components</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">delete_all_components</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Clear all components in the design dictionary.</span>
 
 <span class="sd">        Also clears all pins and netlist.</span>
@@ -1236,7 +1237,7 @@
 
 <div class="viewcode-block" id="QDesign.rebuild">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.designs.QDesign.html#qiskit_metal.designs.QDesign.rebuild">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">rebuild</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># remake_all_components</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rebuild</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># remake_all_components</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Remakes all components with their current parameters.&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_components</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>  <span class="c1"># pylint: disable=unused-variable</span>
             <span class="n">obj</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span></div>
@@ -1747,26 +1748,45 @@
                 <span class="p">)</span>
                 <span class="k">continue</span>
 
-            <span class="c1"># check if module_name exists</span>
-            <span class="k">if</span> <span class="n">importlib</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">find_spec</span><span class="p">(</span><span class="n">path_name</span><span class="p">):</span>
-                <span class="n">class_renderer</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">path_name</span><span class="p">),</span>
-                                         <span class="n">class_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-
-                <span class="c1"># check if class_name is in module</span>
-                <span class="k">if</span> <span class="n">class_renderer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">a_renderer</span> <span class="o">=</span> <span class="n">class_renderer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initiate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-                    <span class="c1"># register renderers here.</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_renderers</span><span class="p">[</span><span class="n">renderer_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">a_renderer</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s1">&#39;Renderer=</span><span class="si">{</span><span class="n">renderer_key</span><span class="si">}</span><span class="s1"> is not registered in QDesign.  &#39;</span>
-                        <span class="sa">f</span><span class="s1">&#39;The class_name=</span><span class="si">{</span><span class="n">class_name</span><span class="si">}</span><span class="s1"> was not found.&#39;</span><span class="p">)</span>
-                    <span class="k">continue</span>
-            <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># check if module_name exists AND can actually be loaded.</span>
+            <span class="c1"># ``find_spec`` only checks that the file is importable as</span>
+            <span class="c1"># a Python module — it succeeds for ``renderer_gmsh`` even</span>
+            <span class="c1"># when the external ``gmsh`` package isn&#39;t installed.</span>
+            <span class="c1"># ``import_module`` can then raise ImportError for the</span>
+            <span class="c1"># missing transitive dep. Catching that here lets a</span>
+            <span class="c1"># lite-install user create a design without having every</span>
+            <span class="c1"># optional renderer&#39;s heavy deps; the renderer just gets</span>
+            <span class="c1"># logged and skipped.</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">importlib</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">find_spec</span><span class="p">(</span><span class="n">path_name</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s1">&#39;Renderer=</span><span class="si">{</span><span class="n">renderer_key</span><span class="si">}</span><span class="s1"> is not registered in QDesign.  &#39;</span>
                     <span class="sa">f</span><span class="s1">&#39;The module_name=</span><span class="si">{</span><span class="n">path_name</span><span class="si">}</span><span class="s1"> was not found.&#39;</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">path_name</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;Renderer=</span><span class="si">{</span><span class="n">renderer_key</span><span class="si">}</span><span class="s1"> skipped: &#39;</span>
+                    <span class="sa">f</span><span class="s1">&#39;an optional dependency for </span><span class="si">{</span><span class="n">path_name</span><span class="si">}</span><span class="s1"> is not &#39;</span>
+                    <span class="sa">f</span><span class="s1">&#39;installed (</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">). Install the corresponding extra &#39;</span>
+                    <span class="sa">f</span><span class="s1">&#39;(e.g. `pip install quantum-metal[fem]` for gmsh, &#39;</span>
+                    <span class="sa">f</span><span class="s1">&#39;`pip install quantum-metal[ansys]` for pyaedt) &#39;</span>
+                    <span class="sa">f</span><span class="s1">&#39;to enable it.&#39;</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="n">class_renderer</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">class_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+            <span class="c1"># check if class_name is in module</span>
+            <span class="k">if</span> <span class="n">class_renderer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">a_renderer</span> <span class="o">=</span> <span class="n">class_renderer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initiate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+                <span class="c1"># register renderers here.</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_renderers</span><span class="p">[</span><span class="n">renderer_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">a_renderer</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;Renderer=</span><span class="si">{</span><span class="n">renderer_key</span><span class="si">}</span><span class="s1"> is not registered in QDesign.  &#39;</span>
+                    <span class="sa">f</span><span class="s1">&#39;The class_name=</span><span class="si">{</span><span class="n">class_name</span><span class="si">}</span><span class="s1"> was not found.&#39;</span><span class="p">)</span>
                 <span class="k">continue</span>
 
         <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">a_render</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_renderers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>

@@ -196,6 +196,7 @@
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="../index.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installing Qiskit Metal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../headless-usage.html">Using Quantum Metal without the Qt GUI</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
 <ul>
@@ -705,17 +706,32 @@
 <h1>QMplRenderer<a class="headerlink" href="#qmplrenderer" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.QMplRenderer">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">QMplRenderer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">canvas</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="qiskit_metal.renderers.PlotCanvas.html#qiskit_metal.renderers.PlotCanvas" title="qiskit_metal.renderers.PlotCanvas"><span class="pre">PlotCanvas</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">design</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="qiskit_metal.designs.QDesign.html#qiskit_metal.designs.QDesign" title="qiskit_metal.designs.design_base.QDesign"><span class="pre">QDesign</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Logger</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/renderers/renderer_mpl/mpl_renderer.html#QMplRenderer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.renderers.QMplRenderer" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">QMplRenderer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">design</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="qiskit_metal.designs.QDesign.html#qiskit_metal.designs.QDesign" title="qiskit_metal.designs.design_base.QDesign"><span class="pre">QDesign</span></a></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">canvas</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="qiskit_metal.renderers.PlotCanvas.html#qiskit_metal.renderers.PlotCanvas" title="qiskit_metal.renderers.PlotCanvas"><span class="pre">PlotCanvas</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Logger</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/renderers/renderer_mpl/mpl_renderer.html#QMplRenderer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.renderers.QMplRenderer" title="Link to this definition">¶</a></dt>
 <dd><p>Matplotlib renderer for Metal designs.</p>
-<p class="rubric">Notes</p>
-<p>Access via <code class="docutils literal notranslate"><span class="pre">gui.canvas.metal_renderer</span></code>. The axis to render is passed
-in the <code class="docutils literal notranslate"><span class="pre">render</span></code> method.</p>
+<p>Can be used in two ways:</p>
+<ol class="arabic simple">
+<li><p><strong>Standalone (no Qt):</strong> <code class="docutils literal notranslate"><span class="pre">QMplRenderer(design)</span></code> — produces a
+renderer that plots into any matplotlib <code class="docutils literal notranslate"><span class="pre">Axes</span></code> passed to
+<a class="reference internal" href="#qiskit_metal.renderers.QMplRenderer.render" title="qiskit_metal.renderers.QMplRenderer.render"><code class="xref py py-meth docutils literal notranslate"><span class="pre">render()</span></code></a>. This is the path used by
+<code class="xref py py-func docutils literal notranslate"><span class="pre">qiskit_metal.view()</span></code> and by tutorials that want to display
+a design inline in a Jupyter notebook with no GUI.</p></li>
+<li><p><strong>Inside the Qt MetalGUI:</strong> <code class="docutils literal notranslate"><span class="pre">QMplRenderer(design,</span> <span class="pre">canvas=plot_canvas)</span></code>
+— the desktop GUI’s <a class="reference internal" href="qiskit_metal.renderers.PlotCanvas.html#qiskit_metal.renderers.PlotCanvas" title="qiskit_metal.renderers.PlotCanvas"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlotCanvas</span></code></a> instantiates this way to
+wire the renderer to its embedded matplotlib figure. The
+<code class="docutils literal notranslate"><span class="pre">canvas</span></code> argument is stored on <code class="docutils literal notranslate"><span class="pre">self.canvas</span></code> for callers
+that need it, but no method in this class uses it directly.</p></li>
+</ol>
+<p>The <code class="docutils literal notranslate"><span class="pre">ax</span></code> to render into is still passed explicitly to
+<a class="reference internal" href="#qiskit_metal.renderers.QMplRenderer.render" title="qiskit_metal.renderers.QMplRenderer.render"><code class="xref py py-meth docutils literal notranslate"><span class="pre">render()</span></code></a> — neither construction path implies a fixed axes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>canvas</strong> (<a class="reference internal" href="qiskit_metal.renderers.PlotCanvas.html#qiskit_metal.renderers.PlotCanvas" title="qiskit_metal.renderers.PlotCanvas"><em>PlotCanvas</em></a>) – The canvas</p></li>
-<li><p><strong>design</strong> (<a class="reference internal" href="qiskit_metal.designs.QDesign.html#qiskit_metal.designs.QDesign" title="qiskit_metal.designs.QDesign"><em>QDesign</em></a>) – The design</p></li>
-<li><p><strong>logger</strong> (<em>logging.Logger</em>) – The logger</p></li>
+<li><p><strong>design</strong> – The design to render. Required.</p></li>
+<li><p><strong>canvas</strong> – Optional Qt <code class="docutils literal notranslate"><span class="pre">PlotCanvas</span></code> (legacy path used by
+<code class="xref py py-class docutils literal notranslate"><span class="pre">MetalGUI</span></code>). Pass <code class="docutils literal notranslate"><span class="pre">None</span></code> for a standalone /
+headless renderer.</p></li>
+<li><p><strong>logger</strong> – Optional logger. Falls back to a module-level
+logger if <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
 </ul>
 </dd>
 </dl>

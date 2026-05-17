@@ -195,6 +195,7 @@
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installing Qiskit Metal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../headless-usage.html">Using Quantum Metal without the Qt GUI</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
 <ul>
@@ -783,9 +784,31 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">_plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QIcon</span><span class="p">,</span> <span class="n">QAction</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QLabel</span>
+<span class="c1"># PySide6 is required only for the interactive toolbar features in</span>
+<span class="c1"># this module (``MplInteraction._init_toolbar``, ``figure_pz``). It is</span>
+<span class="c1"># NOT required to import this module. Wrapping the imports in</span>
+<span class="c1"># ``try/except`` lets ``import qiskit_metal`` succeed in Jupyter /</span>
+<span class="c1"># Colab / Binder / headless CI environments where PySide6 isn&#39;t</span>
+<span class="c1"># installed; callers that hit the GUI path get a clear ImportError</span>
+<span class="c1"># from ``_require_qt`` instead of a confusing top-of-module crash.</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QIcon</span><span class="p">,</span> <span class="n">QAction</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QLabel</span>
+    <span class="n">_PYSIDE6_AVAILABLE</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: no cover — exercised only on lite installs</span>
+    <span class="n">Qt</span> <span class="o">=</span> <span class="n">QIcon</span> <span class="o">=</span> <span class="n">QAction</span> <span class="o">=</span> <span class="n">QLabel</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_PYSIDE6_AVAILABLE</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_require_qt</span><span class="p">(</span><span class="n">feature</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raise a helpful ImportError if PySide6 isn&#39;t installed.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_PYSIDE6_AVAILABLE</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">feature</span><span class="si">}</span><span class="s2"> requires PySide6. Install it with &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;`pip install pyside6` (or `pip install &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;quantum-metal[gui]` once the GUI extra ships).&quot;</span><span class="p">)</span>
+
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span>
 
@@ -1411,16 +1434,17 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">figure_pz</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;matplotlib.pyplot.figure with pan and zoom interaction.&quot;&quot;&quot;</span>
-    <span class="c1">#import warnings</span>
-    <span class="c1"># warnings.filterwarnings(action=&#39;ignore&#39;)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;matplotlib.pyplot.figure with pan and zoom interaction.</span>
+
+<span class="sd">    Requires PySide6 because the pan/zoom toolbar is a Qt widget.</span>
+<span class="sd">    For a Qt-free alternative, see :func:`qiskit_metal.view`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_require_qt</span><span class="p">(</span><span class="s2">&quot;figure_pz&quot;</span><span class="p">)</span>
 
     <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
         <span class="n">fig</span> <span class="o">=</span> <span class="n">_plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="n">fig</span><span class="o">.</span><span class="n">pan_zoom</span> <span class="o">=</span> <span class="n">PanAndZoom</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
-
-    <span class="c1"># warnings.resetwarnings()</span>
 
     <span class="k">return</span> <span class="n">fig</span>
 

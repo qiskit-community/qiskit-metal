@@ -195,6 +195,7 @@
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installing Qiskit Metal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../headless-usage.html">Using Quantum Metal without the Qt GUI</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
 <ul>
@@ -1006,6 +1007,12 @@
 <span class="sd">                the GUI will immediately populate docks and the canvas from this</span>
 <span class="sd">                design. Defaults to None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Qt backend setup used to run at ``import qiskit_metal`` time;</span>
+        <span class="c1"># it&#39;s now lazy, called the first time MetalGUI is instantiated.</span>
+        <span class="c1"># Idempotent — second and later calls are no-ops.</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">setup_qt_backend</span>
+        <span class="n">setup_qt_backend</span><span class="p">()</span>
 
         <span class="kn">from</span><span class="w"> </span><span class="nn">.utility._handle_qt_messages</span><span class="w"> </span><span class="kn">import</span> <span class="n">QtCore</span><span class="p">,</span> <span class="n">_qt_message_handler</span>
         <span class="n">QtCore</span><span class="o">.</span><span class="n">qInstallMessageHandler</span><span class="p">(</span><span class="n">_qt_message_handler</span><span class="p">)</span>

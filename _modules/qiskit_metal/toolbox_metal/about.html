@@ -195,6 +195,7 @@
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installing Qiskit Metal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../headless-usage.html">Using Quantum Metal without the Qt GUI</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
 <ul>
@@ -745,19 +746,21 @@
 <span class="sd">        str: About message</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">qiskit_metal</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">__version__</span> <span class="k">as</span> <span class="n">QT_VERSION_STR</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6</span><span class="w"> </span><span class="kn">import</span> <span class="n">__version__</span> <span class="k">as</span> <span class="n">PYSIDE_VERSION_STR</span>
 
+    <span class="c1"># PySide6 is an optional extra (``quantum-metal[gui]``) — the lite</span>
+    <span class="c1"># install path omits it, so about() must not require it.</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span>
-        <span class="c1">#matplotlib_ver = matplotlib.__version__</span>
-    <span class="k">except</span><span class="p">:</span>
-        <span class="c1">#matplotlib_ver = &#39;None&#39;</span>
-        <span class="k">pass</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">__version__</span> <span class="k">as</span> <span class="n">QT_VERSION_STR</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6</span><span class="w"> </span><span class="kn">import</span> <span class="n">__version__</span> <span class="k">as</span> <span class="n">PYSIDE_VERSION_STR</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="n">QT_VERSION_STR</span> <span class="o">=</span> <span class="s1">&#39;Not installed&#39;</span>
+        <span class="n">PYSIDE_VERSION_STR</span> <span class="o">=</span> <span class="s1">&#39;Not installed&#39;</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">sip</span><span class="w"> </span><span class="kn">import</span> <span class="n">SIP_VERSION_STR</span>
-    <span class="k">except</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="n">SIP_VERSION_STR</span> <span class="o">=</span> <span class="s1">&#39;Not installed&#39;</span>
     <span class="c1"># Riverbank: SIP is a tool for quickly writing Python modules that interface with</span>
     <span class="c1"># C++ and C libraries.</span>

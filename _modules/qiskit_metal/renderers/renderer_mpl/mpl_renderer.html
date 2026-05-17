@@ -195,6 +195,7 @@
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installing Qiskit Metal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../headless-usage.html">Using Quantum Metal without the Qt GUI</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
 <ul>
@@ -741,20 +742,43 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">QMplRenderer</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Matplotlib renderer for Metal designs.</span>
 
-<span class="sd">    Notes:</span>
-<span class="sd">        Access via ``gui.canvas.metal_renderer``. The axis to render is passed</span>
-<span class="sd">        in the ``render`` method.</span>
+<span class="sd">    Can be used in two ways:</span>
+
+<span class="sd">    1. **Standalone (no Qt):** ``QMplRenderer(design)`` — produces a</span>
+<span class="sd">       renderer that plots into any matplotlib ``Axes`` passed to</span>
+<span class="sd">       :meth:`render`. This is the path used by</span>
+<span class="sd">       :func:`qiskit_metal.view` and by tutorials that want to display</span>
+<span class="sd">       a design inline in a Jupyter notebook with no GUI.</span>
+
+<span class="sd">    2. **Inside the Qt MetalGUI:** ``QMplRenderer(design, canvas=plot_canvas)``</span>
+<span class="sd">       — the desktop GUI&#39;s :class:`PlotCanvas` instantiates this way to</span>
+<span class="sd">       wire the renderer to its embedded matplotlib figure. The</span>
+<span class="sd">       ``canvas`` argument is stored on ``self.canvas`` for callers</span>
+<span class="sd">       that need it, but no method in this class uses it directly.</span>
+
+<span class="sd">    The ``ax`` to render into is still passed explicitly to</span>
+<span class="sd">    :meth:`render` — neither construction path implies a fixed axes.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">canvas</span><span class="p">:</span> <span class="s2">&quot;PlotCanvas&quot;</span><span class="p">,</span> <span class="n">design</span><span class="p">:</span> <span class="n">QDesign</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">design</span><span class="p">:</span> <span class="n">QDesign</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">canvas</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;PlotCanvas&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">logger</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Args:</span>
-<span class="sd">            canvas (PlotCanvas): The canvas</span>
-<span class="sd">            design (QDesign): The design</span>
-<span class="sd">            logger (logging.Logger): The logger</span>
+<span class="sd">            design: The design to render. Required.</span>
+<span class="sd">            canvas: Optional Qt ``PlotCanvas`` (legacy path used by</span>
+<span class="sd">                :class:`MetalGUI`). Pass ``None`` for a standalone /</span>
+<span class="sd">                headless renderer.</span>
+<span class="sd">            logger: Optional logger. Falls back to a module-level</span>
+<span class="sd">                logger if ``None``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span> <span class="k">if</span> <span class="n">logger</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span>
+            <span class="s2">&quot;qiskit_metal.renderer_mpl&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span> <span class="o">=</span> <span class="n">canvas</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">design</span> <span class="o">=</span> <span class="n">design</span>
@@ -883,8 +907,13 @@
         <span class="c1"># TODO: Ideally these should be replaced with interface functions,</span>
         <span class="c1"># not direct access to underlying internal representation</span>
 
-        <span class="n">mask</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden_layers</span><span class="p">)</span>
-        <span class="n">mask</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">component</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hidden_components</span><span class="p">)</span>
+        <span class="c1"># A row is hidden if its layer is in ``hidden_layers`` OR its</span>
+        <span class="c1"># component is in ``_hidden_components``. The previous form</span>
+        <span class="c1"># rebuilt ``mask`` from scratch on the second line, silently</span>
+        <span class="c1"># discarding the ``hidden_layers`` filter — visible from the</span>
+        <span class="c1"># Qt GUI only when a user hid both at once.</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden_layers</span><span class="p">)</span>
+                <span class="o">|</span> <span class="n">table</span><span class="o">.</span><span class="n">component</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hidden_components</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="o">~</span><span class="n">mask</span>  <span class="c1"># not</span></div>
 
@@ -1002,7 +1031,13 @@
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">table1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">table1</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">table1</span><span class="p">[[</span><span class="s2">&quot;geometry&quot;</span><span class="p">,</span> <span class="s2">&quot;width&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
                     <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span>
-                        <span class="n">distance</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+                        <span class="c1"># ``x.iloc[1]`` (was ``x[1]``) — in pandas</span>
+                        <span class="c1"># 2.2+, integer indexing on a Series with</span>
+                        <span class="c1"># string labels raises KeyError rather than</span>
+                        <span class="c1"># falling back to positional lookup. The row</span>
+                        <span class="c1"># here has labels ``[&#39;geometry&#39;, &#39;width&#39;]``</span>
+                        <span class="c1"># so positional access must be explicit.</span>
+                        <span class="n">distance</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
                         <span class="n">cap_style</span><span class="o">=</span><span class="n">CAP_STYLE</span><span class="o">.</span><span class="n">flat</span><span class="p">,</span>
                         <span class="n">join_style</span><span class="o">=</span><span class="n">JOIN_STYLE</span><span class="o">.</span><span class="n">mitre</span><span class="p">,</span>
                         <span class="n">quad_segs</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;resolution&quot;</span><span class="p">]),</span>
