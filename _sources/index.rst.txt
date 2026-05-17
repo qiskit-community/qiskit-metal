@@ -38,6 +38,18 @@ Quantum Device Design & Analysis (Q-EDA)
 Design and analyze superconducting quantum chips with a Python API + GUI that plugs into your favorite tools.
 Leverages existing EDA stacks, automates tedious workflows, and keeps best practices baked in.
 
+.. note::
+    **You don't need the Qt GUI to use Quantum Metal.** The full API
+    — designs, components, renderers, analyses — works headlessly in a
+    plain Python interpreter or a Jupyter notebook.  The ``MetalGUI``
+    desktop app is optional and exists for interactive design work; if
+    you're scripting designs, running parameter sweeps, or working in
+    a cloud notebook environment, you can ignore it entirely.
+
+    A no-Qt, in-notebook viewer is under active development as part of
+    the Jupyter / cloud workflow track. See the
+    :doc:`workflow <workflow>` roadmap for status.
+
 .. grid:: 1 2 2 2
    :gutter: 1
 

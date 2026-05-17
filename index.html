@@ -730,6 +730,18 @@ in the <a class="reference external" href="https://qisk.it/join-slack">Qiskit wo
 <p><strong>Quantum Metal | Open source • Community maintained &amp; driven quantum EDA • API</strong></p>
 <p>Design and analyze superconducting quantum chips with a Python API + GUI that plugs into your favorite tools.
 Leverages existing EDA stacks, automates tedious workflows, and keeps best practices baked in.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>You don’t need the Qt GUI to use Quantum Metal.</strong> The full API
+— designs, components, renderers, analyses — works headlessly in a
+plain Python interpreter or a Jupyter notebook.  The <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code>
+desktop app is optional and exists for interactive design work; if
+you’re scripting designs, running parameter sweeps, or working in
+a cloud notebook environment, you can ignore it entirely.</p>
+<p>A no-Qt, in-notebook viewer is under active development as part of
+the Jupyter / cloud workflow track. See the
+<a class="reference internal" href="workflow.html"><span class="doc">workflow</span></a> roadmap for status.</p>
+</div>
 <div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
 <div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-2 sd-row-cols-lg-2 sd-g-1 sd-g-xs-1 sd-g-sm-1 sd-g-md-1 sd-g-lg-1 docutils">
 <div class="sd-col sd-d-flex-row docutils">
