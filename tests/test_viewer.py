@@ -199,5 +199,26 @@ class TestQMplRendererStandalone(unittest.TestCase):
         self.assertIs(renderer.canvas, sentinel)
 
 
+class TestAboutNoQt(unittest.TestCase):
+    """``qm.about()`` must not require PySide6 — it's a debug helper
+    that lite-mode users rely on. Lives in test_viewer.py because
+    that file is in the tests-lite suite; test_toolbox_metal.py is
+    not, so a regression there wouldn't be caught before users."""
+
+    def test_about_runs_without_pyside6(self):
+        """about() must return its summary string even when PySide6 /
+        SIP aren't installed. In the lite CI venv this exercises the
+        real ImportError branch; in the full venv it exercises the
+        success path but still confirms about() doesn't raise."""
+        from qiskit_metal.toolbox_metal import about as about_module
+        text = about_module.about()
+        self.assertIsInstance(text, str)
+        # The summary always reports something for these fields,
+        # even in lite mode where the value is "Not installed".
+        self.assertIn("PySide6 version", text)
+        self.assertIn("Qt version", text)
+        self.assertIn("SIP version", text)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
