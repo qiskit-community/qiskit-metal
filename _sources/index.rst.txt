@@ -299,6 +299,18 @@ The goal of Qiskit Metal is to allow for easy quantum hardware modeling with red
 
     Code of Conduct<https://github.com/Qiskit/qiskit/blob/master/CODE_OF_CONDUCT.md>
 
+.. Hidden glob toctree so every auto-generated per-class stub in
+   ``apidocs/`` is reachable from the document tree. Without this,
+   Sphinx emits one "document isn't included in any toctree" warning
+   per stub (currently ~100). The stubs are linked from the module
+   pages listed in the API References toctree above; this hidden
+   entry just satisfies Sphinx's reachability check.
+.. toctree::
+    :hidden:
+    :glob:
+
+    apidocs/*
+
 .. Hiding - Indices and tables
    :ref:`genindex`
    :ref:`modindex`
