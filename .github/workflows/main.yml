@@ -171,6 +171,28 @@ jobs:
             tests/test_qlibrary_pin_sanity.py \
             tests/test_solution_types.py \
             -v
+      - name: Execute headless tutorial notebook
+        # Gate the canonical no-Qt tutorial (1.4 Headless quick view).
+        # If a future change breaks the headless path, this step
+        # catches it before users hit it.
+        #
+        # ``uv pip install`` is used (not ``python -m pip``) because
+        # the lite venv was created by ``uv venv``, which does not
+        # ship pip inside. The kernel must be registered explicitly —
+        # nbconvert defaults to a kernel named ``python3`` that isn't
+        # tied to our venv.
+        run: |
+          uv pip install --quiet \
+            'jupyter>=1.0' 'nbconvert>=7.0' 'ipykernel>=6.0'
+          .venv/bin/python -m ipykernel install --user --name qm_lite
+          .venv/bin/jupyter nbconvert \
+            --to notebook \
+            --execute \
+            --ExecutePreprocessor.kernel_name=qm_lite \
+            --ExecutePreprocessor.timeout=180 \
+            --output-dir /tmp/exec_check \
+            'tutorials/1 Overview/1.4 Headless quick view (no Qt GUI).ipynb'
+          echo "OK: 1.4 Headless quick view executed cleanly"
 
   coverage:
     name: coverage
