@@ -81,5 +81,62 @@ jobs:
       - name: Check environment.yml against pyproject.toml
         run: uv run --quiet scripts/check_env_consistency.py
 
+  coverage:
+    name: coverage
+    runs-on: ubuntu-24.04
+    env:
+      FORCE_COLOR: "1"
+      UV_MANAGED_PYTHON: "True"
+      UV_PYTHON: "3.12"
+      QISKIT_METAL_HEADLESS: "1"
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.9.24"
+          enable-cache: true
+      - name: Install Gmsh + Qt OS dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libglu1-mesa libglu1-mesa-dev libegl1-mesa-dev
+      - name: Run tests with coverage
+        # Sync into the project venv so pytest can import the package by
+        # name; then run via uv to use the same Python the matrix uses.
+        run: |
+          uv sync --group test --quiet
+          uv run --quiet pytest tests/ \
+            --cov=src/qiskit_metal \
+            --cov-report=term \
+            --cov-report=xml:coverage.xml \
+            --cov-report=html:htmlcov \
+            | tee coverage_output.txt
+      - name: Coverage summary
+        if: always()
+        run: |
+          {
+            echo "## Test coverage"
+            echo ""
+            echo '```'
+            # Emit the per-file table from pytest-cov's terminal report.
+            sed -n '/^Name.*Stmts.*Miss.*Cover/,/^TOTAL/p' coverage_output.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload coverage HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-html
+          path: htmlcov/
+          retention-days: 14
+      - name: Upload coverage XML
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-xml
+          path: coverage.xml
+          retention-days: 14
+
 
 
