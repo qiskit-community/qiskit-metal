@@ -2321,7 +2321,7 @@ wheels = [
 
 [[package]]
 name = "pyepr-quantum"
-version = "0.9.0"
+version = "0.9.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "addict" },
@@ -2336,14 +2336,13 @@ dependencies = [
     { name = "scipy", version = "1.15.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "scipy", version = "1.17.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
     { name = "seaborn" },
-    { name = "sphinx-rtd-theme" },
     { name = "sympy" },
     { name = "xarray", version = "2025.6.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "xarray", version = "2025.12.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/28/8c/7c113048c73525a5695a42ea3481cc47be72412ea9ed139e052783e581cf/pyEPR-quantum-0.9.0.tar.gz", hash = "sha256:a7326f97201335ed2edaee934027d2bcffc888a2051a2f10ba4e9b1208632578", size = 101747, upload-time = "2023-06-14T22:04:46.834Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/07/50/3b0c3825a883038eb62651fb19264c73058b0aaf1003367c52637dc68af4/pyepr_quantum-0.9.4.tar.gz", hash = "sha256:69c4ac847d520e3bc8974d9a5391fe39e251b0adc6388c671c4f227332fc6c32", size = 112207, upload-time = "2026-05-17T01:07:28.621Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/46/39/abe9681fb78dd398b5e0c5f2733faf15456cc53352d81857f23e99bd7813/pyEPR_quantum-0.9.0-py3-none-any.whl", hash = "sha256:f99c27499411737f9db12da9487e7672cfc21f32f23bd738936f32ceb79a5323", size = 102687, upload-time = "2023-06-14T22:04:44.859Z" },
+    { url = "https://files.pythonhosted.org/packages/f6/cc/bd6aa3c72b529c5669b53ff73aea7ba61fb9f3bc64ee5d5ff72131100718/pyepr_quantum-0.9.4-py3-none-any.whl", hash = "sha256:30cf886a7857d43f6ba3303359c7912b8b192316ce4ff4cda8c032478cfb9974", size = 105007, upload-time = "2026-05-17T01:07:26.593Z" },
 ]
 
 [[package]]
@@ -2748,7 +2747,7 @@ wheels = [
 
 [[package]]
 name = "quantum-metal"
-version = "0.5.3.post1"
+version = "0.5.4"
 source = { editable = "." }
 dependencies = [
     { name = "addict" },
@@ -2812,7 +2811,7 @@ requires-dist = [
     { name = "pandas", specifier = ">=2.1.1" },
     { name = "pint", specifier = ">=0.21.0" },
     { name = "pyaedt", specifier = ">=0.21,<0.24" },
-    { name = "pyepr-quantum", specifier = ">=0.9.0" },
+    { name = "pyepr-quantum", specifier = ">=0.9.4" },
     { name = "pygments", specifier = ">=2.14.0" },
     { name = "pyside6", specifier = ">=6.8" },
     { name = "pyyaml", specifier = ">=6.0" },
@@ -3491,21 +3490,6 @@ wheels = [
 ]
 
 [[package]]
-name = "sphinx-rtd-theme"
-version = "3.0.2"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "docutils" },
-    { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
-    { name = "sphinx", version = "8.2.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
-    { name = "sphinxcontrib-jquery" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/91/44/c97faec644d29a5ceddd3020ae2edffa69e7d00054a8c7a6021e82f20335/sphinx_rtd_theme-3.0.2.tar.gz", hash = "sha256:b7457bc25dda723b20b086a670b9953c859eab60a2a03ee8eb2bb23e176e5f85", size = 7620463, upload-time = "2024-11-13T11:06:04.545Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/85/77/46e3bac77b82b4df5bb5b61f2de98637724f246b4966cfc34bc5895d852a/sphinx_rtd_theme-3.0.2-py2.py3-none-any.whl", hash = "sha256:422ccc750c3a3a311de4ae327e82affdaf59eb695ba4936538552f3b00f4ee13", size = 7655561, upload-time = "2024-11-13T11:06:02.094Z" },
-]
-
-[[package]]
 name = "sphinxcontrib-applehelp"
 version = "2.0.0"
 source = { registry = "https://pypi.org/simple" }
@@ -3530,19 +3514,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/43/93/983afd9aa001e5201eab16b5a444ed5b9b0a7a010541e0ddfbbfd0b2470c/sphinxcontrib_htmlhelp-2.1.0.tar.gz", hash = "sha256:c9e2916ace8aad64cc13a0d233ee22317f2b9025b9cf3295249fa985cc7082e9", size = 22617, upload-time = "2024-07-29T01:09:37.889Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/0a/7b/18a8c0bcec9182c05a0b3ec2a776bba4ead82750a55ff798e8d406dae604/sphinxcontrib_htmlhelp-2.1.0-py3-none-any.whl", hash = "sha256:166759820b47002d22914d64a075ce08f4c46818e17cfc9470a9786b759b19f8", size = 98705, upload-time = "2024-07-29T01:09:36.407Z" },
-]
-
-[[package]]
-name = "sphinxcontrib-jquery"
-version = "4.1"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
-    { name = "sphinx", version = "8.2.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/de/f3/aa67467e051df70a6330fe7770894b3e4f09436dea6881ae0b4f3d87cad8/sphinxcontrib-jquery-4.1.tar.gz", hash = "sha256:1620739f04e36a2c779f1a131a2dfd49b2fd07351bf1968ced074365933abc7a", size = 122331, upload-time = "2023-03-14T15:01:01.944Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/76/85/749bd22d1a68db7291c89e2ebca53f4306c3f205853cf31e9de279034c3c/sphinxcontrib_jquery-4.1-py2.py3-none-any.whl", hash = "sha256:f936030d7d0147dd026a4f2b5a57343d233f1fc7b363f68b3d4f1cb0993878ae", size = 121104, upload-time = "2023-03-14T15:01:00.356Z" },
 ]
 
 [[package]]
