@@ -976,26 +976,45 @@ class QDesign():
                 )
                 continue
 
-            # check if module_name exists
-            if importlib.util.find_spec(path_name):
-                class_renderer = getattr(importlib.import_module(path_name),
-                                         class_name, None)
-
-                # check if class_name is in module
-                if class_renderer is not None:
-                    a_renderer = class_renderer(self, initiate=False)
-
-                    # register renderers here.
-                    self._renderers[renderer_key] = a_renderer
-                else:
-                    self.logger.warning(
-                        f'Renderer={renderer_key} is not registered in QDesign.  '
-                        f'The class_name={class_name} was not found.')
-                    continue
-            else:
+            # check if module_name exists AND can actually be loaded.
+            # ``find_spec`` only checks that the file is importable as
+            # a Python module — it succeeds for ``renderer_gmsh`` even
+            # when the external ``gmsh`` package isn't installed.
+            # ``import_module`` can then raise ImportError for the
+            # missing transitive dep. Catching that here lets a
+            # lite-install user create a design without having every
+            # optional renderer's heavy deps; the renderer just gets
+            # logged and skipped.
+            if not importlib.util.find_spec(path_name):
                 self.logger.warning(
                     f'Renderer={renderer_key} is not registered in QDesign.  '
                     f'The module_name={path_name} was not found.')
+                continue
+
+            try:
+                module = importlib.import_module(path_name)
+            except ImportError as e:
+                self.logger.info(
+                    f'Renderer={renderer_key} skipped: '
+                    f'an optional dependency for {path_name} is not '
+                    f'installed ({e}). Install the corresponding extra '
+                    f'(e.g. `pip install quantum-metal[fem]` for gmsh, '
+                    f'`pip install quantum-metal[ansys]` for pyaedt) '
+                    f'to enable it.')
+                continue
+
+            class_renderer = getattr(module, class_name, None)
+
+            # check if class_name is in module
+            if class_renderer is not None:
+                a_renderer = class_renderer(self, initiate=False)
+
+                # register renderers here.
+                self._renderers[renderer_key] = a_renderer
+            else:
+                self.logger.warning(
+                    f'Renderer={renderer_key} is not registered in QDesign.  '
+                    f'The class_name={class_name} was not found.')
                 continue
 
         for _, a_render in self._renderers.items():
