@@ -86,9 +86,31 @@ import warnings
 import matplotlib.pyplot as _plt
 import numpy
 
-from PySide6.QtCore import Qt
-from PySide6.QtGui import QIcon, QAction
-from PySide6.QtWidgets import QLabel
+# PySide6 is required only for the interactive toolbar features in
+# this module (``MplInteraction._init_toolbar``, ``figure_pz``). It is
+# NOT required to import this module. Wrapping the imports in
+# ``try/except`` lets ``import qiskit_metal`` succeed in Jupyter /
+# Colab / Binder / headless CI environments where PySide6 isn't
+# installed; callers that hit the GUI path get a clear ImportError
+# from ``_require_qt`` instead of a confusing top-of-module crash.
+try:
+    from PySide6.QtCore import Qt
+    from PySide6.QtGui import QIcon, QAction
+    from PySide6.QtWidgets import QLabel
+    _PYSIDE6_AVAILABLE = True
+except ImportError:  # pragma: no cover — exercised only on lite installs
+    Qt = QIcon = QAction = QLabel = None
+    _PYSIDE6_AVAILABLE = False
+
+
+def _require_qt(feature: str) -> None:
+    """Raise a helpful ImportError if PySide6 isn't installed."""
+    if not _PYSIDE6_AVAILABLE:
+        raise ImportError(
+            f"{feature} requires PySide6. Install it with "
+            f"`pip install pyside6` (or `pip install "
+            f"quantum-metal[gui]` once the GUI extra ships).")
+
 
 from qiskit_metal import Dict
 
@@ -699,16 +721,17 @@ class PanAndZoom(ZoomOnWheel):
 
 
 def figure_pz(*args, **kwargs):
-    """matplotlib.pyplot.figure with pan and zoom interaction."""
-    #import warnings
-    # warnings.filterwarnings(action='ignore')
+    """matplotlib.pyplot.figure with pan and zoom interaction.
+
+    Requires PySide6 because the pan/zoom toolbar is a Qt widget.
+    For a Qt-free alternative, see :func:`qiskit_metal.view`.
+    """
+    _require_qt("figure_pz")
 
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         fig = _plt.figure(*args, **kwargs)
     fig.pan_zoom = PanAndZoom(fig)
-
-    # warnings.resetwarnings()
 
     return fig
 

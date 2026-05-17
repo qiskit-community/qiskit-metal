@@ -308,6 +308,12 @@ class MetalGUI(QMainWindowBaseHandler):
                 design. Defaults to None.
         """
 
+        # Qt backend setup used to run at ``import qiskit_metal`` time;
+        # it's now lazy, called the first time MetalGUI is instantiated.
+        # Idempotent — second and later calls are no-ops.
+        from qiskit_metal import setup_qt_backend
+        setup_qt_backend()
+
         from .utility._handle_qt_messages import QtCore, _qt_message_handler
         QtCore.qInstallMessageHandler(_qt_message_handler)
 
