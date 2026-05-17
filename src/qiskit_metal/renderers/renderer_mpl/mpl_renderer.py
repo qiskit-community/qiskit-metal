@@ -296,7 +296,13 @@ class QMplRenderer:
             if len(table1) > 0:
                 table1["geometry"] = table1[["geometry", "width"]].apply(
                     lambda x: x.iloc[0].buffer(
-                        distance=float(x[1]) / 2.0,
+                        # ``x.iloc[1]`` (was ``x[1]``) — in pandas
+                        # 2.2+, integer indexing on a Series with
+                        # string labels raises KeyError rather than
+                        # falling back to positional lookup. The row
+                        # here has labels ``['geometry', 'width']``
+                        # so positional access must be explicit.
+                        distance=float(x.iloc[1]) / 2.0,
                         cap_style=CAP_STYLE.flat,
                         join_style=JOIN_STYLE.mitre,
                         quad_segs=int(self.options["resolution"]),
