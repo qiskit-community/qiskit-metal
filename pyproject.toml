@@ -26,6 +26,15 @@
     requires-python = ">=3.10,<3.13"
     urls = { bugtracker = "https://github.com/qiskit-community/qiskit-metal/issues", documentation = "https://qiskit-community.github.io/qiskit-metal/", source = "https://github.com/qiskit-community/qiskit-metal" }
     version = "0.6.1"
+    # Core deps required for ``import qiskit_metal`` + ``qm.view()``
+    # to work in any environment. Heavy / optional deps (Qt GUI,
+    # pyaedt, gmsh) live in the ``[project.optional-dependencies]``
+    # section below so users can opt in. Note: for v0.6.x backward
+    # compatibility, the GUI / ANSYS / FEM stacks are still in the
+    # *base* deps list — the extras are additive. A future v0.7.0
+    # release plans to flip the default to lite (base = no Qt) and
+    # require ``pip install quantum-metal[full]`` for the current
+    # experience. See ``docs/headless-usage.rst`` for the timeline.
     dependencies = [
         "addict>=2.4.0",
         "gdstk>=0.9",
@@ -44,8 +53,34 @@
         "scqubits>=4.1.0",
         "gmsh>=4.11.1",
         "pyaedt>=0.21,<0.24", # pyaedt 0.24 has some bugs (Jan 23, 2026)
-        "pyyaml>=6.0", # Used for the Elmer runner. 
+        "pyyaml>=6.0", # Used for the Elmer runner.
     ]
+
+    # Opt-in extras. Currently informational — every extra's deps are
+    # also in the base list above so v0.6.x users keep the
+    # all-batteries-included install. The CI ``tests-lite`` job
+    # exercises an install pruned of these extras to keep the
+    # lite-mode rendering path provably working, ahead of the v0.7.0
+    # flip when ``[full]`` becomes opt-in.
+    [project.optional-dependencies]
+        gui = [
+            "pyside6>=6.8",
+            "qdarkstyle>=3.1",
+        ]
+        ansys = [
+            "pyaedt>=0.21,<0.24",
+            "pyEPR-quantum>=0.9.5",
+        ]
+        fem = [
+            "gmsh>=4.11.1",
+        ]
+        full = [
+            "pyside6>=6.8",
+            "qdarkstyle>=3.1",
+            "pyaedt>=0.21,<0.24",
+            "pyEPR-quantum>=0.9.5",
+            "gmsh>=4.11.1",
+        ]
 
 [build-system]
     requires      = [ "uv_build>=0.9.23,<0.10.0" ]
