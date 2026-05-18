@@ -130,15 +130,15 @@
     # E722: do not use bare except
     # E741: do not use ambiguous variable names
     # F821 Undefined names. Mostly used for type hints.
-    per-file-ignores = {
-        "**.ipynb" = [ "F811", "E703", "F403", "F405" ],
-        # F811: redefinition of unused name
-        # E703: unnecessary semicolons
-        # F403: import * only allowed to namespace packages
-        # F405: wildcard imports
-        "tests/**" = [ "F841" ],
-        # F841: local variable is assigned to but never used
-    }
+
+[tool.ruff.lint.per-file-ignores]
+    "**.ipynb" = ["F811", "E703", "F403", "F405"]
+    # F811: redefinition of unused name
+    # E703: unnecessary semicolons
+    # F403: import * only allowed to namespace packages
+    # F405: wildcard imports
+    "tests/**" = [ "F841" ]
+    # F841: local variable is assigned to but never used
 
 [tool.tox]
     requires = [ "tox>=4", "tox-uv>=1.29" ]
