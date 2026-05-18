@@ -1,12 +1,12 @@
 name: Testing and Linting
-on: 
+on:
   # Run this workflow every time a new commit is pushed to or a pull request is created from one of these branches
   push:
     branches: [main, "stable/*"]
   pull_request:
     branches: [main, "stable/*"]
   workflow_dispatch:
-  
+
 jobs:
   # OLD NOTE: The ubuntu-24.04 and macos-latest tests have been separated out because ubuntu
   # requires installing some additional libraries (libglu1-mesa) for Gmsh to run. Please
@@ -29,7 +29,7 @@ jobs:
           - ubuntu-24.04
           - macos-15
           - windows-2025
-        python-version: 
+        python-version:
           - "3.10"
           - "3.11"
           - "3.12"
@@ -42,7 +42,7 @@ jobs:
           # Install a specific version of uv.
           version: "0.9.24"
           enable-cache: true
-      # Install OS dependencies 
+      # Install OS dependencies
       - name: Install Gmsh dependencies for Ubuntu
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
         run: |
@@ -63,7 +63,20 @@ jobs:
       - uses: astral-sh/ruff-action@v3
         with:
           ## TODO: Remove --exit-zero once linting is finalized.
-          args: "check --exit-zero"
+          args: "check"
+
+  format:
+    name: format
+    runs-on: ubuntu-24.04
+    env:
+      FORCE_COLOR: "1"
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+      - uses: astral-sh/ruff-action@v3
+        with:
+          args: "format --check"
 
   env-consistency:
     name: env.yml ↔ pyproject.toml drift
@@ -250,6 +263,3 @@ jobs:
           name: coverage-xml
           path: coverage.xml
           retention-days: 14
-
-
-
