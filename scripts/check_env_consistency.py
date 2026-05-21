@@ -145,8 +145,10 @@ def main() -> int:
 
     shared = sorted(set(pyproject) & set(env))
     if not shared:
-        print("No shared packages between pyproject.toml and environment.yml.",
-              file=sys.stderr)
+        print(
+            "No shared packages between pyproject.toml and environment.yml.",
+            file=sys.stderr,
+        )
         return 1
 
     failures: list[str] = []
@@ -161,12 +163,14 @@ def main() -> int:
             failures.append(
                 f"  {pkg}: environment.yml floor {env_floor} < "
                 f"pyproject.toml floor {pp_floor}"
-                f"  (env={env_spec}, pyproject={pp_spec})")
+                f"  (env={env_spec}, pyproject={pp_spec})"
+            )
         if pp_floor and not env_floor:
             failures.append(
                 f"  {pkg}: pyproject.toml requires >={pp_floor} but "
                 f"environment.yml has no floor"
-                f"  (env={env_spec}, pyproject={pp_spec})")
+                f"  (env={env_spec}, pyproject={pp_spec})"
+            )
 
         pp_ceil = ceiling_of(pp_spec)
         env_ceil = ceiling_of(env_spec)
@@ -174,20 +178,25 @@ def main() -> int:
             failures.append(
                 f"  {pkg}: pyproject.toml requires <{pp_ceil} but "
                 f"environment.yml has no ceiling"
-                f"  (env={env_spec}, pyproject={pp_spec})")
+                f"  (env={env_spec}, pyproject={pp_spec})"
+            )
         elif pp_ceil and env_ceil and env_ceil > pp_ceil:
             failures.append(
                 f"  {pkg}: environment.yml ceiling {env_ceil} > "
                 f"pyproject.toml ceiling {pp_ceil}"
-                f"  (env={env_spec}, pyproject={pp_spec})")
+                f"  (env={env_spec}, pyproject={pp_spec})"
+            )
 
     if failures:
-        print("environment.yml drifts from pyproject.toml:\n"
-              + "\n".join(failures),
-              file=sys.stderr)
-        print("\nFix the constraints in environment.yml so a conda "
-              "install picks up the same versions a pip install does.",
-              file=sys.stderr)
+        print(
+            "environment.yml drifts from pyproject.toml:\n" + "\n".join(failures),
+            file=sys.stderr,
+        )
+        print(
+            "\nFix the constraints in environment.yml so a conda "
+            "install picks up the same versions a pip install does.",
+            file=sys.stderr,
+        )
         return 1
 
     print(f"OK: {len(shared)} shared packages, no drift.")

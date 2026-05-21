@@ -16,7 +16,7 @@
 from typing import Tuple, Optional
 from qiskit_metal.designs.design_base import QDesign, Dict
 
-__all__ = ['DesignPlanar']
+__all__ = ["DesignPlanar"]
 
 
 class DesignPlanar(QDesign):
@@ -58,10 +58,12 @@ class DesignPlanar(QDesign):
       surprises in exports.
     """
 
-    def __init__(self,
-                 metadata: Optional[dict] = None,
-                 overwrite_enabled: bool = False,
-                 enable_renderers: bool = True):
+    def __init__(
+        self,
+        metadata: Optional[dict] = None,
+        overwrite_enabled: bool = False,
+        enable_renderers: bool = True,
+    ):
         """Create a planar design with optional metadata and renderer control.
 
         Args:
@@ -73,9 +75,11 @@ class DesignPlanar(QDesign):
                 Set False for lightweight geometry-only workflows.
         """
 
-        super().__init__(metadata=metadata,
-                         overwrite_enabled=overwrite_enabled,
-                         enable_renderers=enable_renderers)
+        super().__init__(
+            metadata=metadata,
+            overwrite_enabled=overwrite_enabled,
+            enable_renderers=enable_renderers,
+        )
         self.add_chip_info()
 
     def add_chip_info(self):
@@ -89,26 +93,26 @@ class DesignPlanar(QDesign):
 
         NOTE: self._chips dict comes from QDesign base class.
         """
-        self._chips['main'] = Dict(
-            material='silicon',
-            layer_start='0',
-            layer_end='2048',
+        self._chips["main"] = Dict(
+            material="silicon",
+            layer_start="0",
+            layer_end="2048",
         )
 
-        self._chips['main']['size'] = Dict(
-            center_x='0.0mm',
-            center_y='0.0mm',
-            center_z='0.0mm',
-            size_x='9mm',
-            size_y='6mm',
-            size_z='-750um',  # chip extends in negative z direction by 750 um
-            sample_holder_top='890um',  # how tall is the vacuum above center_z
-            sample_holder_bottom='1650um'  # how tall is the vacuum below z=0
+        self._chips["main"]["size"] = Dict(
+            center_x="0.0mm",
+            center_y="0.0mm",
+            center_z="0.0mm",
+            size_x="9mm",
+            size_y="6mm",
+            size_z="-750um",  # chip extends in negative z direction by 750 um
+            sample_holder_top="890um",  # how tall is the vacuum above center_z
+            sample_holder_bottom="1650um",  # how tall is the vacuum below z=0
         )
 
     def get_x_y_for_chip(
-            self,
-            chip_name: str) -> Tuple[Tuple[float, float, float, float], int]:
+        self, chip_name: str
+    ) -> Tuple[Tuple[float, float, float, float], int]:
         """If the chip_name is in self.chips, along with entry for size
         information then return a tuple=(minx, miny, maxx, maxy). Used for
         subtraction while exporting design.
@@ -126,36 +130,44 @@ class DesignPlanar(QDesign):
         x_y_location = tuple()
 
         if chip_name in self._chips:
-            if 'size' in self._chips[chip_name]:
-
-                size = self.parse_value(self.chips[chip_name]['size'])
-                if      'center_x' in size               \
-                    and 'center_y' in size          \
-                    and 'size_x' in size            \
-                    and 'size_y' in size:
-                    if type(size.center_x) in [int, float] and \
-                            type(size.center_y) in [int, float] and \
-                            type(size.size_x) in [int, float] and \
-                            type(size.size_y) in [int, float]:
+            if "size" in self._chips[chip_name]:
+                size = self.parse_value(self.chips[chip_name]["size"])
+                if (
+                    "center_x" in size
+                    and "center_y" in size
+                    and "size_x" in size
+                    and "size_y" in size
+                ):
+                    if (
+                        type(size.center_x) in [int, float]
+                        and type(size.center_y) in [int, float]
+                        and type(size.size_x) in [int, float]
+                        and type(size.size_y) in [int, float]
+                    ):
                         x_y_location = (
-                            size['center_x'] - (size['size_x'] / 2.0),
-                            size['center_y'] - (size['size_y'] / 2.0),
-                            size['center_x'] + (size['size_x'] / 2.0),
-                            size['center_y'] + (size['size_y'] / 2.0))
+                            size["center_x"] - (size["size_x"] / 2.0),
+                            size["center_y"] - (size["size_y"] / 2.0),
+                            size["center_x"] + (size["size_x"] / 2.0),
+                            size["center_y"] + (size["size_y"] / 2.0),
+                        )
                         return x_y_location, 0
 
                     self.logger.warning(
                         f'Size information within self.chips[{chip_name}]["size"]'
-                        f' is NOT an int or float.')
+                        f" is NOT an int or float."
+                    )
                     return x_y_location, 2
 
-                self.logger.warning('center_x or center_y or size_x or size_y '
-                                    f' NOT in self._chips[{chip_name}]["size"]')
+                self.logger.warning(
+                    "center_x or center_y or size_x or size_y "
+                    f' NOT in self._chips[{chip_name}]["size"]'
+                )
                 return x_y_location, 2
 
             self.logger.warning(
-                f'Information for size in NOT in self._chips[{chip_name}]'
-                ' dict. Return "None" in tuple.')
+                f"Information for size in NOT in self._chips[{chip_name}]"
+                ' dict. Return "None" in tuple.'
+            )
             return x_y_location, 2
 
         self.logger.warning(

@@ -10,7 +10,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """GUI front-end interface for Qiskit Metal in PySide2."""
-# pylint: disable=invalid-name
 
 import logging
 import os
@@ -20,33 +19,49 @@ from typing import TYPE_CHECKING, List
 
 from PySide6.QtCore import Qt, QTimer
 from PySide6.QtGui import QIcon, QPixmap, QAction
-from PySide6.QtWidgets import (QWidget, QDialog, QDockWidget, QFileDialog,
-                               QLabel, QMainWindow, QMessageBox, QVBoxLayout)
+from PySide6.QtWidgets import (
+    QWidget,
+    QDialog,
+    QDockWidget,
+    QFileDialog,
+    QLabel,
+    QMainWindow,
+    QMessageBox,
+    QVBoxLayout,
+)
 from PySide6.QtCore import QSortFilterProxyModel
-from qiskit_metal._gui.widgets.qlibrary_display.delegate_qlibrary import \
-    LibraryDelegate
-from qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary import \
-    QFileSystemLibraryModel
-from qiskit_metal._gui.widgets.qlibrary_display.proxy_model_qlibrary import \
-    LibraryFileProxyModel
+from qiskit_metal._gui.widgets.qlibrary_display.delegate_qlibrary import LibraryDelegate
+from qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary import (
+    QFileSystemLibraryModel,
+)
+from qiskit_metal._gui.widgets.qlibrary_display.proxy_model_qlibrary import (
+    LibraryFileProxyModel,
+)
 
 from qiskit_metal import config, qlibrary
 from qiskit_metal.designs.design_base import QDesign
 from qiskit_metal._gui.elements_window import ElementsWindow
 from qiskit_metal._gui.net_list_window import NetListWindow
-from qiskit_metal._gui.main_window_base import (QMainWindowBaseHandler, QMainWindowExtensionBase,
-                               kick_start_qApp)
+from qiskit_metal._gui.main_window_base import (
+    QMainWindowBaseHandler,
+    QMainWindowExtensionBase,
+    kick_start_qApp,
+)
 from qiskit_metal._gui.main_window_ui import Ui_MainWindow
 from qiskit_metal._gui.renderer_gds_gui import RendererGDSWidget
 from qiskit_metal._gui.renderer_hfss_gui import RendererHFSSWidget
 from qiskit_metal._gui.renderer_q3d_gui import RendererQ3DWidget
 from qiskit_metal._gui.utility._handle_qt_messages import slot_catch_error
 from qiskit_metal._gui.utility._toolbox_qt import doShowHighlighWidget
-from qiskit_metal._gui.widgets.all_components.table_model_all_components import \
-    QTableModel_AllComponents
-from qiskit_metal._gui.widgets.build_history.build_history_scroll_area import \
-    BuildHistoryScrollArea
-from qiskit_metal._gui.widgets.create_component_window import parameter_entry_window as pew
+from qiskit_metal._gui.widgets.all_components.table_model_all_components import (
+    QTableModel_AllComponents,
+)
+from qiskit_metal._gui.widgets.build_history.build_history_scroll_area import (
+    BuildHistoryScrollArea,
+)
+from qiskit_metal._gui.widgets.create_component_window import (
+    parameter_entry_window as pew,
+)
 from qiskit_metal._gui.widgets.edit_component.component_widget import ComponentWidget
 from qiskit_metal._gui.widgets.plot_widget.plot_window import QMainWindowPlot
 from qiskit_metal._gui.widgets.variable_table import PropertyTableWidget
@@ -55,7 +70,7 @@ if not config.is_building_docs():
     pass
 
 if TYPE_CHECKING:
-    from ..renderers.renderer_mpl.mpl_canvas import PlotCanvas  # pylint: disable=syntax-error
+    from ..renderers.renderer_mpl.mpl_canvas import PlotCanvas
 
 
 class QMainWindowExtension(QMainWindowExtensionBase):
@@ -79,7 +94,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         self.q3d_gui = None  # type: RendererQ3DWidget
 
     @property
-    def design(self) -> 'QDesign':
+    def design(self) -> "QDesign":
         """Return the design.
 
         Returns:
@@ -88,7 +103,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         return self.handler.design
 
     @property
-    def gui(self) -> 'MetalGUI':
+    def gui(self) -> "MetalGUI":
         """Returns the MetalGUI."""
         return self.handler
 
@@ -125,11 +140,12 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         """Delete all components."""
         ret = QMessageBox.question(
             self,
-            'Delete all components?',
+            "Delete all components?",
             "Are you sure you want to clear all Metal components?",
-            buttons=QMessageBox.Yes | QMessageBox.No)
+            buttons=QMessageBox.Yes | QMessageBox.No,
+        )
         if ret == QMessageBox.Yes:
-            self.logger.info('Delete all components.')
+            self.logger.info("Delete all components.")
             self.design.delete_all_components()
             if self.component_window:
                 self.gui.component_window.set_component(None)
@@ -140,15 +156,16 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         """Saves a separate copy of design under a different name"""
         filename = QFileDialog.getSaveFileName(
             None,
-            'Select a new location to save Metal design to',
-            self.design.get_design_name() + '.metal.py',
-            selectedFilter='*.metal.py')[0]
+            "Select a new location to save Metal design to",
+            self.design.get_design_name() + ".metal.py",
+            selectedFilter="*.metal.py",
+        )[0]
 
         # save python script to file path
         pyscript = self.design.to_python_script()
-        #check whether filename is empty or not. Save file only when filename is non-empty.
+        # check whether filename is empty or not. Save file only when filename is non-empty.
         if len(filename):
-            with open(filename, 'w', encoding='utf-8') as f:
+            with open(filename, "w", encoding="utf-8") as f:
                 f.write(pyscript)
 
     @slot_catch_error()
@@ -159,24 +176,28 @@ class QMainWindowExtension(QMainWindowExtensionBase):
             filename = self.design.save_path
             if not filename:
                 QMessageBox.warning(
-                    self, 'Warning', 'This  will save a .metal.py script '
-                    'that needs to be copied into a jupyter notebook to run.'
-                    'The "Load" button has not yet been implemented.')
+                    self,
+                    "Warning",
+                    "This  will save a .metal.py script "
+                    "that needs to be copied into a jupyter notebook to run."
+                    'The "Load" button has not yet been implemented.',
+                )
 
                 filename = QFileDialog.getSaveFileName(
                     None,
-                    'Select a new location to save Metal design to',
-                    self.design.get_design_name() + '.metal.py',
-                    selectedFilter='*.metal.py')[0]
+                    "Select a new location to save Metal design to",
+                    self.design.get_design_name() + ".metal.py",
+                    selectedFilter="*.metal.py",
+                )[0]
                 self.design.save_path = filename
             # save python script to file path
             pyscript = self.design.to_python_script()
-            #check whether filename is empty or not. Save file only when filename is non-empty.
+            # check whether filename is empty or not. Save file only when filename is non-empty.
             if len(filename):
-                with open(filename, 'w', encoding='utf-8') as f:
+                with open(filename, "w", encoding="utf-8") as f:
                     f.write(pyscript)
 
-                #make it clear it's saving
+                # make it clear it's saving
                 saving_dialog = QDialog(self)
                 saving_dialog.setWindowModality(Qt.NonModal)
                 v = QVBoxLayout()
@@ -186,9 +207,8 @@ class QMainWindowExtension(QMainWindowExtensionBase):
                 saving_dialog.show()
                 QTimer.singleShot(200, saving_dialog.close)
         else:
-            self.logger.info('No design present.')
-            QMessageBox.warning(self, 'Warning', 'No design present! Can'
-                                't save')
+            self.logger.info("No design present.")
+            QMessageBox.warning(self, "Warning", "No design present! Cant save")
 
     @slot_catch_error()
     def load_design(self, _):
@@ -199,7 +219,8 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     def full_refresh(self, _=None):
         """Handles click on Refresh."""
         self.logger.info(
-            r'Force refresh of all widgets (does not rebuild components)...')
+            r"Force refresh of all widgets (does not rebuild components)..."
+        )
         self.gui.refresh()
         self.gui.ui.mainViewTab.doShow()
 
@@ -207,21 +228,20 @@ class QMainWindowExtension(QMainWindowExtensionBase):
     def rebuild(self, _=None):
         """Handles click on Rebuild."""
         self.logger.info(
-            r'Rebuilding all components in the model (and refreshing widgets)...'
+            r"Rebuilding all components in the model (and refreshing widgets)..."
         )
         self.gui.rebuild()
-        #self.gui.ui.mainViewTab.doShow()
+        # self.gui.ui.mainViewTab.doShow()
 
     @slot_catch_error()
     def create_build_log_window(self, _=None):
-        """"Handles click on Build History button."""
+        """ "Handles click on Build History button."""
         self.gui.gui_create_build_log_window()
 
     @slot_catch_error()
     def open_web_help(self, _=None):
-        """"Handles click on Build History button."""
-        webbrowser.open('https://qiskit-community.github.io/qiskit-metal/',
-                        new=1)
+        """ "Handles click on Build History button."""
+        webbrowser.open("https://qiskit-community.github.io/qiskit-metal/", new=1)
 
     @slot_catch_error()
     def set_force_close(self, ison: bool):
@@ -257,8 +277,11 @@ class QMainWindowExtension(QMainWindowExtensionBase):
             bool: True to continue, False otherwise
         """
         reply = QMessageBox.question(
-            self, "Qiskit Metal", "Save unsaved changes to design?",
-            QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
+            self,
+            "Qiskit Metal",
+            "Save unsaved changes to design?",
+            QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel,
+        )
 
         if reply == QMessageBox.Cancel:
             return False
@@ -289,13 +312,17 @@ class MetalGUI(QMainWindowBaseHandler):
 
     __UI__ = Ui_MainWindow
     _QMainWindowClass = QMainWindowExtension
-    _img_logo_name = 'metal_logo.png'
-    _stylesheet_default = 'metal_dark'
+    _img_logo_name = "metal_logo.png"
+    _stylesheet_default = "metal_dark"
 
     # This is somewhat outdated
     _dock_names = [
-        'dockComponent', 'dockConnectors', 'dockDesign', 'dockLog',
-        'dockLibrary', 'dockVariables'
+        "dockComponent",
+        "dockConnectors",
+        "dockDesign",
+        "dockLog",
+        "dockLibrary",
+        "dockVariables",
     ]
 
     def __init__(self, design: QDesign = None):
@@ -312,9 +339,11 @@ class MetalGUI(QMainWindowBaseHandler):
         # it's now lazy, called the first time MetalGUI is instantiated.
         # Idempotent — second and later calls are no-ops.
         from qiskit_metal import setup_qt_backend
+
         setup_qt_backend()
 
         from .utility._handle_qt_messages import QtCore, _qt_message_handler
+
         QtCore.qInstallMessageHandler(_qt_message_handler)
 
         self.qApp = kick_start_qApp()
@@ -377,20 +406,25 @@ class MetalGUI(QMainWindowBaseHandler):
         def setEnabled(parent, widgets):
             for widgetname in widgets:
                 if hasattr(parent, widgetname):
-                    widget: 'QWidget' = getattr(parent, widgetname)
+                    widget: "QWidget" = getattr(parent, widgetname)
                     if widget:
                         widget.setEnabled(enabled)
                 else:
-                    self.logger.error(f'GUI issue: wrong name: {widgetname}')
+                    self.logger.error(f"GUI issue: wrong name: {widgetname}")
 
         widgets = [
-            'actionSave', 'action_full_refresh', 'actionRebuild',
-            'actionDelete_All', 'dockComponent', 'dockLibrary', 'dockDesign',
-            'dockConnectors'
+            "actionSave",
+            "action_full_refresh",
+            "actionRebuild",
+            "actionDelete_All",
+            "dockComponent",
+            "dockLibrary",
+            "dockDesign",
+            "dockConnectors",
         ]
         setEnabled(self.ui, widgets)
 
-        widgets = ['component_window', 'elements_win', 'net_list_win']
+        widgets = ["component_window", "elements_win", "net_list_win"]
         setEnabled(self, widgets)
 
     def set_design(self, design: QDesign):
@@ -429,8 +463,8 @@ class MetalGUI(QMainWindowBaseHandler):
         """Setup the logger."""
         super()._setup_logger()
 
-        logger = logging.getLogger('metal')
-        self._log_handler_design = self.create_log_handler('metal', logger)
+        logger = logging.getLogger("metal")
+        self._log_handler_design = self.create_log_handler("metal", logger)
 
     def refresh_design(self):
         """Refresh design properties associated with the GUI."""
@@ -440,8 +474,9 @@ class MetalGUI(QMainWindowBaseHandler):
         """Update the design name."""
         if self.design:
             design_name = self.design.get_design_name()
-            self.main_window.setWindowTitle(self.config.main_window.title +
-                                            f' — {design_name}')
+            self.main_window.setWindowTitle(
+                self.config.main_window.title + f" — {design_name}"
+            )
 
     def _ui_adjustments(self):
         """Any touchups to the loaded ui that need be done soon."""
@@ -452,25 +487,22 @@ class MetalGUI(QMainWindowBaseHandler):
         # Add a second label to the status bar
         status_bar = self.main_window.statusBar()
         self.statusbar_label = QLabel(status_bar)
-        self.statusbar_label.setText('')
+        self.statusbar_label.setText("")
         status_bar.addWidget(self.statusbar_label)
 
         # Docks
         # Left handside
-        self.main_window.splitDockWidget(self.ui.dockDesign,
-                                         self.ui.dockComponent, Qt.Vertical)
-        self.main_window.tabifyDockWidget(self.ui.dockDesign,
-                                          self.ui.dockLibrary)
-        self.main_window.tabifyDockWidget(self.ui.dockLibrary,
-                                          self.ui.dockConnectors)
-        self.main_window.tabifyDockWidget(self.ui.dockConnectors,
-                                          self.ui.dockVariables)
+        self.main_window.splitDockWidget(
+            self.ui.dockDesign, self.ui.dockComponent, Qt.Vertical
+        )
+        self.main_window.tabifyDockWidget(self.ui.dockDesign, self.ui.dockLibrary)
+        self.main_window.tabifyDockWidget(self.ui.dockLibrary, self.ui.dockConnectors)
+        self.main_window.tabifyDockWidget(self.ui.dockConnectors, self.ui.dockVariables)
         self.ui.dockDesign.raise_()
         self.main_window.resizeDocks([self.ui.dockDesign], [350], Qt.Horizontal)
 
         # Log
-        self.ui.dockLog.parent().resizeDocks([self.ui.dockLog], [120],
-                                             Qt.Vertical)
+        self.ui.dockLog.parent().resizeDocks([self.ui.dockLog], [120], Qt.Vertical)
 
         # toolBarView additions
         self._add_additional_qactions_tool_bar_view()
@@ -490,16 +522,20 @@ class MetalGUI(QMainWindowBaseHandler):
         toolbar = self.ui.toolBarView
         toolbarInsertBefore = self.ui.actionToggleDocks  # insert before this action
 
-        DOCKS = [(self.ui.dockLibrary, r":/design"),
-                 (self.ui.dockDesign, r":/component"), (None, '-----'),
-                 (self.ui.dockVariables, r":/variables"),
-                 (self.ui.dockConnectors, r":/connectors"),
-                 (self.ui.dockLog, r":/log"), (None, '-----')]
+        DOCKS = [
+            (self.ui.dockLibrary, r":/design"),
+            (self.ui.dockDesign, r":/component"),
+            (None, "-----"),
+            (self.ui.dockVariables, r":/variables"),
+            (self.ui.dockConnectors, r":/connectors"),
+            (self.ui.dockLog, r":/log"),
+            (None, "-----"),
+        ]
 
         for row in DOCKS:
             dock = row[0]
             iconName = row[1]
-            if iconName == '-----':
+            if iconName == "-----":
                 toolbar.insertSeparator(toolbarInsertBefore)
                 continue
 
@@ -508,10 +544,10 @@ class MetalGUI(QMainWindowBaseHandler):
             icon.addPixmap(QPixmap(iconName), QIcon.Normal, QIcon.Off)
 
             # Function call & monkey patch class instance ala Monkey Patch
-            dock.doShow = doShowHighlighWidget.__get__(dock, type(dock))  # pylint: disable=assignment-from-no-return, no-value-for-parameter
+            dock.doShow = doShowHighlighWidget.__get__(dock, type(dock))
 
             # QT Action with trigger, embed in toolbar
-            action = QAction('', dock, triggered=dock.doShow)
+            action = QAction("", dock, triggered=dock.doShow)
             action.setIcon(icon)
             dock.actionShow = action  # save action
 
@@ -539,9 +575,9 @@ class MetalGUI(QMainWindowBaseHandler):
         self.ui.dockVariables.setWidget(self.variables_window)
         # hookup to delete action
         self.ui.btn_comp_del.clicked.connect(
-            self.ui.tableComponents.delete_selected_rows)
-        self.ui.btn_comp_rename.clicked.connect(
-            self.ui.tableComponents.rename_row)
+            self.ui.tableComponents.delete_selected_rows
+        )
+        self.ui.btn_comp_rename.clicked.connect(self.ui.tableComponents.rename_row)
         self.ui.btn_comp_zoom.clicked.connect(self.btn_comp_zoom_fx)
 
     def _setup_plot_widget(self):
@@ -553,17 +589,18 @@ class MetalGUI(QMainWindowBaseHandler):
 
         # add highlight function ala Monkey Patch
         obj = self.ui.mainViewTab
-        obj.doShow = doShowHighlighWidget.__get__(obj, type(obj))  # pylint: disable=assignment-from-no-return, no-value-for-parameter
+        obj.doShow = doShowHighlighWidget.__get__(obj, type(obj))
 
         # Move the dock
         self._move_dock_to_new_parent(self.ui.dockLog, self.plot_win)
-        self.ui.dockLog.parent().resizeDocks([self.ui.dockLog], [120],
-                                             Qt.Vertical)
+        self.ui.dockLog.parent().resizeDocks([self.ui.dockLog], [120], Qt.Vertical)
 
-    def _move_dock_to_new_parent(self,
-                                 dock: QDockWidget,
-                                 new_parent: QMainWindow,
-                                 dock_location=Qt.BottomDockWidgetArea):
+    def _move_dock_to_new_parent(
+        self,
+        dock: QDockWidget,
+        new_parent: QMainWindow,
+        dock_location=Qt.BottomDockWidgetArea,
+    ):
         """The the doc to a different parent window.
 
         Args:
@@ -587,21 +624,22 @@ class MetalGUI(QMainWindowBaseHandler):
         self.ui.tabQGeometry.sort_model.setSourceModel(self.elements_win.model)
         self.ui.tabQGeometry.sort_model.setFilterKeyColumn(1)
 
-        self.elements_win.ui.tableElements.setModel(
-            self.ui.tabQGeometry.sort_model)
+        self.elements_win.ui.tableElements.setModel(self.ui.tabQGeometry.sort_model)
         self.elements_win.ui.tableElements.setSortingEnabled(True)
 
         # Add a text changed event to the QGeometry/Component/Layer text boxes
         self.elements_win.ui.lineEdit.textChanged.connect(
-            self.elements_lineEdit_onChanged)
+            self.elements_lineEdit_onChanged
+        )
         self.elements_win.ui.lineEdit_2.textChanged.connect(
-            self.elements_lineEdit_2_onChanged)
+            self.elements_lineEdit_2_onChanged
+        )
 
         # Add to the tabbed main view
         self.ui.tabQGeometry.layout().addWidget(self.elements_win)
 
     def elements_lineEdit_onChanged(self, text):
-        """ Text changed event for QGeometry/Component text box
+        """Text changed event for QGeometry/Component text box
         Args:
             text: Text typed in the filter box.
         """
@@ -609,7 +647,7 @@ class MetalGUI(QMainWindowBaseHandler):
         self.ui.tabQGeometry.sort_model.setFilterWildcard(text)
 
     def elements_lineEdit_2_onChanged(self, text):
-        """ Text changed event for QGeometry/Layer text box
+        """Text changed event for QGeometry/Layer text box
         Args:
             text: Text typed in the filter box.
         """
@@ -623,8 +661,7 @@ class MetalGUI(QMainWindowBaseHandler):
         self.ui.tabNetList.sort_model = QSortFilterProxyModel()
         self.ui.tabNetList.sort_model.setSourceModel(self.net_list_win.model)
 
-        self.net_list_win.ui.tableElements.setModel(
-            self.ui.tabNetList.sort_model)
+        self.net_list_win.ui.tableElements.setModel(self.ui.tabNetList.sort_model)
         self.net_list_win.ui.tableElements.setSortingEnabled(True)
 
         # Add to the tabbed main view
@@ -636,9 +673,9 @@ class MetalGUI(QMainWindowBaseHandler):
         Table model that shows the summary of the components of a design
         in a table with their names, classes, and modules
         """
-        model = QTableModel_AllComponents(self,
-                                          logger=self.logger,
-                                          tableView=self.ui.tableComponents)
+        model = QTableModel_AllComponents(
+            self, logger=self.logger, tableView=self.ui.tableComponents
+        )
         # Add Sort/Filter logic to the components table
         self.ui.proxyModel = QSortFilterProxyModel()
         self.ui.proxyModel.setSourceModel(model)
@@ -650,10 +687,11 @@ class MetalGUI(QMainWindowBaseHandler):
 
         # Add a text changed event to the filter text box
         self.ui.filter_text_design.textChanged.connect(
-            self.filter_text_design_onChanged)
+            self.filter_text_design_onChanged
+        )
 
     def filter_text_design_onChanged(self, text):
-        """ Text changed event for filter_text_design
+        """Text changed event for filter_text_design
         Args:
             text: Text typed in the filter box.
         """
@@ -671,10 +709,12 @@ class MetalGUI(QMainWindowBaseHandler):
         """
         try:
             self.param_window = pew.create_parameter_entry_window(
-                self, full_path, self.main_window)
+                self, full_path, self.main_window
+            )
         except Exception as e:
             self.logger.error(
-                f"Unable to open param entry window due to Exception: {e} ")
+                f"Unable to open param entry window due to Exception: {e} "
+            )
 
     def _setup_library_widget(self):
         """
@@ -692,7 +732,7 @@ class MetalGUI(QMainWindowBaseHandler):
 
         # getting absolute path of Qlibrary folder
         init_qlibrary_abs_path = os.path.abspath(qlibrary.__file__)
-        qlibrary_abs_path = init_qlibrary_abs_path.split('__init__.py')[0]
+        qlibrary_abs_path = init_qlibrary_abs_path.split("__init__.py")[0]
         self.QLIBRARY_ROOT = qlibrary_abs_path
         self.QLIBRARY_FOLDERNAME = qlibrary.__name__
 
@@ -702,7 +742,7 @@ class MetalGUI(QMainWindowBaseHandler):
         dock.library_model.setRootPath(self.QLIBRARY_ROOT)
 
         # QSortFilterProxyModel
-        #QSortFilterProxyModel: sorting items, filtering out items, or both.
+        # QSortFilterProxyModel: sorting items, filtering out items, or both.
         #   maps the original model indexes to new indexes, allows a given
         # source model to be restructured as far as views are concerned
         # without requiring any transformations on the underlying data, and
@@ -719,14 +759,17 @@ class MetalGUI(QMainWindowBaseHandler):
         view.setModel(dock.proxy_library_model)
         view.setRootIndex(
             dock.proxy_library_model.mapFromSource(
-                dock.library_model.index(dock.library_model.rootPath())))
+                dock.library_model.index(dock.library_model.rootPath())
+            )
+        )
 
         # try empty one if no work
         view.setItemDelegate(LibraryDelegate(self.main_window))
         view.itemDelegate().tool_tip_signal.connect(view.setToolTip)
 
         view.qlibrary_filepath_signal.connect(
-            self._create_new_component_object_from_qlibrary)
+            self._create_new_component_object_from_qlibrary
+        )
 
         # https://stackoverflow.com/questions/16759088/what-is-the-viewport-of-a-tree-widget
         view.viewport().setAttribute(Qt.WA_Hover, True)
@@ -738,14 +781,17 @@ class MetalGUI(QMainWindowBaseHandler):
         stringLibraryRootPath = str(libraryRootPath)
         view.expand(
             dock.proxy_library_model.mapFromSource(
-                dock.library_model.index(stringLibraryRootPath)))
+                dock.library_model.index(stringLibraryRootPath)
+            )
+        )
 
         # Add a text changed event to the filter text box
         self.ui.dockLibrary_filter.textChanged.connect(
-            self.dockLibrary_filter_onChanged)
+            self.dockLibrary_filter_onChanged
+        )
 
     def dockLibrary_filter_onChanged(self, text):
-        """ Text changed event for filter_text_design
+        """Text changed event for filter_text_design
         Args:
             text: Text typed in the filter box.
         """
@@ -763,7 +809,9 @@ class MetalGUI(QMainWindowBaseHandler):
 
         view.setRootIndex(
             proxy_model.mapFromSource(
-                dock.library_model.index(dock.library_model.rootPath())))
+                dock.library_model.index(dock.library_model.rootPath())
+            )
+        )
 
         if len(text) >= 1 and proxy_model.rowCount() > 0:
             view.expandAll()
@@ -779,8 +827,7 @@ class MetalGUI(QMainWindowBaseHandler):
             do_hide (bool): Hide or show. Defaults to None -- toggle.
         """
         self.main_window.toggle_all_docks(do_hide)
-        self.qApp.processEvents(
-        )  # Process all events, so that if we take screenshot next it won't be partially updated
+        self.qApp.processEvents()  # Process all events, so that if we take screenshot next it won't be partially updated
 
     ################################################
     # Plotting
@@ -800,7 +847,7 @@ class MetalGUI(QMainWindowBaseHandler):
         return axes
 
     @property
-    def axes(self) -> List['matplotlib.plt.Axes']:
+    def axes(self) -> List["matplotlib.plt.Axes"]:
         """Returns the axes."""
         return self.plot_win.canvas.axes
 
@@ -810,7 +857,7 @@ class MetalGUI(QMainWindowBaseHandler):
         return self.plot_win.canvas.figure
 
     @property
-    def canvas(self) -> 'PlotCanvas':
+    def canvas(self) -> "PlotCanvas":
         """Get access to the canvas that handles the figure and axes, and their
         main functions.
 
@@ -909,8 +956,7 @@ class MetalGUI(QMainWindowBaseHandler):
         Args:
             _ (object, optional): Default parameters for slot  - used to call from action
         """
-        self.build_log_window = BuildHistoryScrollArea(
-            self.design.build_logs.data())
+        self.build_log_window = BuildHistoryScrollArea(self.design.build_logs.data())
         self.build_log_window.show()
 
     def save_file(self):

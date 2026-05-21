@@ -10,35 +10,28 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# pylint: disable-msg=import-error
 """Reports a summary of information on Qiskit Metal and dependencies.
 
 Contain functions to report more detailed information to orient a user,
 used for debug purposes.
 """
 
+import inspect
+import os
+import platform
+import sys
+import webbrowser
 from pathlib import Path
 from typing import Union
 
-import os
-import sys
-import getpass
-import inspect
-import platform
-import webbrowser
 import numpy
 import qutip
 
 from qiskit_metal.toolbox_python.display import Color, style_colon_list
 
-__all__ = [
-    'about', 'open_docs', 'get_platform_info', 'get_module_doc_page'
-]
+__all__ = ["about", "open_docs", "get_platform_info", "get_module_doc_page"]
 
 
-# pylint: disable-msg=invalid-name
-# pylint: disable-msg=import-outside-toplevel
-# pylint: disable-msg=bare-except
 def about():
     """Reports a summary of information on Qiskit Metal and dependencies.
 
@@ -50,18 +43,18 @@ def about():
     # PySide6 is an optional extra (``quantum-metal[gui]``) — the lite
     # install path omits it, so about() must not require it.
     try:
-        from PySide6.QtCore import __version__ as QT_VERSION_STR
         from PySide6 import __version__ as PYSIDE_VERSION_STR
+        from PySide6.QtCore import __version__ as QT_VERSION_STR
     except ImportError:
-        QT_VERSION_STR = 'Not installed'
-        PYSIDE_VERSION_STR = 'Not installed'
+        QT_VERSION_STR = "Not installed"
+        PYSIDE_VERSION_STR = "Not installed"
 
     import matplotlib
 
     try:
         from sip import SIP_VERSION_STR
     except ImportError:
-        SIP_VERSION_STR = 'Not installed'
+        SIP_VERSION_STR = "Not installed"
     # Riverbank: SIP is a tool for quickly writing Python modules that interface with
     # C++ and C libraries.
 
@@ -99,15 +92,13 @@ IBM Quantum Team"""
 # DOCS
 
 
-def get_module_doc_page(module,
-                        folder=r'../docs/build/html',
-                        page='index.html'):
+def get_module_doc_page(module, folder=r"../docs/build/html", page="index.html"):
     """Get the file path to a module doc folder assumed to be inside the
     package."""
     return Path(os.path.dirname(module.__file__)) / folder / page
 
 
-def open_docs(page='https://qiskit-community.github.io/qiskit-metal/'):
+def open_docs(page="https://qiskit-community.github.io/qiskit-metal/"):
     """Open the qiskit_metal documentation in HTML.
 
     Open the URL in new window, raising the window if possible.
@@ -119,7 +110,7 @@ def open_docs(page='https://qiskit-community.github.io/qiskit-metal/'):
     # For debug purposes.
     # Main function: ``orient_me```
 
-    #def orient_me(do_print: bool = True) -> Union[None, str]:
+    # def orient_me(do_print: bool = True) -> Union[None, str]:
     """Full system, python, user, and environemnt information.
 
     Args:
@@ -148,7 +139,7 @@ def open_docs(page='https://qiskit-community.github.io/qiskit-metal/'):
 def get_platform_info() -> str:
     """Returns a string with the platform information."""
 
-    return '''
+    return """
 
  System platform information:
 
@@ -165,7 +156,15 @@ def get_platform_info() -> str:
     version  : %s (implem: %s)
     compiler : %s
 
-''' % (platform.system(), platform.node(), platform.release(),
-       platform.machine(), platform.processor(), platform.platform(),
-       platform.version(), platform.python_version(),
-       platform.python_implementation(), platform.python_compiler())
+""" % (
+        platform.system(),
+        platform.node(),
+        platform.release(),
+        platform.machine(),
+        platform.processor(),
+        platform.platform(),
+        platform.version(),
+        platform.python_version(),
+        platform.python_implementation(),
+        platform.python_compiler(),
+    )

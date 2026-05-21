@@ -12,7 +12,6 @@ from PySide6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_NetListWindow(object):
-
     def setupUi(self, NetListWindow):
         NetListWindow.setObjectName("NetListWindow")
         NetListWindow.resize(841, 623)
@@ -43,5 +42,5 @@ class Ui_NetListWindow(object):
 
     def retranslateUi(self, NetListWindow):
         NetListWindow.setWindowTitle(
-            QtWidgets.QApplication.translate("NetListWindow", "MainWindow",
-                                             None, -1))
+            QtWidgets.QApplication.translate("NetListWindow", "MainWindow", None, -1)
+        )

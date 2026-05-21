@@ -33,6 +33,7 @@ class TestPyEPRConvertIntegration(unittest.TestCase, AssertionsMixin):
     def test_convert_symbols_importable(self):
         """The three Convert methods metal calls must remain on the class."""
         from pyEPR.calcs.convert import Convert
+
         self.assertTrue(callable(Convert.Ic_from_Lj))
         self.assertTrue(callable(Convert.Ej_from_Lj))
         self.assertTrue(callable(Convert.Ec_from_Cs))
@@ -45,15 +46,17 @@ class TestPyEPRConvertIntegration(unittest.TestCase, AssertionsMixin):
         3.291e-16 Wb / 10e-9 H = 3.291e-8 A.
         """
         from pyEPR.calcs.convert import Convert
-        ic_amps = Convert.Ic_from_Lj(10.0, 'nH', 'A')
+
+        ic_amps = Convert.Ic_from_Lj(10.0, "nH", "A")
         self.assertAlmostEqualRel(ic_amps, 3.291059784754533e-08, rel_tol=1e-9)
 
     def test_convert_ic_from_lj_default_units(self):
         """Default units must be (nH -> nA)."""
         from pyEPR.calcs.convert import Convert
+
         # 10 nH -> ~32.91 nA
         ic_default = Convert.Ic_from_Lj(10.0)
-        ic_explicit = Convert.Ic_from_Lj(10.0, 'nH', 'nA')
+        ic_explicit = Convert.Ic_from_Lj(10.0, "nH", "nA")
         self.assertAlmostEqualRel(ic_default, ic_explicit, rel_tol=1e-12)
         self.assertAlmostEqualRel(ic_default, 32.91059784754533, rel_tol=1e-9)
 
@@ -64,6 +67,7 @@ class TestPyEPRConvertIntegration(unittest.TestCase, AssertionsMixin):
         For Lj = 10 nH the textbook value is ~16346 MHz.
         """
         from pyEPR.calcs.convert import Convert
+
         ej_mhz = Convert.Ej_from_Lj(10.0)
         self.assertAlmostEqualRel(ej_mhz, 16346.15128067812, rel_tol=1e-9)
 
@@ -74,6 +78,7 @@ class TestPyEPRConvertIntegration(unittest.TestCase, AssertionsMixin):
         For Cs = 100 fF the textbook value is ~193.7 MHz.
         """
         from pyEPR.calcs.convert import Convert
+
         ec_mhz = Convert.Ec_from_Cs(100.0)
         self.assertAlmostEqualRel(ec_mhz, 193.7022932465912, rel_tol=1e-9)
 
@@ -84,6 +89,7 @@ class TestPyEPRConstantsIntegration(unittest.TestCase, AssertionsMixin):
     def test_constants_importable(self):
         """The two constants metal imports must be present."""
         from pyEPR.calcs.constants import e_el, hbar
+
         self.assertIsNotNone(e_el)
         self.assertIsNotNone(hbar)
 
@@ -91,6 +97,7 @@ class TestPyEPRConstantsIntegration(unittest.TestCase, AssertionsMixin):
         """`e_el` and `hbar` should track CODATA values; metal does
         unit-conversion arithmetic with them."""
         from pyEPR.calcs.constants import e_el, hbar
+
         # 2019-redefined exact value of the elementary charge.
         self.assertAlmostEqualRel(e_el, 1.602176634e-19, rel_tol=1e-9)
         # CODATA 2018 reduced Planck constant.
@@ -104,8 +111,15 @@ class TestPyEPRAnsysIntegration(unittest.TestCase, AssertionsMixin):
 
     def test_top_level_symbols_importable(self):
         """The full set of `pyEPR.ansys` symbols metal imports."""
-        from pyEPR.ansys import (parse_units, unparse_units, ureg,
-                                 set_property, HfssApp, release)
+        from pyEPR.ansys import (
+            parse_units,
+            unparse_units,
+            ureg,
+            set_property,
+            HfssApp,
+            release,
+        )
+
         self.assertTrue(callable(parse_units))
         self.assertTrue(callable(unparse_units))
         self.assertTrue(callable(set_property))
@@ -113,19 +127,22 @@ class TestPyEPRAnsysIntegration(unittest.TestCase, AssertionsMixin):
         self.assertTrue(callable(release))
         # ureg must be a Pint UnitRegistry instance.
         import pint
+
         self.assertIsInstance(ureg, pint.UnitRegistry)
 
     def test_parse_units_length_to_meters(self):
         """`parse_units` converts length strings to the HFSS internal unit
         (meters). Metal's `to_ansys_units` and `parse_value_hfss` rely on this."""
         from pyEPR.ansys import parse_units
-        self.assertAlmostEqualRel(parse_units('1mm'), 1e-3, rel_tol=1e-12)
-        self.assertAlmostEqualRel(parse_units('1um'), 1e-6, rel_tol=1e-12)
-        self.assertAlmostEqualRel(parse_units('2.5 mm'), 2.5e-3, rel_tol=1e-12)
+
+        self.assertAlmostEqualRel(parse_units("1mm"), 1e-3, rel_tol=1e-12)
+        self.assertAlmostEqualRel(parse_units("1um"), 1e-6, rel_tol=1e-12)
+        self.assertAlmostEqualRel(parse_units("2.5 mm"), 2.5e-3, rel_tol=1e-12)
 
     def test_unparse_units_meters_to_mm(self):
         """`unparse_units` is the inverse: meters -> mm."""
         from pyEPR.ansys import unparse_units
+
         self.assertAlmostEqualRel(unparse_units(1e-3), 1.0, rel_tol=1e-12)
         self.assertAlmostEqualRel(unparse_units(2.5e-3), 2.5, rel_tol=1e-12)
 
@@ -133,12 +150,13 @@ class TestPyEPRAnsysIntegration(unittest.TestCase, AssertionsMixin):
         """Metal uses `ureg` to construct Pint quantities. Confirm the unit
         registry recognises the units metal actually uses."""
         from pyEPR.ansys import ureg
+
         # nH appears in lumped_elements.py and Q3D conversions
-        self.assertEqual(str(ureg.Quantity(1.0, 'nH').units), 'nanohenry')
+        self.assertEqual(str(ureg.Quantity(1.0, "nH").units), "nanohenry")
         # fF appears in capacitance handling
-        self.assertEqual(str(ureg.Quantity(1.0, 'fF').units), 'femtofarad')
+        self.assertEqual(str(ureg.Quantity(1.0, "fF").units), "femtofarad")
         # GHz appears in eigenmode setup configuration
-        self.assertEqual(str(ureg.Quantity(1.0, 'GHz').units), 'gigahertz')
+        self.assertEqual(str(ureg.Quantity(1.0, "GHz").units), "gigahertz")
 
 
 class TestPyEPRReportsIntegration(unittest.TestCase, AssertionsMixin):
@@ -151,19 +169,28 @@ class TestPyEPRReportsIntegration(unittest.TestCase, AssertionsMixin):
     test will fail and the metal import will need to follow."""
 
     def test_public_eigenmode_convergence_plotters_importable(self):
-        from pyEPR.reports import (plot_convergence_f_vspass,
-                                   plot_convergence_max_df,
-                                   plot_convergence_maxdf_vs_sol,
-                                   plot_convergence_solved_elem)
-        for fn in (plot_convergence_f_vspass, plot_convergence_max_df,
-                   plot_convergence_maxdf_vs_sol,
-                   plot_convergence_solved_elem):
+        from pyEPR.reports import (
+            plot_convergence_f_vspass,
+            plot_convergence_max_df,
+            plot_convergence_maxdf_vs_sol,
+            plot_convergence_solved_elem,
+        )
+
+        for fn in (
+            plot_convergence_f_vspass,
+            plot_convergence_max_df,
+            plot_convergence_maxdf_vs_sol,
+            plot_convergence_solved_elem,
+        ):
             self.assertTrue(callable(fn))
 
     def test_private_q3d_plotters_importable(self):
         """`q3d_renderer.py:22` reaches into pyEPR's private namespace."""
-        from pyEPR.reports import (_plot_q3d_convergence_main,
-                                   _plot_q3d_convergence_chi_f)
+        from pyEPR.reports import (
+            _plot_q3d_convergence_main,
+            _plot_q3d_convergence_chi_f,
+        )
+
         self.assertTrue(callable(_plot_q3d_convergence_main))
         self.assertTrue(callable(_plot_q3d_convergence_chi_f))
 
@@ -176,9 +203,11 @@ class TestPyEPRTopLevelIntegration(unittest.TestCase, AssertionsMixin):
 
     def test_top_level_names_resolve(self):
         import pyEPR as epr
-        for name in ('ProjectInfo', 'DistributedAnalysis', 'QuantumAnalysis'):
-            self.assertTrue(hasattr(epr, name),
-                            f'pyEPR no longer exposes {name} at top level')
+
+        for name in ("ProjectInfo", "DistributedAnalysis", "QuantumAnalysis"):
+            self.assertTrue(
+                hasattr(epr, name), f"pyEPR no longer exposes {name} at top level"
+            )
 
 
 class TestMetalParseWrapper(unittest.TestCase, AssertionsMixin):
@@ -192,12 +221,15 @@ class TestMetalParseWrapper(unittest.TestCase, AssertionsMixin):
 
     def test_parse_value_hfss_round_trip(self):
         from qiskit_metal.renderers.renderer_ansys.parse import (
-            parse_value_hfss, unparse_units)
+            parse_value_hfss,
+            unparse_units,
+        )
+
         # 1 mm -> 1e-3 m (HFSS internal) -> 1.0 mm
-        meters = parse_value_hfss('1mm')
+        meters = parse_value_hfss("1mm")
         self.assertAlmostEqualRel(meters, 1e-3, rel_tol=1e-12)
         self.assertAlmostEqualRel(unparse_units(meters), 1.0, rel_tol=1e-12)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main(verbosity=2)

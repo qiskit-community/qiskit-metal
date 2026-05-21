@@ -12,10 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# pylint: disable-msg=unnecessary-pass
-# pylint: disable-msg=too-many-public-methods
-# pylint: disable-msg=broad-except
-# pylint: disable-msg=import-error
 """Qiskit Metal unit tests components functionality."""
 
 import unittest
@@ -45,7 +41,9 @@ from qiskit_metal.qlibrary.tlines.pathfinder import RoutePathfinder
 from qiskit_metal.qlibrary.tlines.meandered import RouteMeander
 from qiskit_metal.qlibrary.tlines.mixed_path import RouteMixed
 from qiskit_metal.qlibrary.terminations.launchpad_wb import LaunchpadWirebond
-from qiskit_metal.qlibrary.terminations.launchpad_wb_coupled import LaunchpadWirebondCoupled
+from qiskit_metal.qlibrary.terminations.launchpad_wb_coupled import (
+    LaunchpadWirebondCoupled,
+)
 from qiskit_metal.qlibrary.lumped.cap_3_interdigital import Cap3Interdigital
 from qiskit_metal.qlibrary.qubits.star_qubit import StarQubit
 from qiskit_metal.qlibrary.qubits.JJ_Dolan import jj_dolan
@@ -63,7 +61,6 @@ from qiskit_metal import designs
 from qiskit_metal.qlibrary._template import MyQComponent
 from .assertions import AssertionsMixin
 
-#pylint: disable-msg=line-too-long
 from qiskit_metal.qlibrary.lumped.resonator_coil_rect import ResonatorCoilRect
 
 
@@ -95,17 +92,14 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             QComponent(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail(
-                "QComponent(design, \"my_name3\", options={}, make=False)")
+            self.fail('QComponent(design, "my_name3", options={}, make=False)')
 
         try:
-            QComponent(design,
-                       "my_name4",
-                       options={},
-                       make=False,
-                       component_template={})
+            QComponent(
+                design, "my_name4", options={}, make=False, component_template={}
+            )
         except Exception:
-            msg = "QComponent(design, \"my_name4\", options={}, make=False, component_template={})"
+            msg = 'QComponent(design, "my_name4", options={}, make=False, component_template={})'
             self.fail(msg)
 
     def test_qlibrary_instantiate_basequbit(self):
@@ -125,7 +119,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             BaseQubit(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail("BaseQubit(design, \"my_name3\", options={}, make=False)")
+            self.fail('BaseQubit(design, "my_name3", options={}, make=False)')
 
     def test_qlibrary_instantiate_open_to_ground(self):
         """Test the instantiation of openToGround."""
@@ -138,18 +132,17 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             OpenToGround(design, "my_name")
         except Exception:
-            self.fail("OpenToGround(design, \"my_name\")")
+            self.fail('OpenToGround(design, "my_name")')
 
         try:
             OpenToGround(design, "my_name2", options={})
         except Exception:
-            self.fail("OpenToGround(design, \"my_name2\", options={})")
+            self.fail('OpenToGround(design, "my_name2", options={})')
 
         try:
             OpenToGround(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail(
-                "OpenToGround(design, \"my_name3\", options={}, make=False)")
+            self.fail('OpenToGround(design, "my_name3", options={}, make=False)')
 
     def test_qlibrary_instantiate_short_to_ground(self):
         """Test the instantiation of shortToGround."""
@@ -162,18 +155,17 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             ShortToGround(design, "my_name")
         except Exception:
-            self.fail("ShortToGround(design, \"my_name\")")
+            self.fail('ShortToGround(design, "my_name")')
 
         try:
             ShortToGround(design, "my_name2", options={})
         except Exception:
-            self.fail("ShortToGround(design, \"my_name2\", options={})")
+            self.fail('ShortToGround(design, "my_name2", options={})')
 
         try:
             ShortToGround(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail(
-                "ShortToGround(design, \"my_name3\", options={}, make=False)")
+            self.fail('ShortToGround(design, "my_name3", options={}, make=False)')
 
     def test_qlibrary_instantiate_route_frame_path(self):
         """Test the instantiation of RouteFramed."""
@@ -193,13 +185,12 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             RouteStraight(design, "my_name2", options={})
         except Exception:
-            self.fail("RouteStraight(design, \"my_name2\", options={})")
+            self.fail('RouteStraight(design, "my_name2", options={})')
 
         try:
             RouteStraight(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail(
-                "RouteStraight(design, \"my_name3\", options={}, make=False)")
+            self.fail('RouteStraight(design, "my_name3", options={}, make=False)')
 
     def test_qlibrary_instantiate_q_route_lead(self):
         """Test the instantiation of QRouteLead."""
@@ -233,7 +224,7 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         """Test the instantiation of QRoute."""
         design = designs.DesignPlanar()
         try:
-            QRoute(design, name='test_qroute', options={})
+            QRoute(design, name="test_qroute", options={})
         except Exception:
             self.fail("QRoute failed")
 
@@ -248,18 +239,17 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             MyQComponent(design, "my_name")
         except Exception:
-            self.fail("MyQComponent(design, \"my_name\")")
+            self.fail('MyQComponent(design, "my_name")')
 
         try:
             MyQComponent(design, "my_name2", options={})
         except Exception:
-            self.fail("MyQComponent(design, \"my_name2\", options={})")
+            self.fail('MyQComponent(design, "my_name2", options={})')
 
         try:
             MyQComponent(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail(
-                "MyQComponent(design, \"my_name3\", options={}, make=False)")
+            self.fail('MyQComponent(design, "my_name3", options={}, make=False)')
 
     def test_qlibrary_instantiate_cpw_finger_cap(self):
         """Test the instantiation of CapNInterdigital."""
@@ -272,19 +262,17 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             CapNInterdigital(design, "my_name")
         except Exception:
-            self.fail("CapNInterdigital(design, \"my_name\")")
+            self.fail('CapNInterdigital(design, "my_name")')
 
         try:
             CapNInterdigital(design, "my_name2", options={})
         except Exception:
-            self.fail("CapNInterdigital(design, \"my_name2\", options={})")
+            self.fail('CapNInterdigital(design, "my_name2", options={})')
 
         try:
             CapNInterdigital(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail(
-                "CapNInterdigital(design, \"my_name3\", options={}, make=False)"
-            )
+            self.fail('CapNInterdigital(design, "my_name3", options={}, make=False)')
 
     def test_qlibrary_instantiate_cpw_t_finger_cap(self):
         """Test the instantiation of CapNInterdigitalTee."""
@@ -297,19 +285,17 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             CapNInterdigitalTee(design, "my_name")
         except Exception:
-            self.fail("CapNInterdigitalTee(design, \"my_name\")")
+            self.fail('CapNInterdigitalTee(design, "my_name")')
 
         try:
             CapNInterdigitalTee(design, "my_name2", options={})
         except Exception:
-            self.fail("CapNInterdigitalTee(design, \"my_name2\", options={})")
+            self.fail('CapNInterdigitalTee(design, "my_name2", options={})')
 
         try:
             CapNInterdigitalTee(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail(
-                "CapNInterdigitalTee(design, \"my_name3\", options={}, make=False)"
-            )
+            self.fail('CapNInterdigitalTee(design, "my_name3", options={}, make=False)')
 
     def test_qlibrary_instantiate_cpw_t(self):
         """Test the instantiation of LineTee."""
@@ -322,17 +308,17 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             LineTee(design, "my_name")
         except Exception:
-            self.fail("LineTee(design, \"my_name\")")
+            self.fail('LineTee(design, "my_name")')
 
         try:
             LineTee(design, "my_name2", options={})
         except Exception:
-            self.fail("LineTee(design, \"my_name2\", options={})")
+            self.fail('LineTee(design, "my_name2", options={})')
 
         try:
             LineTee(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail("LineTee(design, \"my_name3\", options={}, make=False)")
+            self.fail('LineTee(design, "my_name3", options={}, make=False)')
 
     def test_qlibrary_instantiate_cpw_hanger_t(self):
         """Test the instantiation of CoupledLineTee."""
@@ -345,18 +331,17 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             CoupledLineTee(design, "my_name")
         except Exception:
-            self.fail("CoupledLineTee(design, \"my_name\")")
+            self.fail('CoupledLineTee(design, "my_name")')
 
         try:
             CoupledLineTee(design, "my_name2", options={})
         except Exception:
-            self.fail("CoupledLineTee(design, \"my_name2\", options={})")
+            self.fail('CoupledLineTee(design, "my_name2", options={})')
 
         try:
             CoupledLineTee(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail(
-                "CoupledLineTee(design, \"my_name3\", options={}, make=False)")
+            self.fail('CoupledLineTee(design, "my_name3", options={}, make=False)')
 
     def test_qlibrary_instantiate_resonator_rectangle_spiral(self):
         """Test the instantiation of ResonatorCoilRect."""
@@ -369,19 +354,17 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             ResonatorCoilRect(design, "my_name")
         except Exception:
-            self.fail("ResonatorCoilRect(design, \"my_name\")")
+            self.fail('ResonatorCoilRect(design, "my_name")')
 
         try:
             ResonatorCoilRect(design, "my_name2", options={})
         except Exception:
-            self.fail("ResonatorCoilRect(design, \"my_name2\", options={})")
+            self.fail('ResonatorCoilRect(design, "my_name2", options={})')
 
         try:
             ResonatorCoilRect(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail(
-                "ResonatorCoilRect(design, \"my_name3\", options={}, make=False)"
-            )
+            self.fail('ResonatorCoilRect(design, "my_name3", options={}, make=False)')
 
     def test_qlibrary_instantiate_circle_raster(self):
         """Test the instantiation of CircleRaster."""
@@ -394,18 +377,17 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             CircleRaster(design, "my_name")
         except Exception:
-            self.fail("CircleRaster(design, \"my_name\")")
+            self.fail('CircleRaster(design, "my_name")')
 
         try:
             CircleRaster(design, "my_name2", options={})
         except Exception:
-            self.fail("CircleRaster(design, \"my_name2\", options={})")
+            self.fail('CircleRaster(design, "my_name2", options={})')
 
         try:
             CircleRaster(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail(
-                "CircleRaster(design, \"my_name3\", options={}, make=False)")
+            self.fail('CircleRaster(design, "my_name3", options={}, make=False)')
 
     def test_qlibrary_instantiate_circle_caterpillar(self):
         """Test the instantiation of CircleCaterpillar."""
@@ -418,19 +400,17 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             CircleCaterpillar(design, "my_name")
         except Exception:
-            self.fail("CircleCaterpillar(design, \"my_name\")")
+            self.fail('CircleCaterpillar(design, "my_name")')
 
         try:
             CircleCaterpillar(design, "my_name2", options={})
         except Exception:
-            self.fail("CircleCaterpillar(design, \"my_name2\", options={})")
+            self.fail('CircleCaterpillar(design, "my_name2", options={})')
 
         try:
             CircleCaterpillar(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail(
-                "CircleCaterpillar(design, \"my_name3\", options={}, make=False)"
-            )
+            self.fail('CircleCaterpillar(design, "my_name3", options={}, make=False)')
 
     def test_qlibrary_instantiate_n_gon(self):
         """Test the instantiation of NGon."""
@@ -443,17 +423,17 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             NGon(design, "my_name")
         except Exception:
-            self.fail("NGon(design, \"my_name\")")
+            self.fail('NGon(design, "my_name")')
 
         try:
             NGon(design, "my_name2", options={})
         except Exception:
-            self.fail("NGon(design, \"my_name2\", options={})")
+            self.fail('NGon(design, "my_name2", options={})')
 
         try:
             NGon(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail("NGon(design, \"my_name3\", options={}, make=False)")
+            self.fail('NGon(design, "my_name3", options={}, make=False)')
 
     def test_qlibrary_instantiate_n_square_spiral(self):
         """Test the instantiation of NSquareSpiral."""
@@ -466,18 +446,17 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             NSquareSpiral(design, "my_name")
         except Exception:
-            self.fail("NSquareSpiral(design, \"my_name\")")
+            self.fail('NSquareSpiral(design, "my_name")')
 
         try:
             NSquareSpiral(design, "my_name2", options={})
         except Exception:
-            self.fail("NSquareSpiral(design, \"my_name2\", options={})")
+            self.fail('NSquareSpiral(design, "my_name2", options={})')
 
         try:
             NSquareSpiral(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail(
-                "NSquareSpiral(design, \"my_name3\", options={}, make=False)")
+            self.fail('NSquareSpiral(design, "my_name3", options={}, make=False)')
 
     def test_qlibrary_instantiate_rectangle(self):
         """Test the instantiation of Rectangle."""
@@ -490,17 +469,17 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             Rectangle(design, "my_name")
         except Exception:
-            self.fail("Rectangle(design, \"my_name\")")
+            self.fail('Rectangle(design, "my_name")')
 
         try:
             Rectangle(design, "my_name2", options={})
         except Exception:
-            self.fail("Rectangle(design, \"my_name2\", options={})")
+            self.fail('Rectangle(design, "my_name2", options={})')
 
         try:
             Rectangle(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail("Rectangle(design, \"my_name3\", options={}, make=False)")
+            self.fail('Rectangle(design, "my_name3", options={}, make=False)')
 
     def test_qlibrary_instantiate_rectangle_hollow(self):
         """Test the instantiation of RectangleHollow."""
@@ -513,18 +492,17 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             RectangleHollow(design, "my_name")
         except Exception:
-            self.fail("RectangleHollow(design, \"my_name\")")
+            self.fail('RectangleHollow(design, "my_name")')
 
         try:
             RectangleHollow(design, "my_name2", options={})
         except Exception:
-            self.fail("RectangleHollow(design, \"my_name2\", options={})")
+            self.fail('RectangleHollow(design, "my_name2", options={})')
 
         try:
             RectangleHollow(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail(
-                "RectangleHollow(design, \"my_name3\", options={}, make=False)")
+            self.fail('RectangleHollow(design, "my_name3", options={}, make=False)')
 
     def test_qlibrary_instantiate_route_anchors(self):
         """Test the instantiation of RouteAnchors."""
@@ -537,13 +515,12 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             RouteAnchors(design, "my_name2", options={})
         except Exception:
-            self.fail("RouteAnchors(design, \"my_name2\", options={})")
+            self.fail('RouteAnchors(design, "my_name2", options={})')
 
         try:
             RouteAnchors(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail(
-                "RouteAnchors(design, \"my_name3\", options={}, make=False)")
+            self.fail('RouteAnchors(design, "my_name3", options={}, make=False)')
 
     def test_qlibrary_instantiate_route_pathfinder(self):
         """Test the instantiation of RoutePathfinder."""
@@ -556,13 +533,12 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             RoutePathfinder(design, "my_name2", options={})
         except Exception:
-            self.fail("RoutePathfinder(design, \"my_name2\", options={})")
+            self.fail('RoutePathfinder(design, "my_name2", options={})')
 
         try:
             RoutePathfinder(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail(
-                "RoutePathfinder(design, \"my_name3\", options={}, make=False)")
+            self.fail('RoutePathfinder(design, "my_name3", options={}, make=False)')
 
     def test_qlibrary_instantiate_launch_v1(self):
         """Test the instantiation of LaunchpadWirebond."""
@@ -575,19 +551,17 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             LaunchpadWirebond(design, "my_name")
         except Exception:
-            self.fail("LaunchpadWirebond(design, \"my_name\")")
+            self.fail('LaunchpadWirebond(design, "my_name")')
 
         try:
             LaunchpadWirebond(design, "my_name2", options={})
         except Exception:
-            self.fail("LaunchpadWirebond(design, \"my_name2\", options={})")
+            self.fail('LaunchpadWirebond(design, "my_name2", options={})')
 
         try:
             LaunchpadWirebond(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail(
-                "LaunchpadWirebond(design, \"my_name3\", options={}, make=False)"
-            )
+            self.fail('LaunchpadWirebond(design, "my_name3", options={}, make=False)')
 
     def test_qlibrary_instantiate_launch_v2(self):
         """Test the instantiation of LaunchpadWirebondCoupled."""
@@ -600,19 +574,18 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             LaunchpadWirebondCoupled(design, "my_name")
         except Exception:
-            self.fail("LaunchpadWirebondCoupled(design, \"my_name\")")
+            self.fail('LaunchpadWirebondCoupled(design, "my_name")')
 
         try:
             LaunchpadWirebondCoupled(design, "my_name2", options={})
         except Exception:
-            self.fail(
-                "LaunchpadWirebondCoupled(design, \"my_name2\", options={})")
+            self.fail('LaunchpadWirebondCoupled(design, "my_name2", options={})')
 
         try:
             LaunchpadWirebondCoupled(design, "my_name3", options={}, make=False)
         except Exception:
             self.fail(
-                "LaunchpadWirebondCoupled(design, \"my_name3\", options={}, make=False)"
+                'LaunchpadWirebondCoupled(design, "my_name3", options={}, make=False)'
             )
 
     def test_qlibrary_instantiate_three_finger_cap_v1(self):
@@ -626,19 +599,17 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             Cap3Interdigital(design, "my_name")
         except Exception:
-            self.fail("Cap3Interdigital(design, \"my_name\")")
+            self.fail('Cap3Interdigital(design, "my_name")')
 
         try:
             Cap3Interdigital(design, "my_name2", options={})
         except Exception:
-            self.fail("Cap3Interdigital(design, \"my_name2\", options={})")
+            self.fail('Cap3Interdigital(design, "my_name2", options={})')
 
         try:
             Cap3Interdigital(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail(
-                "Cap3Interdigital(design, \"my_name3\", options={}, make=False)"
-            )
+            self.fail('Cap3Interdigital(design, "my_name3", options={}, make=False)')
 
     def test_qlibrary_qubits_transmon_concentric(self):
         """Test the instantiation of TransmonConcentric."""
@@ -651,20 +622,17 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             TransmonConcentric(design, "my_name")
         except Exception:
-            self.fail("TransmonConcentric(design, \"my_name\") failed")
+            self.fail('TransmonConcentric(design, "my_name") failed')
 
         try:
             TransmonConcentric(design, "my_name2", options={})
         except Exception:
-            self.fail(
-                "TransmonConcentric(design, \"my_name2\", options={}) failed")
+            self.fail('TransmonConcentric(design, "my_name2", options={}) failed')
 
         try:
             TransmonConcentric(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail(
-                "TransmonConcentric(design, \"my_name3\", options={}, make=False)"
-            )
+            self.fail('TransmonConcentric(design, "my_name3", options={}, make=False)')
 
     def test_qlibrary_qubits_star_qubit(self):
         """Test the instantiation of StarQubit."""
@@ -677,17 +645,17 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             StarQubit(design, "my_name")
         except Exception:
-            self.fail("StarQubit(design, \"my_name\") failed")
+            self.fail('StarQubit(design, "my_name") failed')
 
         try:
             StarQubit(design, "my_name2", options={})
         except Exception:
-            self.fail("StarQubit(design, \"my_name2\", options={}) failed")
+            self.fail('StarQubit(design, "my_name2", options={}) failed')
 
         try:
             StarQubit(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail("StarQubit(design, \"my_name3\", options={}, make=False)")
+            self.fail('StarQubit(design, "my_name3", options={}, make=False)')
 
     def test_qlibrary_qubits_transmon_cross(self):
         """Test the instantiation of TransmonCross."""
@@ -700,18 +668,17 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             TransmonCross(design, "my_name")
         except Exception:
-            self.fail("TransmonCross(design, \"my_name\") failed")
+            self.fail('TransmonCross(design, "my_name") failed')
 
         try:
             TransmonCross(design, "my_name2", options={})
         except Exception:
-            self.fail("TransmonCross(design, \"my_name2\", options={}) failed")
+            self.fail('TransmonCross(design, "my_name2", options={}) failed')
 
         try:
             TransmonCross(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail(
-                "TransmonCross(design, \"my_name3\", options={}, make=False)")
+            self.fail('TransmonCross(design, "my_name3", options={}, make=False)')
 
     def test_qlibrary_qubits_transmon_cross_fl(self):
         """Test the instantiation of TransmonCrossFL."""
@@ -724,19 +691,17 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             TransmonCrossFL(design, "my_name")
         except Exception:
-            self.fail("TransmonCrossFL(design, \"my_name\") failed")
+            self.fail('TransmonCrossFL(design, "my_name") failed')
 
         try:
             TransmonCrossFL(design, "my_name2", options={})
         except Exception:
-            self.fail(
-                "TransmonCrossFL(design, \"my_name2\", options={}) failed")
+            self.fail('TransmonCrossFL(design, "my_name2", options={}) failed')
 
         try:
             TransmonCrossFL(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail(
-                "TransmonCrossFL(design, \"my_name3\", options={}, make=False)")
+            self.fail('TransmonCrossFL(design, "my_name3", options={}, make=False)')
 
     def test_qlibrary_qubits_transmon_pocket(self):
         """Test the instantiation of TransmonPocket."""
@@ -749,18 +714,17 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             TransmonPocket(design, "my_name")
         except Exception:
-            self.fail("TransmonPocket(design, \"my_name\") failed")
+            self.fail('TransmonPocket(design, "my_name") failed')
 
         try:
             TransmonPocket(design, "my_name2", options={})
         except Exception:
-            self.fail("TransmonPocket(design, \"my_name2\", options={}) failed")
+            self.fail('TransmonPocket(design, "my_name2", options={}) failed')
 
         try:
             TransmonPocket(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail(
-                "TransmonPocket(design, \"my_name3\", options={}, make=False)")
+            self.fail('TransmonPocket(design, "my_name3", options={}, make=False)')
 
     def test_qlibrary_qubits_transmon_pocket_cl(self):
         """Test the instantiation of TransmonPocketCL."""
@@ -773,20 +737,17 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             TransmonPocketCL(design, "my_name")
         except Exception:
-            self.fail("TransmonPocketCL(design, \"my_name\") failed")
+            self.fail('TransmonPocketCL(design, "my_name") failed')
 
         try:
             TransmonPocketCL(design, "my_name2", options={})
         except Exception:
-            self.fail(
-                "TransmonPocketCL(design, \"my_name2\", options={}) failed")
+            self.fail('TransmonPocketCL(design, "my_name2", options={}) failed')
 
         try:
             TransmonPocketCL(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail(
-                "TransmonPocketCL(design, \"my_name3\", options={}, make=False)"
-            )
+            self.fail('TransmonPocketCL(design, "my_name3", options={}, make=False)')
 
     def test_qlibrary_qubits_transmon_pocket_6(self):
         """Test the instantiation of TransmonPocket6."""
@@ -799,19 +760,17 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             TransmonPocket6(design, "my_name")
         except Exception:
-            self.fail("TransmonPocket6(design, \"my_name\") failed")
+            self.fail('TransmonPocket6(design, "my_name") failed')
 
         try:
             TransmonPocket6(design, "my_name2", options={})
         except Exception:
-            self.fail(
-                "TransmonPocket6(design, \"my_name2\", options={}) failed")
+            self.fail('TransmonPocket6(design, "my_name2", options={}) failed')
 
         try:
             TransmonPocket6(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail(
-                "TransmonPocket6(design, \"my_name3\", options={}, make=False)")
+            self.fail('TransmonPocket6(design, "my_name3", options={}, make=False)')
 
     def test_qlibrary_qubits_transmon_pocket_teeth(self):
         """Test the instantiation of TransmonPocketTeeth."""
@@ -824,20 +783,17 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             TransmonPocketTeeth(design, "my_name")
         except Exception:
-            self.fail("TransmonPocketTeeth(design, \"my_name\") failed")
+            self.fail('TransmonPocketTeeth(design, "my_name") failed')
 
         try:
             TransmonPocketTeeth(design, "my_name2", options={})
         except Exception:
-            self.fail(
-                "TransmonPocketTeeth(design, \"my_name2\", options={}) failed")
+            self.fail('TransmonPocketTeeth(design, "my_name2", options={}) failed')
 
         try:
             TransmonPocketTeeth(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail(
-                "TransmonPocketTeeth(design, \"my_name3\", options={}, make=False)"
-            )
+            self.fail('TransmonPocketTeeth(design, "my_name3", options={}, make=False)')
 
     def test_qlibrary_qubits_squid_loop(self):
         """Test the instantiation of SQUID_LOOP."""
@@ -850,18 +806,17 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             SQUID_LOOP(design, "my_name")
         except Exception:
-            self.fail("SQUID_LOOP(design, \"my_name\") failed")
+            self.fail('SQUID_LOOP(design, "my_name") failed')
 
         try:
             SQUID_LOOP(design, "my_name2", options={})
         except Exception:
-            self.fail("SQUID_LOOP(design, \"my_name2\", options={}) failed")
+            self.fail('SQUID_LOOP(design, "my_name2", options={}) failed')
 
         try:
             SQUID_LOOP(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail(
-                "SQUID_LOOP(design, \"my_name3\", options={}, make=False)")
+            self.fail('SQUID_LOOP(design, "my_name3", options={}, make=False)')
 
     def test_qlibrary_qubits_tunable_coupler_01(self):
         """Test the instantiation of TunableCoupler01."""
@@ -874,20 +829,17 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             TunableCoupler01(design, "my_name")
         except Exception:
-            self.fail("TunableCoupler01(design, \"my_name\") failed")
+            self.fail('TunableCoupler01(design, "my_name") failed')
 
         try:
             TunableCoupler01(design, "my_name2", options={})
         except Exception:
-            self.fail(
-                "TunableCoupler01(design, \"my_name2\", options={}) failed")
+            self.fail('TunableCoupler01(design, "my_name2", options={}) failed')
 
         try:
             TunableCoupler01(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail(
-                "TunableCoupler01(design, \"my_name3\", options={}, make=False)"
-            )
+            self.fail('TunableCoupler01(design, "my_name3", options={}, make=False)')
 
     def test_qlibrary_qubits_jj_dolan_instantiate(self):
         """Test the instantiaion of jj_dolan."""
@@ -900,12 +852,12 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             jj_dolan(design, "my_name2", options={})
         except Exception:
-            self.fail("jj_dolan(design, \"my_name2\", options={})")
+            self.fail('jj_dolan(design, "my_name2", options={})')
 
         try:
             jj_dolan(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail("jj_dolan(design, \"my_name3\", options={}, make=False)")
+            self.fail('jj_dolan(design, "my_name3", options={}, make=False)')
 
     def test_qlibrary_qubits_jj_manhattan_instantiate(self):
         """Test the instantiaion of jj_dolan."""
@@ -918,14 +870,13 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
         try:
             jj_manhattan(design, "my_name2", options={})
         except Exception:
-            self.fail("jj_manhattan(design, \"my_name2\", options={})")
+            self.fail('jj_manhattan(design, "my_name2", options={})')
 
         try:
             jj_manhattan(design, "my_name3", options={}, make=False)
         except Exception:
-            self.fail(
-                "jj_manhattan(design, \"my_name3\", options={}, make=False)")
+            self.fail('jj_manhattan(design, "my_name3", options={}, make=False)')
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main(verbosity=2)

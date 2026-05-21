@@ -31,8 +31,7 @@ plumbing.
 import unittest
 
 from qiskit_metal import designs
-from qiskit_metal.qlibrary.couplers.cap_n_interdigital_tee import (
-    CapNInterdigitalTee)
+from qiskit_metal.qlibrary.couplers.cap_n_interdigital_tee import CapNInterdigitalTee
 from qiskit_metal.qlibrary.couplers.coupled_line_tee import CoupledLineTee
 from qiskit_metal.qlibrary.couplers.line_tee import LineTee
 from qiskit_metal.qlibrary.lumped.cap_3_interdigital import Cap3Interdigital
@@ -48,21 +47,20 @@ from qiskit_metal.qlibrary.qubits.transmon_cross_fl import TransmonCrossFL
 from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 from qiskit_metal.qlibrary.qubits.transmon_pocket_6 import TransmonPocket6
 from qiskit_metal.qlibrary.qubits.transmon_pocket_cl import TransmonPocketCL
-from qiskit_metal.qlibrary.qubits.transmon_pocket_teeth import (
-    TransmonPocketTeeth)
-from qiskit_metal.qlibrary.sample_shapes.circle_caterpillar import (
-    CircleCaterpillar)
+from qiskit_metal.qlibrary.qubits.transmon_pocket_teeth import TransmonPocketTeeth
+from qiskit_metal.qlibrary.sample_shapes.circle_caterpillar import CircleCaterpillar
 from qiskit_metal.qlibrary.sample_shapes.circle_raster import CircleRaster
 from qiskit_metal.qlibrary.sample_shapes.n_gon import NGon
 from qiskit_metal.qlibrary.sample_shapes.n_square_spiral import NSquareSpiral
 from qiskit_metal.qlibrary.sample_shapes.rectangle import Rectangle
-from qiskit_metal.qlibrary.sample_shapes.rectangle_hollow import (
-    RectangleHollow)
+from qiskit_metal.qlibrary.sample_shapes.rectangle_hollow import RectangleHollow
 from qiskit_metal.qlibrary.terminations.launchpad_wb import LaunchpadWirebond
 from qiskit_metal.qlibrary.terminations.launchpad_wb_coupled import (
-    LaunchpadWirebondCoupled)
+    LaunchpadWirebondCoupled,
+)
 from qiskit_metal.qlibrary.terminations.launchpad_wb_driven import (
-    LaunchpadWirebondDriven)
+    LaunchpadWirebondDriven,
+)
 from qiskit_metal.qlibrary.terminations.open_to_ground import OpenToGround
 from qiskit_metal.qlibrary.terminations.short_to_ground import ShortToGround
 
@@ -121,9 +119,9 @@ def _snapshot_geometry(design) -> dict:
         rows = []
         for _, row in table.iterrows():
             row_tuple = tuple(
-                (col, (row[col].wkt if hasattr(row[col], "wkt") else
-                       repr(row[col])))
-                for col in sorted(table.columns))
+                (col, (row[col].wkt if hasattr(row[col], "wkt") else repr(row[col])))
+                for col in sorted(table.columns)
+            )
             rows.append(row_tuple)
         # Sort: only the *set* of geometry rows produced by make()
         # matters, not their insertion order.
@@ -149,15 +147,16 @@ class TestQComponentIdempotency(unittest.TestCase):
         for component_cls in COMPONENTS_UNDER_TEST:
             with self.subTest(component=component_cls.__name__):
                 design = designs.DesignPlanar()
-                component = component_cls(design,
-                                          f"test_{component_cls.__name__}")
+                component = component_cls(design, f"test_{component_cls.__name__}")
                 first = _snapshot_geometry(design)
                 component.rebuild()
                 second = _snapshot_geometry(design)
                 self.assertEqual(
-                    first, second,
+                    first,
+                    second,
                     f"{component_cls.__name__}.make() is not idempotent: "
-                    f"the second rebuild() produced different geometry.")
+                    f"the second rebuild() produced different geometry.",
+                )
 
 
 if __name__ == "__main__":

@@ -37,7 +37,7 @@ class ElementsWindow(QMainWindow):
         Extensiosn in qt designer on signals/slots are linked to this class
     """
 
-    def __init__(self, gui: 'MetalGUI', parent_window: 'QMainWindowExtension'):
+    def __init__(self, gui: "MetalGUI", parent_window: "QMainWindowExtension"):
         """
         Args:
             gui (MetalGUI): The GUI
@@ -68,12 +68,16 @@ class ElementsWindow(QMainWindow):
     def populate_combo_element(self):
         """Populate the combo elements."""
         for table_type in self.design.qgeometry.tables.keys():
-            if self.ui.combo_element_type.findText(
-                    table_type) == -1:  # not in combo box, add it
+            if (
+                self.ui.combo_element_type.findText(table_type) == -1
+            ):  # not in combo box, add it
                 self.ui.combo_element_type.addItem(
                     str(
                         QtWidgets.QApplication.translate(
-                            "ElementsWindow", table_type, None, -1)))
+                            "ElementsWindow", table_type, None, -1
+                        )
+                    )
+                )
 
     def combo_element_type(self, new_type: str):
         """Change to the given type.
@@ -81,7 +85,7 @@ class ElementsWindow(QMainWindow):
         Args:
             new_type (str): Type to change to
         """
-        self.logger.info(f'Changed element table type to: {new_type}')
+        self.logger.info(f"Changed element table type to: {new_type}")
         self.model.set_type(new_type)
 
     def force_refresh(self):
@@ -104,9 +108,10 @@ class ElementTableModel(QAbstractTableModel):
             index = model.index(1,0)
             model.data(index)
     """
+
     __timer_interval = 500  # ms
 
-    def __init__(self, gui, parent=None, element_type='poly'):
+    def __init__(self, gui, parent=None, element_type="poly"):
         """
         Args:
             gui (MetalGUI): The GUI
@@ -177,12 +182,11 @@ class ElementTableModel(QAbstractTableModel):
 
         # if the number of rows have changed
         if self._row_count != new_count:
-            #self.logger.info('Number of components changed')
+            # self.logger.info('Number of components changed')
 
             # Wrap the reset logic in beginResetModel and endResetModel
             self.beginResetModel()
             try:
-
                 # When a model is reset it should be considered that all
                 # information previously retrieved from it is invalid.
                 # This includes but is not limited to the rowCount() and
@@ -209,7 +213,7 @@ class ElementTableModel(QAbstractTableModel):
             return 0
         return self.table.shape[0]
 
-    def columnCount(self, parent: QModelIndex = None):  #pylint: disable=unused-argument
+    def columnCount(self, parent: QModelIndex = None):
         """Counts all the columns.
 
         Args:
@@ -258,8 +262,8 @@ class ElementTableModel(QAbstractTableModel):
             return QtCore.Qt.ItemIsEnabled
 
         return QtCore.Qt.ItemFlags(
-            QAbstractTableModel.flags(self, index) |
-            QtCore.Qt.ItemIsSelectable)  # ItemIsEditable
+            QAbstractTableModel.flags(self, index) | QtCore.Qt.ItemIsSelectable
+        )  # ItemIsEditable
 
     def data(self, index: QModelIndex, role=QtCore.Qt.DisplayRole):
         """Depending on the index and role given, return data. If not returning

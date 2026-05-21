@@ -12,10 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# pylint: disable-msg=unnecessary-pass
-# pylint: disable-msg=broad-except
-# pylint: disable-msg=too-many-public-methods
-# pylint: disable-msg=import-error
 """Qiskit Metal unit tests analyses functionality."""
 
 import unittest
@@ -54,8 +50,9 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
     def test_draw_basic_rectangle(self):
         """Test rectangle in basic.py."""
         polygon_actual = basic.rectangle(0.5, 1.5, 2.1, 3.2)
-        polygon_expected = Polygon([[1.85, 2.45], [2.35, 2.45], [2.35, 3.95],
-                                    [1.85, 3.95], [1.85, 2.45]])
+        polygon_expected = Polygon(
+            [[1.85, 2.45], [2.35, 2.45], [2.35, 3.95], [1.85, 3.95], [1.85, 2.45]]
+        )
 
         coords_actual = list(polygon_actual.exterior.coords)
         coords_expected = list(polygon_expected.exterior.coords)
@@ -79,9 +76,15 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
         subtract_results = basic.subtract(first, second)
         actual_subtract = list(subtract_results.exterior.coords)
-        expected_subtract = [(1.85, 2.85), (1.85, 3.95), (2.35, 3.95),
-                             (2.35, 2.45), (1.95, 2.45), (1.95, 2.85),
-                             (1.85, 2.85)]
+        expected_subtract = [
+            (1.85, 2.85),
+            (1.85, 3.95),
+            (2.35, 3.95),
+            (2.35, 2.45),
+            (1.95, 2.45),
+            (1.95, 2.85),
+            (1.85, 2.85),
+        ]
 
         self.assertEqual(len(actual_subtract), len(expected_subtract))
 
@@ -90,31 +93,40 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
             if actual_subtract[0] == point:
                 offset = idx
 
-        my_range = len(
-            actual_subtract) - 1  #first and last elements are the same. Ignore.
+        my_range = (
+            len(actual_subtract) - 1
+        )  # first and last elements are the same. Ignore.
         for i in range(my_range):
             exp_i = (i + offset) % (my_range)
             for j in range(2):
-                self.assertEqual(actual_subtract[i][j],
-                                 expected_subtract[exp_i][j])
+                self.assertEqual(actual_subtract[i][j], expected_subtract[exp_i][j])
 
     def test_draw_basic_union(self):
         """Test union in basic.py."""
         first = basic.rectangle(0.5, 1.5, 2.1, 3.2)
         second = basic.rectangle(0.1, 1.3, 1.9, 2.2)
 
-        expected = [[(1.85, 2.45), (2.35, 2.45), (2.35, 3.95), (1.85, 3.95),
-                     (1.85, 2.45)],
-                    [(1.85, 2.85), (1.85, 3.95), (2.35, 3.95), (2.35, 2.45),
-                     (1.95, 2.45), (1.95, 1.55), (1.85, 1.55), (1.85, 2.85),
-                     (1.85, 2.85)]]
+        expected = [
+            [(1.85, 2.45), (2.35, 2.45), (2.35, 3.95), (1.85, 3.95), (1.85, 2.45)],
+            [
+                (1.85, 2.85),
+                (1.85, 3.95),
+                (2.35, 3.95),
+                (2.35, 2.45),
+                (1.95, 2.45),
+                (1.95, 1.55),
+                (1.85, 1.55),
+                (1.85, 2.85),
+                (1.85, 2.85),
+            ],
+        ]
 
         union_results_1 = basic.union(first)
         union_results_2 = basic.union(first, second)
 
         actual = [
             list(union_results_1.exterior.coords),
-            list(union_results_2.exterior.coords)
+            list(union_results_2.exterior.coords),
         ]
 
         for x in range(2):
@@ -125,203 +137,245 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
                 if actual[x][0] == point:
                     offset = idx
 
-            my_range = len(actual[x]) - 1  #last element repeats first. Ignore.
+            my_range = len(actual[x]) - 1  # last element repeats first. Ignore.
             for i in range(my_range):
                 exp_i = (i + offset) % (my_range)
                 for j in range(2):
-                    self.assertAlmostEqualRel(actual[x][i][j],
-                                              expected[x][exp_i][j],
-                                              rel_tol=1e-3)
+                    self.assertAlmostEqualRel(
+                        actual[x][i][j], expected[x][exp_i][j], rel_tol=1e-3
+                    )
 
     def test_draw_basic_flip_merge(self):
         """Test flip_merge in basic.py."""
         my_line_string = LineString([(0, 0), (1, 1), (1, 2), (2, 2)])
 
-        expected = [[(0.0, 0.0), (1.0, 1.0), (1.0, 2.0), (2.0, 2.0),
-                     (-2.0, 2.0), (-1.0, 2.0), (-1.0, 1.0), (0.0, 0.0)],
-                    [(0.0, 0.0), (1.0, 1.0), (1.0, 2.0), (2.0, 2.0), (2.0, 2.0),
-                     (7.0, 2.0), (7.0, -3.0), (12.0, -8.0)]]
+        expected = [
+            [
+                (0.0, 0.0),
+                (1.0, 1.0),
+                (1.0, 2.0),
+                (2.0, 2.0),
+                (-2.0, 2.0),
+                (-1.0, 2.0),
+                (-1.0, 1.0),
+                (0.0, 0.0),
+            ],
+            [
+                (0.0, 0.0),
+                (1.0, 1.0),
+                (1.0, 2.0),
+                (2.0, 2.0),
+                (2.0, 2.0),
+                (7.0, 2.0),
+                (7.0, -3.0),
+                (12.0, -8.0),
+            ],
+        ]
 
         flip_results_1 = basic.flip_merge(my_line_string)
-        flip_results_2 = basic.flip_merge(my_line_string,
-                                          xfact=-5,
-                                          yfact=5,
-                                          origin=(2, 2))
+        flip_results_2 = basic.flip_merge(
+            my_line_string, xfact=-5, yfact=5, origin=(2, 2)
+        )
         actual = [flip_results_1, flip_results_2]
 
         for x in range(2):
             self.assertEqual(len(actual[x]), len(expected[x]))
             for i in range(len(actual[x])):
                 for j in range(2):
-                    self.assertAlmostEqualRel(actual[x][i][j],
-                                              expected[x][i][j],
-                                              rel_tol=1e-3)
+                    self.assertAlmostEqualRel(
+                        actual[x][i][j], expected[x][i][j], rel_tol=1e-3
+                    )
 
     def test_draw_basic_rotate(self):
         """Test rotate in basic.py."""
         poly = Polygon([(0, 0), (0.5, 0), (0.25, 0.5)])
 
-        expected = [[(0.3709223813239876, -0.08223151219433734),
-                     (0.5822315121943373, 0.37092238132398764),
-                     (0.023423053240837488, 0.3556545654351749),
-                     (0.3709223813239876, -0.08223151219433734)],
-                    [(0.2953967324042668, -0.13034665704927906),
-                     (0.5067058632746165, 0.3228072364690459),
-                     (-0.05210259567888331, 0.30753942058023315),
-                     (0.2953967324042668, -0.13034665704927906)],
-                    [(0.5284182427245603, 0.053701805333836145),
-                     (0.24719131710547426, 0.4671161450788879),
-                     (-0.025609559830034434, -0.020817950412724023),
-                     (0.5284182427245603, 0.053701805333836145)]]
+        expected = [
+            [
+                (0.3709223813239876, -0.08223151219433734),
+                (0.5822315121943373, 0.37092238132398764),
+                (0.023423053240837488, 0.3556545654351749),
+                (0.3709223813239876, -0.08223151219433734),
+            ],
+            [
+                (0.2953967324042668, -0.13034665704927906),
+                (0.5067058632746165, 0.3228072364690459),
+                (-0.05210259567888331, 0.30753942058023315),
+                (0.2953967324042668, -0.13034665704927906),
+            ],
+            [
+                (0.5284182427245603, 0.053701805333836145),
+                (0.24719131710547426, 0.4671161450788879),
+                (-0.025609559830034434, -0.020817950412724023),
+                (0.5284182427245603, 0.053701805333836145),
+            ],
+        ]
 
         poly_1 = basic.rotate(poly, angle=65)
-        poly_2 = basic.rotate(poly, angle=65, origin='centroid')
-        poly_3 = basic.rotate(poly,
-                              angle=65,
-                              origin='centroid',
-                              use_radians=True)
+        poly_2 = basic.rotate(poly, angle=65, origin="centroid")
+        poly_3 = basic.rotate(poly, angle=65, origin="centroid", use_radians=True)
 
         actual = [
             list(poly_1.exterior.coords),
             list(poly_2.exterior.coords),
-            list(poly_3.exterior.coords)
+            list(poly_3.exterior.coords),
         ]
 
         for x in range(3):
             self.assertEqual(len(actual[x]), len(expected[x]))
             for i in range(len(actual[x])):
                 for j in range(2):
-                    self.assertAlmostEqualRel(actual[x][i][j],
-                                              expected[x][i][j],
-                                              rel_tol=1e-3)
+                    self.assertAlmostEqualRel(
+                        actual[x][i][j], expected[x][i][j], rel_tol=1e-3
+                    )
 
     def test_draw_basic_translate(self):
         """Test translate in basic.py."""
         poly = Polygon([(0, 0), (0.5, 0), (0.25, 0.5)])
 
-        expected = [[(0.0, 0.0), (0.5, 0.0), (0.25, 0.5), (0.0, 0.0)],
-                    [(1.1, 0.0), (1.6, 0.0), (1.35, 0.5), (1.1, 0.0)],
-                    [(1.1, 2.2), (1.6, 2.2), (1.35, 2.7), (1.1, 2.2)],
-                    [(1.1, 2.2), (1.6, 2.2), (1.35, 2.7), (1.1, 2.2)],
-                    [(1.1, 2.2), (1.6, 2.2), (1.35, 2.7), (1.1, 2.2)]]
+        expected = [
+            [(0.0, 0.0), (0.5, 0.0), (0.25, 0.5), (0.0, 0.0)],
+            [(1.1, 0.0), (1.6, 0.0), (1.35, 0.5), (1.1, 0.0)],
+            [(1.1, 2.2), (1.6, 2.2), (1.35, 2.7), (1.1, 2.2)],
+            [(1.1, 2.2), (1.6, 2.2), (1.35, 2.7), (1.1, 2.2)],
+            [(1.1, 2.2), (1.6, 2.2), (1.35, 2.7), (1.1, 2.2)],
+        ]
 
         poly_1 = basic.translate(poly)
         poly_2 = basic.translate(poly, xoff=1.1)
         poly_3 = basic.translate(poly, xoff=1.1, yoff=2.2)
         poly_4 = basic.translate(poly, xoff=1.1, yoff=2.2, zoff=3.3)
-        poly_5 = basic.translate(poly,
-                                 xoff=1.1,
-                                 yoff=2.2,
-                                 zoff=3.3,
-                                 overwrite=True)
+        poly_5 = basic.translate(poly, xoff=1.1, yoff=2.2, zoff=3.3, overwrite=True)
 
         actual = [
             list(poly_1.exterior.coords),
             list(poly_2.exterior.coords),
             list(poly_3.exterior.coords),
             list(poly_4.exterior.coords),
-            list(poly_5.exterior.coords)
+            list(poly_5.exterior.coords),
         ]
 
         for x in range(5):
             self.assertEqual(len(actual[x]), len(expected[x]))
             for i in range(len(actual[x])):
                 for j in range(2):
-                    self.assertAlmostEqualRel(actual[x][i][j],
-                                              expected[x][i][j],
-                                              rel_tol=1e-3)
+                    self.assertAlmostEqualRel(
+                        actual[x][i][j], expected[x][i][j], rel_tol=1e-3
+                    )
 
     def test_draw_basic_scale(self):
         """Test scale in basic.py."""
         poly = Polygon([(0, 0), (0.5, 0), (0.25, 0.5)])
 
-        expected = [[(0.0, 0.0), (0.5, 0.0), (0.25, 0.5), (0.0, 0.0)],
-                    [(-0.025, 0.0), (0.525, 0.0), (0.25, 0.5), (-0.025, 0.0)],
-                    [(-0.025, -0.3), (0.525, -0.3), (0.25, 0.8),
-                     (-0.025, -0.3)],
-                    [(-0.025, -0.3), (0.525, -0.3), (0.25, 0.8),
-                     (-0.025, -0.3)],
-                    [(-0.025, -0.3), (0.525, -0.3), (0.25, 0.8),
-                     (-0.025, -0.3)]]
+        expected = [
+            [(0.0, 0.0), (0.5, 0.0), (0.25, 0.5), (0.0, 0.0)],
+            [(-0.025, 0.0), (0.525, 0.0), (0.25, 0.5), (-0.025, 0.0)],
+            [(-0.025, -0.3), (0.525, -0.3), (0.25, 0.8), (-0.025, -0.3)],
+            [(-0.025, -0.3), (0.525, -0.3), (0.25, 0.8), (-0.025, -0.3)],
+            [(-0.025, -0.3), (0.525, -0.3), (0.25, 0.8), (-0.025, -0.3)],
+        ]
 
         poly_1 = basic.scale(poly)
         poly_2 = basic.scale(poly, xfact=1.1)
         poly_3 = basic.scale(poly, xfact=1.1, yfact=2.2)
         poly_4 = basic.scale(poly, xfact=1.1, yfact=2.2, zfact=3.3)
-        poly_5 = basic.scale(poly,
-                             xfact=1.1,
-                             yfact=2.2,
-                             zfact=3.3,
-                             overwrite=True)
+        poly_5 = basic.scale(poly, xfact=1.1, yfact=2.2, zfact=3.3, overwrite=True)
 
         actual = [
             list(poly_1.exterior.coords),
             list(poly_2.exterior.coords),
             list(poly_3.exterior.coords),
             list(poly_4.exterior.coords),
-            list(poly_5.exterior.coords)
+            list(poly_5.exterior.coords),
         ]
 
         for x in range(5):
             self.assertEqual(len(actual[x]), len(expected[x]))
             for i in range(len(actual[x])):
                 for j in range(2):
-                    self.assertAlmostEqualRel(actual[x][i][j],
-                                              expected[x][i][j],
-                                              rel_tol=1e-3)
+                    self.assertAlmostEqualRel(
+                        actual[x][i][j], expected[x][i][j], rel_tol=1e-3
+                    )
 
     def test_draw_basic_rotate_position(self):
         """Test rotate_position in basic.py."""
         poly = Polygon([(0, 0), (0.5, 0), (0.25, 0.5)])
 
-        expected = [[(2.0, 5.0), (2.433012701892219, 5.25),
-                     (1.9665063509461098, 5.55801270189222), (2.0, 5.0)],
-                    [(10.839745962155611, 2.00961894323342),
-                     (11.27275866404783, 2.25961894323342),
-                     (10.806252313101721, 2.567631645125639),
-                     (10.839745962155611, 2.00961894323342)],
-                    [(10.839745962155611, 2.00961894323342),
-                     (11.27275866404783, 2.25961894323342),
-                     (10.806252313101721, 2.567631645125639),
-                     (10.839745962155611, 2.00961894323342)]]
+        expected = [
+            [
+                (2.0, 5.0),
+                (2.433012701892219, 5.25),
+                (1.9665063509461098, 5.55801270189222),
+                (2.0, 5.0),
+            ],
+            [
+                (10.839745962155611, 2.00961894323342),
+                (11.27275866404783, 2.25961894323342),
+                (10.806252313101721, 2.567631645125639),
+                (10.839745962155611, 2.00961894323342),
+            ],
+            [
+                (10.839745962155611, 2.00961894323342),
+                (11.27275866404783, 2.25961894323342),
+                (10.806252313101721, 2.567631645125639),
+                (10.839745962155611, 2.00961894323342),
+            ],
+        ]
 
         poly_1 = basic.rotate_position(poly, 30, (2, 5))
         poly_2 = basic.rotate_position(poly, 30, (2, 5), pos_rot=(10, 15))
-        poly_3 = basic.rotate_position(poly,
-                                       30, (2, 5),
-                                       pos_rot=(10, 15),
-                                       overwrite=True)
+        poly_3 = basic.rotate_position(
+            poly, 30, (2, 5), pos_rot=(10, 15), overwrite=True
+        )
 
         actual = [
             list(poly_1.exterior.coords),
             list(poly_2.exterior.coords),
-            list(poly_3.exterior.coords)
+            list(poly_3.exterior.coords),
         ]
 
         for x in range(2):
             self.assertEqual(len(actual[x]), len(expected[x]))
             for i in range(len(actual[x])):
                 for j in range(2):
-                    self.assertAlmostEqualRel(actual[x][i][j],
-                                              expected[x][i][j],
-                                              rel_tol=1e-3)
+                    self.assertAlmostEqualRel(
+                        actual[x][i][j], expected[x][i][j], rel_tol=1e-3
+                    )
 
     def test_draw_basic_buffer(self):
         """Test buffer in basic.py."""
         poly = Polygon([(0, 0), (0.5, 0), (0.25, 0.5)])
 
-        expected = [[(-0.16180339887498948, -0.1), (0.25, 0.7236067977499789),
-                     (0.6618033988749895, -0.1), (-0.16180339887498948, -0.1)],
-                    [(-0.16180339887498948, -0.1), (0.25, 0.7236067977499789),
-                     (0.6618033988749895, -0.1), (-0.16180339887498948, -0.1)],
-                    [(-0.16180339887498948, -0.1), (0.25, 0.7236067977499789),
-                     (0.6618033988749895, -0.1), (-0.16180339887498948, -0.1)],
-                    [(-0.08944271909999159, 0.044721359549995794),
-                     (0.16055728090000843, 0.5447213595499958),
-                     (0.3394427190999916, 0.5447213595499958),
-                     (0.5894427190999916, 0.044721359549995794), (0.5, -0.1),
-                     (0.0, -0.1), (-0.08944271909999159, 0.044721359549995794)]]
-        #[(-0.06980083939497377, 0.05587673960663148),
+        expected = [
+            [
+                (-0.16180339887498948, -0.1),
+                (0.25, 0.7236067977499789),
+                (0.6618033988749895, -0.1),
+                (-0.16180339887498948, -0.1),
+            ],
+            [
+                (-0.16180339887498948, -0.1),
+                (0.25, 0.7236067977499789),
+                (0.6618033988749895, -0.1),
+                (-0.16180339887498948, -0.1),
+            ],
+            [
+                (-0.16180339887498948, -0.1),
+                (0.25, 0.7236067977499789),
+                (0.6618033988749895, -0.1),
+                (-0.16180339887498948, -0.1),
+            ],
+            [
+                (-0.08944271909999159, 0.044721359549995794),
+                (0.16055728090000843, 0.5447213595499958),
+                (0.3394427190999916, 0.5447213595499958),
+                (0.5894427190999916, 0.044721359549995794),
+                (0.5, -0.1),
+                (0.0, -0.1),
+                (-0.08944271909999159, 0.044721359549995794),
+            ],
+        ]
+        # [(-0.06980083939497377, 0.05587673960663148),
         # (0.16341640786499884, 0.5300000000000004),
         # (0.3365835921350014, 0.5299999999999997),
         # (0.5698008393949741, 0.05587673960663103),
@@ -331,38 +385,37 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
         poly_1 = basic.buffer(poly, 0.1)
         poly_2 = basic.buffer(poly, 0.1, resolution=2)
-        poly_3 = basic.buffer(poly,
-                              0.1,
-                              resolution=2,
-                              cap_style=CAP_STYLE.round)
-        poly_4 = basic.buffer(poly,
-                              0.1,
-                              resolution=2,
-                              cap_style=CAP_STYLE.round,
-                              join_style=JOIN_STYLE.bevel)
-        #poly_5 = basic.buffer(poly, 0.1, resolution=2, mitre_limit=0.3)
+        poly_3 = basic.buffer(poly, 0.1, resolution=2, cap_style=CAP_STYLE.round)
+        poly_4 = basic.buffer(
+            poly,
+            0.1,
+            resolution=2,
+            cap_style=CAP_STYLE.round,
+            join_style=JOIN_STYLE.bevel,
+        )
+        # poly_5 = basic.buffer(poly, 0.1, resolution=2, mitre_limit=0.3)
 
         actual = [
             list(poly_1.exterior.coords),
             list(poly_2.exterior.coords),
             list(poly_3.exterior.coords),
             list(poly_4.exterior.coords),
-            #list(poly_5.exterior.coords)
+            # list(poly_5.exterior.coords)
         ]
-        #range(5) if poly_5 is included
+        # range(5) if poly_5 is included
         for x in range(4):
             self.assertEqual(len(actual[x]), len(expected[x]))
             for i in range(len(actual[x])):
                 for j in range(2):
-                    self.assertAlmostEqualRel(actual[x][i][j],
-                                              expected[x][i][j],
-                                              rel_tol=1e-3)
+                    self.assertAlmostEqualRel(
+                        actual[x][i][j], expected[x][i][j], rel_tol=1e-3
+                    )
 
     def test_draw_utility_get_poly_pts(self):
         """Test get_poly_pts in utility.py."""
         poly = Polygon([(0, 0), (0.5, 0), (0.25, 0.5)])
 
-        expected_list = [[0., 0.], [0.5, 0.], [0.25, 0.5]]
+        expected_list = [[0.0, 0.0], [0.5, 0.0], [0.25, 0.5]]
         expected = np.array(expected_list)
 
         actual = utility.get_poly_pts(poly)
@@ -370,9 +423,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         self.assertEqual(len(actual), len(expected))
         for i in range(3):
             for j in range(2):
-                self.assertAlmostEqualRel(actual[i][j],
-                                          expected[i][j],
-                                          rel_tol=1e-3)
+                self.assertAlmostEqualRel(actual[i][j], expected[i][j], rel_tol=1e-3)
 
     def test_draw_utility_get_all_geoms(self):
         """Test get_all_geoms in utility.py."""
@@ -387,20 +438,20 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         my_range = len(actual)
         for i in range(my_range):
             for j in range(2):
-                self.assertAlmostEqualRel(actual[i][j],
-                                          expected[i][j],
-                                          rel_tol=1e-3)
+                self.assertAlmostEqualRel(actual[i][j], expected[i][j], rel_tol=1e-3)
 
     def test_draw_utility_flatten_all_filter(self):
         """Test flatten_all_filter in utility.py."""
         poly_1 = Polygon([(0, 0), (0.5, 0), (0.25, 0.5)])
         poly_2 = Polygon([(1, 1), (1.5, 1), (1.25, 1.5)])
         poly_3 = Polygon([(2, 2), (2.5, 2), (2.25, 2.5)])
-        my_dict = {'first': poly_1, 'second': poly_2, 'third': poly_3}
+        my_dict = {"first": poly_1, "second": poly_2, "third": poly_3}
 
-        expected = [[(0.0, 0.0), (0.5, 0.0), (0.25, 0.5), (0.0, 0.0)],
-                    [(1.0, 1.0), (1.5, 1.0), (1.25, 1.5), (1.0, 1.0)],
-                    [(2.0, 2.0), (2.5, 2.0), (2.25, 2.5), (2.0, 2.0)]]
+        expected = [
+            [(0.0, 0.0), (0.5, 0.0), (0.25, 0.5), (0.0, 0.0)],
+            [(1.0, 1.0), (1.5, 1.0), (1.25, 1.5), (1.0, 1.0)],
+            [(2.0, 2.0), (2.5, 2.0), (2.25, 2.5), (2.0, 2.0)],
+        ]
 
         result_raw = utility.flatten_all_filter(my_dict)
         actual = []
@@ -411,9 +462,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         my_range = len(actual)
         for i in range(my_range):
             for j in range(2):
-                self.assertAlmostEqualRel(actual[i][j],
-                                          expected[i][j],
-                                          rel_tol=1e-3)
+                self.assertAlmostEqualRel(actual[i][j], expected[i][j], rel_tol=1e-3)
 
     def test_draw_utility_check_duplicate_list(self):
         """Test check_duplicate_list in utility.py."""
@@ -427,7 +476,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         """Test array_chop in utility.py."""
         my_list = [0, 1, 0.02, 2, -1, 3, 0.11, 4, 5]
 
-        expected_list = [0., 0., 0.02, 2., -1., 3., 0.11, 4., 5.]
+        expected_list = [0.0, 0.0, 0.02, 2.0, -1.0, 3.0, 0.11, 4.0, 5.0]
         expected = np.array(expected_list)
 
         actual = utility.array_chop(my_list, zero=1)
@@ -439,13 +488,19 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
     def test_draw_utility_remove_colinear_pts(self):
         """Test remove_colinear_pts in utility.py."""
-        points_list = [[0, 0], [
-            1,
-            1,
-        ], [
-            1,
-            1,
-        ], [1.5, 1.5], [2, 2]]
+        points_list = [
+            [0, 0],
+            [
+                1,
+                1,
+            ],
+            [
+                1,
+                1,
+            ],
+            [1.5, 1.5],
+            [2, 2],
+        ]
         points = np.array(points_list)
 
         expected_list = [[0, 0], [1, 1], [2, 2]]
@@ -457,9 +512,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         my_range = len(actual)
         for i in range(my_range):
             for j in range(2):
-                self.assertAlmostEqualRel(actual[i][j],
-                                          expected[i][j],
-                                          rel_tol=1e-3)
+                self.assertAlmostEqualRel(actual[i][j], expected[i][j], rel_tol=1e-3)
 
     def test_draw_utility_intersect(self):
         """Test intersect in utility.py."""
@@ -477,31 +530,26 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         # 2d
         points_list = [[0, 0], [1, 1]]
         points = np.array(points_list)
-        expected_list = [[0., 0.], [0.70710678, 0.70710678]]
+        expected_list = [[0.0, 0.0], [0.70710678, 0.70710678]]
         expected = np.array(expected_list)
         actual = utility.vec_unit_planar(points)
         self.assertEqual(len(actual), len(expected))
         my_range = len(actual)
         for i in range(my_range):
             for j in range(2):
-                self.assertAlmostEqualRel(actual[i][j],
-                                          expected[i][j],
-                                          rel_tol=1e-3)
+                self.assertAlmostEqualRel(actual[i][j], expected[i][j], rel_tol=1e-3)
 
         # 3d
         points_list = [[0, 0, 5], [1, 1, 10]]
         points = np.array(points_list)
-        expected_list = [[0., 0., 0.44367825],
-                         [0.08873565, 0.08873565, 0.88735651]]
+        expected_list = [[0.0, 0.0, 0.44367825], [0.08873565, 0.08873565, 0.88735651]]
         expected = np.array(expected_list)
         actual = utility.vec_unit_planar(points)
         self.assertEqual(len(actual), len(expected))
         my_range = len(actual)
         for i in range(my_range):
             for j in range(3):
-                self.assertAlmostEqualRel(actual[i][j],
-                                          expected[i][j],
-                                          rel_tol=1e-3)
+                self.assertAlmostEqualRel(actual[i][j], expected[i][j], rel_tol=1e-3)
 
     def test_draw_vector_normal_z(self):
         """Test that normal_z in Vector class was not accidentally changed."""
@@ -517,31 +565,31 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         """Test rotate_around_point in the Vector class in utility.py."""
         vector = Vector()
 
-        expected = [(2.130314698073308, -0.6795287243176937),
-                    (-1.1764850602505073, 1.9015475021695778),
-                    (1.5611824021515244, 6.655591972503418),
-                    (4.125841082615048, 0.3966454487621853)]
+        expected = [
+            (2.130314698073308, -0.6795287243176937),
+            (-1.1764850602505073, 1.9015475021695778),
+            (1.5611824021515244, 6.655591972503418),
+            (4.125841082615048, 0.3966454487621853),
+        ]
 
         actual = []
         actual.append(vector.rotate_around_point([1, 2], radians=30))
         actual.append(vector.rotate_around_point([1, 2], radians=45))
-        actual.append(
-            vector.rotate_around_point([1, 2], radians=30, origin=(4, 4)))
-        actual.append(
-            vector.rotate_around_point([1, 2], radians=45, origin=(4, 4)))
+        actual.append(vector.rotate_around_point([1, 2], radians=30, origin=(4, 4)))
+        actual.append(vector.rotate_around_point([1, 2], radians=45, origin=(4, 4)))
 
         for i in range(4):
             for j in range(2):
-                self.assertAlmostEqualRel(actual[i][j],
-                                          expected[i][j],
-                                          rel_tol=1e-3)
+                self.assertAlmostEqualRel(actual[i][j], expected[i][j], rel_tol=1e-3)
 
     def test_draw_vector_rotate(self):
         """Test rotate in the Vector class in utility.py."""
         vector = Vector()
 
-        expected = [(2.130314698073308, -0.6795287243176937),
-                    (-1.1764850602505073, 1.9015475021695778)]
+        expected = [
+            (2.130314698073308, -0.6795287243176937),
+            (-1.1764850602505073, 1.9015475021695778),
+        ]
 
         actual = []
         actual.append(vector.rotate_around_point([1, 2], radians=30))
@@ -549,9 +597,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
         for i in range(2):
             for j in range(2):
-                self.assertAlmostEqualRel(actual[i][j],
-                                          expected[i][j],
-                                          rel_tol=1e-3)
+                self.assertAlmostEqualRel(actual[i][j], expected[i][j], rel_tol=1e-3)
 
     def test_draw_vec3d_rotate(self):
         """Test rotate in the Vec3D class in utility.py"""
@@ -561,19 +607,17 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
         actual = []
         actual.append(
-            vec3d.rotate([np.sqrt(2), 0, 0], [0, 0, 0],
-                         az=True,
-                         radians=np.radians(45)))
+            vec3d.rotate([np.sqrt(2), 0, 0], [0, 0, 0], az=True, radians=np.radians(45))
+        )
         actual.append(
-            vec3d.rotate([0, np.sqrt(2), 0], [0, 0, 0],
-                         ax=True,
-                         radians=np.radians(-45)))
+            vec3d.rotate(
+                [0, np.sqrt(2), 0], [0, 0, 0], ax=True, radians=np.radians(-45)
+            )
+        )
 
         for i in range(2):
             for j in range(3):
-                self.assertAlmostEqualRel(actual[i][j],
-                                          expected[i][j],
-                                          rel_tol=1e-3)
+                self.assertAlmostEqualRel(actual[i][j], expected[i][j], rel_tol=1e-3)
 
     def test_draw_vector_angle_between(self):
         """Test angle_between in Vector class in utility.py."""
@@ -619,9 +663,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
         for i in range(2):
             for j in range(3):
-                self.assertAlmostEqualRel(actual[i][j],
-                                          expected[i][j],
-                                          rel_tol=1e-3)
+                self.assertAlmostEqualRel(actual[i][j], expected[i][j], rel_tol=1e-3)
 
     def test_draw_normed(self):
         """Test functionality of normed in utility.py."""
@@ -659,9 +701,9 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
     def test_draw_vector_are_same(self):
         """Test are_same in Vector class in utility.py."""
-        points_list_1 = [10., 15., 2.]
-        points_list_2 = [10., 15., 2.]
-        points_list_3 = [20., 25., 30.]
+        points_list_1 = [10.0, 15.0, 2.0]
+        points_list_2 = [10.0, 15.0, 2.0]
+        points_list_3 = [20.0, 25.0, 30.0]
 
         vect_1 = np.array(points_list_1)
         vect_2 = np.array(points_list_2)
@@ -674,7 +716,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         """Test is_zero in Vector class in utility.py."""
         vector = Vector()
 
-        points_list_1 = [10., 15., 2.]
+        points_list_1 = [10.0, 15.0, 2.0]
         points_list_2 = [0, 0, 0]
 
         vect_1 = np.array(points_list_1)
@@ -687,10 +729,13 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         """Test two_points_described in Vector class in utility.py."""
         vector = Vector()
 
-        expected = ([-8.0, 15.0], [-0.47058823529411764, 0.8823529411764706],
-                    [-0.88235294118, -0.47058823529])
+        expected = (
+            [-8.0, 15.0],
+            [-0.47058823529411764, 0.8823529411764706],
+            [-0.88235294118, -0.47058823529],
+        )
 
-        points_list_1 = [10., 15.]
+        points_list_1 = [10.0, 15.0]
         points_list_2 = [2, 30]
 
         vect_1 = np.array(points_list_1)
@@ -703,9 +748,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
         for i in range(3):
             for j in range(2):
-                self.assertAlmostEqualRel(actual[i][j],
-                                          expected[i][j],
-                                          rel_tol=1e-3)
+                self.assertAlmostEqualRel(actual[i][j], expected[i][j], rel_tol=1e-3)
 
     def test_draw_vector_snap_unit_vector(self):
         """Test snap_unit_vector in Vector class in utility.py."""
@@ -713,7 +756,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
         expected = ([0, 1], [1, 0])
 
-        points_list_1 = [10., 15.]
+        points_list_1 = [10.0, 15.0]
         vect = np.array(points_list_1)
 
         actual = []
@@ -723,9 +766,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
         for i in range(2):
             for j in range(2):
-                self.assertAlmostEqualRel(actual[i][j],
-                                          expected[i][j],
-                                          rel_tol=1e-3)
+                self.assertAlmostEqualRel(actual[i][j], expected[i][j], rel_tol=1e-3)
 
     def test_draw_vec3d_snap_unit_vector(self):
         """Test snap_unit_vector in Vec3D class in utility.py."""
@@ -733,18 +774,16 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
         expected = [[0, 0, 1], [0, 1, 0], [-1, 0, 0]]
 
-        data = np.array([-10., 15., 20])
+        data = np.array([-10.0, 15.0, 20])
 
         actual = []
         actual.append(vec3d.snap_unit_vector(data))
-        actual.append(vec3d.snap_unit_vector(data, snap_to='y'))
-        actual.append(vec3d.snap_unit_vector(data, snap_to='x'))
+        actual.append(vec3d.snap_unit_vector(data, snap_to="y"))
+        actual.append(vec3d.snap_unit_vector(data, snap_to="x"))
 
         for i in range(2):
             for j in range(3):
-                self.assertAlmostEqualRel(actual[i][j],
-                                          expected[i][j],
-                                          rel_tol=1e-3)
+                self.assertAlmostEqualRel(actual[i][j], expected[i][j], rel_tol=1e-3)
 
     def test_draw_get_distance(self):
         """Test the functionality of get_distance in utility.py."""
@@ -782,9 +821,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         actual.append(vec3d.add([1, 3.75, 5.13], [3.5, 3, 5.505]))
         for i in range(2):
             for j in range(3):
-                self.assertAlmostEqualRel(actual[i][j],
-                                          expected[i][j],
-                                          rel_tol=1e-3)
+                self.assertAlmostEqualRel(actual[i][j], expected[i][j], rel_tol=1e-3)
 
     def test_draw_vec3d_sub(self):
         """Test sub in the Vec3D class in utility.py"""
@@ -796,9 +833,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         actual.append(vec3d.sub([7.5, 9.75, 16.14], [3.5, 3, 5.505]))
         for i in range(2):
             for j in range(3):
-                self.assertAlmostEqualRel(actual[i][j],
-                                          expected[i][j],
-                                          rel_tol=1e-3)
+                self.assertAlmostEqualRel(actual[i][j], expected[i][j], rel_tol=1e-3)
 
     def test_draw_vec3d_scale(self):
         """Test scale in the Vec3D class in utility.py"""
@@ -810,9 +845,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         actual.append(vec3d.scale([1, 3.5, 4], 4))
         for i in range(2):
             for j in range(3):
-                self.assertAlmostEqualRel(actual[i][j],
-                                          expected[i][j],
-                                          rel_tol=1e-3)
+                self.assertAlmostEqualRel(actual[i][j], expected[i][j], rel_tol=1e-3)
 
     def test_draw_vec3d_translate(self):
         """Test translate in the Vec3D class in utility.py"""
@@ -824,9 +857,7 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         actual.append(vec3d.translate([1, 3.75, 5.57], [3.5, -3, -7]))
         for i in range(2):
             for j in range(3):
-                self.assertAlmostEqualRel(actual[i][j],
-                                          expected[i][j],
-                                          rel_tol=1e-3)
+                self.assertAlmostEqualRel(actual[i][j], expected[i][j], rel_tol=1e-3)
 
     def test_draw_vec3d_dot(self):
         """Test dot in the Vec3D class in utility.py"""
@@ -849,30 +880,28 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
         actual.append(vec3d.cross([1, 3.75, 5.5], [3.5, 3, 6.5]))
         for i in range(2):
             for j in range(3):
-                self.assertAlmostEqualRel(actual[i][j],
-                                          expected[i][j],
-                                          rel_tol=1e-3)
+                self.assertAlmostEqualRel(actual[i][j], expected[i][j], rel_tol=1e-3)
 
     def test_draw_vec3d_two_points_described(self):
         """Test two_points_described in Vec3D class in utility.py."""
         vec3d = Vec3D()
 
-        expected = [([0, 0, -2], [0, 0, -1], [1, 0, 0]),
-                    ([0, 0, -2], [0, 0, -1], [0, -1, 0])]
+        expected = [
+            ([0, 0, -2], [0, 0, -1], [1, 0, 0]),
+            ([0, 0, -2], [0, 0, -1], [0, -1, 0]),
+        ]
 
         actual = []
-        actual.append(
-            vec3d.two_points_described([[1, 0, 2], [1, 0, 4]], [0, 1, 0, 0]))
-        actual.append(
-            vec3d.two_points_described([[0, 1, 2], [0, 1, 4]], [1, 0, 0, 0]))
+        actual.append(vec3d.two_points_described([[1, 0, 2], [1, 0, 4]], [0, 1, 0, 0]))
+        actual.append(vec3d.two_points_described([[0, 1, 2], [0, 1, 4]], [1, 0, 0, 0]))
 
         for i in range(2):
             for j in range(3):
                 for k in range(3):
-                    self.assertAlmostEqualRel(actual[i][j][k],
-                                              expected[i][j][k],
-                                              rel_tol=1e-3)
+                    self.assertAlmostEqualRel(
+                        actual[i][j][k], expected[i][j][k], rel_tol=1e-3
+                    )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main(verbosity=2)

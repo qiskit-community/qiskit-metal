@@ -13,7 +13,6 @@
 # that they have been altered from the originals.
 """Child of transmon cross, adds a flux line (galvanic T) to the arm with the
 DC SQUID."""
-# pylint: disable=invalid-name
 # Modification of Transmon Pocket Object to include a charge line (would be better to just make as a child)
 
 import numpy as np
@@ -21,7 +20,7 @@ from qiskit_metal import draw, Dict
 from qiskit_metal.qlibrary.qubits.transmon_cross import TransmonCross
 
 
-class TransmonCrossFL(TransmonCross):  # pylint: disable=invalid-name
+class TransmonCrossFL(TransmonCross):
     """The base `TransmonCrossFL` class.
 
     Inherits `TransmonCross` class
@@ -59,17 +58,21 @@ class TransmonCrossFL(TransmonCross):  # pylint: disable=invalid-name
 
     """
 
-    component_metadata = Dict(short_name='Q',
-                              _qgeometry_table_poly='True',
-                              _qgeometry_table_path='True')
+    component_metadata = Dict(
+        short_name="Q", _qgeometry_table_poly="True", _qgeometry_table_path="True"
+    )
     """Component metadata"""
 
-    default_options = Dict(make_fl=True,
-                           fl_options=Dict(t_top='15um',
-                                           t_offset='0um',
-                                           t_inductive_gap='3um',
-                                           t_width='5um',
-                                           t_gap='3um'))
+    default_options = Dict(
+        make_fl=True,
+        fl_options=Dict(
+            t_top="15um",
+            t_offset="0um",
+            t_inductive_gap="3um",
+            t_width="5um",
+            t_gap="3um",
+        ),
+    )
     """Default drawing options"""
 
     TOOLTIP = """The base `TransmonCrossFL` class."""
@@ -78,11 +81,10 @@ class TransmonCrossFL(TransmonCross):  # pylint: disable=invalid-name
         """Define the way the options are turned into QGeometry."""
         super().make()
 
-        if self.options.make_fl == True:
+        if self.options.make_fl:
             self.make_flux_line()
 
-
-#####################################################################
+    #####################################################################
 
     def make_flux_line(self):
         """Creates the charge line if the user has charge line option to
@@ -91,7 +93,7 @@ class TransmonCrossFL(TransmonCross):  # pylint: disable=invalid-name
         # Grab option values
         pf = self.p.fl_options
         p = self.p
-        #Make the T flux line
+        # Make the T flux line
         h_line = draw.LineString([(-pf.t_top / 2, 0), (pf.t_top / 2, 0)])
         v_line = draw.LineString([(pf.t_offset, 0), (pf.t_offset, -0.03)])
 
@@ -99,8 +101,16 @@ class TransmonCrossFL(TransmonCross):  # pylint: disable=invalid-name
 
         # Move the flux line down to the SQUID
         parts = draw.translate(
-            parts, 0, -(p.cross_length + p.cross_gap + pf.t_inductive_gap +
-                        pf.t_width / 2 + pf.t_gap))
+            parts,
+            0,
+            -(
+                p.cross_length
+                + p.cross_gap
+                + pf.t_inductive_gap
+                + pf.t_width / 2
+                + pf.t_gap
+            ),
+        )
 
         # Rotate and translate based on crossmon location
         parts = draw.rotate(parts, p.orientation, origin=(0, 0))
@@ -109,25 +119,27 @@ class TransmonCrossFL(TransmonCross):  # pylint: disable=invalid-name
         [h_line, v_line] = parts
 
         # Adding to qgeometry table
-        self.add_qgeometry('path', {
-            'h_line': h_line,
-            'v_line': v_line
-        },
-                           width=pf.t_width,
-                           layer=p.layer)
+        self.add_qgeometry(
+            "path",
+            {"h_line": h_line, "v_line": v_line},
+            width=pf.t_width,
+            layer=p.layer,
+        )
 
-        self.add_qgeometry('path', {
-            'h_line_sub': h_line,
-            'v_line_sub': v_line
-        },
-                           width=pf.t_width + 2 * pf.t_gap,
-                           subtract=True,
-                           layer=p.layer)
+        self.add_qgeometry(
+            "path",
+            {"h_line_sub": h_line, "v_line_sub": v_line},
+            width=pf.t_width + 2 * pf.t_gap,
+            subtract=True,
+            layer=p.layer,
+        )
 
         # Generating pin
         pin_line = v_line.coords
-        self.add_pin("flux_line",
-                     points=pin_line,
-                     width=pf.t_width,
-                     gap=pf.t_gap,
-                     input_as_norm=True)
+        self.add_pin(
+            "flux_line",
+            points=pin_line,
+            width=pf.t_width,
+            gap=pf.t_gap,
+            input_as_norm=True,
+        )

@@ -19,14 +19,14 @@ import builtins
 import json
 import queue
 from collections import OrderedDict
-from typing import Union, TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Union
 
 import numpy as np
-from PySide6 import QtCore
-from PySide6.QtCore import QAbstractItemModel, QModelIndex, QTimer, Qt
-from PySide6.QtGui import QFont
-from PySide6.QtWidgets import (QComboBox, QTreeView, QWidget)
 from addict import Dict
+from PySide6 import QtCore
+from PySide6.QtCore import QAbstractItemModel, QModelIndex, Qt, QTimer
+from PySide6.QtGui import QFont
+from PySide6.QtWidgets import QComboBox, QTreeView, QWidget
 
 if TYPE_CHECKING:
     from qiskit_metal.designs.design_base import QDesign
@@ -63,10 +63,11 @@ def get_nested_dict_item(dic: dict, key_list: list):
     return dic
 
 
-class Node:  # pylint: disable=too-few-public-methods
+class Node:
     """
     This class was made for type hints (instead of having to union BranchNode and LeafNode)"
     """
+
     KEY, NODE = range(2)
 
 
@@ -96,7 +97,7 @@ class BranchNode(Node):
         self.type = cur_type.__name__
 
     def update_name(self, new_name):
-        """ Updates name """
+        """Updates name"""
         self.name = new_name
         self.parent.update_child(self)
 
@@ -109,6 +110,7 @@ class BranchNode(Node):
         """
         Class for holding the different branch types user can choose from
         """
+
         orderedDict = OrderedDict.__name__
         rdict = dict.__name__
         addict = Dict.__name__
@@ -121,23 +123,23 @@ class BranchNode(Node):
         """
 
         def __init__(self, parent=None):
-            """ Inits Combobox"""
+            """Inits Combobox"""
             super().__init__(parent)
             self.setAutoFillBackground(True)  # must be set for adding to tree
             for btn in self.branch_type_names:
                 self.addItem(btn)
 
-        def getType(self):  # pylint: disable=invalid-name disable=inconsistent-return-statements
-            """ Return Type """
+        def getType(self):
+            """Return Type"""
             if self.currentText() in self.type_dictionary:
                 return self.type_dictionary[self.currentText()]
 
-        def getTypeName(self):  # pylint: disable=invalid-name
-            """ Return Name"""
+        def getTypeName(self):
+            """Return Name"""
             return self.currentText()
 
     def get_empty_dictionary(self):
-        """ Returns correct empty dict"""
+        """Returns correct empty dict"""
         if self.type == self.BranchTypeComboBox.orderedDict:
             return OrderedDict()
         return dict()
@@ -159,7 +161,7 @@ class BranchNode(Node):
 
         return mystr
 
-    def childAtRow(self, row: int):  # pylint: disable=invalid-name disable=inconsistent-return-statements
+    def childAtRow(self, row: int):
         """Gets the child at the given row
 
         Args:
@@ -171,7 +173,7 @@ class BranchNode(Node):
         if 0 <= row < len(self.children):
             return self.children[row][self.NODE]
 
-    def rowOfChild(self, child):  # pylint: disable=invalid-name
+    def rowOfChild(self, child):
         """Gets the row of the given child
 
         Args:
@@ -185,7 +187,7 @@ class BranchNode(Node):
                 return i
         return -1
 
-    def childWithKey(self, key: str):  # pylint: disable=invalid-name
+    def childWithKey(self, key: str):
         """Gets the child with the given key
 
         Args:
@@ -200,7 +202,7 @@ class BranchNode(Node):
                 return childnode
         return None
 
-    def insertChild(self, child):  # pylint: disable=invalid-name
+    def insertChild(self, child):
         """
         Insert the given child
 
@@ -211,11 +213,11 @@ class BranchNode(Node):
         self.children.append((child.name, child))
 
     def update_child(self, child_node):
-        """ Updates child"""
+        """Updates child"""
         row = self.rowOfChild(child_node)
         self.children[row] = (child_node.name, child_node)
 
-    def hasLeaves(self):  # pylint: disable=invalid-name
+    def hasLeaves(self):
         """Do I have leaves?
 
         Returns:
@@ -230,7 +232,7 @@ class NpEncoder(json.JSONEncoder):
     """Helper Class for data transfer"""
 
     # https://docs.python.org/3/library/json.html
-    def default(self, obj):  # pylint: disable=arguments-differ
+    def default(self, obj):
         """Returns default"""
         if isinstance(obj, np.integer):
             return int(obj)
@@ -271,11 +273,12 @@ class LeafNode(Node):
         """
         Contains all possible types for values in a DEB
         """
+
         npArr = "ndarray"
         pylist = "list"
         customFromStringItems = {
             npArr: lambda a: np.array(json.loads(a)),
-            pylist: lambda a: json.loads(a),  # pylint: disable=unnecessary-lambda
+            pylist: lambda a: json.loads(a),
         }
         customToStringItems = {
             npArr: lambda a: json.dumps(a, cls=NpEncoder),
@@ -283,7 +286,7 @@ class LeafNode(Node):
         }
 
         def __init__(self, parent=None):
-            """ Inits Leaf Combobox"""
+            """Inits Leaf Combobox"""
             super().__init__(parent)
             self.setAutoFillBackground(True)  # must be set for adding to tree
             self.addItem("str")
@@ -295,20 +298,19 @@ class LeafNode(Node):
             self.addItem(self.pylist)
             self.np_enc = NpEncoder
 
-        def getType(self):  # pylint: disable=invalid-name
+        def getType(self):
             """Return type"""
             if self.currentText() in self.customFromStringItems:
-
                 return self.customFromStringItems[self.currentText()]
 
             return getattr(builtins, self.currentText())
 
-        def getTypeName(self):  # pylint: disable=invalid-name
+        def getTypeName(self):
             """Return name"""
             return self.currentText()
 
     def _get_display_value(self, value):
-        """Return display value """
+        """Return display value"""
 
         if self.type in self.LeafTypeComboBox.customToStringItems:
             return self.LeafTypeComboBox.customToStringItems[self.type](value)
@@ -317,13 +319,12 @@ class LeafNode(Node):
     def get_real_value(self):
         """Return real value"""
         if self.type in self.LeafTypeComboBox.customFromStringItems:
-            val = self.LeafTypeComboBox.customFromStringItems[self.type](
-                self.value)
+            val = self.LeafTypeComboBox.customFromStringItems[self.type](self.value)
             return val
 
         cur_type = getattr(builtins, self.type)
-        if cur_type == bool:  # pylint: disable=simplifiable-if-statement
-            if self.value.lower() in "true":  # pylint: disable=simplifiable-if-statement
+        if cur_type is bool:
+            if self.value.lower() in "true":
                 value = True
             else:
                 value = False
@@ -337,7 +338,7 @@ class LeafNode(Node):
         self.parent.update_child(self)
 
     def __str__(self):
-        """ To str"""
+        """To str"""
         mystr = f"LeafNode: {self.name} with value: {self.value}"
         return mystr
 
@@ -359,11 +360,13 @@ class TreeModelParamEntry(QAbstractItemModel):
     PARSED = 2
     TYPE = 3
 
-    def __init__(self,
-                 parent: QWidget,
-                 view: QTreeView,
-                 data_dict: OrderedDict = None,
-                 design: 'QDesign' = None):
+    def __init__(
+        self,
+        parent: QWidget,
+        view: QTreeView,
+        data_dict: OrderedDict = None,
+        design: "QDesign" = None,
+    ):
         """
         Editable table with drop-down rows for a generic qcomponent menu.
         Organized as a tree model where child nodes are more specific properties
@@ -376,22 +379,23 @@ class TreeModelParamEntry(QAbstractItemModel):
             design (QDesign): Current design using the model
         """
         super().__init__(parent=parent)
-        self._row_count = -1  # pylint: disable=invalid-name
-        self.root = BranchNode('')
+        self._row_count = -1
+        self.root = BranchNode("")
         self.view = view
         self._design = design
-        self.headers = ['Name', 'Value']
+        self.headers = ["Name", "Value"]
         self._start_timer()
-        self.headers = ['Name', 'Value', 'Parsed Value',
-                        "Type"]  # 3 columns instead of 2
+        self.headers = [
+            "Name",
+            "Value",
+            "Parsed Value",
+            "Type",
+        ]  # 3 columns instead of 2
         if data_dict is None:
             data_dict = {}
         self.init_load(data_dict)
 
-    def add_new_leaf_node(self,
-                          cur_index: QModelIndex,
-                          key: str,
-                          value: Any = None):
+    def add_new_leaf_node(self, cur_index: QModelIndex, key: str, value: Any = None):
         """
         Add new leaf node to model's backing tree structure
         Args:
@@ -414,11 +418,9 @@ class TreeModelParamEntry(QAbstractItemModel):
         self.reload()
         self.expand_items_in_paths(cop)
 
-    def add_new_branch_node(self,
-                            cur_index: QModelIndex,
-                            key: str,
-                            fake_key: str,
-                            fake_value: Any = None):
+    def add_new_branch_node(
+        self, cur_index: QModelIndex, key: str, fake_key: str, fake_value: Any = None
+    ):
         """
         Adds new branch node to model's backing tree
         Args:
@@ -452,12 +454,10 @@ class TreeModelParamEntry(QAbstractItemModel):
         cur_node = self.nodeFromIndex(cur_index)
 
         if cur_node == self.root:
-
             raise Exception("Don't delete the everything please")
 
         # remove from parent
         if (cur_node.name, cur_node) in cur_node.parent.children:
-
             cur_node.parent.children.remove((cur_node.name, cur_node))
 
             # cleaning up dangling branches
@@ -497,12 +497,11 @@ class TreeModelParamEntry(QAbstractItemModel):
         completely rebuild the model and tree.
         """
         # TODO: Check if new nodes have been added; if so, rebuild model.
-        new_row_count = self.rowCount(self.createIndex(0, 0))  # pylint: disable=invalid-name
+        new_row_count = self.rowCount(self.createIndex(0, 0))
         if self._row_count != new_row_count:
             # Wrap the reset logic in beginResetModel and endResetModel
             self.beginResetModel()
             try:
-
                 # When a model is reset it should be considered that all
                 # information previously retrieved from it is invalid.
                 # This includes but is not limited to the rowCount() and
@@ -514,7 +513,7 @@ class TreeModelParamEntry(QAbstractItemModel):
             finally:
                 self.endResetModel()
 
-    def getPaths(self, curdict: OrderedDict, curpath: list):  # pylint: disable=invalid-name
+    def getPaths(self, curdict: OrderedDict, curpath: list):
         """Recursively finds and saves all root-to-leaf paths in model"""
 
         for k, v in curdict.items():
@@ -524,7 +523,7 @@ class TreeModelParamEntry(QAbstractItemModel):
                 self.paths.append(curpath + [k, v])
 
     def reload(self):
-        """ Sends out a signal forcing QTreeView to completely refresh"""
+        """Sends out a signal forcing QTreeView to completely refresh"""
         self.beginResetModel()
         self.endResetModel()
 
@@ -551,8 +550,8 @@ class TreeModelParamEntry(QAbstractItemModel):
                 branch = root.childWithKey(key)
                 if not branch:
                     dict_type = type(
-                        get_nested_dict_item(data_dict,
-                                             path[:path.index(key) + 1]))
+                        get_nested_dict_item(data_dict, path[: path.index(key) + 1])
+                    )
 
                     branch = BranchNode(key, parent=root, cur_type=dict_type)
                     root.insertChild(branch)
@@ -587,7 +586,7 @@ class TreeModelParamEntry(QAbstractItemModel):
 
         return len(node)
 
-    def columnCount(self, parent: QModelIndex = None):  # pylint: disable=unused-argument
+    def columnCount(self, parent: QModelIndex = None):
         """Get the number of columns
 
         Args:
@@ -598,7 +597,7 @@ class TreeModelParamEntry(QAbstractItemModel):
         """
         return len(self.headers)
 
-    def data(self, index: QModelIndex, role: Qt.ItemDataRole = Qt.DisplayRole):  # pylint: disable=too-many-return-statements,too-many-branches
+    def data(self, index: QModelIndex, role: Qt.ItemDataRole = Qt.DisplayRole):
         """Gets the node data
 
         Args:
@@ -635,7 +634,7 @@ class TreeModelParamEntry(QAbstractItemModel):
                         return node.name
                     if index.column() == self.TYPE:
                         return node.type
-                    return ''
+                    return ""
                 # We have a leaf
                 if index.column() == self.NAME:
                     return str(node.name)  # key
@@ -651,10 +650,11 @@ class TreeModelParamEntry(QAbstractItemModel):
         return None
 
     def setData(
-            self,  # pylint: disable=too-many-return-statements
-            index: QModelIndex,
-            value: Any,
-            role: Qt.ItemDataRole = Qt.EditRole) -> bool:
+        self,
+        index: QModelIndex,
+        value: Any,
+        role: Qt.ItemDataRole = Qt.EditRole,
+    ) -> bool:
         """Set the LeafNode value and corresponding data entry to value.
         Returns true if successful; otherwise returns false.
         The dataChanged() signal should be emitted if the data was successfully set.
@@ -668,19 +668,16 @@ class TreeModelParamEntry(QAbstractItemModel):
             bool: True if successful, False otherwise
         """
         try:
-
             if not index.isValid():
                 return False
 
             if role == QtCore.Qt.EditRole:
-
-                if index.column(
-                ) == self.VALUE:  # only want to edit col1 if it's a leafnode
-
+                if (
+                    index.column() == self.VALUE
+                ):  # only want to edit col1 if it's a leafnode
                     node = self.nodeFromIndex(index)
 
                     if isinstance(node, LeafNode):
-
                         value = str(value)  # new value
                         old_value = node.value  # option value
 
@@ -688,15 +685,18 @@ class TreeModelParamEntry(QAbstractItemModel):
                             return False
 
                         # Set the value of an option when the new value is different
-                        node.value = value  # # pylint: disable=attribute-defined-outside-init
+                        node.value = value
                         return True  # why doesn't this require a self.init_load()?
 
-                elif index.column(
-                ) == self.NAME:  # either editing BranchNode name or LeafNode name
+                elif (
+                    index.column() == self.NAME
+                ):  # either editing BranchNode name or LeafNode name
                     node = self.nodeFromIndex(index)
                     if node.parent is None:
-                        raise Exception("Trying to edit node without a parent. "
-                                        "The root node should be uneditable.")
+                        raise Exception(
+                            "Trying to edit node without a parent. "
+                            "The root node should be uneditable."
+                        )
 
                     old_value = node.name
                     if old_value == value:
@@ -716,7 +716,8 @@ class TreeModelParamEntry(QAbstractItemModel):
                 elif index.column() == self.TYPE:
                     # this is a type
                     node = self.nodeFromIndex(
-                        self.index(index.row(), 0, index.parent()))
+                        self.index(index.row(), 0, index.parent())
+                    )
                     node.type = value
 
                     cop = self.get_path_of_expanded_items()
@@ -726,13 +727,13 @@ class TreeModelParamEntry(QAbstractItemModel):
                     return True
 
             return False
-        except Exception as e:  # pylint: disable=broad-except
+        except Exception as e:
             self._design.logger.error(f"Unable to parse tree information: {e}")
             return False
 
     # persistentIndexList
     def get_path_of_expanded_items(self):
-        """ Collect which nodes are currently expanded in
+        """Collect which nodes are currently expanded in
         order to re-expand them after refreshing the model"""
         expanded_nodes = []
         pil = self.persistentIndexList()
@@ -745,8 +746,8 @@ class TreeModelParamEntry(QAbstractItemModel):
 
     def expand_items_in_paths(self, expanded_nodes):
         """Expand all nodes that were previously saved in expanded_nodes"""
-        INDEX = 0  # pylint: disable=invalid-name
-        NODE = 1  # pylint: disable=invalid-name
+        INDEX = 0
+        NODE = 1
         cur_index = QModelIndex()
         node = self.nodeFromIndex(cur_index)
         discovered_queue = queue.Queue()
@@ -755,27 +756,25 @@ class TreeModelParamEntry(QAbstractItemModel):
         while discovered_queue.qsize() > 0:
             to_check = discovered_queue.get()
             if to_check[NODE] in expanded_nodes:
-
                 self.view.setExpanded(to_check[INDEX], True)
 
             # find all children and add them to queue
             parent_index = to_check[INDEX]
             new_index = self.index(0, 0, parent_index)  # be valid
             row = 0
-            while (new_index is not None and new_index.isValid()):
-
+            while new_index is not None and new_index.isValid():
                 new_index = self.index(row, 0, parent_index)
                 if new_index is not None and new_index.isValid():
-
                     new_node = self.nodeFromIndex(new_index)
                     if isinstance(new_node, BranchNode):
                         discovered_queue.put((new_index, new_node))
 
                     row = row + 1
 
-    def headerData(self, section: int, orientation: Qt.Orientation,
-                   role: Qt.ItemDataRole):
-        """ Set the headers to be displayed.
+    def headerData(
+        self, section: int, orientation: Qt.Orientation, role: Qt.ItemDataRole
+    ):
+        """Set the headers to be displayed.
 
         Args:
             section (int): section number
@@ -818,7 +817,8 @@ class TreeModelParamEntry(QAbstractItemModel):
                 return self.createIndex(row, column, node_data)
 
         return self.createIndex(
-            -1, -1, QModelIndex())  # return invalid index which is Branch("")
+            -1, -1, QModelIndex()
+        )  # return invalid index which is Branch("")
 
     def parent(self, child: QModelIndex):
         """Gets the parent index of the given node
@@ -845,7 +845,7 @@ class TreeModelParamEntry(QAbstractItemModel):
         assert row != -1
         return self.createIndex(row, 0, parent)
 
-    def nodeFromIndex(self, index: QModelIndex) -> Union[BranchNode, LeafNode]:  # pylint: disable=invalid-name
+    def nodeFromIndex(self, index: QModelIndex) -> Union[BranchNode, LeafNode]:
         """Utility method we define to get the node from the index.
 
         Args:
@@ -878,7 +878,7 @@ class TreeModelParamEntry(QAbstractItemModel):
 
         return flags
 
-    def node_str(self, node: Node):  # pylint: disable=no-self-use
+    def node_str(self, node: Node):
         """Node to string"""
         if Node is None:
             return "None"

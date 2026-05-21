@@ -12,7 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """This module has a QRenderer to export QDesign to a GDS file."""
-# pylint: disable=too-many-lines
 
 import math
 import os
@@ -360,7 +359,7 @@ class QGDSRenderer(QRenderer):
         Returns:
             int: 1 if access is allowed. Else returns 0, if access not given.
         """
-        status, directory_name = can_write_to_path(file)  # pylint: disable=possibly-used-before-assignment
+        status, directory_name = can_write_to_path(file)
         if status:
             return 1
 
@@ -390,10 +389,9 @@ class QGDSRenderer(QRenderer):
             table_name (str): Name for "table".  Example is "poly", and "path".
             table (geopandas.GeoSeries): Table with similar qgeometries.
         """
-        # pylint: disable=singleton-comparison
-        subtract_true = table[table["subtract"] == True]
+        subtract_true = table[table["subtract"]]
 
-        subtract_false = table[table["subtract"] == False]
+        subtract_false = table[~table["subtract"]]
 
         setattr(self, f"{chip_name}_{table_name}_subtract_true", subtract_true)
         setattr(self, f"{chip_name}_{table_name}_subtract_false", subtract_false)
@@ -555,7 +553,6 @@ class QGDSRenderer(QRenderer):
         # bounding box from design planar.  If list is subset of chip, then
         # calculate a custom bounding box and scale it.
 
-        # pylint: disable=protected-access
         if len(unique_qcomponents) == len(self.design._components):
             # Since user wants all of the chip to be rendered, use the
             # design.planar bounding box.
@@ -746,7 +743,6 @@ class QGDSRenderer(QRenderer):
             all_sub_true_or_false (str): To be used within self.chip_info:
                                 'all_subtract_true' or 'all_subtract_false'.
         """
-        # pylint: disable=too-many-locals
         data_frame = self.chip_info[chip_name][chip_layer][all_sub_true_or_false]
         df_fillet = data_frame[-data_frame["fillet"].isnull()]
 
@@ -818,10 +814,6 @@ class QGDSRenderer(QRenderer):
             Dict: The key is an index into a_shapely. The value is a dict with
             fillet and shorter LineString.
         """
-        # pylint: disable=too-many-locals
-        # pylint: disable=too-many-arguments
-        # pylint: disable=too-many-statements
-        # pylint: disable=too-many-branches
 
         # Holds all of the index of when a segment is too short.
         idx_bad_fillet = list()
@@ -1186,7 +1178,6 @@ class QGDSRenderer(QRenderer):
             * 5 The chip is not in the default option.
             * 6 The layer is not in the chip dict.
         """
-        # pylint: disable=too-many-return-statements
         code = 0
         no_cheese_code = self._check_no_cheese(chip, layer)
         cheese_code = self._check_cheese(chip, layer)
@@ -1281,8 +1272,6 @@ class QGDSRenderer(QRenderer):
             nocheese_sub_layer (int): User defined datatype, considered a
                     sub-layer number for where to place the NO_cheese output.
         """
-        # pylint: disable=too-many-locals
-        # pylint: disable=too-many-arguments
 
         max_points = int(self.parse_value(self.options.max_points))
         cheese_shape = int(self.parse_value(self.options.cheese.shape))
@@ -1366,8 +1355,6 @@ class QGDSRenderer(QRenderer):
         f'TOP_{chip_name}_{chip_layer}_NoCheese_{sub_layer}'.  The sub_layer
         is data_type and denoted in the options.
         """
-
-        # pylint: disable=too-many-nested-blocks
 
         no_cheese_buffer = float(self.parse_value(self.options.no_cheese.buffer))
         sub_layer = int(self.parse_value(self.options.no_cheese.datatype))
@@ -1459,7 +1446,6 @@ class QGDSRenderer(QRenderer):
             shapely which combines the polygons and linestrings and creates
             buffer as specified through default_options.
         """
-        # pylint: disable=too-many-locals
         style_cap = int(self.parse_value(self.options.no_cheese.cap_style))
         style_join = int(self.parse_value(self.options.no_cheese.join_style))
 
@@ -1833,7 +1819,6 @@ class QGDSRenderer(QRenderer):
             LineString is smaller than width of cell from row.gds_cell_name.
             Otherwise the rectangle for pad on RIGHT of row.gds_cell_name.
         """
-        # pylint: disable=too-many-locals
         junction_pad_overlap = float(
             self.parse_value(self.options.junction_pad_overlap)
         )
@@ -1853,7 +1838,6 @@ class QGDSRenderer(QRenderer):
         pad_height = row.width
 
         if pad_height < jj_y_height:
-            # pylint: disable=protected-access
             text_id = self.design._components[row.component]._name
             self.logger.warning(
                 f"In junction table, component={text_id} with name={row.name} "
@@ -1990,8 +1974,6 @@ class QGDSRenderer(QRenderer):
                                                 just chip_name.
             layers_in_chip (list):  List of all layers in chip.
         """
-        # pylint: disable=too-many-locals
-        # pylint: disable=too-many-nested-blocks
 
         # Make sure the file exists, before trying to read it.
         _, directory_name = can_write_to_path(self.options.path_filename)
@@ -2302,7 +2284,7 @@ class QGDSRenderer(QRenderer):
         multi_poly: shapely.geometry.multipolygon.MultiPolygon,
         layer: int,
         data_type: int,
-        no_cheese_buffer: float,  # pylint: disable=unused-argument
+        no_cheese_buffer: float,
     ) -> list:
         """Convert a shapely MultiPolygon to corresponding gdstk.
 
@@ -2317,7 +2299,6 @@ class QGDSRenderer(QRenderer):
         Returns:
             list: Each entry is converted to GDSII.
         """
-        # pylint: disable=too-many-locals
 
         precision = float(self.parse_value(self.options.precision))
 

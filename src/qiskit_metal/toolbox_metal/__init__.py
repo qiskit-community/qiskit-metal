@@ -12,9 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# pylint: disable-msg=relative-beyond-top-level
-# pylint: disable-msg=import-error
-# pylint: disable-msg=import-self
 """
 =================================================
 Toolbox_metal (:mod:`qiskit_metal.toolbox_metal`)
@@ -55,9 +52,13 @@ from qiskit_metal.toolbox_metal.parsing import is_variable_name
 from qiskit_metal.toolbox_metal.parsing import is_numeric_possible
 from qiskit_metal.toolbox_metal.parsing import parse_units
 from qiskit_metal.toolbox_metal.layer_stack_handler import LayerStackHandler
-from qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables import BoundsForPathAndPolyTables, determine_larger_box
+from qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables import (
+    BoundsForPathAndPolyTables,
+    determine_larger_box,
+)
 
 from qiskit_metal import config
+
 if config.is_building_docs():
     from . import about
     from .exceptions import QiskitMetalDesignError

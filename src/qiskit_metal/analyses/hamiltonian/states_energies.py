@@ -15,6 +15,7 @@
 This file contains functions related to extracting and manipulating Hamiltonians
 and their energy levels.
 """
+
 from typing import Dict as Dict_
 from typing import List
 
@@ -24,7 +25,7 @@ from qutip import Qobj
 
 
 def basis_state_on(mode_size: List[int], excitations: Dict_[int, int]):
-    ''' Construct a qutip Qobj. Taken from pyEPR
+    """Construct a qutip Qobj. Taken from pyEPR
     https://github.com/zlatko-minev/pyEPR/blob/master/pyEPR/calcs/back_box_numeric.py
 
     Args:
@@ -36,16 +37,18 @@ def basis_state_on(mode_size: List[int], excitations: Dict_[int, int]):
 
     Returns:
         qutip Qobj: qutip tensor product representing the state
-    '''
-    return qutip.tensor(*[
-        qutip.basis(mode_size[i], excitations.get(i, 0))
-        for i in range(len(mode_size))
-    ])
+    """
+    return qutip.tensor(
+        *[
+            qutip.basis(mode_size[i], excitations.get(i, 0))
+            for i in range(len(mode_size))
+        ]
+    )
 
 
-def extract_energies(esys_array: np.ndarray,
-                     mode_size: List[int],
-                     zero_evals: bool = True):
+def extract_energies(
+    esys_array: np.ndarray, mode_size: List[int], zero_evals: bool = True
+):
     """
     Returns the frequencies, anharmonicities, and dispersive shifts of the modes.
 
@@ -83,7 +86,8 @@ def extract_energies(esys_array: np.ndarray,
     # before stacking is required for qutip>=5, where `np.array([Qobj, ...])`
     # produces an object-dtype ndarray instead of stacking the underlying data.
     evecs_dag_mat = np.squeeze(
-        np.array([evecs[ii].dag().full() for ii in range(evecs.size)]))
+        np.array([evecs[ii].dag().full() for ii in range(evecs.size)])
+    )
 
     single_excitation_states = [state_on({i: 1}) for i in range(N)]
 
@@ -105,25 +109,33 @@ def extract_energies(esys_array: np.ndarray,
     # is one of the target states
 
     single_excitation_states_mat = np.squeeze(
-        np.array([
-            single_excitation_states[ii].full()
-            for ii in range(len(single_excitation_states))
-        ])).T
+        np.array(
+            [
+                single_excitation_states[ii].full()
+                for ii in range(len(single_excitation_states))
+            ]
+        )
+    ).T
 
     double_excitation_states_mat = np.squeeze(
-        np.array([
-            double_excitation_states[ii].full()
-            for ii in range(len(double_excitation_states))
-        ])).T
+        np.array(
+            [
+                double_excitation_states[ii].full()
+                for ii in range(len(double_excitation_states))
+            ]
+        )
+    ).T
 
     # Find the inner product of each of the target state with each of the
     # eigenvector; hence overlap has dimension of number of eigenvectors x
     # number of target states. `.full()` converts the Qobj product to a numpy
     # array; required for qutip>=5 where Qobj no longer supports np.absolute.
     overlap_single = np.absolute(
-        (Qobj(evecs_dag_mat) * Qobj(single_excitation_states_mat)).full())
+        (Qobj(evecs_dag_mat) * Qobj(single_excitation_states_mat)).full()
+    )
     overlap_double = np.absolute(
-        (Qobj(evecs_dag_mat) * Qobj(double_excitation_states_mat)).full())
+        (Qobj(evecs_dag_mat) * Qobj(double_excitation_states_mat)).full()
+    )
 
     # find the index of the eigenvector that is closest to each target state
     # hence evec_idx has shape of (number of target states, )
@@ -133,7 +145,7 @@ def extract_energies(esys_array: np.ndarray,
     for i in range(N):
         for j in range(i, N):
             ev = evals[evec_idx_double[mode_idx_to_state[(i, j)]]]
-            chi = (ev - (evals[evec_idx_single[i]] + evals[evec_idx_single[j]]))
+            chi = ev - (evals[evec_idx_single[i]] + evals[evec_idx_single[j]])
             chis[i, j] = chi
             chis[j, i] = chi
 

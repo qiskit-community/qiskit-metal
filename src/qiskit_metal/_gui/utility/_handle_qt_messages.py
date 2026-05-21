@@ -25,7 +25,7 @@ from PySide6.QtCore import Slot
 
 from qiskit_metal import logger
 
-__all__ = ['slot_catch_error', 'do_debug']
+__all__ = ["slot_catch_error", "do_debug"]
 
 #######################################################################################
 # Core handler
@@ -52,20 +52,19 @@ def _qt_message_handler(mode, context, message):
         message (str): the message
     """
 
-    if message.startswith(
-            'QSocketNotifier: Multiple socket notifiers for same socket'):
+    if message.startswith("QSocketNotifier: Multiple socket notifiers for same socket"):
         pass  # Caused by running %gui qt multiple times
     else:
         if mode == QtCore.QtMsgType.QtInfoMsg:
-            mode = 'INFO'
+            mode = "INFO"
         elif mode == QtCore.QtMsgType.QtWarningMsg:
-            mode = 'WARNING'
+            mode = "WARNING"
         elif mode == QtCore.QtMsgType.QtCriticalMsg:
-            mode = 'CRITICAL'
+            mode = "CRITICAL"
         elif mode == QtCore.QtMsgType.QtFatalMsg:
-            mode = 'FATAL'
+            mode = "FATAL"
         else:
-            mode = 'DEBUG'
+            mode = "DEBUG"
         # logger.log(
         #     getattr(logging, 'CRITICAL'), 'line: %d, func: %s(), file: %s' %
         #     (context.line, context.function, context.file) + '  %s: %s\n' %
@@ -76,9 +75,7 @@ def _qt_message_handler(mode, context, message):
 
         # Include context if available
         if context.file and context.function:
-            base_message += (
-                f" (File: {context.file}, Line: {context.line}, Function: {context.function})"
-            )
+            base_message += f" (File: {context.file}, Line: {context.line}, Function: {context.function})"
         else:
             base_message += " (No context available from Qt)"
 
@@ -88,7 +85,7 @@ def _qt_message_handler(mode, context, message):
         # Log the message with the Python traceback
         logger.log(
             getattr(logging, mode, logging.DEBUG),
-            f"{base_message}\nPython Traceback (most recent call last):\n{python_traceback}"
+            f"{base_message}\nPython Traceback (most recent call last):\n{python_traceback}",
         )
 
 
@@ -96,7 +93,7 @@ def _qt_message_handler(mode, context, message):
 # Auxilary handlers - mostly for debug purposes
 
 
-def do_debug(msg, name='info'):
+def do_debug(msg, name="info"):
     """Utility function used to print debug statements from PySide6 Socket
     calls A bit of a cludge.
 
@@ -112,7 +109,7 @@ def do_debug(msg, name='info'):
     #         try:
     #             stack = inspect.stack()[i]
     #             callers += [f'{stack.function}[{stack.lineno}]']
-    #         except Exception as e:  # pylint: disable=broad-except
+    #         except Exception as e:
     #             print("Exception during do_debug exception handling: " +
     #                   e.__repr__())
     #     callers = reversed(callers)
@@ -143,21 +140,21 @@ def slot_catch_error(*args, catch=Exception, on_exception_emit=None):
     def slot_decorator(func):
 
         @wraps(func)
-        def wrapper(*args, **kwargs):  # pylint: disable=unused-argument
+        def wrapper(*args, **kwargs):
 
             try:
                 func(*args)
 
-            except catch as e:  # pylint: disable=invalid-name,broad-except
-
+            except catch as e:
                 message = traceback.format_exc()
-                message += '\n\nERROR in call by Metal GUI (see traceback above)\n'\
-                    + f"\n{' module   :':12s} {wrapper.__module__}" \
-                    + f"\n{' function :':12s} {wrapper.__qualname__}" \
-                    + f"\n{' err msg  :':12s} {e.__repr__()}"\
-                    + f"\n{' args; kws:':12s} {args}; {kwargs}" \
-
-                do_debug(message, name='error')
+                message += (
+                    "\n\nERROR in call by Metal GUI (see traceback above)\n"
+                    + f"\n{' module   :':12s} {wrapper.__module__}"
+                    + f"\n{' function :':12s} {wrapper.__qualname__}"
+                    + f"\n{' err msg  :':12s} {e.__repr__()}"
+                    + f"\n{' args; kws:':12s} {args}; {kwargs}"
+                )
+                do_debug(message, name="error")
 
                 if on_exception_emit is not None:
                     # args[0] is instance of bound signal

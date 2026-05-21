@@ -21,7 +21,7 @@ from IPython import get_ipython
 from IPython.core.magic import Magics, line_magic, magics_class
 from IPython.display import HTML, Image, display
 
-__all__ = ['get_screenshot', 'format_dict_ala_z']
+__all__ = ["get_screenshot", "format_dict_ala_z"]
 
 
 @magics_class
@@ -29,7 +29,7 @@ class MetalTutorialMagics(Magics):
     """A class of status magic functions."""
 
     @line_magic
-    def metal_print(self, line='', cell=None):  # pylint: disable=unused-argument
+    def metal_print(self, line="", cell=None):
         """Print an HTML formatted message."""
         return display(
             HTML(f"""
@@ -46,10 +46,11 @@ class MetalTutorialMagics(Magics):
     ">
         {line}
     </div>
-        """))
+        """)
+        )
 
     @line_magic
-    def metal_heading(self, line='', cell=None):  # pylint: disable=unused-argument
+    def metal_heading(self, line="", cell=None):
         """Print an HTML formatted message."""
         return display(
             HTML(f"""
@@ -64,7 +65,8 @@ class MetalTutorialMagics(Magics):
         padding-left:25px;
         color: white;
     "> {line} <h1>
-        """))
+        """)
+        )
 
 
 _IP = get_ipython()
@@ -77,6 +79,7 @@ class Headings:
 
     Legcay code. Use cell magics. See: ``MetalTutorialMagics``.
     """
+
     __h1__ = """
     <h1 style="
         background-color: #d4418e;
@@ -88,20 +91,18 @@ class Headings:
         padding-left:25px;
         color: white;
     "> !!!! <h1>
-    """.replace('\n', ' ')
+    """.replace("\n", " ")
 
     @classmethod
     def h1(cls, text):
         """Display the HTML."""
-        display(HTML(cls.__h1__.replace('!!!!', text)))
+        display(HTML(cls.__h1__.replace("!!!!", text)))
 
 
 # TODO: Move to module for GUI programming
-def get_screenshot(self: 'QMainWindow',
-                   name='shot.png',
-                   type_='png',
-                   do_display=True,
-                   disp_ops=None):
+def get_screenshot(
+    self: "QMainWindow", name="shot.png", type_="png", do_display=True, disp_ops=None
+):
     """Grad a screenshot of the main window, save to file, and then copy to
     clipboard.
 
@@ -121,7 +122,7 @@ def get_screenshot(self: 'QMainWindow',
     screenshot.save(str(path), type_)  # Save
 
     QApplication.clipboard().setPixmap(screenshot)  # To clipboard
-    #print(f'Screenshot copied to clipboard and saved to:\n {path}')
+    # print(f'Screenshot copied to clipboard and saved to:\n {path}')
 
     if do_display:
         _disp_ops = dict(width=500)
@@ -144,38 +145,40 @@ class Color:
 
     In general, `termcolor` is more stable across platforms. See `termcolor`
     """
-    purple = '\033[95m'
-    cyan = '\033[96m'
-    darkcyan = '\033[36m'
-    blue = '\033[94m'
-    green = '\033[92m'
-    yellow = '\033[93m'
-    red = '\033[91m'
-    bold = '\033[1m'
-    BOLD = '\033[1m'
-    underline = '\033[4m'
-    end = '\033[0m'
-    END = '\033[0m'
+
+    purple = "\033[95m"
+    cyan = "\033[96m"
+    darkcyan = "\033[36m"
+    blue = "\033[94m"
+    green = "\033[92m"
+    yellow = "\033[93m"
+    red = "\033[91m"
+    bold = "\033[1m"
+    BOLD = "\033[1m"
+    underline = "\033[4m"
+    end = "\033[0m"
+    END = "\033[0m"
 
 
-def style_colon_list(text: str,
-                     sty1a='',
-                     sty1b='',
-                     sty2a=Color.blue,
-                     sty2b=Color.END) -> str:
+def style_colon_list(
+    text: str, sty1a="", sty1b="", sty2a=Color.blue, sty2b=Color.END
+) -> str:
     """Color on the left and right sides of single :"""
-    text = re.sub('(.*?):(.*)', fr'{sty1a}\g<1>{sty1b}:{sty2a}\g<2>{sty2b}',
-                  text)  # *? is non-greedy
+    text = re.sub(
+        "(.*?):(.*)", rf"{sty1a}\g<1>{sty1b}:{sty2a}\g<2>{sty2b}", text
+    )  # *? is non-greedy
     return text
 
 
-def format_dict_ala_z(dic: Dict_,
-                      indent=0,
-                      key_width=20,
-                      do_repr=True,
-                      indent_all: int = 2,
-                      indent_keys=5,
-                      style_dicts=True):
+def format_dict_ala_z(
+    dic: Dict_,
+    indent=0,
+    key_width=20,
+    do_repr=True,
+    indent_all: int = 2,
+    indent_keys=5,
+    style_dicts=True,
+):
     """Format a nested dictionary.
 
     Args:
@@ -194,23 +197,29 @@ def format_dict_ala_z(dic: Dict_,
     if style_dicts:
         sty1a, sty1b = Color.BOLD, Color.END
 
-    text = ''
+    text = ""
     for k, v in dic.items():
         if isinstance(v, dict):
             if do_repr:
                 k = repr(k)
             text += f"{'':{indent_all_full}s}{sty1a}{k:<{key_width}s}{sty1b}: {{\n"
-            text += format_dict_ala_z(v,
-                                      indent + 1,
-                                      key_width=key_width,
-                                      do_repr=do_repr,
-                                      indent_all=indent_all)
-            text += f"{'':{indent_all_full+key_width}s}" + \
-                "  }" + (',' if do_repr else '') + "\n"
+            text += format_dict_ala_z(
+                v,
+                indent + 1,
+                key_width=key_width,
+                do_repr=do_repr,
+                indent_all=indent_all,
+            )
+            text += (
+                f"{'':{indent_all_full + key_width}s}"
+                + "  }"
+                + ("," if do_repr else "")
+                + "\n"
+            )
         else:
             if do_repr:
                 k = repr(k)
-                v = repr(v) + ','
+                v = repr(v) + ","
             text += f"{'':{indent_all_full}s}{k:<{key_width}s}: {str(v):<30s}\n"
 
     if indent == 0:

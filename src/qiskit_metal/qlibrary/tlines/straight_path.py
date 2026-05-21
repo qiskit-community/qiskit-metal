@@ -24,7 +24,7 @@ class RouteStraight(QRoute):
         :description: Route Straight
     """
 
-    component_metadata = Dict(short_name='cpw')
+    component_metadata = Dict(short_name="cpw")
     """Component metadata"""
 
     TOOLTIP = """Draw a straight Route connecting two pins."""

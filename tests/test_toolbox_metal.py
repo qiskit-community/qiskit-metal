@@ -12,10 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# pylint: disable-msg=unnecessary-pass
-# pylint: disable-msg=protected-access
-# pylint: disable-msg=broad-except
-# pylint: disable-msg=import-error
 """Qiskit Metal unit tests analyses functionality."""
 
 import unittest
@@ -129,7 +125,6 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
         """Test that get_platform_info in about.py returns a string with the platform information without any errors."""
         self.assertEqual(type(about.get_platform_info()), str)
 
-    # pylint: disable-msg=unused-variable
     def test_toolbox_metal_parsing_true_str(self):
         """Test that TRUE_STR in parsing.py has not accidentally changed."""
         expected = [

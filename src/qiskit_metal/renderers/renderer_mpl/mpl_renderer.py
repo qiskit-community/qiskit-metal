@@ -77,8 +77,11 @@ class QMplRenderer:
                 logger if ``None``.
         """
         super().__init__()
-        self.logger = logger if logger is not None else logging.getLogger(
-            "qiskit_metal.renderer_mpl")
+        self.logger = (
+            logger
+            if logger is not None
+            else logging.getLogger("qiskit_metal.renderer_mpl")
+        )
         self.canvas = canvas
         self.ax = None
         self.design = design
@@ -129,7 +132,7 @@ class QMplRenderer:
         Args:
             name (str): Component name
         """
-        comp_id = self.design.components[name].id
+        comp_id = self.design.components[name].id  # noqa: F841
         self._hidden_components.discard(name)
 
     def hide_layer(self, name):
@@ -186,8 +189,9 @@ class QMplRenderer:
         # rebuilt ``mask`` from scratch on the second line, silently
         # discarding the ``hidden_layers`` filter — visible from the
         # Qt GUI only when a user hid both at once.
-        mask = (table.layer.isin(self.hidden_layers)
-                | table.component.isin(self._hidden_components))
+        mask = table.layer.isin(self.hidden_layers) | table.component.isin(
+            self._hidden_components
+        )
 
         return ~mask  # not
 
@@ -263,7 +267,7 @@ class QMplRenderer:
             table = table[self.get_mask(table)]
 
             # subtracted
-            mask = table["subtract"] == True
+            mask = table["subtract"]
             render_func = getattr(self, f"render_{element_type}")
             render_func(table[mask], ax, subtracted=True)
 
