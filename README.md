@@ -4,6 +4,10 @@
 >![Welcome to Qiskit Metal!](https://raw.githubusercontent.com/Qiskit/qiskit-metal/main/docs/images/zkm_banner.png 'Welcome to Qiskit Metal')
 > Quantum Metal is an open-source framework for engineers and scientists to design superconducting quantum devices with ease.
 
+> **Where we're heading:** see [ROADMAP.md](./ROADMAP.md) for the
+> lite-by-default flip (v0.7.0), AI-orchestration profile, and
+> the open FEM stack (gmsh + Elmer + AWS Palace).
+
 
 
 
