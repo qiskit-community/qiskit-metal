@@ -824,22 +824,18 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">open_start_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;1000um&#39;</span><span class="p">,</span>
-                         <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;0um&#39;</span><span class="p">,</span>
-                         <span class="n">orientation</span> <span class="o">=</span> <span class="s1">&#39;-90&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">open_start_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;1000um&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;-90&quot;</span><span class="p">)</span>
 
-<span class="n">open_start_meander</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span><span class="s1">&#39;Open_meander_start&#39;</span><span class="p">,</span><span class="n">options</span><span class="o">=</span><span class="n">open_start_options</span><span class="p">)</span>
-
-
+<span class="n">open_start_meander</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Open_meander_start&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">open_start_options</span>
+<span class="p">)</span>
 
 
+<span class="n">open_end_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+    <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;1000um&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;1500um&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;90&quot;</span><span class="p">,</span> <span class="n">termination_gap</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span>
+<span class="p">)</span>
 
-<span class="n">open_end_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;1000um&#39;</span><span class="p">,</span>
-                        <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;1500um&#39;</span><span class="p">,</span>
-                        <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;90&#39;</span><span class="p">,</span>
-                        <span class="n">termination_gap</span><span class="o">=</span><span class="s1">&#39;10um&#39;</span><span class="p">)</span>
-
-<span class="n">open_end_meander</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span><span class="s1">&#39;Open_meander_end&#39;</span><span class="p">,</span><span class="n">options</span><span class="o">=</span><span class="n">open_end_options</span><span class="p">)</span>
+<span class="n">open_end_meander</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Open_meander_end&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">open_end_options</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -847,20 +843,21 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">meander_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-                                            <span class="n">component</span><span class="o">=</span><span class="s1">&#39;Open_meander_start&#39;</span><span class="p">,</span>
-                                            <span class="n">pin</span><span class="o">=</span><span class="s1">&#39;open&#39;</span><span class="p">),</span>
-                                        <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-                                            <span class="n">component</span><span class="o">=</span><span class="s1">&#39;Open_meander_end&#39;</span><span class="p">,</span>
-                                            <span class="n">pin</span><span class="o">=</span><span class="s1">&#39;open&#39;</span><span class="p">)</span>
-                                        <span class="p">),</span>
-                      <span class="n">total_length</span><span class="o">=</span><span class="s1">&#39;9mm&#39;</span><span class="p">,</span>
-                      <span class="n">fillet</span><span class="o">=</span><span class="s1">&#39;99.99um&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">meander_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+    <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
+        <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Open_meander_start&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;open&quot;</span><span class="p">),</span>
+        <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Open_meander_end&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;open&quot;</span><span class="p">),</span>
+    <span class="p">),</span>
+    <span class="n">total_length</span><span class="o">=</span><span class="s2">&quot;9mm&quot;</span><span class="p">,</span>
+    <span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;99.99um&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 
-<span class="n">testMeander</span> <span class="o">=</span> <span class="n">RouteMeander</span><span class="p">(</span><span class="n">design</span><span class="p">,</span><span class="s1">&#39;meanderTest&#39;</span><span class="p">,</span><span class="n">options</span><span class="o">=</span><span class="n">meander_options</span><span class="p">)</span>
+<span class="n">testMeander</span> <span class="o">=</span> <span class="n">RouteMeander</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;meanderTest&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">meander_options</span><span class="p">)</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="n">testMeander</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">open_start_meander</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">open_end_meander</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">testMeander</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">open_start_meander</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">open_end_meander</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -868,8 +865,8 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Let&#39;s see what the testMeander object looks like</span>
-<span class="n">testMeander</span> <span class="c1">#print meanderTest information</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s see what the testMeander object looks like</span>
+<span class="n">testMeander</span>  <span class="c1"># print meanderTest information</span>
 </pre></div>
 </div>
 </div>
@@ -919,8 +916,8 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Let&#39;s see what the open_start_meander object looks like</span>
-<span class="n">open_start_meander</span> <span class="c1">#print Open_meander_start information</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s see what the open_start_meander object looks like</span>
+<span class="n">open_start_meander</span>  <span class="c1"># print Open_meander_start information</span>
 </pre></div>
 </div>
 </div>
@@ -1033,12 +1030,13 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Screenshot the canvas only as a .png formatted file.</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;shot.png&#39;</span><span class="p">)</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;shot.png&quot;</span><span class="p">)</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">display</span>
+
 <span class="n">_disp_ops</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;shot.png&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">_disp_ops</span><span class="p">))</span>
-<br/></pre></div>
+<span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="s2">&quot;shot.png&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">_disp_ops</span><span class="p">))</span>
+</pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">

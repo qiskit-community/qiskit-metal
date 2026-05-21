@@ -765,13 +765,15 @@
 <span class="sd">        * taper_height: &#39;122um&#39; -- Height of the taper from the launch pad to the transmission line</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">trace_width</span><span class="o">=</span><span class="s1">&#39;cpw_width&#39;</span><span class="p">,</span>
-                           <span class="n">trace_gap</span><span class="o">=</span><span class="s1">&#39;cpw_gap&#39;</span><span class="p">,</span>
-                           <span class="n">lead_length</span><span class="o">=</span><span class="s1">&#39;25um&#39;</span><span class="p">,</span>
-                           <span class="n">pad_width</span><span class="o">=</span><span class="s1">&#39;80um&#39;</span><span class="p">,</span>
-                           <span class="n">pad_height</span><span class="o">=</span><span class="s1">&#39;80um&#39;</span><span class="p">,</span>
-                           <span class="n">pad_gap</span><span class="o">=</span><span class="s1">&#39;58um&#39;</span><span class="p">,</span>
-                           <span class="n">taper_height</span><span class="o">=</span><span class="s1">&#39;122um&#39;</span><span class="p">)</span>
+    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+        <span class="n">trace_width</span><span class="o">=</span><span class="s2">&quot;cpw_width&quot;</span><span class="p">,</span>
+        <span class="n">trace_gap</span><span class="o">=</span><span class="s2">&quot;cpw_gap&quot;</span><span class="p">,</span>
+        <span class="n">lead_length</span><span class="o">=</span><span class="s2">&quot;25um&quot;</span><span class="p">,</span>
+        <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;80um&quot;</span><span class="p">,</span>
+        <span class="n">pad_height</span><span class="o">=</span><span class="s2">&quot;80um&quot;</span><span class="p">,</span>
+        <span class="n">pad_gap</span><span class="o">=</span><span class="s2">&quot;58um&quot;</span><span class="p">,</span>
+        <span class="n">taper_height</span><span class="o">=</span><span class="s2">&quot;122um&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Default options&quot;&quot;&quot;</span>
 
     <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Launch pad to feed/read signals to/from the chip.&quot;&quot;&quot;</span>
@@ -788,8 +790,8 @@
         <span class="n">pad_height</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span>
         <span class="n">pad_gap</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_gap</span>
         <span class="n">trace_width</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">trace_width</span>
-        <span class="n">trace_width_half</span> <span class="o">=</span> <span class="n">trace_width</span> <span class="o">/</span> <span class="mf">2.</span>
-        <span class="n">pad_width_half</span> <span class="o">=</span> <span class="n">pad_width</span> <span class="o">/</span> <span class="mf">2.</span>
+        <span class="n">trace_width_half</span> <span class="o">=</span> <span class="n">trace_width</span> <span class="o">/</span> <span class="mf">2.0</span>
+        <span class="n">pad_width_half</span> <span class="o">=</span> <span class="n">pad_width</span> <span class="o">/</span> <span class="mf">2.0</span>
         <span class="n">lead_length</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">lead_length</span>
         <span class="n">taper_height</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">taper_height</span>
         <span class="n">trace_gap</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">trace_gap</span>
@@ -799,36 +801,46 @@
 
         <span class="c1"># Geometry of main launch structure</span>
         <span class="c1"># The shape is a polygon and we prepare this point as orientation is 0 degree</span>
-        <span class="n">launch_pad</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">Polygon</span><span class="p">([</span>
-            <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">trace_width_half</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">taper_height</span><span class="p">,</span> <span class="n">pad_width_half</span><span class="p">),</span>
-            <span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">pad_height</span> <span class="o">+</span> <span class="n">taper_height</span><span class="p">),</span> <span class="n">pad_width_half</span><span class="p">),</span>
-            <span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">pad_height</span> <span class="o">+</span> <span class="n">taper_height</span><span class="p">),</span> <span class="o">-</span><span class="n">pad_width_half</span><span class="p">),</span>
-            <span class="p">(</span><span class="o">-</span><span class="n">taper_height</span><span class="p">,</span> <span class="o">-</span><span class="n">pad_width_half</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">trace_width_half</span><span class="p">),</span>
-            <span class="p">(</span><span class="n">lead_length</span><span class="p">,</span> <span class="o">-</span><span class="n">trace_width_half</span><span class="p">),</span> <span class="p">(</span><span class="n">lead_length</span><span class="p">,</span> <span class="n">trace_width_half</span><span class="p">),</span>
-            <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">trace_width_half</span><span class="p">)</span>
-        <span class="p">])</span>
+        <span class="n">launch_pad</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">Polygon</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">trace_width_half</span><span class="p">),</span>
+                <span class="p">(</span><span class="o">-</span><span class="n">taper_height</span><span class="p">,</span> <span class="n">pad_width_half</span><span class="p">),</span>
+                <span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">pad_height</span> <span class="o">+</span> <span class="n">taper_height</span><span class="p">),</span> <span class="n">pad_width_half</span><span class="p">),</span>
+                <span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">pad_height</span> <span class="o">+</span> <span class="n">taper_height</span><span class="p">),</span> <span class="o">-</span><span class="n">pad_width_half</span><span class="p">),</span>
+                <span class="p">(</span><span class="o">-</span><span class="n">taper_height</span><span class="p">,</span> <span class="o">-</span><span class="n">pad_width_half</span><span class="p">),</span>
+                <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">trace_width_half</span><span class="p">),</span>
+                <span class="p">(</span><span class="n">lead_length</span><span class="p">,</span> <span class="o">-</span><span class="n">trace_width_half</span><span class="p">),</span>
+                <span class="p">(</span><span class="n">lead_length</span><span class="p">,</span> <span class="n">trace_width_half</span><span class="p">),</span>
+                <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">trace_width_half</span><span class="p">),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
 
         <span class="c1"># Geometry pocket (gap)</span>
         <span class="c1"># Same way applied for pocket</span>
-        <span class="n">pocket</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">Polygon</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="n">trace_width_half</span> <span class="o">+</span> <span class="n">trace_gap</span><span class="p">),</span>
-                               <span class="p">(</span><span class="o">-</span><span class="n">taper_height</span><span class="p">,</span> <span class="n">pad_width_half</span> <span class="o">+</span> <span class="n">pad_gap</span><span class="p">),</span>
-                               <span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">pad_height</span> <span class="o">+</span> <span class="n">taper_height</span> <span class="o">+</span> <span class="n">pad_gap</span><span class="p">),</span>
-                                <span class="n">pad_width_half</span> <span class="o">+</span> <span class="n">pad_gap</span><span class="p">),</span>
-                               <span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">pad_height</span> <span class="o">+</span> <span class="n">taper_height</span> <span class="o">+</span> <span class="n">pad_gap</span><span class="p">),</span>
-                                <span class="o">-</span><span class="p">(</span><span class="n">pad_width_half</span> <span class="o">+</span> <span class="n">pad_gap</span><span class="p">)),</span>
-                               <span class="p">(</span><span class="o">-</span><span class="n">taper_height</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">pad_width_half</span> <span class="o">+</span> <span class="n">pad_gap</span><span class="p">)),</span>
-                               <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">trace_width_half</span> <span class="o">+</span> <span class="n">trace_gap</span><span class="p">)),</span>
-                               <span class="p">(</span><span class="n">lead_length</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">trace_width_half</span> <span class="o">+</span> <span class="n">trace_gap</span><span class="p">)),</span>
-                               <span class="p">(</span><span class="n">lead_length</span><span class="p">,</span> <span class="n">trace_width_half</span> <span class="o">+</span> <span class="n">trace_gap</span><span class="p">),</span>
-                               <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">trace_width_half</span> <span class="o">+</span> <span class="n">trace_gap</span><span class="p">)])</span>
+        <span class="n">pocket</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">Polygon</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">trace_width_half</span> <span class="o">+</span> <span class="n">trace_gap</span><span class="p">),</span>
+                <span class="p">(</span><span class="o">-</span><span class="n">taper_height</span><span class="p">,</span> <span class="n">pad_width_half</span> <span class="o">+</span> <span class="n">pad_gap</span><span class="p">),</span>
+                <span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">pad_height</span> <span class="o">+</span> <span class="n">taper_height</span> <span class="o">+</span> <span class="n">pad_gap</span><span class="p">),</span> <span class="n">pad_width_half</span> <span class="o">+</span> <span class="n">pad_gap</span><span class="p">),</span>
+                <span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">pad_height</span> <span class="o">+</span> <span class="n">taper_height</span> <span class="o">+</span> <span class="n">pad_gap</span><span class="p">),</span> <span class="o">-</span><span class="p">(</span><span class="n">pad_width_half</span> <span class="o">+</span> <span class="n">pad_gap</span><span class="p">)),</span>
+                <span class="p">(</span><span class="o">-</span><span class="n">taper_height</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">pad_width_half</span> <span class="o">+</span> <span class="n">pad_gap</span><span class="p">)),</span>
+                <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">trace_width_half</span> <span class="o">+</span> <span class="n">trace_gap</span><span class="p">)),</span>
+                <span class="p">(</span><span class="n">lead_length</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">trace_width_half</span> <span class="o">+</span> <span class="n">trace_gap</span><span class="p">)),</span>
+                <span class="p">(</span><span class="n">lead_length</span><span class="p">,</span> <span class="n">trace_width_half</span> <span class="o">+</span> <span class="n">trace_gap</span><span class="p">),</span>
+                <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">trace_width_half</span> <span class="o">+</span> <span class="n">trace_gap</span><span class="p">),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
 
         <span class="c1"># These variables are used to graphically locate the pin locations</span>
-        <span class="n">main_pin_line</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([(</span><span class="n">lead_length</span><span class="p">,</span> <span class="n">trace_width_half</span><span class="p">),</span>
-                                         <span class="p">(</span><span class="n">lead_length</span><span class="p">,</span> <span class="o">-</span><span class="n">trace_width_half</span><span class="p">)])</span>
-        <span class="n">driven_pin_line</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([</span>
-            <span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">pad_height</span> <span class="o">+</span> <span class="n">taper_height</span> <span class="o">+</span> <span class="n">pad_gap</span><span class="p">),</span> <span class="n">pad_width_half</span><span class="p">),</span>
-            <span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">pad_height</span> <span class="o">+</span> <span class="n">taper_height</span> <span class="o">+</span> <span class="n">pad_gap</span><span class="p">),</span> <span class="o">-</span><span class="n">pad_width_half</span><span class="p">)</span>
-        <span class="p">])</span>
+        <span class="n">main_pin_line</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">(</span>
+            <span class="p">[(</span><span class="n">lead_length</span><span class="p">,</span> <span class="n">trace_width_half</span><span class="p">),</span> <span class="p">(</span><span class="n">lead_length</span><span class="p">,</span> <span class="o">-</span><span class="n">trace_width_half</span><span class="p">)]</span>
+        <span class="p">)</span>
+        <span class="n">driven_pin_line</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">pad_height</span> <span class="o">+</span> <span class="n">taper_height</span> <span class="o">+</span> <span class="n">pad_gap</span><span class="p">),</span> <span class="n">pad_width_half</span><span class="p">),</span>
+                <span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">pad_height</span> <span class="o">+</span> <span class="n">taper_height</span> <span class="o">+</span> <span class="n">pad_gap</span><span class="p">),</span> <span class="o">-</span><span class="n">pad_width_half</span><span class="p">),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
 
         <span class="c1"># Create polygon object list</span>
         <span class="n">polys1</span> <span class="o">=</span> <span class="p">[</span><span class="n">main_pin_line</span><span class="p">,</span> <span class="n">driven_pin_line</span><span class="p">,</span> <span class="n">launch_pad</span><span class="p">,</span> <span class="n">pocket</span><span class="p">]</span>
@@ -840,17 +852,14 @@
         <span class="p">[</span><span class="n">main_pin_line</span><span class="p">,</span> <span class="n">driven_pin_line</span><span class="p">,</span> <span class="n">launch_pad</span><span class="p">,</span> <span class="n">pocket</span><span class="p">]</span> <span class="o">=</span> <span class="n">polys1</span>
 
         <span class="c1"># Adds the object to the qgeometry table</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">launch_pad</span><span class="o">=</span><span class="n">launch_pad</span><span class="p">),</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">launch_pad</span><span class="o">=</span><span class="n">launch_pad</span><span class="p">),</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
 
         <span class="c1"># Subtracts out ground plane on the layer its on</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span>
-                           <span class="nb">dict</span><span class="p">(</span><span class="n">pocket</span><span class="o">=</span><span class="n">pocket</span><span class="p">),</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">pocket</span><span class="o">=</span><span class="n">pocket</span><span class="p">),</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
 
         <span class="c1"># Generates the pins</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s1">&#39;tie&#39;</span><span class="p">,</span> <span class="n">main_pin_line</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">trace_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="n">driven_pin_line</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">pad_width</span><span class="p">,</span> <span class="n">gap</span><span class="o">=</span><span class="n">pad_gap</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s2">&quot;tie&quot;</span><span class="p">,</span> <span class="n">main_pin_line</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">trace_width</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s2">&quot;in&quot;</span><span class="p">,</span> <span class="n">driven_pin_line</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">pad_width</span><span class="p">,</span> <span class="n">gap</span><span class="o">=</span><span class="n">pad_gap</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

@@ -699,35 +699,28 @@
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
 
-<span class="c1"># pylint: disable-msg=import-error</span>
 <span class="sd">&quot;&quot;&quot;Reports a summary of information on Qiskit Metal and dependencies.</span>
 
 <span class="sd">Contain functions to report more detailed information to orient a user,</span>
 <span class="sd">used for debug purposes.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">platform</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">webbrowser</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">getpass</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">platform</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">webbrowser</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">qutip</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.toolbox_python.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Color</span><span class="p">,</span> <span class="n">style_colon_list</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;about&#39;</span><span class="p">,</span> <span class="s1">&#39;open_docs&#39;</span><span class="p">,</span> <span class="s1">&#39;get_platform_info&#39;</span><span class="p">,</span> <span class="s1">&#39;get_module_doc_page&#39;</span>
-<span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;about&quot;</span><span class="p">,</span> <span class="s2">&quot;open_docs&quot;</span><span class="p">,</span> <span class="s2">&quot;get_platform_info&quot;</span><span class="p">,</span> <span class="s2">&quot;get_module_doc_page&quot;</span><span class="p">]</span>
 
 
-<span class="c1"># pylint: disable-msg=invalid-name</span>
-<span class="c1"># pylint: disable-msg=import-outside-toplevel</span>
-<span class="c1"># pylint: disable-msg=bare-except</span>
 <div class="viewcode-block" id="about">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.about.html#qiskit_metal.toolbox_metal.about.about">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">about</span><span class="p">():</span>
@@ -741,18 +734,18 @@
     <span class="c1"># PySide6 is an optional extra (``quantum-metal[gui]``) — the lite</span>
     <span class="c1"># install path omits it, so about() must not require it.</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">__version__</span> <span class="k">as</span> <span class="n">QT_VERSION_STR</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6</span><span class="w"> </span><span class="kn">import</span> <span class="n">__version__</span> <span class="k">as</span> <span class="n">PYSIDE_VERSION_STR</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">__version__</span> <span class="k">as</span> <span class="n">QT_VERSION_STR</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-        <span class="n">QT_VERSION_STR</span> <span class="o">=</span> <span class="s1">&#39;Not installed&#39;</span>
-        <span class="n">PYSIDE_VERSION_STR</span> <span class="o">=</span> <span class="s1">&#39;Not installed&#39;</span>
+        <span class="n">QT_VERSION_STR</span> <span class="o">=</span> <span class="s2">&quot;Not installed&quot;</span>
+        <span class="n">PYSIDE_VERSION_STR</span> <span class="o">=</span> <span class="s2">&quot;Not installed&quot;</span>
 
     <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">sip</span><span class="w"> </span><span class="kn">import</span> <span class="n">SIP_VERSION_STR</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-        <span class="n">SIP_VERSION_STR</span> <span class="o">=</span> <span class="s1">&#39;Not installed&#39;</span>
+        <span class="n">SIP_VERSION_STR</span> <span class="o">=</span> <span class="s2">&quot;Not installed&quot;</span>
     <span class="c1"># Riverbank: SIP is a tool for quickly writing Python modules that interface with</span>
     <span class="c1"># C++ and C libraries.</span>
 
@@ -793,9 +786,7 @@
 
 <div class="viewcode-block" id="get_module_doc_page">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.about.html#qiskit_metal.toolbox_metal.about.get_module_doc_page">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_module_doc_page</span><span class="p">(</span><span class="n">module</span><span class="p">,</span>
-                        <span class="n">folder</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;../docs/build/html&#39;</span><span class="p">,</span>
-                        <span class="n">page</span><span class="o">=</span><span class="s1">&#39;index.html&#39;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_module_doc_page</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;../docs/build/html&quot;</span><span class="p">,</span> <span class="n">page</span><span class="o">=</span><span class="s2">&quot;index.html&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the file path to a module doc folder assumed to be inside the</span>
 <span class="sd">    package.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="vm">__file__</span><span class="p">))</span> <span class="o">/</span> <span class="n">folder</span> <span class="o">/</span> <span class="n">page</span></div>
@@ -804,7 +795,7 @@
 
 <div class="viewcode-block" id="open_docs">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.about.html#qiskit_metal.toolbox_metal.about.open_docs">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">open_docs</span><span class="p">(</span><span class="n">page</span><span class="o">=</span><span class="s1">&#39;https://qiskit-community.github.io/qiskit-metal/&#39;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">open_docs</span><span class="p">(</span><span class="n">page</span><span class="o">=</span><span class="s2">&quot;https://qiskit-community.github.io/qiskit-metal/&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Open the qiskit_metal documentation in HTML.</span>
 
 <span class="sd">    Open the URL in new window, raising the window if possible.</span>
@@ -816,7 +807,7 @@
     <span class="c1"># For debug purposes.</span>
     <span class="c1"># Main function: ``orient_me```</span>
 
-    <span class="c1">#def orient_me(do_print: bool = True) -&gt; Union[None, str]:</span>
+    <span class="c1"># def orient_me(do_print: bool = True) -&gt; Union[None, str]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Full system, python, user, and environemnt information.</span>
 
 <span class="sd">    Args:</span>
@@ -848,27 +839,35 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">get_platform_info</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a string with the platform information.&quot;&quot;&quot;</span>
 
-    <span class="k">return</span> <span class="s1">&#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="s2">&quot;&quot;&quot;</span>
 
-<span class="s1"> System platform information:</span>
+<span class="s2"> System platform information:</span>
 
-<span class="s1">    system   : </span><span class="si">%s</span>
-<span class="s1">    node     : </span><span class="si">%s</span>
-<span class="s1">    release  : </span><span class="si">%s</span>
-<span class="s1">    machine  : </span><span class="si">%s</span>
-<span class="s1">    processor: </span><span class="si">%s</span>
-<span class="s1">    summary  : </span><span class="si">%s</span>
-<span class="s1">    version  : </span><span class="si">%s</span>
+<span class="s2">    system   : </span><span class="si">%s</span>
+<span class="s2">    node     : </span><span class="si">%s</span>
+<span class="s2">    release  : </span><span class="si">%s</span>
+<span class="s2">    machine  : </span><span class="si">%s</span>
+<span class="s2">    processor: </span><span class="si">%s</span>
+<span class="s2">    summary  : </span><span class="si">%s</span>
+<span class="s2">    version  : </span><span class="si">%s</span>
 
-<span class="s1"> Python platform information:</span>
+<span class="s2"> Python platform information:</span>
 
-<span class="s1">    version  : </span><span class="si">%s</span><span class="s1"> (implem: </span><span class="si">%s</span><span class="s1">)</span>
-<span class="s1">    compiler : </span><span class="si">%s</span>
+<span class="s2">    version  : </span><span class="si">%s</span><span class="s2"> (implem: </span><span class="si">%s</span><span class="s2">)</span>
+<span class="s2">    compiler : </span><span class="si">%s</span>
 
-<span class="s1">&#39;&#39;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">(),</span> <span class="n">platform</span><span class="o">.</span><span class="n">node</span><span class="p">(),</span> <span class="n">platform</span><span class="o">.</span><span class="n">release</span><span class="p">(),</span>
-       <span class="n">platform</span><span class="o">.</span><span class="n">machine</span><span class="p">(),</span> <span class="n">platform</span><span class="o">.</span><span class="n">processor</span><span class="p">(),</span> <span class="n">platform</span><span class="o">.</span><span class="n">platform</span><span class="p">(),</span>
-       <span class="n">platform</span><span class="o">.</span><span class="n">version</span><span class="p">(),</span> <span class="n">platform</span><span class="o">.</span><span class="n">python_version</span><span class="p">(),</span>
-       <span class="n">platform</span><span class="o">.</span><span class="n">python_implementation</span><span class="p">(),</span> <span class="n">platform</span><span class="o">.</span><span class="n">python_compiler</span><span class="p">())</span></div>
+<span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span>
+        <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">(),</span>
+        <span class="n">platform</span><span class="o">.</span><span class="n">node</span><span class="p">(),</span>
+        <span class="n">platform</span><span class="o">.</span><span class="n">release</span><span class="p">(),</span>
+        <span class="n">platform</span><span class="o">.</span><span class="n">machine</span><span class="p">(),</span>
+        <span class="n">platform</span><span class="o">.</span><span class="n">processor</span><span class="p">(),</span>
+        <span class="n">platform</span><span class="o">.</span><span class="n">platform</span><span class="p">(),</span>
+        <span class="n">platform</span><span class="o">.</span><span class="n">version</span><span class="p">(),</span>
+        <span class="n">platform</span><span class="o">.</span><span class="n">python_version</span><span class="p">(),</span>
+        <span class="n">platform</span><span class="o">.</span><span class="n">python_implementation</span><span class="p">(),</span>
+        <span class="n">platform</span><span class="o">.</span><span class="n">python_compiler</span><span class="p">(),</span>
+    <span class="p">)</span></div>
 
 </pre></div>
         </article>

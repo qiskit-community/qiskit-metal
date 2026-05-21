@@ -702,7 +702,6 @@
 <span class="c1"># that they have been altered from the originals.</span>
 <span class="sd">&quot;&quot;&quot;Child of transmon cross, adds a flux line (galvanic T) to the arm with the</span>
 <span class="sd">DC SQUID.&quot;&quot;&quot;</span>
-<span class="c1"># pylint: disable=invalid-name</span>
 <span class="c1"># Modification of Transmon Pocket Object to include a charge line (would be better to just make as a child)</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -712,7 +711,7 @@
 
 <div class="viewcode-block" id="TransmonCrossFL">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonCrossFL.html#qiskit_metal.qlibrary.TransmonCrossFL">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">TransmonCrossFL</span><span class="p">(</span><span class="n">TransmonCross</span><span class="p">):</span>  <span class="c1"># pylint: disable=invalid-name</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TransmonCrossFL</span><span class="p">(</span><span class="n">TransmonCross</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The base `TransmonCrossFL` class.</span>
 
 <span class="sd">    Inherits `TransmonCross` class</span>
@@ -750,17 +749,21 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s1">&#39;Q&#39;</span><span class="p">,</span>
-                              <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s1">&#39;True&#39;</span><span class="p">,</span>
-                              <span class="n">_qgeometry_table_path</span><span class="o">=</span><span class="s1">&#39;True&#39;</span><span class="p">)</span>
+    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+        <span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;Q&quot;</span><span class="p">,</span> <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">,</span> <span class="n">_qgeometry_table_path</span><span class="o">=</span><span class="s2">&quot;True&quot;</span>
+    <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Component metadata&quot;&quot;&quot;</span>
 
-    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">make_fl</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                           <span class="n">fl_options</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">t_top</span><span class="o">=</span><span class="s1">&#39;15um&#39;</span><span class="p">,</span>
-                                           <span class="n">t_offset</span><span class="o">=</span><span class="s1">&#39;0um&#39;</span><span class="p">,</span>
-                                           <span class="n">t_inductive_gap</span><span class="o">=</span><span class="s1">&#39;3um&#39;</span><span class="p">,</span>
-                                           <span class="n">t_width</span><span class="o">=</span><span class="s1">&#39;5um&#39;</span><span class="p">,</span>
-                                           <span class="n">t_gap</span><span class="o">=</span><span class="s1">&#39;3um&#39;</span><span class="p">))</span>
+    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+        <span class="n">make_fl</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">fl_options</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
+            <span class="n">t_top</span><span class="o">=</span><span class="s2">&quot;15um&quot;</span><span class="p">,</span>
+            <span class="n">t_offset</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">,</span>
+            <span class="n">t_inductive_gap</span><span class="o">=</span><span class="s2">&quot;3um&quot;</span><span class="p">,</span>
+            <span class="n">t_width</span><span class="o">=</span><span class="s2">&quot;5um&quot;</span><span class="p">,</span>
+            <span class="n">t_gap</span><span class="o">=</span><span class="s2">&quot;3um&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Default drawing options&quot;&quot;&quot;</span>
 
     <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;The base `TransmonCrossFL` class.&quot;&quot;&quot;</span>
@@ -771,12 +774,11 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Define the way the options are turned into QGeometry.&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">make</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">make_fl</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">make_fl</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">make_flux_line</span><span class="p">()</span></div>
 
 
-
-<span class="c1">#####################################################################</span>
+    <span class="c1">#####################################################################</span>
 
 <div class="viewcode-block" id="TransmonCrossFL.make_flux_line">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonCrossFL.html#qiskit_metal.qlibrary.TransmonCrossFL.make_flux_line">[docs]</a>
@@ -787,7 +789,7 @@
         <span class="c1"># Grab option values</span>
         <span class="n">pf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">fl_options</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
-        <span class="c1">#Make the T flux line</span>
+        <span class="c1"># Make the T flux line</span>
         <span class="n">h_line</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([(</span><span class="o">-</span><span class="n">pf</span><span class="o">.</span><span class="n">t_top</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="n">pf</span><span class="o">.</span><span class="n">t_top</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)])</span>
         <span class="n">v_line</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([(</span><span class="n">pf</span><span class="o">.</span><span class="n">t_offset</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="n">pf</span><span class="o">.</span><span class="n">t_offset</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.03</span><span class="p">)])</span>
 
@@ -795,8 +797,16 @@
 
         <span class="c1"># Move the flux line down to the SQUID</span>
         <span class="n">parts</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span>
-            <span class="n">parts</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">cross_length</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cross_gap</span> <span class="o">+</span> <span class="n">pf</span><span class="o">.</span><span class="n">t_inductive_gap</span> <span class="o">+</span>
-                        <span class="n">pf</span><span class="o">.</span><span class="n">t_width</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">pf</span><span class="o">.</span><span class="n">t_gap</span><span class="p">))</span>
+            <span class="n">parts</span><span class="p">,</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="o">-</span><span class="p">(</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">cross_length</span>
+                <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cross_gap</span>
+                <span class="o">+</span> <span class="n">pf</span><span class="o">.</span><span class="n">t_inductive_gap</span>
+                <span class="o">+</span> <span class="n">pf</span><span class="o">.</span><span class="n">t_width</span> <span class="o">/</span> <span class="mi">2</span>
+                <span class="o">+</span> <span class="n">pf</span><span class="o">.</span><span class="n">t_gap</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
 
         <span class="c1"># Rotate and translate based on crossmon location</span>
         <span class="n">parts</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">parts</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
@@ -805,28 +815,30 @@
         <span class="p">[</span><span class="n">h_line</span><span class="p">,</span> <span class="n">v_line</span><span class="p">]</span> <span class="o">=</span> <span class="n">parts</span>
 
         <span class="c1"># Adding to qgeometry table</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="p">{</span>
-            <span class="s1">&#39;h_line&#39;</span><span class="p">:</span> <span class="n">h_line</span><span class="p">,</span>
-            <span class="s1">&#39;v_line&#39;</span><span class="p">:</span> <span class="n">v_line</span>
-        <span class="p">},</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">pf</span><span class="o">.</span><span class="n">t_width</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">&quot;h_line&quot;</span><span class="p">:</span> <span class="n">h_line</span><span class="p">,</span> <span class="s2">&quot;v_line&quot;</span><span class="p">:</span> <span class="n">v_line</span><span class="p">},</span>
+            <span class="n">width</span><span class="o">=</span><span class="n">pf</span><span class="o">.</span><span class="n">t_width</span><span class="p">,</span>
+            <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
+        <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="p">{</span>
-            <span class="s1">&#39;h_line_sub&#39;</span><span class="p">:</span> <span class="n">h_line</span><span class="p">,</span>
-            <span class="s1">&#39;v_line_sub&#39;</span><span class="p">:</span> <span class="n">v_line</span>
-        <span class="p">},</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">pf</span><span class="o">.</span><span class="n">t_width</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pf</span><span class="o">.</span><span class="n">t_gap</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">&quot;h_line_sub&quot;</span><span class="p">:</span> <span class="n">h_line</span><span class="p">,</span> <span class="s2">&quot;v_line_sub&quot;</span><span class="p">:</span> <span class="n">v_line</span><span class="p">},</span>
+            <span class="n">width</span><span class="o">=</span><span class="n">pf</span><span class="o">.</span><span class="n">t_width</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pf</span><span class="o">.</span><span class="n">t_gap</span><span class="p">,</span>
+            <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="c1"># Generating pin</span>
         <span class="n">pin_line</span> <span class="o">=</span> <span class="n">v_line</span><span class="o">.</span><span class="n">coords</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s2">&quot;flux_line&quot;</span><span class="p">,</span>
-                     <span class="n">points</span><span class="o">=</span><span class="n">pin_line</span><span class="p">,</span>
-                     <span class="n">width</span><span class="o">=</span><span class="n">pf</span><span class="o">.</span><span class="n">t_width</span><span class="p">,</span>
-                     <span class="n">gap</span><span class="o">=</span><span class="n">pf</span><span class="o">.</span><span class="n">t_gap</span><span class="p">,</span>
-                     <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
+            <span class="s2">&quot;flux_line&quot;</span><span class="p">,</span>
+            <span class="n">points</span><span class="o">=</span><span class="n">pin_line</span><span class="p">,</span>
+            <span class="n">width</span><span class="o">=</span><span class="n">pf</span><span class="o">.</span><span class="n">t_width</span><span class="p">,</span>
+            <span class="n">gap</span><span class="o">=</span><span class="n">pf</span><span class="o">.</span><span class="n">t_gap</span><span class="p">,</span>
+            <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span></div>
 </div>
 
 </pre></div>

@@ -745,15 +745,18 @@
 <span class="sd">        * gap: &#39;4um&#39; -- The distance between each layer of the spiral</span>
 <span class="sd">        * coupler_distance: &#39;10um&#39; -- The pin position from the grounded termination of the spiral</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s1">&#39;res&#39;</span><span class="p">)</span>
+
+    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;res&quot;</span><span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Component metadata&quot;&quot;&quot;</span>
 
-    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="s1">&#39;3&#39;</span><span class="p">,</span>
-                           <span class="n">length</span><span class="o">=</span><span class="s1">&#39;2000um&#39;</span><span class="p">,</span>
-                           <span class="n">line_width</span><span class="o">=</span><span class="s1">&#39;1um&#39;</span><span class="p">,</span>
-                           <span class="n">height</span><span class="o">=</span><span class="s1">&#39;40um&#39;</span><span class="p">,</span>
-                           <span class="n">gap</span><span class="o">=</span><span class="s1">&#39;4um&#39;</span><span class="p">,</span>
-                           <span class="n">coupler_distance</span><span class="o">=</span><span class="s1">&#39;10um&#39;</span><span class="p">)</span>
+    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+        <span class="n">n</span><span class="o">=</span><span class="s2">&quot;3&quot;</span><span class="p">,</span>
+        <span class="n">length</span><span class="o">=</span><span class="s2">&quot;2000um&quot;</span><span class="p">,</span>
+        <span class="n">line_width</span><span class="o">=</span><span class="s2">&quot;1um&quot;</span><span class="p">,</span>
+        <span class="n">height</span><span class="o">=</span><span class="s2">&quot;40um&quot;</span><span class="p">,</span>
+        <span class="n">gap</span><span class="o">=</span><span class="s2">&quot;4um&quot;</span><span class="p">,</span>
+        <span class="n">coupler_distance</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Default drawing options&quot;&quot;&quot;</span>
 
     <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A rectangle spiral resonator based on length input. The X dimension is</span>
@@ -773,12 +776,15 @@
 
         <span class="n">spiral_list</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="c1">#Formulat to determine the size of the spiral based on inputed length.</span>
-        <span class="n">x_n</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">length</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span><span class="p">))</span> <span class="o">-</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">height</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">gap</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">line_width</span><span class="p">)</span> <span class="o">*</span>
-                                      <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="c1"># Formulat to determine the size of the spiral based on inputed length.</span>
+        <span class="n">x_n</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">length</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span><span class="p">))</span> <span class="o">-</span> <span class="p">(</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">height</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">gap</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">line_width</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">x_n</span> <span class="o">&lt;=</span> <span class="n">p</span><span class="o">.</span><span class="n">gap</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">line_width</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_error_message</span> <span class="o">=</span> <span class="s1">&#39;Inputted values results in the width of the spiral being too small.&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_error_message</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s2">&quot;Inputted values results in the width of the spiral being too small.&quot;</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_error_message</span><span class="p">)</span>
             <span class="k">return</span>
 
@@ -791,20 +797,24 @@
             <span class="n">spiral_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">x_point</span><span class="p">,</span> <span class="n">y_point</span><span class="p">))</span>
             <span class="n">spiral_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="o">-</span><span class="n">x_point</span> <span class="o">-</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">line_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">gap</span><span class="p">),</span> <span class="n">y_point</span><span class="p">))</span>
 
-        <span class="n">x_point</span> <span class="o">=</span> <span class="p">(</span><span class="n">x_n</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">step</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">line_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">gap</span><span class="p">))</span>
-        <span class="n">y_point</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">step</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">line_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">gap</span><span class="p">)</span> <span class="o">-</span>
-                   <span class="n">p</span><span class="o">.</span><span class="n">line_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">x_point</span> <span class="o">=</span> <span class="n">x_n</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">step</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">line_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">gap</span><span class="p">)</span>
+        <span class="n">y_point</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">step</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">line_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">gap</span><span class="p">)</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">line_width</span> <span class="o">/</span> <span class="mi">2</span>
         <span class="n">spiral_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="o">-</span><span class="n">x_point</span><span class="p">,</span> <span class="o">-</span><span class="n">y_point</span><span class="p">))</span>
         <span class="n">spiral_list</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">(</span><span class="n">spiral_list</span><span class="p">)</span>
 
         <span class="n">spiral_etch</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">box</span><span class="p">(</span>
-            <span class="o">-</span><span class="p">(</span><span class="n">x_point</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">line_width</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">gap</span><span class="p">),</span> <span class="o">-</span><span class="n">y_point</span><span class="p">,</span>
-            <span class="n">x_point</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">line_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">y_point</span><span class="p">)</span>
-        <span class="c1">#Generates a linestring to track port location</span>
-        <span class="n">points</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([</span>
-            <span class="p">(</span><span class="o">-</span><span class="n">x_point</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">line_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="n">y_point</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">coupler_distance</span><span class="p">),</span>
-            <span class="p">(</span><span class="o">-</span><span class="n">x_point</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">line_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="n">y_point</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">coupler_distance</span><span class="p">)</span>
-        <span class="p">])</span>
+            <span class="o">-</span><span class="p">(</span><span class="n">x_point</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">line_width</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">gap</span><span class="p">),</span>
+            <span class="o">-</span><span class="n">y_point</span><span class="p">,</span>
+            <span class="n">x_point</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">line_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="n">y_point</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="c1"># Generates a linestring to track port location</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">(</span><span class="o">-</span><span class="n">x_point</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">line_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="n">y_point</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">coupler_distance</span><span class="p">),</span>
+                <span class="p">(</span><span class="o">-</span><span class="n">x_point</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">line_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="n">y_point</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">coupler_distance</span><span class="p">),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
 
         <span class="n">c_items</span> <span class="o">=</span> <span class="p">[</span><span class="n">spiral_list</span><span class="p">,</span> <span class="n">spiral_etch</span><span class="p">,</span> <span class="n">points</span><span class="p">]</span>
         <span class="n">c_items</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">c_items</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
@@ -812,15 +822,16 @@
         <span class="p">[</span><span class="n">spiral_list</span><span class="p">,</span> <span class="n">spiral_etch</span><span class="p">,</span> <span class="n">points</span><span class="p">]</span> <span class="o">=</span> <span class="n">c_items</span>
         <span class="c1">##############################################</span>
         <span class="c1"># add elements</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;n_spiral&#39;</span><span class="p">:</span> <span class="n">spiral_list</span><span class="p">},</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">line_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;n_spira_etch&#39;</span><span class="p">:</span> <span class="n">spiral_etch</span><span class="p">},</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;n_spiral&quot;</span><span class="p">:</span> <span class="n">spiral_list</span><span class="p">},</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">line_width</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;n_spira_etch&quot;</span><span class="p">:</span> <span class="n">spiral_etch</span><span class="p">},</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="c1"># NEW PIN SPOT</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s1">&#39;spiralPin&#39;</span><span class="p">,</span>
-                     <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">points</span><span class="o">.</span><span class="n">coords</span><span class="p">),</span>
-                     <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">line_width</span><span class="p">,</span>
-                     <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
+            <span class="s2">&quot;spiralPin&quot;</span><span class="p">,</span>
+            <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">points</span><span class="o">.</span><span class="n">coords</span><span class="p">),</span>
+            <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">line_width</span><span class="p">,</span>
+            <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span></div>
 </div>
 
 </pre></div>

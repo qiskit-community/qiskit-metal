@@ -687,7 +687,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for qiskit_metal.renderers.renderer_ansys_pyaedt.q3d_renderer_aedt</h1><div class="highlight"><pre>
-<span></span><span class="c1">#-*- coding: utf-8 -*-</span>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span>
 
@@ -710,7 +710,8 @@
 <span class="sd">    QPyaedt Default Options:</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;aedt_q3d&#39;</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;aedt_q3d&quot;</span>
 
     <span class="n">default_setup</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
         <span class="n">name</span><span class="o">=</span><span class="s2">&quot;QQ3DPyaedt_setup&quot;</span><span class="p">,</span>
@@ -728,15 +729,17 @@
     <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Default setup.&quot;&quot;&quot;</span>
 
-    <span class="n">aedt_q3d_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">material_type</span><span class="o">=</span><span class="s1">&#39;pec&#39;</span><span class="p">,</span> <span class="n">material_thickness</span><span class="o">=</span><span class="s1">&#39;200nm&#39;</span><span class="p">)</span>
+    <span class="n">aedt_q3d_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">material_type</span><span class="o">=</span><span class="s2">&quot;pec&quot;</span><span class="p">,</span> <span class="n">material_thickness</span><span class="o">=</span><span class="s2">&quot;200nm&quot;</span><span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;aedt Q3D Options&quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">multilayer_design</span><span class="p">:</span> <span class="s1">&#39;MultiPlanar&#39;</span><span class="p">,</span>
-                 <span class="n">project_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">design_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">initiate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                 <span class="n">options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">multilayer_design</span><span class="p">:</span> <span class="s2">&quot;MultiPlanar&quot;</span><span class="p">,</span>
+        <span class="n">project_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">design_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">initiate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a QRenderer for Q3D simulations using pyaedt and multiplanar design.</span>
 <span class="sd">        QQ3DPyaedt is subclassed from QPyaedt, subclassed from QRendererAnalysis and</span>
 <span class="sd">        subclassed from QRenderer.</span>
@@ -762,17 +765,19 @@
 <span class="sd">            initiate (bool, optional): True to initiate the renderer. Defaults to False.</span>
 <span class="sd">            options (Dict, optional):  Used to override all options. Defaults to None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">multilayer_design</span><span class="p">,</span>
-                         <span class="n">renderer_type</span><span class="o">=</span><span class="s1">&#39;Q3D&#39;</span><span class="p">,</span>
-                         <span class="n">project_name</span><span class="o">=</span><span class="n">project_name</span><span class="p">,</span>
-                         <span class="n">design_name</span><span class="o">=</span><span class="n">design_name</span><span class="p">,</span>
-                         <span class="n">initiate</span><span class="o">=</span><span class="n">initiate</span><span class="p">,</span>
-                         <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">multilayer_design</span><span class="p">,</span>
+            <span class="n">renderer_type</span><span class="o">=</span><span class="s2">&quot;Q3D&quot;</span><span class="p">,</span>
+            <span class="n">project_name</span><span class="o">=</span><span class="n">project_name</span><span class="p">,</span>
+            <span class="n">design_name</span><span class="o">=</span><span class="n">design_name</span><span class="p">,</span>
+            <span class="n">initiate</span><span class="o">=</span><span class="n">initiate</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="c1"># QRenderer has a &quot;cls&quot; method called load()</span>
-        <span class="n">if_registered_in_design</span> <span class="o">=</span> <span class="n">QQ3DPyaedt</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+        <span class="n">if_registered_in_design</span> <span class="o">=</span> <span class="n">QQ3DPyaedt</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>  <span class="c1"># noqa: F841</span>
 
-        <span class="c1">#make a class to read in pandas table.</span>
+        <span class="c1"># make a class to read in pandas table.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tables</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="c1"># Note: desktop is instantiated in the parent&#39;s init.</span>
@@ -803,19 +808,21 @@
 
 <div class="viewcode-block" id="QQ3DPyaedt.add_q3d_setup">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QQ3DPyaedt.html#qiskit_metal.renderers.QQ3DPyaedt.add_q3d_setup">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">add_q3d_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                      <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                      <span class="n">AdaptiveFreq</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                      <span class="n">SaveFields</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                      <span class="n">Enabled</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                      <span class="n">MaxPass</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                      <span class="n">MinPass</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                      <span class="n">MinConvPass</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                      <span class="n">PerError</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                      <span class="n">PerRefine</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                      <span class="n">AutoIncreaseSolutionOrder</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                      <span class="n">SolutionOrder</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                      <span class="n">Solver_Type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_q3d_setup</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">AdaptiveFreq</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">SaveFields</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">Enabled</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">MaxPass</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">MinPass</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">MinConvPass</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">PerError</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">PerRefine</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">AutoIncreaseSolutionOrder</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">SolutionOrder</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">Solver_Type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a solution setup in Ansys Q3D. If user does not provide</span>
 <span class="sd">        arguments, they will be obtained from QQ3DPyaedt.default_setup dict.</span>
 
@@ -838,37 +845,38 @@
         <span class="n">su</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_setup</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
 
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">setup_names</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;The setup name already exists within &#39;</span>
-                <span class="sa">f</span><span class="s1">&#39;project:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="si">}</span><span class="s1"> design: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">design_name</span><span class="si">}</span><span class="s1">. &#39;</span>
-                <span class="sa">f</span><span class="s1">&#39;So a new setup with name=</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> was NOT added to design.&#39;</span><span class="p">)</span>
+                <span class="sa">f</span><span class="s2">&quot;The setup name already exists within &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;project:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="si">}</span><span class="s2"> design: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">design_name</span><span class="si">}</span><span class="s2">. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;So a new setup with name=</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> was NOT added to design.&quot;</span>
+            <span class="p">)</span>
             <span class="k">return</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">AdaptiveFreq</span><span class="p">:</span>
-            <span class="n">AdaptiveFreq</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s1">&#39;AdaptiveFreq&#39;</span><span class="p">]))</span>
+            <span class="n">AdaptiveFreq</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">&quot;AdaptiveFreq&quot;</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">SaveFields</span><span class="p">:</span>
-            <span class="n">SaveFields</span> <span class="o">=</span> <span class="n">is_true</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s1">&#39;SaveFields&#39;</span><span class="p">])</span>
+            <span class="n">SaveFields</span> <span class="o">=</span> <span class="n">is_true</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">&quot;SaveFields&quot;</span><span class="p">])</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">Enabled</span><span class="p">:</span>
-            <span class="n">Enabled</span> <span class="o">=</span> <span class="n">is_true</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s1">&#39;Enabled&#39;</span><span class="p">])</span>
+            <span class="n">Enabled</span> <span class="o">=</span> <span class="n">is_true</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">&quot;Enabled&quot;</span><span class="p">])</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">MaxPass</span><span class="p">:</span>
-            <span class="n">MaxPass</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s1">&#39;MaxPass&#39;</span><span class="p">]))</span>
+            <span class="n">MaxPass</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">&quot;MaxPass&quot;</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">MinPass</span><span class="p">:</span>
-            <span class="n">MinPass</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s1">&#39;MinPass&#39;</span><span class="p">]))</span>
+            <span class="n">MinPass</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">&quot;MinPass&quot;</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">MinConvPass</span><span class="p">:</span>
-            <span class="n">MinConvPass</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s1">&#39;MinConvPass&#39;</span><span class="p">]))</span>
+            <span class="n">MinConvPass</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">&quot;MinConvPass&quot;</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">PerError</span><span class="p">:</span>
-            <span class="n">PerError</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s1">&#39;PerError&#39;</span><span class="p">]))</span>
+            <span class="n">PerError</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">&quot;PerError&quot;</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">PerRefine</span><span class="p">:</span>
-            <span class="n">PerRefine</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s1">&#39;PerRefine&#39;</span><span class="p">]))</span>
+            <span class="n">PerRefine</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">&quot;PerRefine&quot;</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">AutoIncreaseSolutionOrder</span><span class="p">:</span>
-            <span class="n">AutoIncreaseSolutionOrder</span> <span class="o">=</span> <span class="n">is_true</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s1">&#39;AutoIncreaseSolutionOrder&#39;</span><span class="p">])</span>
+            <span class="n">AutoIncreaseSolutionOrder</span> <span class="o">=</span> <span class="n">is_true</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">&quot;AutoIncreaseSolutionOrder&quot;</span><span class="p">])</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">SolutionOrder</span><span class="p">:</span>
-            <span class="n">SolutionOrder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s1">&#39;SolutionOrder&#39;</span><span class="p">])</span>
+            <span class="n">SolutionOrder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">&quot;SolutionOrder&quot;</span><span class="p">])</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">Solver_Type</span><span class="p">:</span>
-            <span class="n">Solver_Type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s1">&#39;Solver_Type&#39;</span><span class="p">])</span>
+            <span class="n">Solver_Type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">&quot;Solver_Type&quot;</span><span class="p">])</span>
 
         <span class="n">new_setup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">create_setup</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
@@ -885,18 +893,19 @@
         <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s1">&#39;Cap&#39;</span><span class="p">][</span><span class="s1">&#39;SolutionOrder&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">SolutionOrder</span>
         <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s1">&#39;Cap&#39;</span><span class="p">][</span><span class="s1">&#39;Solver Type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Solver_Type</span>
         <span class="c1"># yapf: enable</span>
-        <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;AC&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;DC&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;AC&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;DC&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="n">new_setup</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
 
 
-    <span class="c1"># pylint: disable=arguments-differ</span>
 <div class="viewcode-block" id="QQ3DPyaedt.render_design">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QQ3DPyaedt.html#qiskit_metal.renderers.QQ3DPyaedt.render_design">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">render_design</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                      <span class="n">selection</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                      <span class="n">open_pins</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                      <span class="n">box_plus_buffer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">render_design</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">selection</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">open_pins</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">box_plus_buffer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This render_design will add additional logic for Q3D within project.</span>
 
@@ -950,14 +959,14 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">case</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s1">&#39;Unable to proceed with rendering. Please check selection.&#39;</span><span class="p">)</span>
+                <span class="s2">&quot;Unable to proceed with rendering. Please check selection.&quot;</span>
+            <span class="p">)</span>
             <span class="k">return</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">open_pins_is_valid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">confirm_open_pins_are_valid_names</span><span class="p">(</span>
-            <span class="n">open_pins</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">open_pins_is_valid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">confirm_open_pins_are_valid_names</span><span class="p">(</span><span class="n">open_pins</span><span class="p">,</span> <span class="p">[])</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_pins_is_valid</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="s1">&#39;Check the arguments to render_design, invalid name was probably used.&#39;</span>
+                <span class="s2">&quot;Check the arguments to render_design, invalid name was probably used.&quot;</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">activate_user_project_design</span><span class="p">()</span>
@@ -978,9 +987,9 @@
 
 <div class="viewcode-block" id="QQ3DPyaedt.aedt_render_by_layer_then_tables">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QQ3DPyaedt.html#qiskit_metal.renderers.QQ3DPyaedt.aedt_render_by_layer_then_tables">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">aedt_render_by_layer_then_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                                         <span class="n">open_pins</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
-                                         <span class="n">data_type</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">aedt_render_by_layer_then_tables</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">open_pins</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">data_type</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;_summary_</span>
 
 <span class="sd">        Args:</span>
@@ -989,44 +998,45 @@
 <span class="sd">            datatype (int, optional): _description_. Defaults to 0.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># For Q3d skip_junction is always True.</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">aedt_render_by_layer_then_tables</span><span class="p">(</span><span class="n">skip_junction</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                                 <span class="n">open_pins</span><span class="o">=</span><span class="n">open_pins</span><span class="p">,</span>
-                                                 <span class="n">port_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                                                 <span class="n">jj_to_port</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                                                 <span class="n">ignored_jjs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                                                 <span class="n">data_type</span><span class="o">=</span><span class="n">data_type</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">aedt_render_by_layer_then_tables</span><span class="p">(</span>
+            <span class="n">skip_junction</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">open_pins</span><span class="o">=</span><span class="n">open_pins</span><span class="p">,</span>
+            <span class="n">port_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">jj_to_port</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">ignored_jjs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">data_type</span><span class="o">=</span><span class="n">data_type</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="k">for</span> <span class="n">layer_num</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">get_all_unique_layers_for_all_tables</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">qcomp_ids</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">get_all_unique_layers_for_all_tables</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qcomp_ids</span><span class="p">)</span>
+        <span class="p">):</span>
             <span class="k">for</span> <span class="n">table_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">get_element_types</span><span class="p">():</span>
-                <span class="k">if</span> <span class="n">table_type</span> <span class="o">!=</span> <span class="s1">&#39;junction&#39;</span><span class="p">:</span>
-                    <span class="c1">#At this point, we know table type,</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">render_components</span><span class="p">(</span><span class="n">table_type</span><span class="p">,</span>
-                                           <span class="n">layer_num</span><span class="p">,</span>
-                                           <span class="n">port_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                                           <span class="n">jj_to_port</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                                           <span class="n">ignored_jjs</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">table_type</span> <span class="o">!=</span> <span class="s2">&quot;junction&quot;</span><span class="p">:</span>
+                    <span class="c1"># At this point, we know table type,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">render_components</span><span class="p">(</span>
+                        <span class="n">table_type</span><span class="p">,</span>
+                        <span class="n">layer_num</span><span class="p">,</span>
+                        <span class="n">port_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">jj_to_port</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">ignored_jjs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="p">)</span>
 
-            <span class="c1">#For each layer, add the endcaps and</span>
+            <span class="c1"># For each layer, add the endcaps and</span>
             <span class="c1"># add polyline to subtract to self.chip_subtract_dict[layer_num].</span>
 
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">open_pins</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
                 <span class="c1"># Only use this method if user defines open pins.</span>
                 <span class="k">if</span> <span class="n">open_pins</span><span class="p">:</span>
-                    <span class="c1">#Confirm there is something in the list.</span>
-                    <span class="n">open_pins_subset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_open_pins_in_layer</span><span class="p">(</span>
-                        <span class="n">open_pins</span><span class="p">,</span> <span class="n">layer_num</span><span class="p">)</span>
+                    <span class="c1"># Confirm there is something in the list.</span>
+                    <span class="n">open_pins_subset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_open_pins_in_layer</span><span class="p">(</span><span class="n">open_pins</span><span class="p">,</span> <span class="n">layer_num</span><span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">add_endcaps</span><span class="p">(</span><span class="n">open_pins_subset</span><span class="p">,</span> <span class="n">layer_num</span><span class="p">)</span>
 
             <span class="c1"># The layer is obtained from qgeometry tables, but layer_stack</span>
             <span class="c1"># can have multiple data_types.  For now, the subtract will</span>
             <span class="c1"># happen from data_type==0.</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">subtract_from_ground</span><span class="p">(</span><span class="n">layer_num</span><span class="p">,</span> <span class="n">data_type</span><span class="o">=</span><span class="n">data_type</span><span class="p">)</span>
-        <span class="c1">#self.current_app.modeler.sheet_names</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">subtract_from_ground</span><span class="p">(</span><span class="n">layer_num</span><span class="p">,</span> <span class="n">data_type</span><span class="o">=</span><span class="n">data_type</span><span class="p">)</span></div>
 
-        <span class="n">a</span> <span class="o">=</span> <span class="mi">5</span></div>
-
+        <span class="c1"># self.current_app.modeler.sheet_names</span>
 
     <span class="c1"># commenting this out for now.</span>
     <span class="c1"># def get_data(self):</span>
@@ -1052,22 +1062,23 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">analyze_setup</span><span class="p">(</span><span class="n">setup_name</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="s1">&#39;Auto Identify Nets returned False. &#39;</span>
-                    <span class="s1">&#39;Please review your design to see what is failing. &#39;</span>
-                    <span class="s1">&#39;Within Ansys, press simulation in the tab, then validate (green check mark).&#39;</span>
+                    <span class="s2">&quot;Auto Identify Nets returned False. &quot;</span>
+                    <span class="s2">&quot;Please review your design to see what is failing. &quot;</span>
+                    <span class="s2">&quot;Within Ansys, press simulation in the tab, then validate (green check mark).&quot;</span>
                 <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s1">&#39;Since the setup_name is not in the project/design which was used to start Q3d, &#39;</span>
-                <span class="s1">&#39;a new setup will be added with default settings for Q3D.&#39;</span><span class="p">)</span>
+                <span class="s2">&quot;Since the setup_name is not in the project/design which was used to start Q3d, &quot;</span>
+                <span class="s2">&quot;a new setup will be added with default settings for Q3D.&quot;</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_q3d_setup</span><span class="p">(</span><span class="n">setup_name</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">auto_identify_nets</span><span class="p">():</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">analyze_setup</span><span class="p">(</span><span class="n">setup_name</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="s1">&#39;Auto Identify Nets returned False. &#39;</span>
-                    <span class="s1">&#39;Please review your design to see what is failing. &#39;</span>
-                    <span class="s1">&#39;Within Ansys, press simulation in the tab, then validate (green check mark).&#39;</span>
+                    <span class="s2">&quot;Auto Identify Nets returned False. &quot;</span>
+                    <span class="s2">&quot;Please review your design to see what is failing. &quot;</span>
+                    <span class="s2">&quot;Within Ansys, press simulation in the tab, then validate (green check mark).&quot;</span>
                 <span class="p">)</span></div>
 
 
@@ -1079,7 +1090,7 @@
 <div class="viewcode-block" id="QQ3DPyaedt.get_capacitance_matrix">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QQ3DPyaedt.html#qiskit_metal.renderers.QQ3DPyaedt.get_capacitance_matrix">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_capacitance_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="mi">5</span></div>
+        <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="QQ3DPyaedt.get_capacitance_all_passes">
@@ -1106,35 +1117,37 @@
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_C_matrices</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s1">&#39;There are no capacitance matrixes to return.&#39;</span>
-                <span class="s1">&#39;Did you execute analyze_setup()?&#39;</span><span class="p">)</span>
+                <span class="s2">&quot;There are no capacitance matrixes to return.&quot;</span>
+                <span class="s2">&quot;Did you execute analyze_setup()?&quot;</span>
+            <span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
 
         <span class="c1"># Pandas output should have been set prior to opening Ansys,</span>
         <span class="c1"># however, just confirming if changed by user through GUI.</span>
         <span class="n">settings</span><span class="o">.</span><span class="n">enable_pandas_output</span> <span class="o">=</span> <span class="kc">True</span>
 
-        <span class="n">setup_sweep_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">setup_name</span><span class="si">}</span><span class="s1">: AdaptivePass&#39;</span>
+        <span class="n">setup_sweep_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">setup_name</span><span class="si">}</span><span class="s2">: AdaptivePass&quot;</span>
         <span class="n">cap_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">get_solution_data</span><span class="p">(</span>
             <span class="n">expressions</span><span class="o">=</span><span class="n">all_C_matrices</span><span class="p">,</span>
             <span class="n">context</span><span class="o">=</span><span class="s2">&quot;Original&quot;</span><span class="p">,</span>
             <span class="n">setup_sweep_name</span><span class="o">=</span><span class="n">setup_sweep_name</span><span class="p">,</span>
-            <span class="n">variations</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Pass&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;All&quot;</span><span class="p">]})</span>
+            <span class="n">variations</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Pass&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;All&quot;</span><span class="p">]},</span>
+        <span class="p">)</span>
 
-        <span class="n">c1_units</span> <span class="o">=</span> <span class="n">cap_data</span><span class="o">.</span><span class="n">units_data</span>
+        <span class="n">c1_units</span> <span class="o">=</span> <span class="n">cap_data</span><span class="o">.</span><span class="n">units_data</span>  <span class="c1"># noqa: F841</span>
 
         <span class="n">all_cap_data_magnitude</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">all_cap_data_magnitude_freqs</span> <span class="o">=</span> <span class="p">{}</span>
 
-        <span class="n">confirm_freq</span> <span class="o">=</span> <span class="n">cap_data</span><span class="o">.</span><span class="n">active_intrinsic</span><span class="p">[</span><span class="s1">&#39;Freq&#39;</span><span class="p">]</span>  <span class="c1"># Is 5.0</span>
+        <span class="n">confirm_freq</span> <span class="o">=</span> <span class="n">cap_data</span><span class="o">.</span><span class="n">active_intrinsic</span><span class="p">[</span><span class="s2">&quot;Freq&quot;</span><span class="p">]</span>  <span class="c1"># Is 5.0</span>
         <span class="c1"># If a list is not returned, make one so can iterate through it.</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">confirm_freq</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
             <span class="n">confirm_freq</span> <span class="o">=</span> <span class="p">[</span><span class="n">confirm_freq</span><span class="p">]</span>
 
         <span class="k">for</span> <span class="n">freq</span> <span class="ow">in</span> <span class="n">confirm_freq</span><span class="p">:</span>
             <span class="n">all_cap_data_magnitude</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">freq</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">cap_data</span><span class="o">.</span><span class="n">intrinsics</span><span class="p">[</span><span class="s1">&#39;Pass&#39;</span><span class="p">]:</span>
-                <span class="c1">#cap_real_imag = cap_data.full_matrix_real_imag</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">cap_data</span><span class="o">.</span><span class="n">intrinsics</span><span class="p">[</span><span class="s2">&quot;Pass&quot;</span><span class="p">]:</span>
+                <span class="c1"># cap_real_imag = cap_data.full_matrix_real_imag</span>
                 <span class="n">cap_mag</span> <span class="o">=</span> <span class="n">cap_data</span><span class="o">.</span><span class="n">full_matrix_mag_phase</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
                 <span class="n">cap_mag_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_to_dataframe</span><span class="p">(</span><span class="n">cap_mag</span><span class="p">)</span>
                 <span class="n">all_cap_data_magnitude</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cap_mag_df</span><span class="p">)</span>
@@ -1144,9 +1157,7 @@
 
 <div class="viewcode-block" id="QQ3DPyaedt.convert_to_dataframe">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QQ3DPyaedt.html#qiskit_metal.renderers.QQ3DPyaedt.convert_to_dataframe">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">convert_to_dataframe</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">cap_series</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">convert_to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cap_series</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the series to a dataframe based on the column names.</span>
 <span class="sd">        If the names are missing, then the dataframe will be None.</span>
 
@@ -1165,19 +1176,21 @@
 
         <span class="k">if</span> <span class="n">len_row_names</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">len_col_names</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;The dataframe for solution data was not made.&#39;</span>
-                <span class="sa">f</span><span class="s1">&#39;The names of rows=</span><span class="si">{</span><span class="n">row_names</span><span class="si">}</span><span class="s1"> or columns=</span><span class="si">{</span><span class="n">col_names</span><span class="si">}</span><span class="s1"> are empty.&#39;</span>
-                <span class="sa">f</span><span class="s1">&#39;The dataframe was not made and is None.&#39;</span><span class="p">)</span>
+                <span class="sa">f</span><span class="s2">&quot;The dataframe for solution data was not made.&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;The names of rows=</span><span class="si">{</span><span class="n">row_names</span><span class="si">}</span><span class="s2"> or columns=</span><span class="si">{</span><span class="n">col_names</span><span class="si">}</span><span class="s2"> are empty.&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;The dataframe was not made and is None.&quot;</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">len_row_names</span><span class="p">,</span> <span class="n">len_col_names</span><span class="p">),</span>
-                                       <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">),</span>
-                              <span class="n">index</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span><span class="n">row_names</span><span class="p">),</span>
-                              <span class="n">columns</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span><span class="n">col_names</span><span class="p">))</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">len_row_names</span><span class="p">,</span> <span class="n">len_col_names</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">),</span>
+                <span class="n">index</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span><span class="n">row_names</span><span class="p">),</span>
+                <span class="n">columns</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span><span class="n">col_names</span><span class="p">),</span>
+            <span class="p">)</span>
 
-        <span class="c1">#for series_name in cap_series.index:</span>
+        <span class="c1"># for series_name in cap_series.index:</span>
         <span class="k">for</span> <span class="n">series_name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">cap_series</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="c1"># ASSUME format from pyaedt, C(row_name , col_name)</span>
-            <span class="n">row_name</span><span class="p">,</span> <span class="n">col_name</span> <span class="o">=</span> <span class="n">series_name</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">row_name</span><span class="p">,</span> <span class="n">col_name</span> <span class="o">=</span> <span class="n">series_name</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
             <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row_name</span><span class="p">,</span> <span class="p">[</span><span class="n">col_name</span><span class="p">]]</span> <span class="o">=</span> <span class="n">value</span>
 
         <span class="k">return</span> <span class="n">df</span></div>
@@ -1185,8 +1198,7 @@
 
 <div class="viewcode-block" id="QQ3DPyaedt.get_unique_row_and_col_names">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QQ3DPyaedt.html#qiskit_metal.renderers.QQ3DPyaedt.get_unique_row_and_col_names">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_unique_row_and_col_names</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">cap_series</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_unique_row_and_col_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cap_series</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse the names in the series and identify the unique names</span>
 <span class="sd">        for rows and columns</span>
 
@@ -1202,7 +1214,7 @@
         <span class="n">col_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">series_name</span> <span class="ow">in</span> <span class="n">cap_series</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
             <span class="c1"># ASSUME format from pyaedt, C(row_name , col_name)</span>
-            <span class="n">row_name</span><span class="p">,</span> <span class="n">col_name</span> <span class="o">=</span> <span class="n">series_name</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">row_name</span><span class="p">,</span> <span class="n">col_name</span> <span class="o">=</span> <span class="n">series_name</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
             <span class="n">row_names</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">row_name</span><span class="p">)</span>
             <span class="n">col_names</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">col_name</span><span class="p">)</span>
 
@@ -1211,12 +1223,14 @@
 
 <div class="viewcode-block" id="QQ3DPyaedt.render_element">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QQ3DPyaedt.html#qiskit_metal.renderers.QQ3DPyaedt.render_element">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">render_element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                       <span class="n">qgeom</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span>
-                       <span class="n">is_junction</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-                       <span class="n">port_list</span><span class="p">:</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                       <span class="n">jj_to_port</span><span class="p">:</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                       <span class="n">ignored_jjs</span><span class="p">:</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">render_element</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">qgeom</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span>
+        <span class="n">is_junction</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">port_list</span><span class="p">:</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">jj_to_port</span><span class="p">:</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ignored_jjs</span><span class="p">:</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Render an individual shape whose properties are listed in a row of</span>
 <span class="sd">        QGeometry table. Junction elements are handled separately from non-</span>
 <span class="sd">        junction elements. For Q3D, junctions are not rendered.</span>
@@ -1230,7 +1244,7 @@
         <span class="n">qc_shapely</span> <span class="o">=</span> <span class="n">qgeom</span><span class="o">.</span><span class="n">geometry</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">is_junction</span><span class="p">:</span>
-            <span class="c1">#Q3D doesn&#39;t render junction.</span>
+            <span class="c1"># Q3D doesn&#39;t render junction.</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">qc_shapely</span><span class="p">,</span> <span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Polygon</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">render_element_poly</span><span class="p">(</span><span class="n">qgeom</span><span class="p">)</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">qc_shapely</span><span class="p">,</span> <span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">LineString</span><span class="p">):</span>

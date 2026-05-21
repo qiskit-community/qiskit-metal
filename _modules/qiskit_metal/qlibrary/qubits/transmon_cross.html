@@ -707,7 +707,7 @@
 
 <div class="viewcode-block" id="TransmonCross">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonCross.html#qiskit_metal.qlibrary.TransmonCross">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">TransmonCross</span><span class="p">(</span><span class="n">BaseQubit</span><span class="p">):</span>  <span class="c1"># pylint: disable=invalid-name</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TransmonCross</span><span class="p">(</span><span class="n">BaseQubit</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The base `TransmonCross` class.</span>
 
 <span class="sd">    Inherits `BaseQubit` class.</span>
@@ -759,26 +759,28 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">cross_width</span><span class="o">=</span><span class="s1">&#39;20um&#39;</span><span class="p">,</span>
-        <span class="n">cross_length</span><span class="o">=</span><span class="s1">&#39;200um&#39;</span><span class="p">,</span>
-        <span class="n">cross_gap</span><span class="o">=</span><span class="s1">&#39;20um&#39;</span><span class="p">,</span>
-        <span class="n">chip</span><span class="o">=</span><span class="s1">&#39;main&#39;</span><span class="p">,</span>
+        <span class="n">cross_width</span><span class="o">=</span><span class="s2">&quot;20um&quot;</span><span class="p">,</span>
+        <span class="n">cross_length</span><span class="o">=</span><span class="s2">&quot;200um&quot;</span><span class="p">,</span>
+        <span class="n">cross_gap</span><span class="o">=</span><span class="s2">&quot;20um&quot;</span><span class="p">,</span>
+        <span class="n">chip</span><span class="o">=</span><span class="s2">&quot;main&quot;</span><span class="p">,</span>
         <span class="n">_default_connection_pads</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-            <span class="n">connector_type</span><span class="o">=</span><span class="s1">&#39;0&#39;</span><span class="p">,</span>  <span class="c1"># 0 = Claw type, 1 = gap type</span>
-            <span class="n">claw_length</span><span class="o">=</span><span class="s1">&#39;30um&#39;</span><span class="p">,</span>
-            <span class="n">ground_spacing</span><span class="o">=</span><span class="s1">&#39;5um&#39;</span><span class="p">,</span>
-            <span class="n">claw_width</span><span class="o">=</span><span class="s1">&#39;10um&#39;</span><span class="p">,</span>
-            <span class="n">claw_gap</span><span class="o">=</span><span class="s1">&#39;6um&#39;</span><span class="p">,</span>
-            <span class="n">claw_cpw_length</span><span class="o">=</span><span class="s1">&#39;40um&#39;</span><span class="p">,</span>
-            <span class="n">claw_cpw_width</span><span class="o">=</span><span class="s1">&#39;10um&#39;</span><span class="p">,</span>
-            <span class="n">connector_location</span><span class="o">=</span>
-            <span class="s1">&#39;0&#39;</span>  <span class="c1"># 0 =&gt; &#39;west&#39; arm, 90 =&gt; &#39;north&#39; arm, 180 =&gt; &#39;east&#39; arm</span>
-        <span class="p">))</span>
+            <span class="n">connector_type</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>  <span class="c1"># 0 = Claw type, 1 = gap type</span>
+            <span class="n">claw_length</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span><span class="p">,</span>
+            <span class="n">ground_spacing</span><span class="o">=</span><span class="s2">&quot;5um&quot;</span><span class="p">,</span>
+            <span class="n">claw_width</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
+            <span class="n">claw_gap</span><span class="o">=</span><span class="s2">&quot;6um&quot;</span><span class="p">,</span>
+            <span class="n">claw_cpw_length</span><span class="o">=</span><span class="s2">&quot;40um&quot;</span><span class="p">,</span>
+            <span class="n">claw_cpw_width</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
+            <span class="n">connector_location</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>  <span class="c1"># 0 =&gt; &#39;west&#39; arm, 90 =&gt; &#39;north&#39; arm, 180 =&gt; &#39;east&#39; arm</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Default options.&quot;&quot;&quot;</span>
 
-    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s1">&#39;Cross&#39;</span><span class="p">,</span>
-                              <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s1">&#39;True&#39;</span><span class="p">,</span>
-                              <span class="n">_qgeometry_table_junction</span><span class="o">=</span><span class="s1">&#39;True&#39;</span><span class="p">)</span>
+    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+        <span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;Cross&quot;</span><span class="p">,</span>
+        <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">,</span>
+        <span class="n">_qgeometry_table_junction</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Component metadata&quot;&quot;&quot;</span>
 
     <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Simple Metal Transmon Cross.&quot;&quot;&quot;</span>
@@ -794,7 +796,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">make_connection_pads</span><span class="p">()</span></div>
 
 
-<span class="c1">###################################TRANSMON#############################################################</span>
+    <span class="c1">###################################TRANSMON#############################################################</span>
 
 <div class="viewcode-block" id="TransmonCross.make_pocket">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonCross.html#qiskit_metal.qlibrary.TransmonCross.make_pocket">[docs]</a>
@@ -812,21 +814,22 @@
         <span class="n">chip</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">chip</span>
 
         <span class="c1"># Creates the cross and the etch equivalent.</span>
-        <span class="n">cross_line</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">shapely</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">unary_union</span><span class="p">([</span>
-            <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="n">cross_length</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">cross_length</span><span class="p">)]),</span>
-            <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([(</span><span class="n">cross_length</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">cross_length</span><span class="p">,</span> <span class="mi">0</span><span class="p">)])</span>
-        <span class="p">])</span>
+        <span class="n">cross_line</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">shapely</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">unary_union</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="n">cross_length</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">cross_length</span><span class="p">)]),</span>
+                <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([(</span><span class="n">cross_length</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">cross_length</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
 
         <span class="n">cross</span> <span class="o">=</span> <span class="n">cross_line</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="n">cross_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">cap_style</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
         <span class="n">cross_etch</span> <span class="o">=</span> <span class="n">cross</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="n">cross_gap</span><span class="p">,</span> <span class="n">cap_style</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">join_style</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
         <span class="c1"># The junction/SQUID</span>
-        <span class="c1">#rect_jj = draw.rectangle(cross_width, cross_gap)</span>
-        <span class="c1">#rect_jj = draw.translate(rect_jj, 0, -cross_length-cross_gap/2)</span>
-        <span class="n">rect_jj</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">cross_length</span><span class="p">),</span>
-                                   <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">cross_length</span> <span class="o">-</span> <span class="n">cross_gap</span><span class="p">)])</span>
+        <span class="c1"># rect_jj = draw.rectangle(cross_width, cross_gap)</span>
+        <span class="c1"># rect_jj = draw.translate(rect_jj, 0, -cross_length-cross_gap/2)</span>
+        <span class="n">rect_jj</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">cross_length</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">cross_length</span> <span class="o">-</span> <span class="n">cross_gap</span><span class="p">)])</span>
 
-        <span class="c1">#rotate and translate</span>
+        <span class="c1"># rotate and translate</span>
         <span class="n">polys</span> <span class="o">=</span> <span class="p">[</span><span class="n">cross</span><span class="p">,</span> <span class="n">cross_etch</span><span class="p">,</span> <span class="n">rect_jj</span><span class="p">]</span>
         <span class="n">polys</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">polys</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
         <span class="n">polys</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">polys</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_y</span><span class="p">)</span>
@@ -834,19 +837,16 @@
         <span class="p">[</span><span class="n">cross</span><span class="p">,</span> <span class="n">cross_etch</span><span class="p">,</span> <span class="n">rect_jj</span><span class="p">]</span> <span class="o">=</span> <span class="n">polys</span>
 
         <span class="c1"># generate qgeometry</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">cross</span><span class="o">=</span><span class="n">cross</span><span class="p">),</span> <span class="n">chip</span><span class="o">=</span><span class="n">chip</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span>
-                           <span class="nb">dict</span><span class="p">(</span><span class="n">cross_etch</span><span class="o">=</span><span class="n">cross_etch</span><span class="p">),</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                           <span class="n">chip</span><span class="o">=</span><span class="n">chip</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;junction&#39;</span><span class="p">,</span>
-                           <span class="nb">dict</span><span class="p">(</span><span class="n">rect_jj</span><span class="o">=</span><span class="n">rect_jj</span><span class="p">),</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">cross_width</span><span class="p">,</span>
-                           <span class="n">chip</span><span class="o">=</span><span class="n">chip</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">cross</span><span class="o">=</span><span class="n">cross</span><span class="p">),</span> <span class="n">chip</span><span class="o">=</span><span class="n">chip</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">cross_etch</span><span class="o">=</span><span class="n">cross_etch</span><span class="p">),</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">chip</span><span class="o">=</span><span class="n">chip</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;junction&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">rect_jj</span><span class="o">=</span><span class="n">rect_jj</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="n">cross_width</span><span class="p">,</span> <span class="n">chip</span><span class="o">=</span><span class="n">chip</span>
+        <span class="p">)</span></div>
 
 
-
-<span class="c1">############################CONNECTORS##################################################################################################</span>
+    <span class="c1">############################CONNECTORS##################################################################################################</span>
 
 <div class="viewcode-block" id="TransmonCross.make_connection_pads">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonCross.html#qiskit_metal.qlibrary.TransmonCross.make_connection_pads">[docs]</a>
@@ -886,13 +886,14 @@
         <span class="n">claw_cpw</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="o">-</span><span class="n">c_w</span><span class="p">,</span> <span class="o">-</span><span class="n">c_c_w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="n">c_c_l</span> <span class="o">-</span> <span class="n">c_w</span><span class="p">,</span> <span class="n">c_c_w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">pc</span><span class="o">.</span><span class="n">connector_type</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># Claw connector</span>
-            <span class="n">t_claw_height</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">c_g</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">c_w</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">g_s</span> <span class="o">+</span> \
-                <span class="mi">2</span><span class="o">*</span><span class="n">cross_gap</span> <span class="o">+</span> <span class="n">cross_width</span>  <span class="c1"># temp value</span>
+            <span class="n">t_claw_height</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="mi">2</span> <span class="o">*</span> <span class="n">c_g</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">c_w</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">g_s</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">cross_gap</span> <span class="o">+</span> <span class="n">cross_width</span>
+            <span class="p">)</span>  <span class="c1"># temp value</span>
 
-            <span class="n">claw_base</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="o">-</span><span class="n">c_w</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">t_claw_height</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">c_l</span><span class="p">,</span>
-                                 <span class="n">t_claw_height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
-            <span class="n">claw_subtract</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">t_claw_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">c_w</span><span class="p">,</span> <span class="n">c_l</span><span class="p">,</span>
-                                     <span class="n">t_claw_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">c_w</span><span class="p">)</span>
+            <span class="n">claw_base</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="o">-</span><span class="n">c_w</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">t_claw_height</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">c_l</span><span class="p">,</span> <span class="n">t_claw_height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">claw_subtract</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">box</span><span class="p">(</span>
+                <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">t_claw_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">c_w</span><span class="p">,</span> <span class="n">c_l</span><span class="p">,</span> <span class="n">t_claw_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">c_w</span>
+            <span class="p">)</span>
             <span class="n">claw_base</span> <span class="o">=</span> <span class="n">claw_base</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">claw_subtract</span><span class="p">)</span>
 
             <span class="n">connector_arm</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">shapely</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">unary_union</span><span class="p">([</span><span class="n">claw_base</span><span class="p">,</span> <span class="n">claw_cpw</span><span class="p">])</span>
@@ -905,8 +906,9 @@
         <span class="c1"># Done here so as to have the same translations and rotations as the connector. Could</span>
         <span class="c1"># extract from the connector later, but since allowing different connector types,</span>
         <span class="c1"># this seems more straightforward.</span>
-        <span class="n">port_line</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([(</span><span class="o">-</span><span class="n">c_c_l</span> <span class="o">-</span> <span class="n">c_w</span><span class="p">,</span> <span class="o">-</span><span class="n">c_c_w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
-                                     <span class="p">(</span><span class="o">-</span><span class="n">c_c_l</span> <span class="o">-</span> <span class="n">c_w</span><span class="p">,</span> <span class="n">c_c_w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)])</span>
+        <span class="n">port_line</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">(</span>
+            <span class="p">[(</span><span class="o">-</span><span class="n">c_c_l</span> <span class="o">-</span> <span class="n">c_w</span><span class="p">,</span> <span class="o">-</span><span class="n">c_c_w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">c_c_l</span> <span class="o">-</span> <span class="n">c_w</span><span class="p">,</span> <span class="n">c_c_w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)]</span>
+        <span class="p">)</span>
 
         <span class="n">claw_rotate</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">if</span> <span class="n">con_loc</span> <span class="o">&gt;</span> <span class="mi">135</span><span class="p">:</span>
@@ -916,20 +918,20 @@
 
         <span class="c1"># Rotates and translates the connector polygons (and temporary port_line)</span>
         <span class="n">polys</span> <span class="o">=</span> <span class="p">[</span><span class="n">connector_arm</span><span class="p">,</span> <span class="n">connector_etcher</span><span class="p">,</span> <span class="n">port_line</span><span class="p">]</span>
-        <span class="n">polys</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">polys</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">cross_length</span> <span class="o">+</span> <span class="n">cross_gap</span> <span class="o">+</span> <span class="n">g_s</span> <span class="o">+</span> <span class="n">c_g</span><span class="p">),</span>
-                               <span class="mi">0</span><span class="p">)</span>
+        <span class="n">polys</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">polys</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">cross_length</span> <span class="o">+</span> <span class="n">cross_gap</span> <span class="o">+</span> <span class="n">g_s</span> <span class="o">+</span> <span class="n">c_g</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
         <span class="n">polys</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">polys</span><span class="p">,</span> <span class="n">claw_rotate</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
         <span class="n">polys</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">polys</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
         <span class="n">polys</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">polys</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_y</span><span class="p">)</span>
         <span class="p">[</span><span class="n">connector_arm</span><span class="p">,</span> <span class="n">connector_etcher</span><span class="p">,</span> <span class="n">port_line</span><span class="p">]</span> <span class="o">=</span> <span class="n">polys</span>
 
         <span class="c1"># Generates qgeometry for the connector pads</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="p">{</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">_connector_arm&#39;</span><span class="p">:</span> <span class="n">connector_arm</span><span class="p">},</span>
-                           <span class="n">chip</span><span class="o">=</span><span class="n">chip</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span>
-                           <span class="p">{</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">_connector_etcher&#39;</span><span class="p">:</span> <span class="n">connector_etcher</span><span class="p">},</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                           <span class="n">chip</span><span class="o">=</span><span class="n">chip</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="p">{</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_connector_arm&quot;</span><span class="p">:</span> <span class="n">connector_arm</span><span class="p">},</span> <span class="n">chip</span><span class="o">=</span><span class="n">chip</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;poly&quot;</span><span class="p">,</span>
+            <span class="p">{</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_connector_etcher&quot;</span><span class="p">:</span> <span class="n">connector_etcher</span><span class="p">},</span>
+            <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">chip</span><span class="o">=</span><span class="n">chip</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">port_line</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">c_c_w</span><span class="p">)</span></div>
 </div>

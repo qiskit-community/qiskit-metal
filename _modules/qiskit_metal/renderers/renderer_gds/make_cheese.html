@@ -715,11 +715,6 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">Cheesing</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a cheese cell based on input of no-cheese locations.&quot;&quot;&quot;</span>
 
-    <span class="c1"># pylint: disable=too-many-instance-attributes</span>
-    <span class="c1"># pylint: disable=too-many-arguments</span>
-    <span class="c1"># pylint: disable=too-many-locals</span>
-    <span class="c1"># pylint: disable=too-few-public-methods</span>
-
     <span class="c1"># To be used by QGDSRenderer only.</span>
     <span class="c1"># Number of instance attributes is acceptable for this case.</span>
 
@@ -813,8 +808,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">shape_1_radius</span> <span class="o">=</span> <span class="n">shape_1_radius</span>
 
         <span class="c1"># Create a shapely the size of chip.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">boundary</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Polygon</span><span class="p">([(</span><span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">),</span> <span class="p">(</span><span class="n">minx</span><span class="p">,</span> <span class="n">maxy</span><span class="p">),</span>
-                                                  <span class="p">(</span><span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span><span class="p">)])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">boundary</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Polygon</span><span class="p">(</span>
+            <span class="p">[(</span><span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">),</span> <span class="p">(</span><span class="n">minx</span><span class="p">,</span> <span class="n">maxy</span><span class="p">),</span> <span class="p">(</span><span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span><span class="p">)]</span>
+        <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">delta_x</span> <span class="o">=</span> <span class="n">delta_x</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">delta_y</span> <span class="o">=</span> <span class="n">delta_y</span>
@@ -869,8 +865,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">observe</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cheese_shape</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">observe</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta_x</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape_0_x</span> <span class="ow">or</span>
-                       <span class="bp">self</span><span class="o">.</span><span class="n">delta_y</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape_0_y</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">observe</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="mi">1</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta_x</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape_0_x</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta_y</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape_0_y</span>
+                <span class="k">else</span> <span class="mi">0</span>
+            <span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">cheese_shape</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">diameter</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape_1_radius</span>
             <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta_x</span> <span class="o">&lt;=</span> <span class="n">diameter</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta_y</span> <span class="o">&lt;=</span> <span class="n">diameter</span> <span class="k">else</span> <span class="mi">0</span>
@@ -882,7 +881,8 @@
 
         <span class="k">if</span> <span class="n">observe</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;The size of delta spacing is same as or smaller than hole.&quot;</span><span class="p">)</span>
+                <span class="s2">&quot;The size of delta spacing is same as or smaller than hole.&quot;</span>
+            <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">observe</span>
 
@@ -894,8 +894,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cheese_shape</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape_0_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape_0_y</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">hole</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="o">-</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="n">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
-                                             <span class="n">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hole</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">box</span><span class="p">(</span>
+                <span class="o">-</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="n">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">height</span> <span class="o">/</span> <span class="mi">2</span>
+            <span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">cheese_shape</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">hole</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape_1_radius</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -926,9 +927,9 @@
                 <span class="k">for</span> <span class="n">inside</span> <span class="ow">in</span> <span class="n">geom</span><span class="o">.</span><span class="n">interiors</span><span class="p">:</span>
                     <span class="n">interior_coords</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">inside</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span>
                     <span class="n">all_interiors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">interior_coords</span><span class="p">)</span>
-                <span class="n">a_poly_set</span> <span class="o">=</span> <span class="n">gdstk</span><span class="o">.</span><span class="n">PolygonSet</span><span class="p">(</span><span class="n">all_interiors</span><span class="p">,</span>
-                                              <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                                              <span class="n">datatype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">datatype_cheese</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="n">a_poly_set</span> <span class="o">=</span> <span class="n">gdstk</span><span class="o">.</span><span class="n">PolygonSet</span><span class="p">(</span>
+                    <span class="n">all_interiors</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">datatype_cheese</span> <span class="o">+</span> <span class="mi">2</span>
+                <span class="p">)</span>
                 <span class="n">a_poly</span> <span class="o">=</span> <span class="n">gdstk</span><span class="o">.</span><span class="n">boolean</span><span class="p">(</span>
                     <span class="n">exterior_poly</span><span class="p">,</span>
                     <span class="n">a_poly_set</span><span class="p">,</span>
@@ -938,12 +939,15 @@
                     <span class="n">datatype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">datatype_cheese</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">a_poly</span> <span class="o">=</span> <span class="n">exterior_poly</span><span class="o">.</span><span class="n">fracture</span><span class="p">(</span><span class="n">max_points</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_points</span><span class="p">,</span>
-                                                <span class="n">precision</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">precision</span><span class="p">)</span>
+                <span class="n">a_poly</span> <span class="o">=</span> <span class="n">exterior_poly</span><span class="o">.</span><span class="n">fracture</span><span class="p">(</span>
+                    <span class="n">max_points</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_points</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">precision</span>
+                <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">hole_type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hole</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The self.hole was not converted to gdstk; &quot;</span>
-                                <span class="sa">f</span><span class="s2">&quot;the type &#39;</span><span class="si">{</span><span class="n">hole_type</span><span class="si">}</span><span class="s2">&#39; was not handled.&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The self.hole was not converted to gdstk; &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;the type &#39;</span><span class="si">{</span><span class="n">hole_type</span><span class="si">}</span><span class="s2">&#39; was not handled.&quot;</span>
+            <span class="p">)</span>
 
         <span class="c1"># convert a_poly to cell, then use cell reference to add to all the cheese in chip_rect_gds</span>
         <span class="n">chip_layer_only_top_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;TOP_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chip_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -952,9 +956,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">one_hole_cell</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="o">*</span><span class="n">a_poly</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">one_hole_cell</span><span class="o">.</span><span class="n">bounding_box</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="nb">next</span><span class="p">(</span>
-                <span class="p">(</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">cells</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">chip_layer_only_top_name</span>
-                <span class="p">))</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">gdstk</span><span class="o">.</span><span class="n">Reference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">one_hole_cell</span><span class="p">))</span>
+            <span class="nb">next</span><span class="p">((</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">cells</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">chip_layer_only_top_name</span><span class="p">))</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="n">gdstk</span><span class="o">.</span><span class="n">Reference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">one_hole_cell</span><span class="p">)</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">one_hole_cell</span><span class="p">)</span>
 
@@ -969,8 +973,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">gather_holes_cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_all_holes</span><span class="p">()</span>
-        <span class="n">diff_holes_cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subtract_keepout_from_hole_grid</span><span class="p">(</span>
-            <span class="n">gather_holes_cell</span><span class="p">)</span>
+        <span class="n">diff_holes_cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subtract_keepout_from_hole_grid</span><span class="p">(</span><span class="n">gather_holes_cell</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">gather_holes_cell</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_neg_mask</span><span class="p">:</span>
@@ -985,7 +988,8 @@
             <span class="c1"># positive mask for given chip and layer</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fab</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_subtract_from_ground_and_move_under_top_chip_layer</span><span class="p">(</span>
-                    <span class="n">diff_holes_cell</span><span class="p">)</span>
+                    <span class="n">diff_holes_cell</span>
+                <span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_both_pos_and_neg_mask_fab</span><span class="p">()</span>
 
                 <span class="c1">#  This is something special still to do.</span>
@@ -993,7 +997,8 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_remove_ground_chip_layer</span><span class="p">()</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_subtract_from_ground_and_move_under_top_chip_layer</span><span class="p">(</span>
-                    <span class="n">diff_holes_cell</span><span class="p">)</span>
+                    <span class="n">diff_holes_cell</span>
+                <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_both_pos_and_neg_mask_fab</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;For both positive and negative mask need to have this cell removed when</span>
@@ -1005,13 +1010,14 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove cell with just one hole.&quot;&quot;&quot;</span>
         <span class="n">cheese_one_hole_cell_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;TOP_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chip_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="si">}</span><span class="s2">_one_hole&quot;</span>
         <span class="n">cheese_one_hole_cell</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">cells</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">cheese_one_hole_cell_name</span><span class="p">),</span>
-            <span class="kc">None</span><span class="p">)</span>
+            <span class="p">(</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">cells</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">cheese_one_hole_cell_name</span><span class="p">),</span> <span class="kc">None</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="n">cheese_one_hole_cell</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">cheese_one_hole_cell</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_subtract_from_ground_and_move_under_top_chip_layer</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">diff_holes_cell</span><span class="p">:</span> <span class="n">gdstk</span><span class="o">.</span><span class="n">Cell</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">diff_holes_cell</span><span class="p">:</span> <span class="n">gdstk</span><span class="o">.</span><span class="n">Cell</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the existing chip_only_top_name cell, then add the holes to it.</span>
 <span class="sd">        Also, add ground_cheesed_cell under chip_only_top_name</span>
 
@@ -1021,13 +1027,12 @@
 
         <span class="n">chip_only_top_layer_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;TOP_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chip_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="n">chip_only_top_layer_cell</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">cells</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">chip_only_top_layer_name</span><span class="p">),</span>
-            <span class="kc">None</span><span class="p">)</span>
+            <span class="p">(</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">cells</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">chip_only_top_layer_name</span><span class="p">),</span> <span class="kc">None</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="n">chip_only_top_layer_cell</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">diff_holes_cell</span><span class="o">.</span><span class="n">bounding_box</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">chip_only_top_layer_cell</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">gdstk</span><span class="o">.</span><span class="n">Reference</span><span class="p">(</span><span class="n">diff_holes_cell</span><span class="p">))</span>
-                <span class="n">ground_cheese_cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subtract_holes_from_ground</span><span class="p">(</span>
-                    <span class="n">diff_holes_cell</span><span class="p">)</span>
+                <span class="n">ground_cheese_cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subtract_holes_from_ground</span><span class="p">(</span><span class="n">diff_holes_cell</span><span class="p">)</span>
 
                 <span class="c1"># Move to under Top_main_layer (Top_chipname_#)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_move_to_under_top_chip_layer_name</span><span class="p">(</span><span class="n">ground_cheese_cell</span><span class="p">)</span>
@@ -1035,7 +1040,8 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">diff_holes_cell</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_subtract_keepout_from_hole_grid</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">gather_holes_cell</span><span class="p">:</span> <span class="n">gdstk</span><span class="o">.</span><span class="n">Cell</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">gdstk</span><span class="o">.</span><span class="n">Cell</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">gather_holes_cell</span><span class="p">:</span> <span class="n">gdstk</span><span class="o">.</span><span class="n">Cell</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">gdstk</span><span class="o">.</span><span class="n">Cell</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Given a cell with all the holes, subtract the keepout region.</span>
 <span class="sd">        Then return a new cell with the result.</span>
 
@@ -1078,26 +1084,25 @@
         <span class="n">gather_holes_cell_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Gather_holes_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chip_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="n">gather_holes_cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">new_cell</span><span class="p">(</span><span class="n">gather_holes_cell_name</span><span class="p">)</span>
 
-        <span class="n">x_holes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grid_minx</span><span class="p">,</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">grid_maxx</span><span class="p">,</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">delta_x</span><span class="p">,</span>
-                            <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-        <span class="n">y_holes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grid_miny</span><span class="p">,</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">grid_maxy</span><span class="p">,</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">delta_y</span><span class="p">,</span>
-                            <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">x_holes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">grid_minx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_maxx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta_x</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">y_holes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">grid_miny</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_maxy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta_y</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">one_hole_cell</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">x_loc</span> <span class="ow">in</span> <span class="n">x_holes</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">y_loc</span> <span class="ow">in</span> <span class="n">y_holes</span><span class="p">:</span>
                     <span class="n">gather_holes_cell</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
-                        <span class="n">gdstk</span><span class="o">.</span><span class="n">Reference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">one_hole_cell</span><span class="p">,</span>
-                                        <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="n">x_loc</span><span class="p">,</span> <span class="n">y_loc</span><span class="p">)))</span>
+                        <span class="n">gdstk</span><span class="o">.</span><span class="n">Reference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">one_hole_cell</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="n">x_loc</span><span class="p">,</span> <span class="n">y_loc</span><span class="p">))</span>
+                    <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">gather_holes_cell</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_subtract_holes_from_ground</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">diff_holes_cell</span><span class="p">:</span> <span class="n">gdstk</span><span class="o">.</span><span class="n">Cell</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">gdstk</span><span class="o">.</span><span class="n">Cell</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">diff_holes_cell</span><span class="p">:</span> <span class="n">gdstk</span><span class="o">.</span><span class="n">Cell</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">gdstk</span><span class="o">.</span><span class="n">Cell</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get reference to ground cell and then subtract the holes from</span>
 <span class="sd">        ground. Place the difference into a new cell, which will eventually</span>
 <span class="sd">        be added under Top.</span>
@@ -1113,10 +1118,10 @@
         <span class="c1"># Still need to &#39;not&#39; with Top_main_1 (ground)</span>
         <span class="n">top_chip_layer_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;TOP_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chip_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="n">ground_cell_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;ground_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chip_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="k">if</span> <span class="nb">next</span><span class="p">((</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">cells</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">top_chip_layer_name</span><span class="p">),</span>
-                <span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">next</span><span class="p">((</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">cells</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">top_chip_layer_name</span><span class="p">),</span> <span class="kc">None</span><span class="p">):</span>
             <span class="n">ground_cell</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
-                <span class="p">(</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">cells</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">ground_cell_name</span><span class="p">))</span>
+                <span class="p">(</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">cells</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">ground_cell_name</span><span class="p">)</span>
+            <span class="p">)</span>
             <span class="c1"># Need to keep the depth at 0, otherwise all the</span>
             <span class="c1"># cell references (junctions) will be added for boolean.</span>
             <span class="n">ground_cheese</span> <span class="o">=</span> <span class="n">gdstk</span><span class="o">.</span><span class="n">boolean</span><span class="p">(</span>
@@ -1135,7 +1140,8 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;The cell:</span><span class="si">{</span><span class="n">top_chip_layer_name</span><span class="si">}</span><span class="s2"> was not found in self.lib. &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;Cheesing not implemented.&quot;</span><span class="p">)</span>
+            <span class="sa">f</span><span class="s2">&quot;Cheesing not implemented.&quot;</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_move_to_under_top_chip_layer_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a_cell</span><span class="p">:</span> <span class="n">gdstk</span><span class="o">.</span><span class="n">Cell</span><span class="p">):</span>
@@ -1146,8 +1152,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">chip_only_top_chip_layer_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;TOP_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chip_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="n">chip_only_top_chip_layer_cell</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">cells</span>
-             <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">chip_only_top_chip_layer_name</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="p">(</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">cells</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">chip_only_top_chip_layer_name</span><span class="p">),</span> <span class="kc">None</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="n">chip_only_top_chip_layer_cell</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">a_cell</span><span class="o">.</span><span class="n">bounding_box</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">chip_only_top_chip_layer_cell</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">gdstk</span><span class="o">.</span><span class="n">Reference</span><span class="p">(</span><span class="n">a_cell</span><span class="p">))</span>

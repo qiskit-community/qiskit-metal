@@ -699,7 +699,6 @@
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
 <span class="sd">&quot;&quot;&quot;GUI front-end interface for Qiskit Metal in PySide2.&quot;&quot;&quot;</span>
-<span class="c1"># pylint: disable=invalid-name</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -709,33 +708,49 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QTimer</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QIcon</span><span class="p">,</span> <span class="n">QPixmap</span><span class="p">,</span> <span class="n">QAction</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="n">QDialog</span><span class="p">,</span> <span class="n">QDockWidget</span><span class="p">,</span> <span class="n">QFileDialog</span><span class="p">,</span>
-                               <span class="n">QLabel</span><span class="p">,</span> <span class="n">QMainWindow</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="p">,</span> <span class="n">QVBoxLayout</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">QWidget</span><span class="p">,</span>
+    <span class="n">QDialog</span><span class="p">,</span>
+    <span class="n">QDockWidget</span><span class="p">,</span>
+    <span class="n">QFileDialog</span><span class="p">,</span>
+    <span class="n">QLabel</span><span class="p">,</span>
+    <span class="n">QMainWindow</span><span class="p">,</span>
+    <span class="n">QMessageBox</span><span class="p">,</span>
+    <span class="n">QVBoxLayout</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">QSortFilterProxyModel</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.widgets.qlibrary_display.delegate_qlibrary</span><span class="w"> </span><span class="kn">import</span> \
-    <span class="n">LibraryDelegate</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary</span><span class="w"> </span><span class="kn">import</span> \
-    <span class="n">QFileSystemLibraryModel</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.widgets.qlibrary_display.proxy_model_qlibrary</span><span class="w"> </span><span class="kn">import</span> \
-    <span class="n">LibraryFileProxyModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.widgets.qlibrary_display.delegate_qlibrary</span><span class="w"> </span><span class="kn">import</span> <span class="n">LibraryDelegate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">QFileSystemLibraryModel</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.widgets.qlibrary_display.proxy_model_qlibrary</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">LibraryFileProxyModel</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">qlibrary</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.designs.design_base</span><span class="w"> </span><span class="kn">import</span> <span class="n">QDesign</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.elements_window</span><span class="w"> </span><span class="kn">import</span> <span class="n">ElementsWindow</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.net_list_window</span><span class="w"> </span><span class="kn">import</span> <span class="n">NetListWindow</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.main_window_base</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">QMainWindowBaseHandler</span><span class="p">,</span> <span class="n">QMainWindowExtensionBase</span><span class="p">,</span>
-                               <span class="n">kick_start_qApp</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.main_window_base</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">QMainWindowBaseHandler</span><span class="p">,</span>
+    <span class="n">QMainWindowExtensionBase</span><span class="p">,</span>
+    <span class="n">kick_start_qApp</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.main_window_ui</span><span class="w"> </span><span class="kn">import</span> <span class="n">Ui_MainWindow</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.renderer_gds_gui</span><span class="w"> </span><span class="kn">import</span> <span class="n">RendererGDSWidget</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.renderer_hfss_gui</span><span class="w"> </span><span class="kn">import</span> <span class="n">RendererHFSSWidget</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.renderer_q3d_gui</span><span class="w"> </span><span class="kn">import</span> <span class="n">RendererQ3DWidget</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.utility._handle_qt_messages</span><span class="w"> </span><span class="kn">import</span> <span class="n">slot_catch_error</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.utility._toolbox_qt</span><span class="w"> </span><span class="kn">import</span> <span class="n">doShowHighlighWidget</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.widgets.all_components.table_model_all_components</span><span class="w"> </span><span class="kn">import</span> \
-    <span class="n">QTableModel_AllComponents</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.widgets.build_history.build_history_scroll_area</span><span class="w"> </span><span class="kn">import</span> \
-    <span class="n">BuildHistoryScrollArea</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.widgets.create_component_window</span><span class="w"> </span><span class="kn">import</span> <span class="n">parameter_entry_window</span> <span class="k">as</span> <span class="n">pew</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.widgets.all_components.table_model_all_components</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">QTableModel_AllComponents</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.widgets.build_history.build_history_scroll_area</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">BuildHistoryScrollArea</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.widgets.create_component_window</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">parameter_entry_window</span> <span class="k">as</span> <span class="n">pew</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.widgets.edit_component.component_widget</span><span class="w"> </span><span class="kn">import</span> <span class="n">ComponentWidget</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.widgets.plot_widget.plot_window</span><span class="w"> </span><span class="kn">import</span> <span class="n">QMainWindowPlot</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.widgets.variable_table</span><span class="w"> </span><span class="kn">import</span> <span class="n">PropertyTableWidget</span>
@@ -744,7 +759,7 @@
     <span class="k">pass</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">..renderers.renderer_mpl.mpl_canvas</span><span class="w"> </span><span class="kn">import</span> <span class="n">PlotCanvas</span>  <span class="c1"># pylint: disable=syntax-error</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">..renderers.renderer_mpl.mpl_canvas</span><span class="w"> </span><span class="kn">import</span> <span class="n">PlotCanvas</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">QMainWindowExtension</span><span class="p">(</span><span class="n">QMainWindowExtensionBase</span><span class="p">):</span>
@@ -768,7 +783,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">q3d_gui</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: RendererQ3DWidget</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">design</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;QDesign&#39;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">design</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;QDesign&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the design.</span>
 
 <span class="sd">        Returns:</span>
@@ -777,7 +792,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">design</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">gui</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;MetalGUI&#39;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">gui</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;MetalGUI&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the MetalGUI.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">handler</span>
 
@@ -814,11 +829,12 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete all components.&quot;&quot;&quot;</span>
         <span class="n">ret</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">question</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
-            <span class="s1">&#39;Delete all components?&#39;</span><span class="p">,</span>
+            <span class="s2">&quot;Delete all components?&quot;</span><span class="p">,</span>
             <span class="s2">&quot;Are you sure you want to clear all Metal components?&quot;</span><span class="p">,</span>
-            <span class="n">buttons</span><span class="o">=</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span> <span class="o">|</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span><span class="p">)</span>
+            <span class="n">buttons</span><span class="o">=</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span> <span class="o">|</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="n">ret</span> <span class="o">==</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Delete all components.&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Delete all components.&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">delete_all_components</span><span class="p">()</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">component_window</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">gui</span><span class="o">.</span><span class="n">component_window</span><span class="o">.</span><span class="n">set_component</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
@@ -829,15 +845,16 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Saves a separate copy of design under a different name&quot;&quot;&quot;</span>
         <span class="n">filename</span> <span class="o">=</span> <span class="n">QFileDialog</span><span class="o">.</span><span class="n">getSaveFileName</span><span class="p">(</span>
             <span class="kc">None</span><span class="p">,</span>
-            <span class="s1">&#39;Select a new location to save Metal design to&#39;</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">get_design_name</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;.metal.py&#39;</span><span class="p">,</span>
-            <span class="n">selectedFilter</span><span class="o">=</span><span class="s1">&#39;*.metal.py&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="s2">&quot;Select a new location to save Metal design to&quot;</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">get_design_name</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;.metal.py&quot;</span><span class="p">,</span>
+            <span class="n">selectedFilter</span><span class="o">=</span><span class="s2">&quot;*.metal.py&quot;</span><span class="p">,</span>
+        <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
         <span class="c1"># save python script to file path</span>
         <span class="n">pyscript</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">to_python_script</span><span class="p">()</span>
-        <span class="c1">#check whether filename is empty or not. Save file only when filename is non-empty.</span>
+        <span class="c1"># check whether filename is empty or not. Save file only when filename is non-empty.</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                 <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pyscript</span><span class="p">)</span>
 
     <span class="nd">@slot_catch_error</span><span class="p">()</span>
@@ -848,24 +865,28 @@
             <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">save_path</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">filename</span><span class="p">:</span>
                 <span class="n">QMessageBox</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;Warning&#39;</span><span class="p">,</span> <span class="s1">&#39;This  will save a .metal.py script &#39;</span>
-                    <span class="s1">&#39;that needs to be copied into a jupyter notebook to run.&#39;</span>
-                    <span class="s1">&#39;The &quot;Load&quot; button has not yet been implemented.&#39;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="p">,</span>
+                    <span class="s2">&quot;Warning&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;This  will save a .metal.py script &quot;</span>
+                    <span class="s2">&quot;that needs to be copied into a jupyter notebook to run.&quot;</span>
+                    <span class="s1">&#39;The &quot;Load&quot; button has not yet been implemented.&#39;</span><span class="p">,</span>
+                <span class="p">)</span>
 
                 <span class="n">filename</span> <span class="o">=</span> <span class="n">QFileDialog</span><span class="o">.</span><span class="n">getSaveFileName</span><span class="p">(</span>
                     <span class="kc">None</span><span class="p">,</span>
-                    <span class="s1">&#39;Select a new location to save Metal design to&#39;</span><span class="p">,</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">get_design_name</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;.metal.py&#39;</span><span class="p">,</span>
-                    <span class="n">selectedFilter</span><span class="o">=</span><span class="s1">&#39;*.metal.py&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="s2">&quot;Select a new location to save Metal design to&quot;</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">get_design_name</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;.metal.py&quot;</span><span class="p">,</span>
+                    <span class="n">selectedFilter</span><span class="o">=</span><span class="s2">&quot;*.metal.py&quot;</span><span class="p">,</span>
+                <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">save_path</span> <span class="o">=</span> <span class="n">filename</span>
             <span class="c1"># save python script to file path</span>
             <span class="n">pyscript</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">to_python_script</span><span class="p">()</span>
-            <span class="c1">#check whether filename is empty or not. Save file only when filename is non-empty.</span>
+            <span class="c1"># check whether filename is empty or not. Save file only when filename is non-empty.</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                     <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pyscript</span><span class="p">)</span>
 
-                <span class="c1">#make it clear it&#39;s saving</span>
+                <span class="c1"># make it clear it&#39;s saving</span>
                 <span class="n">saving_dialog</span> <span class="o">=</span> <span class="n">QDialog</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
                 <span class="n">saving_dialog</span><span class="o">.</span><span class="n">setWindowModality</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">NonModal</span><span class="p">)</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
@@ -875,9 +896,8 @@
                 <span class="n">saving_dialog</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
                 <span class="n">QTimer</span><span class="o">.</span><span class="n">singleShot</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="n">saving_dialog</span><span class="o">.</span><span class="n">close</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;No design present.&#39;</span><span class="p">)</span>
-            <span class="n">QMessageBox</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;Warning&#39;</span><span class="p">,</span> <span class="s1">&#39;No design present! Can&#39;</span>
-                                <span class="s1">&#39;t save&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No design present.&quot;</span><span class="p">)</span>
+            <span class="n">QMessageBox</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Warning&quot;</span><span class="p">,</span> <span class="s2">&quot;No design present! Cant save&quot;</span><span class="p">)</span>
 
     <span class="nd">@slot_catch_error</span><span class="p">()</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">load_design</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
@@ -888,7 +908,8 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">full_refresh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handles click on Refresh.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="sa">r</span><span class="s1">&#39;Force refresh of all widgets (does not rebuild components)...&#39;</span><span class="p">)</span>
+            <span class="sa">r</span><span class="s2">&quot;Force refresh of all widgets (does not rebuild components)...&quot;</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gui</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gui</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">mainViewTab</span><span class="o">.</span><span class="n">doShow</span><span class="p">()</span>
 
@@ -896,21 +917,20 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">rebuild</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handles click on Rebuild.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="sa">r</span><span class="s1">&#39;Rebuilding all components in the model (and refreshing widgets)...&#39;</span>
+            <span class="sa">r</span><span class="s2">&quot;Rebuilding all components in the model (and refreshing widgets)...&quot;</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
-        <span class="c1">#self.gui.ui.mainViewTab.doShow()</span>
+        <span class="c1"># self.gui.ui.mainViewTab.doShow()</span>
 
     <span class="nd">@slot_catch_error</span><span class="p">()</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">create_build_log_window</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;&quot;Handles click on Build History button.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; &quot;Handles click on Build History button.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gui</span><span class="o">.</span><span class="n">gui_create_build_log_window</span><span class="p">()</span>
 
     <span class="nd">@slot_catch_error</span><span class="p">()</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">open_web_help</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;&quot;Handles click on Build History button.&quot;&quot;&quot;</span>
-        <span class="n">webbrowser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;https://qiskit-community.github.io/qiskit-metal/&#39;</span><span class="p">,</span>
-                        <span class="n">new</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; &quot;Handles click on Build History button.&quot;&quot;&quot;</span>
+        <span class="n">webbrowser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;https://qiskit-community.github.io/qiskit-metal/&quot;</span><span class="p">,</span> <span class="n">new</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="nd">@slot_catch_error</span><span class="p">()</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_force_close</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ison</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
@@ -946,8 +966,11 @@
 <span class="sd">            bool: True to continue, False otherwise</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">reply</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">question</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Qiskit Metal&quot;</span><span class="p">,</span> <span class="s2">&quot;Save unsaved changes to design?&quot;</span><span class="p">,</span>
-            <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span> <span class="o">|</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span> <span class="o">|</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Cancel</span><span class="p">)</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="s2">&quot;Qiskit Metal&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Save unsaved changes to design?&quot;</span><span class="p">,</span>
+            <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span> <span class="o">|</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span> <span class="o">|</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Cancel</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">reply</span> <span class="o">==</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Cancel</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
@@ -980,13 +1003,17 @@
 
     <span class="n">__UI__</span> <span class="o">=</span> <span class="n">Ui_MainWindow</span>
     <span class="n">_QMainWindowClass</span> <span class="o">=</span> <span class="n">QMainWindowExtension</span>
-    <span class="n">_img_logo_name</span> <span class="o">=</span> <span class="s1">&#39;metal_logo.png&#39;</span>
-    <span class="n">_stylesheet_default</span> <span class="o">=</span> <span class="s1">&#39;metal_dark&#39;</span>
+    <span class="n">_img_logo_name</span> <span class="o">=</span> <span class="s2">&quot;metal_logo.png&quot;</span>
+    <span class="n">_stylesheet_default</span> <span class="o">=</span> <span class="s2">&quot;metal_dark&quot;</span>
 
     <span class="c1"># This is somewhat outdated</span>
     <span class="n">_dock_names</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s1">&#39;dockComponent&#39;</span><span class="p">,</span> <span class="s1">&#39;dockConnectors&#39;</span><span class="p">,</span> <span class="s1">&#39;dockDesign&#39;</span><span class="p">,</span> <span class="s1">&#39;dockLog&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;dockLibrary&#39;</span><span class="p">,</span> <span class="s1">&#39;dockVariables&#39;</span>
+        <span class="s2">&quot;dockComponent&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;dockConnectors&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;dockDesign&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;dockLog&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;dockLibrary&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;dockVariables&quot;</span><span class="p">,</span>
     <span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">design</span><span class="p">:</span> <span class="n">QDesign</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
@@ -1003,9 +1030,11 @@
         <span class="c1"># it&#39;s now lazy, called the first time MetalGUI is instantiated.</span>
         <span class="c1"># Idempotent — second and later calls are no-ops.</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">setup_qt_backend</span>
+
         <span class="n">setup_qt_backend</span><span class="p">()</span>
 
         <span class="kn">from</span><span class="w"> </span><span class="nn">.utility._handle_qt_messages</span><span class="w"> </span><span class="kn">import</span> <span class="n">QtCore</span><span class="p">,</span> <span class="n">_qt_message_handler</span>
+
         <span class="n">QtCore</span><span class="o">.</span><span class="n">qInstallMessageHandler</span><span class="p">(</span><span class="n">_qt_message_handler</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">qApp</span> <span class="o">=</span> <span class="n">kick_start_qApp</span><span class="p">()</span>
@@ -1068,20 +1097,25 @@
         <span class="k">def</span><span class="w"> </span><span class="nf">setEnabled</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">widgets</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">widgetname</span> <span class="ow">in</span> <span class="n">widgets</span><span class="p">:</span>
                 <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">widgetname</span><span class="p">):</span>
-                    <span class="n">widget</span><span class="p">:</span> <span class="s1">&#39;QWidget&#39;</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">widgetname</span><span class="p">)</span>
+                    <span class="n">widget</span><span class="p">:</span> <span class="s2">&quot;QWidget&quot;</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">widgetname</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">widget</span><span class="p">:</span>
                         <span class="n">widget</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">enabled</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;GUI issue: wrong name: </span><span class="si">{</span><span class="n">widgetname</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;GUI issue: wrong name: </span><span class="si">{</span><span class="n">widgetname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="n">widgets</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s1">&#39;actionSave&#39;</span><span class="p">,</span> <span class="s1">&#39;action_full_refresh&#39;</span><span class="p">,</span> <span class="s1">&#39;actionRebuild&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;actionDelete_All&#39;</span><span class="p">,</span> <span class="s1">&#39;dockComponent&#39;</span><span class="p">,</span> <span class="s1">&#39;dockLibrary&#39;</span><span class="p">,</span> <span class="s1">&#39;dockDesign&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;dockConnectors&#39;</span>
+            <span class="s2">&quot;actionSave&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;action_full_refresh&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;actionRebuild&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;actionDelete_All&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;dockComponent&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;dockLibrary&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;dockDesign&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;dockConnectors&quot;</span><span class="p">,</span>
         <span class="p">]</span>
         <span class="n">setEnabled</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="p">,</span> <span class="n">widgets</span><span class="p">)</span>
 
-        <span class="n">widgets</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;component_window&#39;</span><span class="p">,</span> <span class="s1">&#39;elements_win&#39;</span><span class="p">,</span> <span class="s1">&#39;net_list_win&#39;</span><span class="p">]</span>
+        <span class="n">widgets</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;component_window&quot;</span><span class="p">,</span> <span class="s2">&quot;elements_win&quot;</span><span class="p">,</span> <span class="s2">&quot;net_list_win&quot;</span><span class="p">]</span>
         <span class="n">setEnabled</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widgets</span><span class="p">)</span>
 
 <div class="viewcode-block" id="MetalGUI.set_design">
@@ -1123,8 +1157,8 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Setup the logger.&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_setup_logger</span><span class="p">()</span>
 
-        <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;metal&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_log_handler_design</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_log_handler</span><span class="p">(</span><span class="s1">&#39;metal&#39;</span><span class="p">,</span> <span class="n">logger</span><span class="p">)</span>
+        <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;metal&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log_handler_design</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_log_handler</span><span class="p">(</span><span class="s2">&quot;metal&quot;</span><span class="p">,</span> <span class="n">logger</span><span class="p">)</span>
 
 <div class="viewcode-block" id="MetalGUI.refresh_design">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal._gui.MetalGUI.html#qiskit_metal._gui.MetalGUI.refresh_design">[docs]</a>
@@ -1139,8 +1173,9 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the design name.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="p">:</span>
             <span class="n">design_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">get_design_name</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">title</span> <span class="o">+</span>
-                                            <span class="sa">f</span><span class="s1">&#39; — </span><span class="si">{</span><span class="n">design_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">title</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot; — </span><span class="si">{</span><span class="n">design_name</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_ui_adjustments</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1152,25 +1187,22 @@
         <span class="c1"># Add a second label to the status bar</span>
         <span class="n">status_bar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">statusBar</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">statusbar_label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="n">status_bar</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">statusbar_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">statusbar_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
         <span class="n">status_bar</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">statusbar_label</span><span class="p">)</span>
 
         <span class="c1"># Docks</span>
         <span class="c1"># Left handside</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">splitDockWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockDesign</span><span class="p">,</span>
-                                         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockComponent</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Vertical</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">tabifyDockWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockDesign</span><span class="p">,</span>
-                                          <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLibrary</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">tabifyDockWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLibrary</span><span class="p">,</span>
-                                          <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockConnectors</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">tabifyDockWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockConnectors</span><span class="p">,</span>
-                                          <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockVariables</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">splitDockWidget</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockDesign</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockComponent</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Vertical</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">tabifyDockWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockDesign</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLibrary</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">tabifyDockWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLibrary</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockConnectors</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">tabifyDockWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockConnectors</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockVariables</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockDesign</span><span class="o">.</span><span class="n">raise_</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">resizeDocks</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockDesign</span><span class="p">],</span> <span class="p">[</span><span class="mi">350</span><span class="p">],</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">)</span>
 
         <span class="c1"># Log</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLog</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span><span class="o">.</span><span class="n">resizeDocks</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLog</span><span class="p">],</span> <span class="p">[</span><span class="mi">120</span><span class="p">],</span>
-                                             <span class="n">Qt</span><span class="o">.</span><span class="n">Vertical</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLog</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span><span class="o">.</span><span class="n">resizeDocks</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLog</span><span class="p">],</span> <span class="p">[</span><span class="mi">120</span><span class="p">],</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Vertical</span><span class="p">)</span>
 
         <span class="c1"># toolBarView additions</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_add_additional_qactions_tool_bar_view</span><span class="p">()</span>
@@ -1190,16 +1222,20 @@
         <span class="n">toolbar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">toolBarView</span>
         <span class="n">toolbarInsertBefore</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">actionToggleDocks</span>  <span class="c1"># insert before this action</span>
 
-        <span class="n">DOCKS</span> <span class="o">=</span> <span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLibrary</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;:/design&quot;</span><span class="p">),</span>
-                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockDesign</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;:/component&quot;</span><span class="p">),</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;-----&#39;</span><span class="p">),</span>
-                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockVariables</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;:/variables&quot;</span><span class="p">),</span>
-                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockConnectors</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;:/connectors&quot;</span><span class="p">),</span>
-                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLog</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;:/log&quot;</span><span class="p">),</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;-----&#39;</span><span class="p">)]</span>
+        <span class="n">DOCKS</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLibrary</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;:/design&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockDesign</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;:/component&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;-----&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockVariables</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;:/variables&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockConnectors</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;:/connectors&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLog</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;:/log&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;-----&quot;</span><span class="p">),</span>
+        <span class="p">]</span>
 
         <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">DOCKS</span><span class="p">:</span>
             <span class="n">dock</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">iconName</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">iconName</span> <span class="o">==</span> <span class="s1">&#39;-----&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">iconName</span> <span class="o">==</span> <span class="s2">&quot;-----&quot;</span><span class="p">:</span>
                 <span class="n">toolbar</span><span class="o">.</span><span class="n">insertSeparator</span><span class="p">(</span><span class="n">toolbarInsertBefore</span><span class="p">)</span>
                 <span class="k">continue</span>
 
@@ -1208,10 +1244,10 @@
             <span class="n">icon</span><span class="o">.</span><span class="n">addPixmap</span><span class="p">(</span><span class="n">QPixmap</span><span class="p">(</span><span class="n">iconName</span><span class="p">),</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Normal</span><span class="p">,</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Off</span><span class="p">)</span>
 
             <span class="c1"># Function call &amp; monkey patch class instance ala Monkey Patch</span>
-            <span class="n">dock</span><span class="o">.</span><span class="n">doShow</span> <span class="o">=</span> <span class="n">doShowHighlighWidget</span><span class="o">.</span><span class="fm">__get__</span><span class="p">(</span><span class="n">dock</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">dock</span><span class="p">))</span>  <span class="c1"># pylint: disable=assignment-from-no-return, no-value-for-parameter</span>
+            <span class="n">dock</span><span class="o">.</span><span class="n">doShow</span> <span class="o">=</span> <span class="n">doShowHighlighWidget</span><span class="o">.</span><span class="fm">__get__</span><span class="p">(</span><span class="n">dock</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">dock</span><span class="p">))</span>
 
             <span class="c1"># QT Action with trigger, embed in toolbar</span>
-            <span class="n">action</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">dock</span><span class="p">,</span> <span class="n">triggered</span><span class="o">=</span><span class="n">dock</span><span class="o">.</span><span class="n">doShow</span><span class="p">)</span>
+            <span class="n">action</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">dock</span><span class="p">,</span> <span class="n">triggered</span><span class="o">=</span><span class="n">dock</span><span class="o">.</span><span class="n">doShow</span><span class="p">)</span>
             <span class="n">action</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">icon</span><span class="p">)</span>
             <span class="n">dock</span><span class="o">.</span><span class="n">actionShow</span> <span class="o">=</span> <span class="n">action</span>  <span class="c1"># save action</span>
 
@@ -1239,9 +1275,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockVariables</span><span class="o">.</span><span class="n">setWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variables_window</span><span class="p">)</span>
         <span class="c1"># hookup to delete action</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">btn_comp_del</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tableComponents</span><span class="o">.</span><span class="n">delete_selected_rows</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">btn_comp_rename</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tableComponents</span><span class="o">.</span><span class="n">rename_row</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tableComponents</span><span class="o">.</span><span class="n">delete_selected_rows</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">btn_comp_rename</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tableComponents</span><span class="o">.</span><span class="n">rename_row</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">btn_comp_zoom</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">btn_comp_zoom_fx</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_setup_plot_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1253,17 +1289,18 @@
 
         <span class="c1"># add highlight function ala Monkey Patch</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">mainViewTab</span>
-        <span class="n">obj</span><span class="o">.</span><span class="n">doShow</span> <span class="o">=</span> <span class="n">doShowHighlighWidget</span><span class="o">.</span><span class="fm">__get__</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>  <span class="c1"># pylint: disable=assignment-from-no-return, no-value-for-parameter</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">doShow</span> <span class="o">=</span> <span class="n">doShowHighlighWidget</span><span class="o">.</span><span class="fm">__get__</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
 
         <span class="c1"># Move the dock</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_move_dock_to_new_parent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLog</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_win</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLog</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span><span class="o">.</span><span class="n">resizeDocks</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLog</span><span class="p">],</span> <span class="p">[</span><span class="mi">120</span><span class="p">],</span>
-                                             <span class="n">Qt</span><span class="o">.</span><span class="n">Vertical</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLog</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span><span class="o">.</span><span class="n">resizeDocks</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLog</span><span class="p">],</span> <span class="p">[</span><span class="mi">120</span><span class="p">],</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Vertical</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_move_dock_to_new_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                                 <span class="n">dock</span><span class="p">:</span> <span class="n">QDockWidget</span><span class="p">,</span>
-                                 <span class="n">new_parent</span><span class="p">:</span> <span class="n">QMainWindow</span><span class="p">,</span>
-                                 <span class="n">dock_location</span><span class="o">=</span><span class="n">Qt</span><span class="o">.</span><span class="n">BottomDockWidgetArea</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_move_dock_to_new_parent</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">dock</span><span class="p">:</span> <span class="n">QDockWidget</span><span class="p">,</span>
+        <span class="n">new_parent</span><span class="p">:</span> <span class="n">QMainWindow</span><span class="p">,</span>
+        <span class="n">dock_location</span><span class="o">=</span><span class="n">Qt</span><span class="o">.</span><span class="n">BottomDockWidgetArea</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The the doc to a different parent window.</span>
 
 <span class="sd">        Args:</span>
@@ -1287,15 +1324,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tabQGeometry</span><span class="o">.</span><span class="n">sort_model</span><span class="o">.</span><span class="n">setSourceModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">elements_win</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tabQGeometry</span><span class="o">.</span><span class="n">sort_model</span><span class="o">.</span><span class="n">setFilterKeyColumn</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">elements_win</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tableElements</span><span class="o">.</span><span class="n">setModel</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tabQGeometry</span><span class="o">.</span><span class="n">sort_model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elements_win</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tableElements</span><span class="o">.</span><span class="n">setModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tabQGeometry</span><span class="o">.</span><span class="n">sort_model</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">elements_win</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tableElements</span><span class="o">.</span><span class="n">setSortingEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="c1"># Add a text changed event to the QGeometry/Component/Layer text boxes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">elements_win</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">lineEdit</span><span class="o">.</span><span class="n">textChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">elements_lineEdit_onChanged</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">elements_lineEdit_onChanged</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">elements_win</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">lineEdit_2</span><span class="o">.</span><span class="n">textChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">elements_lineEdit_2_onChanged</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">elements_lineEdit_2_onChanged</span>
+        <span class="p">)</span>
 
         <span class="c1"># Add to the tabbed main view</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tabQGeometry</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">elements_win</span><span class="p">)</span>
@@ -1303,7 +1341,7 @@
 <div class="viewcode-block" id="MetalGUI.elements_lineEdit_onChanged">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal._gui.MetalGUI.html#qiskit_metal._gui.MetalGUI.elements_lineEdit_onChanged">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">elements_lineEdit_onChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Text changed event for QGeometry/Component text box</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Text changed event for QGeometry/Component text box</span>
 <span class="sd">        Args:</span>
 <span class="sd">            text: Text typed in the filter box.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1314,7 +1352,7 @@
 <div class="viewcode-block" id="MetalGUI.elements_lineEdit_2_onChanged">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal._gui.MetalGUI.html#qiskit_metal._gui.MetalGUI.elements_lineEdit_2_onChanged">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">elements_lineEdit_2_onChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Text changed event for QGeometry/Layer text box</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Text changed event for QGeometry/Layer text box</span>
 <span class="sd">        Args:</span>
 <span class="sd">            text: Text typed in the filter box.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1329,8 +1367,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tabNetList</span><span class="o">.</span><span class="n">sort_model</span> <span class="o">=</span> <span class="n">QSortFilterProxyModel</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tabNetList</span><span class="o">.</span><span class="n">sort_model</span><span class="o">.</span><span class="n">setSourceModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">net_list_win</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">net_list_win</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tableElements</span><span class="o">.</span><span class="n">setModel</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tabNetList</span><span class="o">.</span><span class="n">sort_model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">net_list_win</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tableElements</span><span class="o">.</span><span class="n">setModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tabNetList</span><span class="o">.</span><span class="n">sort_model</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">net_list_win</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tableElements</span><span class="o">.</span><span class="n">setSortingEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="c1"># Add to the tabbed main view</span>
@@ -1342,9 +1379,9 @@
 <span class="sd">        Table model that shows the summary of the components of a design</span>
 <span class="sd">        in a table with their names, classes, and modules</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">model</span> <span class="o">=</span> <span class="n">QTableModel_AllComponents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                                          <span class="n">logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">,</span>
-                                          <span class="n">tableView</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tableComponents</span><span class="p">)</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">QTableModel_AllComponents</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">,</span> <span class="n">tableView</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tableComponents</span>
+        <span class="p">)</span>
         <span class="c1"># Add Sort/Filter logic to the components table</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">proxyModel</span> <span class="o">=</span> <span class="n">QSortFilterProxyModel</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">proxyModel</span><span class="o">.</span><span class="n">setSourceModel</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
@@ -1356,12 +1393,13 @@
 
         <span class="c1"># Add a text changed event to the filter text box</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">filter_text_design</span><span class="o">.</span><span class="n">textChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">filter_text_design_onChanged</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">filter_text_design_onChanged</span>
+        <span class="p">)</span>
 
 <div class="viewcode-block" id="MetalGUI.filter_text_design_onChanged">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal._gui.MetalGUI.html#qiskit_metal._gui.MetalGUI.filter_text_design_onChanged">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">filter_text_design_onChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Text changed event for filter_text_design</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Text changed event for filter_text_design</span>
 <span class="sd">        Args:</span>
 <span class="sd">            text: Text typed in the filter box.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1380,10 +1418,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">param_window</span> <span class="o">=</span> <span class="n">pew</span><span class="o">.</span><span class="n">create_parameter_entry_window</span><span class="p">(</span>
-                <span class="bp">self</span><span class="p">,</span> <span class="n">full_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="p">)</span>
+                <span class="bp">self</span><span class="p">,</span> <span class="n">full_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span>
+            <span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Unable to open param entry window due to Exception: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">)</span>
+                <span class="sa">f</span><span class="s2">&quot;Unable to open param entry window due to Exception: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2"> &quot;</span>
+            <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_setup_library_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1401,7 +1441,7 @@
 
         <span class="c1"># getting absolute path of Qlibrary folder</span>
         <span class="n">init_qlibrary_abs_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">qlibrary</span><span class="o">.</span><span class="vm">__file__</span><span class="p">)</span>
-        <span class="n">qlibrary_abs_path</span> <span class="o">=</span> <span class="n">init_qlibrary_abs_path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;__init__.py&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">qlibrary_abs_path</span> <span class="o">=</span> <span class="n">init_qlibrary_abs_path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;__init__.py&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">QLIBRARY_ROOT</span> <span class="o">=</span> <span class="n">qlibrary_abs_path</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">QLIBRARY_FOLDERNAME</span> <span class="o">=</span> <span class="n">qlibrary</span><span class="o">.</span><span class="vm">__name__</span>
 
@@ -1411,7 +1451,7 @@
         <span class="n">dock</span><span class="o">.</span><span class="n">library_model</span><span class="o">.</span><span class="n">setRootPath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">QLIBRARY_ROOT</span><span class="p">)</span>
 
         <span class="c1"># QSortFilterProxyModel</span>
-        <span class="c1">#QSortFilterProxyModel: sorting items, filtering out items, or both.</span>
+        <span class="c1"># QSortFilterProxyModel: sorting items, filtering out items, or both.</span>
         <span class="c1">#   maps the original model indexes to new indexes, allows a given</span>
         <span class="c1"># source model to be restructured as far as views are concerned</span>
         <span class="c1"># without requiring any transformations on the underlying data, and</span>
@@ -1428,14 +1468,17 @@
         <span class="n">view</span><span class="o">.</span><span class="n">setModel</span><span class="p">(</span><span class="n">dock</span><span class="o">.</span><span class="n">proxy_library_model</span><span class="p">)</span>
         <span class="n">view</span><span class="o">.</span><span class="n">setRootIndex</span><span class="p">(</span>
             <span class="n">dock</span><span class="o">.</span><span class="n">proxy_library_model</span><span class="o">.</span><span class="n">mapFromSource</span><span class="p">(</span>
-                <span class="n">dock</span><span class="o">.</span><span class="n">library_model</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">dock</span><span class="o">.</span><span class="n">library_model</span><span class="o">.</span><span class="n">rootPath</span><span class="p">())))</span>
+                <span class="n">dock</span><span class="o">.</span><span class="n">library_model</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">dock</span><span class="o">.</span><span class="n">library_model</span><span class="o">.</span><span class="n">rootPath</span><span class="p">())</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
 
         <span class="c1"># try empty one if no work</span>
         <span class="n">view</span><span class="o">.</span><span class="n">setItemDelegate</span><span class="p">(</span><span class="n">LibraryDelegate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="p">))</span>
         <span class="n">view</span><span class="o">.</span><span class="n">itemDelegate</span><span class="p">()</span><span class="o">.</span><span class="n">tool_tip_signal</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">view</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">)</span>
 
         <span class="n">view</span><span class="o">.</span><span class="n">qlibrary_filepath_signal</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_create_new_component_object_from_qlibrary</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_create_new_component_object_from_qlibrary</span>
+        <span class="p">)</span>
 
         <span class="c1"># https://stackoverflow.com/questions/16759088/what-is-the-viewport-of-a-tree-widget</span>
         <span class="n">view</span><span class="o">.</span><span class="n">viewport</span><span class="p">()</span><span class="o">.</span><span class="n">setAttribute</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">WA_Hover</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
@@ -1447,16 +1490,19 @@
         <span class="n">stringLibraryRootPath</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">libraryRootPath</span><span class="p">)</span>
         <span class="n">view</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
             <span class="n">dock</span><span class="o">.</span><span class="n">proxy_library_model</span><span class="o">.</span><span class="n">mapFromSource</span><span class="p">(</span>
-                <span class="n">dock</span><span class="o">.</span><span class="n">library_model</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">stringLibraryRootPath</span><span class="p">)))</span>
+                <span class="n">dock</span><span class="o">.</span><span class="n">library_model</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">stringLibraryRootPath</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
 
         <span class="c1"># Add a text changed event to the filter text box</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLibrary_filter</span><span class="o">.</span><span class="n">textChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">dockLibrary_filter_onChanged</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dockLibrary_filter_onChanged</span>
+        <span class="p">)</span>
 
 <div class="viewcode-block" id="MetalGUI.dockLibrary_filter_onChanged">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal._gui.MetalGUI.html#qiskit_metal._gui.MetalGUI.dockLibrary_filter_onChanged">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">dockLibrary_filter_onChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Text changed event for filter_text_design</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Text changed event for filter_text_design</span>
 <span class="sd">        Args:</span>
 <span class="sd">            text: Text typed in the filter box.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1474,7 +1520,9 @@
 
         <span class="n">view</span><span class="o">.</span><span class="n">setRootIndex</span><span class="p">(</span>
             <span class="n">proxy_model</span><span class="o">.</span><span class="n">mapFromSource</span><span class="p">(</span>
-                <span class="n">dock</span><span class="o">.</span><span class="n">library_model</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">dock</span><span class="o">.</span><span class="n">library_model</span><span class="o">.</span><span class="n">rootPath</span><span class="p">())))</span>
+                <span class="n">dock</span><span class="o">.</span><span class="n">library_model</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">dock</span><span class="o">.</span><span class="n">library_model</span><span class="o">.</span><span class="n">rootPath</span><span class="p">())</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">proxy_model</span><span class="o">.</span><span class="n">rowCount</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">view</span><span class="o">.</span><span class="n">expandAll</span><span class="p">()</span>
@@ -1493,8 +1541,7 @@
 <span class="sd">            do_hide (bool): Hide or show. Defaults to None -- toggle.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">toggle_all_docks</span><span class="p">(</span><span class="n">do_hide</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">qApp</span><span class="o">.</span><span class="n">processEvents</span><span class="p">(</span>
-        <span class="p">)</span>  <span class="c1"># Process all events, so that if we take screenshot next it won&#39;t be partially updated</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qApp</span><span class="o">.</span><span class="n">processEvents</span><span class="p">()</span>  <span class="c1"># Process all events, so that if we take screenshot next it won&#39;t be partially updated</span></div>
 
 
     <span class="c1">################################################</span>
@@ -1518,7 +1565,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">axes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="s1">&#39;matplotlib.plt.Axes&#39;</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">axes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;matplotlib.plt.Axes&quot;</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the axes.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_win</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">axes</span>
 
@@ -1528,7 +1575,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_win</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">figure</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">canvas</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;PlotCanvas&#39;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">canvas</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;PlotCanvas&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get access to the canvas that handles the figure and axes, and their</span>
 <span class="sd">        main functions.</span>
 
@@ -1653,8 +1700,7 @@
 <span class="sd">        Args:</span>
 <span class="sd">            _ (object, optional): Default parameters for slot  - used to call from action</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">build_log_window</span> <span class="o">=</span> <span class="n">BuildHistoryScrollArea</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">build_logs</span><span class="o">.</span><span class="n">data</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">build_log_window</span> <span class="o">=</span> <span class="n">BuildHistoryScrollArea</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">build_logs</span><span class="o">.</span><span class="n">data</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">build_log_window</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
 

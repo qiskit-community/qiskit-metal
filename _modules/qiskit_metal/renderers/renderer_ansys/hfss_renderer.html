@@ -713,14 +713,18 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pyEPR</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">epr</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pyEPR.ansys</span><span class="w"> </span><span class="kn">import</span> <span class="n">set_property</span><span class="p">,</span> <span class="n">parse_units</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyEPR.ansys</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_units</span><span class="p">,</span> <span class="n">set_property</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.draw.utility</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_vec3D</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_ansys.ansys_renderer</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">QAnsysRenderer</span><span class="p">,</span> <span class="n">get_clean_name</span><span class="p">)</span>
+    <span class="n">QAnsysRenderer</span><span class="p">,</span>
+    <span class="n">get_clean_name</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_ansys.solution_types</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">is_drivenmodal</span><span class="p">,</span> <span class="n">is_eigenmode</span><span class="p">)</span>
+    <span class="n">is_drivenmodal</span><span class="p">,</span>
+    <span class="n">is_eigenmode</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <div class="viewcode-block" id="QHFSSRenderer">
@@ -742,16 +746,17 @@
 <span class="sd">        * y_buffer_width_mm: 0.2 -- Buffer between max/min y and edge of ground plane, in mm</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;hfss&#39;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;hfss&quot;</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Name&quot;&quot;&quot;</span>
 
     <span class="n">hfss_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">port_inductor_gap</span><span class="o">=</span>
-        <span class="s1">&#39;10um&#39;</span>  <span class="c1"># spacing between port and inductor if junction is drawn both ways</span>
+        <span class="n">port_inductor_gap</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span>  <span class="c1"># spacing between port and inductor if junction is drawn both ways</span>
     <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;HFSS Options&quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">design</span><span class="p">:</span> <span class="s1">&#39;QDesign&#39;</span><span class="p">,</span> <span class="n">initiate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">design</span><span class="p">:</span> <span class="s2">&quot;QDesign&quot;</span><span class="p">,</span> <span class="n">initiate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a QRenderer for HFSS simulations, subclassed from QAnsysRenderer.</span>
 
 <span class="sd">        Args:</span>
@@ -767,13 +772,15 @@
 
 <div class="viewcode-block" id="QHFSSRenderer.render_design">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSRenderer.html#qiskit_metal.renderers.QHFSSRenderer.render_design">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">render_design</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                      <span class="n">selection</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                      <span class="n">open_pins</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                      <span class="n">port_list</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                      <span class="n">jj_to_port</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                      <span class="n">ignored_jjs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                      <span class="n">box_plus_buffer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">render_design</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">selection</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">open_pins</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">port_list</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">jj_to_port</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ignored_jjs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">box_plus_buffer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initiate rendering of components in design contained in selection,</span>
 <span class="sd">        assuming they&#39;re valid. Components are rendered before the chips they</span>
 <span class="sd">        reside on, and subtraction of negative shapes is performed at the very</span>
@@ -854,7 +861,8 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">case</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s1">&#39;Unable to proceed with rendering. Please check selection.&#39;</span><span class="p">)</span>
+                <span class="s2">&quot;Unable to proceed with rendering. Please check selection.&quot;</span>
+            <span class="p">)</span>
             <span class="k">return</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">chip_subtract_dict</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">set</span><span class="p">)</span>
@@ -875,8 +883,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">render_tables</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">port_list</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">add_endcaps</span><span class="p">(</span><span class="n">open_pins</span> <span class="o">+</span>
-                             <span class="p">[(</span><span class="n">qcomp</span><span class="p">,</span> <span class="n">pin</span><span class="p">)</span> <span class="k">for</span> <span class="n">qcomp</span><span class="p">,</span> <span class="n">pin</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">port_list</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_endcaps</span><span class="p">(</span><span class="n">open_pins</span> <span class="o">+</span> <span class="p">[(</span><span class="n">qcomp</span><span class="p">,</span> <span class="n">pin</span><span class="p">)</span> <span class="k">for</span> <span class="n">qcomp</span><span class="p">,</span> <span class="n">pin</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">port_list</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_endcaps</span><span class="p">(</span><span class="n">open_pins</span><span class="p">)</span>
 
@@ -899,10 +906,14 @@
 <span class="sd">            port_list (list): List of tuples of pins to be rendered as ports.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">qcomp</span><span class="p">,</span> <span class="n">pin</span><span class="p">,</span> <span class="n">impedance</span> <span class="ow">in</span> <span class="n">port_list</span><span class="p">:</span>
-            <span class="n">port_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Port_</span><span class="si">{</span><span class="n">qcomp</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">pin</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="n">port_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Port_</span><span class="si">{</span><span class="n">qcomp</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">pin</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="n">pdict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">qcomp</span><span class="p">]</span><span class="o">.</span><span class="n">pins</span><span class="p">[</span><span class="n">pin</span><span class="p">]</span>
-            <span class="n">midpt</span><span class="p">,</span> <span class="n">gap_size</span><span class="p">,</span> <span class="n">norm_vec</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="n">pdict</span><span class="p">[</span><span class="s1">&#39;middle&#39;</span><span class="p">],</span> <span class="n">pdict</span><span class="p">[</span><span class="s1">&#39;gap&#39;</span><span class="p">],</span> \
-                                               <span class="n">pdict</span><span class="p">[</span><span class="s1">&#39;normal&#39;</span><span class="p">],</span> <span class="n">pdict</span><span class="p">[</span><span class="s1">&#39;width&#39;</span><span class="p">]</span>
+            <span class="n">midpt</span><span class="p">,</span> <span class="n">gap_size</span><span class="p">,</span> <span class="n">norm_vec</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">pdict</span><span class="p">[</span><span class="s2">&quot;middle&quot;</span><span class="p">],</span>
+                <span class="n">pdict</span><span class="p">[</span><span class="s2">&quot;gap&quot;</span><span class="p">],</span>
+                <span class="n">pdict</span><span class="p">[</span><span class="s2">&quot;normal&quot;</span><span class="p">],</span>
+                <span class="n">pdict</span><span class="p">[</span><span class="s2">&quot;width&quot;</span><span class="p">],</span>
+            <span class="p">)</span>
             <span class="n">width</span> <span class="o">=</span> <span class="n">parse_units</span><span class="p">(</span><span class="n">width</span><span class="p">)</span>
             <span class="n">endpoints</span> <span class="o">=</span> <span class="n">parse_units</span><span class="p">([</span><span class="n">midpt</span><span class="p">,</span> <span class="n">midpt</span> <span class="o">+</span> <span class="n">gap_size</span> <span class="o">*</span> <span class="n">norm_vec</span><span class="p">])</span>
             <span class="n">endpoints_3d</span> <span class="o">=</span> <span class="n">to_vec3D</span><span class="p">(</span><span class="n">endpoints</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># Set z height to 0</span>
@@ -918,21 +929,24 @@
                 <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span> <span class="o">=</span> <span class="n">y0</span> <span class="o">-</span> <span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">y0</span> <span class="o">+</span> <span class="n">width</span> <span class="o">/</span> <span class="mi">2</span>
 
             <span class="c1"># Draw rectangle</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Drawing a rectangle: </span><span class="si">{</span><span class="n">port_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-            <span class="n">poly_ansys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">draw_rect_corner</span><span class="p">([</span><span class="n">x_min</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-                                                       <span class="n">x_max</span> <span class="o">-</span> <span class="n">x_min</span><span class="p">,</span>
-                                                       <span class="n">y_max</span> <span class="o">-</span> <span class="n">y_min</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
-                                                       <span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="n">transparency</span><span class="o">=</span><span class="mf">0.0</span><span class="p">))</span>
-            <span class="n">axis</span> <span class="o">=</span> <span class="s1">&#39;x&#39;</span> <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y1</span> <span class="o">-</span> <span class="n">y0</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;y&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Drawing a rectangle: </span><span class="si">{</span><span class="n">port_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">poly_ansys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">draw_rect_corner</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">x_min</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                <span class="n">x_max</span> <span class="o">-</span> <span class="n">x_min</span><span class="p">,</span>
+                <span class="n">y_max</span> <span class="o">-</span> <span class="n">y_min</span><span class="p">,</span>
+                <span class="mi">0</span><span class="p">,</span>
+                <span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="n">transparency</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="n">axis</span> <span class="o">=</span> <span class="s2">&quot;x&quot;</span> <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y1</span> <span class="o">-</span> <span class="n">y0</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;y&quot;</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">is_eigenmode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">solution_type</span><span class="p">):</span>
-                <span class="n">poly_ansys</span><span class="o">.</span><span class="n">make_lumped_port</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span>
-                                            <span class="n">z0</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">impedance</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;ohm&#39;</span><span class="p">,</span>
-                                            <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;LumpPort_</span><span class="si">{</span><span class="n">qcomp</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">pin</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">poly_ansys</span><span class="o">.</span><span class="n">make_lumped_port</span><span class="p">(</span>
+                    <span class="n">axis</span><span class="p">,</span> <span class="n">z0</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">impedance</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;ohm&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;LumpPort_</span><span class="si">{</span><span class="n">qcomp</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">pin</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">rename_obj</span><span class="p">(</span><span class="n">poly_ansys</span><span class="p">,</span> <span class="n">port_name</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">poly_ansys</span><span class="o">.</span><span class="n">make_rlc_boundary</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span>
-                                             <span class="n">r</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">impedance</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;ohm&#39;</span><span class="p">,</span>
-                                             <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;RLCBoundary_</span><span class="si">{</span><span class="n">qcomp</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">pin</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">poly_ansys</span><span class="o">.</span><span class="n">make_rlc_boundary</span><span class="p">(</span>
+                    <span class="n">axis</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">impedance</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;ohm&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;RLCBoundary_</span><span class="si">{</span><span class="n">qcomp</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">pin</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">rename_obj</span><span class="p">(</span><span class="n">poly_ansys</span><span class="p">,</span> <span class="n">port_name</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">assign_port_mesh</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">port_name</span><span class="p">)</span>
 
@@ -940,8 +954,9 @@
             <span class="n">lump_line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">draw_polyline</span><span class="p">(</span>
                 <span class="p">[</span><span class="n">endpoints_3d</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">endpoints_3d</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
                 <span class="n">closed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                <span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">128</span><span class="p">)))</span>
-            <span class="n">lump_line</span> <span class="o">=</span> <span class="n">lump_line</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;voltage_line_</span><span class="si">{</span><span class="n">port_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">128</span><span class="p">)),</span>
+            <span class="p">)</span>
+            <span class="n">lump_line</span> <span class="o">=</span> <span class="n">lump_line</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;voltage_line_</span><span class="si">{</span><span class="n">port_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">lump_line</span><span class="o">.</span><span class="n">show_direction</span> <span class="o">=</span> <span class="kc">True</span></div>
 
 
@@ -963,8 +978,8 @@
 <span class="sd">        Args:</span>
 <span class="sd">            qgeom (pd.Series): GeoSeries of element properties.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">qcomp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span><span class="p">[</span><span class="n">qgeom</span><span class="p">[</span><span class="s1">&#39;component&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">name</span>
-        <span class="n">qc_elt</span> <span class="o">=</span> <span class="n">get_clean_name</span><span class="p">(</span><span class="n">qgeom</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
+        <span class="n">qcomp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span><span class="p">[</span><span class="n">qgeom</span><span class="p">[</span><span class="s2">&quot;component&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">qc_elt</span> <span class="o">=</span> <span class="n">get_clean_name</span><span class="p">(</span><span class="n">qgeom</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="n">qcomp</span><span class="p">,</span> <span class="n">qc_elt</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">jj_to_ignore</span><span class="p">:</span>
             <span class="n">qc_shapely</span> <span class="o">=</span> <span class="n">qgeom</span><span class="o">.</span><span class="n">geometry</span>
@@ -977,50 +992,62 @@
             <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z0</span> <span class="o">=</span> <span class="n">endpoints_3d</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y1</span> <span class="o">-</span> <span class="n">y0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">):</span>
                 <span class="c1"># Junction runs vertically up/down</span>
-                <span class="n">axis</span> <span class="o">=</span> <span class="s1">&#39;y&#39;</span>
+                <span class="n">axis</span> <span class="o">=</span> <span class="s2">&quot;y&quot;</span>
                 <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span> <span class="o">=</span> <span class="n">x0</span> <span class="o">-</span> <span class="n">qc_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">x0</span> <span class="o">+</span> <span class="n">qc_width</span> <span class="o">/</span> <span class="mi">2</span>
                 <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">y0</span><span class="p">,</span> <span class="n">y1</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">y0</span><span class="p">,</span> <span class="n">y1</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># Junction runs horizontally left/right</span>
-                <span class="n">axis</span> <span class="o">=</span> <span class="s1">&#39;x&#39;</span>
+                <span class="n">axis</span> <span class="o">=</span> <span class="s2">&quot;x&quot;</span>
                 <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">)</span>
                 <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span> <span class="o">=</span> <span class="n">y0</span> <span class="o">-</span> <span class="n">qc_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">y0</span> <span class="o">+</span> <span class="n">qc_width</span> <span class="o">/</span> <span class="mi">2</span>
 
             <span class="k">if</span> <span class="p">(</span><span class="n">qcomp</span><span class="p">,</span> <span class="n">qc_elt</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">jj_lumped_ports</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">jj_lumped_ports</span><span class="p">[(</span><span class="n">qcomp</span><span class="p">,</span> <span class="n">qc_elt</span><span class="p">)][</span><span class="mi">1</span><span class="p">]:</span>
                     <span class="c1"># Draw both port and inductor side by side with small gap in between</span>
-                    <span class="n">gap</span> <span class="o">=</span> <span class="n">parse_units</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hfss_options</span><span class="p">[</span><span class="s1">&#39;port_inductor_gap&#39;</span><span class="p">])</span>
+                    <span class="n">gap</span> <span class="o">=</span> <span class="n">parse_units</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hfss_options</span><span class="p">[</span><span class="s2">&quot;port_inductor_gap&quot;</span><span class="p">])</span>
                     <span class="n">x_mid</span><span class="p">,</span> <span class="n">y_mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">x_min</span> <span class="o">+</span> <span class="n">x_max</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">y_min</span> <span class="o">+</span> <span class="n">y_max</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
-                    <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="s1">&#39;x&#39;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="s2">&quot;x&quot;</span><span class="p">:</span>
                         <span class="n">y_mid_hi</span> <span class="o">=</span> <span class="n">y_mid</span> <span class="o">+</span> <span class="n">gap</span> <span class="o">/</span> <span class="mi">2</span>
                         <span class="n">y_mid_lo</span> <span class="o">=</span> <span class="n">y_mid</span> <span class="o">-</span> <span class="n">gap</span> <span class="o">/</span> <span class="mi">2</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">render_junction_port</span><span class="p">(</span><span class="n">qgeom</span><span class="p">,</span> <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">y_mid_hi</span><span class="p">,</span>
-                                                  <span class="n">y_max</span><span class="p">,</span> <span class="n">qc_chip_z</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">render_junction_inductor</span><span class="p">(</span><span class="n">qgeom</span><span class="p">,</span> <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span>
-                                                      <span class="n">y_min</span><span class="p">,</span> <span class="n">y_mid_lo</span><span class="p">,</span>
-                                                      <span class="n">qc_chip_z</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
-                    <span class="k">elif</span> <span class="n">axis</span> <span class="o">==</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">render_junction_port</span><span class="p">(</span>
+                            <span class="n">qgeom</span><span class="p">,</span> <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">y_mid_hi</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span> <span class="n">qc_chip_z</span><span class="p">,</span> <span class="n">axis</span>
+                        <span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">render_junction_inductor</span><span class="p">(</span>
+                            <span class="n">qgeom</span><span class="p">,</span> <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">y_mid_lo</span><span class="p">,</span> <span class="n">qc_chip_z</span><span class="p">,</span> <span class="n">axis</span>
+                        <span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">axis</span> <span class="o">==</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span>
                         <span class="n">x_mid_lo</span> <span class="o">=</span> <span class="n">x_mid</span> <span class="o">-</span> <span class="n">gap</span> <span class="o">/</span> <span class="mi">2</span>
                         <span class="n">x_mid_hi</span> <span class="o">=</span> <span class="n">x_mid</span> <span class="o">+</span> <span class="n">gap</span> <span class="o">/</span> <span class="mi">2</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">render_junction_port</span><span class="p">(</span><span class="n">qgeom</span><span class="p">,</span> <span class="n">x_mid_hi</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span>
-                                                  <span class="n">y_max</span><span class="p">,</span> <span class="n">qc_chip_z</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">render_junction_inductor</span><span class="p">(</span><span class="n">qgeom</span><span class="p">,</span> <span class="n">x_min</span><span class="p">,</span> <span class="n">x_mid_lo</span><span class="p">,</span>
-                                                      <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span> <span class="n">qc_chip_z</span><span class="p">,</span>
-                                                      <span class="n">axis</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">render_junction_port</span><span class="p">(</span>
+                            <span class="n">qgeom</span><span class="p">,</span> <span class="n">x_mid_hi</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span> <span class="n">qc_chip_z</span><span class="p">,</span> <span class="n">axis</span>
+                        <span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">render_junction_inductor</span><span class="p">(</span>
+                            <span class="n">qgeom</span><span class="p">,</span> <span class="n">x_min</span><span class="p">,</span> <span class="n">x_mid_lo</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span> <span class="n">qc_chip_z</span><span class="p">,</span> <span class="n">axis</span>
+                        <span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="c1"># Only draw port</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">render_junction_port</span><span class="p">(</span><span class="n">qgeom</span><span class="p">,</span> <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span>
-                                              <span class="n">qc_chip_z</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">render_junction_port</span><span class="p">(</span>
+                        <span class="n">qgeom</span><span class="p">,</span> <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span> <span class="n">qc_chip_z</span><span class="p">,</span> <span class="n">axis</span>
+                    <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># Only draw inductor</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">render_junction_inductor</span><span class="p">(</span><span class="n">qgeom</span><span class="p">,</span> <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span>
-                                              <span class="n">qc_chip_z</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">render_junction_inductor</span><span class="p">(</span>
+                    <span class="n">qgeom</span><span class="p">,</span> <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span> <span class="n">qc_chip_z</span><span class="p">,</span> <span class="n">axis</span>
+                <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QHFSSRenderer.render_junction_port">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSRenderer.html#qiskit_metal.renderers.QHFSSRenderer.render_junction_port">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">render_junction_port</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qgeom</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">xmin</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">xmax</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                             <span class="n">ymin</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">ymax</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">render_junction_port</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">qgeom</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span>
+        <span class="n">xmin</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">xmax</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">ymin</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">ymax</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">z</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">axis</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Render a junction as a port with a bounding box given by xmin/xmax</span>
 <span class="sd">        and ymin/ymax, a height z, and a horizontal or vertical axis.</span>
 
@@ -1034,38 +1061,45 @@
 <span class="sd">            axis (str): Orientation, either &#39;x&#39; or &#39;y&#39;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">ansys_options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">transparency</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
-        <span class="n">qcomp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span><span class="p">[</span><span class="n">qgeom</span><span class="p">[</span><span class="s1">&#39;component&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">name</span>
-        <span class="n">qc_elt</span> <span class="o">=</span> <span class="n">get_clean_name</span><span class="p">(</span><span class="n">qgeom</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
-        <span class="n">port_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Port_</span><span class="si">{</span><span class="n">qcomp</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">qc_elt</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="n">qcomp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span><span class="p">[</span><span class="n">qgeom</span><span class="p">[</span><span class="s2">&quot;component&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">qc_elt</span> <span class="o">=</span> <span class="n">get_clean_name</span><span class="p">(</span><span class="n">qgeom</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+        <span class="n">port_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Port_</span><span class="si">{</span><span class="n">qcomp</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">qc_elt</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="n">impedance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jj_lumped_ports</span><span class="p">[(</span><span class="n">qcomp</span><span class="p">,</span> <span class="n">qc_elt</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span>
         <span class="c1"># Draw rectangle for lumped port.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Drawing a rectangle: </span><span class="si">{</span><span class="n">port_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="n">poly_ansys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">draw_rect_corner</span><span class="p">([</span><span class="n">xmin</span><span class="p">,</span> <span class="n">ymin</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="n">xmax</span> <span class="o">-</span> <span class="n">xmin</span><span class="p">,</span>
-                                                   <span class="n">ymax</span> <span class="o">-</span> <span class="n">ymin</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span>
-                                                   <span class="o">**</span><span class="n">ansys_options</span><span class="p">)</span>
-        <span class="n">poly_ansys</span><span class="o">.</span><span class="n">make_lumped_port</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span>
-                                    <span class="n">z0</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">impedance</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;ohm&#39;</span><span class="p">,</span>
-                                    <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;LumpPort_</span><span class="si">{</span><span class="n">qcomp</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">qc_elt</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Drawing a rectangle: </span><span class="si">{</span><span class="n">port_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">poly_ansys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">draw_rect_corner</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">xmin</span><span class="p">,</span> <span class="n">ymin</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="n">xmax</span> <span class="o">-</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">-</span> <span class="n">ymin</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="o">**</span><span class="n">ansys_options</span>
+        <span class="p">)</span>
+        <span class="n">poly_ansys</span><span class="o">.</span><span class="n">make_lumped_port</span><span class="p">(</span>
+            <span class="n">axis</span><span class="p">,</span> <span class="n">z0</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">impedance</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;ohm&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;LumpPort_</span><span class="si">{</span><span class="n">qcomp</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">qc_elt</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">rename_obj</span><span class="p">(</span><span class="n">poly_ansys</span><span class="p">,</span> <span class="n">port_name</span><span class="p">)</span>
         <span class="c1"># Draw line for lumped port.</span>
-        <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="s1">&#39;x&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="s2">&quot;x&quot;</span><span class="p">:</span>
             <span class="n">ymid</span> <span class="o">=</span> <span class="p">(</span><span class="n">ymin</span> <span class="o">+</span> <span class="n">ymax</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
             <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="p">[</span><span class="n">xmin</span><span class="p">,</span> <span class="n">ymid</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="p">[</span><span class="n">xmax</span><span class="p">,</span> <span class="n">ymid</span><span class="p">,</span> <span class="n">z</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="n">axis</span> <span class="o">==</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">axis</span> <span class="o">==</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span>
             <span class="n">xmid</span> <span class="o">=</span> <span class="p">(</span><span class="n">xmin</span> <span class="o">+</span> <span class="n">xmax</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
             <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="p">[</span><span class="n">xmid</span><span class="p">,</span> <span class="n">ymin</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="p">[</span><span class="n">xmid</span><span class="p">,</span> <span class="n">ymax</span><span class="p">,</span> <span class="n">z</span><span class="p">]</span>
-        <span class="n">lump_line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">draw_polyline</span><span class="p">([</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">],</span>
-                                               <span class="n">closed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                                               <span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">128</span><span class="p">)))</span>
-        <span class="n">lump_line</span> <span class="o">=</span> <span class="n">lump_line</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;voltage_line_</span><span class="si">{</span><span class="n">port_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">lump_line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">draw_polyline</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">],</span> <span class="n">closed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">128</span><span class="p">))</span>
+        <span class="p">)</span>
+        <span class="n">lump_line</span> <span class="o">=</span> <span class="n">lump_line</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;voltage_line_</span><span class="si">{</span><span class="n">port_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">lump_line</span><span class="o">.</span><span class="n">show_direction</span> <span class="o">=</span> <span class="kc">True</span></div>
 
 
 <div class="viewcode-block" id="QHFSSRenderer.render_junction_inductor">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSRenderer.html#qiskit_metal.renderers.QHFSSRenderer.render_junction_inductor">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">render_junction_inductor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qgeom</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">xmin</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                                 <span class="n">xmax</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">ymin</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">ymax</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                                 <span class="n">z</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">render_junction_inductor</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">qgeom</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span>
+        <span class="n">xmin</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">xmax</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">ymin</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">ymax</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">z</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">axis</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Render a junction as an inductor with a bounding box given by</span>
 <span class="sd">        xmin/xmax and ymin/ymax, a height z, and a horizontal or vertical axis.</span>
 
@@ -1079,33 +1113,35 @@
 <span class="sd">            axis (str): Orientation, either &#39;x&#39; or &#39;y&#39;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">ansys_options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">transparency</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
-        <span class="n">qcomp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span><span class="p">[</span><span class="n">qgeom</span><span class="p">[</span><span class="s1">&#39;component&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">name</span>
-        <span class="n">qc_elt</span> <span class="o">=</span> <span class="n">get_clean_name</span><span class="p">(</span><span class="n">qgeom</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
-        <span class="n">qc_name</span> <span class="o">=</span> <span class="s1">&#39;Lj_&#39;</span> <span class="o">+</span> <span class="n">qcomp</span>
-        <span class="n">inductor_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">qc_name</span><span class="si">}{</span><span class="n">QAnsysRenderer</span><span class="o">.</span><span class="n">NAME_DELIM</span><span class="si">}{</span><span class="n">qc_elt</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="n">qcomp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span><span class="p">[</span><span class="n">qgeom</span><span class="p">[</span><span class="s2">&quot;component&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">qc_elt</span> <span class="o">=</span> <span class="n">get_clean_name</span><span class="p">(</span><span class="n">qgeom</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+        <span class="n">qc_name</span> <span class="o">=</span> <span class="s2">&quot;Lj_&quot;</span> <span class="o">+</span> <span class="n">qcomp</span>
+        <span class="n">inductor_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">qc_name</span><span class="si">}{</span><span class="n">QAnsysRenderer</span><span class="o">.</span><span class="n">NAME_DELIM</span><span class="si">}{</span><span class="n">qc_elt</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="c1"># Draw rectangle for inductor.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Drawing a rectangle: </span><span class="si">{</span><span class="n">inductor_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="n">poly_ansys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">draw_rect_corner</span><span class="p">([</span><span class="n">xmin</span><span class="p">,</span> <span class="n">ymin</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="n">xmax</span> <span class="o">-</span> <span class="n">xmin</span><span class="p">,</span>
-                                                   <span class="n">ymax</span> <span class="o">-</span> <span class="n">ymin</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
-                                                   <span class="o">**</span><span class="n">ansys_options</span><span class="p">)</span>
-        <span class="n">poly_ansys</span><span class="o">.</span><span class="n">make_rlc_boundary</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span>
-                                     <span class="n">l</span><span class="o">=</span><span class="n">qgeom</span><span class="p">[</span><span class="s1">&#39;hfss_inductance&#39;</span><span class="p">],</span>
-                                     <span class="n">c</span><span class="o">=</span><span class="n">qgeom</span><span class="p">[</span><span class="s1">&#39;hfss_capacitance&#39;</span><span class="p">],</span>
-                                     <span class="n">r</span><span class="o">=</span><span class="n">qgeom</span><span class="p">[</span><span class="s1">&#39;hfss_resistance&#39;</span><span class="p">],</span>
-                                     <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Lj_&#39;</span> <span class="o">+</span> <span class="n">inductor_name</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">rename_obj</span><span class="p">(</span><span class="n">poly_ansys</span><span class="p">,</span> <span class="s1">&#39;JJ_rect_&#39;</span> <span class="o">+</span> <span class="n">inductor_name</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assign_mesh</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;JJ_rect_&#39;</span> <span class="o">+</span> <span class="n">inductor_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Drawing a rectangle: </span><span class="si">{</span><span class="n">inductor_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">poly_ansys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">draw_rect_corner</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">xmin</span><span class="p">,</span> <span class="n">ymin</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="n">xmax</span> <span class="o">-</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">-</span> <span class="n">ymin</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">ansys_options</span>
+        <span class="p">)</span>
+        <span class="n">poly_ansys</span><span class="o">.</span><span class="n">make_rlc_boundary</span><span class="p">(</span>
+            <span class="n">axis</span><span class="p">,</span>
+            <span class="n">l</span><span class="o">=</span><span class="n">qgeom</span><span class="p">[</span><span class="s2">&quot;hfss_inductance&quot;</span><span class="p">],</span>
+            <span class="n">c</span><span class="o">=</span><span class="n">qgeom</span><span class="p">[</span><span class="s2">&quot;hfss_capacitance&quot;</span><span class="p">],</span>
+            <span class="n">r</span><span class="o">=</span><span class="n">qgeom</span><span class="p">[</span><span class="s2">&quot;hfss_resistance&quot;</span><span class="p">],</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Lj_&quot;</span> <span class="o">+</span> <span class="n">inductor_name</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">rename_obj</span><span class="p">(</span><span class="n">poly_ansys</span><span class="p">,</span> <span class="s2">&quot;JJ_rect_&quot;</span> <span class="o">+</span> <span class="n">inductor_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assign_mesh</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;JJ_rect_&quot;</span> <span class="o">+</span> <span class="n">inductor_name</span><span class="p">)</span>
         <span class="c1"># Draw line for inductor.</span>
-        <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="s1">&#39;x&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="s2">&quot;x&quot;</span><span class="p">:</span>
             <span class="n">ymid</span> <span class="o">=</span> <span class="p">(</span><span class="n">ymin</span> <span class="o">+</span> <span class="n">ymax</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
             <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="p">[</span><span class="n">xmin</span><span class="p">,</span> <span class="n">ymid</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="p">[</span><span class="n">xmax</span><span class="p">,</span> <span class="n">ymid</span><span class="p">,</span> <span class="n">z</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="n">axis</span> <span class="o">==</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">axis</span> <span class="o">==</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span>
             <span class="n">xmid</span> <span class="o">=</span> <span class="p">(</span><span class="n">xmin</span> <span class="o">+</span> <span class="n">xmax</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
             <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="p">[</span><span class="n">xmid</span><span class="p">,</span> <span class="n">ymin</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="p">[</span><span class="n">xmid</span><span class="p">,</span> <span class="n">ymax</span><span class="p">,</span> <span class="n">z</span><span class="p">]</span>
-        <span class="n">induc_line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">draw_polyline</span><span class="p">([</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">],</span>
-                                                <span class="n">closed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                                                <span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">128</span><span class="p">)))</span>
-        <span class="n">induc_line</span> <span class="o">=</span> <span class="n">induc_line</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">&#39;JJ_&#39;</span> <span class="o">+</span> <span class="n">inductor_name</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
+        <span class="n">induc_line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">draw_polyline</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">],</span> <span class="n">closed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">128</span><span class="p">))</span>
+        <span class="p">)</span>
+        <span class="n">induc_line</span> <span class="o">=</span> <span class="n">induc_line</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;JJ_&quot;</span> <span class="o">+</span> <span class="n">inductor_name</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
         <span class="n">induc_line</span><span class="o">.</span><span class="n">show_direction</span> <span class="o">=</span> <span class="kc">True</span></div>
 
 
@@ -1123,9 +1159,9 @@
 <span class="sd">        (deprecated) use new_ansys_design()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="s1">&#39;This method is deprecated. Change your scripts to use new_ansys_design()&#39;</span>
+            <span class="s2">&quot;This method is deprecated. Change your scripts to use new_ansys_design()&quot;</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">new_ansys_design</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;drivenmodal&#39;</span><span class="p">,</span> <span class="n">connect</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_ansys_design</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;drivenmodal&quot;</span><span class="p">,</span> <span class="n">connect</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QHFSSRenderer.activate_drivenmodal_design">
@@ -1135,9 +1171,9 @@
 <span class="sd">        (deprecated) use activate_ansys_design()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="s1">&#39;This method is deprecated. Change your scripts to use activate_ansys_design()&#39;</span>
+            <span class="s2">&quot;This method is deprecated. Change your scripts to use activate_ansys_design()&quot;</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">activate_ansys_design</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;drivenmodal&#39;</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activate_ansys_design</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;drivenmodal&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QHFSSRenderer.activate_drivenmodal_setup">
@@ -1147,24 +1183,26 @@
 <span class="sd">        (deprecated) use activate_ansys_setup()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="s1">&#39;This method is deprecated. Change your scripts to use activate_ansys_setup()&#39;</span>
+            <span class="s2">&quot;This method is deprecated. Change your scripts to use activate_ansys_setup()&quot;</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">activate_ansys_setup</span><span class="p">(</span><span class="n">setup_name_activate</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QHFSSRenderer.add_drivenmodal_setup">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSRenderer.html#qiskit_metal.renderers.QHFSSRenderer.add_drivenmodal_setup">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">add_drivenmodal_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                              <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                              <span class="n">freq_ghz</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                              <span class="n">max_delta_s</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                              <span class="n">max_passes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                              <span class="n">min_passes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                              <span class="n">min_converged</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                              <span class="n">pct_refinement</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                              <span class="n">basis_order</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                              <span class="o">*</span><span class="n">args</span><span class="p">,</span>
-                              <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_drivenmodal_setup</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">freq_ghz</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">max_delta_s</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">max_passes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">min_passes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">min_converged</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">pct_refinement</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">basis_order</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a solution setup in Ansys HFSS Driven Modal. If user does</span>
 <span class="sd">        not provide arguments, they will be obtained from default_setup dict.</span>
 
@@ -1181,21 +1219,21 @@
         <span class="n">dsu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_setup</span><span class="o">.</span><span class="n">drivenmodal</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">freq_ghz</span><span class="p">:</span>
-            <span class="n">freq_ghz</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s1">&#39;freq_ghz&#39;</span><span class="p">]))</span>
+            <span class="n">freq_ghz</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s2">&quot;freq_ghz&quot;</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">max_delta_s</span><span class="p">:</span>
-            <span class="n">max_delta_s</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s1">&#39;max_delta_s&#39;</span><span class="p">]))</span>
+            <span class="n">max_delta_s</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s2">&quot;max_delta_s&quot;</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">max_passes</span><span class="p">:</span>
-            <span class="n">max_passes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s1">&#39;max_passes&#39;</span><span class="p">]))</span>
+            <span class="n">max_passes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s2">&quot;max_passes&quot;</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">min_passes</span><span class="p">:</span>
-            <span class="n">min_passes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s1">&#39;min_passes&#39;</span><span class="p">]))</span>
+            <span class="n">min_passes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s2">&quot;min_passes&quot;</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">min_converged</span><span class="p">:</span>
-            <span class="n">min_converged</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s1">&#39;min_converged&#39;</span><span class="p">]))</span>
+            <span class="n">min_converged</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s2">&quot;min_converged&quot;</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">pct_refinement</span><span class="p">:</span>
-            <span class="n">pct_refinement</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s1">&#39;pct_refinement&#39;</span><span class="p">]))</span>
+            <span class="n">pct_refinement</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s2">&quot;pct_refinement&quot;</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">basis_order</span><span class="p">:</span>
-            <span class="n">basis_order</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s1">&#39;basis_order&#39;</span><span class="p">]))</span>
+            <span class="n">basis_order</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s2">&quot;basis_order&quot;</span><span class="p">]))</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design</span><span class="p">:</span>
@@ -1207,7 +1245,8 @@
                     <span class="n">min_passes</span><span class="o">=</span><span class="n">min_passes</span><span class="p">,</span>
                     <span class="n">min_converged</span><span class="o">=</span><span class="n">min_converged</span><span class="p">,</span>
                     <span class="n">pct_refinement</span><span class="o">=</span><span class="n">pct_refinement</span><span class="p">,</span>
-                    <span class="n">basis_order</span><span class="o">=</span><span class="n">basis_order</span><span class="p">)</span></div>
+                    <span class="n">basis_order</span><span class="o">=</span><span class="n">basis_order</span><span class="p">,</span>
+                <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QHFSSRenderer.add_eigenmode_design">
@@ -1217,9 +1256,9 @@
 <span class="sd">        (deprecated) use new_ansys_design()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="s1">&#39;This method is deprecated. Change your scripts to use new_ansys_design()&#39;</span>
+            <span class="s2">&quot;This method is deprecated. Change your scripts to use new_ansys_design()&quot;</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">new_ansys_design</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;eigenmode&#39;</span><span class="p">,</span> <span class="n">connect</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_ansys_design</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;eigenmode&quot;</span><span class="p">,</span> <span class="n">connect</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QHFSSRenderer.activate_eigenmode_design">
@@ -1229,9 +1268,9 @@
 <span class="sd">        (deprecated) use activate_ansys_design()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="s1">&#39;This method is deprecated. Change your scripts to use activate_ansys_design()&#39;</span>
+            <span class="s2">&quot;This method is deprecated. Change your scripts to use activate_ansys_design()&quot;</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">activate_ansys_design</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;eigenmode&#39;</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activate_ansys_design</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;eigenmode&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QHFSSRenderer.activate_eigenmode_setup">
@@ -1241,25 +1280,27 @@
 <span class="sd">        (deprecated) use activate_ansys_setup()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="s1">&#39;This method is deprecated. Change your scripts to use activate_ansys_setup()&#39;</span>
+            <span class="s2">&quot;This method is deprecated. Change your scripts to use activate_ansys_setup()&quot;</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">activate_ansys_setup</span><span class="p">(</span><span class="n">setup_name_activate</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QHFSSRenderer.add_eigenmode_setup">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSRenderer.html#qiskit_metal.renderers.QHFSSRenderer.add_eigenmode_setup">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">add_eigenmode_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                            <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                            <span class="n">min_freq_ghz</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                            <span class="n">n_modes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                            <span class="n">max_delta_f</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                            <span class="n">max_passes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                            <span class="n">min_passes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                            <span class="n">min_converged</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                            <span class="n">pct_refinement</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                            <span class="n">basis_order</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                            <span class="o">*</span><span class="n">args</span><span class="p">,</span>
-                            <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_eigenmode_setup</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">min_freq_ghz</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">n_modes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">max_delta_f</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">max_passes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">min_passes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">min_converged</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">pct_refinement</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">basis_order</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a solution setup in Ansys HFSS Eigenmode.  If user does not</span>
 <span class="sd">        provide arguments, they will be obtained from hfss_options dict.</span>
 
@@ -1277,23 +1318,23 @@
         <span class="n">esu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_setup</span><span class="o">.</span><span class="n">eigenmode</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">min_freq_ghz</span><span class="p">:</span>
-            <span class="n">min_freq_ghz</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s1">&#39;min_freq_ghz&#39;</span><span class="p">]))</span>
+            <span class="n">min_freq_ghz</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s2">&quot;min_freq_ghz&quot;</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">n_modes</span><span class="p">:</span>
-            <span class="n">n_modes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s1">&#39;n_modes&#39;</span><span class="p">]))</span>
+            <span class="n">n_modes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s2">&quot;n_modes&quot;</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">max_delta_f</span><span class="p">:</span>
-            <span class="n">max_delta_f</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s1">&#39;max_delta_f&#39;</span><span class="p">]))</span>
+            <span class="n">max_delta_f</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s2">&quot;max_delta_f&quot;</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">max_passes</span><span class="p">:</span>
-            <span class="n">max_passes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s1">&#39;max_passes&#39;</span><span class="p">]))</span>
+            <span class="n">max_passes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s2">&quot;max_passes&quot;</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">min_passes</span><span class="p">:</span>
-            <span class="n">min_passes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s1">&#39;min_passes&#39;</span><span class="p">]))</span>
+            <span class="n">min_passes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s2">&quot;min_passes&quot;</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">min_converged</span><span class="p">:</span>
-            <span class="n">min_converged</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s1">&#39;min_converged&#39;</span><span class="p">]))</span>
+            <span class="n">min_converged</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s2">&quot;min_converged&quot;</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">pct_refinement</span><span class="p">:</span>
-            <span class="n">pct_refinement</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s1">&#39;pct_refinement&#39;</span><span class="p">]))</span>
+            <span class="n">pct_refinement</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s2">&quot;pct_refinement&quot;</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">basis_order</span><span class="p">:</span>
-            <span class="n">basis_order</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s1">&#39;basis_order&#39;</span><span class="p">]))</span>
+            <span class="n">basis_order</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s2">&quot;basis_order&quot;</span><span class="p">]))</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design</span><span class="p">:</span>
@@ -1306,7 +1347,8 @@
                     <span class="n">min_passes</span><span class="o">=</span><span class="n">min_passes</span><span class="p">,</span>
                     <span class="n">min_converged</span><span class="o">=</span><span class="n">min_converged</span><span class="p">,</span>
                     <span class="n">pct_refinement</span><span class="o">=</span><span class="n">pct_refinement</span><span class="p">,</span>
-                    <span class="n">basis_order</span><span class="o">=</span><span class="n">basis_order</span><span class="p">)</span></div>
+                    <span class="n">basis_order</span><span class="o">=</span><span class="n">basis_order</span><span class="p">,</span>
+                <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QHFSSRenderer.edit_eigenmode_setup">
@@ -1339,24 +1381,27 @@
                     <span class="k">if</span> <span class="n">is_eigenmode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">solution_type</span><span class="p">):</span>
                         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup_name</span> <span class="o">!=</span> <span class="n">setup_args</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                                <span class="sa">f</span><span class="s1">&#39;The name of active setup=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup_name</span><span class="si">}</span><span class="s1"> does not match&#39;</span>
-                                <span class="sa">f</span><span class="s1">&#39;the name of of setup_args.name=</span><span class="si">{</span><span class="n">setup_args</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">. &#39;</span>
-                                <span class="sa">f</span><span class="s1">&#39;To use this method, activate the desired Setup before editing it. The &#39;</span>
-                                <span class="sa">f</span><span class="s1">&#39;setup_args was not used to update the active Setup.&#39;</span>
+                                <span class="sa">f</span><span class="s2">&quot;The name of active setup=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup_name</span><span class="si">}</span><span class="s2"> does not match&quot;</span>
+                                <span class="sa">f</span><span class="s2">&quot;the name of of setup_args.name=</span><span class="si">{</span><span class="n">setup_args</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">. &quot;</span>
+                                <span class="sa">f</span><span class="s2">&quot;To use this method, activate the desired Setup before editing it. The &quot;</span>
+                                <span class="sa">f</span><span class="s2">&quot;setup_args was not used to update the active Setup.&quot;</span>
                             <span class="p">)</span>
                             <span class="k">return</span>
 
                         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">setup_args</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                             <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span>
-                                <span class="k">continue</span>  <span class="c1">#Checked for above.</span>
+                                <span class="k">continue</span>  <span class="c1"># Checked for above.</span>
                             <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;n_modes&quot;</span><span class="p">:</span>
-                                <span class="c1">#EditSetup  not documented, this is just attempt to use.</span>
-                                <span class="c1">#args_editsetup = [&quot;NAME:&quot; + setup_args.name,[&quot;NumModes:=&quot;, setup_args.n_modes]]</span>
-                                <span class="c1">#self.pinfo.setup._setup_module.EditSetup([setup_args.name, args_editsetup])</span>
-                                <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="mi">20</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span>
-                                        <span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                                <span class="c1"># EditSetup  not documented, this is just attempt to use.</span>
+                                <span class="c1"># args_editsetup = [&quot;NAME:&quot; + setup_args.name,[&quot;NumModes:=&quot;, setup_args.n_modes]]</span>
+                                <span class="c1"># self.pinfo.setup._setup_module.EditSetup([setup_args.name, args_editsetup])</span>
+                                <span class="k">if</span> <span class="p">(</span>
+                                    <span class="n">value</span> <span class="o">&lt;</span> <span class="mi">0</span>
+                                    <span class="ow">or</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="mi">20</span>
+                                    <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+                                <span class="p">):</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                                        <span class="sa">f</span><span class="s1">&#39;Value of n_modes=</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1"> must be integer from 1 to 20.&#39;</span>
+                                        <span class="sa">f</span><span class="s2">&quot;Value of n_modes=</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2"> must be integer from 1 to 20.&quot;</span>
                                     <span class="p">)</span>
                                 <span class="k">else</span><span class="p">:</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">n_modes</span> <span class="o">=</span> <span class="n">value</span>
@@ -1364,47 +1409,52 @@
                             <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;min_freq_ghz&quot;</span><span class="p">:</span>
                                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                                        <span class="s1">&#39;The value for min_freq_ghz should be an int. &#39;</span>
-                                        <span class="sa">f</span><span class="s1">&#39;The present value is </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+                                        <span class="s2">&quot;The value for min_freq_ghz should be an int. &quot;</span>
+                                        <span class="sa">f</span><span class="s2">&quot;The present value is </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">.&quot;</span>
+                                    <span class="p">)</span>
                                 <span class="k">else</span><span class="p">:</span>
-                                    <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">min_freq</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">GHz&#39;</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">min_freq</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">GHz&quot;</span>
                                     <span class="k">continue</span>
-                            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;max_delta_f&#39;</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;max_delta_f&quot;</span><span class="p">:</span>
                                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                                        <span class="s1">&#39;The value for max_delta_f should be float. &#39;</span>
-                                        <span class="sa">f</span><span class="s1">&#39;The present value is </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+                                        <span class="s2">&quot;The value for max_delta_f should be float. &quot;</span>
+                                        <span class="sa">f</span><span class="s2">&quot;The present value is </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">.&quot;</span>
+                                    <span class="p">)</span>
                                 <span class="k">else</span><span class="p">:</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">delta_f</span> <span class="o">=</span> <span class="n">value</span>
                                     <span class="k">continue</span>
-                            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;max_passes&#39;</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;max_passes&quot;</span><span class="p">:</span>
                                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                                        <span class="s1">&#39;The value for max_passes should be an int. &#39;</span>
-                                        <span class="sa">f</span><span class="s1">&#39;The present value is </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+                                        <span class="s2">&quot;The value for max_passes should be an int. &quot;</span>
+                                        <span class="sa">f</span><span class="s2">&quot;The present value is </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">.&quot;</span>
+                                    <span class="p">)</span>
                                 <span class="k">else</span><span class="p">:</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">passes</span> <span class="o">=</span> <span class="n">value</span>
                                     <span class="k">continue</span>
-                            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;pct_refinement&#39;</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;pct_refinement&quot;</span><span class="p">:</span>
                                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                                        <span class="s1">&#39;The value for pct_refinement should be an int. &#39;</span>
-                                        <span class="sa">f</span><span class="s1">&#39;The present value is </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+                                        <span class="s2">&quot;The value for pct_refinement should be an int. &quot;</span>
+                                        <span class="sa">f</span><span class="s2">&quot;The present value is </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">.&quot;</span>
+                                    <span class="p">)</span>
                                 <span class="k">else</span><span class="p">:</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">pct_refinement</span> <span class="o">=</span> <span class="n">value</span>
                                     <span class="k">continue</span>
-                            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;basis_order&#39;</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;basis_order&quot;</span><span class="p">:</span>
                                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                                        <span class="s1">&#39;The value for basis_order should be an int. &#39;</span>
-                                        <span class="sa">f</span><span class="s1">&#39;The present value is </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+                                        <span class="s2">&quot;The value for basis_order should be an int. &quot;</span>
+                                        <span class="sa">f</span><span class="s2">&quot;The present value is </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">.&quot;</span>
+                                    <span class="p">)</span>
                                 <span class="k">else</span><span class="p">:</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">basis_order</span> <span class="o">=</span> <span class="n">value</span>
                                     <span class="k">continue</span>
 
                             <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                                <span class="sa">f</span><span class="s1">&#39;In setup_args, key=</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">, value=</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1"> is not in pinfo.setup, &#39;</span>
-                                <span class="s1">&#39;the key/value pair from setup_args not added to Setup in Ansys.&#39;</span>
+                                <span class="sa">f</span><span class="s2">&quot;In setup_args, key=</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">, value=</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2"> is not in pinfo.setup, &quot;</span>
+                                <span class="s2">&quot;the key/value pair from setup_args not added to Setup in Ansys.&quot;</span>
                             <span class="p">)</span>
 
                     <span class="k">else</span><span class="p">:</span>
@@ -1413,7 +1463,7 @@
                         <span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                        <span class="s1">&#39;A design is not in active project. The Setup not updated.&#39;</span>
+                        <span class="s2">&quot;A design is not in active project. The Setup not updated.&quot;</span>
                     <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
@@ -1455,52 +1505,56 @@
                     <span class="k">if</span> <span class="n">is_drivenmodal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">solution_type</span><span class="p">):</span>
                         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup_name</span> <span class="o">!=</span> <span class="n">setup_args</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                                <span class="sa">f</span><span class="s1">&#39;The name of active setup=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup_name</span><span class="si">}</span><span class="s1"> does not match&#39;</span>
-                                <span class="sa">f</span><span class="s1">&#39;the name of of setup_args.name=</span><span class="si">{</span><span class="n">setup_args</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">. &#39;</span>
-                                <span class="sa">f</span><span class="s1">&#39;To use this method, activate the desired Setup before editing it. The &#39;</span>
-                                <span class="sa">f</span><span class="s1">&#39;setup_args was not used to update the active Setup.&#39;</span>
+                                <span class="sa">f</span><span class="s2">&quot;The name of active setup=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup_name</span><span class="si">}</span><span class="s2"> does not match&quot;</span>
+                                <span class="sa">f</span><span class="s2">&quot;the name of of setup_args.name=</span><span class="si">{</span><span class="n">setup_args</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">. &quot;</span>
+                                <span class="sa">f</span><span class="s2">&quot;To use this method, activate the desired Setup before editing it. The &quot;</span>
+                                <span class="sa">f</span><span class="s2">&quot;setup_args was not used to update the active Setup.&quot;</span>
                             <span class="p">)</span>
                             <span class="k">return</span>
 
                         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">setup_args</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                             <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span>
-                                <span class="k">continue</span>  <span class="c1">#Checked for above.</span>
+                                <span class="k">continue</span>  <span class="c1"># Checked for above.</span>
                             <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;freq_ghz&quot;</span><span class="p">:</span>
                                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                                        <span class="s1">&#39;The value for freq_ghz should be an float. &#39;</span>
-                                        <span class="sa">f</span><span class="s1">&#39;The present value is </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+                                        <span class="s2">&quot;The value for freq_ghz should be an float. &quot;</span>
+                                        <span class="sa">f</span><span class="s2">&quot;The present value is </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">.&quot;</span>
+                                    <span class="p">)</span>
                                 <span class="k">else</span><span class="p">:</span>
-                                    <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">solution_freq</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">GHz&#39;</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">solution_freq</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">GHz&quot;</span>
                                     <span class="k">continue</span>
-                            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;max_passes&#39;</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;max_passes&quot;</span><span class="p">:</span>
                                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                                        <span class="s1">&#39;The value for passes should be an int. &#39;</span>
-                                        <span class="sa">f</span><span class="s1">&#39;The present value is </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+                                        <span class="s2">&quot;The value for passes should be an int. &quot;</span>
+                                        <span class="sa">f</span><span class="s2">&quot;The present value is </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">.&quot;</span>
+                                    <span class="p">)</span>
                                 <span class="k">else</span><span class="p">:</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">passes</span> <span class="o">=</span> <span class="n">value</span>
                                     <span class="k">continue</span>
-                            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;pct_refinement&#39;</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;pct_refinement&quot;</span><span class="p">:</span>
                                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                                        <span class="s1">&#39;The value for pct_refinement should be an int. &#39;</span>
-                                        <span class="sa">f</span><span class="s1">&#39;The present value is </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+                                        <span class="s2">&quot;The value for pct_refinement should be an int. &quot;</span>
+                                        <span class="sa">f</span><span class="s2">&quot;The present value is </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">.&quot;</span>
+                                    <span class="p">)</span>
                                 <span class="k">else</span><span class="p">:</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">pct_refinement</span> <span class="o">=</span> <span class="n">value</span>
                                     <span class="k">continue</span>
-                            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;basis_order&#39;</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;basis_order&quot;</span><span class="p">:</span>
                                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                                        <span class="s1">&#39;The value for basis_order should be an int. &#39;</span>
-                                        <span class="sa">f</span><span class="s1">&#39;The present value is </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+                                        <span class="s2">&quot;The value for basis_order should be an int. &quot;</span>
+                                        <span class="sa">f</span><span class="s2">&quot;The present value is </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">.&quot;</span>
+                                    <span class="p">)</span>
                                 <span class="k">else</span><span class="p">:</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">basis_order</span> <span class="o">=</span> <span class="n">value</span>
                                     <span class="k">continue</span>
 
                             <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                                <span class="sa">f</span><span class="s1">&#39;In setup_args, key=</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">, value=</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1"> is not in pinfo.setup, &#39;</span>
-                                <span class="s1">&#39;the key/value pair from setup_args not added to Setup in Ansys.&#39;</span>
+                                <span class="sa">f</span><span class="s2">&quot;In setup_args, key=</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">, value=</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2"> is not in pinfo.setup, &quot;</span>
+                                <span class="s2">&quot;the key/value pair from setup_args not added to Setup in Ansys.&quot;</span>
                             <span class="p">)</span>
 
                     <span class="k">else</span><span class="p">:</span>
@@ -1509,7 +1563,7 @@
                         <span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                        <span class="s1">&#39;A design is not in active project. The Setup not updated.&#39;</span>
+                        <span class="s2">&quot;A design is not in active project. The Setup not updated.&quot;</span>
                     <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
@@ -1537,8 +1591,7 @@
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design</span><span class="p">:</span>
                     <span class="c1"># double parent, becasue self.pinfo.design does not work</span>
                     <span class="n">o_desktop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">_desktop</span>
-                    <span class="n">o_project</span> <span class="o">=</span> <span class="n">o_desktop</span><span class="o">.</span><span class="n">SetActiveProject</span><span class="p">(</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">project_name</span><span class="p">)</span>
+                    <span class="n">o_project</span> <span class="o">=</span> <span class="n">o_desktop</span><span class="o">.</span><span class="n">SetActiveProject</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">project_name</span><span class="p">)</span>
                     <span class="n">o_design</span> <span class="o">=</span> <span class="n">o_project</span><span class="o">.</span><span class="n">GetActiveDesign</span><span class="p">()</span>
                     <span class="c1"># GetSolutionType() is the raw HFSS COM call; unlike</span>
                     <span class="c1"># pinfo.design.solution_type this is NOT normalised by</span>
@@ -1557,29 +1610,35 @@
                                 <span class="n">setup_solutions</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
                             <span class="k">else</span><span class="p">:</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                                    <span class="s1">&#39;Not able to get setup_solutions, &#39;</span>
-                                    <span class="s1">&#39;the mode was not set.&#39;</span><span class="p">)</span>
+                                    <span class="s2">&quot;Not able to get setup_solutions, &quot;</span>
+                                    <span class="s2">&quot;the mode was not set.&quot;</span>
+                                <span class="p">)</span>
                         <span class="k">else</span><span class="p">:</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                                <span class="sa">f</span><span class="s1">&#39;The requested mode=</span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s1"> is not a valid &#39;</span>
-                                <span class="sa">f</span><span class="s1">&#39;(1 to </span><span class="si">{</span><span class="n">setup</span><span class="o">.</span><span class="n">n_modes</span><span class="si">}</span><span class="s1">) selection. &#39;</span>
-                                <span class="s1">&#39;The mode was not set.&#39;</span><span class="p">)</span>
+                                <span class="sa">f</span><span class="s2">&quot;The requested mode=</span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2"> is not a valid &quot;</span>
+                                <span class="sa">f</span><span class="s2">&quot;(1 to </span><span class="si">{</span><span class="n">setup</span><span class="o">.</span><span class="n">n_modes</span><span class="si">}</span><span class="s2">) selection. &quot;</span>
+                                <span class="s2">&quot;The mode was not set.&quot;</span>
+                            <span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                            <span class="s1">&#39;The design does not have solution type as &#39;</span>
-                            <span class="s1">&#39;&quot;Eigenmode&quot;. The mode was not set.&#39;</span><span class="p">)</span>
+                            <span class="s2">&quot;The design does not have solution type as &quot;</span>
+                            <span class="s1">&#39;&quot;Eigenmode&quot;. The mode was not set.&#39;</span>
+                        <span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;A design is not in active project. &#39;</span>
-                                        <span class="s1">&#39;The mode was not set.&#39;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                        <span class="s2">&quot;A design is not in active project. The mode was not set.&quot;</span>
+                    <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
                     <span class="s2">&quot;Project not available, have you opened a project? &quot;</span>
-                    <span class="s2">&quot;The mode was not set.&quot;</span><span class="p">)</span>
+                    <span class="s2">&quot;The mode was not set.&quot;</span>
+                <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
                 <span class="s2">&quot;Have you run connect_ansys()?  &quot;</span>
                 <span class="s2">&quot;Cannot find a reference to Ansys in QRenderer.  &quot;</span>
-                <span class="s2">&quot;The mode was not set.&quot;</span><span class="p">)</span></div>
+                <span class="s2">&quot;The mode was not set.&quot;</span>
+            <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QHFSSRenderer.analyze_setup">
@@ -1597,15 +1656,17 @@
 
 <div class="viewcode-block" id="QHFSSRenderer.add_sweep">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSRenderer.html#qiskit_metal.renderers.QHFSSRenderer.add_sweep">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">add_sweep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                  <span class="n">setup_name</span><span class="o">=</span><span class="s2">&quot;Setup&quot;</span><span class="p">,</span>
-                  <span class="n">start_ghz</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
-                  <span class="n">stop_ghz</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span>
-                  <span class="n">count</span><span class="o">=</span><span class="mi">101</span><span class="p">,</span>
-                  <span class="n">step_ghz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                  <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Sweep&quot;</span><span class="p">,</span>
-                  <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;Fast&quot;</span><span class="p">,</span>
-                  <span class="n">save_fields</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_sweep</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">setup_name</span><span class="o">=</span><span class="s2">&quot;Setup&quot;</span><span class="p">,</span>
+        <span class="n">start_ghz</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+        <span class="n">stop_ghz</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span>
+        <span class="n">count</span><span class="o">=</span><span class="mi">101</span><span class="p">,</span>
+        <span class="n">step_ghz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Sweep&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;Fast&quot;</span><span class="p">,</span>
+        <span class="n">save_fields</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a frequency sweep to a driven modal setup.</span>
 
 <span class="sd">        Args:</span>
@@ -1626,13 +1687,15 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="p">:</span>
             <span class="n">setup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">get_setup</span><span class="p">(</span><span class="n">setup_name</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">setup</span><span class="o">.</span><span class="n">insert_sweep</span><span class="p">(</span><span class="n">start_ghz</span><span class="o">=</span><span class="n">start_ghz</span><span class="p">,</span>
-                                      <span class="n">stop_ghz</span><span class="o">=</span><span class="n">stop_ghz</span><span class="p">,</span>
-                                      <span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="p">,</span>
-                                      <span class="n">step_ghz</span><span class="o">=</span><span class="n">step_ghz</span><span class="p">,</span>
-                                      <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
-                                      <span class="nb">type</span><span class="o">=</span><span class="nb">type</span><span class="p">,</span>
-                                      <span class="n">save_fields</span><span class="o">=</span><span class="n">save_fields</span><span class="p">)</span></div>
+            <span class="k">return</span> <span class="n">setup</span><span class="o">.</span><span class="n">insert_sweep</span><span class="p">(</span>
+                <span class="n">start_ghz</span><span class="o">=</span><span class="n">start_ghz</span><span class="p">,</span>
+                <span class="n">stop_ghz</span><span class="o">=</span><span class="n">stop_ghz</span><span class="p">,</span>
+                <span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="p">,</span>
+                <span class="n">step_ghz</span><span class="o">=</span><span class="n">step_ghz</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+                <span class="nb">type</span><span class="o">=</span><span class="nb">type</span><span class="p">,</span>
+                <span class="n">save_fields</span><span class="o">=</span><span class="n">save_fields</span><span class="p">,</span>
+            <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QHFSSRenderer.analyze_sweep">
@@ -1660,11 +1723,10 @@
 <span class="sd">            param_name (Optional[list], optional): Parameters to obtain. Defaults to None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_sweep</span><span class="p">:</span>
-
             <span class="n">freqs</span><span class="p">,</span> <span class="n">Pcurves</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_sweep</span><span class="o">.</span><span class="n">get_network_data</span><span class="p">(</span><span class="n">param_name</span><span class="p">)</span>
-            <span class="n">Pparams</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">Pcurves</span><span class="p">,</span>
-                                   <span class="n">columns</span><span class="o">=</span><span class="n">freqs</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">,</span>
-                                   <span class="n">index</span><span class="o">=</span><span class="n">param_name</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+            <span class="n">Pparams</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                <span class="n">Pcurves</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">freqs</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">param_name</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">Pcurves</span><span class="p">,</span> <span class="n">Pparams</span></div>
 
 

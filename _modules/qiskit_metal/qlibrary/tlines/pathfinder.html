@@ -735,8 +735,7 @@
 <span class="sd">            * avoid_collision: &#39;true&#39; -- true/false, defines if the route needs to avoid collisions</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">step_size</span><span class="o">=</span><span class="s1">&#39;0.25mm&#39;</span><span class="p">,</span>
-                           <span class="n">advanced</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">avoid_collision</span><span class="o">=</span><span class="s1">&#39;true&#39;</span><span class="p">))</span>
+    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">step_size</span><span class="o">=</span><span class="s2">&quot;0.25mm&quot;</span><span class="p">,</span> <span class="n">advanced</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">avoid_collision</span><span class="o">=</span><span class="s2">&quot;true&quot;</span><span class="p">))</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Default options&quot;&quot;&quot;</span>
 
     <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot; Non-meandered CPW class that combines A* pathfinding algorithm with</span>
@@ -744,8 +743,9 @@
 
 <div class="viewcode-block" id="RoutePathfinder.connect_astar_or_simple">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.RoutePathfinder.html#qiskit_metal.qlibrary.RoutePathfinder.connect_astar_or_simple">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">connect_astar_or_simple</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_pt</span><span class="p">:</span> <span class="n">QRoutePoint</span><span class="p">,</span>
-                                <span class="n">end_pt</span><span class="p">:</span> <span class="n">QRoutePoint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">connect_astar_or_simple</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">start_pt</span><span class="p">:</span> <span class="n">QRoutePoint</span><span class="p">,</span> <span class="n">end_pt</span><span class="p">:</span> <span class="n">QRoutePoint</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Connect start and end via A* algo if connect_simple doesn&#39;t work.</span>
 
 <span class="sd">        Args:</span>
@@ -768,12 +768,14 @@
         <span class="n">step_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_options</span><span class="p">()</span><span class="o">.</span><span class="n">step_size</span>
 
         <span class="n">starting_dist</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span>
-            <span class="nb">abs</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">))</span>  <span class="c1"># Manhattan distance between start and end</span>
+            <span class="nb">abs</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
+        <span class="p">)</span>  <span class="c1"># Manhattan distance between start and end</span>
         <span class="n">key_starting_point</span> <span class="o">=</span> <span class="p">(</span><span class="n">starting_dist</span><span class="p">,</span> <span class="n">start</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">start</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">pathmapper</span> <span class="o">=</span> <span class="p">{</span><span class="n">key_starting_point</span><span class="p">:</span> <span class="p">[</span><span class="n">starting_dist</span><span class="p">,</span> <span class="p">[</span><span class="n">start</span><span class="p">]]}</span>
         <span class="c1"># pathmapper maps tuple(total length of the path from self.start + Manhattan distance to destination, coordx, coordy) to [total length of</span>
         <span class="c1"># path from self.start, path]</span>
-        <span class="n">visited</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span>
+        <span class="n">visited</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">set</span><span class="p">()</span>
         <span class="p">)</span>  <span class="c1"># maintain record of points we&#39;ve already visited to avoid self-intersections</span>
         <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">start</span><span class="p">))</span>
         <span class="c1"># TODO: add to visited all of the current points in the route, to prevent self intersecting</span>
@@ -807,7 +809,8 @@
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">simple_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connect_simple</span><span class="p">(</span>
                     <span class="n">QRoutePoint</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]),</span> <span class="n">direction</span><span class="p">),</span>
-                    <span class="n">QRoutePoint</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="n">end_direction</span><span class="p">))</span>
+                    <span class="n">QRoutePoint</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="n">end_direction</span><span class="p">),</span>
+                <span class="p">)</span>
             <span class="k">except</span> <span class="n">QiskitMetalDesignError</span><span class="p">:</span>
                 <span class="n">simple_path</span> <span class="o">=</span> <span class="kc">None</span>
                 <span class="c1"># try the pathfinder algorithm</span>
@@ -818,10 +821,10 @@
                 <span class="k">return</span> <span class="n">current_path</span>
 
             <span class="k">for</span> <span class="n">disp</span> <span class="ow">in</span> <span class="p">[</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span>
             <span class="p">]:</span>
                 <span class="c1"># Unit displacement in 4 cardinal directions</span>
                 <span class="k">if</span> <span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">disp</span><span class="p">,</span> <span class="n">direction</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
@@ -837,19 +840,26 @@
                     <span class="n">new_path</span> <span class="o">=</span> <span class="n">current_path</span> <span class="o">+</span> <span class="p">[</span><span class="n">neighbor</span><span class="p">]</span>
                     <span class="k">if</span> <span class="n">new_remaining_dist</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">**-</span><span class="mi">8</span><span class="p">:</span>
                         <span class="c1"># Destination has been reached within acceptable error tolerance (errors due to rounding in Python)</span>
-                        <span class="k">return</span> <span class="n">new_path</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span>
-                            <span class="n">end</span>
-                        <span class="p">]</span>  <span class="c1"># Replace last element of new_path with end since they&#39;re basically the same</span>
-                    <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="n">priority_queue</span><span class="p">,</span>
-                                   <span class="p">(</span><span class="n">new_length_travelled</span> <span class="o">+</span> <span class="n">new_remaining_dist</span><span class="p">,</span>
-                                    <span class="n">neighbor</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">neighbor</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
-                    <span class="n">pathmapper</span><span class="p">[(</span><span class="n">new_length_travelled</span> <span class="o">+</span> <span class="n">new_remaining_dist</span><span class="p">,</span>
-                                <span class="n">neighbor</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">neighbor</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span> <span class="o">=</span> <span class="p">[</span>
-                                    <span class="n">new_length_travelled</span><span class="p">,</span> <span class="n">new_path</span>
-                                <span class="p">]</span>
+                        <span class="k">return</span> <span class="p">(</span>
+                            <span class="n">new_path</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">end</span><span class="p">]</span>
+                        <span class="p">)</span>  <span class="c1"># Replace last element of new_path with end since they&#39;re basically the same</span>
+                    <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span>
+                        <span class="n">priority_queue</span><span class="p">,</span>
+                        <span class="p">(</span>
+                            <span class="n">new_length_travelled</span> <span class="o">+</span> <span class="n">new_remaining_dist</span><span class="p">,</span>
+                            <span class="n">neighbor</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                            <span class="n">neighbor</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                        <span class="p">),</span>
+                    <span class="p">)</span>
+                    <span class="n">pathmapper</span><span class="p">[</span>
+                        <span class="p">(</span>
+                            <span class="n">new_length_travelled</span> <span class="o">+</span> <span class="n">new_remaining_dist</span><span class="p">,</span>
+                            <span class="n">neighbor</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                            <span class="n">neighbor</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                        <span class="p">)</span>
+                    <span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">new_length_travelled</span><span class="p">,</span> <span class="n">new_path</span><span class="p">]</span>
                     <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">neighbor</span><span class="p">))</span>
-        <span class="k">return</span> <span class="p">[</span>
-        <span class="p">]</span>  <span class="c1"># Shouldn&#39;t actually reach here - if it fails, there&#39;s a convergence issue</span></div>
+        <span class="k">return</span> <span class="p">[]</span>  <span class="c1"># Shouldn&#39;t actually reach here - if it fails, there&#39;s a convergence issue</span></div>
 
 
 <div class="viewcode-block" id="RoutePathfinder.make">
@@ -864,27 +874,27 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">set_pin</span><span class="p">(</span><span class="s2">&quot;end&quot;</span><span class="p">)</span>
 
         <span class="c1"># Align the lead-in/out to the input options set from the user</span>
-        <span class="n">start_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_lead</span><span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">)</span>
+        <span class="n">start_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_lead</span><span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">)</span>  <span class="c1"># noqa: F841</span>
         <span class="n">end_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_lead</span><span class="p">(</span><span class="s2">&quot;end&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">arc_num</span><span class="p">,</span> <span class="n">coord</span> <span class="ow">in</span> <span class="n">anchors</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">arc_pts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connect_astar_or_simple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_tip</span><span class="p">(),</span>
-                                                   <span class="n">QRoutePoint</span><span class="p">(</span><span class="n">coord</span><span class="p">))</span>
+            <span class="n">arc_pts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connect_astar_or_simple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_tip</span><span class="p">(),</span> <span class="n">QRoutePoint</span><span class="p">(</span><span class="n">coord</span><span class="p">))</span>
             <span class="k">if</span> <span class="n">arc_pts</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span><span class="p">[</span><span class="n">arc_num</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">coord</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span><span class="p">[</span><span class="n">arc_num</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
-                    <span class="p">[</span><span class="n">arc_pts</span><span class="p">,</span> <span class="p">[</span><span class="n">coord</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                    <span class="p">[</span><span class="n">arc_pts</span><span class="p">,</span> <span class="p">[</span><span class="n">coord</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span>
+                <span class="p">)</span>
         <span class="n">arc_pts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connect_astar_or_simple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_tip</span><span class="p">(),</span> <span class="n">end_point</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">arc_pts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">anchors</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">arc_pts</span><span class="p">)</span>
 
         <span class="c1"># concatenate all points, transforming the dictionary into a single numpy array</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">trim_pts</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
-                                               <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+            <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span>
+        <span class="p">)</span>
 
         <span class="c1"># Make points into elements</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">make_elements</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_points</span><span class="p">())</span></div>

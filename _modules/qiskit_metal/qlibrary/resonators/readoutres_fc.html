@@ -719,35 +719,39 @@
 <span class="sd">    - Adjust resonator frequency by varying ``readout_l5``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;0 um&#39;</span><span class="p">,</span>
-                           <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;0 um&#39;</span><span class="p">,</span>
-                           <span class="n">readout_radius</span><span class="o">=</span><span class="s1">&#39;50 um&#39;</span><span class="p">,</span>
-                           <span class="n">readout_cpw_width</span><span class="o">=</span><span class="s1">&#39;5 um&#39;</span><span class="p">,</span>
-                           <span class="n">readout_cpw_gap</span><span class="o">=</span><span class="s1">&#39;5 um&#39;</span><span class="p">,</span>
-                           <span class="n">readout_cpw_turnradius</span><span class="o">=</span><span class="s1">&#39;50 um&#39;</span><span class="p">,</span>
-                           <span class="n">readout_l1</span><span class="o">=</span><span class="s1">&#39;400 um&#39;</span><span class="p">,</span>
-                           <span class="n">readout_l2</span><span class="o">=</span><span class="s1">&#39;400 um&#39;</span><span class="p">,</span>
-                           <span class="n">readout_l3</span><span class="o">=</span><span class="s1">&#39;400 um&#39;</span><span class="p">,</span>
-                           <span class="n">readout_l4</span><span class="o">=</span><span class="s1">&#39;250 um&#39;</span><span class="p">,</span>
-                           <span class="n">readout_l5</span><span class="o">=</span><span class="s1">&#39;400 um&#39;</span><span class="p">,</span>
-                           <span class="n">arc_step</span><span class="o">=</span><span class="s1">&#39;1 um&#39;</span><span class="p">,</span>
-                           <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;0&#39;</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">,</span>
-                           <span class="n">layer_subtract</span><span class="o">=</span><span class="s1">&#39;2&#39;</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                           <span class="n">chip</span><span class="o">=</span><span class="s1">&#39;main&#39;</span><span class="p">,</span>
-                           <span class="n">_default_connection_pads</span><span class="o">=</span><span class="n">Dict</span><span class="p">())</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39; Default drawing options ?? &#39;&#39;&#39;</span>
-    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s1">&#39;readoutresfc&#39;</span><span class="p">,</span>
-                              <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s1">&#39;True&#39;</span><span class="p">,</span>
-                              <span class="n">_qgeometry_table_junction</span><span class="o">=</span><span class="s1">&#39;False&#39;</span><span class="p">)</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39; Component metadata &#39;&#39;&#39;</span>
+    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+        <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0 um&quot;</span><span class="p">,</span>
+        <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0 um&quot;</span><span class="p">,</span>
+        <span class="n">readout_radius</span><span class="o">=</span><span class="s2">&quot;50 um&quot;</span><span class="p">,</span>
+        <span class="n">readout_cpw_width</span><span class="o">=</span><span class="s2">&quot;5 um&quot;</span><span class="p">,</span>
+        <span class="n">readout_cpw_gap</span><span class="o">=</span><span class="s2">&quot;5 um&quot;</span><span class="p">,</span>
+        <span class="n">readout_cpw_turnradius</span><span class="o">=</span><span class="s2">&quot;50 um&quot;</span><span class="p">,</span>
+        <span class="n">readout_l1</span><span class="o">=</span><span class="s2">&quot;400 um&quot;</span><span class="p">,</span>
+        <span class="n">readout_l2</span><span class="o">=</span><span class="s2">&quot;400 um&quot;</span><span class="p">,</span>
+        <span class="n">readout_l3</span><span class="o">=</span><span class="s2">&quot;400 um&quot;</span><span class="p">,</span>
+        <span class="n">readout_l4</span><span class="o">=</span><span class="s2">&quot;250 um&quot;</span><span class="p">,</span>
+        <span class="n">readout_l5</span><span class="o">=</span><span class="s2">&quot;400 um&quot;</span><span class="p">,</span>
+        <span class="n">arc_step</span><span class="o">=</span><span class="s2">&quot;1 um&quot;</span><span class="p">,</span>
+        <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+        <span class="n">layer</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+        <span class="n">layer_subtract</span><span class="o">=</span><span class="s2">&quot;2&quot;</span><span class="p">,</span>
+        <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">chip</span><span class="o">=</span><span class="s2">&quot;main&quot;</span><span class="p">,</span>
+        <span class="n">_default_connection_pads</span><span class="o">=</span><span class="n">Dict</span><span class="p">(),</span>
+    <span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Default drawing options ?? &quot;&quot;&quot;</span>
+    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+        <span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;readoutresfc&quot;</span><span class="p">,</span>
+        <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">,</span>
+        <span class="n">_qgeometry_table_junction</span><span class="o">=</span><span class="s2">&quot;False&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Component metadata &quot;&quot;&quot;</span>
 
     <span class="c1">##########################</span>
 <div class="viewcode-block" id="ReadoutResFC.make">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.ReadoutResFC.html#qiskit_metal.qlibrary.ReadoutResFC.make">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39; Make the head for readout res&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Make the head for readout res&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">make_ro</span><span class="p">()</span></div>
 
 
@@ -784,11 +788,14 @@
         <span class="c1"># create the extended arm</span>
         <span class="c1">## useful coordinates</span>
         <span class="n">x_1</span><span class="p">,</span> <span class="n">y_1</span> <span class="o">=</span> <span class="n">l_1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">4</span><span class="p">),</span> <span class="o">-</span><span class="n">l_1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span>
-        <span class="n">x_2</span><span class="p">,</span> <span class="n">y_2</span> <span class="o">=</span> <span class="n">x_1</span> <span class="o">+</span> <span class="n">turnradius</span> <span class="o">*</span> <span class="p">(</span>
-            <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)),</span> <span class="n">y_1</span> <span class="o">-</span> <span class="n">turnradius</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="n">x_2</span><span class="p">,</span> <span class="n">y_2</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">x_1</span> <span class="o">+</span> <span class="n">turnradius</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)),</span>
+            <span class="n">y_1</span> <span class="o">-</span> <span class="n">turnradius</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">4</span><span class="p">),</span>
+        <span class="p">)</span>
         <span class="n">coord_init</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="n">x_1</span><span class="p">,</span> <span class="n">y_1</span><span class="p">)</span>
-        <span class="n">coord_center</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="n">x_1</span> <span class="o">-</span> <span class="n">turnradius</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">4</span><span class="p">),</span>
-                                  <span class="n">y_1</span> <span class="o">-</span> <span class="n">turnradius</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">4</span><span class="p">))</span>
+        <span class="n">coord_center</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span>
+            <span class="n">x_1</span> <span class="o">-</span> <span class="n">turnradius</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">4</span><span class="p">),</span> <span class="n">y_1</span> <span class="o">-</span> <span class="n">turnradius</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="p">)</span>
         <span class="n">x_3</span><span class="p">,</span> <span class="n">y_3</span> <span class="o">=</span> <span class="n">x_2</span><span class="p">,</span> <span class="n">y_2</span>
         <span class="n">x_4</span><span class="p">,</span> <span class="n">y_4</span> <span class="o">=</span> <span class="n">x_3</span><span class="p">,</span> <span class="n">y_3</span> <span class="o">-</span> <span class="n">l_2</span>
         <span class="n">x_5</span><span class="p">,</span> <span class="n">y_5</span> <span class="o">=</span> <span class="n">x_4</span> <span class="o">+</span> <span class="n">turnradius</span><span class="p">,</span> <span class="n">y_4</span>
@@ -814,22 +821,27 @@
         <span class="n">arc4</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arc</span><span class="p">(</span><span class="n">coord_init4</span><span class="p">,</span> <span class="n">coord_center4</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
         <span class="c1">## line containing the 45deg line, 45 deg arc,</span>
         <span class="c1">## and a short straight segment for smooth subtraction</span>
-        <span class="n">cparm_line</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">shapely</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">unary_union</span><span class="p">([</span>
-            <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">coord_init</span><span class="p">]),</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">arc</span><span class="p">(</span><span class="n">coord_init</span><span class="p">,</span> <span class="n">coord_center</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">4</span><span class="p">),</span>
-            <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([(</span><span class="n">x_3</span><span class="p">,</span> <span class="n">y_3</span><span class="p">),</span> <span class="p">(</span><span class="n">x_4</span><span class="p">,</span> <span class="n">y_4</span><span class="p">)]),</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">arc</span><span class="p">(</span><span class="n">coord_init1</span><span class="p">,</span> <span class="n">coord_center1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
-            <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([(</span><span class="n">x_6</span><span class="p">,</span> <span class="n">y_6</span><span class="p">),</span> <span class="p">(</span><span class="n">x_7</span><span class="p">,</span> <span class="n">y_7</span><span class="p">)]),</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">arc</span><span class="p">(</span><span class="n">coord_init2</span><span class="p">,</span> <span class="n">coord_center2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">),</span>
-            <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([(</span><span class="n">x_9</span><span class="p">,</span> <span class="n">y_9</span><span class="p">),</span> <span class="p">(</span><span class="n">x_10</span><span class="p">,</span> <span class="n">y_10</span><span class="p">)]),</span> <span class="n">arc3</span><span class="p">,</span> <span class="n">line12</span><span class="p">,</span> <span class="n">arc4</span><span class="p">,</span>
-            <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">line12</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">turnradius</span><span class="p">),</span>
-            <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">arc3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">turnradius</span><span class="p">),</span>
-            <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">line12</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">turnradius</span><span class="p">),</span>
-            <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">arc4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">turnradius</span><span class="p">),</span>
-            <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">line12</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">6</span> <span class="o">*</span> <span class="n">turnradius</span><span class="p">),</span>
-            <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">arc3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">8</span> <span class="o">*</span> <span class="n">turnradius</span><span class="p">),</span>
-            <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">line12</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">8</span> <span class="o">*</span> <span class="n">turnradius</span><span class="p">)</span>
-        <span class="p">])</span>
+        <span class="n">cparm_line</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">shapely</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">unary_union</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">coord_init</span><span class="p">]),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">arc</span><span class="p">(</span><span class="n">coord_init</span><span class="p">,</span> <span class="n">coord_center</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">4</span><span class="p">),</span>
+                <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([(</span><span class="n">x_3</span><span class="p">,</span> <span class="n">y_3</span><span class="p">),</span> <span class="p">(</span><span class="n">x_4</span><span class="p">,</span> <span class="n">y_4</span><span class="p">)]),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">arc</span><span class="p">(</span><span class="n">coord_init1</span><span class="p">,</span> <span class="n">coord_center1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+                <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([(</span><span class="n">x_6</span><span class="p">,</span> <span class="n">y_6</span><span class="p">),</span> <span class="p">(</span><span class="n">x_7</span><span class="p">,</span> <span class="n">y_7</span><span class="p">)]),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">arc</span><span class="p">(</span><span class="n">coord_init2</span><span class="p">,</span> <span class="n">coord_center2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">),</span>
+                <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([(</span><span class="n">x_9</span><span class="p">,</span> <span class="n">y_9</span><span class="p">),</span> <span class="p">(</span><span class="n">x_10</span><span class="p">,</span> <span class="n">y_10</span><span class="p">)]),</span>
+                <span class="n">arc3</span><span class="p">,</span>
+                <span class="n">line12</span><span class="p">,</span>
+                <span class="n">arc4</span><span class="p">,</span>
+                <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">line12</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">turnradius</span><span class="p">),</span>
+                <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">arc3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">turnradius</span><span class="p">),</span>
+                <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">line12</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">turnradius</span><span class="p">),</span>
+                <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">arc4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">turnradius</span><span class="p">),</span>
+                <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">line12</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">6</span> <span class="o">*</span> <span class="n">turnradius</span><span class="p">),</span>
+                <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">arc3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">8</span> <span class="o">*</span> <span class="n">turnradius</span><span class="p">),</span>
+                <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">line12</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">8</span> <span class="o">*</span> <span class="n">turnradius</span><span class="p">),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
         <span class="n">cparm</span> <span class="o">=</span> <span class="n">cparm_line</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="n">w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">cap_style</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">join_style</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="c1">## fix the gap resulting from buffer</span>
         <span class="n">eps</span> <span class="o">=</span> <span class="mf">1e-3</span>
@@ -841,11 +853,10 @@
         <span class="n">ro_etch</span> <span class="o">=</span> <span class="n">ro</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">cap_style</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">join_style</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
         <span class="n">x_15</span><span class="p">,</span> <span class="n">y_15</span> <span class="o">=</span> <span class="n">x_14</span><span class="p">,</span> <span class="n">y_14</span> <span class="o">+</span> <span class="mi">7</span> <span class="o">*</span> <span class="n">turnradius</span>
         <span class="n">x_16</span><span class="p">,</span> <span class="n">y_16</span> <span class="o">=</span> <span class="n">x_15</span> <span class="o">+</span> <span class="n">g</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">y_15</span>
-        <span class="n">port_line</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([(</span><span class="n">x_15</span><span class="p">,</span> <span class="n">y_15</span> <span class="o">+</span> <span class="n">w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
-                                     <span class="p">(</span><span class="n">x_15</span><span class="p">,</span> <span class="n">y_15</span> <span class="o">-</span> <span class="n">w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)])</span>
-        <span class="n">subtract_patch</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([(</span><span class="n">x_16</span><span class="p">,</span> <span class="n">y_16</span> <span class="o">-</span> <span class="n">w</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">g</span> <span class="o">-</span> <span class="n">eps</span><span class="p">),</span>
-                                          <span class="p">(</span><span class="n">x_16</span><span class="p">,</span> <span class="n">y_16</span> <span class="o">+</span> <span class="n">w</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">g</span> <span class="o">+</span> <span class="n">eps</span><span class="p">)</span>
-                                         <span class="p">])</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="n">g</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">cap_style</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">port_line</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([(</span><span class="n">x_15</span><span class="p">,</span> <span class="n">y_15</span> <span class="o">+</span> <span class="n">w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="n">x_15</span><span class="p">,</span> <span class="n">y_15</span> <span class="o">-</span> <span class="n">w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)])</span>
+        <span class="n">subtract_patch</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">(</span>
+            <span class="p">[(</span><span class="n">x_16</span><span class="p">,</span> <span class="n">y_16</span> <span class="o">-</span> <span class="n">w</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">g</span> <span class="o">-</span> <span class="n">eps</span><span class="p">),</span> <span class="p">(</span><span class="n">x_16</span><span class="p">,</span> <span class="n">y_16</span> <span class="o">+</span> <span class="n">w</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">g</span> <span class="o">+</span> <span class="n">eps</span><span class="p">)]</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="n">g</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">cap_style</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
         <span class="n">ro_etch</span> <span class="o">=</span> <span class="n">ro_etch</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">subtract_patch</span><span class="p">)</span>
 
         <span class="c1"># rotate and translate</span>
@@ -857,27 +868,29 @@
         <span class="p">[</span><span class="n">ro</span><span class="p">,</span> <span class="n">ro_etch</span><span class="p">,</span> <span class="n">port_line</span><span class="p">]</span> <span class="o">=</span> <span class="n">polys</span>
 
         <span class="c1"># generate QGeometry</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">ro</span><span class="o">=</span><span class="n">ro</span><span class="p">),</span> <span class="n">chip</span><span class="o">=</span><span class="n">chip</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span>
-                           <span class="nb">dict</span><span class="p">(</span><span class="n">ro_etch</span><span class="o">=</span><span class="n">ro_etch</span><span class="p">),</span>
-                           <span class="n">chip</span><span class="o">=</span><span class="n">chip</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer_subtract</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">subtract</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">ro</span><span class="o">=</span><span class="n">ro</span><span class="p">),</span> <span class="n">chip</span><span class="o">=</span><span class="n">chip</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;poly&quot;</span><span class="p">,</span>
+            <span class="nb">dict</span><span class="p">(</span><span class="n">ro_etch</span><span class="o">=</span><span class="n">ro_etch</span><span class="p">),</span>
+            <span class="n">chip</span><span class="o">=</span><span class="n">chip</span><span class="p">,</span>
+            <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer_subtract</span><span class="p">,</span>
+            <span class="n">subtract</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">subtract</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="c1"># generate pins</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s1">&#39;readout&#39;</span><span class="p">,</span> <span class="n">port_line</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">gap</span><span class="o">=</span><span class="n">g</span><span class="p">,</span> <span class="n">chip</span><span class="o">=</span><span class="n">chip</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s2">&quot;readout&quot;</span><span class="p">,</span> <span class="n">port_line</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">gap</span><span class="o">=</span><span class="n">g</span><span class="p">,</span> <span class="n">chip</span><span class="o">=</span><span class="n">chip</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ReadoutResFC.arc">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.ReadoutResFC.html#qiskit_metal.qlibrary.ReadoutResFC.arc">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">arc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord_init</span><span class="p">,</span> <span class="n">coord_center</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generate x,y coordinates (in terms of shapely.geometry.Point()) of an arc with:</span>
 <span class="sd">        a specified initial point, rotation center, and</span>
 <span class="sd">        rotation direction (specified by angle in radian (float or integer), positive is ccw).</span>
 
 <span class="sd">        coord_init, and coord_center should be shapely.geometry.Point object</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># access to parse values from the user option</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
 
@@ -888,23 +901,21 @@
         <span class="c1"># determine step number</span>
         <span class="n">step_angle</span> <span class="o">=</span> <span class="n">step</span> <span class="o">/</span> <span class="n">r</span> <span class="k">if</span> <span class="n">angle</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="k">else</span> <span class="o">-</span><span class="n">step</span> <span class="o">/</span> <span class="n">r</span>
         <span class="n">step_N</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">angle</span> <span class="o">/</span> <span class="n">step_angle</span><span class="p">))</span>
-        <span class="c1">#laststep_flag = True if angle % step_angle != 0 else False</span>
+        <span class="c1"># laststep_flag = True if angle % step_angle != 0 else False</span>
         <span class="n">laststep_flag</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">angle</span> <span class="o">%</span> <span class="n">step_angle</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
 
         <span class="c1"># generate coordinate</span>
         <span class="n">coord</span> <span class="o">=</span> <span class="p">[</span><span class="n">coord_init</span><span class="p">]</span>
         <span class="n">point</span> <span class="o">=</span> <span class="n">coord_init</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">step_N</span><span class="p">):</span>
-            <span class="n">point</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">point</span><span class="p">,</span>
-                                <span class="n">step_angle</span><span class="p">,</span>
-                                <span class="n">origin</span><span class="o">=</span><span class="n">coord_center</span><span class="p">,</span>
-                                <span class="n">use_radians</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">point</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span>
+                <span class="n">point</span><span class="p">,</span> <span class="n">step_angle</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="n">coord_center</span><span class="p">,</span> <span class="n">use_radians</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
             <span class="n">coord</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">laststep_flag</span><span class="p">:</span>
-            <span class="n">point</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">coord_init</span><span class="p">,</span>
-                                <span class="n">angle</span><span class="p">,</span>
-                                <span class="n">origin</span><span class="o">=</span><span class="n">coord_center</span><span class="p">,</span>
-                                <span class="n">use_radians</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">point</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span>
+                <span class="n">coord_init</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="n">coord_center</span><span class="p">,</span> <span class="n">use_radians</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
             <span class="n">coord</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
         <span class="n">coord</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">(</span><span class="n">coord</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">coord</span></div>

@@ -701,16 +701,14 @@
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
 
-<span class="c1"># pylint: disable=protected-access</span>
-<span class="c1"># pylint: disable-msg=relative-beyond-top-level</span>
-<span class="c1"># pylint: disable-msg=broad-except</span>
 <span class="sd">&quot;&quot;&quot;Saving and load metal data.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
-<span class="c1">#from ..designs.base</span>
+
+<span class="c1"># from ..designs.base</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.toolbox_python.utility_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">log_error_easy</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;save_metal&#39;</span><span class="p">,</span> <span class="s1">&#39;load_metal_design&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;save_metal&quot;</span><span class="p">,</span> <span class="s2">&quot;load_metal_design&quot;</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="save_metal">
@@ -744,7 +742,7 @@
         <span class="n">result</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="c1"># handle errors here? such as PermissionError</span>
-        <span class="n">text</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;ERROR WHILE SAVING: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;ERROR WHILE SAVING: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="n">log_error_easy</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="n">post_text</span><span class="o">=</span><span class="n">text</span><span class="p">)</span>
         <span class="c1"># print(text)</span>
         <span class="c1"># logger.error(text)</span>
@@ -756,7 +754,6 @@
 
 
 
-<span class="c1"># pylint: disable-msg=import-outside-toplevel</span>
 <div class="viewcode-block" id="load_metal_design">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.import_export.html#qiskit_metal.toolbox_metal.import_export.load_metal_design">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">load_metal_design</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
@@ -769,12 +766,12 @@
 <span class="sd">        picked QDesign: The pickled design object and updates if asked the param dicts for defaults</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">design</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
-    <span class="n">design</span><span class="o">.</span><span class="n">save_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span>
-        <span class="n">filename</span><span class="p">)</span>  <span class="c1"># Set the place from where we loaded the design</span>
+    <span class="n">design</span><span class="o">.</span><span class="n">save_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>  <span class="c1"># Set the place from where we loaded the design</span>
 
     <span class="c1"># Restore</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">..</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
-    <span class="n">design</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span>  <span class="c1">#TODO: fix from save pikcle</span>
+
+    <span class="n">design</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span>  <span class="c1"># TODO: fix from save pikcle</span>
 
     <span class="k">return</span> <span class="n">design</span></div>
 

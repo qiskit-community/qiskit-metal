@@ -739,7 +739,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Launch Qiskit Metal GUI to interactively view, edit, and simulate QDesign: Metal GUI</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Launch Qiskit Metal GUI to interactively view, edit, and simulate QDesign: Metal GUI</span>
 <span class="n">gui</span> <span class="o">=</span> <span class="n">MetalGUI</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -755,10 +755,10 @@
 
 <span class="c1"># Be aware of the default_options that can be overridden by user.</span>
 <span class="n">design</span><span class="o">.</span><span class="n">overwrite_enabled</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">jj2</span> <span class="o">=</span> <span class="n">jj_dolan</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;JJ2&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0.1&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0.0&quot;</span><span class="p">))</span>
+<span class="n">jj2</span> <span class="o">=</span> <span class="n">jj_dolan</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;JJ2&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0.1&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0.0&quot;</span><span class="p">))</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s1">&#39;JJ2&#39;</span><span class="p">])</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s2">&quot;JJ2&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -784,12 +784,13 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Screenshot the canvas only as a .png formatted file.</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;shot.png&#39;</span><span class="p">)</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;shot.png&quot;</span><span class="p">)</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">display</span>
+
 <span class="n">_disp_ops</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;shot.png&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">_disp_ops</span><span class="p">))</span>
-<br/></pre></div>
+<span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="s2">&quot;shot.png&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">_disp_ops</span><span class="p">))</span>
+</pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">

@@ -695,13 +695,21 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_base</span><span class="w"> </span><span class="kn">import</span> <span class="n">QRenderer</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_gmsh.gmsh_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">Vec3D</span><span class="p">,</span> <span class="n">Vec3DArray</span><span class="p">,</span> <span class="n">line_width_offset_pts</span><span class="p">,</span> <span class="n">render_path_curves</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables</span><span class="w"> </span><span class="kn">import</span> <span class="n">BoundsForPathAndPolyTables</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_gmsh.gmsh_utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Vec3D</span><span class="p">,</span>
+    <span class="n">Vec3DArray</span><span class="p">,</span>
+    <span class="n">line_width_offset_pts</span><span class="p">,</span>
+    <span class="n">render_path_curves</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">BoundsForPathAndPolyTables</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.toolbox_metal.parsing</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_value</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
+
 <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">is_building_docs</span><span class="p">():</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.toolbox_python.utility_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">clean_name</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.toolbox_python.utility_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">bad_fillet_idxs</span>
@@ -745,10 +753,12 @@
             <span class="n">nodes_per_2pi_curve</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span>
             <span class="n">algorithm_3d</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
             <span class="n">num_threads</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
-            <span class="n">mesh_size_fields</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">min_distance_from_edges</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
-                                  <span class="n">max_distance_from_edges</span><span class="o">=</span><span class="s2">&quot;130um&quot;</span><span class="p">,</span>
-                                  <span class="n">distance_delta</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span><span class="p">,</span>
-                                  <span class="n">gradient_delta</span><span class="o">=</span><span class="s2">&quot;3um&quot;</span><span class="p">),</span>
+            <span class="n">mesh_size_fields</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
+                <span class="n">min_distance_from_edges</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
+                <span class="n">max_distance_from_edges</span><span class="o">=</span><span class="s2">&quot;130um&quot;</span><span class="p">,</span>
+                <span class="n">distance_delta</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span><span class="p">,</span>
+                <span class="n">gradient_delta</span><span class="o">=</span><span class="s2">&quot;3um&quot;</span><span class="p">,</span>
+            <span class="p">),</span>
         <span class="p">),</span>
         <span class="n">colors</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
             <span class="n">metal</span><span class="o">=</span><span class="p">(</span><span class="mi">84</span><span class="p">,</span> <span class="mi">140</span><span class="p">,</span> <span class="mi">168</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
@@ -760,11 +770,13 @@
     <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;gmsh&quot;</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Name&quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">design</span><span class="p">:</span> <span class="s1">&#39;MultiPlanar&#39;</span><span class="p">,</span>
-                 <span class="n">layer_types</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">initiate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                 <span class="n">options</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">design</span><span class="p">:</span> <span class="s2">&quot;MultiPlanar&quot;</span><span class="p">,</span>
+        <span class="n">layer_types</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">initiate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">options</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Args:</span>
 <span class="sd">            design (&#39;MultiPlanar&#39;): The design.</span>
@@ -774,9 +786,7 @@
 <span class="sd">            initiate (bool): True to initiate the renderer (Default: False).</span>
 <span class="sd">            options (Dict, optional): Used to override default options. Defaults to None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">design</span><span class="o">=</span><span class="n">design</span><span class="p">,</span>
-                         <span class="n">initiate</span><span class="o">=</span><span class="n">initiate</span><span class="p">,</span>
-                         <span class="n">render_options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">design</span><span class="o">=</span><span class="n">design</span><span class="p">,</span> <span class="n">initiate</span><span class="o">=</span><span class="n">initiate</span><span class="p">,</span> <span class="n">render_options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_model_name</span> <span class="o">=</span> <span class="s2">&quot;gmsh_model&quot;</span>
 
         <span class="n">default_layer_types</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">metal</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">dielectric</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
@@ -805,7 +815,7 @@
     <span class="nd">@model</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the name of the current model. If not already present,</span>
-<span class="sd">            adds a new model with the given name.</span>
+<span class="sd">        adds a new model with the given name.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">print_info</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">try</span><span class="p">:</span>
@@ -855,9 +865,9 @@
 
 <div class="viewcode-block" id="QGmshRenderer.get_thickness_for_layer_datatype">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QGmshRenderer.html#qiskit_metal.renderers.QGmshRenderer.get_thickness_for_layer_datatype">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_thickness_for_layer_datatype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                                         <span class="n">layer_num</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-                                         <span class="n">datatype</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_thickness_for_layer_datatype</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">layer_num</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">datatype</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to get thickness of a particular layer and datatype</span>
 <span class="sd">        from the layer stack.</span>
 
@@ -867,25 +877,27 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            float: returns the thickness value</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">props</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;thickness&quot;</span><span class="p">]</span>
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_units_gmsh</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">ls</span><span class="o">.</span><span class="n">get_properties_for_layer_datatype</span><span class="p">(</span>
-                <span class="n">properties</span><span class="o">=</span><span class="n">props</span><span class="p">,</span> <span class="n">layer_number</span><span class="o">=</span><span class="n">layer_num</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="n">datatype</span><span class="p">))</span>
+                <span class="n">properties</span><span class="o">=</span><span class="n">props</span><span class="p">,</span> <span class="n">layer_number</span><span class="o">=</span><span class="n">layer_num</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="n">datatype</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># thickness is result[0]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;Could not find </span><span class="si">{</span><span class="n">props</span><span class="si">}</span><span class="s2"> for the layer_number=</span><span class="si">{</span><span class="n">layer_num</span><span class="si">}</span><span class="s2">. &quot;</span>
-                <span class="s2">&quot;Check your design and try again.&quot;</span><span class="p">)</span></div>
+                <span class="s2">&quot;Check your design and try again.&quot;</span>
+            <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QGmshRenderer.get_thickness_zcoord_for_layer_datatype">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QGmshRenderer.html#qiskit_metal.renderers.QGmshRenderer.get_thickness_zcoord_for_layer_datatype">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_thickness_zcoord_for_layer_datatype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                                                <span class="n">layer_num</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-                                                <span class="n">datatype</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
-                                               <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_thickness_zcoord_for_layer_datatype</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">layer_num</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">datatype</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to get the thickness and z_coord of a particular layer</span>
 <span class="sd">        and datatype from the layer stack.</span>
 
@@ -899,13 +911,16 @@
         <span class="n">props</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;thickness&quot;</span><span class="p">,</span> <span class="s2">&quot;z_coord&quot;</span><span class="p">]</span>
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_units_gmsh</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">ls</span><span class="o">.</span><span class="n">get_properties_for_layer_datatype</span><span class="p">(</span>
-                <span class="n">properties</span><span class="o">=</span><span class="n">props</span><span class="p">,</span> <span class="n">layer_number</span><span class="o">=</span><span class="n">layer_num</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="n">datatype</span><span class="p">))</span>
+                <span class="n">properties</span><span class="o">=</span><span class="n">props</span><span class="p">,</span> <span class="n">layer_number</span><span class="o">=</span><span class="n">layer_num</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="n">datatype</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">result</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;Could not find </span><span class="si">{</span><span class="n">props</span><span class="si">}</span><span class="s2"> for the layer_number=</span><span class="si">{</span><span class="n">layer_num</span><span class="si">}</span><span class="s2">. &quot;</span>
-                <span class="s2">&quot;Check your design and try again.&quot;</span><span class="p">)</span></div>
+                <span class="s2">&quot;Check your design and try again.&quot;</span>
+            <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QGmshRenderer.render_design">
@@ -962,16 +977,19 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">clear_design</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">draw_geometries</span><span class="p">(</span><span class="n">selection</span><span class="o">=</span><span class="n">selection</span><span class="p">,</span>
-                             <span class="n">open_pins</span><span class="o">=</span><span class="n">open_pins</span><span class="p">,</span>
-                             <span class="n">box_plus_buffer</span><span class="o">=</span><span class="n">box_plus_buffer</span><span class="p">,</span>
-                             <span class="n">draw_sample_holder</span><span class="o">=</span><span class="n">draw_sample_holder</span><span class="p">,</span>
-                             <span class="n">skip_junctions</span><span class="o">=</span><span class="n">skip_junctions</span><span class="p">,</span>
-                             <span class="n">omit_ground_for_layers</span><span class="o">=</span><span class="n">omit_ground_for_layers</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">draw_geometries</span><span class="p">(</span>
+            <span class="n">selection</span><span class="o">=</span><span class="n">selection</span><span class="p">,</span>
+            <span class="n">open_pins</span><span class="o">=</span><span class="n">open_pins</span><span class="p">,</span>
+            <span class="n">box_plus_buffer</span><span class="o">=</span><span class="n">box_plus_buffer</span><span class="p">,</span>
+            <span class="n">draw_sample_holder</span><span class="o">=</span><span class="n">draw_sample_holder</span><span class="p">,</span>
+            <span class="n">skip_junctions</span><span class="o">=</span><span class="n">skip_junctions</span><span class="p">,</span>
+            <span class="n">omit_ground_for_layers</span><span class="o">=</span><span class="n">omit_ground_for_layers</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">apply_changes_for_simulation</span><span class="p">(</span>
             <span class="n">ignore_metal_volume</span><span class="o">=</span><span class="n">ignore_metal_volume</span><span class="p">,</span>
-            <span class="n">draw_sample_holder</span><span class="o">=</span><span class="n">draw_sample_holder</span><span class="p">)</span>
+            <span class="n">draw_sample_holder</span><span class="o">=</span><span class="n">draw_sample_holder</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">mesh_geoms</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
@@ -982,13 +1000,15 @@
 
 <div class="viewcode-block" id="QGmshRenderer.draw_geometries">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QGmshRenderer.html#qiskit_metal.renderers.QGmshRenderer.draw_geometries">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">draw_geometries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                        <span class="n">draw_sample_holder</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-                        <span class="n">selection</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                        <span class="n">open_pins</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                        <span class="n">box_plus_buffer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-                        <span class="n">skip_junctions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-                        <span class="n">omit_ground_for_layers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">draw_geometries</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">draw_sample_holder</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">selection</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">open_pins</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">box_plus_buffer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">skip_junctions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">omit_ground_for_layers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;This function draws the raw geometries in Gmsh as taken from the</span>
 <span class="sd">        QGeometry tables and applies thickness depending on the layer-stack.</span>
 
@@ -1010,22 +1030,26 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">case</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;Unable to proceed with rendering. Please check selection.&quot;</span><span class="p">)</span>
+                <span class="s2">&quot;Unable to proceed with rendering. Please check selection.&quot;</span>
+            <span class="p">)</span>
             <span class="k">return</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">render_tables</span><span class="p">(</span><span class="n">skip_junction</span><span class="o">=</span><span class="n">skip_junctions</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_endcaps</span><span class="p">(</span><span class="n">open_pins</span><span class="o">=</span><span class="n">open_pins</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">render_layers</span><span class="p">(</span><span class="n">box_plus_buffer</span><span class="o">=</span><span class="n">box_plus_buffer</span><span class="p">,</span>
-                           <span class="n">omit_layers</span><span class="o">=</span><span class="n">omit_ground_for_layers</span><span class="p">,</span>
-                           <span class="n">draw_sample_holder</span><span class="o">=</span><span class="n">draw_sample_holder</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">render_layers</span><span class="p">(</span>
+            <span class="n">box_plus_buffer</span><span class="o">=</span><span class="n">box_plus_buffer</span><span class="p">,</span>
+            <span class="n">omit_layers</span><span class="o">=</span><span class="n">omit_ground_for_layers</span><span class="p">,</span>
+            <span class="n">draw_sample_holder</span><span class="o">=</span><span class="n">draw_sample_holder</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subtract_from_layers</span><span class="p">(</span><span class="n">omit_layers</span><span class="o">=</span><span class="n">omit_ground_for_layers</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gmsh_occ_synchronize</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="QGmshRenderer.apply_changes_for_simulation">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QGmshRenderer.html#qiskit_metal.renderers.QGmshRenderer.apply_changes_for_simulation">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">apply_changes_for_simulation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ignore_metal_volume</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-                                     <span class="n">draw_sample_holder</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply_changes_for_simulation</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">ignore_metal_volume</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">draw_sample_holder</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;This function fragments interfaces to fuse the boundaries and assigns</span>
 <span class="sd">        physical groups to be used by an FEM solvers for defining bodies and</span>
 <span class="sd">        boundary conditions.</span>
@@ -1047,23 +1071,23 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">gmsh_occ_synchronize</span><span class="p">()</span>
 
         <span class="c1"># Add physical groups</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assign_physical_groups</span><span class="p">(</span><span class="n">ignore_metal_volume</span><span class="o">=</span><span class="n">ignore_metal_volume</span><span class="p">,</span>
-                                    <span class="n">draw_sample_holder</span><span class="o">=</span><span class="n">draw_sample_holder</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assign_physical_groups</span><span class="p">(</span>
+            <span class="n">ignore_metal_volume</span><span class="o">=</span><span class="n">ignore_metal_volume</span><span class="p">,</span>
+            <span class="n">draw_sample_holder</span><span class="o">=</span><span class="n">draw_sample_holder</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QGmshRenderer.gmsh_occ_synchronize">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QGmshRenderer.html#qiskit_metal.renderers.QGmshRenderer.gmsh_occ_synchronize">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">gmsh_occ_synchronize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Synchronize Gmsh with the internal OpenCascade graphics engine</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Synchronize Gmsh with the internal OpenCascade graphics engine&quot;&quot;&quot;</span>
         <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">synchronize</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="QGmshRenderer.render_tables">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QGmshRenderer.html#qiskit_metal.renderers.QGmshRenderer.render_tables">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">render_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">skip_junction</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Render components in design grouped by table type (path, poly, or junction).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Render components in design grouped by table type (path, poly, or junction).&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">table_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">get_element_types</span><span class="p">():</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">skip_junction</span> <span class="ow">and</span> <span class="n">table_type</span> <span class="o">==</span> <span class="s2">&quot;junction&quot;</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">render_components</span><span class="p">(</span><span class="n">table_type</span><span class="p">)</span></div>
@@ -1109,8 +1133,7 @@
         <span class="k">elif</span> <span class="n">table_type</span> <span class="o">==</span> <span class="s2">&quot;poly&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">render_element_poly</span><span class="p">(</span><span class="n">qgeom</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;RENDERER ERROR: Unkown element type: </span><span class="si">{</span><span class="n">table_type</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;RENDERER ERROR: Unkown element type: </span><span class="si">{</span><span class="n">table_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QGmshRenderer.make_general_surface">
@@ -1131,8 +1154,7 @@
 
 <div class="viewcode-block" id="QGmshRenderer.parse_units_gmsh">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QGmshRenderer.html#qiskit_metal.renderers.QGmshRenderer.parse_units_gmsh">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">parse_units_gmsh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_input</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span>
-                                             <span class="nb">tuple</span><span class="p">,</span> <span class="nb">str</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse_units_gmsh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_input</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="nb">str</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Helper function to parse numbers and units</span>
 
 <span class="sd">        Args:</span>
@@ -1172,24 +1194,25 @@
         <span class="n">qc_shapely</span> <span class="o">=</span> <span class="n">junc</span><span class="o">.</span><span class="n">geometry</span>
         <span class="n">qc_width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_units_gmsh</span><span class="p">(</span><span class="n">junc</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
         <span class="n">qc_thickness</span><span class="p">,</span> <span class="n">qc_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_thickness_zcoord_for_layer_datatype</span><span class="p">(</span>
-            <span class="n">layer_num</span><span class="o">=</span><span class="n">junc</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
+            <span class="n">layer_num</span><span class="o">=</span><span class="n">junc</span><span class="o">.</span><span class="n">layer</span>
+        <span class="p">)</span>
 
         <span class="n">vecs</span> <span class="o">=</span> <span class="n">Vec3DArray</span><span class="o">.</span><span class="n">make_vec3DArray</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">parse_units_gmsh</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">qc_shapely</span><span class="o">.</span><span class="n">coords</span><span class="p">)),</span> <span class="n">qc_z</span><span class="p">)</span>
-        <span class="n">qc_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span><span class="p">[</span>
-            <span class="n">junc</span><span class="p">[</span><span class="s2">&quot;component&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">clean_name</span><span class="p">(</span><span class="n">junc</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parse_units_gmsh</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">qc_shapely</span><span class="o">.</span><span class="n">coords</span><span class="p">)),</span> <span class="n">qc_z</span>
+        <span class="p">)</span>
+        <span class="n">qc_name</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span><span class="p">[</span><span class="n">junc</span><span class="p">[</span><span class="s2">&quot;component&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">name</span>
+            <span class="o">+</span> <span class="s2">&quot;_&quot;</span>
+            <span class="o">+</span> <span class="n">clean_name</span><span class="p">(</span><span class="n">junc</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+        <span class="p">)</span>
 
         <span class="c1"># Considering JJ will always be a rectangle</span>
-        <span class="n">v1</span><span class="p">,</span> <span class="n">v2</span> <span class="o">=</span> <span class="n">line_width_offset_pts</span><span class="p">(</span><span class="n">vecs</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                                       <span class="n">vecs</span><span class="o">.</span><span class="n">path_vecs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                                       <span class="n">qc_width</span><span class="p">,</span>
-                                       <span class="n">qc_z</span><span class="p">,</span>
-                                       <span class="n">ret_pts</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="n">v3</span><span class="p">,</span> <span class="n">v4</span> <span class="o">=</span> <span class="n">line_width_offset_pts</span><span class="p">(</span><span class="n">vecs</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-                                       <span class="n">vecs</span><span class="o">.</span><span class="n">path_vecs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                                       <span class="n">qc_width</span><span class="p">,</span>
-                                       <span class="n">qc_z</span><span class="p">,</span>
-                                       <span class="n">ret_pts</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">v1</span><span class="p">,</span> <span class="n">v2</span> <span class="o">=</span> <span class="n">line_width_offset_pts</span><span class="p">(</span>
+            <span class="n">vecs</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">vecs</span><span class="o">.</span><span class="n">path_vecs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">qc_width</span><span class="p">,</span> <span class="n">qc_z</span><span class="p">,</span> <span class="n">ret_pts</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+        <span class="n">v3</span><span class="p">,</span> <span class="n">v4</span> <span class="o">=</span> <span class="n">line_width_offset_pts</span><span class="p">(</span>
+            <span class="n">vecs</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">vecs</span><span class="o">.</span><span class="n">path_vecs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">qc_width</span><span class="p">,</span> <span class="n">qc_z</span><span class="p">,</span> <span class="n">ret_pts</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
 
         <span class="n">v1_v3</span> <span class="o">=</span> <span class="n">Vec3D</span><span class="o">.</span><span class="n">get_distance</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v3</span><span class="p">)</span>
         <span class="n">v1_v4</span> <span class="o">=</span> <span class="n">Vec3D</span><span class="o">.</span><span class="n">get_distance</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v4</span><span class="p">)</span>
@@ -1203,10 +1226,7 @@
         <span class="n">surface</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addPlaneSurface</span><span class="p">([</span><span class="n">curve_loop</span><span class="p">])</span>
 
         <span class="c1"># Translate the junction to the middle of the layer</span>
-        <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">translate</span><span class="p">([(</span><span class="mi">2</span><span class="p">,</span> <span class="n">surface</span><span class="p">)],</span>
-                                 <span class="n">dx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                                 <span class="n">dy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                                 <span class="n">dz</span><span class="o">=</span><span class="n">qc_thickness</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">translate</span><span class="p">([(</span><span class="mi">2</span><span class="p">,</span> <span class="n">surface</span><span class="p">)],</span> <span class="n">dx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dz</span><span class="o">=</span><span class="n">qc_thickness</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">junc</span><span class="o">.</span><span class="n">layer</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">juncs_dict</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">juncs_dict</span><span class="p">[</span><span class="n">junc</span><span class="o">.</span><span class="n">layer</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
@@ -1224,18 +1244,25 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">qc_shapely</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">geometry</span>
         <span class="n">qc_width</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">width</span>
-        <span class="n">qc_fillet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_units_gmsh</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">fillet</span><span class="p">)</span> <span class="k">if</span> <span class="nb">float</span><span class="p">(</span>
-            <span class="n">path</span><span class="o">.</span><span class="n">fillet</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="k">else</span> <span class="mf">0.0</span>
+        <span class="n">qc_fillet</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parse_units_gmsh</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">fillet</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">float</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">fillet</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="k">else</span> <span class="mf">0.0</span>
+        <span class="p">)</span>
         <span class="n">qc_thickness</span><span class="p">,</span> <span class="n">qc_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_thickness_zcoord_for_layer_datatype</span><span class="p">(</span>
-            <span class="n">layer_num</span><span class="o">=</span><span class="n">path</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
+            <span class="n">layer_num</span><span class="o">=</span><span class="n">path</span><span class="o">.</span><span class="n">layer</span>
+        <span class="p">)</span>
 
         <span class="n">vecs</span> <span class="o">=</span> <span class="n">Vec3DArray</span><span class="o">.</span><span class="n">make_vec3DArray</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">parse_units_gmsh</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">qc_shapely</span><span class="o">.</span><span class="n">coords</span><span class="p">)),</span> <span class="n">qc_z</span><span class="p">)</span>
-        <span class="n">qc_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span><span class="p">[</span>
-            <span class="n">path</span><span class="p">[</span><span class="s2">&quot;component&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">clean_name</span><span class="p">(</span><span class="n">path</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parse_units_gmsh</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">qc_shapely</span><span class="o">.</span><span class="n">coords</span><span class="p">)),</span> <span class="n">qc_z</span>
+        <span class="p">)</span>
+        <span class="n">qc_name</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span><span class="p">[</span><span class="n">path</span><span class="p">[</span><span class="s2">&quot;component&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">name</span>
+            <span class="o">+</span> <span class="s2">&quot;_&quot;</span>
+            <span class="o">+</span> <span class="n">clean_name</span><span class="p">(</span><span class="n">path</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+        <span class="p">)</span>
         <span class="n">bad_fillets</span> <span class="o">=</span> <span class="n">bad_fillet_idxs</span><span class="p">(</span><span class="n">qc_shapely</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">qc_fillet</span><span class="p">)</span>
-        <span class="n">curves</span> <span class="o">=</span> <span class="n">render_path_curves</span><span class="p">(</span><span class="n">vecs</span><span class="p">,</span> <span class="n">qc_z</span><span class="p">,</span> <span class="n">qc_fillet</span><span class="p">,</span> <span class="n">qc_width</span><span class="p">,</span>
-                                    <span class="n">bad_fillets</span><span class="p">)</span>
+        <span class="n">curves</span> <span class="o">=</span> <span class="n">render_path_curves</span><span class="p">(</span><span class="n">vecs</span><span class="p">,</span> <span class="n">qc_z</span><span class="p">,</span> <span class="n">qc_fillet</span><span class="p">,</span> <span class="n">qc_width</span><span class="p">,</span> <span class="n">bad_fillets</span><span class="p">)</span>
         <span class="n">surface</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_general_surface</span><span class="p">(</span><span class="n">curves</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">layer</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_subtract_dict</span><span class="p">:</span>
@@ -1245,10 +1272,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">paths_dict</span><span class="p">[</span><span class="n">path</span><span class="o">.</span><span class="n">layer</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">qc_thickness</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">extruded_entity</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">extrude</span><span class="p">([(</span><span class="mi">2</span><span class="p">,</span> <span class="n">surface</span><span class="p">)],</span>
-                                                     <span class="n">dx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                                                     <span class="n">dy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                                                     <span class="n">dz</span><span class="o">=</span><span class="n">qc_thickness</span><span class="p">)</span>
+            <span class="n">extruded_entity</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">extrude</span><span class="p">(</span>
+                <span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="n">surface</span><span class="p">)],</span> <span class="n">dx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dz</span><span class="o">=</span><span class="n">qc_thickness</span>
+            <span class="p">)</span>
             <span class="n">volume</span> <span class="o">=</span> <span class="p">[</span><span class="n">tag</span> <span class="k">for</span> <span class="n">dim</span><span class="p">,</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">extruded_entity</span> <span class="k">if</span> <span class="n">dim</span> <span class="o">==</span> <span class="mi">3</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="n">path</span><span class="p">[</span><span class="s2">&quot;subtract&quot;</span><span class="p">]:</span>
@@ -1279,12 +1305,12 @@
         <span class="n">first_tag</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="n">prev_tag</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
-            <span class="n">p1</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addPoint</span><span class="p">(</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-                                         <span class="n">chip_z</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">prev_tag</span>
-            <span class="n">p2</span> <span class="o">=</span> <span class="n">first_tag</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">-</span>
-                                    <span class="mi">2</span><span class="p">)</span> <span class="k">else</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addPoint</span><span class="p">(</span>
-                                        <span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span>
-                                                                 <span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">chip_z</span><span class="p">)</span>
+            <span class="n">p1</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addPoint</span><span class="p">(</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">chip_z</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">prev_tag</span>
+            <span class="n">p2</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">first_tag</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="k">else</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addPoint</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">chip_z</span><span class="p">)</span>
+            <span class="p">)</span>
             <span class="n">lines</span> <span class="o">+=</span> <span class="p">[</span><span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addLine</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">)]</span>
 
             <span class="n">prev_tag</span> <span class="o">=</span> <span class="n">p2</span>
@@ -1304,12 +1330,17 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">qc_shapely</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">geometry</span>
         <span class="n">qc_thickness</span><span class="p">,</span> <span class="n">qc_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_thickness_zcoord_for_layer_datatype</span><span class="p">(</span>
-            <span class="n">layer_num</span><span class="o">=</span><span class="n">poly</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
+            <span class="n">layer_num</span><span class="o">=</span><span class="n">poly</span><span class="o">.</span><span class="n">layer</span>
+        <span class="p">)</span>
 
         <span class="n">vecs</span> <span class="o">=</span> <span class="n">Vec3DArray</span><span class="o">.</span><span class="n">make_vec3DArray</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">parse_units_gmsh</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">qc_shapely</span><span class="o">.</span><span class="n">exterior</span><span class="o">.</span><span class="n">coords</span><span class="p">)),</span> <span class="n">qc_z</span><span class="p">)</span>
-        <span class="n">qc_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span><span class="p">[</span>
-            <span class="n">poly</span><span class="p">[</span><span class="s2">&quot;component&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">clean_name</span><span class="p">(</span><span class="n">poly</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parse_units_gmsh</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">qc_shapely</span><span class="o">.</span><span class="n">exterior</span><span class="o">.</span><span class="n">coords</span><span class="p">)),</span> <span class="n">qc_z</span>
+        <span class="p">)</span>
+        <span class="n">qc_name</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span><span class="p">[</span><span class="n">poly</span><span class="p">[</span><span class="s2">&quot;component&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">name</span>
+            <span class="o">+</span> <span class="s2">&quot;_&quot;</span>
+            <span class="o">+</span> <span class="n">clean_name</span><span class="p">(</span><span class="n">poly</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+        <span class="p">)</span>
 
         <span class="n">surface</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_poly_surface</span><span class="p">(</span><span class="n">vecs</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">qc_z</span><span class="p">)</span>
 
@@ -1317,8 +1348,7 @@
             <span class="n">pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">qc_shapely</span><span class="o">.</span><span class="n">interiors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">coords</span><span class="p">))</span>
             <span class="n">int_vecs</span> <span class="o">=</span> <span class="n">Vec3DArray</span><span class="o">.</span><span class="n">make_vec3DArray</span><span class="p">(</span><span class="n">pts</span><span class="p">,</span> <span class="n">qc_z</span><span class="p">)</span>
             <span class="n">int_surface</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_poly_surface</span><span class="p">(</span><span class="n">int_vecs</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">qc_z</span><span class="p">)</span>
-            <span class="n">surface</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">cut</span><span class="p">([(</span><span class="mi">2</span><span class="p">,</span> <span class="n">surface</span><span class="p">)],</span>
-                                         <span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="n">int_surface</span><span class="p">)])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">surface</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">cut</span><span class="p">([(</span><span class="mi">2</span><span class="p">,</span> <span class="n">surface</span><span class="p">)],</span> <span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="n">int_surface</span><span class="p">)])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">poly</span><span class="o">.</span><span class="n">layer</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_subtract_dict</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">layer_subtract_dict</span><span class="p">[</span><span class="n">poly</span><span class="o">.</span><span class="n">layer</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
@@ -1327,10 +1357,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">polys_dict</span><span class="p">[</span><span class="n">poly</span><span class="o">.</span><span class="n">layer</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">qc_thickness</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">extruded_entity</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">extrude</span><span class="p">([(</span><span class="mi">2</span><span class="p">,</span> <span class="n">surface</span><span class="p">)],</span>
-                                                     <span class="n">dx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                                                     <span class="n">dy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                                                     <span class="n">dz</span><span class="o">=</span><span class="n">qc_thickness</span><span class="p">)</span>
+            <span class="n">extruded_entity</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">extrude</span><span class="p">(</span>
+                <span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="n">surface</span><span class="p">)],</span> <span class="n">dx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dz</span><span class="o">=</span><span class="n">qc_thickness</span>
+            <span class="p">)</span>
             <span class="n">volume</span> <span class="o">=</span> <span class="p">[</span><span class="n">tag</span> <span class="k">for</span> <span class="n">dim</span><span class="p">,</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">extruded_entity</span> <span class="k">if</span> <span class="n">dim</span> <span class="o">==</span> <span class="mi">3</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="n">poly</span><span class="p">[</span><span class="s2">&quot;subtract&quot;</span><span class="p">]:</span>
@@ -1360,23 +1389,20 @@
 
         <span class="k">for</span> <span class="n">comp</span><span class="p">,</span> <span class="n">pin</span> <span class="ow">in</span> <span class="n">open_pins</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">comp</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Component &#39;</span><span class="si">{</span><span class="n">comp</span><span class="si">}</span><span class="s2">&#39; not present in current design.&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Component &#39;</span><span class="si">{</span><span class="n">comp</span><span class="si">}</span><span class="s2">&#39; not present in current design.&quot;</span><span class="p">)</span>
 
             <span class="n">qcomp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">comp</span><span class="p">]</span>
             <span class="n">qc_layer</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">qcomp</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">pin</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">qcomp</span><span class="o">.</span><span class="n">pins</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Pin &#39;</span><span class="si">{</span><span class="n">pin</span><span class="si">}</span><span class="s2">&#39; not present in component &#39;</span><span class="si">{</span><span class="n">comp</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Pin &#39;</span><span class="si">{</span><span class="n">pin</span><span class="si">}</span><span class="s2">&#39; not present in component &#39;</span><span class="si">{</span><span class="n">comp</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
 
             <span class="n">pin_dict</span> <span class="o">=</span> <span class="n">qcomp</span><span class="o">.</span><span class="n">pins</span><span class="p">[</span><span class="n">pin</span><span class="p">]</span>
-            <span class="n">width</span><span class="p">,</span> <span class="n">gap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_units_gmsh</span><span class="p">(</span>
-                <span class="p">[</span><span class="n">pin_dict</span><span class="p">[</span><span class="s2">&quot;width&quot;</span><span class="p">],</span> <span class="n">pin_dict</span><span class="p">[</span><span class="s2">&quot;gap&quot;</span><span class="p">]])</span>
-            <span class="n">mid</span><span class="p">,</span> <span class="n">normal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_units_gmsh</span><span class="p">(</span>
-                <span class="n">pin_dict</span><span class="p">[</span><span class="s2">&quot;middle&quot;</span><span class="p">]),</span> <span class="n">pin_dict</span><span class="p">[</span><span class="s2">&quot;normal&quot;</span><span class="p">]</span>
+            <span class="n">width</span><span class="p">,</span> <span class="n">gap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_units_gmsh</span><span class="p">([</span><span class="n">pin_dict</span><span class="p">[</span><span class="s2">&quot;width&quot;</span><span class="p">],</span> <span class="n">pin_dict</span><span class="p">[</span><span class="s2">&quot;gap&quot;</span><span class="p">]])</span>
+            <span class="n">mid</span><span class="p">,</span> <span class="n">normal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_units_gmsh</span><span class="p">(</span><span class="n">pin_dict</span><span class="p">[</span><span class="s2">&quot;middle&quot;</span><span class="p">]),</span> <span class="n">pin_dict</span><span class="p">[</span><span class="s2">&quot;normal&quot;</span><span class="p">]</span>
             <span class="n">qc_thickness</span><span class="p">,</span> <span class="n">qc_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_thickness_zcoord_for_layer_datatype</span><span class="p">(</span>
-                <span class="n">layer_num</span><span class="o">=</span><span class="n">qc_layer</span><span class="p">)</span>
+                <span class="n">layer_num</span><span class="o">=</span><span class="n">qc_layer</span>
+            <span class="p">)</span>
 
             <span class="n">rect_mid</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="n">normal</span> <span class="o">*</span> <span class="n">gap</span> <span class="o">/</span> <span class="mi">2</span>
             <span class="n">rect_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">rect_mid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rect_mid</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">qc_z</span><span class="p">])</span>
@@ -1397,27 +1423,24 @@
                 <span class="n">rect_z</span> <span class="o">=</span> <span class="n">rect_vec</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">qc_thickness</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">endcap</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addBox</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">rect_x</span><span class="p">,</span>
-                                               <span class="n">y</span><span class="o">=</span><span class="n">rect_y</span><span class="p">,</span>
-                                               <span class="n">z</span><span class="o">=</span><span class="n">rect_z</span><span class="p">,</span>
-                                               <span class="n">dx</span><span class="o">=</span><span class="n">dx</span><span class="p">,</span>
-                                               <span class="n">dy</span><span class="o">=</span><span class="n">dy</span><span class="p">,</span>
-                                               <span class="n">dz</span><span class="o">=</span><span class="n">qc_thickness</span><span class="p">)</span>
+                <span class="n">endcap</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addBox</span><span class="p">(</span>
+                    <span class="n">x</span><span class="o">=</span><span class="n">rect_x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">rect_y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">rect_z</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="o">=</span><span class="n">dy</span><span class="p">,</span> <span class="n">dz</span><span class="o">=</span><span class="n">qc_thickness</span>
+                <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">endcap</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addRectangle</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">rect_x</span><span class="p">,</span>
-                                                     <span class="n">y</span><span class="o">=</span><span class="n">rect_y</span><span class="p">,</span>
-                                                     <span class="n">z</span><span class="o">=</span><span class="n">rect_z</span><span class="p">,</span>
-                                                     <span class="n">dx</span><span class="o">=</span><span class="n">dx</span><span class="p">,</span>
-                                                     <span class="n">dy</span><span class="o">=</span><span class="n">dy</span><span class="p">)</span>
+                <span class="n">endcap</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addRectangle</span><span class="p">(</span>
+                    <span class="n">x</span><span class="o">=</span><span class="n">rect_x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">rect_y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">rect_z</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="o">=</span><span class="n">dy</span>
+                <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">layer_subtract_dict</span><span class="p">[</span><span class="n">qc_layer</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">endcap</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QGmshRenderer.render_layers">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QGmshRenderer.html#qiskit_metal.renderers.QGmshRenderer.render_layers">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">render_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                      <span class="n">draw_sample_holder</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-                      <span class="n">omit_layers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                      <span class="n">box_plus_buffer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">render_layers</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">draw_sample_holder</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">omit_layers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">box_plus_buffer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Render all chips of the design. calls `render_chip` to render the actual geometries</span>
 
 <span class="sd">        Args:</span>
@@ -1439,16 +1462,22 @@
             <span class="n">y_buff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_units_gmsh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s2">&quot;y_buffer_width_mm&quot;</span><span class="p">])</span>
 
             <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bounds_handler</span><span class="o">.</span><span class="n">get_bounds_of_path_and_poly_tables</span><span class="p">(</span>
-                <span class="n">box_plus_buffer</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">qcomp_ids</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">case</span><span class="p">,</span> <span class="n">x_buff</span><span class="p">,</span> <span class="n">y_buff</span><span class="p">)</span>
+                <span class="n">box_plus_buffer</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">qcomp_ids</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">case</span><span class="p">,</span> <span class="n">x_buff</span><span class="p">,</span> <span class="n">y_buff</span>
+            <span class="p">)</span>
 
-            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">box_xy_bounds</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_and_poly_with_valid_comps</span><span class="p">,</span>
-             <span class="bp">self</span><span class="o">.</span><span class="n">path_poly_and_junction_valid_comps</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chip_names_matched</span><span class="p">,</span>
-             <span class="bp">self</span><span class="o">.</span><span class="n">valid_chip_names</span><span class="p">)</span> <span class="o">=</span> <span class="n">result</span>
+            <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">box_xy_bounds</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">path_and_poly_with_valid_comps</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">path_poly_and_junction_valid_comps</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">chip_names_matched</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">valid_chip_names</span><span class="p">,</span>
+            <span class="p">)</span> <span class="o">=</span> <span class="n">result</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">chip_names_matched</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                     <span class="s2">&quot;The chip names in Qgeometry tables do not match with &quot;</span>
-                    <span class="s2">&quot;the ones in the layer-stack. Please re-check your design.&quot;</span><span class="p">)</span>
+                    <span class="s2">&quot;the ones in the layer-stack. Please re-check your design.&quot;</span>
+                <span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">render_layer</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
 
@@ -1459,7 +1488,8 @@
                 <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_uwave_package</span>
 
             <span class="n">vac_height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_units_gmsh</span><span class="p">(</span>
-                <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="s2">&quot;sample_holder_top&quot;</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="s2">&quot;sample_holder_bottom&quot;</span><span class="p">]])</span>
+                <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="s2">&quot;sample_holder_top&quot;</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="s2">&quot;sample_holder_bottom&quot;</span><span class="p">]]</span>
+            <span class="p">)</span>
 
             <span class="c1"># This tolerance is needed for Gmsh to not cut</span>
             <span class="c1"># the vacuum_box into two separate volumes when the</span>
@@ -1488,19 +1518,22 @@
 <span class="sd">                            in the layer-stack</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">thickness</span><span class="p">,</span> <span class="n">z_coord</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_thickness_zcoord_for_layer_datatype</span><span class="p">(</span>
-            <span class="n">layer_num</span><span class="o">=</span><span class="n">layer_number</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="n">datatype</span><span class="p">)</span>
+            <span class="n">layer_num</span><span class="o">=</span><span class="n">layer_number</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="n">datatype</span>
+        <span class="p">)</span>
 
         <span class="n">layer_x</span><span class="p">,</span> <span class="n">layer_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">box_xy_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
-        <span class="n">layer_wx</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">box_xy_bounds</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">box_xy_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="n">layer_wy</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">box_xy_bounds</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">box_xy_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">layer_wx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">box_xy_bounds</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">box_xy_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">layer_wy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">box_xy_bounds</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">box_xy_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
         <span class="c1"># Check if thickness == 0, then draw a rectangle instead</span>
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">thickness</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">layer_tag</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addBox</span><span class="p">(</span><span class="n">layer_x</span><span class="p">,</span> <span class="n">layer_y</span><span class="p">,</span> <span class="n">z_coord</span><span class="p">,</span>
-                                              <span class="n">layer_wx</span><span class="p">,</span> <span class="n">layer_wy</span><span class="p">,</span> <span class="n">thickness</span><span class="p">)</span>
+            <span class="n">layer_tag</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addBox</span><span class="p">(</span>
+                <span class="n">layer_x</span><span class="p">,</span> <span class="n">layer_y</span><span class="p">,</span> <span class="n">z_coord</span><span class="p">,</span> <span class="n">layer_wx</span><span class="p">,</span> <span class="n">layer_wy</span><span class="p">,</span> <span class="n">thickness</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">layer_tag</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addRectangle</span><span class="p">(</span><span class="n">layer_x</span><span class="p">,</span> <span class="n">layer_y</span><span class="p">,</span> <span class="n">z_coord</span><span class="p">,</span>
-                                                    <span class="n">layer_wx</span><span class="p">,</span> <span class="n">layer_wy</span><span class="p">)</span>
+            <span class="n">layer_tag</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addRectangle</span><span class="p">(</span>
+                <span class="n">layer_x</span><span class="p">,</span> <span class="n">layer_y</span><span class="p">,</span> <span class="n">z_coord</span><span class="p">,</span> <span class="n">layer_wx</span><span class="p">,</span> <span class="n">layer_wy</span>
+            <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">layer_number</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_dict</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">layers_dict</span><span class="p">[</span><span class="n">layer_number</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -1522,8 +1555,7 @@
             <span class="k">if</span> <span class="n">omit_layers</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">layer_num</span> <span class="ow">in</span> <span class="n">omit_layers</span><span class="p">:</span>
                 <span class="k">continue</span>
 
-            <span class="n">thickness</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_thickness_for_layer_datatype</span><span class="p">(</span>
-                <span class="n">layer_num</span><span class="o">=</span><span class="n">layer_num</span><span class="p">)</span>
+            <span class="n">thickness</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_thickness_for_layer_datatype</span><span class="p">(</span><span class="n">layer_num</span><span class="o">=</span><span class="n">layer_num</span><span class="p">)</span>
 
             <span class="c1"># Check if thickness == 0, then subtract with dim=2</span>
             <span class="n">dim</span> <span class="o">=</span> <span class="mi">3</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">thickness</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">2</span>
@@ -1531,15 +1563,12 @@
             <span class="n">layer_dim_tag</span> <span class="o">=</span> <span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_dict</span><span class="p">[</span><span class="n">layer_num</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
             <span class="n">tool_dimtags</span> <span class="o">=</span> <span class="p">[</span><span class="n">layer_dim_tag</span><span class="p">]</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape_dim_tags</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">subtract_layer</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">tool_dimtags</span><span class="p">,</span>
-                                                    <span class="n">shape_dim_tags</span><span class="p">)</span>
+                <span class="n">subtract_layer</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">tool_dimtags</span><span class="p">,</span> <span class="n">shape_dim_tags</span><span class="p">)</span>
 
                 <span class="n">updated_layer_geoms</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tool_dimtags</span><span class="p">)):</span>
                     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">subtract_layer</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                        <span class="n">updated_layer_geoms</span> <span class="o">+=</span> <span class="p">[</span>
-                            <span class="n">tag</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">subtract_layer</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
-                        <span class="p">]</span>
+                        <span class="n">updated_layer_geoms</span> <span class="o">+=</span> <span class="p">[</span><span class="n">tag</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">subtract_layer</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]]</span>
 
                 <span class="bp">self</span><span class="o">.</span><span class="n">layers_dict</span><span class="p">[</span><span class="n">layer_num</span><span class="p">]</span> <span class="o">=</span> <span class="n">updated_layer_geoms</span></div>
 
@@ -1567,10 +1596,10 @@
             <span class="k">if</span> <span class="n">layer</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">all_layer_geoms</span><span class="p">:</span>
                 <span class="n">all_layer_geoms</span><span class="p">[</span><span class="n">layer</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
-            <span class="n">layer_type</span> <span class="o">=</span> <span class="s2">&quot;ground&quot;</span> <span class="k">if</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_types</span><span class="p">[</span>
-                <span class="s2">&quot;metal&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="s2">&quot;dielectric&quot;</span>
-            <span class="n">all_layer_geoms</span><span class="p">[</span><span class="n">layer</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-                <span class="p">{</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">layer_type</span><span class="si">}</span><span class="s2">_layer_</span><span class="si">{</span><span class="n">layer</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">geom_id</span><span class="p">})</span>
+            <span class="n">layer_type</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s2">&quot;ground&quot;</span> <span class="k">if</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_types</span><span class="p">[</span><span class="s2">&quot;metal&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="s2">&quot;dielectric&quot;</span>
+            <span class="p">)</span>
+            <span class="n">all_layer_geoms</span><span class="p">[</span><span class="n">layer</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">layer_type</span><span class="si">}</span><span class="s2">_layer_</span><span class="si">{</span><span class="n">layer</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">geom_id</span><span class="p">})</span>
 
         <span class="k">for</span> <span class="n">layer</span><span class="p">,</span> <span class="n">geoms</span> <span class="ow">in</span> <span class="n">all_layer_geoms</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="c1"># Check if thickness == 0, then fragment differently</span>
@@ -1586,21 +1615,22 @@
         <span class="k">if</span> <span class="n">draw_sample_holder</span><span class="p">:</span>
             <span class="n">object_dimtag</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vacuum_box</span><span class="p">)</span>
             <span class="n">all_layer_geoms</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">vacuum_box</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vacuum_box</span><span class="p">])</span>
-            <span class="n">fragmented_geoms</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">fragment</span><span class="p">([</span><span class="n">object_dimtag</span><span class="p">],</span>
-                                                       <span class="n">all_geom_dimtags</span><span class="p">)</span>
+            <span class="n">fragmented_geoms</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">fragment</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">object_dimtag</span><span class="p">],</span> <span class="n">all_geom_dimtags</span>
+            <span class="p">)</span>
             <span class="c1"># Extract the new vacuum_box volume</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">vacuum_box</span> <span class="o">=</span> <span class="n">fragmented_geoms</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
             <span class="n">object_dimtag</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vacuum_box</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Get one of the dim=3 objects</span>
-            <span class="n">dim3_dimtag</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span> <span class="k">for</span> <span class="n">dim</span><span class="p">,</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">all_geom_dimtags</span> <span class="k">if</span> <span class="n">dim</span> <span class="o">==</span> <span class="mi">3</span>
-            <span class="p">]</span>
-            <span class="n">object_dimtag</span> <span class="o">=</span> <span class="n">dim3_dimtag</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span>
-                <span class="n">dim3_dimtag</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">all_geom_dimtags</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">dim3_dimtag</span> <span class="o">=</span> <span class="p">[(</span><span class="n">dim</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span> <span class="k">for</span> <span class="n">dim</span><span class="p">,</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">all_geom_dimtags</span> <span class="k">if</span> <span class="n">dim</span> <span class="o">==</span> <span class="mi">3</span><span class="p">]</span>
+            <span class="n">object_dimtag</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">dim3_dimtag</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dim3_dimtag</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">all_geom_dimtags</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="p">)</span>
             <span class="n">all_geom_dimtags</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">object_dimtag</span><span class="p">)</span>
-            <span class="n">fragmented_geoms</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">fragment</span><span class="p">([</span><span class="n">object_dimtag</span><span class="p">],</span>
-                                                       <span class="n">all_geom_dimtags</span><span class="p">)</span>
+            <span class="n">fragmented_geoms</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">fragment</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">object_dimtag</span><span class="p">],</span> <span class="n">all_geom_dimtags</span>
+            <span class="p">)</span>
 
         <span class="n">updated_geoms</span> <span class="o">=</span> <span class="n">fragmented_geoms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">insert_idx</span> <span class="o">=</span> <span class="n">updated_geoms</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">object_dimtag</span><span class="p">)</span>
@@ -1609,7 +1639,7 @@
             <span class="mi">0</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">paths_dict</span><span class="p">,</span>
             <span class="mi">1</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">polys_dict</span><span class="p">,</span>
             <span class="mi">2</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">juncs_dict</span><span class="p">,</span>
-            <span class="mi">3</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_dict</span>
+            <span class="mi">3</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_dict</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="k">for</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">all_geom_dimtags</span><span class="p">,</span> <span class="n">updated_geoms</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">old</span> <span class="o">!=</span> <span class="n">new</span><span class="p">:</span>
@@ -1668,8 +1698,9 @@
 
 <div class="viewcode-block" id="QGmshRenderer.assign_physical_groups">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QGmshRenderer.html#qiskit_metal.renderers.QGmshRenderer.assign_physical_groups">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">assign_physical_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ignore_metal_volume</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-                               <span class="n">draw_sample_holder</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">assign_physical_groups</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">ignore_metal_volume</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">draw_sample_holder</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Assign physical groups to classify different geometries physically.</span>
 
 <span class="sd">        Args:</span>
@@ -1684,8 +1715,7 @@
         <span class="n">layer_numbers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">l</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">ls</span><span class="o">.</span><span class="n">ls_df</span><span class="p">[</span><span class="s2">&quot;layer&quot;</span><span class="p">]))</span>
         <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">layer_numbers</span><span class="p">:</span>
             <span class="c1"># TODO: check if thickness == 0, then fragment differently</span>
-            <span class="n">layer_thickness</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_thickness_for_layer_datatype</span><span class="p">(</span>
-                <span class="n">layer_num</span><span class="o">=</span><span class="n">layer</span><span class="p">)</span>
+            <span class="n">layer_thickness</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_thickness_for_layer_datatype</span><span class="p">(</span><span class="n">layer_num</span><span class="o">=</span><span class="n">layer</span><span class="p">)</span>
             <span class="n">layer_dim</span> <span class="o">=</span> <span class="mi">3</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">layer_thickness</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">2</span>
 
             <span class="k">if</span> <span class="n">layer</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">physical_groups</span><span class="p">:</span>
@@ -1693,36 +1723,38 @@
 
             <span class="c1"># Check if a component is drawn on that layer</span>
             <span class="n">valid_layers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span>
-                <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">paths_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">polys_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+                <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">paths_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">polys_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="p">)</span>
             <span class="k">if</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">valid_layers</span><span class="p">:</span>
                 <span class="c1"># Make physical groups for components</span>
-                <span class="n">layer_geoms</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">paths_dict</span><span class="p">[</span><span class="n">layer</span><span class="p">],</span>
-                                   <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">polys_dict</span><span class="p">[</span><span class="n">layer</span><span class="p">])</span>
+                <span class="n">layer_geoms</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">paths_dict</span><span class="p">[</span><span class="n">layer</span><span class="p">],</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">polys_dict</span><span class="p">[</span><span class="n">layer</span><span class="p">])</span>
                 <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">layer_geoms</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                     <span class="k">if</span> <span class="n">layer_dim</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
                         <span class="n">tags</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">getSurfaceLoops</span><span class="p">(</span><span class="n">tag</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-                        <span class="n">metal_layer</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_types</span><span class="p">[</span>
-                            <span class="s2">&quot;metal&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="kc">False</span>
-                        <span class="k">if</span> <span class="ow">not</span> <span class="n">metal_layer</span> <span class="ow">or</span> <span class="p">(</span><span class="n">metal_layer</span> <span class="ow">and</span>
-                                               <span class="ow">not</span> <span class="n">ignore_metal_volume</span><span class="p">):</span>
+                        <span class="n">metal_layer</span> <span class="o">=</span> <span class="p">(</span>
+                            <span class="kc">True</span> <span class="k">if</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_types</span><span class="p">[</span><span class="s2">&quot;metal&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="kc">False</span>
+                        <span class="p">)</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">metal_layer</span> <span class="ow">or</span> <span class="p">(</span><span class="n">metal_layer</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">ignore_metal_volume</span><span class="p">):</span>
                             <span class="n">ph_vol_tag</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span>
-                                <span class="n">dim</span><span class="o">=</span><span class="n">layer_dim</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="n">tag</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+                                <span class="n">dim</span><span class="o">=</span><span class="n">layer_dim</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="n">tag</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span>
+                            <span class="p">)</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">physical_groups</span><span class="p">[</span><span class="n">layer</span><span class="p">][</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">ph_vol_tag</span>
 
                         <span class="n">ph_sfs_tag</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span>
-                            <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="n">tags</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_sfs&quot;</span><span class="p">)</span>
+                            <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="n">tags</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_sfs&quot;</span>
+                        <span class="p">)</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">physical_groups</span><span class="p">[</span><span class="n">layer</span><span class="p">][</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_sfs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ph_sfs_tag</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">ph_tag</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="n">layer_dim</span><span class="p">,</span>
-                                                             <span class="n">tags</span><span class="o">=</span><span class="n">tag</span><span class="p">,</span>
-                                                             <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+                        <span class="n">ph_tag</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span>
+                            <span class="n">dim</span><span class="o">=</span><span class="n">layer_dim</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="n">tag</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span>
+                        <span class="p">)</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">physical_groups</span><span class="p">[</span><span class="n">layer</span><span class="p">][</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">ph_tag</span>
 
                 <span class="c1"># TODO: Do we require 3D junctions? Active issue: #842</span>
                 <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">tag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">juncs_dict</span><span class="p">[</span><span class="n">layer</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                    <span class="n">ph_junc_tag</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                                                              <span class="n">tags</span><span class="o">=</span><span class="n">tag</span><span class="p">,</span>
-                                                              <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+                    <span class="n">ph_junc_tag</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span>
+                        <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="n">tag</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span>
+                    <span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">physical_groups</span><span class="p">[</span><span class="n">layer</span><span class="p">][</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">ph_junc_tag</span>
 
             <span class="c1"># Make physical groups for each layer</span>
@@ -1740,67 +1772,64 @@
                         <span class="s2">&quot;Layer number not in the specified `self.layer_types` dict.&quot;</span>
                     <span class="p">)</span>
 
-                <span class="n">layer_name</span> <span class="o">=</span> <span class="n">layer_type</span> <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;_(layer </span><span class="si">{</span><span class="n">layer</span><span class="si">}</span><span class="s1">)&#39;</span>
+                <span class="n">layer_name</span> <span class="o">=</span> <span class="n">layer_type</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;_(layer </span><span class="si">{</span><span class="n">layer</span><span class="si">}</span><span class="s2">)&quot;</span>
                 <span class="n">layer_tag</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_dict</span><span class="p">[</span><span class="n">layer</span><span class="p">]</span>
                 <span class="n">all_metal_surfs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_metal_surfaces</span><span class="p">()</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">layer_tag</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">layer_dim</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
                         <span class="n">layer_sfs_tags</span> <span class="o">=</span> <span class="p">[]</span>
                         <span class="k">for</span> <span class="n">vol</span> <span class="ow">in</span> <span class="n">layer_tag</span><span class="p">:</span>
-                            <span class="n">layer_sfs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
-                                <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">getSurfaceLoops</span><span class="p">(</span><span class="n">vol</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+                            <span class="n">layer_sfs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">getSurfaceLoops</span><span class="p">(</span><span class="n">vol</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
 
                             <span class="k">if</span> <span class="n">layer_type</span> <span class="o">==</span> <span class="s2">&quot;ground_plane&quot;</span><span class="p">:</span>
                                 <span class="n">layer_sfs_tags</span> <span class="o">+=</span> <span class="n">layer_sfs</span>
                             <span class="k">else</span><span class="p">:</span>
                                 <span class="n">layer_sfs_tags</span> <span class="o">+=</span> <span class="p">[</span>
-                                    <span class="n">sf</span> <span class="k">for</span> <span class="n">sf</span> <span class="ow">in</span> <span class="n">layer_sfs</span>
-                                    <span class="k">if</span> <span class="n">sf</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">all_metal_surfs</span>
+                                    <span class="n">sf</span> <span class="k">for</span> <span class="n">sf</span> <span class="ow">in</span> <span class="n">layer_sfs</span> <span class="k">if</span> <span class="n">sf</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">all_metal_surfs</span>
                                 <span class="p">]</span>
 
                         <span class="k">if</span> <span class="n">layer_type</span> <span class="o">!=</span> <span class="s2">&quot;ground_plane&quot;</span> <span class="ow">or</span> <span class="p">(</span>
-                                <span class="n">layer_type</span> <span class="o">==</span> <span class="s2">&quot;ground_plane&quot;</span> <span class="ow">and</span>
-                                <span class="ow">not</span> <span class="n">ignore_metal_volume</span><span class="p">):</span>
+                            <span class="n">layer_type</span> <span class="o">==</span> <span class="s2">&quot;ground_plane&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">ignore_metal_volume</span>
+                        <span class="p">):</span>
                             <span class="n">ph_vol_tag</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span>
-                                <span class="n">dim</span><span class="o">=</span><span class="n">layer_dim</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="n">layer_tag</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">layer_name</span><span class="p">)</span>
+                                <span class="n">dim</span><span class="o">=</span><span class="n">layer_dim</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="n">layer_tag</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">layer_name</span>
+                            <span class="p">)</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">physical_groups</span><span class="p">[</span><span class="n">layer</span><span class="p">][</span><span class="n">layer_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">ph_vol_tag</span>
 
                         <span class="n">ph_sfs_tag</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span>
-                            <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                            <span class="n">tags</span><span class="o">=</span><span class="n">layer_sfs_tags</span><span class="p">,</span>
-                            <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">layer_name</span><span class="si">}</span><span class="s2">_sfs&quot;</span><span class="p">)</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">physical_groups</span><span class="p">[</span><span class="n">layer</span><span class="p">][</span>
-                            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">layer_name</span><span class="si">}</span><span class="s2">_sfs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ph_sfs_tag</span>
+                            <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="n">layer_sfs_tags</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">layer_name</span><span class="si">}</span><span class="s2">_sfs&quot;</span>
+                        <span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">physical_groups</span><span class="p">[</span><span class="n">layer</span><span class="p">][</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">layer_name</span><span class="si">}</span><span class="s2">_sfs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ph_sfs_tag</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">ph_tag</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="n">layer_dim</span><span class="p">,</span>
-                                                             <span class="n">tags</span><span class="o">=</span><span class="n">layer_tag</span><span class="p">,</span>
-                                                             <span class="n">name</span><span class="o">=</span><span class="n">layer_name</span><span class="p">)</span>
+                        <span class="n">ph_tag</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span>
+                            <span class="n">dim</span><span class="o">=</span><span class="n">layer_dim</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="n">layer_tag</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">layer_name</span>
+                        <span class="p">)</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">physical_groups</span><span class="p">[</span><span class="n">layer</span><span class="p">][</span><span class="n">layer_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">ph_tag</span>
 
         <span class="k">if</span> <span class="n">draw_sample_holder</span><span class="p">:</span>
             <span class="c1"># Make physical groups for vacuum box (volume)</span>
             <span class="n">vb_name</span> <span class="o">=</span> <span class="s2">&quot;vacuum_box&quot;</span>
-            <span class="n">ph_vb_tag</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-                                                    <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vacuum_box</span><span class="p">],</span>
-                                                    <span class="n">name</span><span class="o">=</span><span class="n">vb_name</span><span class="p">)</span>
+            <span class="n">ph_vb_tag</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span>
+                <span class="n">dim</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vacuum_box</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">vb_name</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">physical_groups</span><span class="p">[</span><span class="s2">&quot;global&quot;</span><span class="p">][</span><span class="n">vb_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">ph_vb_tag</span>
 
             <span class="c1"># Make physical groups for vacuum box (surfaces)</span>
             <span class="n">vb_sfs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">getSurfaceLoops</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vacuum_box</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
-            <span class="n">ph_vb_sfs_tag</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                                                        <span class="n">tags</span><span class="o">=</span><span class="n">vb_sfs</span><span class="p">,</span>
-                                                        <span class="n">name</span><span class="o">=</span><span class="p">(</span><span class="n">vb_name</span> <span class="o">+</span> <span class="s2">&quot;_sfs&quot;</span><span class="p">))</span>
+            <span class="n">ph_vb_sfs_tag</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span>
+                <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="n">vb_sfs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="p">(</span><span class="n">vb_name</span> <span class="o">+</span> <span class="s2">&quot;_sfs&quot;</span><span class="p">)</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">physical_groups</span><span class="p">[</span><span class="s2">&quot;global&quot;</span><span class="p">][</span><span class="n">vb_name</span> <span class="o">+</span> <span class="s2">&quot;_sfs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ph_vb_sfs_tag</span></div>
 
 
 <div class="viewcode-block" id="QGmshRenderer.isometric_projection">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QGmshRenderer.html#qiskit_metal.renderers.QGmshRenderer.isometric_projection">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">isometric_projection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the view in Gmsh to isometric view manually.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the view in Gmsh to isometric view manually.&quot;&quot;&quot;</span>
         <span class="n">gmsh</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="s2">&quot;General.Trackball&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="n">gmsh</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="s2">&quot;General.RotationX&quot;</span><span class="p">,</span>
-                              <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arcsin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">6</span><span class="p">))))</span>
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span>
+            <span class="s2">&quot;General.RotationX&quot;</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arcsin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">6</span><span class="p">)))</span>
+        <span class="p">)</span>
         <span class="n">gmsh</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="s2">&quot;General.RotationY&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="n">gmsh</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="s2">&quot;General.RotationZ&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">45</span><span class="p">)</span></div>
 
@@ -1808,22 +1837,22 @@
 <div class="viewcode-block" id="QGmshRenderer.define_mesh_size_fields">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QGmshRenderer.html#qiskit_metal.renderers.QGmshRenderer.define_mesh_size_fields">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">define_mesh_size_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Define size fields for mesh varying the mesh density across the design.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Define size fields for mesh varying the mesh density across the design.&quot;&quot;&quot;</span>
         <span class="n">min_mesh_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_units_gmsh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;min_size&quot;</span><span class="p">])</span>
         <span class="n">max_mesh_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_units_gmsh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;max_size&quot;</span><span class="p">])</span>
-        <span class="n">min_mesh_size_jj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_units_gmsh</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;max_size_jj&quot;</span><span class="p">])</span>
+        <span class="n">min_mesh_size_jj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_units_gmsh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;max_size_jj&quot;</span><span class="p">])</span>
         <span class="n">grad_delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_units_gmsh</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;mesh_size_fields&quot;</span><span class="p">][</span><span class="s2">&quot;gradient_delta&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;mesh_size_fields&quot;</span><span class="p">][</span><span class="s2">&quot;gradient_delta&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
         <span class="n">dist_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_units_gmsh</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;mesh_size_fields&quot;</span><span class="p">]</span>
-            <span class="p">[</span><span class="s2">&quot;min_distance_from_edges&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;mesh_size_fields&quot;</span><span class="p">][</span><span class="s2">&quot;min_distance_from_edges&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
         <span class="n">dist_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_units_gmsh</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;mesh_size_fields&quot;</span><span class="p">]</span>
-            <span class="p">[</span><span class="s2">&quot;max_distance_from_edges&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;mesh_size_fields&quot;</span><span class="p">][</span><span class="s2">&quot;max_distance_from_edges&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
         <span class="n">dist_delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_units_gmsh</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;mesh_size_fields&quot;</span><span class="p">][</span><span class="s2">&quot;distance_delta&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;mesh_size_fields&quot;</span><span class="p">][</span><span class="s2">&quot;distance_delta&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
         <span class="n">grad_steps</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">dist_max</span> <span class="o">-</span> <span class="n">dist_min</span><span class="p">)</span> <span class="o">/</span> <span class="n">dist_delta</span><span class="p">)</span>
 
         <span class="n">all_vols</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1847,9 +1876,7 @@
                 <span class="n">all_surfs</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_dict</span><span class="p">[</span><span class="n">layer</span><span class="p">]</span>
 
         <span class="k">for</span> <span class="n">vol</span> <span class="ow">in</span> <span class="n">all_vols</span><span class="p">:</span>
-            <span class="n">all_surfs</span> <span class="o">+=</span> <span class="p">[</span>
-                <span class="n">surf</span> <span class="k">for</span> <span class="n">surf</span> <span class="ow">in</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">getSurfaceLoops</span><span class="p">(</span><span class="n">vol</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-            <span class="p">]</span>
+            <span class="n">all_surfs</span> <span class="o">+=</span> <span class="p">[</span><span class="n">surf</span> <span class="k">for</span> <span class="n">surf</span> <span class="ow">in</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">getSurfaceLoops</span><span class="p">(</span><span class="n">vol</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span>
 
         <span class="n">curve_loops</span> <span class="o">=</span> <span class="p">[</span><span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">getCurveLoops</span><span class="p">(</span><span class="n">surf</span><span class="p">)</span> <span class="k">for</span> <span class="n">surf</span> <span class="ow">in</span> <span class="n">all_surfs</span><span class="p">]</span>
         <span class="n">curves</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1867,11 +1894,13 @@
             <span class="n">tf</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Threshold&quot;</span><span class="p">)</span>
             <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="s2">&quot;DistMin&quot;</span><span class="p">,</span> <span class="n">dist_min</span><span class="p">)</span>
             <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span>
-                <span class="n">tf</span><span class="p">,</span> <span class="s2">&quot;DistMax&quot;</span><span class="p">,</span> <span class="n">dist_max</span> <span class="o">-</span> <span class="p">((</span><span class="n">grad_steps</span> <span class="o">-</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">dist_delta</span><span class="p">))</span>
+                <span class="n">tf</span><span class="p">,</span> <span class="s2">&quot;DistMax&quot;</span><span class="p">,</span> <span class="n">dist_max</span> <span class="o">-</span> <span class="p">((</span><span class="n">grad_steps</span> <span class="o">-</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">dist_delta</span><span class="p">)</span>
+            <span class="p">)</span>
             <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="s2">&quot;Sigmoid&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
             <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="s2">&quot;InField&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
-            <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="s2">&quot;SizeMin&quot;</span><span class="p">,</span>
-                                            <span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">grad_delta</span><span class="p">)</span> <span class="o">+</span> <span class="n">min_mesh_size</span><span class="p">)</span>
+            <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span>
+                <span class="n">tf</span><span class="p">,</span> <span class="s2">&quot;SizeMin&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">grad_delta</span><span class="p">)</span> <span class="o">+</span> <span class="n">min_mesh_size</span>
+            <span class="p">)</span>
             <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="s2">&quot;SizeMax&quot;</span><span class="p">,</span> <span class="n">max_mesh_size</span><span class="p">)</span>
 
             <span class="n">thresh_fields</span> <span class="o">+=</span> <span class="p">[</span><span class="n">tf</span><span class="p">]</span>
@@ -1880,9 +1909,7 @@
         <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">geoms</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">juncs_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">jj_surfs</span> <span class="o">+=</span> <span class="p">[</span><span class="n">tag</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">geoms</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
 
-        <span class="n">jj_curve_loops</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">getCurveLoops</span><span class="p">(</span><span class="n">surf</span><span class="p">)</span> <span class="k">for</span> <span class="n">surf</span> <span class="ow">in</span> <span class="n">all_surfs</span>
-        <span class="p">]</span>
+        <span class="n">jj_curve_loops</span> <span class="o">=</span> <span class="p">[</span><span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">getCurveLoops</span><span class="p">(</span><span class="n">surf</span><span class="p">)</span> <span class="k">for</span> <span class="n">surf</span> <span class="ow">in</span> <span class="n">all_surfs</span><span class="p">]</span>
         <span class="n">jj_curves</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">cl</span> <span class="ow">in</span> <span class="n">jj_curve_loops</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">curve_tag_list</span> <span class="ow">in</span> <span class="n">cl</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>  <span class="c1"># extract curves</span>
@@ -1913,28 +1940,26 @@
 <div class="viewcode-block" id="QGmshRenderer.define_mesh_properties">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QGmshRenderer.html#qiskit_metal.renderers.QGmshRenderer.define_mesh_properties">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">define_mesh_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Define properties for mesh depending on renderer options.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Define properties for mesh depending on renderer options.&quot;&quot;&quot;</span>
         <span class="n">min_mesh_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_units_gmsh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;min_size&quot;</span><span class="p">])</span>
         <span class="n">max_mesh_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_units_gmsh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;max_size&quot;</span><span class="p">])</span>
-        <span class="n">gmsh</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="s2">&quot;Mesh.MeshSizeFromCurvature&quot;</span><span class="p">,</span>
-                              <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;nodes_per_2pi_curve&quot;</span><span class="p">])</span>
-        <span class="n">gmsh</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="s2">&quot;Mesh.Smoothing&quot;</span><span class="p">,</span>
-                              <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;smoothing&quot;</span><span class="p">])</span>
-        <span class="n">gmsh</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="s2">&quot;Mesh.Algorithm3D&quot;</span><span class="p">,</span>
-                              <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;algorithm_3d&quot;</span><span class="p">])</span>
-        <span class="n">gmsh</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="s2">&quot;General.NumThreads&quot;</span><span class="p">,</span>
-                              <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;num_threads&quot;</span><span class="p">])</span>
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span>
+            <span class="s2">&quot;Mesh.MeshSizeFromCurvature&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;nodes_per_2pi_curve&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="s2">&quot;Mesh.Smoothing&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;smoothing&quot;</span><span class="p">])</span>
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="s2">&quot;Mesh.Algorithm3D&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;algorithm_3d&quot;</span><span class="p">])</span>
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span>
+            <span class="s2">&quot;General.NumThreads&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;num_threads&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
         <span class="n">gmsh</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="s2">&quot;Mesh.MeshSizeMin&quot;</span><span class="p">,</span> <span class="n">min_mesh_size</span><span class="p">)</span>
         <span class="n">gmsh</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="s2">&quot;Mesh.MeshSizeMax&quot;</span><span class="p">,</span> <span class="n">max_mesh_size</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QGmshRenderer.add_mesh">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QGmshRenderer.html#qiskit_metal.renderers.QGmshRenderer.add_mesh">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">add_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
-                 <span class="n">intelli_mesh</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-                 <span class="n">custom_mesh_fn</span><span class="p">:</span> <span class="nb">callable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_mesh</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">intelli_mesh</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">custom_mesh_fn</span><span class="p">:</span> <span class="nb">callable</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate mesh for all geometries.</span>
 
 <span class="sd">        Args:</span>
@@ -1961,13 +1986,11 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Assign mesh color according to the type of layer specified by</span>
 <span class="sd">        self.layer_types and colors taken from self._options as provided by the user.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">color_dict</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">color</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">r</span><span class="o">=</span><span class="n">color</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">g</span><span class="o">=</span><span class="n">color</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">b</span><span class="o">=</span><span class="n">color</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">a</span><span class="o">=</span><span class="n">color</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">color_dict</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">color</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="n">color</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">g</span><span class="o">=</span><span class="n">color</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">b</span><span class="o">=</span><span class="n">color</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">a</span><span class="o">=</span><span class="n">color</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
         <span class="n">metal_color</span> <span class="o">=</span> <span class="n">color_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s2">&quot;colors&quot;</span><span class="p">][</span><span class="s2">&quot;metal&quot;</span><span class="p">])</span>
         <span class="n">jj_color</span> <span class="o">=</span> <span class="n">color_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s2">&quot;colors&quot;</span><span class="p">][</span><span class="s2">&quot;jj&quot;</span><span class="p">])</span>
         <span class="n">dielectric_color</span> <span class="o">=</span> <span class="n">color_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s2">&quot;colors&quot;</span><span class="p">][</span><span class="s2">&quot;dielectric&quot;</span><span class="p">])</span>
-        <span class="n">valid_layers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span>
-            <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">paths_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">polys_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+        <span class="n">valid_layers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">paths_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">polys_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
 
         <span class="c1"># Assign mesh color to dielectric layer</span>
         <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
@@ -1982,13 +2005,13 @@
                 <span class="n">layer_sfs</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="k">for</span> <span class="n">vol</span> <span class="ow">in</span> <span class="n">layer_tags</span><span class="p">:</span>
                     <span class="n">layer_sfs</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">getSurfaceLoops</span><span class="p">(</span><span class="n">vol</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
-                <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">setColor</span><span class="p">([(</span><span class="mi">3</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">layer_tags</span><span class="p">],</span>
-                                    <span class="o">**</span><span class="n">dielectric_color</span><span class="p">)</span>
+                <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">setColor</span><span class="p">(</span>
+                    <span class="p">[(</span><span class="mi">3</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">layer_tags</span><span class="p">],</span> <span class="o">**</span><span class="n">dielectric_color</span>
+                <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">layer_sfs</span> <span class="o">=</span> <span class="n">layer_tags</span>
 
-            <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">setColor</span><span class="p">([(</span><span class="mi">2</span><span class="p">,</span> <span class="n">sf</span><span class="p">)</span> <span class="k">for</span> <span class="n">sf</span> <span class="ow">in</span> <span class="n">layer_sfs</span><span class="p">],</span>
-                                <span class="o">**</span><span class="n">dielectric_color</span><span class="p">)</span>
+            <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">setColor</span><span class="p">([(</span><span class="mi">2</span><span class="p">,</span> <span class="n">sf</span><span class="p">)</span> <span class="k">for</span> <span class="n">sf</span> <span class="ow">in</span> <span class="n">layer_sfs</span><span class="p">],</span> <span class="o">**</span><span class="n">dielectric_color</span><span class="p">)</span>
 
         <span class="c1"># Assign colors to geometries and metal (ground plane) layers</span>
         <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
@@ -2018,15 +2041,16 @@
 
                 <span class="k">for</span> <span class="n">vol</span> <span class="ow">in</span> <span class="n">metal_vols</span><span class="p">:</span>
                     <span class="n">metal_surfs</span> <span class="o">+=</span> <span class="p">[</span>
-                        <span class="n">surf</span>
-                        <span class="k">for</span> <span class="n">surf</span> <span class="ow">in</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">getSurfaceLoops</span><span class="p">(</span><span class="n">vol</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="n">surf</span> <span class="k">for</span> <span class="n">surf</span> <span class="ow">in</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">getSurfaceLoops</span><span class="p">(</span><span class="n">vol</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
                     <span class="p">]</span>
 
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">metal_vols</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">setColor</span><span class="p">([(</span><span class="mi">3</span><span class="p">,</span> <span class="n">metal</span><span class="p">)</span> <span class="k">for</span> <span class="n">metal</span> <span class="ow">in</span> <span class="n">metal_vols</span><span class="p">],</span>
-                                        <span class="o">**</span><span class="n">metal_color</span><span class="p">)</span>
-                <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">setColor</span><span class="p">([(</span><span class="mi">2</span><span class="p">,</span> <span class="n">metal</span><span class="p">)</span> <span class="k">for</span> <span class="n">metal</span> <span class="ow">in</span> <span class="n">metal_surfs</span><span class="p">],</span>
-                                    <span class="o">**</span><span class="n">metal_color</span><span class="p">)</span>
+                    <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">setColor</span><span class="p">(</span>
+                        <span class="p">[(</span><span class="mi">3</span><span class="p">,</span> <span class="n">metal</span><span class="p">)</span> <span class="k">for</span> <span class="n">metal</span> <span class="ow">in</span> <span class="n">metal_vols</span><span class="p">],</span> <span class="o">**</span><span class="n">metal_color</span>
+                    <span class="p">)</span>
+                <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">setColor</span><span class="p">(</span>
+                    <span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="n">metal</span><span class="p">)</span> <span class="k">for</span> <span class="n">metal</span> <span class="ow">in</span> <span class="n">metal_surfs</span><span class="p">],</span> <span class="o">**</span><span class="n">metal_color</span>
+                <span class="p">)</span>
 
                 <span class="c1"># Junctions</span>
                 <span class="n">jj_surfs</span> <span class="o">=</span> <span class="p">[]</span>
@@ -2039,8 +2063,7 @@
 <div class="viewcode-block" id="QGmshRenderer.launch_gui">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QGmshRenderer.html#qiskit_metal.renderers.QGmshRenderer.launch_gui">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">launch_gui</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Launch Gmsh GUI for viewing the model.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Launch Gmsh GUI for viewing the model.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">isometric_projection</span><span class="p">()</span>  <span class="c1"># set isometric projection</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">gmsh</span><span class="o">.</span><span class="n">fltk</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
@@ -2071,6 +2094,7 @@
 
         <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
         <span class="n">par_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">par_dir</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Directory not found: </span><span class="si">{</span><span class="n">par_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -2098,6 +2122,7 @@
 
         <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
         <span class="n">par_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">par_dir</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Directory not found: </span><span class="si">{</span><span class="n">par_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -2109,24 +2134,27 @@
                 <span class="s2">&quot;which will show up in your exported .geo_unrolled file. If &quot;</span>
                 <span class="s2">&quot;you aren&#39;t explicitly handling the mesh size fields, we recommend &quot;</span>
                 <span class="s2">&quot;to export the geometry before generating the mesh in your design as &quot;</span>
-                <span class="s2">&quot;it might interfere with your .geo_unrolled file imports.&quot;</span><span class="p">)</span>
+                <span class="s2">&quot;it might interfere with your .geo_unrolled file imports.&quot;</span>
+            <span class="p">)</span>
 
         <span class="n">gmsh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
 
         <span class="c1"># Prepend &quot;SetFactory(&quot;OpenCASCADE&quot;);&quot; in the exported file</span>
         <span class="n">line</span> <span class="o">=</span> <span class="s1">&#39;SetFactory(&quot;OpenCASCADE&quot;);&#39;</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;r+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;r+&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
             <span class="n">f</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\r\n</span><span class="s1">&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">content</span><span class="p">)</span></div>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">content</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QGmshRenderer.import_post_processing_data">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QGmshRenderer.html#qiskit_metal.renderers.QGmshRenderer.import_post_processing_data">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">import_post_processing_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                                    <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                                    <span class="n">launch_gui</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-                                    <span class="n">close_gmsh_on_closing_gui</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">import_post_processing_data</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">launch_gui</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">close_gmsh_on_closing_gui</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Import the post processing data for visualization in Gmsh.</span>
 
 <span class="sd">        Args:</span>
@@ -2139,8 +2167,7 @@
 <span class="sd">            ValueError: raises when the input file isn&#39;t a .msh file</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="s2">&quot;.msh&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Only .msh files supported for post processing views.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Only .msh files supported for post processing views.&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;post_processing&quot;</span>
 
@@ -2172,8 +2199,7 @@
         <span class="c1"># There is no method in Gmsh python wrapper to give</span>
         <span class="c1"># the &#39;Print&#39; command which can provide screenshot feature.</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;This feature is pending and depends on Gmsh</span>
-<span class="s2">                                    general command &#39;Print&#39; being available through the API.&quot;&quot;&quot;</span>
-                                 <span class="p">)</span></div>
+<span class="s2">                                    general command &#39;Print&#39; being available through the API.&quot;&quot;&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QGmshRenderer.render_component">

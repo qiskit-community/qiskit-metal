@@ -701,7 +701,6 @@
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
 <span class="sd">&quot;&quot;&quot;GUI front-end interface for Qiskit Metal in PySide2.&quot;&quot;&quot;</span>
-<span class="c1"># pylint: disable=invalid-name</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -712,7 +711,13 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6</span><span class="w"> </span><span class="kn">import</span> <span class="n">QtCore</span><span class="p">,</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QtWidgets</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">QTimer</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QIcon</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QFileDialog</span><span class="p">,</span> <span class="n">QMainWindow</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="p">,</span> <span class="n">QDockWidget</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">QApplication</span><span class="p">,</span>
+    <span class="n">QFileDialog</span><span class="p">,</span>
+    <span class="n">QMainWindow</span><span class="p">,</span>
+    <span class="n">QMessageBox</span><span class="p">,</span>
+    <span class="n">QDockWidget</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.toolbox_python._logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">setup_logger</span>
@@ -746,18 +751,16 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">settings</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">gui</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;QMainWindowBaseHandler&#39;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">gui</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;QMainWindowBaseHandler&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the GUI.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">handler</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_remove_log_handlers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove the log handlers.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;log_text&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;log_text&quot;</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">log_text</span><span class="o">.</span><span class="n">remove_handlers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">destroy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                <span class="n">destroyWindow</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-                <span class="n">destroySubWindows</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">destroy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destroyWindow</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">destroySubWindows</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;When the window is cleaned up from memory.</span>
 
 <span class="sd">        Args:</span>
@@ -765,17 +768,18 @@
 <span class="sd">            destroySubWindows (bool): Whether or not to destroy sub windows  Defaults to True.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_remove_log_handlers</span><span class="p">()</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">destroy</span><span class="p">(</span><span class="n">destroyWindow</span><span class="o">=</span><span class="n">destroyWindow</span><span class="p">,</span>
-                        <span class="n">destroySubWindows</span><span class="o">=</span><span class="n">destroySubWindows</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">destroy</span><span class="p">(</span>
+            <span class="n">destroyWindow</span><span class="o">=</span><span class="n">destroyWindow</span><span class="p">,</span> <span class="n">destroySubWindows</span><span class="o">=</span><span class="n">destroySubWindows</span>
+        <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">save_window_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Save the window settings.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Saving window state&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Saving window state&quot;</span><span class="p">)</span>
         <span class="c1"># get the current size and position of the window as a byte array.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s1">&#39;metal_version&#39;</span><span class="p">,</span> <span class="n">__version__</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s1">&#39;geometry&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">saveGeometry</span><span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s1">&#39;windowState&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">saveState</span><span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s1">&#39;stylesheet&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">_stylesheet</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s2">&quot;metal_version&quot;</span><span class="p">,</span> <span class="n">__version__</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s2">&quot;geometry&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">saveGeometry</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s2">&quot;windowState&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">saveState</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s2">&quot;stylesheet&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">_stylesheet</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">restore_window_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Call a Qt built-in function to restore values from the settings</span>
@@ -785,34 +789,32 @@
 <span class="sd">            Exception: Error in restoration</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">version_settings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s1">&#39;metal_version&#39;</span><span class="p">,</span>
-                                               <span class="n">defaultValue</span><span class="o">=</span><span class="s1">&#39;0&#39;</span><span class="p">)</span>
+        <span class="n">version_settings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;metal_version&quot;</span><span class="p">,</span> <span class="n">defaultValue</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">__version__</span> <span class="o">&gt;</span> <span class="n">version_settings</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Clearing window settings [</span><span class="si">{</span><span class="n">version_settings</span><span class="si">}</span><span class="s2">]...&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Clearing window settings [</span><span class="si">{</span><span class="n">version_settings</span><span class="si">}</span><span class="s2">]...&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Restoring window settings...&quot;</span><span class="p">)</span>
 
             <span class="c1"># should probably call .encode(&quot;ascii&quot;) here</span>
-            <span class="n">geom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s1">&#39;geometry&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">geom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;geometry&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="n">geom</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">restoreGeometry</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
 
-            <span class="n">window_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s1">&#39;windowState&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">window_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;windowState&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">window_state</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="n">window_state</span> <span class="o">=</span> <span class="n">window_state</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">restoreState</span><span class="p">(</span><span class="n">window_state</span><span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">load_stylesheet</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s1">&#39;stylesheet&#39;</span><span class="p">,</span>
-                                    <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">_stylesheet_default</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;stylesheet&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">_stylesheet_default</span><span class="p">)</span>
+            <span class="p">)</span>
 
             <span class="c1"># TODO: Recent files</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;ERROR [restore_window_settings]: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ERROR [restore_window_settings]: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">bring_to_top</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Bring window to top.</span>
@@ -822,11 +824,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">raise_</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">activateWindow</span><span class="p">()</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_screenshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                       <span class="n">name</span><span class="o">=</span><span class="s1">&#39;shot&#39;</span><span class="p">,</span>
-                       <span class="n">type_</span><span class="o">=</span><span class="s1">&#39;png&#39;</span><span class="p">,</span>
-                       <span class="n">display</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                       <span class="n">disp_ops</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_screenshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;shot&quot;</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="s2">&quot;png&quot;</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">disp_ops</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Grad a screenshot of the main window, save to file, copy to</span>
 <span class="sd">        clipboard and visualize in jupyter.</span>
 
@@ -837,7 +835,7 @@
 <span class="sd">            disp_ops (dict): Used to pass options to IPython.display.Image (example: width)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="n">type_</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">type_</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
 
         <span class="c1"># grab the main window</span>
         <span class="n">screenshot</span><span class="p">:</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QPixmap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grab</span><span class="p">()</span>
@@ -845,20 +843,20 @@
 
         <span class="c1"># copy to clipboard</span>
         <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QApplication</span><span class="o">.</span><span class="n">clipboard</span><span class="p">()</span><span class="o">.</span><span class="n">setPixmap</span><span class="p">(</span><span class="n">screenshot</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s1">&#39;Screenshot copied to clipboard and saved to:</span><span class="se">\n</span><span class="s1"> </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Screenshot copied to clipboard and saved to:</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="c1"># visualize in jupyter (adapt resolution and width first)</span>
         <span class="k">if</span> <span class="n">display</span><span class="p">:</span>
             <span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">display</span>
+
             <span class="n">_disp_ops</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
             <span class="n">_disp_ops</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">disp_ops</span> <span class="ow">or</span> <span class="p">{})</span>
-            <span class="n">width_to_scale</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span>
-                <span class="nb">min</span><span class="p">(</span><span class="n">_disp_ops</span><span class="p">[</span><span class="s1">&#39;width&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">screenshot</span><span class="o">.</span><span class="n">width</span><span class="p">()))</span>
+            <span class="n">width_to_scale</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">_disp_ops</span><span class="p">[</span><span class="s2">&quot;width&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">screenshot</span><span class="o">.</span><span class="n">width</span><span class="p">()))</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">width_to_scale</span> <span class="o">==</span> <span class="n">screenshot</span><span class="o">.</span><span class="n">width</span><span class="p">():</span>
-                <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">width_to_scale</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="n">type_</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+                <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">width_to_scale</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">type_</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
                 <span class="n">screenshot</span> <span class="o">=</span> <span class="n">screenshot</span><span class="o">.</span><span class="n">scaledToWidth</span><span class="p">(</span>
-                    <span class="n">width_to_scale</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">SmoothTransformation</span><span class="p">)</span>
+                    <span class="n">width_to_scale</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">SmoothTransformation</span>
+                <span class="p">)</span>
                 <span class="n">screenshot</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">),</span> <span class="n">type_</span><span class="p">)</span>
             <span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">),</span> <span class="o">**</span><span class="n">_disp_ops</span><span class="p">))</span>
 
@@ -870,22 +868,22 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Get all docks to show/hide. Ignore edit source</span>
         <span class="n">docks</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">widget</span> <span class="k">for</span> <span class="n">widget</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">()</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="n">QDockWidget</span><span class="p">)</span>
+            <span class="n">widget</span> <span class="k">for</span> <span class="n">widget</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="n">QDockWidget</span><span class="p">)</span>
         <span class="p">]</span>
         <span class="n">docks</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
             <span class="nb">filter</span><span class="p">(</span>
-                <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">windowTitle</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;edit source&#39;</span><span class="p">),</span>
-                <span class="n">docks</span><span class="p">))</span>
+                <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">windowTitle</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;edit source&quot;</span><span class="p">),</span> <span class="n">docks</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
         <span class="n">docks</span> <span class="o">+=</span> <span class="p">[</span>
-            <span class="n">widget</span> <span class="k">for</span> <span class="n">widget</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gui</span><span class="o">.</span><span class="n">plot_win</span><span class="o">.</span><span class="n">children</span><span class="p">()</span>
+            <span class="n">widget</span>
+            <span class="k">for</span> <span class="n">widget</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gui</span><span class="o">.</span><span class="n">plot_win</span><span class="o">.</span><span class="n">children</span><span class="p">()</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="n">QDockWidget</span><span class="p">)</span>
         <span class="p">]</span>  <span class="c1"># specific</span>
 
         <span class="k">if</span> <span class="n">do_hide</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">dock_states</span> <span class="o">=</span> <span class="p">{</span><span class="n">dock</span><span class="p">:</span> <span class="n">dock</span><span class="o">.</span><span class="n">isVisible</span><span class="p">()</span> <span class="k">for</span> <span class="n">dock</span> <span class="ow">in</span> <span class="n">docks</span><span class="p">}</span>
-            <span class="n">do_hide</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span>
-                <span class="n">dock_states</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>  <span class="c1"># if any are visible then hide all</span>
+            <span class="n">do_hide</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span><span class="n">dock_states</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>  <span class="c1"># if any are visible then hide all</span>
 
         <span class="k">for</span> <span class="n">dock</span> <span class="ow">in</span> <span class="n">docks</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">do_hide</span><span class="p">:</span>
@@ -906,31 +904,32 @@
     <span class="nd">@slot_catch_error</span><span class="p">()</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">load_stylesheet_default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Used to call from action.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">load_stylesheet</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">load_stylesheet</span><span class="p">(</span><span class="s2">&quot;default&quot;</span><span class="p">)</span>
 
     <span class="nd">@slot_catch_error</span><span class="p">()</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">load_stylesheet_metal_dark</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Used to call from action.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">load_stylesheet</span><span class="p">(</span><span class="s1">&#39;metal_dark&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">load_stylesheet</span><span class="p">(</span><span class="s2">&quot;metal_dark&quot;</span><span class="p">)</span>
 
     <span class="nd">@slot_catch_error</span><span class="p">()</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">load_stylesheet_dark</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Used to call from action.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">load_stylesheet</span><span class="p">(</span><span class="s1">&#39;qdarkstyle&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">load_stylesheet</span><span class="p">(</span><span class="s2">&quot;qdarkstyle&quot;</span><span class="p">)</span>
 
     <span class="nd">@slot_catch_error</span><span class="p">()</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">load_stylesheet_open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Used to call from action.&quot;&quot;&quot;</span>
         <span class="n">default_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gui</span><span class="o">.</span><span class="n">path_stylesheets</span><span class="p">)</span>
         <span class="n">filename</span> <span class="o">=</span> <span class="n">QFileDialog</span><span class="o">.</span><span class="n">getOpenFileName</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;Select Qt stylesheet file `.qss`&#39;</span><span class="p">,</span> <span class="n">default_path</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Select Qt stylesheet file `.qss`&quot;</span><span class="p">,</span> <span class="n">default_path</span>
+        <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">filename</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Attempting to load stylesheet file </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Attempting to load stylesheet file </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">load_stylesheet</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 
 
-<span class="k">class</span><span class="w"> </span><span class="nc">QMainWindowBaseHandler</span><span class="p">():</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">QMainWindowBaseHandler</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract Class to wrap and handle main window (QMainWindow).</span>
 
 <span class="sd">    Assumes a UI that has:</span>
@@ -944,16 +943,17 @@
 <span class="sd">         * config.log.datefmt</span>
 <span class="sd">         * config._ipython</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">_myappid</span> <span class="o">=</span> <span class="s1">&#39;QiskitMetal&#39;</span>
-    <span class="n">_img_logo_name</span> <span class="o">=</span> <span class="s1">&#39;my_logo.png&#39;</span>
-    <span class="n">_img_folder_name</span> <span class="o">=</span> <span class="s1">&#39;_imgs&#39;</span>
+
+    <span class="n">_myappid</span> <span class="o">=</span> <span class="s2">&quot;QiskitMetal&quot;</span>
+    <span class="n">_img_logo_name</span> <span class="o">=</span> <span class="s2">&quot;my_logo.png&quot;</span>
+    <span class="n">_img_folder_name</span> <span class="o">=</span> <span class="s2">&quot;_imgs&quot;</span>
     <span class="n">_dock_names</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">_QMainWindowClass</span> <span class="o">=</span> <span class="n">QMainWindowExtensionBase</span>
     <span class="n">__gui_num__</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>  <span class="c1"># used to count the number of gui instances</span>
-    <span class="n">_stylesheet_default</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
+    <span class="n">_stylesheet_default</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">__UI__</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">QMainWindow</span><span class="p">:</span>  <span class="c1"># pylint: disable=invalid-name</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__UI__</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">QMainWindow</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Abstract, replace with UI class.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="kc">None</span>
 
@@ -972,21 +972,20 @@
         <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">__gui_num__</span> <span class="o">+=</span> <span class="mi">1</span>  <span class="c1"># used to give a unique identifier</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">GUI_CONFIG</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QSettings</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_myappid</span><span class="p">,</span> <span class="s1">&#39;MainWindow&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QSettings</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_myappid</span><span class="p">,</span> <span class="s2">&quot;MainWindow&quot;</span><span class="p">)</span>
 
         <span class="c1"># Logger</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">logger</span><span class="p">:</span>
             <span class="c1"># print(&#39;Setting up logger&#39;)</span>
             <span class="n">logger</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">(</span>
                 <span class="c1"># so that they are not all the same</span>
-                <span class="sa">f</span><span class="s1">&#39;gui</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">__gui_num__</span><span class="w"> </span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;gui</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">__gui_num__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
                 <span class="n">config</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">format</span><span class="p">,</span>
                 <span class="n">config</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">datefmt</span><span class="p">,</span>
                 <span class="n">force_set</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                 <span class="n">create_stream</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">stream_to_std</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="n">log_level</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
-                <span class="nb">getattr</span><span class="p">(</span><span class="n">logging</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;level&#39;</span><span class="p">,</span> <span class="s1">&#39;DEBUG&#39;</span><span class="p">)))</span>
+            <span class="n">log_level</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">logging</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;level&quot;</span><span class="p">,</span> <span class="s2">&quot;DEBUG&quot;</span><span class="p">)))</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">log_level</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span>
@@ -995,10 +994,11 @@
 
         <span class="c1"># File paths</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">path_gui</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_file_path</span><span class="p">()</span>  <span class="c1"># Path to gui folder</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">path_imgs</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path_gui</span><span class="p">)</span> <span class="o">/</span> \
-            <span class="bp">self</span><span class="o">.</span><span class="n">_img_folder_name</span>  <span class="c1"># Path to gui imgs folder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path_imgs</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path_gui</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_img_folder_name</span>
+        <span class="p">)</span>  <span class="c1"># Path to gui imgs folder</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_imgs</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
-            <span class="n">text</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Bad File path for images! </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path_imgs</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Bad File path for images! </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path_imgs</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
@@ -1028,7 +1028,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">path_stylesheets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the path to the stylesheet.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path_gui</span><span class="p">)</span> <span class="o">/</span> <span class="s1">&#39;styles&#39;</span>
+        <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path_gui</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;styles&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">style_window</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Styles the window.&quot;&quot;&quot;</span>
@@ -1072,7 +1072,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">qApp</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">qApp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&quot;&quot;ERROR: QApplication.instance is None.</span>
 <span class="s2">                Did you run a cell with the magic in IPython?</span>
 <span class="s2">                ```python</span>
@@ -1085,12 +1084,12 @@
 
         <span class="c1"># for window platofrms only</span>
         <span class="c1"># QApplication.platformName() -- on mac: &#39;cocoa&#39;</span>
-        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;nt&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;nt&quot;</span><span class="p">):</span>
             <span class="c1"># Arbitrary string, needed for icon in taskbar to be custom set proper</span>
             <span class="c1"># https://stackoverflow.com/questions/1551605/how-to-set-applications-taskbar-icon-in-windows-7</span>
             <span class="kn">import</span><span class="w"> </span><span class="nn">ctypes</span>
-            <span class="n">ctypes</span><span class="o">.</span><span class="n">windll</span><span class="o">.</span><span class="n">shell32</span><span class="o">.</span><span class="n">SetCurrentProcessExplicitAppUserModelID</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_myappid</span><span class="p">)</span>
+
+            <span class="n">ctypes</span><span class="o">.</span><span class="n">windll</span><span class="o">.</span><span class="n">shell32</span><span class="o">.</span><span class="n">SetCurrentProcessExplicitAppUserModelID</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_myappid</span><span class="p">)</span>
 
         <span class="n">app</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qApp</span>
         <span class="k">if</span> <span class="n">app</span><span class="p">:</span>
@@ -1122,8 +1121,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            LogHandler_for_QTextLog: A LogHandler_for_QTextLog</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">LogHandler_for_QTextLog</span><span class="p">(</span><span class="n">name_toshow</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">log_text</span><span class="p">,</span>
-                                       <span class="n">logger</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">LogHandler_for_QTextLog</span><span class="p">(</span><span class="n">name_toshow</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">log_text</span><span class="p">,</span> <span class="n">logger</span><span class="p">)</span>
 
     <span class="nd">@slot_catch_error</span><span class="p">()</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_setup_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1131,16 +1129,15 @@
 
 <span class="sd">        Show wellcome message.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="p">,</span> <span class="s1">&#39;log_text&#39;</span><span class="p">):</span>
-
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="p">,</span> <span class="s2">&quot;log_text&quot;</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">log_text</span><span class="o">.</span><span class="n">img_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_imgs</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">_log_handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_log_handler</span><span class="p">(</span><span class="s1">&#39;GUI&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log_handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_log_handler</span><span class="p">(</span><span class="s2">&quot;GUI&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">)</span>
 
             <span class="n">QTimer</span><span class="o">.</span><span class="n">singleShot</span><span class="p">(</span><span class="mi">1500</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">log_text</span><span class="o">.</span><span class="n">welcome_message</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;UI does not have `log_text`&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;UI does not have `log_text`&quot;</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_setup_window_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Setup the window size.&quot;&quot;&quot;</span>
@@ -1171,25 +1168,27 @@
 <span class="sd">            ImportError: Import failure</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">result</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">if</span> <span class="n">path</span> <span class="o">==</span> <span class="s1">&#39;default&#39;</span> <span class="ow">or</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_style_sheet_path</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">path</span> <span class="o">==</span> <span class="s2">&quot;default&quot;</span> <span class="ow">or</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_style_sheet_path</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;default&quot;</span><span class="p">)</span>
 
-        <span class="k">elif</span> <span class="n">path</span> <span class="o">==</span> <span class="s1">&#39;qdarkstyle&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">path</span> <span class="o">==</span> <span class="s2">&quot;qdarkstyle&quot;</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="kn">import</span><span class="w"> </span><span class="nn">qdarkstyle</span>
             <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
                 <span class="n">QMessageBox</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="p">,</span> <span class="s1">&#39;Failed.&#39;</span><span class="p">,</span>
-                    <span class="s1">&#39;Error, you did not seem to have installed qdarkstyle.</span><span class="se">\n</span><span class="s1">&#39;</span>
-                    <span class="s1">&#39;Please do so from the terminal using</span><span class="se">\n</span><span class="s1">&#39;</span>
-                    <span class="s1">&#39; &gt;&gt;&gt; pip install qdarkstyle&#39;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="p">,</span>
+                    <span class="s2">&quot;Failed.&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Error, you did not seem to have installed qdarkstyle.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot;Please do so from the terminal using</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot; &gt;&gt;&gt; pip install qdarkstyle&quot;</span><span class="p">,</span>
+                <span class="p">)</span>
 
-            <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;QT_API&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;pyside6&#39;</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;QT_API&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pyside6&quot;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="n">qdarkstyle</span><span class="o">.</span><span class="n">load_stylesheet</span><span class="p">())</span>
 
-        <span class="k">elif</span> <span class="n">path</span> <span class="o">==</span> <span class="s1">&#39;metal_dark&#39;</span><span class="p">:</span>
-            <span class="n">path_full</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_stylesheets</span> <span class="o">/</span> <span class="s1">&#39;metal_dark&#39;</span> <span class="o">/</span> <span class="s1">&#39;style.qss&#39;</span>
+        <span class="k">elif</span> <span class="n">path</span> <span class="o">==</span> <span class="s2">&quot;metal_dark&quot;</span><span class="p">:</span>
+            <span class="n">path_full</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_stylesheets</span> <span class="o">/</span> <span class="s2">&quot;metal_dark&quot;</span> <span class="o">/</span> <span class="s2">&quot;style.qss&quot;</span>
             <span class="c1"># print(f&#39;path_full = {path_full}&#39;)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_load_stylesheet_from_file</span><span class="p">(</span><span class="n">path_full</span><span class="p">)</span>
 
@@ -1198,7 +1197,7 @@
 
         <span class="k">if</span> <span class="n">result</span><span class="p">:</span>  <span class="c1"># Set successfuly</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_stylesheet</span> <span class="o">=</span> <span class="n">path</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s1">&#39;stylesheet&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stylesheet</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s2">&quot;stylesheet&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stylesheet</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>  <span class="c1"># Failed to set</span>
             <span class="k">return</span> <span class="kc">False</span>
 
@@ -1220,11 +1219,12 @@
             <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_style_sheet_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
                 <span class="n">stylesheet</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
-                <span class="n">stylesheet</span> <span class="o">=</span> <span class="n">stylesheet</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;:/metal-styles&#39;</span><span class="p">,</span>
-                                                <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path_stylesheets</span><span class="p">))</span>
+                <span class="n">stylesheet</span> <span class="o">=</span> <span class="n">stylesheet</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+                    <span class="s2">&quot;:/metal-styles&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path_stylesheets</span><span class="p">)</span>
+                <span class="p">)</span>
 
                 <span class="c1"># if windows, double the slashes in the paths</span>
-                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;nt&#39;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;nt&quot;</span><span class="p">):</span>
                     <span class="n">stylesheet</span> <span class="o">=</span> <span class="n">stylesheet</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\\\\</span><span class="s2">&quot;</span><span class="p">)</span>
 
                 <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="n">stylesheet</span><span class="p">)</span>
@@ -1232,13 +1232,13 @@
 
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                    <span class="s1">&#39;Could not find the stylesheet file where expected </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span>
-                    <span class="n">path</span><span class="p">)</span>
+                    <span class="s2">&quot;Could not find the stylesheet file where expected </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">path</span>
+                <span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;_load_stylesheet_from_file error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_load_stylesheet_from_file error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">screenshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;shot&#39;</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="s1">&#39;png&#39;</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">disp_ops</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">screenshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;shot&quot;</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="s2">&quot;png&quot;</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">disp_ops</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for get_screenshot().&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">get_screenshot</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="n">display</span><span class="p">,</span> <span class="n">disp_ops</span><span class="p">)</span>
 
@@ -1289,8 +1289,7 @@
     <span class="k">if</span> <span class="n">qApp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="c1"># TODO: See</span>
-            <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QApplication</span><span class="o">.</span><span class="n">setAttribute</span><span class="p">(</span>
-                <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AA_EnableHighDpiScaling</span><span class="p">)</span>
+            <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QApplication</span><span class="o">.</span><span class="n">setAttribute</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AA_EnableHighDpiScaling</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>  <span class="c1"># Attribute only exists for Qt &gt;= 5.6</span>
             <span class="k">pass</span>
 
@@ -1301,10 +1300,10 @@
 
             <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">_ipython</span><span class="p">:</span>
                 <span class="c1"># iPython has magic for loop</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                    <span class="s2">&quot;QApplication.instance: Attempt magic IPython </span><span class="si">%%</span><span class="s2">gui qt5&quot;</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;QApplication.instance: Attempt magic IPython </span><span class="si">%%</span><span class="s2">gui qt5&quot;</span><span class="p">)</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="kn">from</span><span class="w"> </span><span class="nn">IPython</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_ipython</span>
+
                     <span class="n">ipython</span> <span class="o">=</span> <span class="n">get_ipython</span><span class="p">()</span>
                     <span class="n">ipython</span><span class="o">.</span><span class="n">run_line_magic</span><span class="p">(</span><span class="s2">&quot;gui&quot;</span><span class="p">,</span> <span class="s2">&quot;qt6&quot;</span><span class="p">)</span>
 

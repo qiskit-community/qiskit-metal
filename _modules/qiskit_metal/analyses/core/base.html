@@ -738,11 +738,9 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Default data labels.&quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates a new Analysis object with a setup derived from the default_setup Dict.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates a new Analysis object with a setup derived from the default_setup Dict.&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_setup</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_supported_data_labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gather_from_all_children</span><span class="p">(</span>
-        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_setup</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_supported_data_labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gather_from_all_children</span><span class="p">()</span>
 
         <span class="c1"># first self.clear_data()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">()</span>
@@ -751,8 +749,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_sweeper</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_initialize_sweep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new instance of Sweeper</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new instance of Sweeper&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_sweeper</span> <span class="o">=</span> <span class="n">Sweeper</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
     <span class="nd">@property</span>
@@ -823,8 +820,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">data_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_supported_data_labels</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s1">&#39;No </span><span class="si">%s</span><span class="s1"> in the list of supported variables. The variable will still be added. &#39;</span>
-                <span class="s1">&#39;However, make sure this was not a typo&#39;</span><span class="p">,</span> <span class="p">{</span><span class="n">data_name</span><span class="p">})</span>
+                <span class="s2">&quot;No </span><span class="si">%s</span><span class="s2"> in the list of supported variables. The variable will still be added. &quot;</span>
+                <span class="s2">&quot;However, make sure this was not a typo&quot;</span><span class="p">,</span>
+                <span class="p">{</span><span class="n">data_name</span><span class="p">},</span>
+            <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span><span class="p">[</span><span class="n">data_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span></div>
 
 
@@ -890,10 +889,10 @@
 <div class="viewcode-block" id="QAnalysis.print_run_args">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.QAnalysis.html#qiskit_metal.analyses.QAnalysis.print_run_args">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">print_run_args</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Prints the args and kwargs that were used in the last run() of this Analysis instance.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;This analysis object run with the following kwargs:</span><span class="se">\n</span><span class="s2">&quot;</span>
-              <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_setup</span><span class="o">.</span><span class="n">run</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Prints the args and kwargs that were used in the last run() of this Analysis instance.&quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;This analysis object run with the following kwargs:</span><span class="se">\n</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_setup</span><span class="o">.</span><span class="n">run</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="p">)</span></div>
 
 
     <span class="nd">@property</span>
@@ -944,11 +943,10 @@
                     <span class="n">unsupported_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">unsupported_keys</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s1">&#39;the parameters </span><span class="si">{</span><span class="n">unsupported_keys</span><span class="si">}</span><span class="s1"> are unsupported, so they have been ignored&#39;</span>
+                    <span class="sa">f</span><span class="s2">&quot;the parameters </span><span class="si">{</span><span class="n">unsupported_keys</span><span class="si">}</span><span class="s2"> are unsupported, so they have been ignored&quot;</span>
                 <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;the section </span><span class="si">{</span><span class="n">section</span><span class="si">}</span><span class="s1"> does not exist in this analysis setup&#39;</span><span class="p">)</span></div>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;the section </span><span class="si">{</span><span class="n">section</span><span class="si">}</span><span class="s2"> does not exist in this analysis setup&quot;</span><span class="p">)</span></div>
 
 
     <span class="nd">@classmethod</span>
@@ -966,12 +964,12 @@
         <span class="n">parents</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmro</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
 
         <span class="c1"># len-2: base.py is not expected to have default_setup and data_labels.</span>
-        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">parents</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">parents</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">parents</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">parents</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span> <span class="p">::</span> <span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
             <span class="c1"># The template default options are in the attribute `default_setup`.</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="s1">&#39;default_setup&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="s2">&quot;default_setup&quot;</span><span class="p">):</span>
                 <span class="n">setup_from_children</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">default_setup</span><span class="p">))</span>
             <span class="c1"># The data_labels are in the attribute `data_labels`.</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="s1">&#39;data_labels&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="s2">&quot;data_labels&quot;</span><span class="p">):</span>
                 <span class="n">labels_from_children</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">data_labels</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">setup_from_children</span><span class="p">,</span> <span class="n">labels_from_children</span></div>

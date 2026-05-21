@@ -701,10 +701,12 @@
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
 <span class="sd">&quot;&quot;&quot;Parsed dynamic attributes.&quot;&quot;&quot;</span>
+
 <span class="kn">import</span><span class="w"> </span><span class="nn">pprint</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
-<span class="c1">#from ...toolbox_python.utility_functions import log_error_easy</span>
+
+<span class="c1"># from ...toolbox_python.utility_functions import log_error_easy</span>
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">QComponent</span>
 
@@ -712,27 +714,27 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">is_ipython_magic</span><span class="p">(</span><span class="n">check_attribute</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Ignore the following checks by jupyter.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">check_attribute</span> <span class="ow">in</span> <span class="p">{</span>
-        <span class="s1">&#39;_ipython_canary_method_should_not_exist_&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;_ipython_display_&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;_repr_mimebundle_&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;_repr_html_&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;_repr_markdown_&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;_repr_svg_&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;_repr_png_&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;_repr_pdf_&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;_repr_jpeg_&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;_repr_latex_&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;_repr_json_&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;_repr_javascript_&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;_rapped&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;__wrapped__&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;__call__&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;_ipython_canary_method_should_not_exist_&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_ipython_display_&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_repr_mimebundle_&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_repr_html_&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_repr_markdown_&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_repr_svg_&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_repr_png_&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_repr_pdf_&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_repr_jpeg_&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_repr_latex_&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_repr_json_&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_repr_javascript_&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_rapped&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;__wrapped__&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;__call__&quot;</span><span class="p">,</span>
     <span class="p">}</span>
 
 
 <div class="viewcode-block" id="ParsedDynamicAttributes_Component">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.ParsedDynamicAttributes_Component.html#qiskit_metal.qlibrary.ParsedDynamicAttributes_Component">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ParsedDynamicAttributes_Component</span><span class="p">():</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ParsedDynamicAttributes_Component</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Provides a parsing view of the component options.</span>
 
 <span class="sd">    When accessed, returns parse versions of the user options.</span>
@@ -746,6 +748,7 @@
 
 <span class="sd">        &gt;&gt; `float(1e7)`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Special method names:</span>
 <span class="sd">        See Python Data Module for Objects:</span>
@@ -760,13 +763,13 @@
 <span class="sd">        __delattr__:        Called when an attribute deletion is attempted.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component</span><span class="p">:</span> <span class="s1">&#39;QComponent&#39;</span><span class="p">,</span> <span class="n">key_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component</span><span class="p">:</span> <span class="s2">&quot;QComponent&quot;</span><span class="p">,</span> <span class="n">key_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Args:</span>
 <span class="sd">            component (QComponent): Component to get options from.</span>
 <span class="sd">            key_list (List[str]): List of keys.  Defaults to None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1">#print(f&#39;*** Created with {key_list}&#39;)</span>
+        <span class="c1"># print(f&#39;*** Created with {key_list}&#39;)</span>
         <span class="c1"># These names must have __xx__ or else they will go to getattr instead of getattribute</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__component__</span> <span class="o">=</span> <span class="n">component</span>
@@ -793,8 +796,7 @@
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__getdict__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">get_nested_dict_item</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__component__</span><span class="o">.</span><span class="n">options</span><span class="p">,</span>
-                                    <span class="bp">self</span><span class="o">.</span><span class="n">__keylist__</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">get_nested_dict_item</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__component__</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__keylist__</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getdict__</span><span class="p">()</span><span class="o">.</span><span class="fm">__iter__</span><span class="p">()</span>
@@ -824,7 +826,7 @@
         <span class="c1"># if name.startswith(&#39;_repr&#39;) or name.startswith(&#39;_ipython&#39;):</span>
         <span class="c1">#    return</span>
 
-        <span class="c1">#print(f&#39;__getattr__ NAME = {name};  dict=&#39;,self.__getdict__())</span>
+        <span class="c1"># print(f&#39;__getattr__ NAME = {name};  dict=&#39;,self.__getdict__())</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
@@ -850,9 +852,10 @@
                 <span class="n">xx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__keylist__</span>
                 <span class="n">xx</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">xx</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xx</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">name</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">__component__</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                    <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Warning: User tried to access a variable in the parse options&#39;</span>
-                    <span class="sa">f</span><span class="s1">&#39; that is not there!</span><span class="se">\n</span><span class="s1"> Component name = `</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__component__</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">`</span><span class="se">\n</span><span class="s1">&#39;</span>
-                    <span class="sa">f</span><span class="s1">&#39; Option name    = `</span><span class="si">{</span><span class="n">xx</span><span class="si">}</span><span class="s1">`&#39;</span><span class="p">)</span>
+                    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Warning: User tried to access a variable in the parse options&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot; that is not there!</span><span class="se">\n</span><span class="s2"> Component name = `</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__component__</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">`</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot; Option name    = `</span><span class="si">{</span><span class="n">xx</span><span class="si">}</span><span class="s2">`&quot;</span>
+                <span class="p">)</span>
                 <span class="k">return</span> <span class="kc">None</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># IPython checking methods</span>
@@ -861,11 +864,12 @@
 
         <span class="k">else</span><span class="p">:</span>
             <span class="n">val</span> <span class="o">=</span> <span class="n">dic</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-            <span class="c1">#print(f&#39;val = {val}&#39;)</span>
+            <span class="c1"># print(f&#39;val = {val}&#39;)</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                <span class="c1">#print(f&#39;  -&gt; Going to create a new {self.__keylist__ + [name]}&#39;)</span>
+                <span class="c1"># print(f&#39;  -&gt; Going to create a new {self.__keylist__ + [name]}&#39;)</span>
                 <span class="k">return</span> <span class="n">ParsedDynamicAttributes_Component</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">__component__</span><span class="p">,</span> <span class="n">key_list</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__keylist__</span> <span class="o">+</span> <span class="p">[</span><span class="n">name</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__component__</span><span class="p">,</span> <span class="n">key_list</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__keylist__</span> <span class="o">+</span> <span class="p">[</span><span class="n">name</span><span class="p">]</span>
+                <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__parse__</span><span class="p">(</span><span class="n">val</span><span class="p">)</span></div>
 
@@ -888,8 +892,8 @@
 
 <span class="sd">        Just return the whole parse dictionary.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">b</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\033</span><span class="s1">[95m</span><span class="se">\033</span><span class="s1">[1m&#39;</span>
-        <span class="n">e</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\033</span><span class="s1">[0m&#39;</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[95m</span><span class="se">\033</span><span class="s2">[1m&quot;</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[0m&quot;</span>
 
         <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__component__</span>
         <span class="n">parsed</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">options</span><span class="p">)</span>

@@ -707,6 +707,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        Vec3DArray: Array of np.ndarray objects</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">points</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>
     <span class="n">path_vecs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
@@ -737,10 +738,7 @@
 
 <div class="viewcode-block" id="Vec3DArray.get_angle_between">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.Vec3DArray.html#qiskit_metal.renderers.Vec3DArray.get_angle_between">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_angle_between</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                          <span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-                          <span class="n">j</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-                          <span class="n">ret_path_angle</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_angle_between</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">j</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">ret_path_angle</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return acute angle between two vectors depending on &quot;ret_path_angle&quot;</span>
 
 <span class="sd">        Args:</span>
@@ -765,8 +763,7 @@
 <div class="viewcode-block" id="Vec3DArray.make_vec3DArray">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.Vec3DArray.html#qiskit_metal.renderers.Vec3DArray.make_vec3DArray">[docs]</a>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">make_vec3DArray</span><span class="p">(</span><span class="n">points</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]],</span>
-                        <span class="n">layer_z</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_vec3DArray</span><span class="p">(</span><span class="n">points</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]],</span> <span class="n">layer_z</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a Vec3DArray object from list of points</span>
 
 <span class="sd">        Args:</span>
@@ -820,11 +817,13 @@
     <span class="k">return</span> <span class="n">points</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">line_width_offset_pts</span><span class="p">(</span><span class="n">pt_vec</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
-                          <span class="n">path_vec</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
-                          <span class="n">width</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                          <span class="n">layer_z</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                          <span class="n">ret_pts</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">line_width_offset_pts</span><span class="p">(</span>
+    <span class="n">pt_vec</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">path_vec</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">width</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">layer_z</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">ret_pts</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create offset points for straight line</span>
 
 <span class="sd">    Args:</span>
@@ -855,8 +854,9 @@
         <span class="k">return</span> <span class="p">[</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">]</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">arc_width_offset_pts</span><span class="p">(</span><span class="n">vec1</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">vec3</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">angle</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                         <span class="n">width</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">layer_z</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">arc_width_offset_pts</span><span class="p">(</span>
+    <span class="n">vec1</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">vec3</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">angle</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">width</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">layer_z</span><span class="p">:</span> <span class="nb">float</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create offset points for Circle Arcs</span>
 
 <span class="sd">    Args:</span>
@@ -888,8 +888,9 @@
     <span class="k">return</span> <span class="n">pts</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">make_arc_vecs</span><span class="p">(</span><span class="n">angle</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                  <span class="n">fillet</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_arc_vecs</span><span class="p">(</span>
+    <span class="n">angle</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">fillet</span><span class="p">:</span> <span class="nb">float</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create vectors for the circle arc</span>
 
 <span class="sd">    Args:</span>
@@ -918,8 +919,7 @@
     <span class="k">return</span> <span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">v3</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">transform_arc_points</span><span class="p">(</span><span class="n">pts</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">translate</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
-                         <span class="n">path_vecs</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">transform_arc_points</span><span class="p">(</span><span class="n">pts</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">translate</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">path_vecs</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply transformation to arc points</span>
 
 <span class="sd">    Args:</span>
@@ -945,20 +945,14 @@
         <span class="n">new_pts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p4</span><span class="p">)</span>
         <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">mirror</span><span class="p">(</span><span class="n">dim_tags</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
-    <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">dim_tags</span><span class="p">,</span>
-                          <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                          <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                          <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                          <span class="n">ax</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                          <span class="n">ay</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                          <span class="n">az</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                          <span class="n">angle</span><span class="o">=</span><span class="n">angle1</span><span class="p">)</span>
+    <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">dim_tags</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ay</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">az</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="n">angle1</span><span class="p">)</span>
     <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">dim_tags</span><span class="p">,</span> <span class="n">translate</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">translate</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">new_pts</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">draw_curves</span><span class="p">(</span><span class="n">recent_pts</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">curves1</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
-                <span class="n">curves2</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">draw_curves</span><span class="p">(</span>
+    <span class="n">recent_pts</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">curves1</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">curves2</span><span class="p">:</span> <span class="nb">list</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw the curves using control points</span>
 
 <span class="sd">    Args:</span>
@@ -986,10 +980,8 @@
     <span class="n">curves2</span> <span class="o">+=</span> <span class="p">[</span><span class="n">l2</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">recent_pts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
-        <span class="n">a1</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addCircleArc</span><span class="p">(</span><span class="n">recent_pts</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">recent_pts</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span>
-                                         <span class="n">recent_pts</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
-        <span class="n">a2</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addCircleArc</span><span class="p">(</span><span class="n">recent_pts</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">recent_pts</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span>
-                                         <span class="n">recent_pts</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span>
+        <span class="n">a1</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addCircleArc</span><span class="p">(</span><span class="n">recent_pts</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">recent_pts</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">recent_pts</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+        <span class="n">a2</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addCircleArc</span><span class="p">(</span><span class="n">recent_pts</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">recent_pts</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">recent_pts</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span>
         <span class="n">curves1</span> <span class="o">+=</span> <span class="p">[</span><span class="n">a1</span><span class="p">]</span>
         <span class="n">curves2</span> <span class="o">+=</span> <span class="p">[</span><span class="n">a2</span><span class="p">]</span>
 
@@ -998,12 +990,14 @@
     <span class="k">return</span> <span class="n">rec_pts</span><span class="p">,</span> <span class="n">curves1</span><span class="p">,</span> <span class="n">curves2</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">render_path_curves</span><span class="p">(</span><span class="n">vecs</span><span class="p">:</span> <span class="n">Vec3DArray</span><span class="p">,</span>
-                       <span class="n">layer_z</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                       <span class="n">fillet</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                       <span class="n">width</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                       <span class="n">bad_fillet_idxs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
-                       <span class="n">straight_line_tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-9</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">render_path_curves</span><span class="p">(</span>
+    <span class="n">vecs</span><span class="p">:</span> <span class="n">Vec3DArray</span><span class="p">,</span>
+    <span class="n">layer_z</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">fillet</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">width</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">bad_fillet_idxs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+    <span class="n">straight_line_tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-9</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper function for rendering path QGeometry curves</span>
 
 <span class="sd">    Args:</span>
@@ -1031,8 +1025,7 @@
             <span class="k">continue</span>
 
         <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">vecs</span><span class="o">.</span><span class="n">points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span> <span class="o">=</span> <span class="n">line_width_offset_pts</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">vecs</span><span class="o">.</span><span class="n">path_vecs</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">width</span><span class="p">,</span>
-                                           <span class="n">layer_z</span><span class="p">)</span>
+            <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span> <span class="o">=</span> <span class="n">line_width_offset_pts</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">vecs</span><span class="o">.</span><span class="n">path_vecs</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">width</span><span class="p">,</span> <span class="n">layer_z</span><span class="p">)</span>
             <span class="n">recent_pts</span> <span class="o">+=</span> <span class="p">[</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">]</span>
             <span class="n">curves1</span> <span class="o">+=</span> <span class="p">[</span><span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addLine</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">)]</span>
             <span class="k">continue</span>
@@ -1052,12 +1045,10 @@
 
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">v3</span> <span class="o">=</span> <span class="n">make_arc_vecs</span><span class="p">(</span><span class="n">angle12</span><span class="p">,</span> <span class="n">fillet</span><span class="p">)</span>
-                <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p4</span><span class="p">,</span> <span class="n">p5</span> <span class="o">=</span> <span class="n">arc_width_offset_pts</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v3</span><span class="p">,</span> <span class="n">angle12</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span>
-                                                      <span class="n">layer_z</span><span class="p">)</span>
+                <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p4</span><span class="p">,</span> <span class="n">p5</span> <span class="o">=</span> <span class="n">arc_width_offset_pts</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v3</span><span class="p">,</span> <span class="n">angle12</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">layer_z</span><span class="p">)</span>
                 <span class="n">p3</span> <span class="o">=</span> <span class="n">vecs_to_gmsh_points</span><span class="p">([</span><span class="n">v2</span><span class="p">],</span> <span class="n">layer_z</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
-                <span class="n">new_pts</span> <span class="o">=</span> <span class="n">transform_arc_points</span><span class="p">([</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p3</span><span class="p">,</span> <span class="n">p4</span><span class="p">,</span> <span class="n">p5</span><span class="p">],</span> <span class="n">v</span><span class="p">,</span>
-                                               <span class="p">[</span><span class="n">pv1</span><span class="p">,</span> <span class="n">pv2</span><span class="p">])</span>
+                <span class="n">new_pts</span> <span class="o">=</span> <span class="n">transform_arc_points</span><span class="p">([</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p3</span><span class="p">,</span> <span class="n">p4</span><span class="p">,</span> <span class="n">p5</span><span class="p">],</span> <span class="n">v</span><span class="p">,</span> <span class="p">[</span><span class="n">pv1</span><span class="p">,</span> <span class="n">pv2</span><span class="p">])</span>
                 <span class="n">recent_pts</span> <span class="o">+=</span> <span class="n">new_pts</span>
 
         <span class="k">else</span><span class="p">:</span>
@@ -1069,21 +1060,20 @@
             <span class="n">turn_pt_vec</span> <span class="o">=</span> <span class="n">vecs</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="n">pv1_normed</span> <span class="o">=</span> <span class="n">Vec3D</span><span class="o">.</span><span class="n">normed</span><span class="p">(</span><span class="n">pv1</span><span class="p">)</span>
             <span class="n">pv1_scaled</span> <span class="o">=</span> <span class="n">Vec3D</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span>
-                <span class="n">pv1_normed</span><span class="p">,</span> <span class="n">width</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">half_angle</span><span class="p">)))</span>
+                <span class="n">pv1_normed</span><span class="p">,</span> <span class="n">width</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">half_angle</span><span class="p">))</span>
+            <span class="p">)</span>
             <span class="n">pv1_trans</span> <span class="o">=</span> <span class="n">Vec3D</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">pv1_scaled</span><span class="p">,</span> <span class="n">turn_pt_vec</span><span class="p">)</span>
-            <span class="n">offset_vec1</span> <span class="o">=</span> <span class="n">Vec3D</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">pv1_trans</span><span class="p">,</span>
-                                       <span class="n">turn_pt_vec</span><span class="p">,</span>
-                                       <span class="n">az</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                       <span class="n">radians</span><span class="o">=</span><span class="n">right_turn</span> <span class="o">*</span> <span class="n">half_angle</span><span class="p">)</span>
-            <span class="n">offset_vec2</span> <span class="o">=</span> <span class="n">Vec3D</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">pv1_trans</span><span class="p">,</span>
-                                       <span class="n">turn_pt_vec</span><span class="p">,</span>
-                                       <span class="n">az</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                       <span class="n">radians</span><span class="o">=-</span><span class="n">right_turn</span> <span class="o">*</span>
-                                       <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">half_angle</span><span class="p">))</span>
-            <span class="n">p1</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addPoint</span><span class="p">(</span><span class="n">offset_vec1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">offset_vec1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-                                         <span class="n">layer_z</span><span class="p">)</span>
-            <span class="n">p2</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addPoint</span><span class="p">(</span><span class="n">offset_vec2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">offset_vec2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-                                         <span class="n">layer_z</span><span class="p">)</span>
+            <span class="n">offset_vec1</span> <span class="o">=</span> <span class="n">Vec3D</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span>
+                <span class="n">pv1_trans</span><span class="p">,</span> <span class="n">turn_pt_vec</span><span class="p">,</span> <span class="n">az</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">radians</span><span class="o">=</span><span class="n">right_turn</span> <span class="o">*</span> <span class="n">half_angle</span>
+            <span class="p">)</span>
+            <span class="n">offset_vec2</span> <span class="o">=</span> <span class="n">Vec3D</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span>
+                <span class="n">pv1_trans</span><span class="p">,</span>
+                <span class="n">turn_pt_vec</span><span class="p">,</span>
+                <span class="n">az</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">radians</span><span class="o">=-</span><span class="n">right_turn</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">half_angle</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="n">p1</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addPoint</span><span class="p">(</span><span class="n">offset_vec1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">offset_vec1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">layer_z</span><span class="p">)</span>
+            <span class="n">p2</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addPoint</span><span class="p">(</span><span class="n">offset_vec2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">offset_vec2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">layer_z</span><span class="p">)</span>
             <span class="n">recent_pts</span> <span class="o">+=</span> <span class="p">[</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">]</span> <span class="k">if</span> <span class="n">right_turn</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="p">[</span><span class="n">p2</span><span class="p">,</span> <span class="n">p1</span><span class="p">]</span>
 
         <span class="n">recent_pts</span><span class="p">,</span> <span class="n">curves1</span><span class="p">,</span> <span class="n">curves2</span> <span class="o">=</span> <span class="n">draw_curves</span><span class="p">(</span><span class="n">recent_pts</span><span class="p">,</span> <span class="n">curves1</span><span class="p">,</span> <span class="n">curves2</span><span class="p">)</span>

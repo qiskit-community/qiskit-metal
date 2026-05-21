@@ -701,14 +701,11 @@
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
 
-<span class="c1"># pylint: disable=protected-access</span>
-<span class="c1"># pylint: disable=global-statement</span>
-<span class="c1"># pylint: disable=import-error</span>
 <span class="sd">&quot;&quot;&quot;Math and override functions.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;set_decimal_precision&#39;</span><span class="p">,</span> <span class="s1">&#39;dot&#39;</span><span class="p">,</span> <span class="s1">&#39;cross&#39;</span><span class="p">,</span> <span class="s1">&#39;round&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;set_decimal_precision&quot;</span><span class="p">,</span> <span class="s2">&quot;dot&quot;</span><span class="p">,</span> <span class="s2">&quot;cross&quot;</span><span class="p">,</span> <span class="s2">&quot;round&quot;</span><span class="p">]</span>
 
 <span class="n">DECIMAL_PRECISION</span> <span class="o">=</span> <span class="mi">10</span>
 
@@ -742,7 +739,6 @@
 
 
 
-<span class="c1"># pylint: disable=redefined-builtin</span>
 <div class="viewcode-block" id="round">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.math_and_overrides.html#qiskit_metal.toolbox_metal.math_and_overrides.round">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
@@ -784,8 +780,7 @@
 <span class="sd">        bool: True if they are aligned. False otherwise</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-            <span class="s2">&quot;Ambiguous. You can only pass exactly 3 points to this method&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Ambiguous. You can only pass exactly 3 points to this method&quot;</span><span class="p">)</span>
     <span class="n">v1</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">v1_dir</span> <span class="o">=</span> <span class="n">v1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
     <span class="n">v2</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>

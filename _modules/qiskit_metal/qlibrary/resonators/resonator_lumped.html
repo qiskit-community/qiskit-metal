@@ -699,8 +699,8 @@
 <span class="c1"># Any modifications or derivative works of this code must retain this</span>
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
-<span class="sd">&quot;&quot;&quot;Lumped Resonator, as shown in Phys. Rev. Appl. 10, 034050 (2018).</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Lumped Resonator, as shown in Phys. Rev. Appl. 10, 034050 (2018).&quot;&quot;&quot;</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">sin</span><span class="p">,</span> <span class="n">cos</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">draw</span><span class="p">,</span> <span class="n">Dict</span>
@@ -710,7 +710,7 @@
 <div class="viewcode-block" id="ResonatorLumped">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.ResonatorLumped.html#qiskit_metal.qlibrary.ResonatorLumped">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ResonatorLumped</span><span class="p">(</span><span class="n">QComponent</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The base ResonatorLumped class</span>
 <span class="sd">    Inherits the QComponent class</span>
 
@@ -735,24 +735,24 @@
 <span class="sd">        * final: &#39;2.5mm&#39; -- the length of the upper straight segment of the resonator</span>
 <span class="sd">        * break_width: &#39;0.2mm&#39; -- the width of the &quot;break&quot; in the top of the rectangular resonator</span>
 <span class="sd">        * layer: &#39;1&#39; -- the layer of the component</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;0 um&#39;</span><span class="p">,</span>
-        <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;0 um&#39;</span><span class="p">,</span>
-        <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;0&#39;</span><span class="p">,</span>
-        <span class="n">box_width</span><span class="o">=</span><span class="s1">&#39;5mm&#39;</span><span class="p">,</span>
-        <span class="n">box_height</span><span class="o">=</span><span class="s1">&#39;5mm&#39;</span><span class="p">,</span>
-        <span class="n">perimeter_thickness</span><span class="o">=</span><span class="s1">&#39;0.01mm&#39;</span><span class="p">,</span>
-        <span class="n">res_width</span><span class="o">=</span><span class="s1">&#39;0.01mm&#39;</span><span class="p">,</span>
-        <span class="n">initial</span><span class="o">=</span><span class="s1">&#39;0.1mm&#39;</span><span class="p">,</span>
-        <span class="n">n_turns</span><span class="o">=</span><span class="s1">&#39;10&#39;</span><span class="p">,</span>
-        <span class="n">turn_radius</span><span class="o">=</span><span class="s1">&#39;0.1mm&#39;</span><span class="p">,</span>
-        <span class="n">inner_space</span><span class="o">=</span><span class="s1">&#39;0.1mm&#39;</span><span class="p">,</span>
-        <span class="n">outer_space</span><span class="o">=</span><span class="s1">&#39;0.1mm&#39;</span><span class="p">,</span>
-        <span class="n">final</span><span class="o">=</span><span class="s1">&#39;2.5mm&#39;</span><span class="p">,</span>
-        <span class="n">break_width</span><span class="o">=</span><span class="s1">&#39;0.2mm&#39;</span><span class="p">,</span>
-        <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">,</span>
+        <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0 um&quot;</span><span class="p">,</span>
+        <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0 um&quot;</span><span class="p">,</span>
+        <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+        <span class="n">box_width</span><span class="o">=</span><span class="s2">&quot;5mm&quot;</span><span class="p">,</span>
+        <span class="n">box_height</span><span class="o">=</span><span class="s2">&quot;5mm&quot;</span><span class="p">,</span>
+        <span class="n">perimeter_thickness</span><span class="o">=</span><span class="s2">&quot;0.01mm&quot;</span><span class="p">,</span>
+        <span class="n">res_width</span><span class="o">=</span><span class="s2">&quot;0.01mm&quot;</span><span class="p">,</span>
+        <span class="n">initial</span><span class="o">=</span><span class="s2">&quot;0.1mm&quot;</span><span class="p">,</span>
+        <span class="n">n_turns</span><span class="o">=</span><span class="s2">&quot;10&quot;</span><span class="p">,</span>
+        <span class="n">turn_radius</span><span class="o">=</span><span class="s2">&quot;0.1mm&quot;</span><span class="p">,</span>
+        <span class="n">inner_space</span><span class="o">=</span><span class="s2">&quot;0.1mm&quot;</span><span class="p">,</span>
+        <span class="n">outer_space</span><span class="o">=</span><span class="s2">&quot;0.1mm&quot;</span><span class="p">,</span>
+        <span class="n">final</span><span class="o">=</span><span class="s2">&quot;2.5mm&quot;</span><span class="p">,</span>
+        <span class="n">break_width</span><span class="o">=</span><span class="s2">&quot;0.2mm&quot;</span><span class="p">,</span>
+        <span class="n">layer</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="c1">##########################</span>
@@ -765,17 +765,20 @@
 
         <span class="c1"># draw the perimeter</span>
         <span class="n">box_out</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">box_width</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">box_height</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
-        <span class="n">box_in</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">box_width</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span><span class="p">,</span>
-                                <span class="n">p</span><span class="o">.</span><span class="n">box_height</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span>
-                                <span class="mf">0.0</span><span class="p">)</span>
+        <span class="n">box_in</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">box_width</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">box_height</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span><span class="p">,</span>
+            <span class="mf">0.0</span><span class="p">,</span>
+            <span class="mf">0.0</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">perimeter</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">box_out</span><span class="p">,</span> <span class="n">box_in</span><span class="p">)</span>
         <span class="n">perimeter</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">perimeter</span><span class="p">,</span> <span class="n">xoff</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">yoff</span><span class="o">=</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_height</span><span class="p">)</span>
-        <span class="n">break_rect</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">break_width</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">break_width</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span>
-                                    <span class="n">p</span><span class="o">.</span><span class="n">box_height</span><span class="p">)</span>
+        <span class="n">break_rect</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">break_width</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">break_width</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">box_height</span><span class="p">)</span>
         <span class="n">perimeter</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">perimeter</span><span class="p">,</span> <span class="n">break_rect</span><span class="p">)</span>
         <span class="c1"># start the resonator</span>
-        <span class="n">initial</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span><span class="p">),</span>
-                                   <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">initial</span><span class="p">)])</span>
+        <span class="n">initial</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">(</span>
+            <span class="p">[(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">initial</span><span class="p">)]</span>
+        <span class="p">)</span>
         <span class="c1"># Draw the first quarter turn</span>
         <span class="n">centerx</span><span class="p">,</span> <span class="n">centery</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">initial</span>
         <span class="n">radius</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span>
@@ -809,19 +812,31 @@
         <span class="n">y3</span> <span class="o">=</span> <span class="n">centery3</span> <span class="o">+</span> <span class="n">radius3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta3</span><span class="p">)</span>
         <span class="n">arc_right_1</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">x3</span><span class="p">,</span> <span class="n">y3</span><span class="p">]))</span>
         <span class="c1"># bottom half-line</span>
-        <span class="n">line1</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([</span>
-            <span class="p">(</span><span class="o">-</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span> <span class="o">-</span> <span class="mf">0.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">,</span>
-             <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">initial</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span><span class="p">),</span>
-            <span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">outer_space</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span><span class="p">,</span>
-             <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">initial</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span><span class="p">)</span>
-        <span class="p">])</span>
+        <span class="n">line1</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">(</span>
+                    <span class="o">-</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span> <span class="o">-</span> <span class="mf">0.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">,</span>
+                    <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">initial</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="p">(</span>
+                    <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">outer_space</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span><span class="p">,</span>
+                    <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">initial</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span><span class="p">,</span>
+                <span class="p">),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
         <span class="c1"># bottom full-line (this one gets repeated)</span>
-        <span class="n">line2</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([</span>
-            <span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">outer_space</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span><span class="p">,</span>
-             <span class="n">p</span><span class="o">.</span><span class="n">initial</span> <span class="o">+</span> <span class="mf">3.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">),</span>
-            <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_width</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">outer_space</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span><span class="p">,</span>
-             <span class="n">p</span><span class="o">.</span><span class="n">initial</span> <span class="o">+</span> <span class="mf">3.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="p">])</span>
+        <span class="n">line2</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">(</span>
+                    <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">outer_space</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span><span class="p">,</span>
+                    <span class="n">p</span><span class="o">.</span><span class="n">initial</span> <span class="o">+</span> <span class="mf">3.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="p">(</span>
+                    <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_width</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">outer_space</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span><span class="p">,</span>
+                    <span class="n">p</span><span class="o">.</span><span class="n">initial</span> <span class="o">+</span> <span class="mf">3.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">,</span>
+                <span class="p">),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
         <span class="c1"># repeat the full fline</span>
         <span class="n">line3</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">line2</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span><span class="p">)</span>
         <span class="n">line4</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">line3</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span><span class="p">)</span>
@@ -837,18 +852,25 @@
         <span class="n">line14</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">line13</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span><span class="p">)</span>
         <span class="c1"># hard code the position for now; make it adjustable later</span>
         <span class="n">line_last</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span>
-            <span class="n">line1</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_width</span> <span class="o">-</span> <span class="mf">0.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">outer_space</span><span class="p">,</span>
-            <span class="mi">28</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span><span class="p">)</span>
+            <span class="n">line1</span><span class="p">,</span>
+            <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_width</span> <span class="o">-</span> <span class="mf">0.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">outer_space</span><span class="p">,</span>
+            <span class="mi">28</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="c1"># draw the line exiting the rectangle</span>
-        <span class="n">final</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([</span>
-            <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">initial</span> <span class="o">+</span> <span class="mf">30.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span><span class="p">),</span>
-            <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span>
-             <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">initial</span> <span class="o">+</span> <span class="mf">30.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">final</span><span class="p">)</span>
-        <span class="p">])</span>
-        <span class="n">arc_last</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">arc</span><span class="p">,</span>
-                               <span class="mi">180</span><span class="p">,</span>
-                               <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">initial</span> <span class="o">+</span>
-                                       <span class="mf">1.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span><span class="p">))</span>
+        <span class="n">final</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">initial</span> <span class="o">+</span> <span class="mf">30.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span><span class="p">),</span>
+                <span class="p">(</span>
+                    <span class="mf">0.0</span><span class="p">,</span>
+                    <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">initial</span> <span class="o">+</span> <span class="mf">30.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">final</span><span class="p">,</span>
+                <span class="p">),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">arc_last</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span>
+            <span class="n">arc</span><span class="p">,</span>
+            <span class="mi">180</span><span class="p">,</span>
+            <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">initial</span> <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span><span class="p">),</span>
+        <span class="p">)</span>
         <span class="n">arc_last</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">arc_last</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">initial</span> <span class="o">+</span> <span class="mi">26</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span><span class="p">)</span>
         <span class="c1"># repeat the left turns</span>
         <span class="n">arc_left_2</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">arc_left_1</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">4.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span><span class="p">)</span>
@@ -866,12 +888,42 @@
         <span class="n">arc_right_7</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">arc_right_6</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">4.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span><span class="p">)</span>
         <span class="c1"># Translate and rotate all shapes</span>
         <span class="n">objects</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">perimeter</span><span class="p">,</span> <span class="n">initial</span><span class="p">,</span> <span class="n">arc</span><span class="p">,</span> <span class="n">arc_left_1</span><span class="p">,</span> <span class="n">arc_left_2</span><span class="p">,</span> <span class="n">arc_left_3</span><span class="p">,</span>
-            <span class="n">arc_left_4</span><span class="p">,</span> <span class="n">arc_left_5</span><span class="p">,</span> <span class="n">arc_left_6</span><span class="p">,</span> <span class="n">arc_left_7</span><span class="p">,</span> <span class="n">arc_right_1</span><span class="p">,</span>
-            <span class="n">arc_right_2</span><span class="p">,</span> <span class="n">arc_right_2</span><span class="p">,</span> <span class="n">arc_right_3</span><span class="p">,</span> <span class="n">arc_right_4</span><span class="p">,</span> <span class="n">arc_right_4</span><span class="p">,</span>
-            <span class="n">arc_right_5</span><span class="p">,</span> <span class="n">arc_right_6</span><span class="p">,</span> <span class="n">arc_right_7</span><span class="p">,</span> <span class="n">arc_last</span><span class="p">,</span> <span class="n">final</span><span class="p">,</span> <span class="n">line1</span><span class="p">,</span>
-            <span class="n">line2</span><span class="p">,</span> <span class="n">line3</span><span class="p">,</span> <span class="n">line4</span><span class="p">,</span> <span class="n">line5</span><span class="p">,</span> <span class="n">line6</span><span class="p">,</span> <span class="n">line7</span><span class="p">,</span> <span class="n">line8</span><span class="p">,</span> <span class="n">line9</span><span class="p">,</span> <span class="n">line10</span><span class="p">,</span>
-            <span class="n">line11</span><span class="p">,</span> <span class="n">line12</span><span class="p">,</span> <span class="n">line13</span><span class="p">,</span> <span class="n">line14</span><span class="p">,</span> <span class="n">line_last</span>
+            <span class="n">perimeter</span><span class="p">,</span>
+            <span class="n">initial</span><span class="p">,</span>
+            <span class="n">arc</span><span class="p">,</span>
+            <span class="n">arc_left_1</span><span class="p">,</span>
+            <span class="n">arc_left_2</span><span class="p">,</span>
+            <span class="n">arc_left_3</span><span class="p">,</span>
+            <span class="n">arc_left_4</span><span class="p">,</span>
+            <span class="n">arc_left_5</span><span class="p">,</span>
+            <span class="n">arc_left_6</span><span class="p">,</span>
+            <span class="n">arc_left_7</span><span class="p">,</span>
+            <span class="n">arc_right_1</span><span class="p">,</span>
+            <span class="n">arc_right_2</span><span class="p">,</span>
+            <span class="n">arc_right_2</span><span class="p">,</span>
+            <span class="n">arc_right_3</span><span class="p">,</span>
+            <span class="n">arc_right_4</span><span class="p">,</span>
+            <span class="n">arc_right_4</span><span class="p">,</span>
+            <span class="n">arc_right_5</span><span class="p">,</span>
+            <span class="n">arc_right_6</span><span class="p">,</span>
+            <span class="n">arc_right_7</span><span class="p">,</span>
+            <span class="n">arc_last</span><span class="p">,</span>
+            <span class="n">final</span><span class="p">,</span>
+            <span class="n">line1</span><span class="p">,</span>
+            <span class="n">line2</span><span class="p">,</span>
+            <span class="n">line3</span><span class="p">,</span>
+            <span class="n">line4</span><span class="p">,</span>
+            <span class="n">line5</span><span class="p">,</span>
+            <span class="n">line6</span><span class="p">,</span>
+            <span class="n">line7</span><span class="p">,</span>
+            <span class="n">line8</span><span class="p">,</span>
+            <span class="n">line9</span><span class="p">,</span>
+            <span class="n">line10</span><span class="p">,</span>
+            <span class="n">line11</span><span class="p">,</span>
+            <span class="n">line12</span><span class="p">,</span>
+            <span class="n">line13</span><span class="p">,</span>
+            <span class="n">line14</span><span class="p">,</span>
+            <span class="n">line_last</span><span class="p">,</span>
         <span class="p">]</span>
         <span class="c1"># first translate so that the origin is at the middle of the loop</span>
         <span class="n">objects</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_height</span><span class="p">)</span>
@@ -879,218 +931,179 @@
         <span class="n">objects</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
         <span class="n">objects</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="n">xoff</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">pos_x</span><span class="p">,</span> <span class="n">yoff</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">pos_y</span><span class="p">)</span>
         <span class="p">[</span>
-            <span class="n">perimeter</span><span class="p">,</span> <span class="n">initial</span><span class="p">,</span> <span class="n">arc</span><span class="p">,</span> <span class="n">arc_left_1</span><span class="p">,</span> <span class="n">arc_left_2</span><span class="p">,</span> <span class="n">arc_left_3</span><span class="p">,</span>
-            <span class="n">arc_left_4</span><span class="p">,</span> <span class="n">arc_left_5</span><span class="p">,</span> <span class="n">arc_left_6</span><span class="p">,</span> <span class="n">arc_left_7</span><span class="p">,</span> <span class="n">arc_right_1</span><span class="p">,</span>
-            <span class="n">arc_right_2</span><span class="p">,</span> <span class="n">arc_right_2</span><span class="p">,</span> <span class="n">arc_right_3</span><span class="p">,</span> <span class="n">arc_right_4</span><span class="p">,</span> <span class="n">arc_right_4</span><span class="p">,</span>
-            <span class="n">arc_right_5</span><span class="p">,</span> <span class="n">arc_right_6</span><span class="p">,</span> <span class="n">arc_right_7</span><span class="p">,</span> <span class="n">arc_last</span><span class="p">,</span> <span class="n">final</span><span class="p">,</span> <span class="n">line1</span><span class="p">,</span>
-            <span class="n">line2</span><span class="p">,</span> <span class="n">line3</span><span class="p">,</span> <span class="n">line4</span><span class="p">,</span> <span class="n">line5</span><span class="p">,</span> <span class="n">line6</span><span class="p">,</span> <span class="n">line7</span><span class="p">,</span> <span class="n">line8</span><span class="p">,</span> <span class="n">line9</span><span class="p">,</span> <span class="n">line10</span><span class="p">,</span>
-            <span class="n">line11</span><span class="p">,</span> <span class="n">line12</span><span class="p">,</span> <span class="n">line13</span><span class="p">,</span> <span class="n">line14</span><span class="p">,</span> <span class="n">line_last</span>
+            <span class="n">perimeter</span><span class="p">,</span>
+            <span class="n">initial</span><span class="p">,</span>
+            <span class="n">arc</span><span class="p">,</span>
+            <span class="n">arc_left_1</span><span class="p">,</span>
+            <span class="n">arc_left_2</span><span class="p">,</span>
+            <span class="n">arc_left_3</span><span class="p">,</span>
+            <span class="n">arc_left_4</span><span class="p">,</span>
+            <span class="n">arc_left_5</span><span class="p">,</span>
+            <span class="n">arc_left_6</span><span class="p">,</span>
+            <span class="n">arc_left_7</span><span class="p">,</span>
+            <span class="n">arc_right_1</span><span class="p">,</span>
+            <span class="n">arc_right_2</span><span class="p">,</span>
+            <span class="n">arc_right_2</span><span class="p">,</span>
+            <span class="n">arc_right_3</span><span class="p">,</span>
+            <span class="n">arc_right_4</span><span class="p">,</span>
+            <span class="n">arc_right_4</span><span class="p">,</span>
+            <span class="n">arc_right_5</span><span class="p">,</span>
+            <span class="n">arc_right_6</span><span class="p">,</span>
+            <span class="n">arc_right_7</span><span class="p">,</span>
+            <span class="n">arc_last</span><span class="p">,</span>
+            <span class="n">final</span><span class="p">,</span>
+            <span class="n">line1</span><span class="p">,</span>
+            <span class="n">line2</span><span class="p">,</span>
+            <span class="n">line3</span><span class="p">,</span>
+            <span class="n">line4</span><span class="p">,</span>
+            <span class="n">line5</span><span class="p">,</span>
+            <span class="n">line6</span><span class="p">,</span>
+            <span class="n">line7</span><span class="p">,</span>
+            <span class="n">line8</span><span class="p">,</span>
+            <span class="n">line9</span><span class="p">,</span>
+            <span class="n">line10</span><span class="p">,</span>
+            <span class="n">line11</span><span class="p">,</span>
+            <span class="n">line12</span><span class="p">,</span>
+            <span class="n">line13</span><span class="p">,</span>
+            <span class="n">line14</span><span class="p">,</span>
+            <span class="n">line_last</span><span class="p">,</span>
         <span class="p">]</span> <span class="o">=</span> <span class="n">objects</span>
         <span class="c1"># give polys names for qgeometry</span>
-        <span class="n">geom_perimeter</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly1&#39;</span><span class="p">:</span> <span class="n">perimeter</span><span class="p">}</span>
-        <span class="n">geom_initial</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly2&#39;</span><span class="p">:</span> <span class="n">initial</span><span class="p">}</span>
-        <span class="n">geom_arc</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly3&#39;</span><span class="p">:</span> <span class="n">arc</span><span class="p">}</span>
-        <span class="n">geom_arc_left_1</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly4&#39;</span><span class="p">:</span> <span class="n">arc_left_1</span><span class="p">}</span>
-        <span class="n">geom_arc_left_2</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly4&#39;</span><span class="p">:</span> <span class="n">arc_left_2</span><span class="p">}</span>
-        <span class="n">geom_arc_left_3</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly4&#39;</span><span class="p">:</span> <span class="n">arc_left_3</span><span class="p">}</span>
-        <span class="n">geom_arc_left_4</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly4&#39;</span><span class="p">:</span> <span class="n">arc_left_4</span><span class="p">}</span>
-        <span class="n">geom_arc_left_5</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly4&#39;</span><span class="p">:</span> <span class="n">arc_left_5</span><span class="p">}</span>
-        <span class="n">geom_arc_left_6</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly4&#39;</span><span class="p">:</span> <span class="n">arc_left_6</span><span class="p">}</span>
-        <span class="n">geom_arc_left_7</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly4&#39;</span><span class="p">:</span> <span class="n">arc_left_7</span><span class="p">}</span>
-        <span class="n">geom_arc_right_1</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly4&#39;</span><span class="p">:</span> <span class="n">arc_right_1</span><span class="p">}</span>
-        <span class="n">geom_arc_right_2</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly4&#39;</span><span class="p">:</span> <span class="n">arc_right_2</span><span class="p">}</span>
-        <span class="n">geom_arc_right_3</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly4&#39;</span><span class="p">:</span> <span class="n">arc_right_3</span><span class="p">}</span>
-        <span class="n">geom_arc_right_4</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly4&#39;</span><span class="p">:</span> <span class="n">arc_right_4</span><span class="p">}</span>
-        <span class="n">geom_arc_right_5</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly4&#39;</span><span class="p">:</span> <span class="n">arc_right_5</span><span class="p">}</span>
-        <span class="n">geom_arc_right_6</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly4&#39;</span><span class="p">:</span> <span class="n">arc_right_6</span><span class="p">}</span>
-        <span class="n">geom_arc_right_7</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly4&#39;</span><span class="p">:</span> <span class="n">arc_right_7</span><span class="p">}</span>
-        <span class="n">geom_arc_last</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly4&#39;</span><span class="p">:</span> <span class="n">arc_last</span><span class="p">}</span>
-        <span class="n">geom_final</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly&#39;</span><span class="p">:</span> <span class="n">final</span><span class="p">}</span>
-        <span class="n">geom_line1</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly5&#39;</span><span class="p">:</span> <span class="n">line1</span><span class="p">}</span>
-        <span class="n">geom_line2</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly6&#39;</span><span class="p">:</span> <span class="n">line2</span><span class="p">}</span>
-        <span class="n">geom_line3</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly7&#39;</span><span class="p">:</span> <span class="n">line3</span><span class="p">}</span>
-        <span class="n">geom_line4</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly8&#39;</span><span class="p">:</span> <span class="n">line4</span><span class="p">}</span>
-        <span class="n">geom_line5</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly9&#39;</span><span class="p">:</span> <span class="n">line5</span><span class="p">}</span>
-        <span class="n">geom_line6</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly10&#39;</span><span class="p">:</span> <span class="n">line6</span><span class="p">}</span>
-        <span class="n">geom_line7</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly11&#39;</span><span class="p">:</span> <span class="n">line7</span><span class="p">}</span>
-        <span class="n">geom_line8</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly11&#39;</span><span class="p">:</span> <span class="n">line8</span><span class="p">}</span>
-        <span class="n">geom_line9</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly9&#39;</span><span class="p">:</span> <span class="n">line9</span><span class="p">}</span>
-        <span class="n">geom_line10</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly10&#39;</span><span class="p">:</span> <span class="n">line10</span><span class="p">}</span>
-        <span class="n">geom_line11</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly11&#39;</span><span class="p">:</span> <span class="n">line11</span><span class="p">}</span>
-        <span class="n">geom_line12</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly12&#39;</span><span class="p">:</span> <span class="n">line12</span><span class="p">}</span>
-        <span class="n">geom_line13</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly13&#39;</span><span class="p">:</span> <span class="n">line13</span><span class="p">}</span>
-        <span class="n">geom_line14</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly14&#39;</span><span class="p">:</span> <span class="n">line14</span><span class="p">}</span>
-        <span class="n">geom_line_last</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly14&#39;</span><span class="p">:</span> <span class="n">line_last</span><span class="p">}</span>
+        <span class="n">geom_perimeter</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly1&quot;</span><span class="p">:</span> <span class="n">perimeter</span><span class="p">}</span>
+        <span class="n">geom_initial</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly2&quot;</span><span class="p">:</span> <span class="n">initial</span><span class="p">}</span>
+        <span class="n">geom_arc</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly3&quot;</span><span class="p">:</span> <span class="n">arc</span><span class="p">}</span>
+        <span class="n">geom_arc_left_1</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly4&quot;</span><span class="p">:</span> <span class="n">arc_left_1</span><span class="p">}</span>
+        <span class="n">geom_arc_left_2</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly4&quot;</span><span class="p">:</span> <span class="n">arc_left_2</span><span class="p">}</span>
+        <span class="n">geom_arc_left_3</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly4&quot;</span><span class="p">:</span> <span class="n">arc_left_3</span><span class="p">}</span>
+        <span class="n">geom_arc_left_4</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly4&quot;</span><span class="p">:</span> <span class="n">arc_left_4</span><span class="p">}</span>
+        <span class="n">geom_arc_left_5</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly4&quot;</span><span class="p">:</span> <span class="n">arc_left_5</span><span class="p">}</span>
+        <span class="n">geom_arc_left_6</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly4&quot;</span><span class="p">:</span> <span class="n">arc_left_6</span><span class="p">}</span>
+        <span class="n">geom_arc_left_7</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly4&quot;</span><span class="p">:</span> <span class="n">arc_left_7</span><span class="p">}</span>
+        <span class="n">geom_arc_right_1</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly4&quot;</span><span class="p">:</span> <span class="n">arc_right_1</span><span class="p">}</span>
+        <span class="n">geom_arc_right_2</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly4&quot;</span><span class="p">:</span> <span class="n">arc_right_2</span><span class="p">}</span>
+        <span class="n">geom_arc_right_3</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly4&quot;</span><span class="p">:</span> <span class="n">arc_right_3</span><span class="p">}</span>
+        <span class="n">geom_arc_right_4</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly4&quot;</span><span class="p">:</span> <span class="n">arc_right_4</span><span class="p">}</span>
+        <span class="n">geom_arc_right_5</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly4&quot;</span><span class="p">:</span> <span class="n">arc_right_5</span><span class="p">}</span>
+        <span class="n">geom_arc_right_6</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly4&quot;</span><span class="p">:</span> <span class="n">arc_right_6</span><span class="p">}</span>
+        <span class="n">geom_arc_right_7</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly4&quot;</span><span class="p">:</span> <span class="n">arc_right_7</span><span class="p">}</span>
+        <span class="n">geom_arc_last</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly4&quot;</span><span class="p">:</span> <span class="n">arc_last</span><span class="p">}</span>
+        <span class="n">geom_final</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly&quot;</span><span class="p">:</span> <span class="n">final</span><span class="p">}</span>
+        <span class="n">geom_line1</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly5&quot;</span><span class="p">:</span> <span class="n">line1</span><span class="p">}</span>
+        <span class="n">geom_line2</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly6&quot;</span><span class="p">:</span> <span class="n">line2</span><span class="p">}</span>
+        <span class="n">geom_line3</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly7&quot;</span><span class="p">:</span> <span class="n">line3</span><span class="p">}</span>
+        <span class="n">geom_line4</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly8&quot;</span><span class="p">:</span> <span class="n">line4</span><span class="p">}</span>
+        <span class="n">geom_line5</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly9&quot;</span><span class="p">:</span> <span class="n">line5</span><span class="p">}</span>
+        <span class="n">geom_line6</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly10&quot;</span><span class="p">:</span> <span class="n">line6</span><span class="p">}</span>
+        <span class="n">geom_line7</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly11&quot;</span><span class="p">:</span> <span class="n">line7</span><span class="p">}</span>
+        <span class="n">geom_line8</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly11&quot;</span><span class="p">:</span> <span class="n">line8</span><span class="p">}</span>
+        <span class="n">geom_line9</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly9&quot;</span><span class="p">:</span> <span class="n">line9</span><span class="p">}</span>
+        <span class="n">geom_line10</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly10&quot;</span><span class="p">:</span> <span class="n">line10</span><span class="p">}</span>
+        <span class="n">geom_line11</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly11&quot;</span><span class="p">:</span> <span class="n">line11</span><span class="p">}</span>
+        <span class="n">geom_line12</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly12&quot;</span><span class="p">:</span> <span class="n">line12</span><span class="p">}</span>
+        <span class="n">geom_line13</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly13&quot;</span><span class="p">:</span> <span class="n">line13</span><span class="p">}</span>
+        <span class="n">geom_line14</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly14&quot;</span><span class="p">:</span> <span class="n">line14</span><span class="p">}</span>
+        <span class="n">geom_line_last</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly14&quot;</span><span class="p">:</span> <span class="n">line_last</span><span class="p">}</span>
         <span class="c1"># add to qgeometry</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span>
-                           <span class="n">geom_perimeter</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_initial</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_arc</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_arc_left_1</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_arc_left_2</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_arc_left_3</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_arc_left_4</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_arc_left_5</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_arc_left_6</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_arc_left_7</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_arc_right_1</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_arc_right_2</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_arc_right_3</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_arc_right_4</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_arc_right_5</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_arc_right_6</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_arc_right_7</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_arc_last</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_line1</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_line2</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_line3</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_line4</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_line5</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_line6</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_line7</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_line8</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_line9</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_line10</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_line11</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_line12</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_line13</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_line14</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_line_last</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
-                           <span class="n">geom_final</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom_perimeter</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_initial</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_arc</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_arc_left_1</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_arc_left_2</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_arc_left_3</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_arc_left_4</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_arc_left_5</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_arc_left_6</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_arc_left_7</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_arc_right_1</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_arc_right_2</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_arc_right_3</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_arc_right_4</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_arc_right_5</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_arc_right_6</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_arc_right_7</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_arc_last</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_line1</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_line2</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_line3</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_line4</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_line5</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_line6</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_line7</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_line8</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_line9</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_line10</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_line11</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_line12</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_line13</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_line14</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_line_last</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_final</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">res_width</span>
+        <span class="p">)</span>
 
         <span class="c1">##########################</span>
         <span class="c1"># Add Qpin connections</span>
@@ -1099,9 +1112,11 @@
             <span class="n">y</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
             <span class="n">z</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
             <span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">orientation</span> <span class="o">*</span> <span class="mf">3.14159</span> <span class="o">/</span> <span class="mi">180</span><span class="p">)</span> <span class="o">-</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span>
-                <span class="n">p</span><span class="o">.</span><span class="n">orientation</span> <span class="o">*</span> <span class="mf">3.14159</span> <span class="o">/</span> <span class="mi">180</span><span class="p">)</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">orientation</span> <span class="o">*</span> <span class="mf">3.14159</span> <span class="o">/</span> <span class="mi">180</span>
+            <span class="p">)</span>
             <span class="n">z</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">orientation</span> <span class="o">*</span> <span class="mf">3.14159</span> <span class="o">/</span> <span class="mi">180</span><span class="p">)</span> <span class="o">+</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span>
-                <span class="n">p</span><span class="o">.</span><span class="n">orientation</span> <span class="o">*</span> <span class="mf">3.14159</span> <span class="o">/</span> <span class="mi">180</span><span class="p">)</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">orientation</span> <span class="o">*</span> <span class="mf">3.14159</span> <span class="o">/</span> <span class="mi">180</span>
+            <span class="p">)</span>
             <span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_x</span>
             <span class="n">z</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_y</span>
             <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">z</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
@@ -1112,79 +1127,90 @@
         <span class="n">qp1b</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_width</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
         <span class="n">qp1a</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qp1a</span><span class="p">)</span>
         <span class="n">qp1b</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qp1b</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s1">&#39;pin_east&#39;</span><span class="p">,</span>
-                     <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qp1a</span><span class="p">,</span> <span class="n">qp1b</span><span class="p">]),</span>
-                     <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
-                     <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
+            <span class="s2">&quot;pin_east&quot;</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qp1a</span><span class="p">,</span> <span class="n">qp1b</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
         <span class="c1"># North-East pin</span>
-        <span class="n">qpa_ne</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_width</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span><span class="p">,</span>
-                  <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_height</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span><span class="p">)</span>
+        <span class="n">qpa_ne</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_width</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span><span class="p">,</span>
+            <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_height</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">qpb_ne</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_width</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_height</span><span class="p">)</span>
         <span class="n">qpa_ne</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qpa_ne</span><span class="p">)</span>
         <span class="n">qpb_ne</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qpb_ne</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s1">&#39;pin_ne&#39;</span><span class="p">,</span>
-                     <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qpa_ne</span><span class="p">,</span> <span class="n">qpb_ne</span><span class="p">]),</span>
-                     <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
-                     <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
+            <span class="s2">&quot;pin_ne&quot;</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qpa_ne</span><span class="p">,</span> <span class="n">qpb_ne</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
         <span class="c1"># South-East pin</span>
-        <span class="n">qpa_se</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_width</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span><span class="p">,</span>
-                  <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_height</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span><span class="p">)</span>
+        <span class="n">qpa_se</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_width</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_height</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">qpb_se</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_width</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_height</span><span class="p">)</span>
         <span class="n">qpa_se</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qpa_se</span><span class="p">)</span>
         <span class="n">qpb_se</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qpb_se</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s1">&#39;pin_se&#39;</span><span class="p">,</span>
-                     <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qpa_se</span><span class="p">,</span> <span class="n">qpb_se</span><span class="p">]),</span>
-                     <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
-                     <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
+            <span class="s2">&quot;pin_se&quot;</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qpa_se</span><span class="p">,</span> <span class="n">qpb_se</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
         <span class="c1"># North-West pin</span>
-        <span class="n">qpa_nw</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span><span class="p">,</span>
-                  <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_height</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span><span class="p">)</span>
+        <span class="n">qpa_nw</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span><span class="p">,</span>
+            <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_height</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">qpb_nw</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_width</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_height</span><span class="p">)</span>
         <span class="n">qpa_nw</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qpa_nw</span><span class="p">)</span>
         <span class="n">qpb_nw</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qpb_nw</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s1">&#39;pin_nw&#39;</span><span class="p">,</span>
-                     <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qpa_nw</span><span class="p">,</span> <span class="n">qpb_nw</span><span class="p">]),</span>
-                     <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
-                     <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
+            <span class="s2">&quot;pin_nw&quot;</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qpa_nw</span><span class="p">,</span> <span class="n">qpb_nw</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
         <span class="c1"># West pin</span>
         <span class="n">qp2a</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
         <span class="n">qp2b</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_width</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
         <span class="n">qp2a</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qp2a</span><span class="p">)</span>
         <span class="n">qp2b</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qp2b</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s1">&#39;pin_west&#39;</span><span class="p">,</span>
-                     <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qp2a</span><span class="p">,</span> <span class="n">qp2b</span><span class="p">]),</span>
-                     <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
-                     <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
+            <span class="s2">&quot;pin_west&quot;</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qp2a</span><span class="p">,</span> <span class="n">qp2b</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
         <span class="c1"># South-West pin</span>
-        <span class="n">qpa_sw</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span><span class="p">,</span>
-                  <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_height</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span><span class="p">)</span>
+        <span class="n">qpa_sw</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_height</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">qpb_sw</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_width</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_height</span><span class="p">)</span>
         <span class="n">qpa_sw</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qpa_sw</span><span class="p">)</span>
         <span class="n">qpb_sw</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qpb_sw</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s1">&#39;pin_sw&#39;</span><span class="p">,</span>
-                     <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qpa_sw</span><span class="p">,</span> <span class="n">qpb_sw</span><span class="p">]),</span>
-                     <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
-                     <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
+            <span class="s2">&quot;pin_sw&quot;</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qpa_sw</span><span class="p">,</span> <span class="n">qpb_sw</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
         <span class="c1"># South pin</span>
         <span class="n">qpa_s</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_height</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span><span class="p">)</span>
         <span class="n">qpb_s</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_height</span><span class="p">)</span>
         <span class="n">qpa_s</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qpa_s</span><span class="p">)</span>
         <span class="n">qpb_s</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qpb_s</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s1">&#39;pin_s&#39;</span><span class="p">,</span>
-                     <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qpa_s</span><span class="p">,</span> <span class="n">qpb_s</span><span class="p">]),</span>
-                     <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
-                     <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
+            <span class="s2">&quot;pin_s&quot;</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qpa_s</span><span class="p">,</span> <span class="n">qpb_s</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
         <span class="c1"># north pin</span>
-        <span class="n">qpa_n</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_height</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">initial</span> <span class="o">+</span>
-                 <span class="mf">30.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span><span class="p">)</span>
-        <span class="n">qpb_n</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_height</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">initial</span> <span class="o">+</span>
-                 <span class="mf">30.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">final</span><span class="p">)</span>
+        <span class="n">qpa_n</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mf">0.0</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_height</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">initial</span>
+            <span class="o">+</span> <span class="mf">30.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">qpb_n</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mf">0.0</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">box_height</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">perimeter_thickness</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">initial</span>
+            <span class="o">+</span> <span class="mf">30.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">turn_radius</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">final</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">qpa_n</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qpa_n</span><span class="p">)</span>
         <span class="n">qpb_n</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qpb_n</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s1">&#39;pin_n&#39;</span><span class="p">,</span>
-                     <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qpa_n</span><span class="p">,</span> <span class="n">qpb_n</span><span class="p">]),</span>
-                     <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
-                     <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
+            <span class="s2">&quot;pin_n&quot;</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qpa_n</span><span class="p">,</span> <span class="n">qpb_n</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span></div>
 </div>
 
 </pre></div>

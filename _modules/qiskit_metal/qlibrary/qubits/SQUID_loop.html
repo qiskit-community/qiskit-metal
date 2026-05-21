@@ -716,6 +716,7 @@
 <span class="sd">    |                                                   |</span>
 <span class="sd">    |                                                   |</span>
 <span class="sd">&quot;&quot;&quot;</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">draw</span><span class="p">,</span> <span class="n">Dict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.core.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">QComponent</span>
 
@@ -757,26 +758,29 @@
 <span class="sd">        * plate2_width: &#39;6um&#39; -- width of plate 2 (right)</span>
 <span class="sd">        * plate2_height: &#39;30um&#39; -- height of plate 2 (right)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="c1"># Default drawing options</span>
-    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">plate1_width</span><span class="o">=</span><span class="s1">&#39;5.5um&#39;</span><span class="p">,</span>
-                           <span class="n">plate1_height</span><span class="o">=</span><span class="s1">&#39;40um&#39;</span><span class="p">,</span>
-                           <span class="n">plate1_pos_x</span><span class="o">=</span><span class="s1">&#39;0&#39;</span><span class="p">,</span>
-                           <span class="n">plate1_pos_y</span><span class="o">=</span><span class="s1">&#39;0&#39;</span><span class="p">,</span>
-                           <span class="n">squid_gap</span><span class="o">=</span><span class="s1">&#39;10um&#39;</span><span class="p">,</span>
-                           <span class="n">segment_a_length</span><span class="o">=</span><span class="s1">&#39;10um&#39;</span><span class="p">,</span>
-                           <span class="n">segment_a_width</span><span class="o">=</span><span class="s1">&#39;1um&#39;</span><span class="p">,</span>
-                           <span class="n">JJ_gap</span><span class="o">=</span><span class="s1">&#39;0.5um&#39;</span><span class="p">,</span>
-                           <span class="n">segment_b_length</span><span class="o">=</span><span class="s1">&#39;5um&#39;</span><span class="p">,</span>
-                           <span class="n">segment_b_width</span><span class="o">=</span><span class="s1">&#39;1um&#39;</span><span class="p">,</span>
-                           <span class="n">segment_c_width</span><span class="o">=</span><span class="s1">&#39;1um&#39;</span><span class="p">,</span>
-                           <span class="n">segment_d_length</span><span class="o">=</span><span class="s1">&#39;10um&#39;</span><span class="p">,</span>
-                           <span class="n">segment_d_width</span><span class="o">=</span><span class="s1">&#39;2um&#39;</span><span class="p">,</span>
-                           <span class="n">plate2_width</span><span class="o">=</span><span class="s1">&#39;6um&#39;</span><span class="p">,</span>
-                           <span class="n">plate2_height</span><span class="o">=</span><span class="s1">&#39;30um&#39;</span><span class="p">)</span>
+    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+        <span class="n">plate1_width</span><span class="o">=</span><span class="s2">&quot;5.5um&quot;</span><span class="p">,</span>
+        <span class="n">plate1_height</span><span class="o">=</span><span class="s2">&quot;40um&quot;</span><span class="p">,</span>
+        <span class="n">plate1_pos_x</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+        <span class="n">plate1_pos_y</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+        <span class="n">squid_gap</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
+        <span class="n">segment_a_length</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
+        <span class="n">segment_a_width</span><span class="o">=</span><span class="s2">&quot;1um&quot;</span><span class="p">,</span>
+        <span class="n">JJ_gap</span><span class="o">=</span><span class="s2">&quot;0.5um&quot;</span><span class="p">,</span>
+        <span class="n">segment_b_length</span><span class="o">=</span><span class="s2">&quot;5um&quot;</span><span class="p">,</span>
+        <span class="n">segment_b_width</span><span class="o">=</span><span class="s2">&quot;1um&quot;</span><span class="p">,</span>
+        <span class="n">segment_c_width</span><span class="o">=</span><span class="s2">&quot;1um&quot;</span><span class="p">,</span>
+        <span class="n">segment_d_length</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
+        <span class="n">segment_d_width</span><span class="o">=</span><span class="s2">&quot;2um&quot;</span><span class="p">,</span>
+        <span class="n">plate2_width</span><span class="o">=</span><span class="s2">&quot;6um&quot;</span><span class="p">,</span>
+        <span class="n">plate2_height</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Default drawing options&quot;&quot;&quot;</span>
 
     <span class="c1"># Name prefix of component, if user doesn&#39;t provide name</span>
-    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s1">&#39;component&#39;</span><span class="p">)</span>
+    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;component&quot;</span><span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Component metadata&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="SQUID_LOOP.make">
@@ -787,50 +791,82 @@
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_options</span><span class="p">()</span>  <span class="c1"># Parse the string options into numbers</span>
 
         <span class="c1"># draw the lower pad as a rectangle</span>
-        <span class="n">plate1</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">plate1_width</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">plate1_height</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">plate1_pos_x</span><span class="p">,</span>
-                                <span class="n">p</span><span class="o">.</span><span class="n">plate1_pos_y</span><span class="p">)</span>
+        <span class="n">plate1</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">plate1_width</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">plate1_height</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">plate1_pos_x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">plate1_pos_y</span>
+        <span class="p">)</span>
 
-        <span class="n">segment_a</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">segment_a_length</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_a_width</span><span class="p">,</span>
-                                   <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">plate1_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_a_length</span><span class="p">),</span>
-                                   <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">squid_gap</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_a_width</span><span class="p">))</span>
+        <span class="n">segment_a</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">segment_a_length</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">segment_a_width</span><span class="p">,</span>
+            <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">plate1_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_a_length</span><span class="p">),</span>
+            <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">squid_gap</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_a_width</span><span class="p">),</span>
+        <span class="p">)</span>
 
         <span class="n">segment_a_lower</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span>
-            <span class="n">segment_a</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">squid_gap</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_a_width</span><span class="p">))</span>
+            <span class="n">segment_a</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">squid_gap</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_a_width</span><span class="p">)</span>
+        <span class="p">)</span>
 
         <span class="n">segment_b</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span>
-            <span class="n">p</span><span class="o">.</span><span class="n">segment_b_length</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_b_width</span><span class="p">,</span>
-            <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">plate1_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_b_length</span><span class="p">)</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_gap</span> <span class="o">+</span>
-            <span class="n">p</span><span class="o">.</span><span class="n">segment_a_length</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">squid_gap</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_b_width</span><span class="p">))</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">segment_b_length</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">segment_b_width</span><span class="p">,</span>
+            <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">plate1_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_b_length</span><span class="p">)</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_gap</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_a_length</span><span class="p">,</span>
+            <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">squid_gap</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_b_width</span><span class="p">),</span>
+        <span class="p">)</span>
 
         <span class="n">segment_b_lower</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span>
-            <span class="n">segment_b</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">squid_gap</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_b_width</span><span class="p">))</span>
+            <span class="n">segment_b</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">squid_gap</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_b_width</span><span class="p">)</span>
+        <span class="p">)</span>
 
         <span class="n">segment_c</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span>
             <span class="n">p</span><span class="o">.</span><span class="n">segment_c_width</span><span class="p">,</span>
             <span class="n">p</span><span class="o">.</span><span class="n">squid_gap</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_a_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_b_width</span><span class="p">,</span>
-            <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">plate1_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_c_width</span><span class="p">)</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_a_length</span> <span class="o">+</span>
-            <span class="n">p</span><span class="o">.</span><span class="n">segment_b_length</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_gap</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">plate1_pos_y</span><span class="p">)</span>
+            <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">plate1_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_c_width</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_a_length</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_b_length</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_gap</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">plate1_pos_y</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="n">segment_d</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span>
-            <span class="n">p</span><span class="o">.</span><span class="n">segment_d_length</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_d_width</span><span class="p">,</span>
-            <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">plate1_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_d_length</span><span class="p">)</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_a_length</span> <span class="o">+</span>
-            <span class="n">p</span><span class="o">.</span><span class="n">segment_b_length</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_gap</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_c_width</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">plate1_pos_y</span><span class="p">)</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">segment_d_length</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">segment_d_width</span><span class="p">,</span>
+            <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">plate1_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_d_length</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_a_length</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_b_length</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_gap</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_c_width</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">plate1_pos_y</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="n">plate2</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span>
-            <span class="n">p</span><span class="o">.</span><span class="n">plate2_width</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">plate2_height</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span>
-            <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">plate1_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">plate2_width</span><span class="p">)</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_a_length</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_gap</span> <span class="o">+</span>
-            <span class="n">p</span><span class="o">.</span><span class="n">segment_b_length</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_c_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_d_length</span><span class="p">,</span>
-            <span class="n">p</span><span class="o">.</span><span class="n">plate1_pos_y</span><span class="p">)</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">plate2_width</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">plate2_height</span><span class="p">,</span>
+            <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">plate1_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">plate2_width</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_a_length</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_gap</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_b_length</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_c_width</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_d_length</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">plate1_pos_y</span><span class="p">,</span>
+        <span class="p">)</span>
 
-        <span class="n">design1</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">plate1</span><span class="p">,</span> <span class="n">segment_a</span><span class="p">,</span> <span class="n">segment_a_lower</span><span class="p">,</span> <span class="n">segment_b</span><span class="p">,</span>
-                             <span class="n">segment_b_lower</span><span class="p">,</span> <span class="n">segment_c</span><span class="p">,</span> <span class="n">segment_d</span><span class="p">,</span> <span class="n">plate2</span><span class="p">)</span>
+        <span class="n">design1</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">union</span><span class="p">(</span>
+            <span class="n">plate1</span><span class="p">,</span>
+            <span class="n">segment_a</span><span class="p">,</span>
+            <span class="n">segment_a_lower</span><span class="p">,</span>
+            <span class="n">segment_b</span><span class="p">,</span>
+            <span class="n">segment_b_lower</span><span class="p">,</span>
+            <span class="n">segment_c</span><span class="p">,</span>
+            <span class="n">segment_d</span><span class="p">,</span>
+            <span class="n">plate2</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="c1"># now translate and rotate the final structure</span>
         <span class="n">design1</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">design1</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
         <span class="n">design1</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">design1</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_y</span><span class="p">)</span>
 
-        <span class="n">geom</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;design&#39;</span><span class="p">:</span> <span class="n">design1</span><span class="p">}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+        <span class="n">geom</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;design&quot;</span><span class="p">:</span> <span class="n">design1</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

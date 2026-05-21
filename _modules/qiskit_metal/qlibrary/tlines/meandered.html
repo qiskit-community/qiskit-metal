@@ -749,12 +749,14 @@
 <span class="sd">        * prevent_short_edges: &#39;true&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s1">&#39;cpw&#39;</span><span class="p">)</span>
+    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;cpw&quot;</span><span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Component metadata&quot;&quot;&quot;</span>
 
-    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">meander</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">spacing</span><span class="o">=</span><span class="s1">&#39;200um&#39;</span><span class="p">,</span> <span class="n">asymmetry</span><span class="o">=</span><span class="s1">&#39;0um&#39;</span><span class="p">),</span>
-                           <span class="n">snap</span><span class="o">=</span><span class="s1">&#39;true&#39;</span><span class="p">,</span>
-                           <span class="n">prevent_short_edges</span><span class="o">=</span><span class="s1">&#39;true&#39;</span><span class="p">)</span>
+    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+        <span class="n">meander</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">spacing</span><span class="o">=</span><span class="s2">&quot;200um&quot;</span><span class="p">,</span> <span class="n">asymmetry</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">),</span>
+        <span class="n">snap</span><span class="o">=</span><span class="s2">&quot;true&quot;</span><span class="p">,</span>
+        <span class="n">prevent_short_edges</span><span class="o">=</span><span class="s2">&quot;true&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Default options&quot;&quot;&quot;</span>
 
     <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Implements a simple CPW, with a single meander.&quot;&quot;&quot;</span>
@@ -768,7 +770,7 @@
 <span class="sd">        qcomponent.add_qgeometry(...), adding in extra needed information, such</span>
 <span class="sd">        as layer, subtract, etc.&quot;&quot;&quot;</span>
         <span class="c1"># parsed options</span>
-        <span class="n">snap</span> <span class="o">=</span> <span class="n">is_true</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">snap</span><span class="p">)</span>
+        <span class="c1"># snap = is_true(self.p.snap)</span>
 
         <span class="c1"># Set the CPW pins and add the points/directions to the lead-in/out arrays</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_pin</span><span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">)</span>
@@ -779,16 +781,20 @@
         <span class="n">meander_end_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_lead</span><span class="p">(</span><span class="s2">&quot;end&quot;</span><span class="p">)</span>
 
         <span class="c1"># approximate length needed for the meander</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_length_segment</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">total_length</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">length</span> <span class="o">+</span>
-                                                      <span class="bp">self</span><span class="o">.</span><span class="n">tail</span><span class="o">.</span><span class="n">length</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_length_segment</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">total_length</span> <span class="o">-</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">length</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">tail</span><span class="o">.</span><span class="n">length</span>
+        <span class="p">)</span>
 
         <span class="n">arc_pts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connect_meandered</span><span class="p">(</span><span class="n">meander_start_point</span><span class="p">,</span> <span class="n">meander_end_point</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span> <span class="o">=</span> <span class="n">arc_pts</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adjust_length</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">total_length</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">arc_pts</span><span class="p">,</span> <span class="n">meander_start_point</span><span class="p">,</span>
-            <span class="n">meander_end_point</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">total_length</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">,</span>
+            <span class="n">arc_pts</span><span class="p">,</span>
+            <span class="n">meander_start_point</span><span class="p">,</span>
+            <span class="n">meander_end_point</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="c1"># Make points into elements</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">make_elements</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_points</span><span class="p">())</span></div>
@@ -796,8 +802,9 @@
 
 <div class="viewcode-block" id="RouteMeander.connect_meandered">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.RouteMeander.html#qiskit_metal.qlibrary.RouteMeander.connect_meandered">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">connect_meandered</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_pt</span><span class="p">:</span> <span class="n">QRoutePoint</span><span class="p">,</span>
-                          <span class="n">end_pt</span><span class="p">:</span> <span class="n">QRoutePoint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">connect_meandered</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">start_pt</span><span class="p">:</span> <span class="n">QRoutePoint</span><span class="p">,</span> <span class="n">end_pt</span><span class="p">:</span> <span class="n">QRoutePoint</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Meanders using a fixed length and fixed spacing.</span>
 
 <span class="sd">        Args:</span>
@@ -823,11 +830,11 @@
         <span class="n">prevent_short_edges</span> <span class="o">=</span> <span class="n">is_true</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">prevent_short_edges</span><span class="p">)</span>
 
         <span class="c1"># take care of anchors (do not have set directions)</span>
-        <span class="n">anchor_lead</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># anchor_lead = 0</span>
         <span class="k">if</span> <span class="n">end_pt</span><span class="o">.</span><span class="n">direction</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># end_direction originates strictly from endpoint + leadout (NOT intermediate stopping anchors)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">assign_direction_to_anchor</span><span class="p">(</span><span class="n">start_pt</span><span class="p">,</span> <span class="n">end_pt</span><span class="p">)</span>
-            <span class="n">anchor_lead</span> <span class="o">=</span> <span class="n">spacing</span>
+            <span class="c1"># anchor_lead = spacing</span>
 
         <span class="c1"># Meander length</span>
         <span class="n">length_meander</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_length_segment</span>
@@ -841,33 +848,43 @@
         <span class="c1"># Calculate lengths and meander number</span>
         <span class="n">dist</span> <span class="o">=</span> <span class="n">end_pt</span><span class="o">.</span><span class="n">position</span> <span class="o">-</span> <span class="n">start_pt</span><span class="o">.</span><span class="n">position</span>
         <span class="k">if</span> <span class="n">snap</span><span class="p">:</span>
-            <span class="n">length_direct</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">norm</span><span class="p">(</span><span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span>
-                <span class="n">dist</span><span class="p">,</span> <span class="n">forward</span><span class="p">)))</span>  <span class="c1"># in the vertical direction</span>
-            <span class="n">length_sideways</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">norm</span><span class="p">(</span><span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span>
-                <span class="n">dist</span><span class="p">,</span> <span class="n">sideways</span><span class="p">)))</span>  <span class="c1"># in the orthogonal direction</span>
+            <span class="n">length_direct</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span>
+                <span class="n">norm</span><span class="p">(</span><span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="n">forward</span><span class="p">))</span>
+            <span class="p">)</span>  <span class="c1"># in the vertical direction</span>
+            <span class="c1"># length_sideways = abs(</span>
+            <span class="c1">#     norm(mao.dot(dist, sideways))</span>
+            <span class="c1"># )  # in the orthogonal direction</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">length_direct</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">dist</span><span class="p">)</span>
-            <span class="n">length_sideways</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="c1"># length_sideways = 0</span>
 
         <span class="c1"># Breakup into sections</span>
         <span class="n">meander_number</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">length_direct</span> <span class="o">/</span> <span class="n">spacing</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">meander_number</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Zero meanders for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Zero meanders for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="nb">float</span><span class="p">)</span>
 
         <span class="c1"># The start and end points can have 4 directions each. Depending on the direction</span>
         <span class="c1"># there might be not enough space for all the meanders, thus here we adjust</span>
         <span class="c1"># meander_number w.r.t. what the start and end points &quot;directionality&quot; allows</span>
-        <span class="k">if</span> <span class="n">mao</span><span class="o">.</span><span class="n">round</span><span class="p">(</span>
-                <span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">start_pt</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span> <span class="n">sideways</span><span class="p">)</span> <span class="o">*</span>
-                <span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">end_pt</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span> <span class="n">sideways</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="p">(</span><span class="n">meander_number</span> <span class="o">%</span>
-                                                              <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">mao</span><span class="o">.</span><span class="n">round</span><span class="p">(</span>
+                <span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">start_pt</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span> <span class="n">sideways</span><span class="p">)</span>
+                <span class="o">*</span> <span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">end_pt</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span> <span class="n">sideways</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="o">&gt;</span> <span class="mi">0</span>
+            <span class="ow">and</span> <span class="p">(</span><span class="n">meander_number</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="p">):</span>
             <span class="c1"># even meander_number is no good if roots have same orientation (w.r.t sideway)</span>
             <span class="n">meander_number</span> <span class="o">-=</span> <span class="mi">1</span>
-        <span class="k">elif</span> <span class="n">mao</span><span class="o">.</span><span class="n">round</span><span class="p">(</span>
-                <span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">start_pt</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span> <span class="n">sideways</span><span class="p">)</span> <span class="o">*</span>
-                <span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">end_pt</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span> <span class="n">sideways</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="p">(</span><span class="n">meander_number</span> <span class="o">%</span>
-                                                              <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="p">(</span>
+            <span class="n">mao</span><span class="o">.</span><span class="n">round</span><span class="p">(</span>
+                <span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">start_pt</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span> <span class="n">sideways</span><span class="p">)</span>
+                <span class="o">*</span> <span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">end_pt</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span> <span class="n">sideways</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="o">&lt;</span> <span class="mi">0</span>
+            <span class="ow">and</span> <span class="p">(</span><span class="n">meander_number</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="p">):</span>
             <span class="c1"># odd meander_number is no good if roots have opposite orientation (w.r.t sideway)</span>
             <span class="n">meander_number</span> <span class="o">-=</span> <span class="mi">1</span>
 
@@ -880,17 +897,17 @@
             <span class="n">first_meander_sideways</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">end_meander_direction</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># sideway direction</span>
-                <span class="n">first_meander_sideways</span> <span class="o">=</span> <span class="p">((</span><span class="n">meander_number</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">first_meander_sideways</span> <span class="o">=</span> <span class="p">(</span><span class="n">meander_number</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
             <span class="k">elif</span> <span class="n">end_meander_direction</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># opposite to sideway direction</span>
-                <span class="n">first_meander_sideways</span> <span class="o">=</span> <span class="p">((</span><span class="n">meander_number</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="n">first_meander_sideways</span> <span class="o">=</span> <span class="p">(</span><span class="n">meander_number</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># either direction is fine, so let&#39;s just pick one</span>
                 <span class="n">first_meander_sideways</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="c1"># length to distribute on the meanders (excess w.r.t a straight line between start and end)</span>
-        <span class="n">length_excess</span> <span class="o">=</span> <span class="p">(</span><span class="n">length_meander</span> <span class="o">-</span> <span class="n">length_direct</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">asymmetry</span><span class="p">))</span>
+        <span class="n">length_excess</span> <span class="o">=</span> <span class="n">length_meander</span> <span class="o">-</span> <span class="n">length_direct</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">asymmetry</span><span class="p">)</span>
         <span class="c1"># how much meander offset from center-line is needed to accommodate the length_excess (perpendicular length)</span>
-        <span class="n">length_perp</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">length_excess</span> <span class="o">/</span> <span class="p">(</span><span class="n">meander_number</span> <span class="o">*</span> <span class="mf">2.</span><span class="p">))</span>
+        <span class="n">length_perp</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">length_excess</span> <span class="o">/</span> <span class="p">(</span><span class="n">meander_number</span> <span class="o">*</span> <span class="mf">2.0</span><span class="p">))</span>
 
         <span class="c1"># USES ROW Vectors</span>
         <span class="c1"># const vec. of unit normals</span>
@@ -899,7 +916,7 @@
         <span class="n">scale_bys</span> <span class="o">=</span> <span class="n">spacing</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">meander_number</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))[:,</span> <span class="kc">None</span><span class="p">]</span>
         <span class="c1"># multiply each one in a linear chain fashion fwd</span>
         <span class="n">middle_points</span> <span class="o">=</span> <span class="n">scale_bys</span> <span class="o">*</span> <span class="n">middle_points</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        middle_points = array([</span>
 <span class="sd">            [0. , 0. ],</span>
 <span class="sd">            [0.2, 0. ],</span>
@@ -907,7 +924,7 @@
 <span class="sd">            [0.6, 0. ],</span>
 <span class="sd">            [0.8, 0. ],</span>
 <span class="sd">            [1. , 0. ]])</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1">################################################################</span>
         <span class="c1"># Calculation</span>
@@ -915,8 +932,7 @@
         <span class="c1"># root_pts = np.concatenate([middle_points,</span>
         <span class="c1">#                            end.position[None, :]],  # convert to row vectors</span>
         <span class="c1">#                           axis=0)</span>
-        <span class="n">side_shift_vecs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sideways</span> <span class="o">*</span> <span class="n">length_perp</span><span class="p">]</span> <span class="o">*</span>
-                                   <span class="nb">len</span><span class="p">(</span><span class="n">middle_points</span><span class="p">))</span>
+        <span class="n">side_shift_vecs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sideways</span> <span class="o">*</span> <span class="n">length_perp</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">middle_points</span><span class="p">))</span>
         <span class="n">asymmetry_vecs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sideways</span> <span class="o">*</span> <span class="n">asymmetry</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">middle_points</span><span class="p">))</span>
         <span class="n">root_pts</span> <span class="o">=</span> <span class="n">middle_points</span> <span class="o">+</span> <span class="n">asymmetry_vecs</span>
         <span class="n">top_pts</span> <span class="o">=</span> <span class="n">root_pts</span> <span class="o">+</span> <span class="n">side_shift_vecs</span>
@@ -934,40 +950,52 @@
         <span class="c1"># need to add the last root_pts in, because there could be a left-over non-meandered segment</span>
         <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">root_pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
         <span class="n">idx_side1_meander</span><span class="p">,</span> <span class="n">odd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_index_for_side1_meander</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">root_pts</span><span class="p">))</span>
-        <span class="n">idx_side2_meander</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">idx_side1_meander</span><span class="p">[:</span><span class="kc">None</span> <span class="k">if</span> <span class="n">odd</span> <span class="k">else</span> <span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">idx_side2_meander</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">idx_side1_meander</span><span class="p">[:</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">odd</span> <span class="k">else</span> <span class="o">-</span><span class="mi">2</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">first_meander_sideways</span><span class="p">:</span>
-            <span class="n">pts</span><span class="p">[</span><span class="n">idx_side1_meander</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">top_pts</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span> <span class="k">if</span> <span class="n">odd</span> <span class="k">else</span> <span class="kc">None</span><span class="p">]</span>
-            <span class="n">pts</span><span class="p">[</span><span class="n">idx_side2_meander</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">bot_pts</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="kc">None</span> <span class="k">if</span> <span class="n">odd</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">pts</span><span class="p">[</span><span class="n">idx_side1_meander</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">top_pts</span><span class="p">[:</span> <span class="o">-</span><span class="mi">1</span> <span class="k">if</span> <span class="n">odd</span> <span class="k">else</span> <span class="kc">None</span><span class="p">]</span>
+            <span class="n">pts</span><span class="p">[</span><span class="n">idx_side2_meander</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">bot_pts</span><span class="p">[</span><span class="mi">1</span> <span class="p">:</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">odd</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">pts</span><span class="p">[</span><span class="n">idx_side1_meander</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">bot_pts</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span> <span class="k">if</span> <span class="n">odd</span> <span class="k">else</span> <span class="kc">None</span><span class="p">]</span>
-            <span class="n">pts</span><span class="p">[</span><span class="n">idx_side2_meander</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">top_pts</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="kc">None</span> <span class="k">if</span> <span class="n">odd</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">pts</span><span class="p">[</span><span class="n">idx_side1_meander</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">bot_pts</span><span class="p">[:</span> <span class="o">-</span><span class="mi">1</span> <span class="k">if</span> <span class="n">odd</span> <span class="k">else</span> <span class="kc">None</span><span class="p">]</span>
+            <span class="n">pts</span><span class="p">[</span><span class="n">idx_side2_meander</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">top_pts</span><span class="p">[</span><span class="mi">1</span> <span class="p">:</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">odd</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
         <span class="n">pts</span> <span class="o">+=</span> <span class="n">start_pt</span><span class="o">.</span><span class="n">position</span>  <span class="c1"># move to start position</span>
 
         <span class="k">if</span> <span class="n">snap</span><span class="p">:</span>
-            <span class="k">if</span> <span class="p">((</span><span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">start_pt</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span> <span class="n">end_pt</span><span class="o">.</span><span class="n">direction</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span>
-                <span class="p">(</span><span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">forward</span><span class="p">,</span> <span class="n">start_pt</span><span class="o">.</span><span class="n">direction</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">start_pt</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span> <span class="n">end_pt</span><span class="o">.</span><span class="n">direction</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
+                <span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">forward</span><span class="p">,</span> <span class="n">start_pt</span><span class="o">.</span><span class="n">direction</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span>
+            <span class="p">):</span>
                 <span class="c1"># pins are pointing opposite directions and diverging</span>
                 <span class="c1"># the last root_pts need to be sideways aligned with the end.position point</span>
                 <span class="c1"># and forward aligned with the previous meander point</span>
                 <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">forward</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span> <span class="o">=</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">forward</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
-                <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span>
-                    <span class="nb">abs</span><span class="p">(</span><span class="n">forward</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">end_pt</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="nb">abs</span><span class="p">(</span><span class="n">forward</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">forward</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">end_pt</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="nb">abs</span><span class="p">(</span><span class="n">forward</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># the last root_pts need to be forward aligned with the end.position point</span>
                 <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">forward</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span> <span class="o">=</span> <span class="n">end_pt</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="nb">abs</span><span class="p">(</span><span class="n">forward</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
                 <span class="c1"># and if the last root_pts ends outside the CPW amplitude on the side where the last meander is</span>
                 <span class="c1"># then the last meander needs to be locked on it as well</span>
-                <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">issideways</span><span class="p">(</span><span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">],</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
-                        <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">issideways</span><span class="p">(</span><span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">root_pts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">start_pt</span><span class="o">.</span><span class="n">position</span><span class="p">,</span> <span class="n">root_pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">start_pt</span><span class="o">.</span><span class="n">position</span><span class="p">))</span>\
-                        <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">issideways</span><span class="p">(</span><span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">],</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
-                            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">issideways</span><span class="p">(</span><span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">root_pts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">start_pt</span><span class="o">.</span><span class="n">position</span><span class="p">,</span>
-                                                    <span class="n">root_pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">start_pt</span><span class="o">.</span><span class="n">position</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">issideways</span><span class="p">(</span><span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">],</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">issideways</span><span class="p">(</span>
+                        <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span>
+                        <span class="n">root_pts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">start_pt</span><span class="o">.</span><span class="n">position</span><span class="p">,</span>
+                        <span class="n">root_pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">start_pt</span><span class="o">.</span><span class="n">position</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+                    <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">issideways</span><span class="p">(</span><span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">],</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+                    <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">issideways</span><span class="p">(</span>
+                        <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span>
+                        <span class="n">root_pts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">start_pt</span><span class="o">.</span><span class="n">position</span><span class="p">,</span>
+                        <span class="n">root_pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">start_pt</span><span class="o">.</span><span class="n">position</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">):</span>
                     <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">forward</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span> <span class="o">=</span> <span class="n">end_pt</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="nb">abs</span><span class="p">(</span><span class="n">forward</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
                     <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">forward</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span> <span class="o">=</span> <span class="n">end_pt</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="nb">abs</span><span class="p">(</span><span class="n">forward</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
         <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">asymmetry</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">abs</span><span class="p">(</span><span class="n">length_perp</span><span class="p">):</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="p">((</span><span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">start_pt</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span> <span class="n">end_pt</span><span class="o">.</span><span class="n">direction</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span>
-                    <span class="p">(</span><span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">forward</span><span class="p">,</span> <span class="n">start_pt</span><span class="o">.</span><span class="n">direction</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span>
+                <span class="p">(</span><span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">start_pt</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span> <span class="n">end_pt</span><span class="o">.</span><span class="n">direction</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="p">(</span><span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">forward</span><span class="p">,</span> <span class="n">start_pt</span><span class="o">.</span><span class="n">direction</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="p">):</span>
                 <span class="c1"># pins are &quot;not&quot; pointing opposite directions and diverging</span>
                 <span class="k">if</span> <span class="n">start_meander_direction</span> <span class="o">*</span> <span class="n">asymmetry</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># sideway direction</span>
                     <span class="n">pts</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">forward</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span> <span class="o">=</span> <span class="n">start_pt</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="nb">abs</span><span class="p">(</span><span class="n">forward</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
@@ -987,15 +1015,11 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">skippoint</span> <span class="o">=</span> <span class="mi">1</span>
             <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="nb">abs</span><span class="p">(</span><span class="n">mao</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">end_pt</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span> <span class="o">&lt;</span> <span class="n">x2fillet</span><span class="p">:</span>
-                <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">skippoint</span><span class="p">,</span>
-                    <span class="mi">0</span> <span class="o">-</span> <span class="n">skippoint</span><span class="p">]</span> <span class="o">=</span> <span class="n">end_pt</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">0</span> <span class="o">-</span> <span class="n">skippoint</span><span class="p">]</span>
-                <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span> <span class="o">-</span> <span class="n">skippoint</span><span class="p">,</span>
-                    <span class="mi">0</span> <span class="o">-</span> <span class="n">skippoint</span><span class="p">]</span> <span class="o">=</span> <span class="n">end_pt</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">0</span> <span class="o">-</span> <span class="n">skippoint</span><span class="p">]</span>
+                <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">skippoint</span><span class="p">,</span> <span class="mi">0</span> <span class="o">-</span> <span class="n">skippoint</span><span class="p">]</span> <span class="o">=</span> <span class="n">end_pt</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">0</span> <span class="o">-</span> <span class="n">skippoint</span><span class="p">]</span>
+                <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span> <span class="o">-</span> <span class="n">skippoint</span><span class="p">,</span> <span class="mi">0</span> <span class="o">-</span> <span class="n">skippoint</span><span class="p">]</span> <span class="o">=</span> <span class="n">end_pt</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">0</span> <span class="o">-</span> <span class="n">skippoint</span><span class="p">]</span>
             <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="nb">abs</span><span class="p">(</span><span class="n">mao</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">end_pt</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))</span> <span class="o">&lt;</span> <span class="n">x2fillet</span><span class="p">:</span>
-                <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">skippoint</span><span class="p">,</span>
-                    <span class="mi">1</span> <span class="o">-</span> <span class="n">skippoint</span><span class="p">]</span> <span class="o">=</span> <span class="n">end_pt</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">1</span> <span class="o">-</span> <span class="n">skippoint</span><span class="p">]</span>
-                <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span> <span class="o">-</span> <span class="n">skippoint</span><span class="p">,</span>
-                    <span class="mi">1</span> <span class="o">-</span> <span class="n">skippoint</span><span class="p">]</span> <span class="o">=</span> <span class="n">end_pt</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">1</span> <span class="o">-</span> <span class="n">skippoint</span><span class="p">]</span>
+                <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">skippoint</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">skippoint</span><span class="p">]</span> <span class="o">=</span> <span class="n">end_pt</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">1</span> <span class="o">-</span> <span class="n">skippoint</span><span class="p">]</span>
+                <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span> <span class="o">-</span> <span class="n">skippoint</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">skippoint</span><span class="p">]</span> <span class="o">=</span> <span class="n">end_pt</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">1</span> <span class="o">-</span> <span class="n">skippoint</span><span class="p">]</span>
             <span class="c1"># repeat for the start. here we do not have the extra point</span>
             <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="nb">abs</span><span class="p">(</span><span class="n">mao</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">start_pt</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">pts</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span> <span class="o">&lt;</span> <span class="n">x2fillet</span><span class="p">:</span>
                 <span class="n">pts</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">start_pt</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -1009,8 +1033,9 @@
 
 <div class="viewcode-block" id="RouteMeander.adjust_length">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.RouteMeander.html#qiskit_metal.qlibrary.RouteMeander.adjust_length">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">adjust_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delta_length</span><span class="p">,</span> <span class="n">pts</span><span class="p">,</span> <span class="n">start_pt</span><span class="p">:</span> <span class="n">QRoutePoint</span><span class="p">,</span>
-                      <span class="n">end_pt</span><span class="p">:</span> <span class="n">QRoutePoint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">adjust_length</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">delta_length</span><span class="p">,</span> <span class="n">pts</span><span class="p">,</span> <span class="n">start_pt</span><span class="p">:</span> <span class="n">QRoutePoint</span><span class="p">,</span> <span class="n">end_pt</span><span class="p">:</span> <span class="n">QRoutePoint</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Edits meander points to redistribute the length slacks accrued with</span>
 <span class="sd">        the various local adjustments It should be run after</span>
 <span class="sd">        self.pts_intermediate is completely defined Inputs are however specific</span>
@@ -1047,8 +1072,13 @@
             <span class="n">first_meander_sideways</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">first_meander_sideways</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">if</span> <span class="n">mao</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span> <span class="o">-</span> <span class="n">term_point</span><span class="p">]</span> <span class="o">-</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">term_point</span><span class="p">],</span>
-                     <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span> <span class="o">-</span> <span class="n">term_point</span><span class="p">]</span> <span class="o">-</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span> <span class="o">-</span> <span class="n">term_point</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">mao</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span>
+                <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span> <span class="o">-</span> <span class="n">term_point</span><span class="p">]</span> <span class="o">-</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">term_point</span><span class="p">],</span>
+                <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span> <span class="o">-</span> <span class="n">term_point</span><span class="p">]</span> <span class="o">-</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span> <span class="o">-</span> <span class="n">term_point</span><span class="p">],</span>
+            <span class="p">)</span>
+            <span class="o">&lt;</span> <span class="mi">0</span>
+        <span class="p">):</span>
             <span class="n">last_meander_sideways</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">last_meander_sideways</span> <span class="o">=</span> <span class="kc">True</span>
@@ -1074,27 +1104,30 @@
 
         <span class="c1"># if start_pt.position is below axes + shift - 2xfillet &amp;  first_meander_sideways</span>
         <span class="k">if</span> <span class="n">first_meander_sideways</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">issideways</span><span class="p">(</span>
-                <span class="n">start_pt_adjusted_up</span><span class="p">,</span> <span class="n">pts</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pts</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">start_pt_adjusted_up</span><span class="p">,</span> <span class="n">pts</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="p">):</span>
             <span class="k">pass</span>
         <span class="c1"># if start_pt.position is above axes - shift + 2xfillet &amp;  not first_meander_sideways</span>
         <span class="k">elif</span> <span class="ow">not</span> <span class="n">first_meander_sideways</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">issideways</span><span class="p">(</span>
-                <span class="n">start_pt_adjusted_down</span><span class="p">,</span> <span class="n">pts</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pts</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">start_pt_adjusted_down</span><span class="p">,</span> <span class="n">pts</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="p">):</span>
             <span class="k">pass</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># else block first mender</span>
             <span class="n">adjustment_vector</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
         <span class="c1"># if end_pt.position is below axes + shift - 2xfillet &amp;  last_meander_sideways</span>
         <span class="k">if</span> <span class="n">last_meander_sideways</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">issideways</span><span class="p">(</span>
-                <span class="n">end_pt_adjusted_up</span><span class="p">,</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span> <span class="o">-</span> <span class="n">term_point</span><span class="p">],</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">term_point</span><span class="p">]):</span>
+            <span class="n">end_pt_adjusted_up</span><span class="p">,</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span> <span class="o">-</span> <span class="n">term_point</span><span class="p">],</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">term_point</span><span class="p">]</span>
+        <span class="p">):</span>
             <span class="k">pass</span>
         <span class="c1"># if end_pt.position is above axes - shift + 2xfillet &amp;  not last_meander_sideways</span>
         <span class="k">elif</span> <span class="ow">not</span> <span class="n">last_meander_sideways</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">issideways</span><span class="p">(</span>
-                <span class="n">end_pt_adjusted_down</span><span class="p">,</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span> <span class="o">-</span> <span class="n">term_point</span><span class="p">],</span>
-                <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">term_point</span><span class="p">]):</span>
+            <span class="n">end_pt_adjusted_down</span><span class="p">,</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span> <span class="o">-</span> <span class="n">term_point</span><span class="p">],</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">term_point</span><span class="p">]</span>
+        <span class="p">):</span>
             <span class="k">pass</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># else block last mender</span>
-            <span class="n">adjustment_vector</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span> <span class="o">-</span> <span class="n">term_point</span><span class="p">:</span><span class="o">-</span><span class="n">term_point</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="n">adjustment_vector</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span> <span class="o">-</span> <span class="n">term_point</span> <span class="p">:</span> <span class="o">-</span><span class="n">term_point</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
 
         <span class="n">not_a_meander</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">if</span> <span class="n">term_point</span><span class="p">:</span>
@@ -1103,8 +1136,9 @@
             <span class="n">adjustment_vector</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="c1"># ...unless the last point is anchored to the last meander curve</span>
             <span class="k">if</span> <span class="n">start_pt</span><span class="o">.</span><span class="n">direction</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">end_pt</span><span class="o">.</span><span class="n">direction</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">if</span> <span class="p">((</span><span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">start_pt</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span> <span class="n">end_pt</span><span class="o">.</span><span class="n">direction</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span>
-                    <span class="p">(</span><span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">forward</span><span class="p">,</span> <span class="n">start_pt</span><span class="o">.</span><span class="n">direction</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">start_pt</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span> <span class="n">end_pt</span><span class="o">.</span><span class="n">direction</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
+                    <span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">forward</span><span class="p">,</span> <span class="n">start_pt</span><span class="o">.</span><span class="n">direction</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span>
+                <span class="p">):</span>
                     <span class="c1"># pins are pointing opposite directions and diverging, thus keep consistency</span>
                     <span class="n">adjustment_vector</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">adjustment_vector</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
                     <span class="k">if</span> <span class="n">adjustment_vector</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
@@ -1114,10 +1148,11 @@
 
         <span class="c1"># Finally, divide the slack amongst all points...</span>
         <span class="n">sideways_adjustment</span> <span class="o">=</span> <span class="n">sideways</span> <span class="o">*</span> <span class="p">(</span>
-            <span class="n">delta_length</span> <span class="o">/</span>
-            <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">adjustment_vector</span><span class="p">)</span> <span class="o">-</span> <span class="n">not_a_meander</span><span class="p">))</span>
-        <span class="n">pts</span> <span class="o">=</span> <span class="n">pts</span> <span class="o">+</span> <span class="n">sideways_adjustment</span><span class="p">[</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">adjustment_vector</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+            <span class="n">delta_length</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">adjustment_vector</span><span class="p">)</span> <span class="o">-</span> <span class="n">not_a_meander</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">pts</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">pts</span> <span class="o">+</span> <span class="n">sideways_adjustment</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">adjustment_vector</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+        <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">pts</span></div>
 

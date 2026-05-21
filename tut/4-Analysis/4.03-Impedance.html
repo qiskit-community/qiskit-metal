@@ -726,8 +726,8 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span> <span class="o">=</span> <span class="n">designs</span><span class="o">.</span><span class="n">DesignPlanar</span><span class="p">({},</span> <span class="kc">True</span><span class="p">)</span>
-<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s1">&#39;size_x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;2mm&#39;</span>
-<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s1">&#39;size_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;2mm&#39;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;size_x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;2mm&quot;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;size_y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;2mm&quot;</span>
 
 <span class="n">gui</span> <span class="o">=</span> <span class="n">MetalGUI</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
 </pre></div>
@@ -742,12 +742,15 @@
 
 <span class="n">design</span><span class="o">.</span><span class="n">delete_all_components</span><span class="p">()</span>
 
-<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span>  <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">pad_width</span> <span class="o">=</span> <span class="s1">&#39;425 um&#39;</span><span class="p">,</span>
-    <span class="n">pocket_height</span> <span class="o">=</span> <span class="s1">&#39;650um&#39;</span><span class="p">,</span>
-    <span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-        <span class="n">readout</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span><span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s1">&#39;200um&#39;</span><span class="p">)</span>
-    <span class="p">)))</span>
+<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;Q1&quot;</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;425 um&quot;</span><span class="p">,</span>
+        <span class="n">pocket_height</span><span class="o">=</span><span class="s2">&quot;650um&quot;</span><span class="p">,</span>
+        <span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">readout</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;200um&quot;</span><span class="p">)),</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
@@ -765,6 +768,7 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.simulation</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScatteringImpedanceSim</span>
+
 <span class="n">em1</span> <span class="o">=</span> <span class="n">ScatteringImpedanceSim</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;hfss&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -832,7 +836,7 @@
 <span class="n">em1</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">max_passes</span> <span class="o">=</span> <span class="mi">12</span>
 <span class="n">em1</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">sweep_setup</span><span class="o">.</span><span class="n">stop_ghz</span> <span class="o">=</span> <span class="mi">13</span>
 <span class="c1"># example: update multiple settings</span>
-<span class="n">em1</span><span class="o">.</span><span class="n">setup_update</span><span class="p">(</span><span class="n">max_delta_s</span> <span class="o">=</span> <span class="mf">0.15</span><span class="p">,</span> <span class="n">freq_ghz</span> <span class="o">=</span> <span class="mf">5.2</span><span class="p">)</span>
+<span class="n">em1</span><span class="o">.</span><span class="n">setup_update</span><span class="p">(</span><span class="n">max_delta_s</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span> <span class="n">freq_ghz</span><span class="o">=</span><span class="mf">5.2</span><span class="p">)</span>
 
 <span class="n">em1</span><span class="o">.</span><span class="n">setup</span>
 </pre></div>
@@ -873,7 +877,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">hfss_inductance</span><span class="o">=</span><span class="s1">&#39;11nH&#39;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">hfss_inductance</span> <span class="o">=</span> <span class="s2">&quot;11nH&quot;</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -883,8 +887,14 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">em1</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;SingleTM&quot;</span><span class="p">,</span> <span class="n">components</span><span class="o">=</span><span class="p">[],</span> <span class="n">open_terminations</span><span class="o">=</span><span class="p">[],</span> <span class="n">port_list</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="s1">&#39;readout&#39;</span><span class="p">,</span> <span class="mi">70</span><span class="p">)],</span>
-           <span class="n">jj_to_port</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="s1">&#39;rect_jj&#39;</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="kc">True</span><span class="p">)],</span> <span class="n">box_plus_buffer</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">em1</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;SingleTM&quot;</span><span class="p">,</span>
+    <span class="n">components</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">open_terminations</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">port_list</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;readout&quot;</span><span class="p">,</span> <span class="mi">70</span><span class="p">)],</span>
+    <span class="n">jj_to_port</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;rect_jj&quot;</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="kc">True</span><span class="p">)],</span>
+    <span class="n">box_plus_buffer</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1054,7 +1064,7 @@ INFO 08:51AM [connect]:         Connected to project &#34;Project22&#34; and des
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">setup</span> <span class="o">=</span> <span class="n">em1</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">new_ansys_setup</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Setup_demo&quot;</span><span class="p">,</span> <span class="n">max_passes</span> <span class="o">=</span> <span class="mi">6</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">setup</span> <span class="o">=</span> <span class="n">em1</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">new_ansys_setup</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Setup_demo&quot;</span><span class="p">,</span> <span class="n">max_passes</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

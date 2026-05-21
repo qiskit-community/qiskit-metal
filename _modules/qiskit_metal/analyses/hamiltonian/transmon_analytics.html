@@ -701,8 +701,6 @@
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
 
-<span class="c1">#pylint: disable-msg=import-error</span>
-<span class="c1">#pylint: disable-msg=consider-using-enumerate</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">This code calculates the energy eigenvalues of the transmon qubit cooper pair box</span>
 <span class="sd">as a function of the offset charge and plots the corresponding results.</span>
@@ -717,7 +715,7 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;kidx_raw&#39;</span><span class="p">,</span> <span class="s1">&#39;kidx&#39;</span><span class="p">,</span> <span class="s1">&#39;transmon_eigenvalue&#39;</span><span class="p">,</span> <span class="s1">&#39;plot_eigenvalues&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;kidx_raw&quot;</span><span class="p">,</span> <span class="s2">&quot;kidx&quot;</span><span class="p">,</span> <span class="s2">&quot;transmon_eigenvalue&quot;</span><span class="p">,</span> <span class="s2">&quot;plot_eigenvalues&quot;</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="kidx_raw">
@@ -737,8 +735,12 @@
     <span class="k">if</span> <span class="n">my_ng</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">m</span> <span class="o">+</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="p">((</span><span class="n">m</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">%</span> <span class="mf">2.0</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">m</span> <span class="o">+</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="p">((</span><span class="n">m</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">%</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">my_ng</span> <span class="o">*</span> <span class="p">(</span>
-        <span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="n">m</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">my_ng</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)))</span></div>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">m</span>
+        <span class="o">+</span> <span class="mf">1.0</span>
+        <span class="o">-</span> <span class="p">((</span><span class="n">m</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">%</span> <span class="mf">2.0</span><span class="p">)</span>
+        <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">my_ng</span> <span class="o">*</span> <span class="p">((</span><span class="o">-</span><span class="mf">1.0</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="n">m</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">my_ng</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)))</span>
+    <span class="p">)</span></div>
 
 
 
@@ -845,10 +847,10 @@
 <span class="sd">        A plot of the eigenvalues as a function of offset charge.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># plot the PERIODIC eigen energies between (-2.0, 2.0)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ng_periodic</span><span class="p">,</span> <span class="n">E0_periodic</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">)</span>  <span class="c1"># m=0</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ng_periodic</span><span class="p">,</span> <span class="n">E1_periodic</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>  <span class="c1"># m=1</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ng_periodic</span><span class="p">,</span> <span class="n">E2_periodic</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">)</span>  <span class="c1"># m=2</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ng_periodic</span><span class="p">,</span> <span class="n">E3_periodic</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">)</span>  <span class="c1"># m=3</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ng_periodic</span><span class="p">,</span> <span class="n">E0_periodic</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">)</span>  <span class="c1"># m=0</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ng_periodic</span><span class="p">,</span> <span class="n">E1_periodic</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>  <span class="c1"># m=1</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ng_periodic</span><span class="p">,</span> <span class="n">E2_periodic</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">)</span>  <span class="c1"># m=2</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ng_periodic</span><span class="p">,</span> <span class="n">E3_periodic</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>  <span class="c1"># m=3</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Offset Charge [ng]&quot;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Energy E_m[ng]&quot;</span><span class="p">)</span></div>
 

@@ -697,9 +697,13 @@
 
 <div class="viewcode-block" id="determine_larger_box">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.determine_larger_box.html#qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables.determine_larger_box">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">determine_larger_box</span><span class="p">(</span><span class="n">minx</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">miny</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
-                         <span class="n">maxx</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">maxy</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
-                         <span class="n">chip_box</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">determine_larger_box</span><span class="p">(</span>
+    <span class="n">minx</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">miny</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">maxx</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">maxy</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">chip_box</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return box which includes the two boxes.</span>
 
 <span class="sd">    Args:</span>
@@ -733,12 +737,12 @@
 
 <div class="viewcode-block" id="BoundsForPathAndPolyTables">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables.html#qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables.BoundsForPathAndPolyTables">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">BoundsForPathAndPolyTables</span><span class="p">():</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BoundsForPathAndPolyTables</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create class which can be used by multiple renderers.  In particular, this class</span>
 <span class="sd">    assumes a LayerStack is being used within QDesign.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">design</span><span class="p">:</span> <span class="s1">&#39;MultiPlanar&#39;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">design</span><span class="p">:</span> <span class="s2">&quot;MultiPlanar&quot;</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">design</span> <span class="o">=</span> <span class="n">design</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">chip_names_matched</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># bool</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">valid_chip_names</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># set of valid chip names from layer_stack</span>
@@ -746,10 +750,19 @@
 <div class="viewcode-block" id="BoundsForPathAndPolyTables.get_bounds_of_path_and_poly_tables">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables.html#qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables.BoundsForPathAndPolyTables.get_bounds_of_path_and_poly_tables">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_bounds_of_path_and_poly_tables</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">box_plus_buffer</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">qcomp_ids</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span> <span class="n">case</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">x_buff</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">y_buff</span><span class="p">:</span> <span class="nb">float</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
-               <span class="nb">bool</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">set</span><span class="p">]]:</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">box_plus_buffer</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">qcomp_ids</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span>
+        <span class="n">case</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">x_buff</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">y_buff</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
+        <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+        <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+        <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">set</span><span class="p">],</span>
+    <span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return bounds and concatenated geometry tables for selected components.</span>
 
 <span class="sd">        Args:</span>
@@ -771,13 +784,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">chip_names_matched</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">valid_chip_names</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="n">path_dataframe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span>
-        <span class="n">poly_dataframe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s1">&#39;poly&#39;</span><span class="p">]</span>
-        <span class="n">junction_dataframe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s1">&#39;junction&#39;</span><span class="p">]</span>
+        <span class="n">path_dataframe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">]</span>
+        <span class="n">poly_dataframe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s2">&quot;poly&quot;</span><span class="p">]</span>
+        <span class="n">junction_dataframe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s2">&quot;junction&quot;</span><span class="p">]</span>
 
         <span class="c1"># NOTE:get_box_for_xy_bounds populates self.chip_names_matched and self.valid_chip_names</span>
-        <span class="n">chip_minx</span><span class="p">,</span> <span class="n">chip_miny</span><span class="p">,</span> <span class="n">chip_maxx</span><span class="p">,</span> <span class="n">chip_maxy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_box_for_xy_bounds</span><span class="p">(</span>
-        <span class="p">)</span>
+        <span class="n">chip_minx</span><span class="p">,</span> <span class="n">chip_miny</span><span class="p">,</span> <span class="n">chip_maxx</span><span class="p">,</span> <span class="n">chip_maxy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_box_for_xy_bounds</span><span class="p">()</span>
 
         <span class="n">chip_bounds_xy</span> <span class="o">=</span> <span class="p">(</span><span class="n">chip_minx</span><span class="p">,</span> <span class="n">chip_miny</span><span class="p">,</span> <span class="n">chip_maxx</span><span class="p">,</span> <span class="n">chip_maxy</span><span class="p">)</span>
 
@@ -791,29 +803,26 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;One or more components not found.&quot;</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">case</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># Render all components</span>
                 <span class="n">frames</span> <span class="o">=</span> <span class="p">[</span><span class="n">path_dataframe</span><span class="p">,</span> <span class="n">poly_dataframe</span><span class="p">]</span>
-                <span class="n">frames_with_jj</span> <span class="o">=</span> <span class="p">[</span>
-                    <span class="n">path_dataframe</span><span class="p">,</span> <span class="n">poly_dataframe</span><span class="p">,</span> <span class="n">junction_dataframe</span>
-                <span class="p">]</span>
+                <span class="n">frames_with_jj</span> <span class="o">=</span> <span class="p">[</span><span class="n">path_dataframe</span><span class="p">,</span> <span class="n">poly_dataframe</span><span class="p">,</span> <span class="n">junction_dataframe</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>  <span class="c1"># Strict subset rendered.</span>
-                <span class="n">mask_path</span> <span class="o">=</span> <span class="n">path_dataframe</span><span class="p">[</span><span class="s1">&#39;component&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">qcomp_ids</span><span class="p">)</span>
-                <span class="n">mask_poly</span> <span class="o">=</span> <span class="n">poly_dataframe</span><span class="p">[</span><span class="s1">&#39;component&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">qcomp_ids</span><span class="p">)</span>
-                <span class="n">mask_junction</span> <span class="o">=</span> <span class="n">junction_dataframe</span><span class="p">[</span><span class="s1">&#39;component&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">qcomp_ids</span><span class="p">)</span>
+                <span class="n">mask_path</span> <span class="o">=</span> <span class="n">path_dataframe</span><span class="p">[</span><span class="s2">&quot;component&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">qcomp_ids</span><span class="p">)</span>
+                <span class="n">mask_poly</span> <span class="o">=</span> <span class="n">poly_dataframe</span><span class="p">[</span><span class="s2">&quot;component&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">qcomp_ids</span><span class="p">)</span>
+                <span class="n">mask_junction</span> <span class="o">=</span> <span class="n">junction_dataframe</span><span class="p">[</span><span class="s2">&quot;component&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">qcomp_ids</span><span class="p">)</span>
                 <span class="n">subset_path_df</span> <span class="o">=</span> <span class="n">path_dataframe</span><span class="p">[</span><span class="n">mask_path</span><span class="p">]</span>
                 <span class="n">subset_poly_df</span> <span class="o">=</span> <span class="n">poly_dataframe</span><span class="p">[</span><span class="n">mask_poly</span><span class="p">]</span>
                 <span class="n">subset_junction_df</span> <span class="o">=</span> <span class="n">junction_dataframe</span><span class="p">[</span><span class="n">mask_junction</span><span class="p">]</span>
                 <span class="n">frames</span> <span class="o">=</span> <span class="p">[</span><span class="n">subset_path_df</span><span class="p">,</span> <span class="n">subset_poly_df</span><span class="p">]</span>
-                <span class="n">frames_with_jj</span> <span class="o">=</span> <span class="p">[</span>
-                    <span class="n">subset_path_df</span><span class="p">,</span> <span class="n">subset_poly_df</span><span class="p">,</span> <span class="n">subset_junction_df</span>
-                <span class="p">]</span>
+                <span class="n">frames_with_jj</span> <span class="o">=</span> <span class="p">[</span><span class="n">subset_path_df</span><span class="p">,</span> <span class="n">subset_poly_df</span><span class="p">,</span> <span class="n">subset_junction_df</span><span class="p">]</span>
 
-            <span class="c1">#Concat the frames and then determine the total bounds of all the geometries.</span>
+            <span class="c1"># Concat the frames and then determine the total bounds of all the geometries.</span>
             <span class="c1"># maybe, change name to package_cavity</span>
-            <span class="n">path_and_poly_with_valid_comps</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span>
-                                                       <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="n">path_poly_and_junction_valid_comps</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames_with_jj</span><span class="p">,</span>
-                                                           <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">path_and_poly_with_valid_comps</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">path_poly_and_junction_valid_comps</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
+                <span class="n">frames_with_jj</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
             <span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
-                <span class="n">path_and_poly_with_valid_comps</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">total_bounds</span><span class="p">)</span>
+                <span class="n">path_and_poly_with_valid_comps</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">total_bounds</span>
+            <span class="p">)</span>
             <span class="c1"># minx, miny, maxx, maxy = list(</span>
             <span class="c1">#     pd.concat(frames, ignore_index=True)[&#39;geometry&#39;].total_bounds)</span>
             <span class="c1"># # Add the buffer, using options for renderer.</span>
@@ -827,27 +836,38 @@
             <span class="n">box_for_xy_bounds</span> <span class="o">=</span> <span class="p">(</span><span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span><span class="p">)</span>
 
             <span class="n">safe_xy_bounds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ensure_component_box_smaller_than_chip_box_</span><span class="p">(</span>
-                <span class="n">box_for_xy_bounds</span><span class="p">,</span> <span class="n">chip_bounds_xy</span><span class="p">)</span>
+                <span class="n">box_for_xy_bounds</span><span class="p">,</span> <span class="n">chip_bounds_xy</span>
+            <span class="p">)</span>
 
-            <span class="k">return</span> <span class="n">safe_xy_bounds</span><span class="p">,</span> <span class="n">path_and_poly_with_valid_comps</span><span class="p">,</span> <span class="n">path_poly_and_junction_valid_comps</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chip_names_matched</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid_chip_names</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="n">safe_xy_bounds</span><span class="p">,</span>
+                <span class="n">path_and_poly_with_valid_comps</span><span class="p">,</span>
+                <span class="n">path_poly_and_junction_valid_comps</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">chip_names_matched</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">valid_chip_names</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>  <span class="c1"># Incorporate all the chip sizes.</span>
-
             <span class="n">frames</span> <span class="o">=</span> <span class="p">[</span><span class="n">path_dataframe</span><span class="p">,</span> <span class="n">poly_dataframe</span><span class="p">]</span>
-            <span class="n">frames_with_jj</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="n">path_dataframe</span><span class="p">,</span> <span class="n">poly_dataframe</span><span class="p">,</span> <span class="n">junction_dataframe</span>
-            <span class="p">]</span>
-            <span class="n">path_and_poly_with_valid_comps</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span>
-                                                       <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="n">path_poly_and_junction_valid_comps</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames_with_jj</span><span class="p">,</span>
-                                                           <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">chip_bounds_xy</span><span class="p">,</span> <span class="n">path_and_poly_with_valid_comps</span><span class="p">,</span> <span class="n">path_poly_and_junction_valid_comps</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chip_names_matched</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid_chip_names</span></div>
+            <span class="n">frames_with_jj</span> <span class="o">=</span> <span class="p">[</span><span class="n">path_dataframe</span><span class="p">,</span> <span class="n">poly_dataframe</span><span class="p">,</span> <span class="n">junction_dataframe</span><span class="p">]</span>
+            <span class="n">path_and_poly_with_valid_comps</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">path_poly_and_junction_valid_comps</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
+                <span class="n">frames_with_jj</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="n">chip_bounds_xy</span><span class="p">,</span>
+                <span class="n">path_and_poly_with_valid_comps</span><span class="p">,</span>
+                <span class="n">path_poly_and_junction_valid_comps</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">chip_names_matched</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">valid_chip_names</span><span class="p">,</span>
+            <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="BoundsForPathAndPolyTables.ensure_component_box_smaller_than_chip_box_">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables.html#qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables.BoundsForPathAndPolyTables.ensure_component_box_smaller_than_chip_box_">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">ensure_component_box_smaller_than_chip_box_</span><span class="p">(</span>
-            <span class="bp">cls</span><span class="p">,</span> <span class="n">box_for_xy_bounds</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">chip_bounds_xy</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">:</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">box_for_xy_bounds</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">chip_bounds_xy</span><span class="p">:</span> <span class="n">Tuple</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;If the box_plus_buffer is larger than the aggregate chip bounds from DesignPlanar,</span>
 <span class="sd">        use the chip bounds as the cutoff.</span>
 
@@ -865,7 +885,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">chip_minx</span><span class="p">,</span> <span class="n">chip_miny</span><span class="p">,</span> <span class="n">chip_maxx</span><span class="p">,</span> <span class="n">chip_maxy</span> <span class="o">=</span> <span class="n">chip_bounds_xy</span>
-        <span class="k">if</span> <span class="n">chip_minx</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">chip_miny</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">chip_maxx</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">chip_maxy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">chip_minx</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="ow">or</span> <span class="n">chip_miny</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="ow">or</span> <span class="n">chip_maxx</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="ow">or</span> <span class="n">chip_maxy</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="p">):</span>
             <span class="n">input_xy_box</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">box_for_xy_bounds</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">input_xy_box</span>
 
@@ -873,12 +898,12 @@
         <span class="n">safe_xy_box</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="c1">#  Keep the order of appends in this way.  It should match (minx, miny, maxx, maxy)</span>
 
-        <span class="c1">#yapf: disable</span>
+        <span class="c1"># yapf: disable</span>
         <span class="n">safe_xy_box</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chip_minx</span><span class="p">)</span> <span class="k">if</span> <span class="n">box_minx</span> <span class="o">&lt;</span> <span class="n">chip_minx</span> <span class="k">else</span> <span class="n">safe_xy_box</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box_minx</span><span class="p">)</span>
         <span class="n">safe_xy_box</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chip_miny</span><span class="p">)</span> <span class="k">if</span> <span class="n">box_miny</span> <span class="o">&lt;</span> <span class="n">chip_miny</span> <span class="k">else</span> <span class="n">safe_xy_box</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box_miny</span><span class="p">)</span>
         <span class="n">safe_xy_box</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chip_maxx</span><span class="p">)</span> <span class="k">if</span> <span class="n">box_maxx</span> <span class="o">&gt;</span> <span class="n">chip_maxx</span> <span class="k">else</span> <span class="n">safe_xy_box</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box_maxx</span><span class="p">)</span>
         <span class="n">safe_xy_box</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chip_maxy</span><span class="p">)</span> <span class="k">if</span> <span class="n">box_maxy</span> <span class="o">&gt;</span> <span class="n">chip_maxy</span> <span class="k">else</span> <span class="n">safe_xy_box</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box_maxy</span><span class="p">)</span>
-        <span class="c1">#yapf: enable</span>
+        <span class="c1"># yapf: enable</span>
 
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">safe_xy_box</span><span class="p">)</span></div>
 
@@ -886,7 +911,7 @@
 <div class="viewcode-block" id="BoundsForPathAndPolyTables.get_box_for_xy_bounds">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables.html#qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables.BoundsForPathAndPolyTables.get_box_for_xy_bounds">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_box_for_xy_bounds</span><span class="p">(</span>
-            <span class="bp">self</span>
+        <span class="bp">self</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="kc">None</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Assuming the chip size is used from Multiplanar design, and list of chip_names</span>
 <span class="sd">        comes from layer_stack that will be used to determine the box size for simulation.</span>
@@ -897,7 +922,8 @@
 <span class="sd">                                Tuple holds the box to use for simulation [minx, miny, maxx, maxy]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">chip_names_matched</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid_chip_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">are_all_chipnames_in_design</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chip_names_matched</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid_chip_names</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">are_all_chipnames_in_design</span><span class="p">()</span>
         <span class="p">)</span>
 
         <span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
@@ -905,12 +931,13 @@
             <span class="c1"># Using the chip size from Multiplanar design and z_coord from layer_stack, get the box</span>
             <span class="c1"># for chip_name in self.chip_names_matched:</span>
             <span class="k">for</span> <span class="n">chip_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid_chip_names</span><span class="p">:</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="p">[</span><span class="n">chip_name</span><span class="p">][</span><span class="s1">&#39;size&#39;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="p">[</span><span class="n">chip_name</span><span class="p">][</span><span class="s2">&quot;size&quot;</span><span class="p">]:</span>
                     <span class="n">chip_box</span><span class="p">,</span> <span class="n">return_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_x_y_for_chip</span><span class="p">(</span><span class="n">chip_name</span><span class="p">)</span>
 
                     <span class="k">if</span> <span class="n">return_code</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># All was found and good.</span>
                         <span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span> <span class="o">=</span> <span class="n">determine_larger_box</span><span class="p">(</span>
-                            <span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span><span class="p">,</span> <span class="n">chip_box</span><span class="p">)</span>
+                            <span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span><span class="p">,</span> <span class="n">chip_box</span>
+                        <span class="p">)</span>
 
                 <span class="k">else</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">chip_size_not_in_chipname_within_design</span><span class="p">(</span><span class="n">chip_name</span><span class="p">)</span>
@@ -933,8 +960,9 @@
         <span class="n">chip_set_from_design</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
         <span class="n">chip_set_from_layer_stack</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">ls</span><span class="o">.</span><span class="n">get_unique_chip_names</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">chip_set_from_layer_stack</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="n">chip_set_from_design</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">chip_names_not_in_design</span><span class="p">(</span><span class="n">chip_set_from_layer_stack</span><span class="p">,</span>
-                                          <span class="n">chip_set_from_design</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">chip_names_not_in_design</span><span class="p">(</span>
+                <span class="n">chip_set_from_layer_stack</span><span class="p">,</span> <span class="n">chip_set_from_design</span>
+            <span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
 
         <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">chip_set_from_layer_stack</span></div>
@@ -960,38 +988,44 @@
         <span class="n">x_y_location</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">chip_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s1">&#39;size&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="p">[</span><span class="n">chip_name</span><span class="p">]:</span>
-
-                <span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="p">[</span><span class="n">chip_name</span><span class="p">][</span><span class="s1">&#39;size&#39;</span><span class="p">])</span>
-                <span class="k">if</span>      <span class="s1">&#39;center_x&#39;</span> <span class="ow">in</span> <span class="n">size</span>               \
-                    <span class="ow">and</span> <span class="s1">&#39;center_y&#39;</span> <span class="ow">in</span> <span class="n">size</span>          \
-                    <span class="ow">and</span> <span class="s1">&#39;size_x&#39;</span> <span class="ow">in</span> <span class="n">size</span>            \
-                    <span class="ow">and</span> <span class="s1">&#39;size_y&#39;</span> <span class="ow">in</span> <span class="n">size</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="o">.</span><span class="n">center_x</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="ow">and</span> \
-                            <span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="o">.</span><span class="n">center_y</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="ow">and</span> \
-                            <span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="o">.</span><span class="n">size_x</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="ow">and</span> \
-                            <span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="o">.</span><span class="n">size_y</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="s2">&quot;size&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="p">[</span><span class="n">chip_name</span><span class="p">]:</span>
+                <span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="p">[</span><span class="n">chip_name</span><span class="p">][</span><span class="s2">&quot;size&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="s2">&quot;center_x&quot;</span> <span class="ow">in</span> <span class="n">size</span>
+                    <span class="ow">and</span> <span class="s2">&quot;center_y&quot;</span> <span class="ow">in</span> <span class="n">size</span>
+                    <span class="ow">and</span> <span class="s2">&quot;size_x&quot;</span> <span class="ow">in</span> <span class="n">size</span>
+                    <span class="ow">and</span> <span class="s2">&quot;size_y&quot;</span> <span class="ow">in</span> <span class="n">size</span>
+                <span class="p">):</span>
+                    <span class="k">if</span> <span class="p">(</span>
+                        <span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="o">.</span><span class="n">center_x</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+                        <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="o">.</span><span class="n">center_y</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+                        <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="o">.</span><span class="n">size_x</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+                        <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="o">.</span><span class="n">size_y</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+                    <span class="p">):</span>
                         <span class="n">x_y_location</span> <span class="o">=</span> <span class="p">(</span>
-                            <span class="n">size</span><span class="p">[</span><span class="s1">&#39;center_x&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="s1">&#39;size_x&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
-                            <span class="n">size</span><span class="p">[</span><span class="s1">&#39;center_y&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="s1">&#39;size_y&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
-                            <span class="n">size</span><span class="p">[</span><span class="s1">&#39;center_x&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="s1">&#39;size_x&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
-                            <span class="n">size</span><span class="p">[</span><span class="s1">&#39;center_y&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="s1">&#39;size_y&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">))</span>
+                            <span class="n">size</span><span class="p">[</span><span class="s2">&quot;center_x&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;size_x&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+                            <span class="n">size</span><span class="p">[</span><span class="s2">&quot;center_y&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;size_y&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+                            <span class="n">size</span><span class="p">[</span><span class="s2">&quot;center_x&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;size_x&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+                            <span class="n">size</span><span class="p">[</span><span class="s2">&quot;center_y&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;size_y&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+                        <span class="p">)</span>
                         <span class="k">return</span> <span class="n">x_y_location</span><span class="p">,</span> <span class="mi">0</span>
 
                     <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s1">&#39;Size information within self.design.chips[</span><span class="si">{</span><span class="n">chip_name</span><span class="si">}</span><span class="s1">][</span><span class="se">\&quot;</span><span class="s1">size</span><span class="se">\&quot;</span><span class="s1">]&#39;</span>
-                        <span class="sa">f</span><span class="s1">&#39; is NOT an int or float.&#39;</span><span class="p">)</span>
+                        <span class="sa">f</span><span class="s1">&#39;Size information within self.design.chips[</span><span class="si">{</span><span class="n">chip_name</span><span class="si">}</span><span class="s1">][&quot;size&quot;]&#39;</span>
+                        <span class="sa">f</span><span class="s2">&quot; is NOT an int or float.&quot;</span>
+                    <span class="p">)</span>
                     <span class="k">return</span> <span class="n">x_y_location</span><span class="p">,</span> <span class="mi">2</span>
 
                 <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="s1">&#39;center_x or center_y or size_x or size_y &#39;</span>
-                    <span class="sa">f</span><span class="s1">&#39; NOT in self.design.chips[</span><span class="si">{</span><span class="n">chip_name</span><span class="si">}</span><span class="s1">][</span><span class="se">\&quot;</span><span class="s1">size</span><span class="se">\&quot;</span><span class="s1">]&#39;</span><span class="p">)</span>
+                    <span class="s2">&quot;center_x or center_y or size_x or size_y &quot;</span>
+                    <span class="sa">f</span><span class="s1">&#39; NOT in self.design.chips[</span><span class="si">{</span><span class="n">chip_name</span><span class="si">}</span><span class="s1">][&quot;size&quot;]&#39;</span>
+                <span class="p">)</span>
                 <span class="k">return</span> <span class="n">x_y_location</span><span class="p">,</span> <span class="mi">2</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;Information for size in NOT in self.design.chips[</span><span class="si">{</span><span class="n">chip_name</span><span class="si">}</span><span class="s1">]&#39;</span>
-                <span class="s1">&#39; dict. Return &quot;None&quot; in tuple.&#39;</span><span class="p">)</span>
+                <span class="sa">f</span><span class="s2">&quot;Information for size in NOT in self.design.chips[</span><span class="si">{</span><span class="n">chip_name</span><span class="si">}</span><span class="s2">]&quot;</span>
+                <span class="s1">&#39; dict. Return &quot;None&quot; in tuple.&#39;</span>
+            <span class="p">)</span>
             <span class="k">return</span> <span class="n">x_y_location</span><span class="p">,</span> <span class="mi">2</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
@@ -1000,13 +1034,11 @@
         <span class="k">return</span> <span class="n">x_y_location</span><span class="p">,</span> <span class="mi">1</span></div>
 
 
-
-<span class="c1">######### Warnings and Errors##################################################</span>
+    <span class="c1">######### Warnings and Errors##################################################</span>
 
 <div class="viewcode-block" id="BoundsForPathAndPolyTables.chip_names_not_in_design">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables.html#qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables.BoundsForPathAndPolyTables.chip_names_not_in_design">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">chip_names_not_in_design</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer_stack_names</span><span class="p">:</span> <span class="nb">set</span><span class="p">,</span>
-                                 <span class="n">design_names</span><span class="p">:</span> <span class="nb">set</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">chip_names_not_in_design</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer_stack_names</span><span class="p">:</span> <span class="nb">set</span><span class="p">,</span> <span class="n">design_names</span><span class="p">:</span> <span class="nb">set</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Tell user to check the chip name and data in design.</span>
 
@@ -1015,9 +1047,10 @@
 <span class="sd">            design_names (set): Chip names from design.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">The chip_names from layer_stack are not in design. &#39;</span>
-            <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> The names in layer_stack:</span><span class="si">{</span><span class="n">layer_stack_names</span><span class="si">}</span><span class="s1">.&#39;</span>
-            <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> The names in design:</span><span class="si">{</span><span class="n">design_names</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span></div>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">The chip_names from layer_stack are not in design. &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> The names in layer_stack:</span><span class="si">{</span><span class="n">layer_stack_names</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> The names in design:</span><span class="si">{</span><span class="n">design_names</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="BoundsForPathAndPolyTables.chip_size_not_in_chipname_within_design">
@@ -1030,8 +1063,8 @@
 <span class="sd">            chip_name (str): Chip names from layer_stack.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">The chip_name:</span><span class="si">{</span><span class="n">chip_name</span><span class="si">}</span><span class="s1"> within design. &#39;</span>
-            <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> Update your QDesign or subclass to see confirm the size information is provided.&#39;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">The chip_name:</span><span class="si">{</span><span class="n">chip_name</span><span class="si">}</span><span class="s2"> within design. &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> Update your QDesign or subclass to see confirm the size information is provided.&quot;</span>
         <span class="p">)</span></div>
 </div>
 

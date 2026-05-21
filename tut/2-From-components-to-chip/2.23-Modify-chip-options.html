@@ -764,7 +764,7 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a new qcomponent object with name &#39;Q1&#39;</span>
-<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;Q1&#39;</span><span class="p">)</span>
+<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -825,7 +825,7 @@ dict_keys([&#39;main&#39;])
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">material</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;germanium&#39;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">material</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;germanium&quot;</span><span class="p">]</span>
 <span class="n">design</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -891,12 +891,12 @@ dict_keys([&#39;main&#39;])
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We will begin by resetting the wafer material to silicon</span>
 
-<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">material</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;silicon&#39;</span><span class="p">]</span>
+<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">material</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;silicon&quot;</span><span class="p">]</span>
 <span class="n">design</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 
 <span class="c1"># We will then export the current file to a GDS file</span>
 <span class="n">a_gds</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">gds</span>
-<span class="n">a_gds</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;path_filename&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;../../resources/Fake_Junctions.GDS&#39;</span>
+<span class="n">a_gds</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;path_filename&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;../../resources/Fake_Junctions.GDS&quot;</span>
 
 <span class="n">design</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">gds</span><span class="o">.</span><span class="n">export_to_gds</span><span class="p">(</span><span class="s2">&quot;Before_size_change.gds&quot;</span><span class="p">)</span>
 </pre></div>
@@ -916,8 +916,8 @@ dict_keys([&#39;main&#39;])
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s1">&#39;size_x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;15mm&#39;</span>
-<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s1">&#39;size_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;10mm&#39;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;size_x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;15mm&quot;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;size_y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;10mm&quot;</span>
 <span class="n">design</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -946,13 +946,13 @@ dict_keys([&#39;main&#39;])
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First we will rest to the original settings</span>
 
-<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s1">&#39;size_x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;9mm&#39;</span>
-<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s1">&#39;size_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;6mm&#39;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;size_x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;9mm&quot;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;size_y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;6mm&quot;</span>
 
 <span class="c1"># Next we will shift the center of the chip</span>
 
-<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s1">&#39;center_x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;4.5mm&#39;</span>
-<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s1">&#39;center_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;2mm&#39;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;center_x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;4.5mm&quot;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;center_y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;2mm&quot;</span>
 <span class="n">design</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 
 <span class="c1"># We next export it to GDS</span>
@@ -1032,8 +1032,8 @@ options.</p>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a_gds</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">no_cheese</span><span class="p">[</span><span class="s1">&#39;view_in_file&#39;</span><span class="p">][</span><span class="s1">&#39;main&#39;</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
-<span class="n">a_gds</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">cheese</span><span class="p">[</span><span class="s1">&#39;view_in_file&#39;</span><span class="p">][</span><span class="s1">&#39;main&#39;</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a_gds</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">no_cheese</span><span class="p">[</span><span class="s2">&quot;view_in_file&quot;</span><span class="p">][</span><span class="s2">&quot;main&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
+<span class="n">a_gds</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">cheese</span><span class="p">[</span><span class="s2">&quot;view_in_file&quot;</span><span class="p">][</span><span class="s2">&quot;main&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -1062,13 +1062,13 @@ options.</p>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Restore a_gds options</span>
 
-<span class="n">a_gds</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">no_cheese</span><span class="p">[</span><span class="s1">&#39;view_in_file&#39;</span><span class="p">][</span><span class="s1">&#39;main&#39;</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
-<span class="n">a_gds</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">cheese</span><span class="p">[</span><span class="s1">&#39;view_in_file&#39;</span><span class="p">][</span><span class="s1">&#39;main&#39;</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+<span class="n">a_gds</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">no_cheese</span><span class="p">[</span><span class="s2">&quot;view_in_file&quot;</span><span class="p">][</span><span class="s2">&quot;main&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+<span class="n">a_gds</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">cheese</span><span class="p">[</span><span class="s2">&quot;view_in_file&quot;</span><span class="p">][</span><span class="s2">&quot;main&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
 
 <span class="c1"># We will shift the center of the chip to origin</span>
 
-<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s1">&#39;center_x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;0mm&#39;</span>
-<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s1">&#39;center_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;0mm&#39;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;center_x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;0mm&quot;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;center_y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;0mm&quot;</span>
 <span class="n">design</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 
 <span class="c1"># We next export it to GDS</span>
@@ -1091,6 +1091,7 @@ options.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">MetalGUI</span>
+
 <span class="n">gui</span> <span class="o">=</span> <span class="n">MetalGUI</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>

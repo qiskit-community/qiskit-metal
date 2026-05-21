@@ -729,10 +729,7 @@
 <span class="sd">        * helper: &#39;False&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="s1">&#39;3&#39;</span><span class="p">,</span>
-                           <span class="n">radius</span><span class="o">=</span><span class="s1">&#39;30um&#39;</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="s1">&#39;False&#39;</span><span class="p">,</span>
-                           <span class="n">helper</span><span class="o">=</span><span class="s1">&#39;False&#39;</span><span class="p">)</span>
+    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="s2">&quot;3&quot;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="s2">&quot;False&quot;</span><span class="p">,</span> <span class="n">helper</span><span class="o">=</span><span class="s2">&quot;False&quot;</span><span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Default drawing options&quot;&quot;&quot;</span>
 
     <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A n-gon polygon&quot;&quot;&quot;</span>
@@ -749,8 +746,10 @@
         <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
         <span class="c1"># Create the geometry</span>
         <span class="c1"># Generates a list of points</span>
-        <span class="n">n_polygon</span> <span class="o">=</span> <span class="p">[(</span><span class="n">p</span><span class="o">.</span><span class="n">radius</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">x</span> <span class="o">/</span> <span class="n">n</span><span class="p">),</span>
-                      <span class="n">p</span><span class="o">.</span><span class="n">radius</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">x</span> <span class="o">/</span> <span class="n">n</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+        <span class="n">n_polygon</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">radius</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">x</span> <span class="o">/</span> <span class="n">n</span><span class="p">),</span> <span class="n">p</span><span class="o">.</span><span class="n">radius</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">x</span> <span class="o">/</span> <span class="n">n</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="p">]</span>
         <span class="c1"># Converts said list into a shapely polygon</span>
         <span class="n">n_polygon</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">Polygon</span><span class="p">(</span><span class="n">n_polygon</span><span class="p">)</span>
 
@@ -759,11 +758,14 @@
 
         <span class="c1">##############################################</span>
         <span class="c1"># add qgeometry</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;n_polygon&#39;</span><span class="p">:</span> <span class="n">n_polygon</span><span class="p">},</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">subtract</span><span class="p">,</span>
-                           <span class="n">helper</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">helper</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">chip</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">chip</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;poly&quot;</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">&quot;n_polygon&quot;</span><span class="p">:</span> <span class="n">n_polygon</span><span class="p">},</span>
+            <span class="n">subtract</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">subtract</span><span class="p">,</span>
+            <span class="n">helper</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">helper</span><span class="p">,</span>
+            <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
+            <span class="n">chip</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">chip</span><span class="p">,</span>
+        <span class="p">)</span></div>
 </div>
 
 </pre></div>

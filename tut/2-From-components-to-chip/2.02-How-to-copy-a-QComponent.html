@@ -707,7 +707,7 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">metal</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">designs</span><span class="p">,</span> <span class="n">draw</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">MetalGUI</span><span class="p">,</span> <span class="n">Dict</span> <span class="c1">#, open_docs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">MetalGUI</span><span class="p">,</span> <span class="n">Dict</span>  <span class="c1"># , open_docs</span>
 </pre></div>
 </div>
 </div>
@@ -728,8 +728,9 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s start by putting a transmon at the origin:</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.qubits.transmon_pocket</span><span class="w"> </span><span class="kn">import</span> <span class="n">TransmonPocket</span>
+
 <span class="n">design</span><span class="o">.</span><span class="n">overwrite_enabled</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;Q1&#39;</span><span class="p">)</span>
+<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">)</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
 </pre></div>
@@ -741,8 +742,8 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now let&#39;s copy the transmon at the origin and put it at position (0,1):</span>
-<span class="n">q1_copy</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">copy_qcomponent</span><span class="p">(</span><span class="n">q1</span><span class="p">,</span> <span class="s1">&#39;Q1_copy&#39;</span><span class="p">)</span>
-<span class="n">q1_copy</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;pos_x&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;1.0mm&#39;</span>
+<span class="n">q1_copy</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">copy_qcomponent</span><span class="p">(</span><span class="n">q1</span><span class="p">,</span> <span class="s2">&quot;Q1_copy&quot;</span><span class="p">)</span>
+<span class="n">q1_copy</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;pos_x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;1.0mm&quot;</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
 </pre></div>
@@ -754,7 +755,7 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now let&#39;s copy the transmon at the origin and put it at position (0,-1):</span>
-<span class="n">q1_anothercopy</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">copy_qcomponent</span><span class="p">(</span><span class="n">q1</span><span class="p">,</span><span class="s1">&#39;Q1_another_copy&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;-1.0mm&#39;</span><span class="p">))</span>
+<span class="n">q1_anothercopy</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">copy_qcomponent</span><span class="p">(</span><span class="n">q1</span><span class="p">,</span> <span class="s2">&quot;Q1_another_copy&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;-1.0mm&quot;</span><span class="p">))</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
 </pre></div>
@@ -766,7 +767,11 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now let&#39;s copy all three components at the same time, moving them up by +2mm in the y-direction:</span>
-<span class="n">newcopies</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">copy_multiple_qcomponents</span><span class="p">([</span><span class="n">q1</span><span class="p">,</span> <span class="n">q1_copy</span><span class="p">,</span> <span class="n">q1_anothercopy</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Q3&#39;</span><span class="p">,</span> <span class="s1">&#39;Q4&#39;</span><span class="p">,</span> <span class="s1">&#39;Q5&#39;</span><span class="p">],</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;1.0mm&#39;</span><span class="p">),</span> <span class="nb">dict</span><span class="p">(</span><span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;2.0mm&#39;</span><span class="p">),</span> <span class="nb">dict</span><span class="p">(</span><span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;3.0mm&#39;</span><span class="p">)])</span>
+<span class="n">newcopies</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">copy_multiple_qcomponents</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">q1</span><span class="p">,</span> <span class="n">q1_copy</span><span class="p">,</span> <span class="n">q1_anothercopy</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;Q3&quot;</span><span class="p">,</span> <span class="s2">&quot;Q4&quot;</span><span class="p">,</span> <span class="s2">&quot;Q5&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;1.0mm&quot;</span><span class="p">),</span> <span class="nb">dict</span><span class="p">(</span><span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;2.0mm&quot;</span><span class="p">),</span> <span class="nb">dict</span><span class="p">(</span><span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;3.0mm&quot;</span><span class="p">)],</span>
+<span class="p">)</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
 </pre></div>
@@ -778,7 +783,9 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example of copying without giving any dictionary values; qcomponents will sit on top of the originals!</span>
-<span class="n">newcopies2</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">copy_multiple_qcomponents</span><span class="p">([</span><span class="n">q1</span><span class="p">,</span> <span class="n">q1_copy</span><span class="p">,</span> <span class="n">q1_anothercopy</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Q6&#39;</span><span class="p">,</span> <span class="s1">&#39;Q7&#39;</span><span class="p">,</span> <span class="s1">&#39;Q8&#39;</span><span class="p">])</span>
+<span class="n">newcopies2</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">copy_multiple_qcomponents</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">q1</span><span class="p">,</span> <span class="n">q1_copy</span><span class="p">,</span> <span class="n">q1_anothercopy</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;Q6&quot;</span><span class="p">,</span> <span class="s2">&quot;Q7&quot;</span><span class="p">,</span> <span class="s2">&quot;Q8&quot;</span><span class="p">]</span>
+<span class="p">)</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
 </pre></div>
@@ -790,7 +797,11 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Copy the three original components but only give a dictionary for the first one; other two dictionaries still need to exist but can be empty:</span>
-<span class="n">newcopies3</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">copy_multiple_qcomponents</span><span class="p">([</span><span class="n">q1</span><span class="p">,</span> <span class="n">q1_copy</span><span class="p">,</span> <span class="n">q1_anothercopy</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Q9&#39;</span><span class="p">,</span> <span class="s1">&#39;Q10&#39;</span><span class="p">,</span> <span class="s1">&#39;Q11&#39;</span><span class="p">],</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;-1.0mm&#39;</span><span class="p">),</span> <span class="nb">dict</span><span class="p">(),</span> <span class="nb">dict</span><span class="p">()])</span>
+<span class="n">newcopies3</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">copy_multiple_qcomponents</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">q1</span><span class="p">,</span> <span class="n">q1_copy</span><span class="p">,</span> <span class="n">q1_anothercopy</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;Q9&quot;</span><span class="p">,</span> <span class="s2">&quot;Q10&quot;</span><span class="p">,</span> <span class="s2">&quot;Q11&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;-1.0mm&quot;</span><span class="p">),</span> <span class="nb">dict</span><span class="p">(),</span> <span class="nb">dict</span><span class="p">()],</span>
+<span class="p">)</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
 </pre></div>

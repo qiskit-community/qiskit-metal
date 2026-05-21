@@ -779,8 +779,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">between_anchors</span><span class="o">=</span><span class="n">OrderedDict</span><span class="p">(</span>
-        <span class="p">),</span>  <span class="c1"># Intermediate anchors only; doesn&#39;t include endpoints</span>
+        <span class="n">between_anchors</span><span class="o">=</span><span class="n">OrderedDict</span><span class="p">(),</span>  <span class="c1"># Intermediate anchors only; doesn&#39;t include endpoints</span>
         <span class="c1"># Example: {1: &quot;M&quot;, 2: &quot;S&quot;, 3: &quot;PF&quot;}</span>
         <span class="c1"># startpin -&gt; startpin + leadin -&gt; anchors -&gt; endpin + leadout -&gt; endpin</span>
     <span class="p">)</span>
@@ -812,9 +811,14 @@
         <span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_length_segment</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">count_meanders_list</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_length_segment</span> <span class="o">=</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">total_length</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">length</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">tail</span><span class="o">.</span><span class="n">length</span><span class="p">)</span> \
-                                   <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">free_manhattan_length_anchors</span><span class="p">())</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">count_meanders_list</span><span class="p">))</span> \
-                                   <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">free_manhattan_length_anchors</span><span class="p">()</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">count_meanders_list</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_length_segment</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">total_length</span>
+                    <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">length</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">tail</span><span class="o">.</span><span class="n">length</span><span class="p">)</span>
+                    <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">free_manhattan_length_anchors</span><span class="p">()</span>
+                <span class="p">)</span>
+                <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">count_meanders_list</span><span class="p">)</span>
+            <span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">free_manhattan_length_anchors</span><span class="p">()</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">count_meanders_list</span><span class="p">))</span>
 
         <span class="c1"># find the points to connect between each pair of anchors, or between anchors and leads</span>
         <span class="c1"># at first, store points &quot;per segment&quot; in a dictionary, so it is easier to apply length requirements</span>
@@ -831,7 +835,8 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span><span class="p">[</span><span class="n">arc_num</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">coord</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span><span class="p">[</span><span class="n">arc_num</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
-                    <span class="p">[</span><span class="n">arc_pts</span><span class="p">,</span> <span class="p">[</span><span class="n">coord</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                    <span class="p">[</span><span class="n">arc_pts</span><span class="p">,</span> <span class="p">[</span><span class="n">coord</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span>
+                <span class="p">)</span>
         <span class="c1"># compute last connection point to the output QRouteLead</span>
         <span class="n">connect_method</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_connect_method</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">anchors</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">connect_method</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">connect_meandered</span><span class="p">:</span>
@@ -843,9 +848,9 @@
         <span class="c1"># concatenate all points, transforming the dictionary into a single numpy array</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">trim_pts</span><span class="p">()</span>
         <span class="n">dictionary_intermediate_pts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
-                                               <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+            <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span>
+        <span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">count_meanders_list</span><span class="p">):</span>
             <span class="c1"># refine length of meanders</span>
@@ -862,13 +867,17 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">meander_end_point</span> <span class="o">=</span> <span class="n">QRoutePoint</span><span class="p">(</span><span class="n">anchors</span><span class="p">[</span><span class="n">m</span><span class="p">])</span>
                 <span class="n">dictionary_intermediate_pts</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adjust_length</span><span class="p">(</span>
-                    <span class="n">individual_delta_length</span><span class="p">,</span> <span class="n">arc_pts</span><span class="p">,</span> <span class="n">meander_start_point</span><span class="p">,</span>
-                    <span class="n">meander_end_point</span><span class="p">)</span>
+                    <span class="n">individual_delta_length</span><span class="p">,</span>
+                    <span class="n">arc_pts</span><span class="p">,</span>
+                    <span class="n">meander_start_point</span><span class="p">,</span>
+                    <span class="n">meander_end_point</span><span class="p">,</span>
+                <span class="p">)</span>
                 <span class="n">dictionary_intermediate_pts</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
-                    <span class="p">[</span><span class="n">dictionary_intermediate_pts</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="p">[</span><span class="n">anchors</span><span class="p">[</span><span class="n">m</span><span class="p">]]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span>
-            <span class="n">dictionary_intermediate_pts</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
-                                               <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                    <span class="p">[</span><span class="n">dictionary_intermediate_pts</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="p">[</span><span class="n">anchors</span><span class="p">[</span><span class="n">m</span><span class="p">]]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span>
+                <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+            <span class="nb">list</span><span class="p">(</span><span class="n">dictionary_intermediate_pts</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span>
+        <span class="p">)</span>
 
         <span class="c1"># Make points into elements</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">make_elements</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_points</span><span class="p">())</span></div>

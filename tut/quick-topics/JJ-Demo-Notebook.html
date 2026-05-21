@@ -708,7 +708,7 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">metal</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">designs</span><span class="p">,</span> <span class="n">draw</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">MetalGUI</span><span class="p">,</span> <span class="n">Dict</span> <span class="c1">#, open_docs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">MetalGUI</span><span class="p">,</span> <span class="n">Dict</span>  <span class="c1"># , open_docs</span>
 </pre></div>
 </div>
 </div>
@@ -728,8 +728,9 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.qubits.JJ_Manhattan</span><span class="w"> </span><span class="kn">import</span> <span class="n">jj_manhattan</span>
+
 <span class="n">design</span><span class="o">.</span><span class="n">overwrite_enabled</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">jj1</span> <span class="o">=</span> <span class="n">jj_manhattan</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;JJ1&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">())</span>
+<span class="n">jj1</span> <span class="o">=</span> <span class="n">jj_manhattan</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;JJ1&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">())</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
 </pre></div>
@@ -745,9 +746,9 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">edit_component</span><span class="p">(</span><span class="s1">&#39;JJ1&#39;</span><span class="p">)</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s1">&#39;JJ1&#39;</span><span class="p">])</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">highlight_components</span><span class="p">([</span><span class="s1">&#39;JJ1&#39;</span><span class="p">])</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">edit_component</span><span class="p">(</span><span class="s2">&quot;JJ1&quot;</span><span class="p">)</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s2">&quot;JJ1&quot;</span><span class="p">])</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">highlight_components</span><span class="p">([</span><span class="s2">&quot;JJ1&quot;</span><span class="p">])</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -767,8 +768,9 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.qubits.JJ_Dolan</span><span class="w"> </span><span class="kn">import</span> <span class="n">jj_dolan</span>
+
 <span class="n">design</span><span class="o">.</span><span class="n">overwrite_enabled</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">jj2</span> <span class="o">=</span> <span class="n">jj_dolan</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;JJ2&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0.1&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0.0&quot;</span><span class="p">))</span>
+<span class="n">jj2</span> <span class="o">=</span> <span class="n">jj_dolan</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;JJ2&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0.1&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0.0&quot;</span><span class="p">))</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
 </pre></div>
@@ -781,9 +783,9 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">edit_component</span><span class="p">(</span><span class="s1">&#39;JJ2&#39;</span><span class="p">)</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s1">&#39;JJ2&#39;</span><span class="p">])</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">highlight_components</span><span class="p">([</span><span class="s1">&#39;JJ2&#39;</span><span class="p">])</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">edit_component</span><span class="p">(</span><span class="s2">&quot;JJ2&quot;</span><span class="p">)</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s2">&quot;JJ2&quot;</span><span class="p">])</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">highlight_components</span><span class="p">([</span><span class="s2">&quot;JJ2&quot;</span><span class="p">])</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -814,8 +816,9 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.qubits.transmon_pocket</span><span class="w"> </span><span class="kn">import</span> <span class="n">TransmonPocket</span>
+
 <span class="n">design</span><span class="o">.</span><span class="n">overwrite_enabled</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;qubit1&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">())</span>
+<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;qubit1&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">())</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
 </pre></div>
@@ -827,8 +830,9 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.qubits.JJ_Manhattan</span><span class="w"> </span><span class="kn">import</span> <span class="n">jj_manhattan</span>
+
 <span class="n">design</span><span class="o">.</span><span class="n">overwrite_enabled</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">jj1</span> <span class="o">=</span> <span class="n">jj_manhattan</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;JJ1&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;-0.015&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;-0.02&quot;</span><span class="p">))</span>
+<span class="n">jj1</span> <span class="o">=</span> <span class="n">jj_manhattan</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;JJ1&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;-0.015&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;-0.02&quot;</span><span class="p">))</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
 </pre></div>
@@ -841,8 +845,8 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">edit_component</span><span class="p">(</span><span class="s1">&#39;qubit1&#39;</span><span class="p">)</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s1">&#39;qubit1&#39;</span><span class="p">])</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">edit_component</span><span class="p">(</span><span class="s2">&quot;qubit1&quot;</span><span class="p">)</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s2">&quot;qubit1&quot;</span><span class="p">])</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -861,8 +865,8 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">edit_component</span><span class="p">(</span><span class="s1">&#39;JJ1&#39;</span><span class="p">)</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s1">&#39;JJ1&#39;</span><span class="p">])</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">edit_component</span><span class="p">(</span><span class="s2">&quot;JJ1&quot;</span><span class="p">)</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s2">&quot;JJ1&quot;</span><span class="p">])</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -880,8 +884,8 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">overwrite_enabled</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">q2</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;qubit2&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;1.0&quot;</span><span class="p">))</span>
-<span class="n">jj2</span> <span class="o">=</span> <span class="n">jj_dolan</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;JJ2&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0.985&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;-0.02&quot;</span><span class="p">))</span>
+<span class="n">q2</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;qubit2&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;1.0&quot;</span><span class="p">))</span>
+<span class="n">jj2</span> <span class="o">=</span> <span class="n">jj_dolan</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;JJ2&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0.985&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;-0.02&quot;</span><span class="p">))</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
 </pre></div>
@@ -894,8 +898,8 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">edit_component</span><span class="p">(</span><span class="s1">&#39;qubit2&#39;</span><span class="p">)</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s1">&#39;qubit2&#39;</span><span class="p">])</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">edit_component</span><span class="p">(</span><span class="s2">&quot;qubit2&quot;</span><span class="p">)</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s2">&quot;qubit2&quot;</span><span class="p">])</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -914,8 +918,8 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">edit_component</span><span class="p">(</span><span class="s1">&#39;JJ2&#39;</span><span class="p">)</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s1">&#39;JJ2&#39;</span><span class="p">])</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">edit_component</span><span class="p">(</span><span class="s2">&quot;JJ2&quot;</span><span class="p">)</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s2">&quot;JJ2&quot;</span><span class="p">])</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
 </pre></div>
 </div>

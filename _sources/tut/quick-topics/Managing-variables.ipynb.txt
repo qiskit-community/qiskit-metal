@@ -42,30 +42,33 @@
     "from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket\n",
     "from qiskit_metal.qlibrary.tlines.meandered import RouteMeander\n",
     "\n",
-    "connection_pads = dict(connection_pads=dict(\n",
-    "                a = dict(loc_W=+1,loc_H=+1), \n",
-    "                b = dict(loc_W=-1,loc_H=+1),\n",
-    "                c = dict(loc_W=+1,loc_H=-1),\n",
-    "                d = dict(loc_W=-1,loc_H=-1)\n",
-    "            ))\n",
-    "q1 = TransmonPocket(design, 'Q1', options = dict(pos_x='-1.5mm', pos_y='+0.0mm', **connection_pads))\n",
-    "q2 = TransmonPocket(design, 'Q2', options = dict(pos_x='+1.5mm', pos_y='+0.0mm', **connection_pads))\n",
-    "q3 = TransmonPocket(design, 'Q3', options = dict(pos_x='+0.0mm', pos_y='+1.3mm', **connection_pads))\n",
-    "\n",
+    "connection_pads = dict(\n",
+    "    connection_pads=dict(\n",
+    "        a=dict(loc_W=+1, loc_H=+1),\n",
+    "        b=dict(loc_W=-1, loc_H=+1),\n",
+    "        c=dict(loc_W=+1, loc_H=-1),\n",
+    "        d=dict(loc_W=-1, loc_H=-1),\n",
+    "    )\n",
+    ")\n",
+    "q1 = TransmonPocket(\n",
+    "    design, \"Q1\", options=dict(pos_x=\"-1.5mm\", pos_y=\"+0.0mm\", **connection_pads)\n",
+    ")\n",
+    "q2 = TransmonPocket(\n",
+    "    design, \"Q2\", options=dict(pos_x=\"+1.5mm\", pos_y=\"+0.0mm\", **connection_pads)\n",
+    ")\n",
+    "q3 = TransmonPocket(\n",
+    "    design, \"Q3\", options=dict(pos_x=\"+0.0mm\", pos_y=\"+1.3mm\", **connection_pads)\n",
+    ")\n",
     "\n",
     "\n",
     "options = Dict(\n",
     "    pin_inputs=Dict(\n",
-    "        start_pin=Dict(\n",
-    "            component= 'Q1',\n",
-    "            pin= 'a'),\n",
-    "        end_pin=Dict(\n",
-    "            component= 'Q2',\n",
-    "            pin= 'b')),\n",
+    "        start_pin=Dict(component=\"Q1\", pin=\"a\"), end_pin=Dict(component=\"Q2\", pin=\"b\")\n",
+    "    ),\n",
     ")\n",
-    "design.variables.cpw_width = '10um'\n",
-    "design.variables.cpw_gap = '6um'\n",
-    "cpw = RouteMeander(design, 'cpw', options)\n",
+    "design.variables.cpw_width = \"10um\"\n",
+    "design.variables.cpw_gap = \"6um\"\n",
+    "cpw = RouteMeander(design, \"cpw\", options)\n",
     "\n",
     "gui.rebuild()\n",
     "gui.autoscale()"
@@ -137,6 +140,7 @@
    "outputs": [],
    "source": [
     "from PySide6.QtWidgets import QAbstractItemView\n",
+    "\n",
     "table.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)\n",
     "table.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)"
    ]
@@ -194,14 +198,14 @@
    "outputs": [],
    "source": [
     "# Set variables in the design\n",
-    "design.variables.pad_width = '400 um'\n",
+    "design.variables.pad_width = \"400 um\"\n",
     "\n",
     "# Assign variables to component options\n",
-    "q1.options.pad_width = 'pad_width'\n",
-    "q2.options.pad_width = 'pad_width'\n",
-    "q3.options.pad_width = 'pad_width'\n",
+    "q1.options.pad_width = \"pad_width\"\n",
+    "q2.options.pad_width = \"pad_width\"\n",
+    "q3.options.pad_width = \"pad_width\"\n",
     "\n",
-    "# Rebuild all compoinent and refresh the gui \n",
+    "# Rebuild all compoinent and refresh the gui\n",
     "gui.rebuild()\n",
     "gui.autoscale()"
    ]
@@ -213,9 +217,9 @@
    "outputs": [],
    "source": [
     "# Set variables in the design\n",
-    "design.variables.pad_width = '300 um'\n",
+    "design.variables.pad_width = \"300 um\"\n",
     "\n",
-    "# Rebuild all compoinent and refresh the gui \n",
+    "# Rebuild all compoinent and refresh the gui\n",
     "gui.rebuild()\n",
     "gui.autoscale()"
    ]
@@ -227,9 +231,9 @@
    "outputs": [],
    "source": [
     "# Set variables in the design\n",
-    "design.variables.pad_width = '550 um'\n",
+    "design.variables.pad_width = \"550 um\"\n",
     "\n",
-    "# Rebuild all compoinent and refresh the gui \n",
+    "# Rebuild all compoinent and refresh the gui\n",
     "gui.rebuild()\n",
     "gui.autoscale()"
    ]
@@ -384,7 +388,7 @@
     }
    ],
    "source": [
-    "type(q1.qgeometry_table('poly'))"
+    "type(q1.qgeometry_table(\"poly\"))"
    ]
   },
   {
@@ -540,7 +544,7 @@
     }
    ],
    "source": [
-    "q1.qgeometry_table('poly')"
+    "q1.qgeometry_table(\"poly\")"
    ]
   },
   {

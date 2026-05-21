@@ -834,17 +834,18 @@
 
     <span class="c1"># Edit these to define your own tempate options for creation</span>
     <span class="c1"># Default drawing options</span>
-    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s1">&#39;500um&#39;</span><span class="p">,</span>
-                           <span class="n">height</span><span class="o">=</span><span class="s1">&#39;300um&#39;</span><span class="p">,</span>
-                           <span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;0um&#39;</span><span class="p">,</span>
-                           <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;0um&#39;</span><span class="p">,</span>
-                           <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;0&#39;</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">)</span>
+    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+        <span class="n">width</span><span class="o">=</span><span class="s2">&quot;500um&quot;</span><span class="p">,</span>
+        <span class="n">height</span><span class="o">=</span><span class="s2">&quot;300um&quot;</span><span class="p">,</span>
+        <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">,</span>
+        <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">,</span>
+        <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+        <span class="n">layer</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Default drawing options&quot;&quot;&quot;</span>
 
     <span class="c1"># Name prefix of component, if user doesn&#39;t provide name</span>
-    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s1">&#39;component&#39;</span><span class="p">,</span>
-                             <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s1">&#39;True&#39;</span><span class="p">)</span>
+    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;component&quot;</span><span class="p">,</span> <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Component metadata&quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -858,10 +859,10 @@
         <span class="n">rect</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_y</span><span class="p">)</span>
 
         <span class="n">rect</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">rect</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">orientation</span><span class="p">)</span>
-        <span class="n">rect</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">rect</span><span class="p">,</span><span class="n">p</span><span class="o">.</span><span class="n">pos_x</span><span class="p">,</span><span class="n">p</span><span class="o">.</span><span class="n">pos_y</span><span class="p">)</span>
+        <span class="n">rect</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">rect</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_y</span><span class="p">)</span>
 
-        <span class="n">geom</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;my_polygon&#39;</span><span class="p">:</span> <span class="n">rect</span><span class="p">}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">geom</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;my_polygon&quot;</span><span class="p">:</span> <span class="n">rect</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -882,7 +883,7 @@ Currently the options are:</p>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -898,7 +899,7 @@ Currently the options are:</p>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="mi">45</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">45</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -946,6 +947,7 @@ Currently the options are:</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">metal</span>
+
 <span class="o">?</span>metal.qlibrary.core.QComponent.add_qgeometry
 </pre></div>
 </div>
@@ -983,6 +985,7 @@ width), with the <code class="docutils literal notranslate"><span class="pre">ga
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.toolbox_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">math_and_overrides</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">QComponent</span>
 
+
 <span class="k">class</span><span class="w"> </span><span class="nc">MySimpleGapCapacitor</span><span class="p">(</span><span class="n">QComponent</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Inherits &#39;QComponent&#39; class.</span>
@@ -1005,20 +1008,24 @@ width), with the <code class="docutils literal notranslate"><span class="pre">ga
 
     <span class="c1"># Edit these to define your own tempate options for creation</span>
     <span class="c1"># Default drawing options</span>
-    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">cpw_width</span><span class="o">=</span><span class="s1">&#39;15um&#39;</span><span class="p">,</span>
-                           <span class="n">cpw_gap</span><span class="o">=</span><span class="s1">&#39;9um&#39;</span><span class="p">,</span>
-                           <span class="n">cap_width</span><span class="o">=</span><span class="s1">&#39;35um&#39;</span><span class="p">,</span>
-                           <span class="n">cap_gap</span><span class="o">=</span><span class="s1">&#39;3um&#39;</span><span class="p">,</span>
-                           <span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;0um&#39;</span><span class="p">,</span>
-                           <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;0um&#39;</span><span class="p">,</span>
-                           <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;0&#39;</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">)</span>
+    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+        <span class="n">cpw_width</span><span class="o">=</span><span class="s2">&quot;15um&quot;</span><span class="p">,</span>
+        <span class="n">cpw_gap</span><span class="o">=</span><span class="s2">&quot;9um&quot;</span><span class="p">,</span>
+        <span class="n">cap_width</span><span class="o">=</span><span class="s2">&quot;35um&quot;</span><span class="p">,</span>
+        <span class="n">cap_gap</span><span class="o">=</span><span class="s2">&quot;3um&quot;</span><span class="p">,</span>
+        <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">,</span>
+        <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">,</span>
+        <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+        <span class="n">layer</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Default drawing options&quot;&quot;&quot;</span>
 
     <span class="c1"># Name prefix of component, if user doesn&#39;t provide name</span>
-    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s1">&#39;component&#39;</span><span class="p">,</span>
-                             <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s1">&#39;True&#39;</span><span class="p">,</span>
-                             <span class="n">_qgeometry_table_path</span><span class="o">=</span><span class="s1">&#39;True&#39;</span><span class="p">)</span>
+    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+        <span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;component&quot;</span><span class="p">,</span>
+        <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">,</span>
+        <span class="n">_qgeometry_table_path</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Component metadata&quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1027,24 +1034,58 @@ width), with the <code class="docutils literal notranslate"><span class="pre">ga
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_options</span><span class="p">()</span>  <span class="c1"># Parse the string options into numbers</span>
 
         <span class="n">pad</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">cap_width</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="n">pad_left</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">pad</span><span class="p">,</span><span class="o">-</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span><span class="o">+</span><span class="n">p</span><span class="o">.</span><span class="n">cap_gap</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">pad_right</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">pad</span><span class="p">,(</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span><span class="o">+</span><span class="n">p</span><span class="o">.</span><span class="n">cap_gap</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">pad_etch</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_gap</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span><span class="o">+</span><span class="n">p</span><span class="o">.</span><span class="n">cap_gap</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_gap</span><span class="o">+</span><span class="n">p</span><span class="o">.</span><span class="n">cap_width</span><span class="p">)</span>
-        <span class="n">cpw_left</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">LineString</span><span class="p">([[</span><span class="o">-</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span><span class="o">+</span><span class="n">p</span><span class="o">.</span><span class="n">cap_gap</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span><span class="mi">0</span><span class="p">],[</span><span class="o">-</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span><span class="o">*</span><span class="mi">3</span> <span class="o">+</span><span class="n">p</span><span class="o">.</span><span class="n">cap_gap</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span><span class="mi">0</span><span class="p">]])</span>
-        <span class="n">cpw_right</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">LineString</span><span class="p">([[(</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span><span class="o">+</span><span class="n">p</span><span class="o">.</span><span class="n">cap_gap</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span><span class="mi">0</span><span class="p">],[(</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span><span class="o">*</span><span class="mi">3</span> <span class="o">+</span><span class="n">p</span><span class="o">.</span><span class="n">cap_gap</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span><span class="mi">0</span><span class="p">]])</span>
+        <span class="n">pad_left</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">pad</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cap_gap</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">pad_right</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">pad</span><span class="p">,</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cap_gap</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">pad_etch</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span>
+            <span class="mi">2</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cpw_gap</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cap_gap</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cpw_gap</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cap_width</span>
+        <span class="p">)</span>
+        <span class="n">cpw_left</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">LineString</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">[</span><span class="o">-</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cap_gap</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">0</span><span class="p">],</span>
+                <span class="p">[</span><span class="o">-</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cap_gap</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">cpw_right</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">LineString</span><span class="p">(</span>
+            <span class="p">[[(</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cap_gap</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[(</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cap_gap</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">0</span><span class="p">]]</span>
+        <span class="p">)</span>
 
-        <span class="n">geom_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">pad_left</span><span class="p">,</span><span class="n">pad_right</span><span class="p">,</span><span class="n">cpw_left</span><span class="p">,</span><span class="n">cpw_right</span><span class="p">,</span><span class="n">pad_etch</span><span class="p">]</span>
-        <span class="n">geom_list</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">geom_list</span><span class="p">,</span><span class="n">p</span><span class="o">.</span><span class="n">orientation</span><span class="p">)</span>
-        <span class="n">geom_list</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">geom_list</span><span class="p">,</span><span class="n">p</span><span class="o">.</span><span class="n">pos_x</span><span class="p">,</span><span class="n">p</span><span class="o">.</span><span class="n">pos_y</span><span class="p">)</span>
-        <span class="p">[</span><span class="n">pad_left</span><span class="p">,</span><span class="n">pad_right</span><span class="p">,</span><span class="n">cpw_left</span><span class="p">,</span><span class="n">cpw_right</span><span class="p">,</span><span class="n">pad_etch</span><span class="p">]</span> <span class="o">=</span> <span class="n">geom_list</span>
+        <span class="n">geom_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">pad_left</span><span class="p">,</span> <span class="n">pad_right</span><span class="p">,</span> <span class="n">cpw_left</span><span class="p">,</span> <span class="n">cpw_right</span><span class="p">,</span> <span class="n">pad_etch</span><span class="p">]</span>
+        <span class="n">geom_list</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">geom_list</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">orientation</span><span class="p">)</span>
+        <span class="n">geom_list</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">geom_list</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_y</span><span class="p">)</span>
+        <span class="p">[</span><span class="n">pad_left</span><span class="p">,</span> <span class="n">pad_right</span><span class="p">,</span> <span class="n">cpw_left</span><span class="p">,</span> <span class="n">cpw_right</span><span class="p">,</span> <span class="n">pad_etch</span><span class="p">]</span> <span class="o">=</span> <span class="n">geom_list</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;cpw_left&#39;</span><span class="p">:</span><span class="n">cpw_left</span><span class="p">,</span> <span class="s1">&#39;cpw_right&#39;</span><span class="p">:</span><span class="n">cpw_right</span><span class="p">},</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;cpw_left_etch&#39;</span><span class="p">:</span><span class="n">cpw_left</span><span class="p">,</span> <span class="s1">&#39;cpw_right_etch&#39;</span><span class="p">:</span><span class="n">cpw_right</span><span class="p">},</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_gap</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;pad_left&#39;</span><span class="p">:</span><span class="n">pad_left</span><span class="p">,</span> <span class="s1">&#39;pad_right&#39;</span><span class="p">:</span><span class="n">pad_right</span><span class="p">},</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;pad_etch&#39;</span><span class="p">:</span><span class="n">pad_etch</span><span class="p">},</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">&quot;cpw_left&quot;</span><span class="p">:</span> <span class="n">cpw_left</span><span class="p">,</span> <span class="s2">&quot;cpw_right&quot;</span><span class="p">:</span> <span class="n">cpw_right</span><span class="p">},</span>
+            <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
+            <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">&quot;cpw_left_etch&quot;</span><span class="p">:</span> <span class="n">cpw_left</span><span class="p">,</span> <span class="s2">&quot;cpw_right_etch&quot;</span><span class="p">:</span> <span class="n">cpw_right</span><span class="p">},</span>
+            <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
+            <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cpw_gap</span><span class="p">,</span>
+            <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;pad_left&quot;</span><span class="p">:</span> <span class="n">pad_left</span><span class="p">,</span> <span class="s2">&quot;pad_right&quot;</span><span class="p">:</span> <span class="n">pad_right</span><span class="p">},</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;pad_etch&quot;</span><span class="p">:</span> <span class="n">pad_etch</span><span class="p">},</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s1">&#39;cap_left&#39;</span><span class="p">,</span> <span class="n">cpw_left</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span><span class="p">,</span> <span class="n">gap</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">cpw_gap</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s1">&#39;cap_right&#39;</span><span class="p">,</span> <span class="n">cpw_right</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span><span class="p">,</span> <span class="n">gap</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">cpw_gap</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
+            <span class="s2">&quot;cap_left&quot;</span><span class="p">,</span>
+            <span class="n">cpw_left</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span>
+            <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span><span class="p">,</span>
+            <span class="n">gap</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_gap</span><span class="p">,</span>
+            <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
+            <span class="s2">&quot;cap_right&quot;</span><span class="p">,</span>
+            <span class="n">cpw_right</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span>
+            <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span><span class="p">,</span>
+            <span class="n">gap</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_gap</span><span class="p">,</span>
+            <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1062,7 +1103,7 @@ width), with the <code class="docutils literal notranslate"><span class="pre">ga
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_cap</span> <span class="o">=</span> <span class="n">MySimpleGapCapacitor</span><span class="p">(</span><span class="n">design</span><span class="p">,</span><span class="s1">&#39;my_cap&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_cap</span> <span class="o">=</span> <span class="n">MySimpleGapCapacitor</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;my_cap&quot;</span><span class="p">)</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>

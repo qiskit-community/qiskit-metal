@@ -708,17 +708,17 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_ansys_pyaedt.pyaedt_base</span><span class="w"> </span><span class="kn">import</span> <span class="n">QPyaedt</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_ansys.ansys_renderer</span><span class="w"> </span><span class="kn">import</span> <span class="n">QAnsysRenderer</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.draw.utility</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_vec3D</span><span class="p">,</span> <span class="n">to_vec3D_list</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.toolbox_metal.parsing</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_entry</span><span class="p">,</span> <span class="n">parse_units</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">shapely</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.draw.utility</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_vec3D</span><span class="p">,</span> <span class="n">to_vec3D_list</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_ansys.ansys_renderer</span><span class="w"> </span><span class="kn">import</span> <span class="n">QAnsysRenderer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_ansys_pyaedt.pyaedt_base</span><span class="w"> </span><span class="kn">import</span> <span class="n">QPyaedt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.toolbox_metal.parsing</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_entry</span><span class="p">,</span> <span class="n">parse_units</span>
+
 <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">is_building_docs</span><span class="p">():</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.toolbox_python.utility_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_clean_name</span>
 
@@ -728,47 +728,52 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">QHFSSPyaedt</span><span class="p">(</span><span class="n">QPyaedt</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Subclass of pyaedt renderer for running HFSS simulations.</span>
 
-<span class="sd">     QPyaedt Default Options:</span>
+<span class="sd">    QPyaedt Default Options:</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">default_setup</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">drivenmodal</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Setup&quot;</span><span class="p">,</span>
-            <span class="n">freq_ghz</span><span class="o">=</span><span class="s2">&quot;5.0&quot;</span><span class="p">,</span>
-            <span class="n">max_delta_s</span><span class="o">=</span><span class="s2">&quot;0.1&quot;</span><span class="p">,</span>
-            <span class="n">max_passes</span><span class="o">=</span><span class="s2">&quot;10&quot;</span><span class="p">,</span>
-            <span class="n">min_passes</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
-            <span class="n">min_converged</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
-            <span class="n">pct_refinement</span><span class="o">=</span><span class="s2">&quot;30&quot;</span><span class="p">,</span>
-            <span class="n">basis_order</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+    <span class="n">default_setup</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">Dict</span><span class="p">(</span>
+            <span class="n">drivenmodal</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Setup&quot;</span><span class="p">,</span>
+                <span class="n">freq_ghz</span><span class="o">=</span><span class="s2">&quot;5.0&quot;</span><span class="p">,</span>
+                <span class="n">max_delta_s</span><span class="o">=</span><span class="s2">&quot;0.1&quot;</span><span class="p">,</span>
+                <span class="n">max_passes</span><span class="o">=</span><span class="s2">&quot;10&quot;</span><span class="p">,</span>
+                <span class="n">min_passes</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+                <span class="n">min_converged</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+                <span class="n">pct_refinement</span><span class="o">=</span><span class="s2">&quot;30&quot;</span><span class="p">,</span>
+                <span class="n">basis_order</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">eigenmode</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Setup&quot;</span><span class="p">,</span>
+                <span class="n">min_freq_ghz</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+                <span class="n">n_modes</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+                <span class="n">max_delta_f</span><span class="o">=</span><span class="s2">&quot;0.5&quot;</span><span class="p">,</span>
+                <span class="n">max_passes</span><span class="o">=</span><span class="s2">&quot;10&quot;</span><span class="p">,</span>
+                <span class="n">min_passes</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+                <span class="n">min_converged</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+                <span class="n">pct_refinement</span><span class="o">=</span><span class="s2">&quot;30&quot;</span><span class="p">,</span>
+                <span class="n">basis_order</span><span class="o">=</span><span class="s2">&quot;-1&quot;</span><span class="p">,</span>
+            <span class="p">),</span>
         <span class="p">),</span>
-        <span class="n">eigenmode</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Setup&quot;</span><span class="p">,</span>
-            <span class="n">min_freq_ghz</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
-            <span class="n">n_modes</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
-            <span class="n">max_delta_f</span><span class="o">=</span><span class="s2">&quot;0.5&quot;</span><span class="p">,</span>
-            <span class="n">max_passes</span><span class="o">=</span><span class="s2">&quot;10&quot;</span><span class="p">,</span>
-            <span class="n">min_passes</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
-            <span class="n">min_converged</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
-            <span class="n">pct_refinement</span><span class="o">=</span><span class="s2">&quot;30&quot;</span><span class="p">,</span>
-            <span class="n">basis_order</span><span class="o">=</span><span class="s2">&quot;-1&quot;</span><span class="p">,</span>
-        <span class="p">),</span>
-    <span class="p">),</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;aedt_hfss&#39;</span>
+    <span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;aedt_hfss&quot;</span>
 
     <span class="n">aedt_hfss_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
         <span class="c1"># spacing between port and inductor if junction is drawn both ways</span>
-        <span class="n">port_inductor_gap</span><span class="o">=</span><span class="s1">&#39;10um&#39;</span><span class="p">)</span>
+        <span class="n">port_inductor_gap</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span>
+    <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;aedt HFSS Options&quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">multilayer_design</span><span class="p">:</span> <span class="s1">&#39;MultiPlanar&#39;</span><span class="p">,</span>
-                 <span class="n">renderer_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;HFSS&#39;</span><span class="p">,</span>
-                 <span class="n">project_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">design_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">initiate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                 <span class="n">options</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">multilayer_design</span><span class="p">:</span> <span class="s2">&quot;MultiPlanar&quot;</span><span class="p">,</span>
+        <span class="n">renderer_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;HFSS&quot;</span><span class="p">,</span>
+        <span class="n">project_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">design_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">initiate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">options</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a QRenderer for HFSS simulations using pyaedt and multiplanar design.</span>
 <span class="sd">        QHFSSPyaedt is subclassed from QPyaedt, subclassed from QRendererAnalysis and</span>
 <span class="sd">        subclassed from QRenderer.  The default_setup options are expected to be defined by</span>
@@ -788,19 +793,21 @@
 <span class="sd">            options (Dict, optional):  Used to override all options. Defaults to None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">multilayer_design</span><span class="p">,</span>
-                         <span class="n">renderer_type</span><span class="o">=</span><span class="n">renderer_type</span><span class="p">,</span>
-                         <span class="n">project_name</span><span class="o">=</span><span class="n">project_name</span><span class="p">,</span>
-                         <span class="n">design_name</span><span class="o">=</span><span class="n">design_name</span><span class="p">,</span>
-                         <span class="n">initiate</span><span class="o">=</span><span class="n">initiate</span><span class="p">,</span>
-                         <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">multilayer_design</span><span class="p">,</span>
+            <span class="n">renderer_type</span><span class="o">=</span><span class="n">renderer_type</span><span class="p">,</span>
+            <span class="n">project_name</span><span class="o">=</span><span class="n">project_name</span><span class="p">,</span>
+            <span class="n">design_name</span><span class="o">=</span><span class="n">design_name</span><span class="p">,</span>
+            <span class="n">initiate</span><span class="o">=</span><span class="n">initiate</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">current_sweep</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="c1"># Check if user entered valid data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">port_list_is_valid</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># bool</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">jj_to_port_is_valid</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1">#bool</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ignored_jjs_is_valid</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1">#bool</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jj_to_port_is_valid</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># bool</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ignored_jjs_is_valid</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># bool</span>
 
         <span class="c1"># Reformat the port_list and enter into port_list_dict</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">port_list_dict</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">()</span>
@@ -812,20 +819,22 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ignored_jjs</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="c1"># QRenderer has a &quot;cls&quot; method called load()</span>
-        <span class="n">if_registered_in_design</span> <span class="o">=</span> <span class="n">QHFSSPyaedt</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+        <span class="n">if_registered_in_design</span> <span class="o">=</span> <span class="n">QHFSSPyaedt</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>  <span class="c1"># noqa: F841</span>
 
-        <span class="c1">#make a class to read in pandas table.</span>
+        <span class="c1"># make a class to read in pandas table.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tables</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="QHFSSPyaedt.render_design">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSPyaedt.html#qiskit_metal.renderers.QHFSSPyaedt.render_design">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">render_design</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                      <span class="n">selection</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                      <span class="n">open_pins</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                      <span class="n">port_list</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                      <span class="n">jj_to_port</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                      <span class="n">ignored_jjs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                      <span class="n">box_plus_buffer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">render_design</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">selection</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">open_pins</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">port_list</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">jj_to_port</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ignored_jjs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">box_plus_buffer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This render_design will add additional logic for HFSS within project.</span>
 <span class="sd">        In particular, when used by BOTH solution types of eigenmode and drivenmodal.</span>
@@ -906,20 +915,22 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">case</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s1">&#39;Unable to proceed with rendering. Please check selection.&#39;</span><span class="p">)</span>
+                <span class="s2">&quot;Unable to proceed with rendering. Please check selection.&quot;</span>
+            <span class="p">)</span>
             <span class="k">return</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">reset_hfss_arguments</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ignored_jjs</span> <span class="o">=</span> <span class="n">ignored_jjs</span>
 
-        <span class="c1">#Every time one chooses to render, we have to get the chip names since the</span>
-        <span class="c1">#qgeometry tables can be updated between each render_design().</span>
-        <span class="n">chip_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_chip_names</span><span class="p">()</span>
+        <span class="c1"># Every time one chooses to render, we have to get the chip names since the</span>
+        <span class="c1"># qgeometry tables can be updated between each render_design().</span>
+        <span class="n">chip_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_chip_names</span><span class="p">()</span>  <span class="c1"># noqa: F841</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid_input_arguments</span><span class="p">(</span><span class="n">open_pins</span><span class="p">,</span> <span class="n">port_list</span><span class="p">,</span> <span class="n">jj_to_port</span><span class="p">,</span>
-                                          <span class="n">ignored_jjs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid_input_arguments</span><span class="p">(</span>
+            <span class="n">open_pins</span><span class="p">,</span> <span class="n">port_list</span><span class="p">,</span> <span class="n">jj_to_port</span><span class="p">,</span> <span class="n">ignored_jjs</span>
+        <span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="s1">&#39;Check the arguments to render_design, invalid name was probably used.&#39;</span>
+                <span class="s2">&quot;Check the arguments to render_design, invalid name was probably used.&quot;</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Ansys default units is &#39;mm&#39;?????, but metal using &#39;meter&#39;.</span>
@@ -930,11 +941,13 @@
 
             <span class="bp">self</span><span class="o">.</span><span class="n">draw_sample_holder</span><span class="p">()</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">aedt_render_by_layer_then_tables</span><span class="p">(</span><span class="n">skip_junction</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                                                  <span class="n">open_pins</span><span class="o">=</span><span class="n">open_pins</span><span class="p">,</span>
-                                                  <span class="n">port_list</span><span class="o">=</span><span class="n">port_list</span><span class="p">,</span>
-                                                  <span class="n">jj_to_port</span><span class="o">=</span><span class="n">jj_to_port</span><span class="p">,</span>
-                                                  <span class="n">ignored_jjs</span><span class="o">=</span><span class="n">ignored_jjs</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">aedt_render_by_layer_then_tables</span><span class="p">(</span>
+                <span class="n">skip_junction</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">open_pins</span><span class="o">=</span><span class="n">open_pins</span><span class="p">,</span>
+                <span class="n">port_list</span><span class="o">=</span><span class="n">port_list</span><span class="p">,</span>
+                <span class="n">jj_to_port</span><span class="o">=</span><span class="n">jj_to_port</span><span class="p">,</span>
+                <span class="n">ignored_jjs</span><span class="o">=</span><span class="n">ignored_jjs</span><span class="p">,</span>
+            <span class="p">)</span></div>
 
 
         <span class="c1"># self.assign_thin_conductor()</span>
@@ -942,13 +955,15 @@
 
 <div class="viewcode-block" id="QHFSSPyaedt.aedt_render_by_layer_then_tables">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSPyaedt.html#qiskit_metal.renderers.QHFSSPyaedt.aedt_render_by_layer_then_tables">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">aedt_render_by_layer_then_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                                         <span class="n">open_pins</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
-                                         <span class="n">port_list</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
-                                         <span class="n">jj_to_port</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
-                                         <span class="n">ignored_jjs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
-                                         <span class="n">skip_junction</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-                                         <span class="n">data_type</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">aedt_render_by_layer_then_tables</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">open_pins</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+        <span class="n">port_list</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+        <span class="n">jj_to_port</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+        <span class="n">ignored_jjs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+        <span class="n">skip_junction</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">data_type</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;_summary_</span>
 
 <span class="sd">        Args:</span>
@@ -967,51 +982,63 @@
 <span class="sd">                                                    layer and datatype. Defaults to 0.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">aedt_render_by_layer_then_tables</span><span class="p">(</span><span class="n">skip_junction</span><span class="o">=</span><span class="n">skip_junction</span><span class="p">,</span>
-                                                 <span class="n">open_pins</span><span class="o">=</span><span class="n">open_pins</span><span class="p">,</span>
-                                                 <span class="n">port_list</span><span class="o">=</span><span class="n">port_list</span><span class="p">,</span>
-                                                 <span class="n">jj_to_port</span><span class="o">=</span><span class="n">jj_to_port</span><span class="p">,</span>
-                                                 <span class="n">ignored_jjs</span><span class="o">=</span><span class="n">ignored_jjs</span><span class="p">,</span>
-                                                 <span class="n">data_type</span><span class="o">=</span><span class="n">data_type</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">aedt_render_by_layer_then_tables</span><span class="p">(</span>
+            <span class="n">skip_junction</span><span class="o">=</span><span class="n">skip_junction</span><span class="p">,</span>
+            <span class="n">open_pins</span><span class="o">=</span><span class="n">open_pins</span><span class="p">,</span>
+            <span class="n">port_list</span><span class="o">=</span><span class="n">port_list</span><span class="p">,</span>
+            <span class="n">jj_to_port</span><span class="o">=</span><span class="n">jj_to_port</span><span class="p">,</span>
+            <span class="n">ignored_jjs</span><span class="o">=</span><span class="n">ignored_jjs</span><span class="p">,</span>
+            <span class="n">data_type</span><span class="o">=</span><span class="n">data_type</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="k">for</span> <span class="n">layer_num</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">get_all_unique_layers_for_all_tables</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">qcomp_ids</span><span class="p">)):</span>
-
+            <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">get_all_unique_layers_for_all_tables</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qcomp_ids</span><span class="p">)</span>
+        <span class="p">):</span>
             <span class="c1"># Create subsets per layer for  port_list, jj_to)port, and open_pins.</span>
 
             <span class="n">result_subset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_subset_based_on_layer</span><span class="p">(</span>
-                <span class="n">open_pins</span><span class="p">,</span> <span class="n">port_list</span><span class="p">,</span> <span class="n">jj_to_port</span><span class="p">,</span> <span class="n">ignored_jjs</span><span class="p">,</span> <span class="n">layer_num</span><span class="p">)</span>
-            <span class="n">open_pins_subset</span><span class="p">,</span> <span class="n">port_list_subset</span><span class="p">,</span> <span class="n">jj_to_port_subset</span><span class="p">,</span> <span class="n">ignored_jjs_subset</span> <span class="o">=</span> <span class="n">result_subset</span>
+                <span class="n">open_pins</span><span class="p">,</span> <span class="n">port_list</span><span class="p">,</span> <span class="n">jj_to_port</span><span class="p">,</span> <span class="n">ignored_jjs</span><span class="p">,</span> <span class="n">layer_num</span>
+            <span class="p">)</span>
+            <span class="p">(</span>
+                <span class="n">open_pins_subset</span><span class="p">,</span>
+                <span class="n">port_list_subset</span><span class="p">,</span>
+                <span class="n">jj_to_port_subset</span><span class="p">,</span>
+                <span class="n">ignored_jjs_subset</span><span class="p">,</span>
+            <span class="p">)</span> <span class="o">=</span> <span class="n">result_subset</span>
 
             <span class="k">for</span> <span class="n">table_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">get_element_types</span><span class="p">():</span>
-                <span class="k">if</span> <span class="n">table_type</span> <span class="o">!=</span> <span class="s1">&#39;junction&#39;</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">skip_junction</span><span class="p">:</span>
-                    <span class="c1">#At this point, we know table type,</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">render_components</span><span class="p">(</span><span class="n">table_type</span><span class="p">,</span> <span class="n">layer_num</span><span class="p">,</span>
-                                           <span class="n">port_list_subset</span><span class="p">,</span> <span class="n">jj_to_port_subset</span><span class="p">,</span>
-                                           <span class="n">ignored_jjs_subset</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">table_type</span> <span class="o">!=</span> <span class="s2">&quot;junction&quot;</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">skip_junction</span><span class="p">:</span>
+                    <span class="c1"># At this point, we know table type,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">render_components</span><span class="p">(</span>
+                        <span class="n">table_type</span><span class="p">,</span>
+                        <span class="n">layer_num</span><span class="p">,</span>
+                        <span class="n">port_list_subset</span><span class="p">,</span>
+                        <span class="n">jj_to_port_subset</span><span class="p">,</span>
+                        <span class="n">ignored_jjs_subset</span><span class="p">,</span>
+                    <span class="p">)</span>
 
-            <span class="c1">#For each layer, add the endcaps and</span>
+            <span class="c1"># For each layer, add the endcaps and</span>
             <span class="c1"># add polyline to subtract to self.chip_subtract_dict[layer_num].</span>
 
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">open_pins_subset</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_pins_is_valid</span><span class="p">:</span>
                 <span class="c1"># Only use this method if user defines open pins.</span>
                 <span class="k">if</span> <span class="n">open_pins_subset</span><span class="p">:</span>
-                    <span class="c1">#Confirm there is something in the list.</span>
+                    <span class="c1"># Confirm there is something in the list.</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">add_endcaps</span><span class="p">(</span><span class="n">open_pins_subset</span><span class="p">,</span> <span class="n">layer_num</span><span class="p">)</span>
 
             <span class="n">solution_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">solution_type</span>
 
-            <span class="k">if</span> <span class="n">solution_type</span> <span class="o">==</span> <span class="s1">&#39;Modal&#39;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">port_list_is_valid</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
-                    <span class="n">port_list_subset</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">solution_type</span> <span class="o">==</span> <span class="s2">&quot;Modal&quot;</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">port_list_is_valid</span>
+                <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">port_list_subset</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+            <span class="p">):</span>
                 <span class="c1"># Only use this method if user defines drivenmodal solution_type,</span>
                 <span class="c1"># and  port list is provided by user.</span>
                 <span class="k">if</span> <span class="n">port_list_subset</span><span class="p">:</span>
-                    <span class="c1">#Confirm there is something in the list.</span>
+                    <span class="c1"># Confirm there is something in the list.</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">port_list_dict_populate</span><span class="p">(</span><span class="n">port_list_subset</span><span class="p">)</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">add_ports</span><span class="p">(</span><span class="n">port_list_subset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">port_list_dict</span><span class="p">,</span>
-                                   <span class="n">layer_num</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">add_ports</span><span class="p">(</span><span class="n">port_list_subset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">port_list_dict</span><span class="p">,</span> <span class="n">layer_num</span><span class="p">)</span>
 
             <span class="c1"># The layer is obtained from qgeometry tables, but layer_stack</span>
             <span class="c1"># can have multiple data_types.  For now, the subtract will</span>
@@ -1019,7 +1046,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">subtract_from_ground</span><span class="p">(</span><span class="n">layer_num</span><span class="p">,</span> <span class="n">data_type</span><span class="o">=</span><span class="n">data_type</span><span class="p">)</span></div>
 
 
-<span class="c1">#yapf: disable</span>
+    <span class="c1"># yapf: disable</span>
 <div class="viewcode-block" id="QHFSSPyaedt.get_subset_based_on_layer">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSPyaedt.html#qiskit_metal.renderers.QHFSSPyaedt.get_subset_based_on_layer">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_subset_based_on_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -1296,7 +1323,7 @@
                 <span class="n">impedance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jj_to_port_dict</span><span class="p">[</span><span class="n">search_junction</span><span class="p">]</span>
                 <span class="n">jj_name_port</span> <span class="o">=</span> <span class="s2">&quot;JJ_rect_&quot;</span> <span class="o">+</span> <span class="s2">&quot;R_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span>
                     <span class="n">qgeom</span><span class="p">[</span><span class="s2">&quot;component&quot;</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">qgeom</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
-                <span class="n">jj_to_port_boundary</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">create_lumped_port_to_sheet</span><span class="p">(</span>
+                <span class="n">jj_to_port_boundary</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">create_lumped_port_to_sheet</span><span class="p">(</span>  <span class="c1"># noqa: F841</span>
                     <span class="n">sheet_name</span><span class="o">=</span><span class="n">poly_sheet</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
                     <span class="n">portname</span><span class="o">=</span><span class="n">jj_name_port</span><span class="p">,</span>
                     <span class="n">axisdir</span><span class="o">=</span><span class="n">endpoints_3d</span><span class="p">,</span>
@@ -1308,7 +1335,7 @@
             <span class="n">Lvalue</span> <span class="o">=</span> <span class="n">parse_entry</span><span class="p">(</span><span class="n">jj_of_interest</span><span class="p">[</span><span class="s1">&#39;aedt_hfss_inductance&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
             <span class="n">Cvalue</span> <span class="o">=</span> <span class="n">parse_entry</span><span class="p">(</span><span class="n">jj_of_interest</span><span class="p">[</span><span class="s1">&#39;aedt_hfss_capacitance&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
 
-            <span class="n">lumped_rlc_boundary</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">assign_lumped_rlc_to_sheet</span><span class="p">(</span>
+            <span class="n">lumped_rlc_boundary</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">assign_lumped_rlc_to_sheet</span><span class="p">(</span>  <span class="c1"># noqa: F841</span>
                 <span class="n">sheet_name</span><span class="o">=</span><span class="n">poly_sheet</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
                 <span class="n">sourcename</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;rlc_</span><span class="si">{</span><span class="n">poly_sheet</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
                 <span class="n">axisdir</span><span class="o">=</span><span class="n">endpoints_3d</span><span class="p">,</span>
@@ -1380,7 +1407,7 @@
 
 
 
-<span class="c1"># yapf: disable</span>
+    <span class="c1"># yapf: disable</span>
 <div class="viewcode-block" id="QHFSSPyaedt.valid_input_arguments">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSPyaedt.html#qiskit_metal.renderers.QHFSSPyaedt.valid_input_arguments">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">valid_input_arguments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -1407,7 +1434,7 @@
         <span class="k">if</span> <span class="n">open_pins</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">open_pins_is_valid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">confirm_open_pins_are_valid_names</span><span class="p">(</span>
                 <span class="n">open_pins</span><span class="p">,</span> <span class="n">pair_used</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_pins_is_valid</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_pins_is_valid</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Arguments are not in Design for open_pins.&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">open_pins_is_valid</span> <span class="o">=</span> <span class="kc">True</span>
@@ -1415,30 +1442,30 @@
         <span class="k">if</span> <span class="n">port_list</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">port_list_is_valid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">confirm_port_list_have_valid_request</span><span class="p">(</span>
                 <span class="n">port_list</span><span class="p">,</span> <span class="n">pair_used</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">port_list_is_valid</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">port_list_is_valid</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Arguments are not in Design for port_list.&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">port_list_is_valid</span> <span class="o">==</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">port_list_is_valid</span>
 
         <span class="k">if</span> <span class="n">jj_to_port</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">jj_to_port_is_valid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">confirm_jj_to_port_has_valid_request</span><span class="p">(</span>
                 <span class="n">jj_to_port</span><span class="p">,</span> <span class="n">pair_used</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">jj_to_port_is_valid</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">jj_to_port_is_valid</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                     <span class="s1">&#39;Arguments are not in Design for jj_to_port.&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">jj_to_port_is_valid</span> <span class="o">==</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">jj_to_port_is_valid</span>
 
         <span class="k">if</span> <span class="n">ignored_jjs</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ignored_jjs_is_valid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">confirm_ignored_jjs_has_valid_request</span><span class="p">(</span>
                 <span class="n">ignored_jjs</span><span class="p">,</span> <span class="n">pair_used</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ignored_jjs_is_valid</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ignored_jjs_is_valid</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                     <span class="s1">&#39;Arguments are not in Design for ignored_jjs.&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ignored_jjs_is_valid</span> <span class="o">=</span> <span class="kc">True</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_pins_is_valid</span> <span class="o">==</span> <span class="kc">False</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">port_list_is_valid</span> <span class="o">==</span> <span class="kc">False</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">jj_to_port_is_valid</span> <span class="o">==</span> <span class="kc">False</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">ignored_jjs_is_valid</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_pins_is_valid</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">port_list_is_valid</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">jj_to_port_is_valid</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ignored_jjs_is_valid</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span></div>

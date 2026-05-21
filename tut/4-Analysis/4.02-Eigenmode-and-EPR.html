@@ -778,8 +778,8 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span> <span class="o">=</span> <span class="n">designs</span><span class="o">.</span><span class="n">DesignPlanar</span><span class="p">({},</span> <span class="kc">True</span><span class="p">)</span>
-<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s1">&#39;size_x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;2mm&#39;</span>
-<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s1">&#39;size_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;2mm&#39;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;size_x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;2mm&quot;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;size_y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;2mm&quot;</span>
 
 <span class="n">gui</span> <span class="o">=</span> <span class="n">MetalGUI</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
 </pre></div>
@@ -794,12 +794,15 @@
 
 <span class="n">design</span><span class="o">.</span><span class="n">delete_all_components</span><span class="p">()</span>
 
-<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">pad_width</span> <span class="o">=</span> <span class="s1">&#39;425 um&#39;</span><span class="p">,</span>
-    <span class="n">pocket_height</span> <span class="o">=</span> <span class="s1">&#39;650um&#39;</span><span class="p">,</span>
-    <span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-        <span class="n">readout</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span><span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s1">&#39;200um&#39;</span><span class="p">)</span>
-    <span class="p">)))</span>
+<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;Q1&quot;</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;425 um&quot;</span><span class="p">,</span>
+        <span class="n">pocket_height</span><span class="o">=</span><span class="s2">&quot;650um&quot;</span><span class="p">,</span>
+        <span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">readout</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;200um&quot;</span><span class="p">)),</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
@@ -862,9 +865,9 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># example: update single setting</span>
 <span class="n">eig_qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">max_passes</span> <span class="o">=</span> <span class="mi">6</span>
-<span class="n">eig_qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">vars</span><span class="o">.</span><span class="n">Lj</span> <span class="o">=</span> <span class="s1">&#39;11 nH&#39;</span>
+<span class="n">eig_qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">vars</span><span class="o">.</span><span class="n">Lj</span> <span class="o">=</span> <span class="s2">&quot;11 nH&quot;</span>
 <span class="c1"># example: update multiple settings</span>
-<span class="n">eig_qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup_update</span><span class="p">(</span><span class="n">max_delta_f</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">min_freq_ghz</span> <span class="o">=</span> <span class="mf">1.1</span><span class="p">)</span>
+<span class="n">eig_qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup_update</span><span class="p">(</span><span class="n">max_delta_f</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">min_freq_ghz</span><span class="o">=</span><span class="mf">1.1</span><span class="p">)</span>
 
 <span class="n">eig_qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span>
 </pre></div>
@@ -898,7 +901,9 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Qbit&quot;</span><span class="p">,</span> <span class="n">components</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Q1&#39;</span><span class="p">],</span> <span class="n">open_terminations</span><span class="o">=</span><span class="p">[],</span> <span class="n">box_plus_buffer</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Qbit&quot;</span><span class="p">,</span> <span class="n">components</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Q1&quot;</span><span class="p">],</span> <span class="n">open_terminations</span><span class="o">=</span><span class="p">[],</span> <span class="n">box_plus_buffer</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
 <span class="n">eig_qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">plot_convergences</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1115,7 +1120,9 @@ INFO 10:35PM [analyze]: Analyzing setup Setup2
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">plot_fields</span><span class="p">(</span><span class="s1">&#39;main&#39;</span><span class="p">)</span>   <span class="c1"># TODO:::: Ez, normal component.....decide which field typically on the qbit, or on the crossing between meanders</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">plot_fields</span><span class="p">(</span>
+    <span class="s2">&quot;main&quot;</span>
+<span class="p">)</span>  <span class="c1"># TODO:::: Ez, normal component.....decide which field typically on the qbit, or on the crossing between meanders</span>
 <span class="n">eig_qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">save_screenshot</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1190,8 +1197,8 @@ WindowsPath(&#39;C:/_code_ibmq/qiskit-metal-public/docs/tut/4-Analysis/ansys.png
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_qb</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">junctions</span><span class="o">.</span><span class="n">jj</span><span class="o">.</span><span class="n">rect</span> <span class="o">=</span> <span class="s1">&#39;JJ_rect_Lj_Q1_rect_jj&#39;</span>
-<span class="n">eig_qb</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">junctions</span><span class="o">.</span><span class="n">jj</span><span class="o">.</span><span class="n">line</span> <span class="o">=</span> <span class="s1">&#39;JJ_Lj_Q1_rect_jj_&#39;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_qb</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">junctions</span><span class="o">.</span><span class="n">jj</span><span class="o">.</span><span class="n">rect</span> <span class="o">=</span> <span class="s2">&quot;JJ_rect_Lj_Q1_rect_jj&quot;</span>
+<span class="n">eig_qb</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">junctions</span><span class="o">.</span><span class="n">jj</span><span class="o">.</span><span class="n">line</span> <span class="o">=</span> <span class="s2">&quot;JJ_Lj_Q1_rect_jj_&quot;</span>
 <span class="n">eig_qb</span><span class="o">.</span><span class="n">setup</span>
 </pre></div>
 </div>
@@ -1464,15 +1471,24 @@ Index: [0]
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.terminations.open_to_ground</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenToGround</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.tlines.meandered</span><span class="w"> </span><span class="kn">import</span> <span class="n">RouteMeander</span>
-<span class="n">otg</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;open_to_ground&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;1.75mm&#39;</span><span class="p">,</span>  <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;0um&#39;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;0&#39;</span><span class="p">))</span>
-<span class="n">RouteMeander</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;readout&#39;</span><span class="p">,</span>  <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">total_length</span><span class="o">=</span><span class="s1">&#39;6 mm&#39;</span><span class="p">,</span>
-        <span class="n">hfss_wire_bonds</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="n">fillet</span><span class="o">=</span><span class="s1">&#39;90 um&#39;</span><span class="p">,</span>
-        <span class="n">lead</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s1">&#39;100um&#39;</span><span class="p">),</span>
+
+<span class="n">otg</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;open_to_ground&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;1.75mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">RouteMeander</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;readout&quot;</span><span class="p">,</span>
+    <span class="n">Dict</span><span class="p">(</span>
+        <span class="n">total_length</span><span class="o">=</span><span class="s2">&quot;6 mm&quot;</span><span class="p">,</span>
+        <span class="n">hfss_wire_bonds</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;90 um&quot;</span><span class="p">,</span>
+        <span class="n">lead</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">),</span>
         <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-            <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s1">&#39;readout&#39;</span><span class="p">),</span>
-            <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s1">&#39;open_to_ground&#39;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s1">&#39;open&#39;</span><span class="p">)),</span> <span class="p">))</span>
+            <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;readout&quot;</span><span class="p">),</span>
+            <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;open_to_ground&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;open&quot;</span><span class="p">),</span>
+        <span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
@@ -1502,9 +1518,11 @@ Index: [0]
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_rd</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Readout&quot;</span><span class="p">,</span>
-               <span class="n">components</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;readout&#39;</span><span class="p">,</span> <span class="s1">&#39;open_to_ground&#39;</span><span class="p">],</span>
-               <span class="n">open_terminations</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;readout&#39;</span><span class="p">,</span> <span class="s1">&#39;start&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;readout&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">)])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_rd</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Readout&quot;</span><span class="p">,</span>
+    <span class="n">components</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;readout&quot;</span><span class="p">,</span> <span class="s2">&quot;open_to_ground&quot;</span><span class="p">],</span>
+    <span class="n">open_terminations</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;readout&quot;</span><span class="p">,</span> <span class="s2">&quot;start&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;readout&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">)],</span>
+<span class="p">)</span>
 <span class="n">eig_rd</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">plot_convergences</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1620,7 +1638,7 @@ Design &#34;Readout_hfss&#34; info:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_rd</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">plot_fields</span><span class="p">(</span><span class="s1">&#39;main&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_rd</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">plot_fields</span><span class="p">(</span><span class="s2">&quot;main&quot;</span><span class="p">)</span>
 <span class="n">eig_rd</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">save_screenshot</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1657,7 +1675,7 @@ WindowsPath(&#39;C:/_code_ibmq/qiskit-metal-public/docs/tut/4-Analysis/ansys.png
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_rd</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">max_passes</span> <span class="o">=</span> <span class="mi">15</span>   <span class="c1"># update single setting</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_rd</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">max_passes</span> <span class="o">=</span> <span class="mi">15</span>  <span class="c1"># update single setting</span>
 <span class="n">eig_rd</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 <span class="n">eig_rd</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">plot_convergences</span><span class="p">()</span>
 </pre></div>
@@ -1678,7 +1696,7 @@ INFO 10:38PM [analyze]: Analyzing setup Setup2
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_rd</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">plot_fields</span><span class="p">(</span><span class="s1">&#39;main&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_rd</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">plot_fields</span><span class="p">(</span><span class="s2">&quot;main&quot;</span><span class="p">)</span>
 <span class="n">eig_rd</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">save_screenshot</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1716,7 +1734,7 @@ WindowsPath(&#39;C:/_code_ibmq/qiskit-metal-public/docs/tut/4-Analysis/ansys.png
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_rd</span><span class="o">.</span><span class="n">run_epr</span><span class="p">(</span><span class="n">no_junctions</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_rd</span><span class="o">.</span><span class="n">run_epr</span><span class="p">(</span><span class="n">no_junctions</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1795,9 +1813,11 @@ Design &#34;Readout_hfss&#34; info:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_qres</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;TransmonResonator&quot;</span><span class="p">,</span>
-                 <span class="n">components</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="s1">&#39;readout&#39;</span><span class="p">,</span> <span class="s1">&#39;open_to_ground&#39;</span><span class="p">],</span>
-                 <span class="n">open_terminations</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;readout&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">)])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_qres</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;TransmonResonator&quot;</span><span class="p">,</span>
+    <span class="n">components</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;readout&quot;</span><span class="p">,</span> <span class="s2">&quot;open_to_ground&quot;</span><span class="p">],</span>
+    <span class="n">open_terminations</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;readout&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">)],</span>
+<span class="p">)</span>
 <span class="n">eig_qres</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">plot_convergences</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1846,7 +1866,7 @@ WindowsPath(&#39;C:/_code_ibmq/qiskit-metal-public/docs/tut/4-Analysis/ansys.png
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_qres</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">plot_fields</span><span class="p">(</span><span class="s1">&#39;main&#39;</span><span class="p">,</span> <span class="n">eigenmode</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_qres</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">plot_fields</span><span class="p">(</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="n">eigenmode</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">eig_qres</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">save_screenshot</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1884,8 +1904,8 @@ WindowsPath(&#39;C:/_code_ibmq/qiskit-metal-public/docs/tut/4-Analysis/ansys.png
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_qres</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">junctions</span><span class="o">.</span><span class="n">jj</span><span class="o">.</span><span class="n">rect</span> <span class="o">=</span> <span class="s1">&#39;JJ_rect_Lj_Q1_rect_jj&#39;</span>
-<span class="n">eig_qres</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">junctions</span><span class="o">.</span><span class="n">jj</span><span class="o">.</span><span class="n">line</span> <span class="o">=</span> <span class="s1">&#39;JJ_Lj_Q1_rect_jj_&#39;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_qres</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">junctions</span><span class="o">.</span><span class="n">jj</span><span class="o">.</span><span class="n">rect</span> <span class="o">=</span> <span class="s2">&quot;JJ_rect_Lj_Q1_rect_jj&quot;</span>
+<span class="n">eig_qres</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">junctions</span><span class="o">.</span><span class="n">jj</span><span class="o">.</span><span class="n">line</span> <span class="o">=</span> <span class="s2">&quot;JJ_Lj_Q1_rect_jj_&quot;</span>
 <span class="n">eig_qres</span><span class="o">.</span><span class="n">setup</span>
 </pre></div>
 </div>
@@ -2219,25 +2239,38 @@ Index: [0, 1]
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.qubits.transmon_pocket</span><span class="w"> </span><span class="kn">import</span> <span class="n">TransmonPocket</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.tlines.straight_path</span><span class="w"> </span><span class="kn">import</span> <span class="n">RouteStraight</span>
 
-<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">pad_width</span> <span class="o">=</span> <span class="s1">&#39;425 um&#39;</span><span class="p">,</span>
-    <span class="n">pocket_height</span> <span class="o">=</span> <span class="s1">&#39;650um&#39;</span><span class="p">,</span>
-    <span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-        <span class="n">readout</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span><span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s1">&#39;200um&#39;</span><span class="p">)</span>
-    <span class="p">)))</span>
+<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;Q1&quot;</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;425 um&quot;</span><span class="p">,</span>
+        <span class="n">pocket_height</span><span class="o">=</span><span class="s2">&quot;650um&quot;</span><span class="p">,</span>
+        <span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">readout</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;200um&quot;</span><span class="p">)),</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 
-<span class="n">q2</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;Q2&#39;</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">pos_x</span> <span class="o">=</span> <span class="s1">&#39;1.0 mm&#39;</span><span class="p">,</span>
-    <span class="n">pad_width</span> <span class="o">=</span> <span class="s1">&#39;425 um&#39;</span><span class="p">,</span>
-    <span class="n">pocket_height</span> <span class="o">=</span> <span class="s1">&#39;650um&#39;</span><span class="p">,</span>
-    <span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-        <span class="n">readout</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span><span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s1">&#39;200um&#39;</span><span class="p">)</span>
-    <span class="p">)))</span>
+<span class="n">q2</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;Q2&quot;</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;1.0 mm&quot;</span><span class="p">,</span>
+        <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;425 um&quot;</span><span class="p">,</span>
+        <span class="n">pocket_height</span><span class="o">=</span><span class="s2">&quot;650um&quot;</span><span class="p">,</span>
+        <span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">readout</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;200um&quot;</span><span class="p">)),</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 
-<span class="n">coupler</span> <span class="o">=</span> <span class="n">RouteStraight</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;coupler&#39;</span><span class="p">,</span> <span class="n">Dict</span><span class="p">(</span><span class="n">hfss_wire_bonds</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="n">coupler</span> <span class="o">=</span> <span class="n">RouteStraight</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;coupler&quot;</span><span class="p">,</span>
+    <span class="n">Dict</span><span class="p">(</span>
+        <span class="n">hfss_wire_bonds</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-            <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s1">&#39;readout&#39;</span><span class="p">),</span>
-            <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s1">&#39;Q2&#39;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s1">&#39;readout&#39;</span><span class="p">)),</span> <span class="p">))</span>
+            <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;readout&quot;</span><span class="p">),</span>
+            <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q2&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;readout&quot;</span><span class="p">),</span>
+        <span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
@@ -2249,7 +2282,7 @@ Index: [0, 1]
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s1">&#39;junction&#39;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s2">&quot;junction&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -2349,10 +2382,10 @@ observe the change by re-executing the cell above.</p>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># TODO: fold this inside either an analysis class method, or inside the analysis class setup</span>
 
 <span class="n">qcomps</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">components</span>  <span class="c1"># short handle (alias)</span>
-<span class="n">qcomps</span><span class="p">[</span><span class="s1">&#39;Q1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;hfss_inductance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Lj1&#39;</span>
-<span class="n">qcomps</span><span class="p">[</span><span class="s1">&#39;Q1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;hfss_capacitance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Cj1&#39;</span>
-<span class="n">qcomps</span><span class="p">[</span><span class="s1">&#39;Q2&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;hfss_inductance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Lj2&#39;</span>
-<span class="n">qcomps</span><span class="p">[</span><span class="s1">&#39;Q2&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;hfss_capacitance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Cj2&#39;</span>
+<span class="n">qcomps</span><span class="p">[</span><span class="s2">&quot;Q1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;hfss_inductance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Lj1&quot;</span>
+<span class="n">qcomps</span><span class="p">[</span><span class="s2">&quot;Q1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;hfss_capacitance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Cj1&quot;</span>
+<span class="n">qcomps</span><span class="p">[</span><span class="s2">&quot;Q2&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;hfss_inductance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Lj2&quot;</span>
+<span class="n">qcomps</span><span class="p">[</span><span class="s2">&quot;Q2&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;hfss_capacitance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Cj2&quot;</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>  <span class="c1"># line needed to propagate the updates from the qubit instance into the junction design table</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
 </pre></div>
@@ -2369,6 +2402,7 @@ observe the change by re-executing the cell above.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.quantization</span><span class="w"> </span><span class="kn">import</span> <span class="n">EPRanalysis</span>
+
 <span class="n">eig_2qb</span> <span class="o">=</span> <span class="n">EPRanalysis</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;hfss&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -2386,8 +2420,7 @@ observe the change by re-executing the cell above.</p>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_2qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">max_passes</span> <span class="o">=</span> <span class="mi">15</span>
 <span class="n">eig_2qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">max_delta_f</span> <span class="o">=</span> <span class="mf">0.05</span>
 <span class="n">eig_2qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">n_modes</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">eig_2qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">vars</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">Lj1</span><span class="o">=</span> <span class="s1">&#39;13 nH&#39;</span><span class="p">,</span> <span class="n">Cj1</span><span class="o">=</span> <span class="s1">&#39;0 fF&#39;</span><span class="p">,</span>
-                           <span class="n">Lj2</span><span class="o">=</span> <span class="s1">&#39;9 nH&#39;</span><span class="p">,</span> <span class="n">Cj2</span><span class="o">=</span> <span class="s1">&#39;0 fF&#39;</span><span class="p">)</span>
+<span class="n">eig_2qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">vars</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">Lj1</span><span class="o">=</span><span class="s2">&quot;13 nH&quot;</span><span class="p">,</span> <span class="n">Cj1</span><span class="o">=</span><span class="s2">&quot;0 fF&quot;</span><span class="p">,</span> <span class="n">Lj2</span><span class="o">=</span><span class="s2">&quot;9 nH&quot;</span><span class="p">,</span> <span class="n">Cj2</span><span class="o">=</span><span class="s2">&quot;0 fF&quot;</span><span class="p">)</span>
 <span class="n">eig_2qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span>
 </pre></div>
 </div>
@@ -2419,8 +2452,8 @@ observe the change by re-executing the cell above.</p>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># TODO: fold this inside either an analysis class method, or inside the analysis class setup</span>
 
-<span class="n">eig_2qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;x_buffer_width_mm&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span>
-<span class="n">eig_2qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;y_buffer_width_mm&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">eig_2qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;x_buffer_width_mm&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">eig_2qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;y_buffer_width_mm&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span>
 <span class="n">eig_2qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">options</span>
 </pre></div>
 </div>
@@ -2463,8 +2496,7 @@ observe the change by re-executing the cell above.</p>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_2qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;TwoTransmons&quot;</span><span class="p">,</span>
-                <span class="n">components</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;coupler&#39;</span><span class="p">,</span> <span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="s1">&#39;Q2&#39;</span><span class="p">])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_2qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;TwoTransmons&quot;</span><span class="p">,</span> <span class="n">components</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;coupler&quot;</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;Q2&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -2531,7 +2563,7 @@ WindowsPath(&#39;C:/_code_ibmq/qiskit-metal-public/docs/tut/4-Analysis/ansys.png
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[47]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_2qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">plot_fields</span><span class="p">(</span><span class="s1">&#39;main&#39;</span><span class="p">,</span> <span class="n">eigenmode</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_2qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">plot_fields</span><span class="p">(</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="n">eigenmode</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">eig_2qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">save_screenshot</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -2571,7 +2603,7 @@ WindowsPath(&#39;C:/_code_ibmq/qiskit-metal-public/docs/tut/4-Analysis/ansys.png
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">del</span> <span class="n">eig_2qb</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">junctions</span><span class="p">[</span><span class="s1">&#39;jj&#39;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">del</span> <span class="n">eig_2qb</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">junctions</span><span class="p">[</span><span class="s2">&quot;jj&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -2579,11 +2611,19 @@ WindowsPath(&#39;C:/_code_ibmq/qiskit-metal-public/docs/tut/4-Analysis/ansys.png
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_2qb</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">junctions</span><span class="o">.</span><span class="n">jj1</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">rect</span><span class="o">=</span><span class="s1">&#39;JJ_rect_Lj_Q1_rect_jj&#39;</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="s1">&#39;JJ_Lj_Q1_rect_jj_&#39;</span><span class="p">,</span>
-                  <span class="n">Lj_variable</span><span class="o">=</span><span class="s1">&#39;Lj1&#39;</span><span class="p">,</span> <span class="n">Cj_variable</span><span class="o">=</span><span class="s1">&#39;Cj1&#39;</span><span class="p">)</span>
-<span class="n">eig_2qb</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">junctions</span><span class="o">.</span><span class="n">jj2</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">rect</span><span class="o">=</span><span class="s1">&#39;JJ_rect_Lj_Q2_rect_jj&#39;</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="s1">&#39;JJ_Lj_Q2_rect_jj_&#39;</span><span class="p">,</span>
-                  <span class="n">Lj_variable</span><span class="o">=</span><span class="s1">&#39;Lj2&#39;</span><span class="p">,</span> <span class="n">Cj_variable</span><span class="o">=</span><span class="s1">&#39;Cj2&#39;</span><span class="p">)</span>
-<span class="n">eig_2qb</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">sweep_variable</span> <span class="o">=</span> <span class="s1">&#39;Lj1&#39;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_2qb</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">junctions</span><span class="o">.</span><span class="n">jj1</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+    <span class="n">rect</span><span class="o">=</span><span class="s2">&quot;JJ_rect_Lj_Q1_rect_jj&quot;</span><span class="p">,</span>
+    <span class="n">line</span><span class="o">=</span><span class="s2">&quot;JJ_Lj_Q1_rect_jj_&quot;</span><span class="p">,</span>
+    <span class="n">Lj_variable</span><span class="o">=</span><span class="s2">&quot;Lj1&quot;</span><span class="p">,</span>
+    <span class="n">Cj_variable</span><span class="o">=</span><span class="s2">&quot;Cj1&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">eig_2qb</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">junctions</span><span class="o">.</span><span class="n">jj2</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+    <span class="n">rect</span><span class="o">=</span><span class="s2">&quot;JJ_rect_Lj_Q2_rect_jj&quot;</span><span class="p">,</span>
+    <span class="n">line</span><span class="o">=</span><span class="s2">&quot;JJ_Lj_Q2_rect_jj_&quot;</span><span class="p">,</span>
+    <span class="n">Lj_variable</span><span class="o">=</span><span class="s2">&quot;Lj2&quot;</span><span class="p">,</span>
+    <span class="n">Cj_variable</span><span class="o">=</span><span class="s2">&quot;Cj2&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">eig_2qb</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">sweep_variable</span> <span class="o">=</span> <span class="s2">&quot;Lj1&quot;</span>
 <span class="n">eig_2qb</span><span class="o">.</span><span class="n">setup</span>
 </pre></div>
 </div>

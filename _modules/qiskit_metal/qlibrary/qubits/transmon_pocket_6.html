@@ -800,35 +800,38 @@
 
     <span class="c1"># Default drawing options</span>
     <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">pad_gap</span><span class="o">=</span><span class="s1">&#39;30um&#39;</span><span class="p">,</span>
-        <span class="n">inductor_width</span><span class="o">=</span><span class="s1">&#39;20um&#39;</span><span class="p">,</span>
-        <span class="n">pad_width</span><span class="o">=</span><span class="s1">&#39;455um&#39;</span><span class="p">,</span>
-        <span class="n">pad_height</span><span class="o">=</span><span class="s1">&#39;90um&#39;</span><span class="p">,</span>
-        <span class="n">pocket_width</span><span class="o">=</span><span class="s1">&#39;650um&#39;</span><span class="p">,</span>
-        <span class="n">pocket_height</span><span class="o">=</span><span class="s1">&#39;650um&#39;</span><span class="p">,</span>
+        <span class="n">pad_gap</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span><span class="p">,</span>
+        <span class="n">inductor_width</span><span class="o">=</span><span class="s2">&quot;20um&quot;</span><span class="p">,</span>
+        <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;455um&quot;</span><span class="p">,</span>
+        <span class="n">pad_height</span><span class="o">=</span><span class="s2">&quot;90um&quot;</span><span class="p">,</span>
+        <span class="n">pocket_width</span><span class="o">=</span><span class="s2">&quot;650um&quot;</span><span class="p">,</span>
+        <span class="n">pocket_height</span><span class="o">=</span><span class="s2">&quot;650um&quot;</span><span class="p">,</span>
         <span class="c1"># 90 has dipole aligned along the +X axis,</span>
         <span class="c1"># while 0 has dipole aligned along the +Y axis</span>
         <span class="n">_default_connection_pads</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-            <span class="n">pad_gap</span><span class="o">=</span><span class="s1">&#39;15um&#39;</span><span class="p">,</span>
-            <span class="n">pad_width</span><span class="o">=</span><span class="s1">&#39;125um&#39;</span><span class="p">,</span>
-            <span class="n">pad_height</span><span class="o">=</span><span class="s1">&#39;30um&#39;</span><span class="p">,</span>
-            <span class="n">pad_cpw_shift</span><span class="o">=</span><span class="s1">&#39;0um&#39;</span><span class="p">,</span>
-            <span class="n">pad_cpw_extent</span><span class="o">=</span><span class="s1">&#39;25um&#39;</span><span class="p">,</span>
-            <span class="n">cpw_width</span><span class="o">=</span><span class="s1">&#39;10um&#39;</span><span class="p">,</span>
-            <span class="n">cpw_gap</span><span class="o">=</span><span class="s1">&#39;6um&#39;</span><span class="p">,</span>
+            <span class="n">pad_gap</span><span class="o">=</span><span class="s2">&quot;15um&quot;</span><span class="p">,</span>
+            <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;125um&quot;</span><span class="p">,</span>
+            <span class="n">pad_height</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span><span class="p">,</span>
+            <span class="n">pad_cpw_shift</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">,</span>
+            <span class="n">pad_cpw_extent</span><span class="o">=</span><span class="s2">&quot;25um&quot;</span><span class="p">,</span>
+            <span class="n">cpw_width</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
+            <span class="n">cpw_gap</span><span class="o">=</span><span class="s2">&quot;6um&quot;</span><span class="p">,</span>
             <span class="c1"># : cpw_extend: how far into the ground to extend the CPW line from the coupling pads</span>
-            <span class="n">cpw_extend</span><span class="o">=</span><span class="s1">&#39;100um&#39;</span><span class="p">,</span>
-            <span class="n">pocket_extent</span><span class="o">=</span><span class="s1">&#39;5um&#39;</span><span class="p">,</span>
-            <span class="n">pocket_rise</span><span class="o">=</span><span class="s1">&#39;0um&#39;</span><span class="p">,</span>
-            <span class="n">loc_W</span><span class="o">=</span><span class="s1">&#39;+1&#39;</span><span class="p">,</span>  <span class="c1"># width location  only +-1 or 0,</span>
-            <span class="n">loc_H</span><span class="o">=</span><span class="s1">&#39;+1&#39;</span><span class="p">,</span>  <span class="c1"># height location  only +-1 or 0</span>
-        <span class="p">))</span>
+            <span class="n">cpw_extend</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">,</span>
+            <span class="n">pocket_extent</span><span class="o">=</span><span class="s2">&quot;5um&quot;</span><span class="p">,</span>
+            <span class="n">pocket_rise</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">,</span>
+            <span class="n">loc_W</span><span class="o">=</span><span class="s2">&quot;+1&quot;</span><span class="p">,</span>  <span class="c1"># width location  only +-1 or 0,</span>
+            <span class="n">loc_H</span><span class="o">=</span><span class="s2">&quot;+1&quot;</span><span class="p">,</span>  <span class="c1"># height location  only +-1 or 0</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Default drawing options&quot;&quot;&quot;</span>
 
-    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s1">&#39;Pocket&#39;</span><span class="p">,</span>
-                              <span class="n">_qgeometry_table_path</span><span class="o">=</span><span class="s1">&#39;True&#39;</span><span class="p">,</span>
-                              <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s1">&#39;True&#39;</span><span class="p">,</span>
-                              <span class="n">_qgeometry_table_junction</span><span class="o">=</span><span class="s1">&#39;True&#39;</span><span class="p">)</span>
+    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+        <span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;Pocket&quot;</span><span class="p">,</span>
+        <span class="n">_qgeometry_table_path</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">,</span>
+        <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">,</span>
+        <span class="n">_qgeometry_table_junction</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Component metadata&quot;&quot;&quot;</span>
 
     <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Transmon pocket with 6 connection pads.&quot;&quot;&quot;</span>
@@ -863,8 +866,8 @@
 
         <span class="c1"># make the pads as rectangles (shapely polygons)</span>
         <span class="n">pad</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">pad_width</span><span class="p">,</span> <span class="n">pad_height</span><span class="p">)</span>
-        <span class="n">pad_top</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">pad</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">+</span><span class="p">(</span><span class="n">pad_height</span> <span class="o">+</span> <span class="n">pad_gap</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">)</span>
-        <span class="n">pad_bot</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">pad</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">pad_height</span> <span class="o">+</span> <span class="n">pad_gap</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">)</span>
+        <span class="n">pad_top</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">pad</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">+</span><span class="p">(</span><span class="n">pad_height</span> <span class="o">+</span> <span class="n">pad_gap</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span>
+        <span class="n">pad_bot</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">pad</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">pad_height</span> <span class="o">+</span> <span class="n">pad_gap</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span>
 
         <span class="n">rect_jj</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">pad_gap</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">+</span><span class="n">pad_gap</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)])</span>
         <span class="c1"># the draw.rectangle representing the josephson junction</span>
@@ -882,13 +885,11 @@
         <span class="p">[</span><span class="n">rect_jj</span><span class="p">,</span> <span class="n">pad_top</span><span class="p">,</span> <span class="n">pad_bot</span><span class="p">,</span> <span class="n">rect_pk</span><span class="p">]</span> <span class="o">=</span> <span class="n">polys</span>
 
         <span class="c1"># Use the geometry to create Metal qgeometry</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">pad_top</span><span class="o">=</span><span class="n">pad_top</span><span class="p">,</span> <span class="n">pad_bot</span><span class="o">=</span><span class="n">pad_bot</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">rect_pk</span><span class="o">=</span><span class="n">rect_pk</span><span class="p">),</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">pad_top</span><span class="o">=</span><span class="n">pad_top</span><span class="p">,</span> <span class="n">pad_bot</span><span class="o">=</span><span class="n">pad_bot</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">rect_pk</span><span class="o">=</span><span class="n">rect_pk</span><span class="p">),</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="c1"># self.add_qgeometry(&#39;poly&#39;, dict(</span>
         <span class="c1">#     rect_jj=rect_jj), helper=True)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;junction&#39;</span><span class="p">,</span>
-                           <span class="nb">dict</span><span class="p">(</span><span class="n">rect_jj</span><span class="o">=</span><span class="n">rect_jj</span><span class="p">),</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">inductor_width</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;junction&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">rect_jj</span><span class="o">=</span><span class="n">rect_jj</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">inductor_width</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="TransmonPocket6.make_connection_pads">
@@ -923,35 +924,38 @@
 
         <span class="n">loc_W</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">pc</span><span class="o">.</span><span class="n">loc_W</span><span class="p">)</span>
         <span class="n">loc_W</span><span class="p">,</span> <span class="n">loc_H</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">pc</span><span class="o">.</span><span class="n">loc_W</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">pc</span><span class="o">.</span><span class="n">loc_H</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">float</span><span class="p">(</span><span class="n">loc_W</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="o">+</span><span class="mf">1.</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="nb">float</span><span class="p">(</span><span class="n">loc_H</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="o">+</span><span class="mf">1.</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="nb">float</span><span class="p">(</span><span class="n">loc_W</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">+</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="nb">float</span><span class="p">(</span><span class="n">loc_H</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">+</span><span class="mf">1.0</span><span class="p">]:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                <span class="s1">&#39;Warning: Did you mean to define a transmon qubit with loc_W and&#39;</span>
-                <span class="s1">&#39; loc_H that are not +1, -1, or 0? Are you sure you want to do this?&#39;</span>
+                <span class="s2">&quot;Warning: Did you mean to define a transmon qubit with loc_W and&quot;</span>
+                <span class="s2">&quot; loc_H that are not +1, -1, or 0? Are you sure you want to do this?&quot;</span>
             <span class="p">)</span>
 
         <span class="c1"># Define the geometry</span>
         <span class="c1"># Connector pad</span>
 
         <span class="k">if</span> <span class="nb">float</span><span class="p">(</span><span class="n">loc_W</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">connector_pad</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">pad_width</span><span class="p">,</span> <span class="n">pad_height</span><span class="p">,</span>
-                                           <span class="o">-</span><span class="n">pad_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">pad_height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">connector_pad</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span>
+                <span class="n">pad_width</span><span class="p">,</span> <span class="n">pad_height</span><span class="p">,</span> <span class="o">-</span><span class="n">pad_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">pad_height</span> <span class="o">/</span> <span class="mi">2</span>
+            <span class="p">)</span>
             <span class="c1"># Connector CPW wire</span>
             <span class="n">connector_wire_path</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">wkt</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;LINESTRING (</span><span class="se">\</span>
-<span class="s2">                0 </span><span class="si">{</span><span class="n">pad_cpw_shift</span><span class="o">+</span><span class="n">cpw_width</span><span class="o">/</span><span class="mi">2</span><span class="si">}</span><span class="s2">, </span><span class="se">\</span>
-<span class="s2">                </span><span class="si">{</span><span class="n">pc</span><span class="o">.</span><span class="n">pad_cpw_extent</span><span class="si">}</span><span class="s2">                           </span><span class="si">{</span><span class="n">pad_cpw_shift</span><span class="o">+</span><span class="n">cpw_width</span><span class="o">/</span><span class="mi">2</span><span class="si">}</span><span class="s2">, </span><span class="se">\</span>
-<span class="s2">                </span><span class="si">{</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pocket_width</span><span class="o">-</span><span class="n">p</span><span class="o">.</span><span class="n">pad_width</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="o">-</span><span class="n">pocket_extent</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">pad_cpw_shift</span><span class="o">+</span><span class="n">cpw_width</span><span class="o">/</span><span class="mi">2</span><span class="o">+</span><span class="n">pocket_rise</span><span class="si">}</span><span class="s2">, </span><span class="se">\</span>
-<span class="s2">                </span><span class="si">{</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pocket_width</span><span class="o">-</span><span class="n">p</span><span class="o">.</span><span class="n">pad_width</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="o">+</span><span class="n">cpw_extend</span><span class="si">}</span><span class="s2">    </span><span class="si">{</span><span class="n">pad_cpw_shift</span><span class="o">+</span><span class="n">cpw_width</span><span class="o">/</span><span class="mi">2</span><span class="o">+</span><span class="n">pocket_rise</span><span class="si">}</span><span class="se">\</span>
+<span class="s2">                0 </span><span class="si">{</span><span class="n">pad_cpw_shift</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">cpw_width</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="si">}</span><span class="s2">, </span><span class="se">\</span>
+<span class="s2">                </span><span class="si">{</span><span class="n">pc</span><span class="o">.</span><span class="n">pad_cpw_extent</span><span class="si">}</span><span class="s2">                           </span><span class="si">{</span><span class="n">pad_cpw_shift</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">cpw_width</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="si">}</span><span class="s2">, </span><span class="se">\</span>
+<span class="s2">                </span><span class="si">{</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pocket_width</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">p</span><span class="o">.</span><span class="n">pad_width</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">pocket_extent</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">pad_cpw_shift</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">cpw_width</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">pocket_rise</span><span class="si">}</span><span class="s2">, </span><span class="se">\</span>
+<span class="s2">                </span><span class="si">{</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pocket_width</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">p</span><span class="o">.</span><span class="n">pad_width</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">cpw_extend</span><span class="si">}</span><span class="s2">    </span><span class="si">{</span><span class="n">pad_cpw_shift</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">cpw_width</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">pocket_rise</span><span class="si">}</span><span class="se">\</span>
 <span class="s2">                                            )&quot;&quot;&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">connector_pad</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">pad_width</span><span class="p">,</span> <span class="n">pad_height</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
-                                           <span class="n">pad_height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">connector_pad</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">pad_width</span><span class="p">,</span> <span class="n">pad_height</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pad_height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
             <span class="n">connector_wire_path</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">(</span>
-                <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="n">pad_height</span><span class="p">],</span>
-                 <span class="p">[</span>
-                     <span class="mi">0</span><span class="p">,</span>
-                     <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pocket_width</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_gap</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span>
-                      <span class="n">pc</span><span class="o">.</span><span class="n">pad_gap</span><span class="p">)</span> <span class="o">+</span> <span class="n">cpw_extend</span>
-                 <span class="p">]])</span>
+                <span class="p">[</span>
+                    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">pad_height</span><span class="p">],</span>
+                    <span class="p">[</span>
+                        <span class="mi">0</span><span class="p">,</span>
+                        <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pocket_width</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_gap</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">pc</span><span class="o">.</span><span class="n">pad_gap</span><span class="p">)</span>
+                        <span class="o">+</span> <span class="n">cpw_extend</span><span class="p">,</span>
+                    <span class="p">],</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
 
         <span class="c1"># Position the connector, rotate and translate</span>
         <span class="n">objects</span> <span class="o">=</span> <span class="p">[</span><span class="n">connector_pad</span><span class="p">,</span> <span class="n">connector_wire_path</span><span class="p">]</span>
@@ -964,27 +968,28 @@
         <span class="n">objects</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="n">loc_Woff</span><span class="p">,</span> <span class="n">loc_H</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
         <span class="n">objects</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span>
             <span class="n">objects</span><span class="p">,</span>
-            <span class="n">loc_W</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pad_width</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">,</span>
-            <span class="n">loc_H</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_gap</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">pc</span><span class="o">.</span><span class="n">pad_gap</span><span class="p">))</span>
-        <span class="n">objects</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate_position</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span>
-                                       <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">pos_x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_y</span><span class="p">])</span>
+            <span class="n">loc_W</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pad_width</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+            <span class="n">loc_H</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_gap</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">pc</span><span class="o">.</span><span class="n">pad_gap</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">objects</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate_position</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">pos_x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_y</span><span class="p">])</span>
         <span class="p">[</span><span class="n">connector_pad</span><span class="p">,</span> <span class="n">connector_wire_path</span><span class="p">]</span> <span class="o">=</span> <span class="n">objects</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="p">{</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">_connector_pad&#39;</span><span class="p">:</span> <span class="n">connector_pad</span><span class="p">})</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="p">{</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">_wire&#39;</span><span class="p">:</span> <span class="n">connector_wire_path</span><span class="p">},</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">cpw_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="p">{</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">_wire_sub&#39;</span><span class="p">:</span> <span class="n">connector_wire_path</span><span class="p">},</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">cpw_width</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pc</span><span class="o">.</span><span class="n">cpw_gap</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="p">{</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_connector_pad&quot;</span><span class="p">:</span> <span class="n">connector_pad</span><span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="p">{</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_wire&quot;</span><span class="p">:</span> <span class="n">connector_wire_path</span><span class="p">},</span> <span class="n">width</span><span class="o">=</span><span class="n">cpw_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span>
+            <span class="p">{</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_wire_sub&quot;</span><span class="p">:</span> <span class="n">connector_wire_path</span><span class="p">},</span>
+            <span class="n">width</span><span class="o">=</span><span class="n">cpw_width</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pc</span><span class="o">.</span><span class="n">cpw_gap</span><span class="p">,</span>
+            <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="c1">############################################################</span>
 
         <span class="c1"># add pins</span>
         <span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">connector_wire_path</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="n">name</span><span class="p">,</span>
-                     <span class="n">points</span><span class="o">=</span><span class="n">points</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:],</span>
-                     <span class="n">width</span><span class="o">=</span><span class="n">cpw_width</span><span class="p">,</span>
-                     <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">points</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:],</span> <span class="n">width</span><span class="o">=</span><span class="n">cpw_width</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

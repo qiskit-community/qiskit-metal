@@ -701,10 +701,11 @@
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deepcopy</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.toolbox_python.attr_dict</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.core.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">QComponent</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pprint</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deepcopy</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.core.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">QComponent</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.toolbox_python.attr_dict</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span>
 
 
 <div class="viewcode-block" id="BaseQubit">
@@ -723,22 +724,23 @@
 <span class="sd">        * _default_connection_pads: empty Dict -- The default values for the (if any) connection lines of the qubit.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">connection_pads</span><span class="o">=</span><span class="n">Dict</span><span class="p">(),</span>
-                           <span class="n">_default_connection_pads</span><span class="o">=</span><span class="n">Dict</span><span class="p">())</span>
+    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">connection_pads</span><span class="o">=</span><span class="n">Dict</span><span class="p">(),</span> <span class="n">_default_connection_pads</span><span class="o">=</span><span class="n">Dict</span><span class="p">())</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Default options.&quot;&quot;&quot;</span>
 
-    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s1">&#39;Q&#39;</span><span class="p">,</span> <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s1">&#39;True&#39;</span><span class="p">)</span>
+    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;Q&quot;</span><span class="p">,</span> <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Component metadata&quot;&quot;&quot;</span>
 
     <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Qubit&quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">design</span><span class="p">,</span>
-                 <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">options</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">options_connection_pads</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">make</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-                 <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">design</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">options</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">options_connection_pads</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">make</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Args:</span>
 <span class="sd">            design (QDesign): The parent design.</span>
@@ -750,7 +752,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">,</span> <span class="n">make</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s1">&#39;Not Built&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;Not Built&quot;</span><span class="p">:</span>
             <span class="c1"># Component is not registered in design.</span>
             <span class="c1"># This qubit was not added to design.</span>
             <span class="c1"># self.logger.warning(</span>
@@ -771,8 +773,9 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_options_connection_pads</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Applies the default options.&quot;&quot;&quot;</span>
         <span class="c1"># class_name = type(self).__name__</span>
-        <span class="k">assert</span> <span class="s1">&#39;_default_connection_pads&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">template_options</span><span class="p">[</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">class_name</span><span class="p">],</span> <span class="s2">&quot;&quot;&quot;When</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="s2">&quot;_default_connection_pads&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">template_options</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">class_name</span><span class="p">]</span>
+        <span class="p">),</span> <span class="s2">&quot;&quot;&quot;When</span>
 <span class="s2">        you define your custom qubit class please add a _default_connection_pads</span>
 <span class="s2">        dictionary name as default_options[&#39;_default_connection_pads&#39;]. This should specify the default</span>
 <span class="s2">        creation options for the connection. &quot;&quot;&quot;</span>
@@ -784,10 +787,11 @@
         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">connection_pads</span><span class="p">:</span>
             <span class="n">my_options_connection_pads</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">connection_pads</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">connection_pads</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">template_options</span><span class="p">[</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">class_name</span><span class="p">][</span><span class="s1">&#39;_default_connection_pads&#39;</span><span class="p">])</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">connection_pads</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-                <span class="n">my_options_connection_pads</span><span class="p">)</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">template_options</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">class_name</span><span class="p">][</span>
+                    <span class="s2">&quot;_default_connection_pads&quot;</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">connection_pads</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">my_options_connection_pads</span><span class="p">)</span></div>
 
 </pre></div>
         </article>

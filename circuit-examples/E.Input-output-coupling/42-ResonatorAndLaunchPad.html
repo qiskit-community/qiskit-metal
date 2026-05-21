@@ -704,8 +704,8 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Enables module automatic reload.</span>
-<span class="c1">#Your notebook will be able to pick up code updates made to qiskit-metal (or other) module code.</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Enables module automatic reload.</span>
+<span class="c1"># Your notebook will be able to pick up code updates made to qiskit-metal (or other) module code.</span>
 
 <span class="o">%</span><span class="k">reload_ext</span> autoreload
 <span class="o">%</span><span class="k">autoreload</span> 2
@@ -733,9 +733,11 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.terminations.launchpad_wb_coupled</span><span class="w"> </span><span class="kn">import</span> <span class="n">LaunchpadWirebondCoupled</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.terminations.launchpad_wb_coupled</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">LaunchpadWirebondCoupled</span><span class="p">,</span>
+<span class="p">)</span>
 
-<span class="c1">#Explore the options of the LaunchpadWirebondCoupled.</span>
+<span class="c1"># Explore the options of the LaunchpadWirebondCoupled.</span>
 <span class="n">LaunchpadWirebondCoupled</span><span class="o">.</span><span class="n">get_template_options</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -762,7 +764,7 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.tlines.meandered</span><span class="w"> </span><span class="kn">import</span> <span class="n">RouteMeander</span>
 
-<span class="c1">#Explore the options of the RouteMeander.</span>
+<span class="c1"># Explore the options of the RouteMeander.</span>
 <span class="n">RouteMeander</span><span class="o">.</span><span class="n">get_template_options</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -795,7 +797,7 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.terminations.open_to_ground</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenToGround</span>
 
-<span class="c1">#Explore the options of the OpenToGround.</span>
+<span class="c1"># Explore the options of the OpenToGround.</span>
 <span class="n">OpenToGround</span><span class="o">.</span><span class="n">get_template_options</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -820,10 +822,12 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Setup the launchpad location and orientation.</span>
-<span class="n">launch_options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;990um&#39;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;2812um&#39;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;270&#39;</span><span class="p">,</span> <span class="n">lead_length</span><span class="o">=</span><span class="s1">&#39;30um&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Setup the launchpad location and orientation.</span>
+<span class="n">launch_options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;990um&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;2812um&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;270&quot;</span><span class="p">,</span> <span class="n">lead_length</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span>
+<span class="p">)</span>
 
-<span class="n">lp</span> <span class="o">=</span> <span class="n">LaunchpadWirebondCoupled</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;P4_Q&#39;</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="n">launch_options</span><span class="p">)</span>
+<span class="n">lp</span> <span class="o">=</span> <span class="n">LaunchpadWirebondCoupled</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;P4_Q&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">launch_options</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -831,10 +835,10 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Setup the OpenToGround location and orientation.</span>
-<span class="n">otg_options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;2.5mm&#39;</span><span class="p">,</span>  <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;0.5mm&#39;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;0&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Setup the OpenToGround location and orientation.</span>
+<span class="n">otg_options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;2.5mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0.5mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">)</span>
 
-<span class="n">otg</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;open_to_ground&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">otg_options</span><span class="p">)</span>
+<span class="n">otg</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;open_to_ground&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">otg_options</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -842,16 +846,18 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#After the two QComponents are added to design, connect them with a RouteMeander.</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># After the two QComponents are added to design, connect them with a RouteMeander.</span>
 <span class="n">meander_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">total_length</span><span class="o">=</span><span class="s1">&#39;10 mm&#39;</span><span class="p">,</span>
-        <span class="n">fillet</span><span class="o">=</span><span class="s1">&#39;90 um&#39;</span><span class="p">,</span>
-        <span class="n">lead</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s1">&#39;100um&#39;</span><span class="p">),</span>
-        <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-            <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="n">lp</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s1">&#39;tie&#39;</span><span class="p">),</span>
-            <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="n">otg</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s1">&#39;open&#39;</span><span class="p">)),</span> <span class="p">)</span>
+    <span class="n">total_length</span><span class="o">=</span><span class="s2">&quot;10 mm&quot;</span><span class="p">,</span>
+    <span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;90 um&quot;</span><span class="p">,</span>
+    <span class="n">lead</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">),</span>
+    <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
+        <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="n">lp</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;tie&quot;</span><span class="p">),</span>
+        <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="n">otg</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;open&quot;</span><span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 
-<span class="n">meander</span> <span class="o">=</span> <span class="n">RouteMeander</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;bus&#39;</span><span class="p">,</span>  <span class="n">options</span><span class="o">=</span><span class="n">meander_options</span><span class="p">)</span>
+<span class="n">meander</span> <span class="o">=</span> <span class="n">RouteMeander</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;bus&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">meander_options</span><span class="p">)</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
 </pre></div>
@@ -930,7 +936,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Save screenshot as a .png formatted file.</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Save screenshot as a .png formatted file.</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -947,12 +953,13 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Screenshot the canvas only as a .png formatted file.</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;shot.png&#39;</span><span class="p">)</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;shot.png&quot;</span><span class="p">)</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">display</span>
+
 <span class="n">_disp_ops</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;shot.png&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">_disp_ops</span><span class="p">))</span>
-<br/></pre></div>
+<span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="s2">&quot;shot.png&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">_disp_ops</span><span class="p">))</span>
+</pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">

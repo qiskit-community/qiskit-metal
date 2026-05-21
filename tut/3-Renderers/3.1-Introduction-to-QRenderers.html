@@ -731,8 +731,10 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Headings</span><span class="o">.</span><span class="n">h1</span><span class="p">(</span><span class="s1">&#39;The default_options in a QComponent are different than the default_options in QRenderers.&#39;</span><span class="p">)</span>
-<br/></pre></div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Headings</span><span class="o">.</span><span class="n">h1</span><span class="p">(</span>
+    <span class="s2">&quot;The default_options in a QComponent are different than the default_options in QRenderers.&quot;</span>
+<span class="p">)</span>
+</pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -747,7 +749,7 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">TransmonPocket</span><span class="o">.</span><span class="n">default_options</span>
-<br/></pre></div>
+</pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -850,7 +852,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Headings</span><span class="o">.</span><span class="n">h1</span><span class="p">(</span><span class="s1">&#39;How does a QRenderer get registered within QDesign?&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Headings</span><span class="o">.</span><span class="n">h1</span><span class="p">(</span><span class="s2">&quot;How does a QRenderer get registered within QDesign?&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -882,12 +884,12 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use GDS QRenderer for remaining examples.  Can do similar things with Ansys QRenderer.</span>
 
-<span class="c1">#an_ansys = design._renderers[&#39;ansys&#39;]</span>
-<span class="c1">#an_ansys = design._renderers.ansys</span>
+<span class="c1"># an_ansys = design._renderers[&#39;ansys&#39;]</span>
+<span class="c1"># an_ansys = design._renderers.ansys</span>
 
-<span class="c1">#a_gds = design._renderers[&#39;gds&#39;]</span>
+<span class="c1"># a_gds = design._renderers[&#39;gds&#39;]</span>
 <span class="n">a_gds</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">_renderers</span><span class="o">.</span><span class="n">gds</span>
-<br/></pre></div>
+</pre></div>
 </div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -903,7 +905,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Headings</span><span class="o">.</span><span class="n">h1</span><span class="p">(</span><span class="s1">&#39;Populate QDesign to demonstrate exporting to GDS format.&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Headings</span><span class="o">.</span><span class="n">h1</span><span class="p">(</span><span class="s2">&quot;Populate QDesign to demonstrate exporting to GDS format.&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -926,16 +928,16 @@
 <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
     <span class="c1"># Some options we want to modify from the deafults</span>
     <span class="c1"># (see below for defaults)</span>
-    <span class="n">pad_width</span> <span class="o">=</span> <span class="s1">&#39;425 um&#39;</span><span class="p">,</span>
-    <span class="n">pad_gap</span> <span class="o">=</span> <span class="s1">&#39;80 um&#39;</span><span class="p">,</span>
-    <span class="n">pocket_height</span> <span class="o">=</span> <span class="s1">&#39;650um&#39;</span><span class="p">,</span>
+    <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;425 um&quot;</span><span class="p">,</span>
+    <span class="n">pad_gap</span><span class="o">=</span><span class="s2">&quot;80 um&quot;</span><span class="p">,</span>
+    <span class="n">pocket_height</span><span class="o">=</span><span class="s2">&quot;650um&quot;</span><span class="p">,</span>
     <span class="c1"># Adding 4 connectors (see below for defaults)</span>
     <span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span><span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">),</span>
-        <span class="n">b</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span><span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s1">&#39;30um&#39;</span><span class="p">),</span>
-        <span class="n">c</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span><span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s1">&#39;200um&#39;</span><span class="p">),</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span><span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s1">&#39;50um&#39;</span><span class="p">)</span>
-    <span class="p">)</span>
+        <span class="n">a</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">b</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span><span class="p">),</span>
+        <span class="n">c</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;200um&quot;</span><span class="p">),</span>
+        <span class="n">d</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s2">&quot;50um&quot;</span><span class="p">),</span>
+    <span class="p">),</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -955,14 +957,42 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Create 4 TransmonPockets</span>
 
-<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;+2.55mm&#39;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;+0.0mm&#39;</span><span class="p">,</span> <span class="n">gds_cell_name</span><span class="o">=</span><span class="s1">&#39;FakeJunction_02&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">))</span>
-<span class="n">q2</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;Q2&#39;</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;+0.0mm&#39;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;-0.9mm&#39;</span><span class="p">,</span> <span class="n">orientation</span> <span class="o">=</span> <span class="s1">&#39;90&#39;</span><span class="p">,</span> <span class="n">gds_cell_name</span><span class="o">=</span><span class="s1">&#39;FakeJunction_02&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">))</span>
-<span class="n">q3</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;Q3&#39;</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;-2.55mm&#39;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;+0.0mm&#39;</span><span class="p">,</span> <span class="n">gds_cell_name</span><span class="o">=</span><span class="s1">&#39;FakeJunction_01&#39;</span><span class="p">,</span><span class="o">**</span><span class="n">options</span><span class="p">))</span>
-<span class="n">q4</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;Q4&#39;</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;+0.0mm&#39;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;+0.9mm&#39;</span><span class="p">,</span> <span class="n">orientation</span> <span class="o">=</span> <span class="s1">&#39;90&#39;</span><span class="p">,</span> <span class="n">gds_cell_name</span><span class="o">=</span><span class="s1">&#39;my_other_junction&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">))</span>
+<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;Q1&quot;</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;+2.55mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;+0.0mm&quot;</span><span class="p">,</span> <span class="n">gds_cell_name</span><span class="o">=</span><span class="s2">&quot;FakeJunction_02&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+<span class="n">q2</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;Q2&quot;</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;+0.0mm&quot;</span><span class="p">,</span>
+        <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;-0.9mm&quot;</span><span class="p">,</span>
+        <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;90&quot;</span><span class="p">,</span>
+        <span class="n">gds_cell_name</span><span class="o">=</span><span class="s2">&quot;FakeJunction_02&quot;</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">options</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+<span class="n">q3</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;Q3&quot;</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;-2.55mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;+0.0mm&quot;</span><span class="p">,</span> <span class="n">gds_cell_name</span><span class="o">=</span><span class="s2">&quot;FakeJunction_01&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+<span class="n">q4</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;Q4&quot;</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;+0.0mm&quot;</span><span class="p">,</span>
+        <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;+0.9mm&quot;</span><span class="p">,</span>
+        <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;90&quot;</span><span class="p">,</span>
+        <span class="n">gds_cell_name</span><span class="o">=</span><span class="s2">&quot;my_other_junction&quot;</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">options</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -974,51 +1004,53 @@
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
 
-<span class="c1">#Connect using techniques explained earlier notebooks.</span>
+<span class="c1"># Connect using techniques explained earlier notebooks.</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.tlines.meandered</span><span class="w"> </span><span class="kn">import</span> <span class="n">RouteMeander</span>
+
 <span class="n">RouteMeander</span><span class="o">.</span><span class="n">get_template_options</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
 
-<span class="n">options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-    <span class="n">meander</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-        <span class="n">lead_start</span><span class="o">=</span><span class="s1">&#39;0.1mm&#39;</span><span class="p">,</span>
-        <span class="n">lead_end</span><span class="o">=</span><span class="s1">&#39;0.1mm&#39;</span><span class="p">,</span>
-        <span class="n">asymmetry</span><span class="o">=</span><span class="s1">&#39;0 um&#39;</span><span class="p">)</span>
-<span class="p">)</span>
+<span class="n">options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">meander</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">lead_start</span><span class="o">=</span><span class="s2">&quot;0.1mm&quot;</span><span class="p">,</span> <span class="n">lead_end</span><span class="o">=</span><span class="s2">&quot;0.1mm&quot;</span><span class="p">,</span> <span class="n">asymmetry</span><span class="o">=</span><span class="s2">&quot;0 um&quot;</span><span class="p">))</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">connect</span><span class="p">(</span><span class="n">component_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">component1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pin1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">component2</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pin2</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-            <span class="n">length</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">asymmetry</span><span class="o">=</span><span class="s1">&#39;0 um&#39;</span><span class="p">,</span> <span class="n">flip</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fillet</span><span class="o">=</span><span class="s1">&#39;50um&#39;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">connect</span><span class="p">(</span>
+    <span class="n">component_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">component1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">pin1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">component2</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">pin2</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">length</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">asymmetry</span><span class="o">=</span><span class="s2">&quot;0 um&quot;</span><span class="p">,</span>
+    <span class="n">flip</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;50um&quot;</span><span class="p">,</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Connect two pins with a CPW.&quot;&quot;&quot;</span>
     <span class="n">myoptions</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
         <span class="n">fillet</span><span class="o">=</span><span class="n">fillet</span><span class="p">,</span>
         <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-            <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-                <span class="n">component</span><span class="o">=</span><span class="n">component1</span><span class="p">,</span>
-                <span class="n">pin</span><span class="o">=</span><span class="n">pin1</span><span class="p">),</span>
-            <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-                <span class="n">component</span><span class="o">=</span><span class="n">component2</span><span class="p">,</span>
-                <span class="n">pin</span><span class="o">=</span><span class="n">pin2</span><span class="p">)),</span>
-        <span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-            <span class="n">start_straight</span><span class="o">=</span><span class="s1">&#39;0.13mm&#39;</span><span class="p">,</span>
-            <span class="n">end_straight</span><span class="o">=</span><span class="s1">&#39;0.13mm&#39;</span>
+            <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="n">component1</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="n">pin1</span><span class="p">),</span>
+            <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="n">component2</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="n">pin2</span><span class="p">),</span>
         <span class="p">),</span>
-        <span class="n">total_length</span><span class="o">=</span><span class="n">length</span><span class="p">)</span>
+        <span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">&quot;0.13mm&quot;</span><span class="p">,</span> <span class="n">end_straight</span><span class="o">=</span><span class="s2">&quot;0.13mm&quot;</span><span class="p">),</span>
+        <span class="n">total_length</span><span class="o">=</span><span class="n">length</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="n">myoptions</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
     <span class="n">myoptions</span><span class="o">.</span><span class="n">meander</span><span class="o">.</span><span class="n">asymmetry</span> <span class="o">=</span> <span class="n">asymmetry</span>
-    <span class="n">myoptions</span><span class="o">.</span><span class="n">meander</span><span class="o">.</span><span class="n">lead_direction_inverted</span> <span class="o">=</span> <span class="s1">&#39;true&#39;</span> <span class="k">if</span> <span class="n">flip</span> <span class="k">else</span> <span class="s1">&#39;false&#39;</span>
+    <span class="n">myoptions</span><span class="o">.</span><span class="n">meander</span><span class="o">.</span><span class="n">lead_direction_inverted</span> <span class="o">=</span> <span class="s2">&quot;true&quot;</span> <span class="k">if</span> <span class="n">flip</span> <span class="k">else</span> <span class="s2">&quot;false&quot;</span>
     <span class="k">return</span> <span class="n">RouteMeander</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="n">component_name</span><span class="p">,</span> <span class="n">myoptions</span><span class="p">)</span>
 
 
 <span class="n">asym</span> <span class="o">=</span> <span class="mi">90</span>
-<span class="n">cpw1</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s1">&#39;cpw1&#39;</span><span class="p">,</span> <span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;Q2&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;5.7 mm&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;+</span><span class="si">{</span><span class="n">asym</span><span class="si">}</span><span class="s1">um&#39;</span><span class="p">,</span> <span class="n">fillet</span><span class="o">=</span><span class="s1">&#39;25um&#39;</span><span class="p">)</span>
-<span class="n">cpw2</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s1">&#39;cpw2&#39;</span><span class="p">,</span> <span class="s1">&#39;Q3&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;Q2&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;5.4 mm&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;-</span><span class="si">{</span><span class="n">asym</span><span class="si">}</span><span class="s1">um&#39;</span><span class="p">,</span> <span class="n">flip</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fillet</span><span class="o">=</span><span class="s1">&#39;100um&#39;</span><span class="p">)</span>
-<span class="n">cpw3</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s1">&#39;cpw3&#39;</span><span class="p">,</span> <span class="s1">&#39;Q3&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;Q4&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;5.3 mm&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;+</span><span class="si">{</span><span class="n">asym</span><span class="si">}</span><span class="s1">um&#39;</span><span class="p">,</span> <span class="n">fillet</span><span class="o">=</span><span class="s1">&#39;75um&#39;</span><span class="p">)</span>
-<span class="n">cpw4</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s1">&#39;cpw4&#39;</span><span class="p">,</span> <span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;Q4&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;5.5 mm&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;-</span><span class="si">{</span><span class="n">asym</span><span class="si">}</span><span class="s1">um&#39;</span><span class="p">,</span> <span class="n">flip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">cpw1</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s2">&quot;cpw1&quot;</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="s2">&quot;Q2&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;5.7 mm&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;+</span><span class="si">{</span><span class="n">asym</span><span class="si">}</span><span class="s2">um&quot;</span><span class="p">,</span> <span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;25um&quot;</span><span class="p">)</span>
+<span class="n">cpw2</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span>
+    <span class="s2">&quot;cpw2&quot;</span><span class="p">,</span> <span class="s2">&quot;Q3&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;Q2&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;5.4 mm&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;-</span><span class="si">{</span><span class="n">asym</span><span class="si">}</span><span class="s2">um&quot;</span><span class="p">,</span> <span class="n">flip</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span>
+<span class="p">)</span>
+<span class="n">cpw3</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s2">&quot;cpw3&quot;</span><span class="p">,</span> <span class="s2">&quot;Q3&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;Q4&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;5.3 mm&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;+</span><span class="si">{</span><span class="n">asym</span><span class="si">}</span><span class="s2">um&quot;</span><span class="p">,</span> <span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;75um&quot;</span><span class="p">)</span>
+<span class="n">cpw4</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s2">&quot;cpw4&quot;</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;Q4&quot;</span><span class="p">,</span> <span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="s2">&quot;5.5 mm&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;-</span><span class="si">{</span><span class="n">asym</span><span class="si">}</span><span class="s2">um&quot;</span><span class="p">,</span> <span class="n">flip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
-<br/></pre></div>
+</pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -1040,7 +1072,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Headings</span><span class="o">.</span><span class="n">h1</span><span class="p">(</span><span class="s1">&#39;Exporting a GDS file.&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Headings</span><span class="o">.</span><span class="n">h1</span><span class="p">(</span><span class="s2">&quot;Exporting a GDS file.&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1054,12 +1086,12 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#QDesign enables GDS renderer during init.</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># QDesign enables GDS renderer during init.</span>
 <span class="n">a_gds</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">gds</span>
 <span class="c1"># An alternate way to envoke the gds commands without using a_gds:</span>
 <span class="c1"># design.renderers.gds.export_to_gds()</span>
 
-<span class="c1">#Show the options for GDS</span>
+<span class="c1"># Show the options for GDS</span>
 <span class="n">a_gds</span><span class="o">.</span><span class="n">options</span>
 </pre></div>
 </div>
@@ -1108,7 +1140,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a_gds</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;path_filename&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;../resources/Fake_Junctions.GDS&#39;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a_gds</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;path_filename&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;../resources/Fake_Junctions.GDS&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -1117,11 +1149,11 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#If you have a fillet_value and there are LineSegments that are shorter than 2*fillet_value,</span>
-<span class="c1">#When true, the short segments will not be fillet&#39;d.</span>
-<span class="n">a_gds</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;short_segments_to_not_fillet&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;True&#39;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># If you have a fillet_value and there are LineSegments that are shorter than 2*fillet_value,</span>
+<span class="c1"># When true, the short segments will not be fillet&#39;d.</span>
+<span class="n">a_gds</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;short_segments_to_not_fillet&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;True&quot;</span>
 <span class="n">scale_fillet</span> <span class="o">=</span> <span class="mf">2.0</span>
-<span class="n">a_gds</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;check_short_segments_by_scaling_fillet&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scale_fillet</span>
+<span class="n">a_gds</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;check_short_segments_by_scaling_fillet&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scale_fillet</span>
 </pre></div>
 </div>
 </div>
@@ -1130,15 +1162,15 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Export GDS file for all components in design.</span>
-<span class="c1">#def export_to_gds(self, file_name: str, highlight_qcomponents: list = []) -&gt; int:</span>
+<span class="c1"># def export_to_gds(self, file_name: str, highlight_qcomponents: list = []) -&gt; int:</span>
 
 
 <span class="c1"># Please change the path where you want to write a GDS file.</span>
-<span class="c1">#Examples below.</span>
-<span class="c1">#a_gds.export_to_gds(&quot;../../../gds-files/GDS QRenderer Notebook.gds&quot;)</span>
+<span class="c1"># Examples below.</span>
+<span class="c1"># a_gds.export_to_gds(&quot;../../../gds-files/GDS QRenderer Notebook.gds&quot;)</span>
 
-<span class="n">a_gds</span><span class="o">.</span><span class="n">export_to_gds</span><span class="p">(</span><span class="s1">&#39;GDS QRenderer Notebook.gds&#39;</span><span class="p">)</span>
-<br/><br/></pre></div>
+<span class="n">a_gds</span><span class="o">.</span><span class="n">export_to_gds</span><span class="p">(</span><span class="s2">&quot;GDS QRenderer Notebook.gds&quot;</span><span class="p">)</span>
+</pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1158,9 +1190,10 @@
 
 <span class="c1"># You will probably want to put the exported file in a specific directory.</span>
 <span class="c1"># Please give the full path for output.</span>
-<span class="n">a_gds</span><span class="o">.</span><span class="n">export_to_gds</span><span class="p">(</span><span class="s2">&quot;four_qcomponents.gds&quot;</span><span class="p">,</span>
-                           <span class="n">highlight_qcomponents</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cpw1&#39;</span><span class="p">,</span> <span class="s1">&#39;cpw4&#39;</span><span class="p">,</span> <span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="s1">&#39;Q3&#39;</span><span class="p">])</span>
-<br/><br/></pre></div>
+<span class="n">a_gds</span><span class="o">.</span><span class="n">export_to_gds</span><span class="p">(</span>
+    <span class="s2">&quot;four_qcomponents.gds&quot;</span><span class="p">,</span> <span class="n">highlight_qcomponents</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;cpw1&quot;</span><span class="p">,</span> <span class="s2">&quot;cpw4&quot;</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;Q3&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1181,7 +1214,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Headings</span><span class="o">.</span><span class="n">h1</span><span class="p">(</span><span class="s1">&#39;QUESTION:  Where is the geometry of a QComponent placed?&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Headings</span><span class="o">.</span><span class="n">h1</span><span class="p">(</span><span class="s2">&quot;QUESTION:  Where is the geometry of a QComponent placed?&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1204,12 +1237,12 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Many ways to view the QGeometry tables.</span>
-<span class="c1">#If you want to view, uncomment below lines and and run it.</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Many ways to view the QGeometry tables.</span>
+<span class="c1"># If you want to view, uncomment below lines and and run it.</span>
 
-<span class="c1">#design.qgeometry.tables</span>
-<span class="c1">#design.qgeometry.tables[&#39;path&#39;]</span>
-<span class="c1">#design.qgeometry.tables[&#39;poly&#39;]</span>
+<span class="c1"># design.qgeometry.tables</span>
+<span class="c1"># design.qgeometry.tables[&#39;path&#39;]</span>
+<span class="c1"># design.qgeometry.tables[&#39;poly&#39;]</span>
 </pre></div>
 </div>
 </div>
@@ -1217,7 +1250,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s1">&#39;junction&#39;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s2">&quot;junction&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -1356,7 +1389,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span><span class="o">.</span><span class="n">qgeometry_table</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span><span class="o">.</span><span class="n">qgeometry_table</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1480,7 +1513,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span><span class="o">.</span><span class="n">qgeometry_table</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span><span class="o">.</span><span class="n">qgeometry_table</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1648,7 +1681,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span><span class="o">.</span><span class="n">qgeometry_table</span><span class="p">(</span><span class="s1">&#39;junction&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span><span class="o">.</span><span class="n">qgeometry_table</span><span class="p">(</span><span class="s2">&quot;junction&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

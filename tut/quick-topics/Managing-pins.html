@@ -716,7 +716,8 @@
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">metal</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">designs</span><span class="p">,</span> <span class="n">draw</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">MetalGUI</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Headings</span>
-<span class="n">Headings</span><span class="o">.</span><span class="n">h1</span><span class="p">(</span><span class="s1">&#39;Welcome to Qiskit Metal&#39;</span><span class="p">)</span>
+
+<span class="n">Headings</span><span class="o">.</span><span class="n">h1</span><span class="p">(</span><span class="s2">&quot;Welcome to Qiskit Metal&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -746,27 +747,35 @@
 <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
     <span class="c1"># Some options we want to modify from the deafults</span>
     <span class="c1"># (see below for defaults)</span>
-    <span class="n">pad_width</span> <span class="o">=</span> <span class="s1">&#39;425 um&#39;</span><span class="p">,</span>
-    <span class="n">pocket_height</span> <span class="o">=</span> <span class="s1">&#39;650um&#39;</span><span class="p">,</span>
+    <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;425 um&quot;</span><span class="p">,</span>
+    <span class="n">pocket_height</span><span class="o">=</span><span class="s2">&quot;650um&quot;</span><span class="p">,</span>
     <span class="c1"># Adding 4 connectors (see below for defaults)</span>
     <span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span><span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">),</span>
-        <span class="n">b</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span><span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s1">&#39;30um&#39;</span><span class="p">),</span>
-        <span class="n">c</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span><span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s1">&#39;200um&#39;</span><span class="p">),</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span><span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s1">&#39;50um&#39;</span><span class="p">)</span>
-    <span class="p">)</span>
+        <span class="n">a</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">b</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span><span class="p">),</span>
+        <span class="n">c</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;200um&quot;</span><span class="p">),</span>
+        <span class="n">d</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s2">&quot;50um&quot;</span><span class="p">),</span>
+    <span class="p">),</span>
 <span class="p">)</span>
 
 <span class="c1">## Create 4 transmons</span>
 
-<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;+2.4mm&#39;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;+0.0mm&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">))</span>
-<span class="n">q2</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;Q2&#39;</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;+0.0mm&#39;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;-0.9mm&#39;</span><span class="p">,</span> <span class="n">orientation</span> <span class="o">=</span> <span class="s1">&#39;90&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">))</span>
-<span class="n">q3</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;Q3&#39;</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;-2.4mm&#39;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;+0.0mm&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">))</span>
-<span class="n">q4</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;Q4&#39;</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;+0.0mm&#39;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;+0.9mm&#39;</span><span class="p">,</span> <span class="n">orientation</span> <span class="o">=</span> <span class="s1">&#39;90&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">))</span>
+<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;+2.4mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;+0.0mm&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">q2</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;Q2&quot;</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;+0.0mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;-0.9mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;90&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">q3</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Q3&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;-2.4mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;+0.0mm&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">q4</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;Q4&quot;</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;+0.0mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;+0.9mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;90&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">),</span>
+<span class="p">)</span>
 
 <span class="c1">## Rebuild the design</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
@@ -826,10 +835,17 @@ dict_keys([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;])
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.tlines.straight_path</span><span class="w"> </span><span class="kn">import</span> <span class="n">RouteStraight</span>
 
-<span class="n">c1</span> <span class="o">=</span> <span class="n">RouteStraight</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;c1&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;Route&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pin_inputs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">start_pin</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;Q1&#39;</span><span class="p">,</span>
-                                                                               <span class="n">pin</span> <span class="o">=</span> <span class="s1">&#39;d&#39;</span><span class="p">),</span>
-                                                            <span class="n">end_pin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;Q2&#39;</span><span class="p">,</span>
-                                                                                <span class="n">pin</span> <span class="o">=</span> <span class="s1">&#39;c&#39;</span><span class="p">))))</span>
+<span class="n">c1</span> <span class="o">=</span> <span class="n">RouteStraight</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;c1&quot;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;Route&quot;</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">pin_inputs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">start_pin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;d&quot;</span><span class="p">),</span>
+            <span class="n">end_pin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q2&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;c&quot;</span><span class="p">),</span>
+        <span class="p">)</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
 </pre></div>
@@ -945,11 +961,18 @@ dict_keys([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;])
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#A component that doesn&#39;t exist</span>
-<span class="n">c2</span> <span class="o">=</span> <span class="n">RouteStraight</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;c2&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;Route&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pin_inputs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">start_pin</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;NotReallyHere&#39;</span><span class="p">,</span>
-                                                                               <span class="n">pin</span> <span class="o">=</span> <span class="s1">&#39;d&#39;</span><span class="p">),</span>
-                                                            <span class="n">end_pin</span> <span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;Q2&#39;</span><span class="p">,</span>
-                                                                                <span class="n">pin</span> <span class="o">=</span> <span class="s1">&#39;a&#39;</span><span class="p">))))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># A component that doesn&#39;t exist</span>
+<span class="n">c2</span> <span class="o">=</span> <span class="n">RouteStraight</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;c2&quot;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;Route&quot;</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">pin_inputs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">start_pin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;NotReallyHere&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;d&quot;</span><span class="p">),</span>
+            <span class="n">end_pin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q2&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">),</span>
+        <span class="p">)</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -965,11 +988,18 @@ dict_keys([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;])
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#A pin that doesn&#39;t exist</span>
-<span class="n">c3</span> <span class="o">=</span> <span class="n">RouteStraight</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;c3&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;Route&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pin_inputs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">start_pin</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;Q1&#39;</span><span class="p">,</span>
-                                                                               <span class="n">pin</span> <span class="o">=</span> <span class="s1">&#39;NotReallyHere&#39;</span><span class="p">),</span>
-                                                            <span class="n">end_pin</span> <span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;Q2&#39;</span><span class="p">,</span>
-                                                                                <span class="n">pin</span> <span class="o">=</span> <span class="s1">&#39;a&#39;</span><span class="p">))))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># A pin that doesn&#39;t exist</span>
+<span class="n">c3</span> <span class="o">=</span> <span class="n">RouteStraight</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;c3&quot;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;Route&quot;</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">pin_inputs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">start_pin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;NotReallyHere&quot;</span><span class="p">),</span>
+            <span class="n">end_pin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q2&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">),</span>
+        <span class="p">)</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -986,10 +1016,17 @@ dict_keys([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;])
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c4</span> <span class="o">=</span> <span class="n">RouteStraight</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;c4&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;Route&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pin_inputs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">start_pin</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;Q1&#39;</span><span class="p">,</span>
-                                                                               <span class="n">pin</span> <span class="o">=</span> <span class="s1">&#39;b&#39;</span><span class="p">),</span>
-                                                            <span class="n">end_pin</span> <span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;Q2&#39;</span><span class="p">,</span>
-                                                                                <span class="n">pin</span> <span class="o">=</span> <span class="s1">&#39;c&#39;</span><span class="p">))))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c4</span> <span class="o">=</span> <span class="n">RouteStraight</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;c4&quot;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;Route&quot;</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">pin_inputs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">start_pin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">),</span>
+            <span class="n">end_pin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q2&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;c&quot;</span><span class="p">),</span>
+        <span class="p">)</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1006,7 +1043,7 @@ dict_keys([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;])
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Headings</span><span class="o">.</span><span class="n">h1</span><span class="p">(</span><span class="s1">&#39;CPW Examples&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Headings</span><span class="o">.</span><span class="n">h1</span><span class="p">(</span><span class="s2">&quot;CPW Examples&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1040,41 +1077,71 @@ dict_keys([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;])
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">open_start_straight</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span><span class="s1">&#39;Open_straight_start&#39;</span><span class="p">,</span><span class="n">options</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;0um&#39;</span><span class="p">,</span><span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;0um&#39;</span><span class="p">,</span><span class="n">orientation</span> <span class="o">=</span> <span class="s1">&#39;-90&#39;</span><span class="p">))</span>
-<span class="n">open_end_straight</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span><span class="s1">&#39;Open_straight_end&#39;</span><span class="p">,</span><span class="n">options</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;0um&#39;</span><span class="p">,</span><span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;1500um&#39;</span><span class="p">,</span><span class="n">orientation</span> <span class="o">=</span> <span class="s1">&#39;90&#39;</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">open_start_straight</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;Open_straight_start&quot;</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;-90&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">open_end_straight</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;Open_straight_end&quot;</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;1500um&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;90&quot;</span><span class="p">),</span>
+<span class="p">)</span>
 
-<span class="n">open_start_auto</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span><span class="s1">&#39;Open_auto_start&#39;</span><span class="p">,</span><span class="n">options</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;250um&#39;</span><span class="p">,</span><span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;0um&#39;</span><span class="p">,</span><span class="n">orientation</span> <span class="o">=</span> <span class="s1">&#39;-90&#39;</span><span class="p">))</span>
-<span class="n">open_end_auto</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span><span class="s1">&#39;Open_auto_end&#39;</span><span class="p">,</span><span class="n">options</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;250um&#39;</span><span class="p">,</span><span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;1500um&#39;</span><span class="p">,</span><span class="n">orientation</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span><span class="p">))</span>
+<span class="n">open_start_auto</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;Open_auto_start&quot;</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;250um&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;-90&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">open_end_auto</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;Open_auto_end&quot;</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;250um&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;1500um&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">),</span>
+<span class="p">)</span>
 
-<span class="n">open_start_meander</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span><span class="s1">&#39;Open_meander_start&#39;</span><span class="p">,</span><span class="n">options</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;1000um&#39;</span><span class="p">,</span><span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;0um&#39;</span><span class="p">,</span><span class="n">orientation</span> <span class="o">=</span> <span class="s1">&#39;-90&#39;</span><span class="p">))</span>
-<span class="n">open_end_meander</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span><span class="s1">&#39;Open_meander_end&#39;</span><span class="p">,</span><span class="n">options</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;1000um&#39;</span><span class="p">,</span><span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;1500um&#39;</span><span class="p">,</span><span class="n">orientation</span> <span class="o">=</span> <span class="s1">&#39;90&#39;</span><span class="p">))</span>
+<span class="n">open_start_meander</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;Open_meander_start&quot;</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;1000um&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;-90&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">open_end_meander</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;Open_meander_end&quot;</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;1000um&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;1500um&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;90&quot;</span><span class="p">),</span>
+<span class="p">)</span>
 
-<span class="n">testStraight</span> <span class="o">=</span> <span class="n">RouteStraight</span><span class="p">(</span><span class="n">design</span><span class="p">,</span><span class="s1">&#39;straightTest&#39;</span><span class="p">,</span><span class="n">options</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-                                                                    <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-                                                                        <span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;Open_straight_start&#39;</span><span class="p">,</span>
-                                                                        <span class="n">pin</span> <span class="o">=</span> <span class="s1">&#39;open&#39;</span><span class="p">),</span>
-                                                                    <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-                                                                        <span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;Open_straight_end&#39;</span><span class="p">,</span>
-                                                                        <span class="n">pin</span> <span class="o">=</span> <span class="s1">&#39;open&#39;</span><span class="p">)</span>
-                                                                    <span class="p">)))</span>
+<span class="n">testStraight</span> <span class="o">=</span> <span class="n">RouteStraight</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;straightTest&quot;</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
+        <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
+            <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Open_straight_start&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;open&quot;</span><span class="p">),</span>
+            <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Open_straight_end&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;open&quot;</span><span class="p">),</span>
+        <span class="p">)</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 
-<span class="n">testAuto</span> <span class="o">=</span> <span class="n">RouteFramed</span><span class="p">(</span><span class="n">design</span><span class="p">,</span><span class="s1">&#39;autoTest&#39;</span><span class="p">,</span><span class="n">options</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-                                                                    <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-                                                                        <span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;Open_auto_start&#39;</span><span class="p">,</span>
-                                                                        <span class="n">pin</span> <span class="o">=</span> <span class="s1">&#39;open&#39;</span><span class="p">),</span>
-                                                                    <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-                                                                        <span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;Open_auto_end&#39;</span><span class="p">,</span>
-                                                                        <span class="n">pin</span> <span class="o">=</span> <span class="s1">&#39;open&#39;</span><span class="p">)</span>
-                                                                    <span class="p">)))</span>
+<span class="n">testAuto</span> <span class="o">=</span> <span class="n">RouteFramed</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;autoTest&quot;</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
+        <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
+            <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Open_auto_start&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;open&quot;</span><span class="p">),</span>
+            <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Open_auto_end&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;open&quot;</span><span class="p">),</span>
+        <span class="p">)</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 
-<span class="n">testMeander</span> <span class="o">=</span> <span class="n">RouteMeander</span><span class="p">(</span><span class="n">design</span><span class="p">,</span><span class="s1">&#39;meanderTest&#39;</span><span class="p">,</span><span class="n">options</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-                                                                    <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-                                                                        <span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;Open_meander_start&#39;</span><span class="p">,</span>
-                                                                        <span class="n">pin</span> <span class="o">=</span> <span class="s1">&#39;open&#39;</span><span class="p">),</span>
-                                                                    <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-                                                                        <span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;Open_meander_end&#39;</span><span class="p">,</span>
-                                                                        <span class="n">pin</span> <span class="o">=</span> <span class="s1">&#39;open&#39;</span><span class="p">)</span>
-                                                                    <span class="p">)))</span>
+<span class="n">testMeander</span> <span class="o">=</span> <span class="n">RouteMeander</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;meanderTest&quot;</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
+        <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
+            <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Open_meander_start&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;open&quot;</span><span class="p">),</span>
+            <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Open_meander_end&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;open&quot;</span><span class="p">),</span>
+        <span class="p">)</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
 </pre></div>

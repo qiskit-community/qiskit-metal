@@ -734,8 +734,8 @@
 <span class="c1"># Create a design by specifying the chip size and open Metal GUI.</span>
 
 <span class="n">design</span> <span class="o">=</span> <span class="n">designs</span><span class="o">.</span><span class="n">DesignPlanar</span><span class="p">({},</span> <span class="kc">True</span><span class="p">)</span>
-<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s1">&#39;size_x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;2mm&#39;</span>
-<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s1">&#39;size_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;2mm&#39;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;size_x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;2mm&quot;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;size_y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;2mm&quot;</span>
 
 <span class="n">gui</span> <span class="o">=</span> <span class="n">MetalGUI</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
 
@@ -758,31 +758,37 @@
 <span class="n">design</span><span class="o">.</span><span class="n">delete_all_components</span><span class="p">()</span>
 
 <span class="c1"># So as to demonstrate the quality factor outputs easily, the</span>
-<span class="c1">#subtrate material type is being changed to FR4_epoxy from the</span>
-<span class="c1">#default of silicon</span>
-<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">material</span> <span class="o">=</span> <span class="s1">&#39;FR4_epoxy&#39;</span>
+<span class="c1"># subtrate material type is being changed to FR4_epoxy from the</span>
+<span class="c1"># default of silicon</span>
+<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">material</span> <span class="o">=</span> <span class="s2">&quot;FR4_epoxy&quot;</span>
 
 <span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span>
-    <span class="s1">&#39;Q1&#39;</span><span class="p">,</span>
-    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pad_width</span><span class="o">=</span><span class="s1">&#39;425 um&#39;</span><span class="p">,</span>
-                 <span class="n">pocket_height</span><span class="o">=</span><span class="s1">&#39;650um&#39;</span><span class="p">,</span>
-                 <span class="n">hfss_inductance</span> <span class="o">=</span> <span class="s1">&#39;17nH&#39;</span><span class="p">,</span>
-                 <span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-                     <span class="n">readout</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s1">&#39;200um&#39;</span><span class="p">))))</span>
-<span class="n">otg</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span>
-                   <span class="s1">&#39;open_to_ground&#39;</span><span class="p">,</span>
-                   <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;1.75mm&#39;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;0um&#39;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;0&#39;</span><span class="p">))</span>
+    <span class="s2">&quot;Q1&quot;</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;425 um&quot;</span><span class="p">,</span>
+        <span class="n">pocket_height</span><span class="o">=</span><span class="s2">&quot;650um&quot;</span><span class="p">,</span>
+        <span class="n">hfss_inductance</span><span class="o">=</span><span class="s2">&quot;17nH&quot;</span><span class="p">,</span>
+        <span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">readout</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;200um&quot;</span><span class="p">)),</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+<span class="n">otg</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;open_to_ground&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;1.75mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">)</span>
+<span class="p">)</span>
 <span class="n">readout</span> <span class="o">=</span> <span class="n">RouteMeander</span><span class="p">(</span>
-    <span class="n">design</span><span class="p">,</span> <span class="s1">&#39;readout&#39;</span><span class="p">,</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;readout&quot;</span><span class="p">,</span>
     <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">total_length</span><span class="o">=</span><span class="s1">&#39;6 mm&#39;</span><span class="p">,</span>
-        <span class="n">hfss_wire_bonds</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="n">fillet</span><span class="o">=</span><span class="s1">&#39;90 um&#39;</span><span class="p">,</span>
-        <span class="n">lead</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s1">&#39;100um&#39;</span><span class="p">),</span>
-        <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s1">&#39;readout&#39;</span><span class="p">),</span>
-                        <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s1">&#39;open_to_ground&#39;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s1">&#39;open&#39;</span><span class="p">)),</span>
-    <span class="p">))</span>
+        <span class="n">total_length</span><span class="o">=</span><span class="s2">&quot;6 mm&quot;</span><span class="p">,</span>
+        <span class="n">hfss_wire_bonds</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;90 um&quot;</span><span class="p">,</span>
+        <span class="n">lead</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">),</span>
+        <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
+            <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;readout&quot;</span><span class="p">),</span>
+            <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;open_to_ground&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;open&quot;</span><span class="p">),</span>
+        <span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
@@ -814,7 +820,7 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a separate analysis object for the combined qbit+readout.</span>
 <span class="n">eig_qres</span> <span class="o">=</span> <span class="n">EPRanalysis</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;hfss&quot;</span><span class="p">)</span>
-<br/></pre></div>
+</pre></div>
 </div>
 </div>
 <p>Prepare data to pass as arguments for method run_sweep().</p>
@@ -833,8 +839,8 @@
 <span class="c1"># No pins are open, so don&#39;t need to utilize render_endcaps.</span>
 <span class="n">open_terminations</span> <span class="o">=</span> <span class="p">[]</span>
 
-<span class="c1">#List of tuples of jj&#39;s that shouldn&#39;t be rendered.</span>
-<span class="c1">#Follow details from renderer in QHFSSRenderer.render_design.</span>
+<span class="c1"># List of tuples of jj&#39;s that shouldn&#39;t be rendered.</span>
+<span class="c1"># Follow details from renderer in QHFSSRenderer.render_design.</span>
 <span class="n">render_ignored_jjs</span> <span class="o">=</span> <span class="p">[]</span>
 
 <span class="c1"># Either calculate a bounding box based on the location of</span>
@@ -857,15 +863,15 @@
 <span class="c1"># If a setup named &quot;sweeper_em_setup&quot; exists in the project, it will be deleted,</span>
 <span class="c1"># and a new setup will be added.</span>
 
-<span class="n">eig_qres</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;sweeper_em_setup&quot;</span>
-<span class="n">eig_qres</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">min_freq_ghz</span><span class="o">=</span><span class="mi">4</span>
-<span class="n">eig_qres</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">n_modes</span><span class="o">=</span><span class="mi">2</span>
-<span class="n">eig_qres</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">max_passes</span><span class="o">=</span><span class="mi">15</span>
+<span class="n">eig_qres</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;sweeper_em_setup&quot;</span>
+<span class="n">eig_qres</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">min_freq_ghz</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">eig_qres</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">n_modes</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">eig_qres</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">max_passes</span> <span class="o">=</span> <span class="mi">15</span>
 <span class="n">eig_qres</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">min_converged</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="n">eig_qres</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">max_delta_f</span> <span class="o">=</span> <span class="mf">0.2</span>
 
-<span class="n">eig_qres</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">junctions</span><span class="o">.</span><span class="n">jj</span><span class="o">.</span><span class="n">rect</span> <span class="o">=</span> <span class="s1">&#39;JJ_rect_Lj_Q1_rect_jj&#39;</span>
-<span class="n">eig_qres</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">junctions</span><span class="o">.</span><span class="n">jj</span><span class="o">.</span><span class="n">line</span> <span class="o">=</span> <span class="s1">&#39;JJ_Lj_Q1_rect_jj_&#39;</span>
+<span class="n">eig_qres</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">junctions</span><span class="o">.</span><span class="n">jj</span><span class="o">.</span><span class="n">rect</span> <span class="o">=</span> <span class="s2">&quot;JJ_rect_Lj_Q1_rect_jj&quot;</span>
+<span class="n">eig_qres</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">junctions</span><span class="o">.</span><span class="n">jj</span><span class="o">.</span><span class="n">line</span> <span class="o">=</span> <span class="s2">&quot;JJ_Lj_Q1_rect_jj_&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -888,18 +894,19 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Note: The method will connect to Ansys, activate_eigenmode_design(), add_eigenmode_setup().</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Note: The method will connect to Ansys, activate_eigenmode_design(), add_eigenmode_setup().</span>
 
-<span class="n">all_sweeps</span><span class="p">,</span> <span class="n">return_code</span> <span class="o">=</span> <span class="n">eig_qres</span><span class="o">.</span><span class="n">run_sweep</span><span class="p">(</span><span class="n">readout</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                                        <span class="s1">&#39;total_length&#39;</span><span class="p">,</span>
-                                        <span class="p">[</span><span class="s1">&#39;10mm&#39;</span><span class="p">,</span> <span class="s1">&#39;11mm&#39;</span><span class="p">,</span> <span class="s1">&#39;12mm&#39;</span><span class="p">],</span>
-                                        <span class="n">render_qcomps</span><span class="p">,</span>
-                                        <span class="n">open_terminations</span><span class="p">,</span>
-                                         <span class="n">ignored_jjs</span><span class="o">=</span><span class="n">render_ignored_jjs</span><span class="p">,</span>
-                                        <span class="n">design_name</span><span class="o">=</span><span class="s2">&quot;GetEigenModeSolution&quot;</span><span class="p">,</span>
-                                       <span class="n">box_plus_buffer</span><span class="o">=</span><span class="n">box_plus_buffer</span>
-                                      <span class="p">)</span>
-<br/></pre></div>
+<span class="n">all_sweeps</span><span class="p">,</span> <span class="n">return_code</span> <span class="o">=</span> <span class="n">eig_qres</span><span class="o">.</span><span class="n">run_sweep</span><span class="p">(</span>
+    <span class="n">readout</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+    <span class="s2">&quot;total_length&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;10mm&quot;</span><span class="p">,</span> <span class="s2">&quot;11mm&quot;</span><span class="p">,</span> <span class="s2">&quot;12mm&quot;</span><span class="p">],</span>
+    <span class="n">render_qcomps</span><span class="p">,</span>
+    <span class="n">open_terminations</span><span class="p">,</span>
+    <span class="n">ignored_jjs</span><span class="o">=</span><span class="n">render_ignored_jjs</span><span class="p">,</span>
+    <span class="n">design_name</span><span class="o">=</span><span class="s2">&quot;GetEigenModeSolution&quot;</span><span class="p">,</span>
+    <span class="n">box_plus_buffer</span><span class="o">=</span><span class="n">box_plus_buffer</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -1750,8 +1757,8 @@ dict_keys([&#39;10mm&#39;, &#39;11mm&#39;, &#39;12mm&#39;])
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># For example, just one group of solution data.</span>
-<span class="n">all_sweeps</span><span class="p">[</span><span class="s1">&#39;10mm&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-<br/></pre></div>
+<span class="n">all_sweeps</span><span class="p">[</span><span class="s2">&quot;10mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+</pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1767,8 +1774,8 @@ dict_keys([&#39;option_name&#39;, &#39;variables&#39;, &#39;sim_variables&#39;])
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_sweeps</span><span class="p">[</span><span class="s1">&#39;10mm&#39;</span><span class="p">]</span>
-<br/></pre></div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_sweeps</span><span class="p">[</span><span class="s2">&quot;10mm&quot;</span><span class="p">]</span>
+</pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1822,7 +1829,7 @@ dict_keys([&#39;option_name&#39;, &#39;variables&#39;, &#39;sim_variables&#39;])
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_sweeps</span><span class="p">[</span><span class="s1">&#39;10mm&#39;</span><span class="p">][</span><span class="s1">&#39;variables&#39;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_sweeps</span><span class="p">[</span><span class="s2">&quot;10mm&quot;</span><span class="p">][</span><span class="s2">&quot;variables&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -1841,7 +1848,7 @@ dict_keys([&#39;option_name&#39;, &#39;variables&#39;, &#39;sim_variables&#39;])
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_sweeps</span><span class="p">[</span><span class="s1">&#39;10mm&#39;</span><span class="p">][</span><span class="s1">&#39;sim_variables&#39;</span><span class="p">][</span><span class="s1">&#39;convergence_t&#39;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_sweeps</span><span class="p">[</span><span class="s2">&quot;10mm&quot;</span><span class="p">][</span><span class="s2">&quot;sim_variables&quot;</span><span class="p">][</span><span class="s2">&quot;convergence_t&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -1961,7 +1968,7 @@ dict_keys([&#39;option_name&#39;, &#39;variables&#39;, &#39;sim_variables&#39;])
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_sweeps</span><span class="p">[</span><span class="s1">&#39;10mm&#39;</span><span class="p">][</span><span class="s1">&#39;sim_variables&#39;</span><span class="p">][</span><span class="s1">&#39;convergence_f&#39;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_sweeps</span><span class="p">[</span><span class="s2">&quot;10mm&quot;</span><span class="p">][</span><span class="s2">&quot;sim_variables&quot;</span><span class="p">][</span><span class="s2">&quot;convergence_f&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -2082,7 +2089,7 @@ dict_keys([&#39;option_name&#39;, &#39;variables&#39;, &#39;sim_variables&#39;])
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the next close simulation software.</span>
-<span class="c1">#eig_qres.sim.close()</span>
+<span class="c1"># eig_qres.sim.close()</span>
 </pre></div>
 </div>
 </div>
@@ -2091,7 +2098,7 @@ dict_keys([&#39;option_name&#39;, &#39;variables&#39;, &#39;sim_variables&#39;])
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment next line if you would like to close the gui</span>
-<span class="c1">#gui.main_window.close()</span>
+<span class="c1"># gui.main_window.close()</span>
 </pre></div>
 </div>
 </div>

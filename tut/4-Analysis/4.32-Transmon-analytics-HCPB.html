@@ -718,7 +718,7 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We&#39;ll use the variable x to represent the offset charge (ng), which will vary from -2.0 to 2.0</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span><span class="mf">2.0</span><span class="p">,</span><span class="mi">101</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -730,7 +730,7 @@
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define a value of the Josephson Energy (E_J) as well as the ratio between the E_J and the Charging Energy (E_C):</span>
 <span class="n">E_J</span> <span class="o">=</span> <span class="mf">1000.0</span>
 <span class="n">ratio</span> <span class="o">=</span> <span class="mf">1.0</span>
-<span class="n">E_C</span> <span class="o">=</span> <span class="n">E_J</span><span class="o">/</span><span class="n">ratio</span>
+<span class="n">E_C</span> <span class="o">=</span> <span class="n">E_J</span> <span class="o">/</span> <span class="n">ratio</span>
 </pre></div>
 </div>
 </div>
@@ -742,7 +742,7 @@ minimum value of the lowest energy eigenvalue (called “floor”) and set this 
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># we&#39;ll normalize the calculated energies by the 0-&gt;1 transition state energy evaluated at the degenercy point (ng=0.5)</span>
 <span class="n">H_norm</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="n">E_J</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="n">E_C</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">norm</span> <span class="o">=</span> <span class="n">H_norm</span><span class="o">.</span><span class="n">fij</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">norm</span> <span class="o">=</span> <span class="n">H_norm</span><span class="o">.</span><span class="n">fij</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
 <span class="c1"># Next we&#39;ll empty lists to the first three eigenvalues (m=0, m=1, m=2):</span>
 <span class="n">E0</span> <span class="o">=</span> <span class="p">[]</span>
@@ -752,16 +752,16 @@ minimum value of the lowest energy eigenvalue (called “floor”) and set this 
 <span class="c1"># For a given value of offset charge (ng, represented by x) we will calculate the CPB Hamiltonian using the previously assigned values of E_J and E_C. Then we calculate the eigenvalue for a given value of m.</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
     <span class="n">H</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="n">E_J</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="n">E_C</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
-    <span class="n">E0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">/</span><span class="n">norm</span><span class="p">)</span>
-    <span class="n">E1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">norm</span><span class="p">)</span>
-    <span class="n">E2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">norm</span><span class="p">)</span>
+    <span class="n">E0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">norm</span><span class="p">)</span>
+    <span class="n">E1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">norm</span><span class="p">)</span>
+    <span class="n">E2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">norm</span><span class="p">)</span>
 
 <span class="c1"># define the minimum of E0 and set this to E=0</span>
 <span class="n">floor</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">E0</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">E0</span> <span class="o">-</span> <span class="n">floor</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">E1</span> <span class="o">-</span> <span class="n">floor</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">E2</span> <span class="o">-</span> <span class="n">floor</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">E0</span> <span class="o">-</span> <span class="n">floor</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">E1</span> <span class="o">-</span> <span class="n">floor</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">E2</span> <span class="o">-</span> <span class="n">floor</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;ng&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Em/E01&quot;</span><span class="p">)</span>
 </pre></div>

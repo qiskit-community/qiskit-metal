@@ -704,6 +704,7 @@
 <span class="sd">Josephson Junction (Manhattan-Style)</span>
 <span class="sd">REFERENCE: I.M. Pop et al., Nature 508, 369-372 (2014)</span>
 <span class="sd">&quot;&quot;&quot;</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">draw</span><span class="p">,</span> <span class="n">Dict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.core.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">QComponent</span>
 
@@ -738,18 +739,21 @@
 <span class="sd">        * finger_lower_height: &#39;20um&#39; -- the length of the overlapping rectangular finger(s)</span>
 <span class="sd">        * extension: &#39;1um&#39; -- the length of the fingers extending beyond the cross-point</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="c1"># Default drawing options</span>
-    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">JJ_pad_lower_width</span><span class="o">=</span><span class="s1">&#39;25um&#39;</span><span class="p">,</span>
-                           <span class="n">JJ_pad_lower_height</span><span class="o">=</span><span class="s1">&#39;10um&#39;</span><span class="p">,</span>
-                           <span class="n">JJ_pad_lower_pos_x</span><span class="o">=</span><span class="s1">&#39;0&#39;</span><span class="p">,</span>
-                           <span class="n">JJ_pad_lower_pos_y</span><span class="o">=</span><span class="s1">&#39;0&#39;</span><span class="p">,</span>
-                           <span class="n">finger_lower_width</span><span class="o">=</span><span class="s1">&#39;1um&#39;</span><span class="p">,</span>
-                           <span class="n">finger_lower_height</span><span class="o">=</span><span class="s1">&#39;20um&#39;</span><span class="p">,</span>
-                           <span class="n">extension</span><span class="o">=</span><span class="s1">&#39;1um&#39;</span><span class="p">)</span>
+    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+        <span class="n">JJ_pad_lower_width</span><span class="o">=</span><span class="s2">&quot;25um&quot;</span><span class="p">,</span>
+        <span class="n">JJ_pad_lower_height</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
+        <span class="n">JJ_pad_lower_pos_x</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+        <span class="n">JJ_pad_lower_pos_y</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+        <span class="n">finger_lower_width</span><span class="o">=</span><span class="s2">&quot;1um&quot;</span><span class="p">,</span>
+        <span class="n">finger_lower_height</span><span class="o">=</span><span class="s2">&quot;20um&quot;</span><span class="p">,</span>
+        <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;1um&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Default drawing options&quot;&quot;&quot;</span>
 
     <span class="c1"># Name prefix of component, if user doesn&#39;t provide name</span>
-    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s1">&#39;component&#39;</span><span class="p">)</span>
+    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;component&quot;</span><span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Component metadata&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="jj_manhattan.make">
@@ -760,14 +764,19 @@
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_options</span><span class="p">()</span>  <span class="c1"># Parse the string options into numbers</span>
 
         <span class="c1"># draw the lower pad as a rectangle</span>
-        <span class="n">JJ_pad_lower</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">JJ_pad_lower_width</span><span class="p">,</span>
-                                      <span class="n">p</span><span class="o">.</span><span class="n">JJ_pad_lower_height</span><span class="p">,</span>
-                                      <span class="n">p</span><span class="o">.</span><span class="n">JJ_pad_lower_pos_x</span><span class="p">,</span>
-                                      <span class="n">p</span><span class="o">.</span><span class="n">JJ_pad_lower_pos_y</span><span class="p">)</span>
+        <span class="n">JJ_pad_lower</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">JJ_pad_lower_width</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">JJ_pad_lower_height</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">JJ_pad_lower_pos_x</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">JJ_pad_lower_pos_y</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="n">finger_lower</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span>
-            <span class="n">p</span><span class="o">.</span><span class="n">finger_lower_width</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_lower_height</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_pad_lower_pos_x</span><span class="p">,</span>
-            <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">JJ_pad_lower_height</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_lower_height</span><span class="p">))</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">finger_lower_width</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">finger_lower_height</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">JJ_pad_lower_pos_x</span><span class="p">,</span>
+            <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">JJ_pad_lower_height</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_lower_height</span><span class="p">),</span>
+        <span class="p">)</span>
 
         <span class="c1"># fudge factor to merge the two options</span>
         <span class="n">finger_lower</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">finger_lower</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0001</span><span class="p">)</span>
@@ -780,24 +789,29 @@
 
         <span class="c1"># translate the second pad/finger to achieve the desired extension</span>
         <span class="n">design2</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span>
-            <span class="n">design2</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">JJ_pad_lower_height</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_lower_height</span><span class="p">)</span> <span class="o">-</span>
-            <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_lower_width</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">extension</span><span class="p">,</span>
-            <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">JJ_pad_lower_height</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_lower_height</span><span class="p">)</span> <span class="o">-</span>
-            <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_lower_width</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">extension</span><span class="p">)</span>
+            <span class="n">design2</span><span class="p">,</span>
+            <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">JJ_pad_lower_height</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_lower_height</span><span class="p">)</span>
+            <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_lower_width</span>
+            <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">extension</span><span class="p">,</span>
+            <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">JJ_pad_lower_height</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_lower_height</span><span class="p">)</span>
+            <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_lower_width</span>
+            <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">extension</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="n">final_design</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="n">design2</span><span class="p">)</span>
 
         <span class="c1"># translate the final design so that the bottom left</span>
         <span class="c1"># corner of the lower pad is at the origin</span>
-        <span class="n">final_design</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">final_design</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_pad_lower_width</span><span class="p">,</span>
-                                      <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_pad_lower_height</span><span class="p">)</span>
+        <span class="n">final_design</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span>
+            <span class="n">final_design</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_pad_lower_width</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_pad_lower_height</span>
+        <span class="p">)</span>
 
         <span class="c1"># now translate so that the design is centered on the</span>
         <span class="c1"># user-defined coordinates (pos_x, pos_y)</span>
         <span class="n">final_design</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">final_design</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_y</span><span class="p">)</span>
 
-        <span class="n">geom</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;design&#39;</span><span class="p">:</span> <span class="n">final_design</span><span class="p">}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+        <span class="n">geom</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;design&quot;</span><span class="p">:</span> <span class="n">final_design</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

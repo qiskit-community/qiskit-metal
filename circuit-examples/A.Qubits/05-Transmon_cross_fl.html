@@ -741,7 +741,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Launch Qiskit Metal GUI to interactively view, edit, and simulate QDesign: Metal GUI</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Launch Qiskit Metal GUI to interactively view, edit, and simulate QDesign: Metal GUI</span>
 <span class="n">gui</span> <span class="o">=</span> <span class="n">MetalGUI</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -804,7 +804,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><br/><span></span><span class="c1"># The connectord_type can be string of &#39;0&#39; for &#39;Claw&#39; or &#39;1&#39; for &#39;Gap&#39;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The connectord_type can be string of &#39;0&#39; for &#39;Claw&#39; or &#39;1&#39; for &#39;Gap&#39;</span>
 <span class="c1"># to define which type of connector is used.</span>
 
 <span class="c1"># The connector_location can be string of &#39;0&#39;, &#39;90&#39;, &#39;180&#39;  degrees which of the three arms where a given connector should be.</span>
@@ -812,18 +812,18 @@
 
 <span class="n">xmon_options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
     <span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span> <span class="n">connector_location</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="n">connector_type</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span><span class="p">),</span>
-        <span class="n">b</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">connector_location</span> <span class="o">=</span> <span class="s1">&#39;90&#39;</span><span class="p">,</span> <span class="n">connector_type</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span><span class="p">),</span>
-        <span class="n">c</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">connector_location</span> <span class="o">=</span> <span class="s1">&#39;180&#39;</span><span class="p">,</span> <span class="n">connector_type</span> <span class="o">=</span> <span class="s1">&#39;1&#39;</span><span class="p">),</span>
+        <span class="n">a</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">connector_location</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="n">connector_type</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">),</span>
+        <span class="n">b</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">connector_location</span><span class="o">=</span><span class="s2">&quot;90&quot;</span><span class="p">,</span> <span class="n">connector_type</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">),</span>
+        <span class="n">c</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">connector_location</span><span class="o">=</span><span class="s2">&quot;180&quot;</span><span class="p">,</span> <span class="n">connector_type</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">),</span>
     <span class="p">),</span>
 <span class="p">)</span>
 
 <span class="c1"># Create a new Transmon Cross object with name &#39;Q1&#39;</span>
-<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonCrossFL</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">xmon_options</span><span class="p">)</span>
+<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonCrossFL</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">xmon_options</span><span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>  <span class="c1"># rebuild the design and plot</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span> <span class="c1">#resize GUI to see QComponent</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s1">&#39;Q1&#39;</span><span class="p">])</span> <span class="c1">#Can also gui.zoom_on_components([q1.name])</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>  <span class="c1"># resize GUI to see QComponent</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s2">&quot;Q1&quot;</span><span class="p">])</span>  <span class="c1"># Can also gui.zoom_on_components([q1.name])</span>
 </pre></div>
 </div>
 </div>
@@ -832,7 +832,7 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s see what the Q1 object looks like</span>
-<span class="n">q1</span> <span class="c1">#print Q1 information</span>
+<span class="n">q1</span>  <span class="c1"># print Q1 information</span>
 </pre></div>
 </div>
 </div>
@@ -923,12 +923,13 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Screenshot the canvas only as a .png formatted file.</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;shot.png&#39;</span><span class="p">)</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;shot.png&quot;</span><span class="p">)</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">display</span>
+
 <span class="n">_disp_ops</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;shot.png&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">_disp_ops</span><span class="p">))</span>
-<br/></pre></div>
+<span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="s2">&quot;shot.png&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">_disp_ops</span><span class="p">))</span>
+</pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">

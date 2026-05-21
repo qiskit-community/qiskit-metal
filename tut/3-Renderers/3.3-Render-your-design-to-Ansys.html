@@ -734,6 +734,7 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_ansys.ansys_renderer</span><span class="w"> </span><span class="kn">import</span> <span class="n">QAnsysRenderer</span>
+
 <span class="n">QAnsysRenderer</span><span class="o">.</span><span class="n">default_options</span>
 </pre></div>
 </div>
@@ -797,8 +798,8 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;cpw_width&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;15 um&#39;</span>
-<span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;cpw_gap&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;9 um&#39;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;cpw_width&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;15 um&quot;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;cpw_gap&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;9 um&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -813,60 +814,78 @@
 <span class="c1"># We now define the same custom options for all the transmons.</span>
 <span class="c1"># We only list the options we intend to modify with respect to the default values</span>
 <span class="n">options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-    <span class="n">pad_width</span> <span class="o">=</span> <span class="s1">&#39;425 um&#39;</span><span class="p">,</span>
-    <span class="n">pocket_height</span> <span class="o">=</span> <span class="s1">&#39;650um&#39;</span><span class="p">,</span>
+    <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;425 um&quot;</span><span class="p">,</span>
+    <span class="n">pocket_height</span><span class="o">=</span><span class="s2">&quot;650um&quot;</span><span class="p">,</span>
     <span class="c1"># Adding 3 connection_pads</span>
     <span class="n">connection_pads</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span><span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s1">&#39;200um&#39;</span><span class="p">),</span>
-        <span class="n">b</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span><span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s1">&#39;30um&#39;</span><span class="p">),</span>
-        <span class="n">c</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span><span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s1">&#39;50um&#39;</span><span class="p">)</span>
-    <span class="p">)</span>
+        <span class="n">a</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;200um&quot;</span><span class="p">),</span>
+        <span class="n">b</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span><span class="p">),</span>
+        <span class="n">c</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s2">&quot;50um&quot;</span><span class="p">),</span>
+    <span class="p">),</span>
 <span class="p">)</span>
 
 <span class="c1"># Create the 4 transmons</span>
-<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;+2.42251mm&#39;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;+0.0mm&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">))</span>
-<span class="n">q2</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;Q2&#39;</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;+0.0mm&#39;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;-0.95mm&#39;</span><span class="p">,</span> <span class="n">orientation</span> <span class="o">=</span> <span class="s1">&#39;270&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">))</span>
-<span class="n">q3</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;Q3&#39;</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;-2.42251mm&#39;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;+0.0mm&#39;</span><span class="p">,</span> <span class="n">orientation</span> <span class="o">=</span> <span class="s1">&#39;180&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">))</span>
-<span class="n">q4</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;Q4&#39;</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;+0.0mm&#39;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;+0.95mm&#39;</span><span class="p">,</span> <span class="n">orientation</span> <span class="o">=</span> <span class="s1">&#39;90&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">))</span>
+<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;+2.42251mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;+0.0mm&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">q2</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;Q2&quot;</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;+0.0mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;-0.95mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;270&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">q3</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;Q3&quot;</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;-2.42251mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;+0.0mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;180&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">q4</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;Q4&quot;</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;+0.0mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;+0.95mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;90&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">),</span>
+<span class="p">)</span>
 
 <span class="c1"># Now we do the same for the CPWs</span>
 <span class="n">options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-            <span class="n">start_straight</span><span class="o">=</span><span class="s1">&#39;0.2mm&#39;</span><span class="p">,</span>
-            <span class="n">end_straight</span><span class="o">=</span><span class="s1">&#39;0.2mm&#39;</span><span class="p">),</span>
-        <span class="n">trace_gap</span><span class="o">=</span><span class="s1">&#39;9um&#39;</span><span class="p">,</span>
-        <span class="n">trace_width</span><span class="o">=</span><span class="s1">&#39;15um&#39;</span><span class="p">)</span>
+    <span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">&quot;0.2mm&quot;</span><span class="p">,</span> <span class="n">end_straight</span><span class="o">=</span><span class="s2">&quot;0.2mm&quot;</span><span class="p">),</span>
+    <span class="n">trace_gap</span><span class="o">=</span><span class="s2">&quot;9um&quot;</span><span class="p">,</span>
+    <span class="n">trace_width</span><span class="o">=</span><span class="s2">&quot;15um&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
 
 <span class="c1"># We define a handy method to shorten the number of line of code necessary to define the 4 CPW</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">connect</span><span class="p">(</span><span class="n">component_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">component1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pin1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">component2</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pin2</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-            <span class="n">length</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">asymmetry</span><span class="o">=</span><span class="s1">&#39;0 um&#39;</span><span class="p">,</span> <span class="n">flip</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fillet</span><span class="o">=</span><span class="s1">&#39;90um&#39;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">connect</span><span class="p">(</span>
+    <span class="n">component_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">component1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">pin1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">component2</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">pin2</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">length</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">asymmetry</span><span class="o">=</span><span class="s2">&quot;0 um&quot;</span><span class="p">,</span>
+    <span class="n">flip</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;90um&quot;</span><span class="p">,</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Connect two pins with a CPW.&quot;&quot;&quot;</span>
     <span class="n">myoptions</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
         <span class="n">fillet</span><span class="o">=</span><span class="n">fillet</span><span class="p">,</span>
-        <span class="n">hfss_wire_bonds</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">hfss_wire_bonds</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-            <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-                <span class="n">component</span><span class="o">=</span><span class="n">component1</span><span class="p">,</span>
-                <span class="n">pin</span><span class="o">=</span><span class="n">pin1</span><span class="p">),</span>
-            <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-                <span class="n">component</span><span class="o">=</span><span class="n">component2</span><span class="p">,</span>
-                <span class="n">pin</span><span class="o">=</span><span class="n">pin2</span><span class="p">)),</span>
-        <span class="n">total_length</span><span class="o">=</span><span class="n">length</span><span class="p">)</span>
+            <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="n">component1</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="n">pin1</span><span class="p">),</span>
+            <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="n">component2</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="n">pin2</span><span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">total_length</span><span class="o">=</span><span class="n">length</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="n">myoptions</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
     <span class="n">myoptions</span><span class="o">.</span><span class="n">meander</span><span class="o">.</span><span class="n">asymmetry</span> <span class="o">=</span> <span class="n">asymmetry</span>
-    <span class="n">myoptions</span><span class="o">.</span><span class="n">meander</span><span class="o">.</span><span class="n">lead_direction_inverted</span> <span class="o">=</span> <span class="s1">&#39;true&#39;</span> <span class="k">if</span> <span class="n">flip</span> <span class="k">else</span> <span class="s1">&#39;false&#39;</span>
+    <span class="n">myoptions</span><span class="o">.</span><span class="n">meander</span><span class="o">.</span><span class="n">lead_direction_inverted</span> <span class="o">=</span> <span class="s2">&quot;true&quot;</span> <span class="k">if</span> <span class="n">flip</span> <span class="k">else</span> <span class="s2">&quot;false&quot;</span>
     <span class="k">return</span> <span class="n">RouteMeander</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="n">component_name</span><span class="p">,</span> <span class="n">myoptions</span><span class="p">)</span>
+
 
 <span class="c1"># Create the 4 CPWs</span>
 <span class="n">asym</span> <span class="o">=</span> <span class="mi">140</span>
-<span class="n">cpw1</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s1">&#39;cpw1&#39;</span><span class="p">,</span> <span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;Q2&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;5.6 mm&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;+</span><span class="si">{</span><span class="n">asym</span><span class="si">}</span><span class="s1">um&#39;</span><span class="p">)</span>
-<span class="n">cpw2</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s1">&#39;cpw2&#39;</span><span class="p">,</span> <span class="s1">&#39;Q3&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;Q2&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;5.7 mm&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;-</span><span class="si">{</span><span class="n">asym</span><span class="si">}</span><span class="s1">um&#39;</span><span class="p">,</span> <span class="n">flip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">cpw3</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s1">&#39;cpw3&#39;</span><span class="p">,</span> <span class="s1">&#39;Q3&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;Q4&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;5.6 mm&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;+</span><span class="si">{</span><span class="n">asym</span><span class="si">}</span><span class="s1">um&#39;</span><span class="p">)</span>
-<span class="n">cpw4</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s1">&#39;cpw4&#39;</span><span class="p">,</span> <span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;Q4&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;5.7 mm&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;-</span><span class="si">{</span><span class="n">asym</span><span class="si">}</span><span class="s1">um&#39;</span><span class="p">,</span> <span class="n">flip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">cpw1</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s2">&quot;cpw1&quot;</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;Q2&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;5.6 mm&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;+</span><span class="si">{</span><span class="n">asym</span><span class="si">}</span><span class="s2">um&quot;</span><span class="p">)</span>
+<span class="n">cpw2</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s2">&quot;cpw2&quot;</span><span class="p">,</span> <span class="s2">&quot;Q3&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;Q2&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;5.7 mm&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;-</span><span class="si">{</span><span class="n">asym</span><span class="si">}</span><span class="s2">um&quot;</span><span class="p">,</span> <span class="n">flip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">cpw3</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s2">&quot;cpw3&quot;</span><span class="p">,</span> <span class="s2">&quot;Q3&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;Q4&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;5.6 mm&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;+</span><span class="si">{</span><span class="n">asym</span><span class="si">}</span><span class="s2">um&quot;</span><span class="p">)</span>
+<span class="n">cpw4</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s2">&quot;cpw4&quot;</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;Q4&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;5.7 mm&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;-</span><span class="si">{</span><span class="n">asym</span><span class="si">}</span><span class="s2">um&quot;</span><span class="p">,</span> <span class="n">flip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># Render the entire design to the Qiskit Metal GUI</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
@@ -960,7 +979,7 @@ True
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ansys_design</span> <span class="o">=</span> <span class="n">fourq_hfss</span><span class="o">.</span><span class="n">new_ansys_design</span><span class="p">(</span><span class="s2">&quot;HFSSMetalEigenmode&quot;</span><span class="p">,</span> <span class="s1">&#39;eigenmode&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ansys_design</span> <span class="o">=</span> <span class="n">fourq_hfss</span><span class="o">.</span><span class="n">new_ansys_design</span><span class="p">(</span><span class="s2">&quot;HFSSMetalEigenmode&quot;</span><span class="p">,</span> <span class="s2">&quot;eigenmode&quot;</span><span class="p">)</span>
 <span class="n">ansys_design</span><span class="o">.</span><span class="n">name</span>
 </pre></div>
 </div>
@@ -990,7 +1009,7 @@ INFO 04:09PM [get_setup]:       Opened setup `Setup`  (&lt;class &#39;pyEPR.ansy
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ansys_design</span> <span class="o">=</span> <span class="n">fourq_hfss</span><span class="o">.</span><span class="n">new_ansys_design</span><span class="p">(</span><span class="s2">&quot;HFSSMetalDrivenModal&quot;</span><span class="p">,</span> <span class="s1">&#39;drivenmodal&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ansys_design</span> <span class="o">=</span> <span class="n">fourq_hfss</span><span class="o">.</span><span class="n">new_ansys_design</span><span class="p">(</span><span class="s2">&quot;HFSSMetalDrivenModal&quot;</span><span class="p">,</span> <span class="s2">&quot;drivenmodal&quot;</span><span class="p">)</span>
 <span class="n">ansys_design</span><span class="o">.</span><span class="n">name</span>
 </pre></div>
 </div>
@@ -1080,7 +1099,9 @@ INFO 04:09PM [connect_design]:  Opened active design
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fourq_hfss</span><span class="o">.</span><span class="n">clean_active_design</span><span class="p">()</span>
-<span class="n">fourq_hfss</span><span class="o">.</span><span class="n">render_design</span><span class="p">([</span><span class="s1">&#39;Q1&#39;</span><span class="p">],</span> <span class="p">[(</span><span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">)])</span>  <span class="c1"># single qubit with 2 endcaps.</span>
+<span class="n">fourq_hfss</span><span class="o">.</span><span class="n">render_design</span><span class="p">(</span>
+    <span class="p">[</span><span class="s2">&quot;Q1&quot;</span><span class="p">],</span> <span class="p">[(</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">)]</span>
+<span class="p">)</span>  <span class="c1"># single qubit with 2 endcaps.</span>
 </pre></div>
 </div>
 </div>
@@ -1089,7 +1110,9 @@ INFO 04:09PM [connect_design]:  Opened active design
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fourq_hfss</span><span class="o">.</span><span class="n">clean_active_design</span><span class="p">()</span>
-<span class="n">fourq_hfss</span><span class="o">.</span><span class="n">render_design</span><span class="p">([</span><span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="s1">&#39;cpw1&#39;</span><span class="p">,</span> <span class="s1">&#39;Q2&#39;</span><span class="p">],</span> <span class="p">[(</span><span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Q2&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">)])</span>  <span class="c1"># 2 qubits and 2 endcaps, one per qubit.</span>
+<span class="n">fourq_hfss</span><span class="o">.</span><span class="n">render_design</span><span class="p">(</span>
+    <span class="p">[</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;cpw1&quot;</span><span class="p">,</span> <span class="s2">&quot;Q2&quot;</span><span class="p">],</span> <span class="p">[(</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Q2&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">)]</span>
+<span class="p">)</span>  <span class="c1"># 2 qubits and 2 endcaps, one per qubit.</span>
 </pre></div>
 </div>
 </div>
@@ -1099,7 +1122,7 @@ INFO 04:09PM [connect_design]:  Opened active design
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fourq_hfss</span><span class="o">.</span><span class="n">clean_active_design</span><span class="p">()</span>
-<span class="n">fourq_hfss</span><span class="o">.</span><span class="n">render_design</span><span class="p">([</span><span class="s1">&#39;Q2&#39;</span><span class="p">],</span> <span class="p">[(</span><span class="s1">&#39;Q2&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)],</span> <span class="p">[(</span><span class="s1">&#39;Q2&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;70&#39;</span><span class="p">)])</span>
+<span class="n">fourq_hfss</span><span class="o">.</span><span class="n">render_design</span><span class="p">([</span><span class="s2">&quot;Q2&quot;</span><span class="p">],</span> <span class="p">[(</span><span class="s2">&quot;Q2&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)],</span> <span class="p">[(</span><span class="s2">&quot;Q2&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;70&quot;</span><span class="p">)])</span>
 </pre></div>
 </div>
 </div>
@@ -1109,7 +1132,7 @@ INFO 04:09PM [connect_design]:  Opened active design
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s1">&#39;main&#39;</span><span class="p">][</span><span class="s1">&#39;size&#39;</span><span class="p">][</span><span class="s1">&#39;size_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;6mm&#39;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">][</span><span class="s2">&quot;size&quot;</span><span class="p">][</span><span class="s2">&quot;size_y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;6mm&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -1129,7 +1152,7 @@ INFO 04:09PM [connect_design]:  Opened active design
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fourq_hfss</span><span class="o">.</span><span class="n">clean_active_design</span><span class="p">()</span>
-<span class="n">design</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s1">&#39;main&#39;</span><span class="p">][</span><span class="s1">&#39;size&#39;</span><span class="p">][</span><span class="s1">&#39;size_x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;4mm&#39;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">][</span><span class="s2">&quot;size&quot;</span><span class="p">][</span><span class="s2">&quot;size_x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;4mm&quot;</span>
 <span class="n">fourq_hfss</span><span class="o">.</span><span class="n">render_design</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">box_plus_buffer</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1139,7 +1162,7 @@ INFO 04:09PM [connect_design]:  Opened active design
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#    Return back to original size, for the remainder of the notebook</span>
-<span class="n">design</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s1">&#39;main&#39;</span><span class="p">][</span><span class="s1">&#39;size&#39;</span><span class="p">][</span><span class="s1">&#39;size_x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;6mm&#39;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">][</span><span class="s2">&quot;size&quot;</span><span class="p">][</span><span class="s2">&quot;size_x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;6mm&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -1152,7 +1175,7 @@ INFO 04:09PM [connect_design]:  Opened active design
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fourq_hfss</span><span class="o">.</span><span class="n">activate_ansys_setup</span><span class="p">(</span><span class="s1">&#39;SetupNEW&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fourq_hfss</span><span class="o">.</span><span class="n">activate_ansys_setup</span><span class="p">(</span><span class="s2">&quot;SetupNEW&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1252,7 +1275,7 @@ True
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ansys_design</span> <span class="o">=</span> <span class="n">fourq_q3d</span><span class="o">.</span><span class="n">new_ansys_design</span><span class="p">(</span><span class="s2">&quot;Q3dMetalDesign&quot;</span><span class="p">,</span> <span class="s1">&#39;capacitive&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ansys_design</span> <span class="o">=</span> <span class="n">fourq_q3d</span><span class="o">.</span><span class="n">new_ansys_design</span><span class="p">(</span><span class="s2">&quot;Q3dMetalDesign&quot;</span><span class="p">,</span> <span class="s2">&quot;capacitive&quot;</span><span class="p">)</span>
 <span class="n">ansys_design</span><span class="o">.</span><span class="n">name</span>
 </pre></div>
 </div>
@@ -1293,7 +1316,7 @@ INFO 04:11PM [get_setup]:       Opened setup `Setup`  (&lt;class &#39;pyEPR.ansy
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fourq_q3d</span><span class="o">.</span><span class="n">activate_ansys_design</span><span class="p">(</span><span class="s2">&quot;Q3dMetalDesignNEW&quot;</span><span class="p">,</span> <span class="s1">&#39;capacitive&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fourq_q3d</span><span class="o">.</span><span class="n">activate_ansys_design</span><span class="p">(</span><span class="s2">&quot;Q3dMetalDesignNEW&quot;</span><span class="p">,</span> <span class="s2">&quot;capacitive&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1347,7 +1370,9 @@ INFO 04:11PM [connect_design]:  Opened active design
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fourq_q3d</span><span class="o">.</span><span class="n">clean_active_design</span><span class="p">()</span>
-<span class="n">fourq_q3d</span><span class="o">.</span><span class="n">render_design</span><span class="p">([</span><span class="s1">&#39;Q1&#39;</span><span class="p">],</span> <span class="p">[(</span><span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">)])</span>  <span class="c1"># single qubit with 2 endcaps.</span>
+<span class="n">fourq_q3d</span><span class="o">.</span><span class="n">render_design</span><span class="p">(</span>
+    <span class="p">[</span><span class="s2">&quot;Q1&quot;</span><span class="p">],</span> <span class="p">[(</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">)]</span>
+<span class="p">)</span>  <span class="c1"># single qubit with 2 endcaps.</span>
 </pre></div>
 </div>
 </div>
@@ -1356,7 +1381,9 @@ INFO 04:11PM [connect_design]:  Opened active design
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fourq_q3d</span><span class="o">.</span><span class="n">clean_active_design</span><span class="p">()</span>
-<span class="n">fourq_q3d</span><span class="o">.</span><span class="n">render_design</span><span class="p">([</span><span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="s1">&#39;cpw1&#39;</span><span class="p">,</span> <span class="s1">&#39;Q2&#39;</span><span class="p">],</span> <span class="p">[(</span><span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Q2&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">)])</span>  <span class="c1"># 2 qubits and 2 endcaps, one per qubit.</span>
+<span class="n">fourq_q3d</span><span class="o">.</span><span class="n">render_design</span><span class="p">(</span>
+    <span class="p">[</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;cpw1&quot;</span><span class="p">,</span> <span class="s2">&quot;Q2&quot;</span><span class="p">],</span> <span class="p">[(</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Q2&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">)]</span>
+<span class="p">)</span>  <span class="c1"># 2 qubits and 2 endcaps, one per qubit.</span>
 </pre></div>
 </div>
 </div>
@@ -1377,7 +1404,7 @@ INFO 04:11PM [connect_design]:  Opened active design
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fourq_q3d</span><span class="o">.</span><span class="n">clean_active_design</span><span class="p">()</span>
-<span class="n">design</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s1">&#39;main&#39;</span><span class="p">][</span><span class="s1">&#39;size&#39;</span><span class="p">][</span><span class="s1">&#39;size_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;4mm&#39;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">][</span><span class="s2">&quot;size&quot;</span><span class="p">][</span><span class="s2">&quot;size_y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;4mm&quot;</span>
 <span class="n">fourq_q3d</span><span class="o">.</span><span class="n">render_design</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">box_plus_buffer</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1387,7 +1414,7 @@ INFO 04:11PM [connect_design]:  Opened active design
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#    Return back to original size, for the remainder of the notebook</span>
-<span class="n">design</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s1">&#39;main&#39;</span><span class="p">][</span><span class="s1">&#39;size&#39;</span><span class="p">][</span><span class="s1">&#39;size_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;6mm&#39;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">][</span><span class="s2">&quot;size&quot;</span><span class="p">][</span><span class="s2">&quot;size_y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;6mm&quot;</span>
 </pre></div>
 </div>
 </div>

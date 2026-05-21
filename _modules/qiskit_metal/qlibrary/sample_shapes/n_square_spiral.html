@@ -743,12 +743,9 @@
 <span class="sd">        * helper: &#39;False&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="s1">&#39;3&#39;</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="s1">&#39;1um&#39;</span><span class="p">,</span>
-                           <span class="n">radius</span><span class="o">=</span><span class="s1">&#39;40um&#39;</span><span class="p">,</span>
-                           <span class="n">gap</span><span class="o">=</span><span class="s1">&#39;4um&#39;</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="s1">&#39;False&#39;</span><span class="p">,</span>
-                           <span class="n">helper</span><span class="o">=</span><span class="s1">&#39;False&#39;</span><span class="p">)</span>
+    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+        <span class="n">n</span><span class="o">=</span><span class="s2">&quot;3&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;1um&quot;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="s2">&quot;40um&quot;</span><span class="p">,</span> <span class="n">gap</span><span class="o">=</span><span class="s2">&quot;4um&quot;</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="s2">&quot;False&quot;</span><span class="p">,</span> <span class="n">helper</span><span class="o">=</span><span class="s2">&quot;False&quot;</span>
+    <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Default drawing options&quot;&quot;&quot;</span>
 
     <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;An n count square spiral&quot;&quot;&quot;</span>
@@ -783,19 +780,19 @@
 
         <span class="c1">##############################################</span>
         <span class="c1"># add qgeometry</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;n_spiral&#39;</span><span class="p">:</span> <span class="n">spiral_list</span><span class="p">},</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">width</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">subtract</span><span class="p">,</span>
-                           <span class="n">helper</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">helper</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">chip</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">chip</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">&quot;n_spiral&quot;</span><span class="p">:</span> <span class="n">spiral_list</span><span class="p">},</span>
+            <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">width</span><span class="p">,</span>
+            <span class="n">subtract</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">subtract</span><span class="p">,</span>
+            <span class="n">helper</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">helper</span><span class="p">,</span>
+            <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
+            <span class="n">chip</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">chip</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">spiral_list</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span>
         <span class="c1"># FIX POINTS,</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s1">&#39;spiralPin&#39;</span><span class="p">,</span>
-                     <span class="n">points</span><span class="o">=</span><span class="n">points</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:],</span>
-                     <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">width</span><span class="p">,</span>
-                     <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s2">&quot;spiralPin&quot;</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">points</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:],</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

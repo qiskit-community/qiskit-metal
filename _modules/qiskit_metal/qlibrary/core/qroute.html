@@ -736,8 +736,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">=</span> <span class="n">direction</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;position: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; : direction:&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">direction</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span></div>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="s2">&quot;position: &quot;</span>
+            <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">&quot; : direction:&quot;</span>
+            <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">direction</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">&quot;.&quot;</span>
+        <span class="p">)</span></div>
 
 
 
@@ -803,35 +808,42 @@
 <span class="sd">        &gt;&gt; &quot;L&quot;, &quot;L90&quot;, &quot;R-90&quot;, 90, &quot;90&quot;, &quot;A,90&quot;, &quot;left&quot;, &quot;left90&quot;, &quot;right-90&quot;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s1">&#39;route&#39;</span><span class="p">,</span> <span class="n">_qgeometry_table_path</span><span class="o">=</span><span class="s1">&#39;True&#39;</span><span class="p">)</span>
+    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;route&quot;</span><span class="p">,</span> <span class="n">_qgeometry_table_path</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Component metadata&quot;&quot;&quot;</span>
 
     <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
         <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
             <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>  <span class="c1"># QRoute also supports single pin routes</span>
-                <span class="n">component</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>  <span class="c1"># Name of component to start from, which has a pin</span>
-                <span class="n">pin</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">),</span>  <span class="c1"># Name of pin used for pin_start</span>
+                <span class="n">component</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>  <span class="c1"># Name of component to start from, which has a pin</span>
+                <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="p">),</span>  <span class="c1"># Name of pin used for pin_start</span>
             <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-                <span class="n">component</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>  <span class="c1"># Name of component to end on, which has a pin</span>
-                <span class="n">pin</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>  <span class="c1"># Name of pin used for pin_end</span>
+                <span class="n">component</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>  <span class="c1"># Name of component to end on, which has a pin</span>
+                <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="p">),</span>  <span class="c1"># Name of pin used for pin_end</span>
         <span class="p">),</span>
-        <span class="n">fillet</span><span class="o">=</span><span class="s1">&#39;0&#39;</span><span class="p">,</span>
-        <span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s1">&#39;0mm&#39;</span><span class="p">,</span>
-                  <span class="n">end_straight</span><span class="o">=</span><span class="s1">&#39;0mm&#39;</span><span class="p">,</span>
-                  <span class="n">start_jogged_extension</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
-                  <span class="n">end_jogged_extension</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">),</span>
-        <span class="n">total_length</span><span class="o">=</span><span class="s1">&#39;7mm&#39;</span><span class="p">,</span>
-        <span class="n">trace_width</span><span class="o">=</span><span class="s1">&#39;cpw_width&#39;</span><span class="p">)</span>
+        <span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+        <span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
+            <span class="n">start_straight</span><span class="o">=</span><span class="s2">&quot;0mm&quot;</span><span class="p">,</span>
+            <span class="n">end_straight</span><span class="o">=</span><span class="s2">&quot;0mm&quot;</span><span class="p">,</span>
+            <span class="n">start_jogged_extension</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">end_jogged_extension</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">total_length</span><span class="o">=</span><span class="s2">&quot;7mm&quot;</span><span class="p">,</span>
+        <span class="n">trace_width</span><span class="o">=</span><span class="s2">&quot;cpw_width&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Default options&quot;&quot;&quot;</span>
 
     <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;QRoute&quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">design</span><span class="p">,</span>
-                 <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">options</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;CPW&quot;</span><span class="p">,</span>
-                 <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">design</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">options</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;CPW&quot;</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initializes all Routes.</span>
 
 <span class="sd">        Calls the QComponent __init__() to create a new Metal component.</span>
@@ -889,7 +901,7 @@
             <span class="kc">None</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;CPW&quot;</span><span class="p">:</span>
             <span class="c1"># add the variable to define the space between the route and the ground plane</span>
-            <span class="n">cpw_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">trace_gap</span><span class="o">=</span><span class="s1">&#39;cpw_gap&#39;</span><span class="p">)</span>
+            <span class="n">cpw_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">trace_gap</span><span class="o">=</span><span class="s2">&quot;cpw_gap&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">options</span><span class="p">:</span>
                 <span class="k">if</span> <span class="s2">&quot;trace_gap&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
                     <span class="c1"># user did not pass the trace_gap, so add it</span>
@@ -898,8 +910,11 @@
                 <span class="c1"># user did not pass custom options, so create it to add trace_gap</span>
                 <span class="n">options</span><span class="p">[</span><span class="s2">&quot;options&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cpw_options</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Unsupported Route type: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">+</span>
-                            <span class="s2">&quot; The only supported types are CPW and route&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+                <span class="s2">&quot;Unsupported Route type: &quot;</span>
+                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span>
+                <span class="o">+</span> <span class="s2">&quot; The only supported types are CPW and route&quot;</span>
+            <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">options</span>
 
@@ -937,9 +952,12 @@
             <span class="n">options_pin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">end_pin</span>
             <span class="n">lead</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tail</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Pin name </span><span class="se">\&quot;</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span>
-                            <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2"> is not supported for this CPW.&quot;</span> <span class="o">+</span>
-                            <span class="s2">&quot; The only supported pins are: start, end.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+                <span class="s1">&#39;Pin name &quot;&#39;</span>
+                <span class="o">+</span> <span class="n">name</span>
+                <span class="o">+</span> <span class="s1">&#39;&quot; is not supported for this CPW.&#39;</span>
+                <span class="o">+</span> <span class="s2">&quot; The only supported pins are: start, end.&quot;</span>
+            <span class="p">)</span>
 
         <span class="c1"># grab the reference component pin</span>
         <span class="n">reference_pin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_connected_pin</span><span class="p">(</span><span class="n">options_pin</span><span class="p">)</span>
@@ -947,8 +965,11 @@
         <span class="c1"># create the cpw pin and document the connections to the reference_pin in the netlist</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">reference_pin</span><span class="o">.</span><span class="n">points</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">trace_width</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">connect_pins</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">options_pin</span><span class="o">.</span><span class="n">component</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">options_pin</span><span class="o">.</span><span class="n">pin</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">options_pin</span><span class="o">.</span><span class="n">component</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="n">options_pin</span><span class="o">.</span><span class="n">pin</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="n">name</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="c1"># anchor the correct lead to the pin and return its position and direction</span>
         <span class="k">return</span> <span class="n">lead</span><span class="o">.</span><span class="n">seed_from_pin</span><span class="p">(</span><span class="n">reference_pin</span><span class="p">)</span></div>
@@ -980,9 +1001,12 @@
             <span class="n">lead</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tail</span>
             <span class="n">jogged_lead</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">lead</span><span class="o">.</span><span class="n">end_jogged_extension</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Pin name </span><span class="se">\&quot;</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span>
-                            <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2"> is not supported for this CPW.&quot;</span> <span class="o">+</span>
-                            <span class="s2">&quot; The only supported pins are: start, end.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+                <span class="s1">&#39;Pin name &quot;&#39;</span>
+                <span class="o">+</span> <span class="n">name</span>
+                <span class="o">+</span> <span class="s1">&#39;&quot; is not supported for this CPW.&#39;</span>
+                <span class="o">+</span> <span class="s2">&quot; The only supported pins are: start, end.&quot;</span>
+            <span class="p">)</span>
 
         <span class="c1"># then change the lead by adding a point in the same direction of the seed pin</span>
         <span class="c1"># minimum lead, to be able to jog correctly</span>
@@ -1021,16 +1045,19 @@
             <span class="n">options_lead</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">lead</span><span class="o">.</span><span class="n">end_jogged_extension</span>
             <span class="n">lead</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tail</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Pin name </span><span class="se">\&quot;</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span>
-                            <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2"> is not supported for this CPW.&quot;</span> <span class="o">+</span>
-                            <span class="s2">&quot; The only supported pins are: start, end.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+                <span class="s1">&#39;Pin name &quot;&#39;</span>
+                <span class="o">+</span> <span class="n">name</span>
+                <span class="o">+</span> <span class="s1">&#39;&quot; is not supported for this CPW.&#39;</span>
+                <span class="o">+</span> <span class="s2">&quot; The only supported pins are: start, end.&quot;</span>
+            <span class="p">)</span>
 
         <span class="c1"># then change the lead by adding points</span>
         <span class="k">for</span> <span class="n">turn</span><span class="p">,</span> <span class="n">length</span> <span class="ow">in</span> <span class="n">options_lead</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">turn</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
                 <span class="c1"># turn is a number indicating the angle</span>
                 <span class="n">lead</span><span class="o">.</span><span class="n">go_angle</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">turn</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^[-+]?(\d+\.\d+|\d+)$&#39;</span><span class="p">,</span> <span class="n">turn</span><span class="p">):</span>
+            <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^[-+]?(\d+\.\d+|\d+)$&quot;</span><span class="p">,</span> <span class="n">turn</span><span class="p">):</span>
                 <span class="c1"># turn is a string of a number indicating the angle</span>
                 <span class="n">lead</span><span class="o">.</span><span class="n">go_angle</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">turn</span><span class="p">))</span>
             <span class="k">elif</span> <span class="n">turn</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="s2">&quot;L&quot;</span><span class="p">):</span>
@@ -1042,27 +1069,28 @@
             <span class="k">elif</span> <span class="n">turn</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;straight&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;S&quot;</span><span class="p">):</span>
                 <span class="c1"># implicit 0 degrees movement</span>
                 <span class="n">lead</span><span class="o">.</span><span class="n">go_straight</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^(left|L)[-+]?(\d+\.\d+|\d+)$&#39;</span><span class="p">,</span> <span class="n">turn</span><span class="p">):</span>
+            <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^(left|L)[-+]?(\d+\.\d+|\d+)$&quot;</span><span class="p">,</span> <span class="n">turn</span><span class="p">):</span>
                 <span class="c1"># left turn by the specified int/float degrees. can be signed</span>
-                <span class="n">angle</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^(left|L)&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">turn</span><span class="p">)</span>
+                <span class="n">angle</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^(left|L)&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">turn</span><span class="p">)</span>
                 <span class="n">lead</span><span class="o">.</span><span class="n">go_angle</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">angle</span><span class="p">))</span>
-            <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^(right|R)[-+]?(\d+\.\d+|\d+)$&#39;</span><span class="p">,</span> <span class="n">turn</span><span class="p">):</span>
+            <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^(right|R)[-+]?(\d+\.\d+|\d+)$&quot;</span><span class="p">,</span> <span class="n">turn</span><span class="p">):</span>
                 <span class="c1"># right turn by the specified int/float degrees. can be signed</span>
-                <span class="n">angle</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^(right|R)&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">turn</span><span class="p">)</span>
+                <span class="n">angle</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^(right|R)&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">turn</span><span class="p">)</span>
                 <span class="n">lead</span><span class="o">.</span><span class="n">go_angle</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">angle</span><span class="p">))</span>
-            <span class="k">elif</span> <span class="p">(</span><span class="s1">&#39;A&#39;</span> <span class="ow">or</span> <span class="s1">&#39;angle&#39;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">turn</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="s2">&quot;A&quot;</span> <span class="ow">or</span> <span class="s2">&quot;angle&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">turn</span><span class="p">:</span>
                 <span class="c1"># turn by the specified int/float degrees. Positive numbers turn left.</span>
-                <span class="n">turn</span><span class="p">,</span> <span class="n">angle</span> <span class="o">=</span> <span class="n">turn</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+                <span class="n">turn</span><span class="p">,</span> <span class="n">angle</span> <span class="o">=</span> <span class="n">turn</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
                 <span class="n">lead</span><span class="o">.</span><span class="n">go_angle</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">angle</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">The input string </span><span class="si">{</span><span class="n">turn</span><span class="si">}</span><span class="s2"> is not supported. Please specify the jog turn &quot;</span>
-                    <span class="s2">&quot;using one of the supported formats:</span><span class="se">\n\&quot;</span><span class="s2">L</span><span class="se">\&quot;</span><span class="s2">, </span><span class="se">\&quot;</span><span class="s2">L#</span><span class="se">\&quot;</span><span class="s2">, </span><span class="se">\&quot;</span><span class="s2">R</span><span class="se">\&quot;</span><span class="s2">, </span><span class="se">\&quot;</span><span class="s2">R#</span><span class="se">\&quot;</span><span class="s2">, #, &quot;</span>
-                    <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">#</span><span class="se">\&quot;</span><span class="s2">, </span><span class="se">\&quot;</span><span class="s2">A,#</span><span class="se">\&quot;</span><span class="s2">, </span><span class="se">\&quot;</span><span class="s2">left</span><span class="se">\&quot;</span><span class="s2">, </span><span class="se">\&quot;</span><span class="s2">left#</span><span class="se">\&quot;</span><span class="s2">, </span><span class="se">\&quot;</span><span class="s2">right</span><span class="se">\&quot;</span><span class="s2">, </span><span class="se">\&quot;</span><span class="s2">right#</span><span class="se">\&quot;</span><span class="s2">&quot;</span>
+                    <span class="s1">&#39;using one of the supported formats:</span><span class="se">\n</span><span class="s1">&quot;L&quot;, &quot;L#&quot;, &quot;R&quot;, &quot;R#&quot;, #, &#39;</span>
+                    <span class="s1">&#39;&quot;#&quot;, &quot;A,#&quot;, &quot;left&quot;, &quot;left#&quot;, &quot;right&quot;, &quot;right#&quot;&#39;</span>
                     <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">where # is any signed or unsigned integer or floating point value.</span><span class="se">\n</span><span class="s2">&quot;</span>
                     <span class="s2">&quot;For example the following will all lead to the same turn:</span><span class="se">\n</span><span class="s2">&quot;</span>
-                    <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">L</span><span class="se">\&quot;</span><span class="s2">, </span><span class="se">\&quot;</span><span class="s2">L90</span><span class="se">\&quot;</span><span class="s2">, </span><span class="se">\&quot;</span><span class="s2">R-90</span><span class="se">\&quot;</span><span class="s2">, 90, &quot;</span>
-                    <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">90</span><span class="se">\&quot;</span><span class="s2">, </span><span class="se">\&quot;</span><span class="s2">A,90</span><span class="se">\&quot;</span><span class="s2">, </span><span class="se">\&quot;</span><span class="s2">left</span><span class="se">\&quot;</span><span class="s2">, </span><span class="se">\&quot;</span><span class="s2">left90</span><span class="se">\&quot;</span><span class="s2">, </span><span class="se">\&quot;</span><span class="s2">right-90</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="s1">&#39;&quot;L&quot;, &quot;L90&quot;, &quot;R-90&quot;, 90, &#39;</span>
+                    <span class="s1">&#39;&quot;90&quot;, &quot;A,90&quot;, &quot;left&quot;, &quot;left90&quot;, &quot;right-90&quot;&#39;</span>
+                <span class="p">)</span>
 
         <span class="c1"># return the last QRoutePoint of the lead</span>
         <span class="k">return</span> <span class="n">lead</span><span class="o">.</span><span class="n">get_tip</span><span class="p">()</span></div>
@@ -1079,8 +1107,7 @@
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">pt</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span>
-                    <span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="c1"># array 2,1</span>
                 <span class="n">pt</span> <span class="o">=</span> <span class="n">arr</span>
             <span class="k">else</span><span class="p">:</span>
@@ -1109,17 +1136,16 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">get_tip</span><span class="p">()</span>
         <span class="n">tip_pt</span> <span class="o">=</span> <span class="n">tip_pt_minus_1</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
-            <span class="n">tip_pt</span><span class="p">,</span> <span class="n">tip_pt_minus_1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_lead2pts_array</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+        <span class="p">):</span>
+            <span class="n">tip_pt</span><span class="p">,</span> <span class="n">tip_pt_minus_1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_lead2pts_array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
             <span class="c1"># then it is either a dict or a OrderedDict</span>
             <span class="c1"># this method relies on the keys to be numerical integer. Will use the last points</span>
             <span class="c1"># assumes that the &quot;value&quot; associated with each key is some &quot;not empty&quot; list/array</span>
             <span class="n">sorted_keys</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">sorted_keys</span><span class="p">:</span>
-                <span class="n">pt0</span><span class="p">,</span> <span class="n">pt_minus1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_lead2pts_array</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+                <span class="n">pt0</span><span class="p">,</span> <span class="n">pt_minus1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_lead2pts_array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
                 <span class="k">if</span> <span class="n">pt0</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">continue</span>
                 <span class="k">if</span> <span class="n">tip_pt_minus_1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -1128,8 +1154,10 @@
                     <span class="n">tip_pt</span><span class="p">,</span> <span class="n">tip_pt_minus_1</span> <span class="o">=</span> <span class="n">tip_pt_minus_1</span><span class="p">,</span> <span class="n">tip_pt</span>
                     <span class="n">tip_pt_minus_1</span> <span class="o">=</span> <span class="n">pt_minus1</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;unsupported type for self.intermediate_pts&quot;</span><span class="p">,</span>
-                  <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;unsupported type for self.intermediate_pts&quot;</span><span class="p">,</span>
+                <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span><span class="p">),</span>
+            <span class="p">)</span>
             <span class="k">return</span>
         <span class="k">if</span> <span class="n">tip_pt</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># no point in the intermediate array</span>
@@ -1155,7 +1183,7 @@
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">inarray</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">outarray</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>  <span class="c1">#outarray = np.empty(shape=[0, 2])</span>
+            <span class="n">outarray</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>  <span class="c1"># outarray = np.empty(shape=[0, 2])</span>
             <span class="n">pts</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">inarray</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
             <span class="k">for</span> <span class="n">idxnext</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">inarray</span><span class="p">)):</span>
                 <span class="n">pts</span> <span class="o">=</span> <span class="n">pts</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="p">[</span><span class="n">inarray</span><span class="p">[</span><span class="n">idxnext</span><span class="p">]]</span>
@@ -1194,8 +1222,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">beginning</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">pts</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">beginning</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">pts</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span><span class="p">],</span>
-                                       <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">beginning</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">pts</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
         <span class="c1"># cover case where there is no tail defined (floating end)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tail</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -1210,10 +1237,9 @@
 
 <div class="viewcode-block" id="QRoute.get_unit_vectors">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.QRoute.html#qiskit_metal.qlibrary.QRoute.get_unit_vectors">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_unit_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                         <span class="n">start</span><span class="p">:</span> <span class="n">QRoutePoint</span><span class="p">,</span>
-                         <span class="n">end</span><span class="p">:</span> <span class="n">QRoutePoint</span><span class="p">,</span>
-                         <span class="n">snap</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_unit_vectors</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">:</span> <span class="n">QRoutePoint</span><span class="p">,</span> <span class="n">end</span><span class="p">:</span> <span class="n">QRoutePoint</span><span class="p">,</span> <span class="n">snap</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the unit and target vector in which the CPW should process as</span>
 <span class="sd">        its coordinate sys.</span>
 
@@ -1247,7 +1273,8 @@
 
         <span class="c1"># get the length without the corner rounding radius adjustment</span>
         <span class="n">length_estimate</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span>
-            <span class="n">norm</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="n">norm</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="p">)</span>
         <span class="c1"># compensate for corner rounding</span>
         <span class="n">length_estimate</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">length_excess_corner_rounding</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
 
@@ -1275,8 +1302,7 @@
 
 <div class="viewcode-block" id="QRoute.assign_direction_to_anchor">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.QRoute.html#qiskit_metal.qlibrary.QRoute.assign_direction_to_anchor">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">assign_direction_to_anchor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ref_pt</span><span class="p">:</span> <span class="n">QRoutePoint</span><span class="p">,</span>
-                                   <span class="n">anchor_pt</span><span class="p">:</span> <span class="n">QRoutePoint</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">assign_direction_to_anchor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ref_pt</span><span class="p">:</span> <span class="n">QRoutePoint</span><span class="p">,</span> <span class="n">anchor_pt</span><span class="p">:</span> <span class="n">QRoutePoint</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Method to assign a direction to a point. Currently assigned as the</span>
 <span class="sd">        max(x,y projection) of the direct path between the reference point and</span>
 <span class="sd">        the anchor. Method directly modifies the anchor_pt.direction, thus</span>
@@ -1318,23 +1344,27 @@
 
         <span class="c1"># compute actual final length</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">_actual_length</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span>
-            <span class="n">line</span><span class="o">.</span><span class="n">length</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">length_excess_corner_rounding</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span>
-        <span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">get_units</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">_actual_length</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">length</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">length_excess_corner_rounding</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">coords</span><span class="p">))</span>
+            <span class="o">+</span> <span class="s2">&quot; &quot;</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">get_units</span><span class="p">()</span>
+        <span class="p">)</span>
 
         <span class="c1"># expand the routing track to form the substrate core of the cpw</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;trace&#39;</span><span class="p">:</span> <span class="n">line</span><span class="p">},</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">trace_width</span><span class="p">,</span>
-                           <span class="n">fillet</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">fillet</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;trace&quot;</span><span class="p">:</span> <span class="n">line</span><span class="p">},</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">trace_width</span><span class="p">,</span> <span class="n">fillet</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">fillet</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;CPW&quot;</span><span class="p">:</span>
             <span class="c1"># expand the routing track to form the two gaps in the substrate</span>
             <span class="c1"># final gap will be form by this minus the trace above</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;cut&#39;</span><span class="p">:</span> <span class="n">line</span><span class="p">},</span>
-                               <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">trace_gap</span><span class="p">,</span>
-                               <span class="n">fillet</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">fillet</span><span class="p">,</span>
-                               <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                               <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+                <span class="s2">&quot;path&quot;</span><span class="p">,</span>
+                <span class="p">{</span><span class="s2">&quot;cut&quot;</span><span class="p">:</span> <span class="n">line</span><span class="p">},</span>
+                <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">trace_gap</span><span class="p">,</span>
+                <span class="n">fillet</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">fillet</span><span class="p">,</span>
+                <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
+                <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span></div>
 </div>
 
 
@@ -1377,8 +1407,8 @@
 <span class="sd">            QRoutePoint: Last point (for now the single point) in the QRouteLead</span>
 <span class="sd">            The values are numpy arrays with two float points each.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">position</span> <span class="o">=</span> <span class="n">pin</span><span class="p">[</span><span class="s1">&#39;middle&#39;</span><span class="p">]</span>
-        <span class="n">direction</span> <span class="o">=</span> <span class="n">pin</span><span class="p">[</span><span class="s1">&#39;normal&#39;</span><span class="p">]</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="n">pin</span><span class="p">[</span><span class="s2">&quot;middle&quot;</span><span class="p">]</span>
+        <span class="n">direction</span> <span class="o">=</span> <span class="n">pin</span><span class="p">[</span><span class="s2">&quot;normal&quot;</span><span class="p">]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">=</span> <span class="n">direction</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">position</span><span class="p">])</span>
@@ -1394,8 +1424,7 @@
 <span class="sd">        Args:</span>
 <span class="sd">            length (float) : How much to move by</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pts</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">*</span> <span class="n">length</span><span class="p">],</span>
-                             <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pts</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">*</span> <span class="n">length</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QRouteLead.go_left">
@@ -1408,8 +1437,7 @@
 <span class="sd">            length (float): How much to move by</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">Vector</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pts</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">*</span> <span class="n">length</span><span class="p">],</span>
-                             <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pts</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">*</span> <span class="n">length</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QRouteLead.go_right">
@@ -1421,8 +1449,7 @@
 <span class="sd">            length (float): How much to move by</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">Vector</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pts</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">*</span> <span class="n">length</span><span class="p">],</span>
-                             <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pts</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">*</span> <span class="n">length</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QRouteLead.go_right45">
@@ -1434,8 +1461,7 @@
 <span class="sd">            length(float): How much to move by</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">Vector</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pts</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">*</span> <span class="n">length</span><span class="p">],</span>
-                             <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pts</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">*</span> <span class="n">length</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QRouteLead.go_left45">
@@ -1447,22 +1473,20 @@
 <span class="sd">            length(float): How much to move by</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">Vector</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pts</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">*</span> <span class="n">length</span><span class="p">],</span>
-                             <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pts</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">*</span> <span class="n">length</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QRouteLead.go_angle">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.QRouteLead.html#qiskit_metal.qlibrary.QRouteLead.go_angle">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">go_angle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">angle</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Straight line at any angle w.r.t lead tip direction.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Straight line at any angle w.r.t lead tip direction.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            length(float): How much to move by</span>
 <span class="sd">            angle(float): rotation angle w.r.t lead tip direction</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">Vector</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span> <span class="o">*</span> <span class="n">angle</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pts</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">*</span> <span class="n">length</span><span class="p">],</span>
-                             <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pts</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">*</span> <span class="n">length</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
 
 
     <span class="nd">@property</span>
@@ -1473,8 +1497,8 @@
 <span class="sd">            length (float): Full point_array length</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span>
-            <span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pts</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">pts</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pts</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pts</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">pts</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pts</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="p">)</span>
 
 <div class="viewcode-block" id="QRouteLead.get_tip">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.QRouteLead.html#qiskit_metal.qlibrary.QRouteLead.get_tip">[docs]</a>

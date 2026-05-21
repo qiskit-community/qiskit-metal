@@ -742,16 +742,19 @@
 <span class="sd">        * second_gap: &#39;6um&#39; -- The dielectric gap of the one pin CPW transmission line (also for the capacitor)</span>
 <span class="sd">        * t_length: &#39;50um&#39; -- The length for the t branches</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s1">&#39;cpw&#39;</span><span class="p">,</span> <span class="n">_qgeometry_table_path</span><span class="o">=</span><span class="s1">&#39;True&#39;</span><span class="p">)</span>
+
+    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;cpw&quot;</span><span class="p">,</span> <span class="n">_qgeometry_table_path</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Component metadata&quot;&quot;&quot;</span>
 
-    <span class="c1">#Currently setting the primary CPW length based on the coupling_length</span>
-    <span class="c1">#May want it to be it&#39;s own value that the user can control?</span>
-    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">prime_width</span><span class="o">=</span><span class="s1">&#39;10um&#39;</span><span class="p">,</span>
-                           <span class="n">prime_gap</span><span class="o">=</span><span class="s1">&#39;6um&#39;</span><span class="p">,</span>
-                           <span class="n">second_width</span><span class="o">=</span><span class="s1">&#39;10um&#39;</span><span class="p">,</span>
-                           <span class="n">second_gap</span><span class="o">=</span><span class="s1">&#39;6um&#39;</span><span class="p">,</span>
-                           <span class="n">t_length</span><span class="o">=</span><span class="s1">&#39;50um&#39;</span><span class="p">)</span>
+    <span class="c1"># Currently setting the primary CPW length based on the coupling_length</span>
+    <span class="c1"># May want it to be it&#39;s own value that the user can control?</span>
+    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+        <span class="n">prime_width</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
+        <span class="n">prime_gap</span><span class="o">=</span><span class="s2">&quot;6um&quot;</span><span class="p">,</span>
+        <span class="n">second_width</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
+        <span class="n">second_gap</span><span class="o">=</span><span class="s2">&quot;6um&quot;</span><span class="p">,</span>
+        <span class="n">t_length</span><span class="o">=</span><span class="s2">&quot;50um&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Default connector options&quot;&quot;&quot;</span>
 
     <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Generates a three pin (+) structure comprised of a primary two pin CPW</span>
@@ -765,52 +768,64 @@
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
         <span class="n">prime_cpw_length</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">t_length</span> <span class="o">*</span> <span class="mi">2</span>
 
-        <span class="c1">#Primary CPW</span>
-        <span class="n">prime_cpw</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([[</span><span class="o">-</span><span class="n">prime_cpw_length</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-                                     <span class="p">[</span><span class="n">prime_cpw_length</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+        <span class="c1"># Primary CPW</span>
+        <span class="n">prime_cpw</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">(</span>
+            <span class="p">[[</span><span class="o">-</span><span class="n">prime_cpw_length</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="n">prime_cpw_length</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
+        <span class="p">)</span>
 
-        <span class="c1">#Secondary CPW</span>
-        <span class="n">second_cpw</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">p</span><span class="o">.</span><span class="n">prime_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span>
-                                                                <span class="o">-</span><span class="n">p</span><span class="o">.</span><span class="n">t_length</span><span class="p">]])</span>
+        <span class="c1"># Secondary CPW</span>
+        <span class="n">second_cpw</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">p</span><span class="o">.</span><span class="n">prime_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">p</span><span class="o">.</span><span class="n">t_length</span><span class="p">]])</span>
 
-        <span class="c1">#Rotate and Translate</span>
+        <span class="c1"># Rotate and Translate</span>
         <span class="n">c_items</span> <span class="o">=</span> <span class="p">[</span><span class="n">prime_cpw</span><span class="p">,</span> <span class="n">second_cpw</span><span class="p">]</span>
         <span class="n">c_items</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">c_items</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
         <span class="n">c_items</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">c_items</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_y</span><span class="p">)</span>
         <span class="p">[</span><span class="n">prime_cpw</span><span class="p">,</span> <span class="n">second_cpw</span><span class="p">]</span> <span class="o">=</span> <span class="n">c_items</span>
 
-        <span class="c1">#Add to qgeometry tables</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;prime_cpw&#39;</span><span class="p">:</span> <span class="n">prime_cpw</span><span class="p">},</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">prime_width</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;prime_cpw_sub&#39;</span><span class="p">:</span> <span class="n">prime_cpw</span><span class="p">},</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">prime_width</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">prime_gap</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;second_cpw&#39;</span><span class="p">:</span> <span class="n">second_cpw</span><span class="p">},</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">second_width</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;second_cpw_sub&#39;</span><span class="p">:</span> <span class="n">second_cpw</span><span class="p">},</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">second_width</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">second_gap</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
+        <span class="c1"># Add to qgeometry tables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;prime_cpw&quot;</span><span class="p">:</span> <span class="n">prime_cpw</span><span class="p">},</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">prime_width</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">&quot;prime_cpw_sub&quot;</span><span class="p">:</span> <span class="n">prime_cpw</span><span class="p">},</span>
+            <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">prime_width</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">prime_gap</span><span class="p">,</span>
+            <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;second_cpw&quot;</span><span class="p">:</span> <span class="n">second_cpw</span><span class="p">},</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">second_width</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">&quot;second_cpw_sub&quot;</span><span class="p">:</span> <span class="n">second_cpw</span><span class="p">},</span>
+            <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">second_width</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">second_gap</span><span class="p">,</span>
+            <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
+        <span class="p">)</span>
 
-        <span class="c1">#Add pins</span>
+        <span class="c1"># Add pins</span>
         <span class="n">prime_pin_list</span> <span class="o">=</span> <span class="n">prime_cpw</span><span class="o">.</span><span class="n">coords</span>
         <span class="n">second_pin_list</span> <span class="o">=</span> <span class="n">second_cpw</span><span class="o">.</span><span class="n">coords</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s1">&#39;prime_start&#39;</span><span class="p">,</span>
-                     <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">prime_pin_list</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
-                     <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">prime_width</span><span class="p">,</span>
-                     <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s1">&#39;prime_end&#39;</span><span class="p">,</span>
-                     <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">prime_pin_list</span><span class="p">),</span>
-                     <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">prime_width</span><span class="p">,</span>
-                     <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s1">&#39;second_end&#39;</span><span class="p">,</span>
-                     <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">second_pin_list</span><span class="p">),</span>
-                     <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">second_width</span><span class="p">,</span>
-                     <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
+            <span class="s2">&quot;prime_start&quot;</span><span class="p">,</span>
+            <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">prime_pin_list</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">prime_width</span><span class="p">,</span>
+            <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
+            <span class="s2">&quot;prime_end&quot;</span><span class="p">,</span>
+            <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">prime_pin_list</span><span class="p">),</span>
+            <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">prime_width</span><span class="p">,</span>
+            <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
+            <span class="s2">&quot;second_end&quot;</span><span class="p">,</span>
+            <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">second_pin_list</span><span class="p">),</span>
+            <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">second_width</span><span class="p">,</span>
+            <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span></div>
 </div>
 
 </pre></div>

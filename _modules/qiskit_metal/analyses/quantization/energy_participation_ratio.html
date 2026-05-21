@@ -701,7 +701,7 @@
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.designs</span><span class="w"> </span><span class="kn">import</span> <span class="n">QDesign</span>  <span class="c1"># pylint: disable=unused-import</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.designs</span><span class="w"> </span><span class="kn">import</span> <span class="n">QDesign</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">QAnalysis</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.simulation</span><span class="w"> </span><span class="kn">import</span> <span class="n">EigenmodeSim</span>
 
@@ -739,20 +739,22 @@
 <span class="sd">        * energy_elec_sub (float): Admittance matrix.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">default_setup</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">junctions</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-        <span class="n">jj</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">Lj_variable</span><span class="o">=</span><span class="s1">&#39;Lj&#39;</span><span class="p">,</span> <span class="n">Cj_variable</span><span class="o">=</span><span class="s1">&#39;Cj&#39;</span><span class="p">,</span> <span class="n">rect</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)),</span>
-                         <span class="n">dissipatives</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">dielectrics_bulk</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;main&#39;</span><span class="p">]),</span>
-                         <span class="n">cos_trunc</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
-                         <span class="n">fock_trunc</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
-                         <span class="n">sweep_variable</span><span class="o">=</span><span class="s1">&#39;Lj&#39;</span><span class="p">)</span>
+
+    <span class="n">default_setup</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+        <span class="n">junctions</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">jj</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">Lj_variable</span><span class="o">=</span><span class="s2">&quot;Lj&quot;</span><span class="p">,</span> <span class="n">Cj_variable</span><span class="o">=</span><span class="s2">&quot;Cj&quot;</span><span class="p">,</span> <span class="n">rect</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)),</span>
+        <span class="n">dissipatives</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">dielectrics_bulk</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]),</span>
+        <span class="n">cos_trunc</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+        <span class="n">fock_trunc</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+        <span class="n">sweep_variable</span><span class="o">=</span><span class="s2">&quot;Lj&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Default setup.&quot;&quot;&quot;</span>
 
     <span class="c1"># supported labels for data generated from the simulation</span>
-    <span class="n">data_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;energy_elec&#39;</span><span class="p">,</span> <span class="s1">&#39;energy_mag&#39;</span><span class="p">,</span> <span class="s1">&#39;energy_elec_sub&#39;</span><span class="p">]</span>
+    <span class="n">data_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;energy_elec&quot;</span><span class="p">,</span> <span class="s2">&quot;energy_mag&quot;</span><span class="p">,</span> <span class="s2">&quot;energy_elec_sub&quot;</span><span class="p">]</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Default data labels.&quot;&quot;&quot;</span>
 
     <span class="c1"># TODO: renderer_name should default to None. Need to create a set renderer method</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">design</span><span class="p">:</span> <span class="s1">&#39;QDesign&#39;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">renderer_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">design</span><span class="p">:</span> <span class="s2">&quot;QDesign&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">renderer_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs Energy Participation Ratio (EPR) analysis on a simulated or</span>
 <span class="sd">        user-provided eigenmode matrix.</span>
 
@@ -765,8 +767,9 @@
         <span class="c1"># QAnalysis are expected to either run simulation or use pre-saved sim outputs</span>
         <span class="c1"># we use a Dict() to store the sim outputs previously saved. Its key names need</span>
         <span class="c1"># to match those found in the correspondent simulation class.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sim</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">()</span> <span class="k">if</span> <span class="n">renderer_name</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">EigenmodeSim</span><span class="p">(</span>
-            <span class="n">design</span><span class="p">,</span> <span class="n">renderer_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sim</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">Dict</span><span class="p">()</span> <span class="k">if</span> <span class="n">renderer_name</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">EigenmodeSim</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="n">renderer_name</span><span class="p">)</span>
+        <span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
     <span class="nd">@property</span>
@@ -776,7 +779,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            float: Electric field energy stored in the system based on the eigenmode results.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;energy_elec&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s2">&quot;energy_elec&quot;</span><span class="p">)</span>
 
     <span class="nd">@energy_elec</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">energy_elec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
@@ -787,10 +790,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s1">&#39;Unsupported type </span><span class="si">%s</span><span class="s1">. Only accepts float. Please try again.&#39;</span><span class="p">,</span>
-                <span class="p">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)})</span>
+                <span class="s2">&quot;Unsupported type </span><span class="si">%s</span><span class="s2">. Only accepts float. Please try again.&quot;</span><span class="p">,</span>
+                <span class="p">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)},</span>
+            <span class="p">)</span>
             <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="s1">&#39;energy_elec&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="s2">&quot;energy_elec&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">energy_mag</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
@@ -799,7 +803,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            float: Magnetic field energy stored in the system based on the eigenmode results.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;energy_mag&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s2">&quot;energy_mag&quot;</span><span class="p">)</span>
 
     <span class="nd">@energy_mag</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">energy_mag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
@@ -810,10 +814,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s1">&#39;Unsupported type </span><span class="si">%s</span><span class="s1">. Only accepts float. Please try again.&#39;</span><span class="p">,</span>
-                <span class="p">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)})</span>
+                <span class="s2">&quot;Unsupported type </span><span class="si">%s</span><span class="s2">. Only accepts float. Please try again.&quot;</span><span class="p">,</span>
+                <span class="p">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)},</span>
+            <span class="p">)</span>
             <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="s1">&#39;energy_mag&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="s2">&quot;energy_mag&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">energy_elec_sub</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
@@ -822,7 +827,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            float: Electric field energy stored in the substrate based on the eigenmode results.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;energy_elec_sub&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s2">&quot;energy_elec_sub&quot;</span><span class="p">)</span>
 
     <span class="nd">@energy_elec_sub</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">energy_elec_sub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
@@ -834,10 +839,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s1">&#39;Unsupported type </span><span class="si">%s</span><span class="s1">. Only accepts float. Please try again.&#39;</span><span class="p">,</span>
-                <span class="p">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)})</span>
+                <span class="s2">&quot;Unsupported type </span><span class="si">%s</span><span class="s2">. Only accepts float. Please try again.&quot;</span><span class="p">,</span>
+                <span class="p">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)},</span>
+            <span class="p">)</span>
             <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="s1">&#39;energy_elec_sub&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="s2">&quot;energy_elec_sub&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 
 <div class="viewcode-block" id="EPRanalysis.run">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.EPRanalysis.html#qiskit_metal.analyses.EPRanalysis.run">[docs]</a>
@@ -871,7 +877,8 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">report_hamiltonian</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">sweep_variable</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                    <span class="s2">&quot;Please install a more recent version of pyEPR (&gt;=0.8.5.3)&quot;</span><span class="p">)</span></div>
+                    <span class="s2">&quot;Please install a more recent version of pyEPR (&gt;=0.8.5.3)&quot;</span>
+                <span class="p">)</span></div>
 
 
     <span class="c1"># TODO: all the epr methods should not use the renderer. Now they are forced to because of the</span>
@@ -887,10 +894,10 @@
         <span class="c1"># pandas cannot handle Dict so need to convert Dict to dict</span>
         <span class="n">system</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup</span>
-        <span class="n">system</span><span class="p">[</span><span class="s1">&#39;junctions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span> <span class="k">if</span> <span class="n">no_junctions</span> <span class="k">else</span> <span class="p">{</span>
-            <span class="n">k</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">junctions</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-        <span class="p">}</span>
-        <span class="n">system</span><span class="p">[</span><span class="s1">&#39;dissipatives&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">dissipatives</span><span class="p">)</span>
+        <span class="n">system</span><span class="p">[</span><span class="s2">&quot;junctions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">{}</span> <span class="k">if</span> <span class="n">no_junctions</span> <span class="k">else</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">junctions</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="p">)</span>
+        <span class="n">system</span><span class="p">[</span><span class="s2">&quot;dissipatives&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">dissipatives</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">epr_start</span><span class="p">(</span><span class="o">**</span><span class="n">system</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">system</span></div>
 
@@ -898,20 +905,20 @@
 <div class="viewcode-block" id="EPRanalysis.get_stored_energy">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.EPRanalysis.html#qiskit_metal.analyses.EPRanalysis.get_stored_energy">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_stored_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">no_junctions</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the energy stored in the system based on the eigenmode results.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the energy stored in the system based on the eigenmode results.&quot;&quot;&quot;</span>
         <span class="c1"># execute EPR and energy extraction</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">energy_elec</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">energy_elec_sub</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">energy_mag</span> <span class="o">=</span> \
+        <span class="bp">self</span><span class="o">.</span><span class="n">energy_elec</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">energy_elec_sub</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">energy_mag</span> <span class="o">=</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">epr_get_stored_energy</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">epr_start</span><span class="p">(</span><span class="n">no_junctions</span><span class="p">))</span>
+        <span class="p">)</span>
 
         <span class="c1"># present a human-friendly output</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">        energy_elec_all       = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">energy_elec</span><span class="si">}</span>
 <span class="s2">        energy_elec_substrate = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">energy_elec_sub</span><span class="si">}</span>
-<span class="s2">        EPR of substrate = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">energy_elec_sub</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">energy_elec</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%</span>
+<span class="s2">        EPR of substrate = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">energy_elec_sub</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">energy_elec</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%</span>
 
 <span class="s2">        energy_mag    = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">energy_mag</span><span class="si">}</span>
-<span class="s2">        energy_mag % of energy_elec_all  = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">energy_mag</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">energy_elec</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%</span>
+<span class="s2">        energy_mag % of energy_elec_all  = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">energy_mag</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">energy_elec</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%</span>
 <span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span></div>
 
 
@@ -954,7 +961,7 @@
 
 <div class="viewcode-block" id="EPRanalysis.del_junction">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.EPRanalysis.html#qiskit_metal.analyses.EPRanalysis.del_junction">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">del_junction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name_junction</span><span class="o">=</span><span class="s1">&#39;jj&#39;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">del_junction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name_junction</span><span class="o">=</span><span class="s2">&quot;jj&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove a junction from the dictionary setup.junctions</span>
 
 <span class="sd">        Args:</span>
@@ -966,12 +973,9 @@
 
 <div class="viewcode-block" id="EPRanalysis.add_junction">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.EPRanalysis.html#qiskit_metal.analyses.EPRanalysis.add_junction">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">add_junction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                     <span class="n">name_junction</span><span class="o">=</span><span class="s2">&quot;jj&quot;</span><span class="p">,</span>
-                     <span class="n">lj_var</span><span class="o">=</span><span class="s2">&quot;Lj&quot;</span><span class="p">,</span>
-                     <span class="n">cj_var</span><span class="o">=</span><span class="s1">&#39;Cj&#39;</span><span class="p">,</span>
-                     <span class="n">rect</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
-                     <span class="n">line</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_junction</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name_junction</span><span class="o">=</span><span class="s2">&quot;jj&quot;</span><span class="p">,</span> <span class="n">lj_var</span><span class="o">=</span><span class="s2">&quot;Lj&quot;</span><span class="p">,</span> <span class="n">cj_var</span><span class="o">=</span><span class="s2">&quot;Cj&quot;</span><span class="p">,</span> <span class="n">rect</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a new junction for the EPR analysis</span>
 
 <span class="sd">        Args:</span>
@@ -988,14 +992,12 @@
         <span class="n">j_dic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">junctions</span>
         <span class="k">if</span> <span class="n">name_junction</span> <span class="ow">in</span> <span class="n">j_dic</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;junction already defined. Overwriting </span><span class="si">{</span><span class="n">name_junction</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="sa">f</span><span class="s2">&quot;junction already defined. Overwriting </span><span class="si">{</span><span class="n">name_junction</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
 
-        <span class="n">j_dic</span><span class="p">[</span><span class="n">name_junction</span><span class="p">]</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">({</span>
-            <span class="s1">&#39;Lj_variable&#39;</span><span class="p">:</span> <span class="n">lj_var</span><span class="p">,</span>
-            <span class="s1">&#39;Cj_variable&#39;</span><span class="p">:</span> <span class="n">cj_var</span><span class="p">,</span>
-            <span class="s1">&#39;rect&#39;</span><span class="p">:</span> <span class="n">rect</span><span class="p">,</span>
-            <span class="s1">&#39;line&#39;</span><span class="p">:</span> <span class="n">line</span>
-        <span class="p">})</span></div>
+        <span class="n">j_dic</span><span class="p">[</span><span class="n">name_junction</span><span class="p">]</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+            <span class="p">{</span><span class="s2">&quot;Lj_variable&quot;</span><span class="p">:</span> <span class="n">lj_var</span><span class="p">,</span> <span class="s2">&quot;Cj_variable&quot;</span><span class="p">:</span> <span class="n">cj_var</span><span class="p">,</span> <span class="s2">&quot;rect&quot;</span><span class="p">:</span> <span class="n">rect</span><span class="p">,</span> <span class="s2">&quot;line&quot;</span><span class="p">:</span> <span class="n">line</span><span class="p">}</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="EPRanalysis.load_simulation_data">

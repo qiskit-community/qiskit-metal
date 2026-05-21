@@ -763,24 +763,28 @@
 <span class="sd">        * _default_connection_pads: Currently empty</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">c_width</span><span class="o">=</span><span class="s1">&#39;400um&#39;</span><span class="p">,</span>
-                           <span class="n">l_width</span><span class="o">=</span><span class="s1">&#39;20um&#39;</span><span class="p">,</span>
-                           <span class="n">l_gap</span><span class="o">=</span><span class="s1">&#39;10um&#39;</span><span class="p">,</span>
-                           <span class="n">a_height</span><span class="o">=</span><span class="s1">&#39;60um&#39;</span><span class="p">,</span>
-                           <span class="n">cp_height</span><span class="o">=</span><span class="s1">&#39;15um&#39;</span><span class="p">,</span>
-                           <span class="n">cp_arm_length</span><span class="o">=</span><span class="s1">&#39;30um&#39;</span><span class="p">,</span>
-                           <span class="n">cp_arm_width</span><span class="o">=</span><span class="s1">&#39;6um&#39;</span><span class="p">,</span>
-                           <span class="n">cp_gap</span><span class="o">=</span><span class="s1">&#39;6um&#39;</span><span class="p">,</span>
-                           <span class="n">cp_gspace</span><span class="o">=</span><span class="s1">&#39;3um&#39;</span><span class="p">,</span>
-                           <span class="n">fl_width</span><span class="o">=</span><span class="s1">&#39;5um&#39;</span><span class="p">,</span>
-                           <span class="n">fl_gap</span><span class="o">=</span><span class="s1">&#39;3um&#39;</span><span class="p">,</span>
-                           <span class="n">fl_length</span><span class="o">=</span><span class="s1">&#39;10um&#39;</span><span class="p">,</span>
-                           <span class="n">fl_ground</span><span class="o">=</span><span class="s1">&#39;2um&#39;</span><span class="p">)</span>
+    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+        <span class="n">c_width</span><span class="o">=</span><span class="s2">&quot;400um&quot;</span><span class="p">,</span>
+        <span class="n">l_width</span><span class="o">=</span><span class="s2">&quot;20um&quot;</span><span class="p">,</span>
+        <span class="n">l_gap</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
+        <span class="n">a_height</span><span class="o">=</span><span class="s2">&quot;60um&quot;</span><span class="p">,</span>
+        <span class="n">cp_height</span><span class="o">=</span><span class="s2">&quot;15um&quot;</span><span class="p">,</span>
+        <span class="n">cp_arm_length</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span><span class="p">,</span>
+        <span class="n">cp_arm_width</span><span class="o">=</span><span class="s2">&quot;6um&quot;</span><span class="p">,</span>
+        <span class="n">cp_gap</span><span class="o">=</span><span class="s2">&quot;6um&quot;</span><span class="p">,</span>
+        <span class="n">cp_gspace</span><span class="o">=</span><span class="s2">&quot;3um&quot;</span><span class="p">,</span>
+        <span class="n">fl_width</span><span class="o">=</span><span class="s2">&quot;5um&quot;</span><span class="p">,</span>
+        <span class="n">fl_gap</span><span class="o">=</span><span class="s2">&quot;3um&quot;</span><span class="p">,</span>
+        <span class="n">fl_length</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
+        <span class="n">fl_ground</span><span class="o">=</span><span class="s2">&quot;2um&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s1">&#39;Pocket&#39;</span><span class="p">,</span>
-                              <span class="n">_qgeometry_table_path</span><span class="o">=</span><span class="s1">&#39;True&#39;</span><span class="p">,</span>
-                              <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s1">&#39;True&#39;</span><span class="p">,</span>
-                              <span class="n">_qgeometry_table_junction</span><span class="o">=</span><span class="s1">&#39;True&#39;</span><span class="p">)</span>
+    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+        <span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;Pocket&quot;</span><span class="p">,</span>
+        <span class="n">_qgeometry_table_path</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">,</span>
+        <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">,</span>
+        <span class="n">_qgeometry_table_junction</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
     <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;One of the tunable couplers&quot;&quot;&quot;</span>
 
@@ -790,117 +794,148 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Builds the component.&quot;&quot;&quot;</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
 
-        <span class="c1">#Draw the charge island</span>
-        <span class="n">btm</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="o">-</span><span class="n">p</span><span class="o">.</span><span class="n">c_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="n">p</span><span class="o">.</span><span class="n">l_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
-                                        <span class="n">p</span><span class="o">.</span><span class="n">l_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="c1"># Draw the charge island</span>
+        <span class="n">btm</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">box</span><span class="p">(</span>
+            <span class="o">-</span><span class="n">p</span><span class="o">.</span><span class="n">c_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="n">p</span><span class="o">.</span><span class="n">l_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">l_width</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="p">)</span>
 
         <span class="n">x_spot</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">c_width</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">l_width</span> <span class="o">/</span> <span class="mi">2</span>
 
-        <span class="n">arm1</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">x_spot</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">l_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
-                                         <span class="n">p</span><span class="o">.</span><span class="n">l_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
-                                         <span class="o">-</span><span class="p">(</span><span class="n">x_spot</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">l_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="n">p</span><span class="o">.</span><span class="n">a_height</span><span class="p">)</span>
-        <span class="n">arm2</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="o">-</span><span class="p">((</span><span class="n">x_spot</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">/</span> <span class="mi">5</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">l_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
-                                         <span class="n">p</span><span class="o">.</span><span class="n">l_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
-                                         <span class="o">-</span><span class="p">((</span><span class="n">x_spot</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">/</span> <span class="mi">5</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">l_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
-                                         <span class="n">p</span><span class="o">.</span><span class="n">a_height</span><span class="p">)</span>
-        <span class="n">arm3</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="o">-</span><span class="p">((</span><span class="n">x_spot</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">5</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">l_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
-                                         <span class="n">p</span><span class="o">.</span><span class="n">l_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
-                                         <span class="o">-</span><span class="p">((</span><span class="n">x_spot</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">5</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">l_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
-                                         <span class="n">p</span><span class="o">.</span><span class="n">a_height</span><span class="p">)</span>
+        <span class="n">arm1</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">box</span><span class="p">(</span>
+            <span class="o">-</span><span class="p">(</span><span class="n">x_spot</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">l_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">l_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="o">-</span><span class="p">(</span><span class="n">x_spot</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">l_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">a_height</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">arm2</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">box</span><span class="p">(</span>
+            <span class="o">-</span><span class="p">((</span><span class="n">x_spot</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">/</span> <span class="mi">5</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">l_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">l_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="o">-</span><span class="p">((</span><span class="n">x_spot</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">/</span> <span class="mi">5</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">l_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">a_height</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">arm3</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">box</span><span class="p">(</span>
+            <span class="o">-</span><span class="p">((</span><span class="n">x_spot</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">5</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">l_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">l_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="o">-</span><span class="p">((</span><span class="n">x_spot</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">5</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">l_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">a_height</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="n">left_side</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">shapely</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">unary_union</span><span class="p">([</span><span class="n">btm</span><span class="p">,</span> <span class="n">arm1</span><span class="p">,</span> <span class="n">arm2</span><span class="p">,</span> <span class="n">arm3</span><span class="p">])</span>
-        <span class="n">cap_island</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">shapely</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">unary_union</span><span class="p">([</span>
-            <span class="n">left_side</span><span class="p">,</span>
-            <span class="n">draw</span><span class="o">.</span><span class="n">shapely</span><span class="o">.</span><span class="n">affinity</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">left_side</span><span class="p">,</span>
-                                        <span class="n">xfact</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
-                                        <span class="n">yfact</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                                        <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-        <span class="p">])</span>
+        <span class="n">cap_island</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">shapely</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">unary_union</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">left_side</span><span class="p">,</span>
+                <span class="n">draw</span><span class="o">.</span><span class="n">shapely</span><span class="o">.</span><span class="n">affinity</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span>
+                    <span class="n">left_side</span><span class="p">,</span> <span class="n">xfact</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">yfact</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="p">),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
 
         <span class="n">cap_subtract</span> <span class="o">=</span> <span class="n">cap_island</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">l_gap</span><span class="p">,</span> <span class="n">cap_style</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">join_style</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
-        <span class="c1">#Reference coordinates</span>
+        <span class="c1"># Reference coordinates</span>
         <span class="n">cpl_x</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">x_spot</span>
         <span class="n">cpl_y</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">a_height</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">l_gap</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cp_gap</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cp_gspace</span>
         <span class="n">fl_y</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">a_height</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">l_gap</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">fl_ground</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">fl_gap</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">fl_width</span> <span class="o">/</span> <span class="mi">2</span>
 
-        <span class="c1">#Draw the junction and flux line</span>
-        <span class="n">rect_jj</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([(</span><span class="o">-</span><span class="n">cpl_x</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">a_height</span><span class="p">),</span>
-                                   <span class="p">(</span><span class="o">-</span><span class="n">cpl_x</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">a_height</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">l_gap</span><span class="p">)])</span>
+        <span class="c1"># Draw the junction and flux line</span>
+        <span class="n">rect_jj</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">(</span>
+            <span class="p">[(</span><span class="o">-</span><span class="n">cpl_x</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">a_height</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">cpl_x</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">a_height</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">l_gap</span><span class="p">)]</span>
+        <span class="p">)</span>
 
-        <span class="n">flux_line</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([[</span><span class="o">-</span><span class="n">cpl_x</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">fl_length</span><span class="p">,</span> <span class="n">fl_y</span><span class="p">],</span>
-                                     <span class="p">[</span><span class="o">-</span><span class="n">cpl_x</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="n">fl_y</span><span class="p">],</span>
-                                     <span class="p">[</span><span class="o">-</span><span class="n">cpl_x</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="n">fl_y</span> <span class="o">+</span> <span class="mf">0.01</span><span class="p">]])</span>
+        <span class="n">flux_line</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">[</span><span class="o">-</span><span class="n">cpl_x</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">fl_length</span><span class="p">,</span> <span class="n">fl_y</span><span class="p">],</span>
+                <span class="p">[</span><span class="o">-</span><span class="n">cpl_x</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="n">fl_y</span><span class="p">],</span>
+                <span class="p">[</span><span class="o">-</span><span class="n">cpl_x</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="n">fl_y</span> <span class="o">+</span> <span class="mf">0.01</span><span class="p">],</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
 
-        <span class="c1">#Draw the connector</span>
+        <span class="c1"># Draw the connector</span>
         <span class="n">cpl_x</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">x_spot</span>
         <span class="n">cpl_y</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">a_height</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">l_gap</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cp_gap</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cp_gspace</span>
 
         <span class="n">con_pad</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">box</span><span class="p">(</span>
-            <span class="n">cpl_x</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">x_spot</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">cp_arm_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">cpl_y</span><span class="p">,</span>
-            <span class="n">cpl_x</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">x_spot</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cp_arm_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">cpl_y</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cp_height</span><span class="p">)</span>
+            <span class="n">cpl_x</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">x_spot</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">cp_arm_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="n">cpl_y</span><span class="p">,</span>
+            <span class="n">cpl_x</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">x_spot</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cp_arm_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="n">cpl_y</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cp_height</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="n">con_arm_l</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">box</span><span class="p">(</span>
             <span class="n">cpl_x</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">x_spot</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">cp_arm_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
             <span class="n">cpl_y</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">cp_arm_length</span><span class="p">,</span>
-            <span class="n">cpl_x</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">x_spot</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cp_arm_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">cpl_y</span><span class="p">)</span>
+            <span class="n">cpl_x</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">x_spot</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cp_arm_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="n">cpl_y</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="n">con_arm_r</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">box</span><span class="p">(</span>
             <span class="n">cpl_x</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">x_spot</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">cp_arm_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
             <span class="n">cpl_y</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">cp_arm_length</span><span class="p">,</span>
-            <span class="n">cpl_x</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">x_spot</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cp_arm_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">cpl_y</span><span class="p">)</span>
+            <span class="n">cpl_x</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">x_spot</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cp_arm_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="n">cpl_y</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="n">con_body</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">shapely</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">unary_union</span><span class="p">([</span><span class="n">con_pad</span><span class="p">,</span> <span class="n">con_arm_l</span><span class="p">,</span> <span class="n">con_arm_r</span><span class="p">])</span>
 
         <span class="n">con_sub</span> <span class="o">=</span> <span class="n">con_body</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">cp_gap</span><span class="p">,</span> <span class="n">cap_style</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">join_style</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
-        <span class="n">con_pin</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([[</span><span class="n">cpl_x</span><span class="p">,</span> <span class="n">cpl_y</span><span class="p">],</span> <span class="p">[</span><span class="n">cpl_x</span><span class="p">,</span>
-                                                    <span class="n">cpl_y</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cp_height</span><span class="p">]])</span>
+        <span class="n">con_pin</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([[</span><span class="n">cpl_x</span><span class="p">,</span> <span class="n">cpl_y</span><span class="p">],</span> <span class="p">[</span><span class="n">cpl_x</span><span class="p">,</span> <span class="n">cpl_y</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cp_height</span><span class="p">]])</span>
 
-        <span class="c1">#Rotate and translate.</span>
+        <span class="c1"># Rotate and translate.</span>
         <span class="n">c_items</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">cap_island</span><span class="p">,</span> <span class="n">cap_subtract</span><span class="p">,</span> <span class="n">rect_jj</span><span class="p">,</span> <span class="n">con_body</span><span class="p">,</span> <span class="n">con_sub</span><span class="p">,</span> <span class="n">flux_line</span><span class="p">,</span>
-            <span class="n">con_pin</span>
+            <span class="n">cap_island</span><span class="p">,</span>
+            <span class="n">cap_subtract</span><span class="p">,</span>
+            <span class="n">rect_jj</span><span class="p">,</span>
+            <span class="n">con_body</span><span class="p">,</span>
+            <span class="n">con_sub</span><span class="p">,</span>
+            <span class="n">flux_line</span><span class="p">,</span>
+            <span class="n">con_pin</span><span class="p">,</span>
         <span class="p">]</span>
         <span class="n">c_items</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">c_items</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
         <span class="n">c_items</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">c_items</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_y</span><span class="p">)</span>
-        <span class="p">[</span>
-            <span class="n">cap_island</span><span class="p">,</span> <span class="n">cap_subtract</span><span class="p">,</span> <span class="n">rect_jj</span><span class="p">,</span> <span class="n">con_body</span><span class="p">,</span> <span class="n">con_sub</span><span class="p">,</span> <span class="n">flux_line</span><span class="p">,</span>
-            <span class="n">con_pin</span>
-        <span class="p">]</span> <span class="o">=</span> <span class="n">c_items</span>
+        <span class="p">[</span><span class="n">cap_island</span><span class="p">,</span> <span class="n">cap_subtract</span><span class="p">,</span> <span class="n">rect_jj</span><span class="p">,</span> <span class="n">con_body</span><span class="p">,</span> <span class="n">con_sub</span><span class="p">,</span> <span class="n">flux_line</span><span class="p">,</span> <span class="n">con_pin</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">c_items</span>
+        <span class="p">)</span>
 
-        <span class="c1">#Add to qgeometry</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="p">{</span>
-            <span class="s1">&#39;cap_island&#39;</span><span class="p">:</span> <span class="n">cap_island</span><span class="p">,</span>
-            <span class="s1">&#39;connector_body&#39;</span><span class="p">:</span> <span class="n">con_body</span>
-        <span class="p">},</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="p">{</span>
-            <span class="s1">&#39;cap_subtract&#39;</span><span class="p">:</span> <span class="n">cap_subtract</span><span class="p">,</span>
-            <span class="s1">&#39;connector_sub&#39;</span><span class="p">:</span> <span class="n">con_sub</span>
-        <span class="p">},</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># Add to qgeometry</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;poly&quot;</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">&quot;cap_island&quot;</span><span class="p">:</span> <span class="n">cap_island</span><span class="p">,</span> <span class="s2">&quot;connector_body&quot;</span><span class="p">:</span> <span class="n">con_body</span><span class="p">},</span>
+            <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;poly&quot;</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">&quot;cap_subtract&quot;</span><span class="p">:</span> <span class="n">cap_subtract</span><span class="p">,</span> <span class="s2">&quot;connector_sub&quot;</span><span class="p">:</span> <span class="n">con_sub</span><span class="p">},</span>
+            <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
+            <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;flux_line&#39;</span><span class="p">:</span> <span class="n">flux_line</span><span class="p">},</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">fl_width</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;flux_line_sub&#39;</span><span class="p">:</span> <span class="n">flux_line</span><span class="p">},</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">fl_width</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">fl_gap</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;flux_line&quot;</span><span class="p">:</span> <span class="n">flux_line</span><span class="p">},</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">fl_width</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">&quot;flux_line_sub&quot;</span><span class="p">:</span> <span class="n">flux_line</span><span class="p">},</span>
+            <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">fl_width</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">fl_gap</span><span class="p">,</span>
+            <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
+        <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;junction&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">rect_jj</span><span class="o">=</span><span class="n">rect_jj</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">l_width</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;junction&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">rect_jj</span><span class="o">=</span><span class="n">rect_jj</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">l_width</span><span class="p">)</span>
 
-        <span class="c1">#Add pin</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s1">&#39;Control&#39;</span><span class="p">,</span>
-                     <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">con_pin</span><span class="o">.</span><span class="n">coords</span><span class="p">),</span>
-                     <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">l_width</span><span class="p">,</span>
-                     <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s1">&#39;Flux&#39;</span><span class="p">,</span>
-                     <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">flux_line</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]),</span>
-                     <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">l_width</span><span class="p">,</span>
-                     <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+        <span class="c1"># Add pin</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
+            <span class="s2">&quot;Control&quot;</span><span class="p">,</span>
+            <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">con_pin</span><span class="o">.</span><span class="n">coords</span><span class="p">),</span>
+            <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">l_width</span><span class="p">,</span>
+            <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
+            <span class="s2">&quot;Flux&quot;</span><span class="p">,</span>
+            <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">flux_line</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]),</span>
+            <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">l_width</span><span class="p">,</span>
+            <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span></div>
 </div>
 
 </pre></div>

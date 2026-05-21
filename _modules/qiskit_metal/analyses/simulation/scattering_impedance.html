@@ -704,7 +704,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.designs</span><span class="w"> </span><span class="kn">import</span> <span class="n">QDesign</span>  <span class="c1"># pylint: disable=unused-import</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.designs</span><span class="w"> </span><span class="kn">import</span> <span class="n">QDesign</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">QSimulation</span>
@@ -742,28 +742,33 @@
 <span class="sd">        * param_s (pd.DataFrame): Scattering matrix.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">default_setup</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">freq_ghz</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-                         <span class="n">max_delta_s</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
-                         <span class="n">max_passes</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-                         <span class="n">min_passes</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                         <span class="n">min_converged</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                         <span class="n">pct_refinement</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
-                         <span class="n">basis_order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                         <span class="nb">vars</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">Lj</span><span class="o">=</span><span class="s1">&#39;10 nH&#39;</span><span class="p">,</span> <span class="n">Cj</span><span class="o">=</span><span class="s1">&#39;0 fF&#39;</span><span class="p">),</span>
-                         <span class="n">sweep_setup</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Sweep&quot;</span><span class="p">,</span>
-                                          <span class="n">start_ghz</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
-                                          <span class="n">stop_ghz</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span>
-                                          <span class="n">count</span><span class="o">=</span><span class="mi">101</span><span class="p">,</span>
-                                          <span class="n">step_ghz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                                          <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;Fast&quot;</span><span class="p">,</span>
-                                          <span class="n">save_fields</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+
+    <span class="n">default_setup</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+        <span class="n">freq_ghz</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+        <span class="n">max_delta_s</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">max_passes</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="n">min_passes</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">min_converged</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">pct_refinement</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+        <span class="n">basis_order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="nb">vars</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">Lj</span><span class="o">=</span><span class="s2">&quot;10 nH&quot;</span><span class="p">,</span> <span class="n">Cj</span><span class="o">=</span><span class="s2">&quot;0 fF&quot;</span><span class="p">),</span>
+        <span class="n">sweep_setup</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Sweep&quot;</span><span class="p">,</span>
+            <span class="n">start_ghz</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+            <span class="n">stop_ghz</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span>
+            <span class="n">count</span><span class="o">=</span><span class="mi">101</span><span class="p">,</span>
+            <span class="n">step_ghz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;Fast&quot;</span><span class="p">,</span>
+            <span class="n">save_fields</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Default setup.&quot;&quot;&quot;</span>
 
     <span class="c1"># supported labels for data generated from the simulation</span>
-    <span class="n">data_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;sweep_name&#39;</span><span class="p">,</span> <span class="s1">&#39;params_z&#39;</span><span class="p">,</span> <span class="s1">&#39;params_y&#39;</span><span class="p">,</span> <span class="s1">&#39;params_s&#39;</span><span class="p">]</span>
+    <span class="n">data_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;sweep_name&quot;</span><span class="p">,</span> <span class="s2">&quot;params_z&quot;</span><span class="p">,</span> <span class="s2">&quot;params_y&quot;</span><span class="p">,</span> <span class="s2">&quot;params_s&quot;</span><span class="p">]</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Default data labels.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">design</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;QDesign&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">renderer_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;hfss&#39;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">design</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;QDesign&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">renderer_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;hfss&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute drivenmodal and then extracts impedance, admittance and scattering paramters.</span>
 
 <span class="sd">        Args:</span>
@@ -780,14 +785,15 @@
 <span class="sd">        output of the analysis and stores it in self.params_z/params_y/params_s.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sim_setup_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sweep_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">initialize_drivenmodal</span><span class="p">(</span>
-            <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="p">)</span>
+            <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">setup</span>
+        <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">analyze_sweep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sweep_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim_setup_name</span><span class="p">)</span>
         <span class="c1"># TODO: return the impedance, admittance and scattering matrices for later use</span>
 
 <div class="viewcode-block" id="ScatteringImpedanceSim.get_impedance">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.ScatteringImpedanceSim.html#qiskit_metal.analyses.ScatteringImpedanceSim.get_impedance">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_impedance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param_name</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Z11&#39;</span><span class="p">,</span> <span class="s1">&#39;Z21&#39;</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_impedance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param_name</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Z11&quot;</span><span class="p">,</span> <span class="s2">&quot;Z21&quot;</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the impedance plot.</span>
 
 <span class="sd">        Args:</span>
@@ -800,7 +806,7 @@
 
 <div class="viewcode-block" id="ScatteringImpedanceSim.get_admittance">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.ScatteringImpedanceSim.html#qiskit_metal.analyses.ScatteringImpedanceSim.get_admittance">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_admittance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param_name</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Y11&#39;</span><span class="p">,</span> <span class="s1">&#39;Y21&#39;</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_admittance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param_name</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Y11&quot;</span><span class="p">,</span> <span class="s2">&quot;Y21&quot;</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the impedance plot.</span>
 
 <span class="sd">        Args:</span>
@@ -813,7 +819,7 @@
 
 <div class="viewcode-block" id="ScatteringImpedanceSim.get_scattering">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.ScatteringImpedanceSim.html#qiskit_metal.analyses.ScatteringImpedanceSim.get_scattering">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_scattering</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param_name</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;S11&#39;</span><span class="p">,</span> <span class="s1">&#39;S21&#39;</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_scattering</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param_name</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;S11&quot;</span><span class="p">,</span> <span class="s2">&quot;S21&quot;</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the scattering plot.</span>
 
 <span class="sd">        Args:</span>
@@ -826,15 +832,16 @@
 
 <div class="viewcode-block" id="ScatteringImpedanceSim.run_sim">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.ScatteringImpedanceSim.html#qiskit_metal.analyses.ScatteringImpedanceSim.run_sim">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">run_sim</span><span class="p">(</span>  <span class="c1"># pylint: disable=arguments-differ</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">components</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">open_terminations</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">port_list</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">jj_to_port</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">ignored_jjs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">box_plus_buffer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run_sim</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">components</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">open_terminations</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">port_list</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">jj_to_port</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ignored_jjs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">box_plus_buffer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Executes the entire drivenmodal analysis and convergence result export.</span>
 <span class="sd">        First it makes sure the tool is running. Then it does what&#39;s necessary to render the design.</span>
 <span class="sd">        Finally it runs the setup and sweep defined in this class. You need to modify the setup</span>
@@ -865,7 +872,7 @@
         <span class="c1"># save input variables to run(). This line must be the first in the method</span>
         <span class="k">if</span> <span class="n">components</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">argm</span> <span class="o">=</span> <span class="nb">locals</span><span class="p">()</span>
-            <span class="k">del</span> <span class="n">argm</span><span class="p">[</span><span class="s1">&#39;self&#39;</span><span class="p">]</span>
+            <span class="k">del</span> <span class="n">argm</span><span class="p">[</span><span class="s2">&quot;self&quot;</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">save_run_args</span><span class="p">(</span><span class="o">**</span><span class="n">argm</span><span class="p">)</span>
         <span class="c1"># wipe data from the previous run (if any)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clear_data</span><span class="p">()</span>
@@ -876,14 +883,15 @@
         <span class="n">vars_to_initialize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">vars</span>
         <span class="n">renderer_design_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_render</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
-            <span class="n">solution_type</span><span class="o">=</span><span class="s1">&#39;drivenmodal&#39;</span><span class="p">,</span>
+            <span class="n">solution_type</span><span class="o">=</span><span class="s2">&quot;drivenmodal&quot;</span><span class="p">,</span>
             <span class="n">selection</span><span class="o">=</span><span class="n">components</span><span class="p">,</span>
             <span class="n">open_pins</span><span class="o">=</span><span class="n">open_terminations</span><span class="p">,</span>
             <span class="n">port_list</span><span class="o">=</span><span class="n">port_list</span><span class="p">,</span>
             <span class="n">jj_to_port</span><span class="o">=</span><span class="n">jj_to_port</span><span class="p">,</span>
             <span class="n">ignored_jjs</span><span class="o">=</span><span class="n">ignored_jjs</span><span class="p">,</span>
             <span class="n">box_plus_buffer</span><span class="o">=</span><span class="n">box_plus_buffer</span><span class="p">,</span>
-            <span class="n">vars_to_initialize</span><span class="o">=</span><span class="n">vars_to_initialize</span><span class="p">)</span>
+            <span class="n">vars_to_initialize</span><span class="o">=</span><span class="n">vars_to_initialize</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_analyze</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">renderer_design_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim_setup_name</span></div>
@@ -896,7 +904,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            str: Name of the sweep being executed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;sweep_name&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s2">&quot;sweep_name&quot;</span><span class="p">)</span>
 
     <span class="nd">@sweep_name</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">sweep_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
@@ -907,10 +915,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s1">&#39;Unsupported type </span><span class="si">%s</span><span class="s1">. Only accepts str. Please try again.&#39;</span><span class="p">,</span>
-                <span class="p">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)})</span>
+                <span class="s2">&quot;Unsupported type </span><span class="si">%s</span><span class="s2">. Only accepts str. Please try again.&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)}</span>
+            <span class="p">)</span>
             <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="s1">&#39;sweep_name&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="s2">&quot;sweep_name&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">param_z</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
@@ -919,7 +927,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            str: Impedance matrix.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;param_z&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s2">&quot;param_z&quot;</span><span class="p">)</span>
 
     <span class="nd">@param_z</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">param_z</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
@@ -930,10 +938,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s1">&#39;Unsupported type </span><span class="si">%s</span><span class="s1">. Only accepts pd.DataFrame. Please try again.&#39;</span><span class="p">,</span>
-                <span class="p">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)})</span>
+                <span class="s2">&quot;Unsupported type </span><span class="si">%s</span><span class="s2">. Only accepts pd.DataFrame. Please try again.&quot;</span><span class="p">,</span>
+                <span class="p">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)},</span>
+            <span class="p">)</span>
             <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="s1">&#39;param_z&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="s2">&quot;param_z&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">param_y</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
@@ -942,7 +951,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            str: Admittance matrix.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;param_y&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s2">&quot;param_y&quot;</span><span class="p">)</span>
 
     <span class="nd">@param_y</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">param_y</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
@@ -953,10 +962,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s1">&#39;Unsupported type </span><span class="si">%s</span><span class="s1">. Only accepts pd.DataFrame. Please try again.&#39;</span><span class="p">,</span>
-                <span class="p">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)})</span>
+                <span class="s2">&quot;Unsupported type </span><span class="si">%s</span><span class="s2">. Only accepts pd.DataFrame. Please try again.&quot;</span><span class="p">,</span>
+                <span class="p">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)},</span>
+            <span class="p">)</span>
             <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="s1">&#39;param_y&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="s2">&quot;param_y&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">param_s</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
@@ -965,7 +975,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            str: Scattering matrix.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;param_s&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s2">&quot;param_s&quot;</span><span class="p">)</span>
 
     <span class="nd">@param_s</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">param_s</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
@@ -976,10 +986,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s1">&#39;Unsupported type </span><span class="si">%s</span><span class="s1">. Only accepts pd.DataFrame. Please try again.&#39;</span><span class="p">,</span>
-                <span class="p">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)})</span>
+                <span class="s2">&quot;Unsupported type </span><span class="si">%s</span><span class="s2">. Only accepts pd.DataFrame. Please try again.&quot;</span><span class="p">,</span>
+                <span class="p">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)},</span>
+            <span class="p">)</span>
             <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="s1">&#39;param_s&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="s2">&quot;param_s&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></div>
 
 </pre></div>
         </article>

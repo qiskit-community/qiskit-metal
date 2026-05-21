@@ -744,10 +744,12 @@
             <span class="n">overwrite_enabled</span><span class="o">=</span><span class="n">overwrite_enabled</span><span class="p">,</span>
             <span class="n">enable_renderers</span><span class="o">=</span><span class="n">enable_renderers</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span>
-            <span class="s2">&quot;sample_holder_top&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;890um&quot;</span>  <span class="c1"># how tall is the vacuum above z=0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span>
-            <span class="s2">&quot;sample_holder_bottom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;1650um&quot;</span>  <span class="c1"># how tall is the vacuum below z=0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;sample_holder_top&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;890um&quot;</span>  <span class="c1"># how tall is the vacuum above z=0</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;sample_holder_bottom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;1650um&quot;</span>  <span class="c1"># how tall is the vacuum below z=0</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_chip_info</span><span class="p">()</span>
 
 <div class="viewcode-block" id="DesignFlipChip.add_chip_info">
@@ -765,12 +767,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Reinitilise self._chips, then add two chips</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_chips</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s2">&quot;C_chip&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">material</span><span class="o">=</span><span class="s2">&quot;silicon&quot;</span><span class="p">,</span>
-                                     <span class="n">layer_start</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
-                                     <span class="n">layer_end</span><span class="o">=</span><span class="s2">&quot;2048&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s2">&quot;Q_chip&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">material</span><span class="o">=</span><span class="s2">&quot;silicon&quot;</span><span class="p">,</span>
-                                     <span class="n">layer_start</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
-                                     <span class="n">layer_end</span><span class="o">=</span><span class="s2">&quot;2048&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s2">&quot;C_chip&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+            <span class="n">material</span><span class="o">=</span><span class="s2">&quot;silicon&quot;</span><span class="p">,</span> <span class="n">layer_start</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="n">layer_end</span><span class="o">=</span><span class="s2">&quot;2048&quot;</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s2">&quot;Q_chip&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+            <span class="n">material</span><span class="o">=</span><span class="s2">&quot;silicon&quot;</span><span class="p">,</span> <span class="n">layer_start</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="n">layer_end</span><span class="o">=</span><span class="s2">&quot;2048&quot;</span>
+        <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s2">&quot;C_chip&quot;</span><span class="p">][</span><span class="s2">&quot;size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
             <span class="n">center_x</span><span class="o">=</span><span class="s2">&quot;0.0mm&quot;</span><span class="p">,</span>
@@ -817,14 +819,19 @@
 
         <span class="k">if</span> <span class="n">chip_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chips</span><span class="p">:</span>
             <span class="k">if</span> <span class="s2">&quot;size&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="n">chip_name</span><span class="p">]:</span>
-
                 <span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chips</span><span class="p">[</span><span class="n">chip_name</span><span class="p">][</span><span class="s2">&quot;size&quot;</span><span class="p">])</span>
-                <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;center_x&quot;</span> <span class="ow">in</span> <span class="n">size</span> <span class="ow">and</span> <span class="s2">&quot;center_y&quot;</span> <span class="ow">in</span> <span class="n">size</span> <span class="ow">and</span>
-                        <span class="s2">&quot;size_x&quot;</span> <span class="ow">in</span> <span class="n">size</span> <span class="ow">and</span> <span class="s2">&quot;size_y&quot;</span> <span class="ow">in</span> <span class="n">size</span><span class="p">):</span>
-                    <span class="k">if</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="o">.</span><span class="n">center_x</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="ow">and</span>
-                            <span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="o">.</span><span class="n">center_y</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="ow">and</span>
-                            <span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="o">.</span><span class="n">size_x</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="ow">and</span>
-                            <span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="o">.</span><span class="n">size_y</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="s2">&quot;center_x&quot;</span> <span class="ow">in</span> <span class="n">size</span>
+                    <span class="ow">and</span> <span class="s2">&quot;center_y&quot;</span> <span class="ow">in</span> <span class="n">size</span>
+                    <span class="ow">and</span> <span class="s2">&quot;size_x&quot;</span> <span class="ow">in</span> <span class="n">size</span>
+                    <span class="ow">and</span> <span class="s2">&quot;size_y&quot;</span> <span class="ow">in</span> <span class="n">size</span>
+                <span class="p">):</span>
+                    <span class="k">if</span> <span class="p">(</span>
+                        <span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="o">.</span><span class="n">center_x</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+                        <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="o">.</span><span class="n">center_y</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+                        <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="o">.</span><span class="n">size_x</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+                        <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="o">.</span><span class="n">size_y</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+                    <span class="p">):</span>
                         <span class="n">x_y_location</span> <span class="o">=</span> <span class="p">(</span>
                             <span class="n">size</span><span class="p">[</span><span class="s2">&quot;center_x&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;size_x&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
                             <span class="n">size</span><span class="p">[</span><span class="s2">&quot;center_y&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;size_y&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
@@ -835,16 +842,20 @@
 
                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s1">&#39;Size information within self.chips[</span><span class="si">{</span><span class="n">chip_name</span><span class="si">}</span><span class="s1">][&quot;size&quot;]&#39;</span>
-                        <span class="sa">f</span><span class="s2">&quot; is NOT an int or float.&quot;</span><span class="p">)</span>
+                        <span class="sa">f</span><span class="s2">&quot; is NOT an int or float.&quot;</span>
+                    <span class="p">)</span>
                     <span class="k">return</span> <span class="n">x_y_location</span><span class="p">,</span> <span class="mi">2</span>
 
-                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;center_x or center_y or size_x or size_y &quot;</span>
-                                    <span class="sa">f</span><span class="s1">&#39; NOT in self._chips[</span><span class="si">{</span><span class="n">chip_name</span><span class="si">}</span><span class="s1">][&quot;size&quot;]&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="s2">&quot;center_x or center_y or size_x or size_y &quot;</span>
+                    <span class="sa">f</span><span class="s1">&#39; NOT in self._chips[</span><span class="si">{</span><span class="n">chip_name</span><span class="si">}</span><span class="s1">][&quot;size&quot;]&#39;</span>
+                <span class="p">)</span>
                 <span class="k">return</span> <span class="n">x_y_location</span><span class="p">,</span> <span class="mi">2</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;Information for size in NOT in self._chips[</span><span class="si">{</span><span class="n">chip_name</span><span class="si">}</span><span class="s2">]&quot;</span>
-                <span class="s1">&#39; dict. Return &quot;None&quot; in tuple.&#39;</span><span class="p">)</span>
+                <span class="s1">&#39; dict. Return &quot;None&quot; in tuple.&#39;</span>
+            <span class="p">)</span>
             <span class="k">return</span> <span class="n">x_y_location</span><span class="p">,</span> <span class="mi">2</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>

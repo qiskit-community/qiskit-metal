@@ -725,19 +725,23 @@
 <span class="n">u0</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">10</span><span class="o">**-</span><span class="mi">7</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;guided_wavelength&#39;</span><span class="p">,</span> <span class="s1">&#39;lumped_cpw&#39;</span><span class="p">,</span> <span class="s1">&#39;effective_dielectric_constant&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;elliptic_int_constants&#39;</span>
+    <span class="s2">&quot;guided_wavelength&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;lumped_cpw&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;effective_dielectric_constant&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;elliptic_int_constants&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
 <div class="viewcode-block" id="guided_wavelength">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.cpw_calculations.html#qiskit_metal.analyses.cpw_calculations.guided_wavelength">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">guided_wavelength</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span>
-                      <span class="n">line_width</span><span class="p">,</span>
-                      <span class="n">line_gap</span><span class="p">,</span>
-                      <span class="n">substrate_thickness</span><span class="p">,</span>
-                      <span class="n">film_thickness</span><span class="p">,</span>
-                      <span class="n">dielectric_constant</span><span class="o">=</span><span class="mf">11.45</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">guided_wavelength</span><span class="p">(</span>
+    <span class="n">freq</span><span class="p">,</span>
+    <span class="n">line_width</span><span class="p">,</span>
+    <span class="n">line_gap</span><span class="p">,</span>
+    <span class="n">substrate_thickness</span><span class="p">,</span>
+    <span class="n">film_thickness</span><span class="p">,</span>
+    <span class="n">dielectric_constant</span><span class="o">=</span><span class="mf">11.45</span><span class="p">,</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A simple calculator to determine the guided wavelength of a planar CPW</span>
 <span class="sd">    transmission line. Assumes the substrate has relative permeability of 1.</span>
 <span class="sd">    Assumes package grounds are far away.</span>
@@ -767,13 +771,13 @@
     <span class="n">t</span> <span class="o">=</span> <span class="n">film_thickness</span>
     <span class="n">eRD</span> <span class="o">=</span> <span class="n">dielectric_constant</span>
 
-    <span class="c1">#elliptic integrals</span>
+    <span class="c1"># elliptic integrals</span>
     <span class="n">Kk0</span><span class="p">,</span> <span class="n">Kk01</span><span class="p">,</span> <span class="n">Kk1</span><span class="p">,</span> <span class="n">Kk11</span> <span class="o">=</span> <span class="n">elliptic_int_constants</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
 
-    <span class="c1">#filling factor</span>
+    <span class="c1"># filling factor</span>
     <span class="n">q</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">Kk1</span> <span class="o">*</span> <span class="n">Kk01</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">Kk11</span> <span class="o">*</span> <span class="n">Kk0</span><span class="p">)</span>
 
-    <span class="c1">#effective dielectric constant (accounting for film thickness)</span>
+    <span class="c1"># effective dielectric constant (accounting for film thickness)</span>
     <span class="n">etfSqrt</span> <span class="o">=</span> <span class="n">effective_dielectric_constant</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">Kk0</span><span class="p">,</span> <span class="n">Kk01</span><span class="p">,</span> <span class="n">eRD</span><span class="p">)</span>
 
     <span class="n">lambdaG</span> <span class="o">=</span> <span class="p">(</span><span class="n">c0</span> <span class="o">/</span> <span class="n">freq</span><span class="p">)</span> <span class="o">/</span> <span class="n">etfSqrt</span>
@@ -784,14 +788,16 @@
 
 <div class="viewcode-block" id="lumped_cpw">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.cpw_calculations.html#qiskit_metal.analyses.cpw_calculations.lumped_cpw">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">lumped_cpw</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span>
-               <span class="n">line_width</span><span class="p">,</span>
-               <span class="n">line_gap</span><span class="p">,</span>
-               <span class="n">substrate_thickness</span><span class="p">,</span>
-               <span class="n">film_thickness</span><span class="p">,</span>
-               <span class="n">dielectric_constant</span><span class="o">=</span><span class="mf">11.45</span><span class="p">,</span>
-               <span class="n">loss_tangent</span><span class="o">=</span><span class="mi">10</span><span class="o">**-</span><span class="mi">5</span><span class="p">,</span>
-               <span class="n">london_penetration_depth</span><span class="o">=</span><span class="mi">30</span> <span class="o">*</span> <span class="mi">10</span><span class="o">**-</span><span class="mi">9</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">lumped_cpw</span><span class="p">(</span>
+    <span class="n">freq</span><span class="p">,</span>
+    <span class="n">line_width</span><span class="p">,</span>
+    <span class="n">line_gap</span><span class="p">,</span>
+    <span class="n">substrate_thickness</span><span class="p">,</span>
+    <span class="n">film_thickness</span><span class="p">,</span>
+    <span class="n">dielectric_constant</span><span class="o">=</span><span class="mf">11.45</span><span class="p">,</span>
+    <span class="n">loss_tangent</span><span class="o">=</span><span class="mi">10</span><span class="o">**-</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">london_penetration_depth</span><span class="o">=</span><span class="mi">30</span> <span class="o">*</span> <span class="mi">10</span><span class="o">**-</span><span class="mi">9</span><span class="p">,</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A simple calculator to determine the lumped element equivalent of a CPW</span>
 <span class="sd">    transmission line. Assumes a lossless superconductor. The internal</span>
 <span class="sd">    geometric series inductance is ignored.</span>
@@ -845,31 +851,30 @@
 
     <span class="n">C</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">e0</span> <span class="o">*</span> <span class="p">(</span><span class="n">eRD</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">Kk1</span> <span class="o">/</span> <span class="n">Kk11</span><span class="p">)</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">e0</span> <span class="o">*</span> <span class="p">(</span><span class="n">Kk0</span> <span class="o">/</span> <span class="n">Kk01</span><span class="p">)</span>
 
-    <span class="c1">#filling factor</span>
+    <span class="c1"># filling factor</span>
     <span class="n">q</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">Kk1</span> <span class="o">*</span> <span class="n">Kk01</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">Kk11</span> <span class="o">*</span> <span class="n">Kk0</span><span class="p">)</span>
 
-    <span class="c1">#Admittance</span>
+    <span class="c1"># Admittance</span>
     <span class="n">G</span> <span class="o">=</span> <span class="n">wfreq</span> <span class="o">*</span> <span class="n">C</span> <span class="o">*</span> <span class="n">q</span> <span class="o">*</span> <span class="n">tanD</span>
 
-    <span class="c1">#Effective Dielectric Constant</span>
+    <span class="c1"># Effective Dielectric Constant</span>
     <span class="n">etfSqrt</span> <span class="o">=</span> <span class="n">effective_dielectric_constant</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">Kk0</span><span class="p">,</span> <span class="n">Kk01</span><span class="p">,</span> <span class="n">eRD</span><span class="p">)</span>
 
-    <span class="c1">#External Inducatance</span>
+    <span class="c1"># External Inducatance</span>
     <span class="n">Z0</span> <span class="o">=</span> <span class="p">(</span><span class="mi">30</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">etfSqrt</span><span class="p">)</span> <span class="o">*</span> <span class="n">Kk01</span> <span class="o">/</span> <span class="n">Kk0</span>
     <span class="n">Lext</span> <span class="o">=</span> <span class="n">Z0</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">C</span>
     <span class="n">Cstar</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">e0</span> <span class="o">*</span> <span class="p">(</span><span class="n">etfSqrt</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">Kk1</span> <span class="o">/</span> <span class="n">Kk11</span><span class="p">)</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">e0</span> <span class="o">*</span> <span class="p">(</span><span class="n">Kk0</span> <span class="o">/</span> <span class="n">Kk01</span><span class="p">)</span>
 
-    <span class="c1">#Kinetic Inductance</span>
-    <span class="n">A1</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">t</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="n">t</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="c1"># Kinetic Inductance</span>
+    <span class="n">A1</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">t</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="n">t</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">B1</span> <span class="o">=</span> <span class="n">s</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">A1</span><span class="p">)</span>
-    <span class="n">C1</span> <span class="o">=</span> <span class="n">B1</span> <span class="o">-</span> <span class="p">(</span><span class="n">t</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">t</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">w</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">C1</span> <span class="o">=</span> <span class="n">B1</span> <span class="o">-</span> <span class="p">(</span><span class="n">t</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">t</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">w</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">D1</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">t</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">+</span> <span class="n">C1</span>
 
-    <span class="n">LkinStep</span> <span class="o">=</span> <span class="p">(</span><span class="n">u0</span> <span class="o">*</span> <span class="n">lambdaLT</span> <span class="o">*</span> <span class="n">C1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">A1</span> <span class="o">*</span> <span class="n">D1</span> <span class="o">*</span> <span class="n">Kk0</span><span class="p">))</span>
+    <span class="n">LkinStep</span> <span class="o">=</span> <span class="n">u0</span> <span class="o">*</span> <span class="n">lambdaLT</span> <span class="o">*</span> <span class="n">C1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">A1</span> <span class="o">*</span> <span class="n">D1</span> <span class="o">*</span> <span class="n">Kk0</span><span class="p">)</span>
 
     <span class="n">Lkin1</span> <span class="o">=</span> <span class="n">LkinStep</span> <span class="o">*</span> <span class="mf">1.7</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sinh</span><span class="p">(</span><span class="n">t</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">lambdaLT</span><span class="p">)))</span>
-    <span class="n">Lkin2</span> <span class="o">=</span> <span class="n">LkinStep</span> <span class="o">*</span> <span class="mf">0.4</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
-        <span class="p">(((</span><span class="n">B1</span> <span class="o">/</span> <span class="n">A1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">B1</span> <span class="o">/</span> <span class="n">D1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)))</span>
+    <span class="n">Lkin2</span> <span class="o">=</span> <span class="n">LkinStep</span> <span class="o">*</span> <span class="mf">0.4</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((((</span><span class="n">B1</span> <span class="o">/</span> <span class="n">A1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">B1</span> <span class="o">/</span> <span class="n">D1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)))</span>
 
     <span class="n">Lk</span> <span class="o">=</span> <span class="n">Lkin1</span> <span class="o">+</span> <span class="n">Lkin2</span>
 
@@ -900,7 +905,7 @@
 <span class="sd">        film and substrate thickness.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1">#Effective Dielectric Constant</span>
+    <span class="c1"># Effective Dielectric Constant</span>
     <span class="n">e00</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">q</span> <span class="o">*</span> <span class="p">(</span><span class="n">eRD</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">et0</span> <span class="o">=</span> <span class="n">e00</span> <span class="o">-</span> <span class="p">(</span><span class="mf">0.7</span> <span class="o">*</span> <span class="p">(</span><span class="n">e00</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">t</span> <span class="o">/</span> <span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="p">((</span><span class="n">Kk0</span> <span class="o">/</span> <span class="n">Kk01</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.7</span> <span class="o">*</span> <span class="n">t</span> <span class="o">/</span> <span class="n">w</span><span class="p">)</span>
 
@@ -910,8 +915,9 @@
     <span class="n">fTE</span> <span class="o">=</span> <span class="n">c0</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">h</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">eRD</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
     <span class="n">g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">u</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">s</span> <span class="o">/</span> <span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="n">v</span><span class="p">)</span>
 
-    <span class="n">etfSqrt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">et0</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">eRD</span><span class="p">)</span> <span class="o">-</span>
-                              <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">et0</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">g</span> <span class="o">*</span> <span class="p">(</span><span class="n">freq</span> <span class="o">/</span> <span class="n">fTE</span><span class="p">)</span><span class="o">**-</span><span class="mf">1.8</span><span class="p">)</span>
+    <span class="n">etfSqrt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">et0</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">eRD</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">et0</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span>
+        <span class="mi">1</span> <span class="o">+</span> <span class="n">g</span> <span class="o">*</span> <span class="p">(</span><span class="n">freq</span> <span class="o">/</span> <span class="n">fTE</span><span class="p">)</span> <span class="o">**</span> <span class="o">-</span><span class="mf">1.8</span>
+    <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">etfSqrt</span></div>
 
@@ -937,11 +943,10 @@
 <span class="sd">        * ellipk(k1) (float): The complete elliptic integral for k1</span>
 <span class="sd">        * ellipk(k11) (float): The complete elliptic integral for k11</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1">#elliptical integral constants</span>
+    <span class="c1"># elliptical integral constants</span>
     <span class="n">k0</span> <span class="o">=</span> <span class="n">s</span> <span class="o">/</span> <span class="p">(</span><span class="n">s</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">w</span><span class="p">)</span>
     <span class="n">k01</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">k0</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-    <span class="n">k1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sinh</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">s</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">h</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sinh</span><span class="p">(</span>
-        <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">s</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">w</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">h</span><span class="p">)))</span>
+    <span class="n">k1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sinh</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">s</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">h</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sinh</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">s</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">w</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">h</span><span class="p">)))</span>
     <span class="n">k11</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">k1</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">ellipk</span><span class="p">(</span><span class="n">k0</span><span class="o">**</span><span class="mf">2.0</span><span class="p">),</span> <span class="n">ellipk</span><span class="p">(</span><span class="n">k01</span><span class="o">**</span><span class="mf">2.0</span><span class="p">),</span> <span class="n">ellipk</span><span class="p">(</span><span class="n">k1</span><span class="o">**</span><span class="mf">2.0</span><span class="p">),</span> <span class="n">ellipk</span><span class="p">(</span><span class="n">k11</span><span class="o">**</span><span class="mf">2.0</span><span class="p">)</span></div>

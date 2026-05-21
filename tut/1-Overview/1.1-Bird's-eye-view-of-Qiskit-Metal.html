@@ -933,7 +933,7 @@ The autoreload extension is already loaded. To reload it, use:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">designs</span> <span class="c1"># Library of chip designs</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">designs</span>  <span class="c1"># Library of chip designs</span>
 
 <span class="o">%</span><span class="k">metal_heading</span> Welcome to Qiskit Metal!
 </pre></div>
@@ -1046,8 +1046,8 @@ The autoreload extension is already loaded. To reload it, use:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">size_x</span> <span class="o">=</span> <span class="s1">&#39;11mm&#39;</span>
-<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">size_y</span> <span class="o">=</span> <span class="s1">&#39;9mm&#39;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">size_x</span> <span class="o">=</span> <span class="s2">&quot;11mm&quot;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">size_y</span> <span class="o">=</span> <span class="s2">&quot;9mm&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -1057,6 +1057,7 @@ The autoreload extension is already loaded. To reload it, use:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">MetalGUI</span>
+
 <span class="n">gui</span> <span class="o">=</span> <span class="n">MetalGUI</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1104,11 +1105,13 @@ The autoreload extension is already loaded. To reload it, use:
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.qubits.transmon_pocket</span><span class="w"> </span><span class="kn">import</span> <span class="n">TransmonPocket</span>
 
 
-<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="nb">dict</span><span class="p">())))</span> <span class="c1"># Create a new Transmon Pocket object with name &#39;Q1&#39;</span>
+<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="nb">dict</span><span class="p">()))</span>
+<span class="p">)</span>  <span class="c1"># Create a new Transmon Pocket object with name &#39;Q1&#39;</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>  <span class="c1"># rebuild the design and plot</span>
 
-<span class="n">gui</span><span class="o">.</span><span class="n">edit_component</span><span class="p">(</span><span class="s1">&#39;Q1&#39;</span><span class="p">)</span> <span class="c1"># set Q1 as the editable component</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span> <span class="c1"># resize GUI view to see QComponent</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">edit_component</span><span class="p">(</span><span class="s2">&quot;Q1&quot;</span><span class="p">)</span>  <span class="c1"># set Q1 as the editable component</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>  <span class="c1"># resize GUI view to see QComponent</span>
 </pre></div>
 </div>
 </div>
@@ -1132,7 +1135,7 @@ The autoreload extension is already loaded. To reload it, use:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">q1</span><span class="p">)</span> <span class="c1">#print Q1 information</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">q1</span><span class="p">)</span>  <span class="c1"># print Q1 information</span>
 </pre></div>
 </div>
 </div>
@@ -1238,11 +1241,11 @@ The autoreload extension is already loaded. To reload it, use:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Change options</span>
-<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pos_x</span> <span class="o">=</span> <span class="s1">&#39;0.5 mm&#39;</span>
-<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pos_y</span> <span class="o">=</span> <span class="s1">&#39;0.25 mm&#39;</span>
-<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">=</span> <span class="s1">&#39;225 um&#39;</span>
-<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_width</span>  <span class="o">=</span> <span class="s1">&#39;250 um&#39;</span>
-<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_gap</span>    <span class="o">=</span> <span class="s1">&#39;50 um&#39;</span>
+<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pos_x</span> <span class="o">=</span> <span class="s2">&quot;0.5 mm&quot;</span>
+<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pos_y</span> <span class="o">=</span> <span class="s2">&quot;0.25 mm&quot;</span>
+<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">=</span> <span class="s2">&quot;225 um&quot;</span>
+<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">=</span> <span class="s2">&quot;250 um&quot;</span>
+<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_gap</span> <span class="o">=</span> <span class="s2">&quot;50 um&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -1251,7 +1254,7 @@ The autoreload extension is already loaded. To reload it, use:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span> <span class="c1"># Update the component geometry, since we changed the options</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>  <span class="c1"># Update the component geometry, since we changed the options</span>
 
 <span class="c1"># Get a list of all the qcomponents in QDesign and then zoom on them.</span>
 <span class="n">all_component_names</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
@@ -1259,9 +1262,9 @@ The autoreload extension is already loaded. To reload it, use:
 <span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">(</span><span class="n">all_component_names</span><span class="p">)</span>
 
 <span class="c1"># An alternate way to view within GUI. If want to try it, remove the &quot;#&quot; from the beginning of line.</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">highlight_components</span><span class="p">([</span><span class="s1">&#39;Q1&#39;</span><span class="p">])</span> <span class="c1"># set Q1 as the highlighted component</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">highlight_components</span><span class="p">([</span><span class="s2">&quot;Q1&quot;</span><span class="p">])</span>  <span class="c1"># set Q1 as the highlighted component</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
-<br/></pre></div>
+</pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">

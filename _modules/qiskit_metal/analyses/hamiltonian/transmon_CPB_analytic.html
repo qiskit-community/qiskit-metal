@@ -706,7 +706,6 @@
 
 <span class="sd">@author: Nick Lanzillo (IBM)</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="c1"># pylint: disable=invalid-name</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.special</span><span class="w"> </span><span class="kn">import</span> <span class="n">mathieu_a</span>
@@ -739,10 +738,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">evals</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">evecs</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="c1"># Generate the diagonal and offdiagonal components of the Hamiltonian</span>
-        <span class="c1">#self._gen_operators()</span>
+        <span class="c1"># self._gen_operators()</span>
         <span class="c1"># compute the eigenvectors and eigenvalues of the CPB</span>
         <span class="c1"># all properties can be derived from these</span>
-        <span class="c1">#self._calc_H()</span>
+        <span class="c1"># self._calc_H()</span>
 
 <div class="viewcode-block" id="Hcpb_analytic.evalue_k">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.Hcpb_analytic.html#qiskit_metal.analyses.Hcpb_analytic.evalue_k">[docs]</a>
@@ -759,11 +758,15 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ng</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">index</span> <span class="o">=</span> <span class="n">k</span> <span class="o">+</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="p">((</span><span class="n">k</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">%</span> <span class="mf">2.0</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">index</span> <span class="o">=</span> <span class="n">k</span> <span class="o">+</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="p">((</span><span class="n">k</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">%</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ng</span> <span class="o">*</span> <span class="p">(</span>
-                <span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ng</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)))</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">k</span>
+                <span class="o">+</span> <span class="mf">1.0</span>
+                <span class="o">-</span> <span class="p">((</span><span class="n">k</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">%</span> <span class="mf">2.0</span><span class="p">)</span>
+                <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ng</span> <span class="o">*</span> <span class="p">((</span><span class="o">-</span><span class="mf">1.0</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ng</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)))</span>
+            <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">evals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Ec</span> <span class="o">*</span> <span class="n">mathieu_a</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Ej</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Ec</span><span class="p">)</span>
-        <span class="c1">#return self.evals[k]</span>
+        <span class="c1"># return self.evals[k]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">evals</span></div>
 </div>
 

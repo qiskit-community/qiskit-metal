@@ -730,15 +730,19 @@
 <span class="sd">            * orientation: &#39;15&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s1">&#39;500um&#39;</span><span class="p">,</span>
-                           <span class="n">height</span><span class="o">=</span><span class="s1">&#39;300um&#39;</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="s1">&#39;False&#39;</span><span class="p">,</span>
-                           <span class="n">helper</span><span class="o">=</span><span class="s1">&#39;False&#39;</span><span class="p">,</span>
-                           <span class="n">inner</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s1">&#39;250um&#39;</span><span class="p">,</span>
-                                      <span class="n">height</span><span class="o">=</span><span class="s1">&#39;100um&#39;</span><span class="p">,</span>
-                                      <span class="n">offset_x</span><span class="o">=</span><span class="s1">&#39;40um&#39;</span><span class="p">,</span>
-                                      <span class="n">offset_y</span><span class="o">=</span><span class="s1">&#39;-20um&#39;</span><span class="p">,</span>
-                                      <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;15&#39;</span><span class="p">))</span>
+    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+        <span class="n">width</span><span class="o">=</span><span class="s2">&quot;500um&quot;</span><span class="p">,</span>
+        <span class="n">height</span><span class="o">=</span><span class="s2">&quot;300um&quot;</span><span class="p">,</span>
+        <span class="n">subtract</span><span class="o">=</span><span class="s2">&quot;False&quot;</span><span class="p">,</span>
+        <span class="n">helper</span><span class="o">=</span><span class="s2">&quot;False&quot;</span><span class="p">,</span>
+        <span class="n">inner</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">width</span><span class="o">=</span><span class="s2">&quot;250um&quot;</span><span class="p">,</span>
+            <span class="n">height</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">,</span>
+            <span class="n">offset_x</span><span class="o">=</span><span class="s2">&quot;40um&quot;</span><span class="p">,</span>
+            <span class="n">offset_y</span><span class="o">=</span><span class="s2">&quot;-20um&quot;</span><span class="p">,</span>
+            <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;15&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Default drawing options&quot;&quot;&quot;</span>
 
     <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A single configurable square&quot;&quot;&quot;</span>
@@ -755,19 +759,25 @@
 
         <span class="c1"># create the geometry</span>
         <span class="n">rect</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_y</span><span class="p">)</span>
-        <span class="n">rec1</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">inner</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">inner</span><span class="o">.</span><span class="n">height</span><span class="p">,</span>
-                              <span class="n">p</span><span class="o">.</span><span class="n">pos_x</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">inner</span><span class="o">.</span><span class="n">offset_x</span><span class="p">,</span>
-                              <span class="n">p</span><span class="o">.</span><span class="n">pos_y</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">inner</span><span class="o">.</span><span class="n">offset_y</span><span class="p">)</span>
+        <span class="n">rec1</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">inner</span><span class="o">.</span><span class="n">width</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">inner</span><span class="o">.</span><span class="n">height</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">pos_x</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">inner</span><span class="o">.</span><span class="n">offset_x</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">pos_y</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">inner</span><span class="o">.</span><span class="n">offset_y</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">rec1</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">rec1</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">inner</span><span class="o">.</span><span class="n">orientation</span><span class="p">)</span>
         <span class="n">rect</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">rect</span><span class="p">,</span> <span class="n">rec1</span><span class="p">)</span>
         <span class="n">rect</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">rect</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">orientation</span><span class="p">)</span>
 
         <span class="c1"># add qgeometry</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;rect&#39;</span><span class="p">:</span> <span class="n">rect</span><span class="p">},</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">subtract</span><span class="p">,</span>
-                           <span class="n">helper</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">helper</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">chip</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">chip</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;poly&quot;</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">&quot;rect&quot;</span><span class="p">:</span> <span class="n">rect</span><span class="p">},</span>
+            <span class="n">subtract</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">subtract</span><span class="p">,</span>
+            <span class="n">helper</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">helper</span><span class="p">,</span>
+            <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
+            <span class="n">chip</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">chip</span><span class="p">,</span>
+        <span class="p">)</span></div>
 </div>
 
 </pre></div>

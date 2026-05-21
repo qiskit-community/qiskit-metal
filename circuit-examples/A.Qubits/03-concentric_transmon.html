@@ -741,7 +741,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Launch Qiskit Metal GUI to interactively view, edit, and simulate QDesign: Metal GUI</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Launch Qiskit Metal GUI to interactively view, edit, and simulate QDesign: Metal GUI</span>
 <span class="n">gui</span> <span class="o">=</span> <span class="n">MetalGUI</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -807,19 +807,19 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Place the concentric transmon at (x,y) =(1,2)</span>
 <span class="n">concentric_options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">pos_x</span> <span class="o">=</span> <span class="s1">&#39;1um&#39;</span><span class="p">,</span>
-    <span class="n">pos_y</span> <span class="o">=</span> <span class="s1">&#39;2um&#39;</span><span class="p">,</span>
-    <span class="n">layer</span> <span class="o">=</span> <span class="s1">&#39;5&#39;</span><span class="p">,</span> <span class="c1"># default is 1, this is just for example.</span>
-    <span class="n">pocket_w</span><span class="o">=</span><span class="s1">&#39;1500um&#39;</span><span class="p">,</span>  <span class="c1"># transmon pocket width</span>
-    <span class="n">pocket_h</span><span class="o">=</span><span class="s1">&#39;900um&#39;</span><span class="p">,</span>  <span class="c1"># transmon pocket height</span>
+    <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;1um&quot;</span><span class="p">,</span>
+    <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;2um&quot;</span><span class="p">,</span>
+    <span class="n">layer</span><span class="o">=</span><span class="s2">&quot;5&quot;</span><span class="p">,</span>  <span class="c1"># default is 1, this is just for example.</span>
+    <span class="n">pocket_w</span><span class="o">=</span><span class="s2">&quot;1500um&quot;</span><span class="p">,</span>  <span class="c1"># transmon pocket width</span>
+    <span class="n">pocket_h</span><span class="o">=</span><span class="s2">&quot;900um&quot;</span><span class="p">,</span>  <span class="c1"># transmon pocket height</span>
 <span class="p">)</span>
 
 <span class="c1"># Create a new Concentric Transmon object with name &#39;Q1&#39;</span>
-<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonConcentric</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;qubit1&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">concentric_options</span><span class="p">)</span>
+<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonConcentric</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;qubit1&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">concentric_options</span><span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>  <span class="c1"># rebuild the design and plot</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span> <span class="c1">#resize GUI to see QComponent</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s1">&#39;qubit1&#39;</span><span class="p">])</span> <span class="c1">#Can also gui.zoom_on_components([q1.name])</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>  <span class="c1"># resize GUI to see QComponent</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s2">&quot;qubit1&quot;</span><span class="p">])</span>  <span class="c1"># Can also gui.zoom_on_components([q1.name])</span>
 </pre></div>
 </div>
 </div>
@@ -827,9 +827,9 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Let&#39;s see what the Q1 object looks like</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s see what the Q1 object looks like</span>
 
-<span class="n">q1</span> <span class="c1">#print Q1 information</span>
+<span class="n">q1</span>  <span class="c1"># print Q1 information</span>
 </pre></div>
 </div>
 </div>
@@ -873,7 +873,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Save screenshot as a .png formatted file.</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Save screenshot as a .png formatted file.</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -890,12 +890,13 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Screenshot the canvas only as a .png formatted file.</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;shot.png&#39;</span><span class="p">)</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;shot.png&quot;</span><span class="p">)</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">display</span>
+
 <span class="n">_disp_ops</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;shot.png&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">_disp_ops</span><span class="p">))</span>
-<br/></pre></div>
+<span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="s2">&quot;shot.png&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">_disp_ops</span><span class="p">))</span>
+</pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">

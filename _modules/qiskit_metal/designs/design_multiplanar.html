@@ -703,14 +703,14 @@
 <span class="sd">&quot;&quot;&quot;Module containing Multi-Planar design for CPW type</span>
 <span class="sd">geometry. Supports tek file approach for layer stack definitions.&quot;&quot;&quot;</span>
 
-<span class="c1">#from typing import Tuple</span>
+<span class="c1"># from typing import Tuple</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.designs.design_base</span><span class="w"> </span><span class="kn">import</span> <span class="n">QDesign</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.toolbox_metal.layer_stack_handler</span><span class="w"> </span><span class="kn">import</span> <span class="n">LayerStackHandler</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">addict</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tuple</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MultiPlanar&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;MultiPlanar&quot;</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="MultiPlanar">
@@ -722,11 +722,13 @@
 <span class="sd">    Inherits QDesign class.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">metadata</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">overwrite_enabled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-                 <span class="n">enable_renderers</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-                 <span class="n">layer_stack_filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">metadata</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">overwrite_enabled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">enable_renderers</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">layer_stack_filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Pass metadata to QDesign.</span>
 
 <span class="sd">        Args:</span>
@@ -735,15 +737,17 @@
 <span class="sd">            enable_renderers (bool, optional): Passed to QDesign base class. Defaults to True.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
-                         <span class="n">overwrite_enabled</span><span class="o">=</span><span class="n">overwrite_enabled</span><span class="p">,</span>
-                         <span class="n">enable_renderers</span><span class="o">=</span><span class="n">enable_renderers</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
+            <span class="n">overwrite_enabled</span><span class="o">=</span><span class="n">overwrite_enabled</span><span class="p">,</span>
+            <span class="n">enable_renderers</span><span class="o">=</span><span class="n">enable_renderers</span><span class="p">,</span>
+        <span class="p">)</span>
 
-        <span class="c1">#just using the single planar approach for the moment</span>
-        <span class="c1">#still have the different chips, or just all via layers?</span>
+        <span class="c1"># just using the single planar approach for the moment</span>
+        <span class="c1"># still have the different chips, or just all via layers?</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_add_chip_info</span><span class="p">()</span>
 
-        <span class="c1">#generates the table for the layer information</span>
+        <span class="c1"># generates the table for the layer information</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ls_filename</span> <span class="o">=</span> <span class="n">layer_stack_filename</span>
 
         <span class="c1"># Note: layers numbers can be repeated since there can be datatypes.</span>
@@ -753,12 +757,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_populate_uwave_values</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_populate_uwave_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Can be updated by user.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_uwave_package</span><span class="p">[</span>
-            <span class="s1">&#39;sample_holder_top&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;890um&#39;</span>  <span class="c1"># how tall is the vacuum above center_z</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_uwave_package</span><span class="p">[</span>
-            <span class="s1">&#39;sample_holder_bottom&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;1650um&#39;</span>  <span class="c1"># how tall is the vacuum below z=0</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Can be updated by user.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_uwave_package</span><span class="p">[</span><span class="s2">&quot;sample_holder_top&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;890um&quot;</span>  <span class="c1"># how tall is the vacuum above center_z</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_uwave_package</span><span class="p">[</span><span class="s2">&quot;sample_holder_bottom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;1650um&quot;</span>  <span class="c1"># how tall is the vacuum below z=0</span>
+        <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_add_layer_stack</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LayerStackHandler</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds the data structure for the &quot;layer_stack file&quot; in the design for defining</span>
@@ -776,13 +781,13 @@
 
 <span class="sd">        NOTE: self._chips dict comes from QDesign base class.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s1">&#39;main&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s1">&#39;main&#39;</span><span class="p">][</span><span class="s1">&#39;size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-            <span class="n">center_x</span><span class="o">=</span><span class="s1">&#39;0.0mm&#39;</span><span class="p">,</span>
-            <span class="n">center_y</span><span class="o">=</span><span class="s1">&#39;0.0mm&#39;</span><span class="p">,</span>
-            <span class="n">size_x</span><span class="o">=</span><span class="s1">&#39;9mm&#39;</span><span class="p">,</span>
-            <span class="n">size_y</span><span class="o">=</span><span class="s1">&#39;7mm&#39;</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">][</span><span class="s2">&quot;size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+            <span class="n">center_x</span><span class="o">=</span><span class="s2">&quot;0.0mm&quot;</span><span class="p">,</span>
+            <span class="n">center_y</span><span class="o">=</span><span class="s2">&quot;0.0mm&quot;</span><span class="p">,</span>
+            <span class="n">size_x</span><span class="o">=</span><span class="s2">&quot;9mm&quot;</span><span class="p">,</span>
+            <span class="n">size_y</span><span class="o">=</span><span class="s2">&quot;7mm&quot;</span><span class="p">,</span>
         <span class="p">)</span>
 
 <div class="viewcode-block" id="MultiPlanar.get_x_y_for_chip">
@@ -805,36 +810,44 @@
         <span class="n">x_y_location</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">chip_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chips</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s1">&#39;size&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="n">chip_name</span><span class="p">]:</span>
-
-                <span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chips</span><span class="p">[</span><span class="n">chip_name</span><span class="p">][</span><span class="s1">&#39;size&#39;</span><span class="p">])</span>
-                <span class="k">if</span>      <span class="s1">&#39;center_x&#39;</span> <span class="ow">in</span> <span class="n">size</span>               \
-                    <span class="ow">and</span> <span class="s1">&#39;center_y&#39;</span> <span class="ow">in</span> <span class="n">size</span>          \
-                    <span class="ow">and</span> <span class="s1">&#39;size_x&#39;</span> <span class="ow">in</span> <span class="n">size</span>            \
-                    <span class="ow">and</span> <span class="s1">&#39;size_y&#39;</span> <span class="ow">in</span> <span class="n">size</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="o">.</span><span class="n">center_x</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="ow">and</span> \
-                            <span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="o">.</span><span class="n">center_y</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="ow">and</span> \
-                            <span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="o">.</span><span class="n">size_x</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="ow">and</span> \
-                            <span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="o">.</span><span class="n">size_y</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="s2">&quot;size&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="n">chip_name</span><span class="p">]:</span>
+                <span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chips</span><span class="p">[</span><span class="n">chip_name</span><span class="p">][</span><span class="s2">&quot;size&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="s2">&quot;center_x&quot;</span> <span class="ow">in</span> <span class="n">size</span>
+                    <span class="ow">and</span> <span class="s2">&quot;center_y&quot;</span> <span class="ow">in</span> <span class="n">size</span>
+                    <span class="ow">and</span> <span class="s2">&quot;size_x&quot;</span> <span class="ow">in</span> <span class="n">size</span>
+                    <span class="ow">and</span> <span class="s2">&quot;size_y&quot;</span> <span class="ow">in</span> <span class="n">size</span>
+                <span class="p">):</span>
+                    <span class="k">if</span> <span class="p">(</span>
+                        <span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="o">.</span><span class="n">center_x</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+                        <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="o">.</span><span class="n">center_y</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+                        <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="o">.</span><span class="n">size_x</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+                        <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="o">.</span><span class="n">size_y</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+                    <span class="p">):</span>
                         <span class="n">x_y_location</span> <span class="o">=</span> <span class="p">(</span>
-                            <span class="n">size</span><span class="p">[</span><span class="s1">&#39;center_x&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="s1">&#39;size_x&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
-                            <span class="n">size</span><span class="p">[</span><span class="s1">&#39;center_y&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="s1">&#39;size_y&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
-                            <span class="n">size</span><span class="p">[</span><span class="s1">&#39;center_x&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="s1">&#39;size_x&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
-                            <span class="n">size</span><span class="p">[</span><span class="s1">&#39;center_y&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="s1">&#39;size_y&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">))</span>
+                            <span class="n">size</span><span class="p">[</span><span class="s2">&quot;center_x&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;size_x&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+                            <span class="n">size</span><span class="p">[</span><span class="s2">&quot;center_y&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;size_y&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+                            <span class="n">size</span><span class="p">[</span><span class="s2">&quot;center_x&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;size_x&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+                            <span class="n">size</span><span class="p">[</span><span class="s2">&quot;center_y&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;size_y&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+                        <span class="p">)</span>
                         <span class="k">return</span> <span class="n">x_y_location</span><span class="p">,</span> <span class="mi">0</span>
 
                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s1">&#39;Size information within self.chips[</span><span class="si">{</span><span class="n">chip_name</span><span class="si">}</span><span class="s1">][&quot;size&quot;]&#39;</span>
-                        <span class="sa">f</span><span class="s1">&#39; is NOT an int or float.&#39;</span><span class="p">)</span>
+                        <span class="sa">f</span><span class="s2">&quot; is NOT an int or float.&quot;</span>
+                    <span class="p">)</span>
                     <span class="k">return</span> <span class="n">x_y_location</span><span class="p">,</span> <span class="mi">2</span>
 
-                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;center_x or center_y or size_x or size_y &#39;</span>
-                                    <span class="sa">f</span><span class="s1">&#39; NOT in self._chips[</span><span class="si">{</span><span class="n">chip_name</span><span class="si">}</span><span class="s1">][&quot;size&quot;]&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="s2">&quot;center_x or center_y or size_x or size_y &quot;</span>
+                    <span class="sa">f</span><span class="s1">&#39; NOT in self._chips[</span><span class="si">{</span><span class="n">chip_name</span><span class="si">}</span><span class="s1">][&quot;size&quot;]&#39;</span>
+                <span class="p">)</span>
                 <span class="k">return</span> <span class="n">x_y_location</span><span class="p">,</span> <span class="mi">2</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;Information for size in NOT in self._chips[</span><span class="si">{</span><span class="n">chip_name</span><span class="si">}</span><span class="s1">]&#39;</span>
-                <span class="s1">&#39; dict. Return &quot;None&quot; in tuple.&#39;</span><span class="p">)</span>
+                <span class="sa">f</span><span class="s2">&quot;Information for size in NOT in self._chips[</span><span class="si">{</span><span class="n">chip_name</span><span class="si">}</span><span class="s2">]&quot;</span>
+                <span class="s1">&#39; dict. Return &quot;None&quot; in tuple.&#39;</span>
+            <span class="p">)</span>
             <span class="k">return</span> <span class="n">x_y_location</span><span class="p">,</span> <span class="mi">2</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>

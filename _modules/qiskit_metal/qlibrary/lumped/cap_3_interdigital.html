@@ -756,10 +756,12 @@
 
     <span class="c1">#  Define structure functions</span>
 
-    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">trace_width</span><span class="o">=</span><span class="s1">&#39;10um&#39;</span><span class="p">,</span>
-                           <span class="n">finger_length</span><span class="o">=</span><span class="s1">&#39;65um&#39;</span><span class="p">,</span>
-                           <span class="n">pocket_buffer_width_x</span><span class="o">=</span><span class="s1">&#39;10um&#39;</span><span class="p">,</span>
-                           <span class="n">pocket_buffer_width_y</span><span class="o">=</span><span class="s1">&#39;30um&#39;</span><span class="p">)</span>
+    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+        <span class="n">trace_width</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
+        <span class="n">finger_length</span><span class="o">=</span><span class="s2">&quot;65um&quot;</span><span class="p">,</span>
+        <span class="n">pocket_buffer_width_x</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
+        <span class="n">pocket_buffer_width_y</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Default drawing options&quot;&quot;&quot;</span>
 
     <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Create a three finger planar capacitor with a ground pocket cuttout.&quot;&quot;&quot;</span>
@@ -774,54 +776,78 @@
 
         <span class="c1"># Make the shapely polygons for the main cap structure</span>
         <span class="n">pad</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">*</span> <span class="mi">5</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">trace_width</span><span class="p">)</span>
-        <span class="n">pad_top</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">pad</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
-                                 <span class="o">+</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_length</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="n">pad_bot</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">pad</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
-                                 <span class="o">-</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_length</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">pad_top</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">pad</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">+</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_length</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">pad_bot</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">pad</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_length</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
         <span class="n">finger</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">trace_width</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_length</span><span class="p">)</span>
         <span class="n">cent_finger</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">finger</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">+</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">trace_width</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="n">left_finger</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">finger</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">*</span> <span class="mi">2</span><span class="p">),</span>
-                                     <span class="o">-</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">trace_width</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="n">right_finger</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">finger</span><span class="p">,</span> <span class="o">+</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">*</span> <span class="mi">2</span><span class="p">),</span>
-                                      <span class="o">-</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">trace_width</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">left_finger</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">finger</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">*</span> <span class="mi">2</span><span class="p">),</span> <span class="o">-</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">trace_width</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">right_finger</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span>
+            <span class="n">finger</span><span class="p">,</span> <span class="o">+</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">*</span> <span class="mi">2</span><span class="p">),</span> <span class="o">-</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">trace_width</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="p">)</span>
 
         <span class="c1"># Make the shapely polygons for the leads in the pocket (length=pocket_buffer_width_y)</span>
         <span class="n">trace_temp_1</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">trace_width</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pocket_buffer_width_y</span><span class="p">)</span>
         <span class="n">trace_top</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span>
-            <span class="n">trace_temp_1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
-            <span class="o">+</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">finger_length</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">pocket_buffer_width_y</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
-            <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">pocket_buffer_width_y</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">trace_temp_1</span><span class="p">,</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="o">+</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">finger_length</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">pocket_buffer_width_y</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+            <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">pocket_buffer_width_y</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">trace_bot</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span>
-            <span class="n">trace_temp_1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
-            <span class="o">-</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">finger_length</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">pocket_buffer_width_y</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
-            <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">pocket_buffer_width_y</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">trace_temp_1</span><span class="p">,</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="o">-</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">finger_length</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">pocket_buffer_width_y</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">pocket_buffer_width_y</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="c1"># Make the shapely polygons for pocket ground plane cuttout</span>
         <span class="n">pocket</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span>
             <span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">pocket_buffer_width_x</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
-            <span class="n">p</span><span class="o">.</span><span class="n">finger_length</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">pocket_buffer_width_y</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">finger_length</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">pocket_buffer_width_y</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="c1"># These variables are used to graphically locate the pin locations</span>
-        <span class="n">top_pin_line</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([</span>
-            <span class="p">(</span><span class="o">-</span><span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
-             <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">finger_length</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">pocket_buffer_width_y</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
-             <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
-            <span class="p">(</span><span class="o">+</span><span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
-             <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">finger_length</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">pocket_buffer_width_y</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
-             <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="p">])</span>
-        <span class="n">bot_pin_line</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([(</span>
-            <span class="o">-</span><span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
-            <span class="o">-</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">finger_length</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">pocket_buffer_width_y</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
-            <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
-                                        <span class="p">(</span><span class="o">+</span><span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
-                                         <span class="o">-</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">finger_length</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span>
-                                           <span class="n">p</span><span class="o">.</span><span class="n">pocket_buffer_width_y</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)])</span>
+        <span class="n">top_pin_line</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">(</span>
+                    <span class="o">-</span><span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+                    <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">finger_length</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">pocket_buffer_width_y</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+                    <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="p">(</span>
+                    <span class="o">+</span><span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+                    <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">finger_length</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">pocket_buffer_width_y</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+                    <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="p">),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">bot_pin_line</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">(</span>
+                    <span class="o">-</span><span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+                    <span class="o">-</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">finger_length</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">pocket_buffer_width_y</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+                    <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="p">(</span>
+                    <span class="o">+</span><span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+                    <span class="o">-</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">finger_length</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">trace_width</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">pocket_buffer_width_y</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+                    <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="p">),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
 
         <span class="c1"># Create polygon object list</span>
         <span class="n">polys1</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">top_pin_line</span><span class="p">,</span> <span class="n">bot_pin_line</span><span class="p">,</span> <span class="n">pad_top</span><span class="p">,</span> <span class="n">pad_bot</span><span class="p">,</span> <span class="n">cent_finger</span><span class="p">,</span>
-            <span class="n">left_finger</span><span class="p">,</span> <span class="n">right_finger</span><span class="p">,</span> <span class="n">pocket</span><span class="p">,</span> <span class="n">trace_top</span><span class="p">,</span> <span class="n">trace_bot</span>
+            <span class="n">top_pin_line</span><span class="p">,</span>
+            <span class="n">bot_pin_line</span><span class="p">,</span>
+            <span class="n">pad_top</span><span class="p">,</span>
+            <span class="n">pad_bot</span><span class="p">,</span>
+            <span class="n">cent_finger</span><span class="p">,</span>
+            <span class="n">left_finger</span><span class="p">,</span>
+            <span class="n">right_finger</span><span class="p">,</span>
+            <span class="n">pocket</span><span class="p">,</span>
+            <span class="n">trace_top</span><span class="p">,</span>
+            <span class="n">trace_bot</span><span class="p">,</span>
         <span class="p">]</span>
 
         <span class="c1"># Rotates and translates all the objects as requested. Uses package functions</span>
@@ -829,30 +855,39 @@
         <span class="n">polys1</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">polys1</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
         <span class="n">polys1</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">polys1</span><span class="p">,</span> <span class="n">xoff</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">pos_x</span><span class="p">,</span> <span class="n">yoff</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">pos_y</span><span class="p">)</span>
         <span class="p">[</span>
-            <span class="n">top_pin_line</span><span class="p">,</span> <span class="n">bot_pin_line</span><span class="p">,</span> <span class="n">pad_top</span><span class="p">,</span> <span class="n">pad_bot</span><span class="p">,</span> <span class="n">cent_finger</span><span class="p">,</span>
-            <span class="n">left_finger</span><span class="p">,</span> <span class="n">right_finger</span><span class="p">,</span> <span class="n">pocket</span><span class="p">,</span> <span class="n">trace_top</span><span class="p">,</span> <span class="n">trace_bot</span>
+            <span class="n">top_pin_line</span><span class="p">,</span>
+            <span class="n">bot_pin_line</span><span class="p">,</span>
+            <span class="n">pad_top</span><span class="p">,</span>
+            <span class="n">pad_bot</span><span class="p">,</span>
+            <span class="n">cent_finger</span><span class="p">,</span>
+            <span class="n">left_finger</span><span class="p">,</span>
+            <span class="n">right_finger</span><span class="p">,</span>
+            <span class="n">pocket</span><span class="p">,</span>
+            <span class="n">trace_top</span><span class="p">,</span>
+            <span class="n">trace_bot</span><span class="p">,</span>
         <span class="p">]</span> <span class="o">=</span> <span class="n">polys1</span>
 
         <span class="c1"># Adds the object to the qgeometry table</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span>
-                           <span class="nb">dict</span><span class="p">(</span><span class="n">pad_top</span><span class="o">=</span><span class="n">pad_top</span><span class="p">,</span>
-                                <span class="n">pad_bot</span><span class="o">=</span><span class="n">pad_bot</span><span class="p">,</span>
-                                <span class="n">cent_finger</span><span class="o">=</span><span class="n">cent_finger</span><span class="p">,</span>
-                                <span class="n">left_finger</span><span class="o">=</span><span class="n">left_finger</span><span class="p">,</span>
-                                <span class="n">right_finger</span><span class="o">=</span><span class="n">right_finger</span><span class="p">,</span>
-                                <span class="n">trace_top</span><span class="o">=</span><span class="n">trace_top</span><span class="p">,</span>
-                                <span class="n">trace_bot</span><span class="o">=</span><span class="n">trace_bot</span><span class="p">),</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;poly&quot;</span><span class="p">,</span>
+            <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">pad_top</span><span class="o">=</span><span class="n">pad_top</span><span class="p">,</span>
+                <span class="n">pad_bot</span><span class="o">=</span><span class="n">pad_bot</span><span class="p">,</span>
+                <span class="n">cent_finger</span><span class="o">=</span><span class="n">cent_finger</span><span class="p">,</span>
+                <span class="n">left_finger</span><span class="o">=</span><span class="n">left_finger</span><span class="p">,</span>
+                <span class="n">right_finger</span><span class="o">=</span><span class="n">right_finger</span><span class="p">,</span>
+                <span class="n">trace_top</span><span class="o">=</span><span class="n">trace_top</span><span class="p">,</span>
+                <span class="n">trace_bot</span><span class="o">=</span><span class="n">trace_bot</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
+        <span class="p">)</span>
 
-        <span class="c1">#subtracts out ground plane on the layer its on</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span>
-                           <span class="nb">dict</span><span class="p">(</span><span class="n">pocket</span><span class="o">=</span><span class="n">pocket</span><span class="p">),</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
+        <span class="c1"># subtracts out ground plane on the layer its on</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">pocket</span><span class="o">=</span><span class="n">pocket</span><span class="p">),</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
 
         <span class="c1"># Generates its own pins</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">top_pin_line</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">trace_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">bot_pin_line</span><span class="o">.</span><span class="n">coords</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">p</span><span class="o">.</span><span class="n">trace_width</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">top_pin_line</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">trace_width</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">bot_pin_line</span><span class="o">.</span><span class="n">coords</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">p</span><span class="o">.</span><span class="n">trace_width</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

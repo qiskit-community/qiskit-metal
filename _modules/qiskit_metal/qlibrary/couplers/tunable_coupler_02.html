@@ -700,8 +700,7 @@
 <span class="c1"># Any modifications or derivative works of this code must retain this</span>
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
-<span class="sd">&quot;&quot;&quot;Tunable Coupler, as shown in Phys. Rev. Research 2, 033447 (2020).</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Tunable Coupler, as shown in Phys. Rev. Research 2, 033447 (2020).&quot;&quot;&quot;</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">sin</span><span class="p">,</span> <span class="n">cos</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -740,27 +739,31 @@
 <span class="sd">        * layer: &#39;1&#39; -- the default design layer</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">pocket_width</span><span class="o">=</span><span class="s1">&#39;3mm&#39;</span><span class="p">,</span>
-                           <span class="n">pocket_height</span><span class="o">=</span><span class="s1">&#39;2mm&#39;</span><span class="p">,</span>
-                           <span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;0mm&#39;</span><span class="p">,</span>
-                           <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;0mm&#39;</span><span class="p">,</span>
-                           <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;0&#39;</span><span class="p">,</span>
-                           <span class="n">pad_radius</span><span class="o">=</span><span class="s1">&#39;0.3mm&#39;</span><span class="p">,</span>
-                           <span class="n">bus_width</span><span class="o">=</span><span class="s1">&#39;0.1mm&#39;</span><span class="p">,</span>
-                           <span class="n">bus_inner_length</span><span class="o">=</span><span class="s1">&#39;0.5mm&#39;</span><span class="p">,</span>
-                           <span class="n">bus_outer_length</span><span class="o">=</span><span class="s1">&#39;0.5mm&#39;</span><span class="p">,</span>
-                           <span class="n">bus_JJ_height</span><span class="o">=</span><span class="s1">&#39;0.5mm&#39;</span><span class="p">,</span>
-                           <span class="n">JJ_width</span><span class="o">=</span><span class="s1">&#39;0.1mm&#39;</span><span class="p">,</span>
-                           <span class="n">JJ_length</span><span class="o">=</span><span class="s1">&#39;0.4mm&#39;</span><span class="p">,</span>
-                           <span class="n">fbl_width</span><span class="o">=</span><span class="s1">&#39;0.1mm&#39;</span><span class="p">,</span>
-                           <span class="n">fbl_length</span><span class="o">=</span><span class="s1">&#39;0.5mm&#39;</span><span class="p">,</span>
-                           <span class="n">fbl_offset</span><span class="o">=</span><span class="s1">&#39;0.1mm&#39;</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">)</span>
+    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+        <span class="n">pocket_width</span><span class="o">=</span><span class="s2">&quot;3mm&quot;</span><span class="p">,</span>
+        <span class="n">pocket_height</span><span class="o">=</span><span class="s2">&quot;2mm&quot;</span><span class="p">,</span>
+        <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0mm&quot;</span><span class="p">,</span>
+        <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0mm&quot;</span><span class="p">,</span>
+        <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+        <span class="n">pad_radius</span><span class="o">=</span><span class="s2">&quot;0.3mm&quot;</span><span class="p">,</span>
+        <span class="n">bus_width</span><span class="o">=</span><span class="s2">&quot;0.1mm&quot;</span><span class="p">,</span>
+        <span class="n">bus_inner_length</span><span class="o">=</span><span class="s2">&quot;0.5mm&quot;</span><span class="p">,</span>
+        <span class="n">bus_outer_length</span><span class="o">=</span><span class="s2">&quot;0.5mm&quot;</span><span class="p">,</span>
+        <span class="n">bus_JJ_height</span><span class="o">=</span><span class="s2">&quot;0.5mm&quot;</span><span class="p">,</span>
+        <span class="n">JJ_width</span><span class="o">=</span><span class="s2">&quot;0.1mm&quot;</span><span class="p">,</span>
+        <span class="n">JJ_length</span><span class="o">=</span><span class="s2">&quot;0.4mm&quot;</span><span class="p">,</span>
+        <span class="n">fbl_width</span><span class="o">=</span><span class="s2">&quot;0.1mm&quot;</span><span class="p">,</span>
+        <span class="n">fbl_length</span><span class="o">=</span><span class="s2">&quot;0.5mm&quot;</span><span class="p">,</span>
+        <span class="n">fbl_offset</span><span class="o">=</span><span class="s2">&quot;0.1mm&quot;</span><span class="p">,</span>
+        <span class="n">layer</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s1">&#39;Pocket&#39;</span><span class="p">,</span>
-                              <span class="n">_qgeometry_table_path</span><span class="o">=</span><span class="s1">&#39;True&#39;</span><span class="p">,</span>
-                              <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s1">&#39;True&#39;</span><span class="p">,</span>
-                              <span class="n">_qgeometry_table_junction</span><span class="o">=</span><span class="s1">&#39;True&#39;</span><span class="p">)</span>
+    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+        <span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;Pocket&quot;</span><span class="p">,</span>
+        <span class="n">_qgeometry_table_path</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">,</span>
+        <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">,</span>
+        <span class="n">_qgeometry_table_junction</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
     <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;One of the tunable couplers&quot;&quot;&quot;</span>
 
@@ -771,89 +774,111 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert self.options into QGeometry.&quot;&quot;&quot;</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_options</span><span class="p">()</span>  <span class="c1"># Parse the string options into numbers</span>
         <span class="c1"># draw the Josephson Junction</span>
-        <span class="n">JJ</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([</span>
-            <span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_length</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_JJ_height</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_width</span><span class="p">),</span>
-            <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_length</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_JJ_height</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_width</span><span class="p">)</span>
-        <span class="p">])</span>
+        <span class="n">JJ</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_length</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_JJ_height</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_width</span><span class="p">),</span>
+                <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_length</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_JJ_height</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_width</span><span class="p">),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
         <span class="c1"># draw the individual components of the CPW resonator</span>
         <span class="n">bus_vertical_left</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span>
-            <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_JJ_height</span><span class="p">,</span>
-            <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_length</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_JJ_height</span><span class="p">)</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">bus_JJ_height</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_length</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span><span class="p">,</span>
+            <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_JJ_height</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">bus_vertical_right</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span>
-            <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_JJ_height</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_length</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span><span class="p">,</span>
-            <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_JJ_height</span><span class="p">)</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">bus_JJ_height</span><span class="p">,</span>
+            <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_length</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span><span class="p">,</span>
+            <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_JJ_height</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">bus_left</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span>
             <span class="n">p</span><span class="o">.</span><span class="n">bus_inner_length</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_outer_length</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_radius</span><span class="p">,</span>
-            <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_length</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span>
-            <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">bus_inner_length</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_outer_length</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_radius</span><span class="p">),</span>
-            <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span><span class="p">)</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_length</span>
+            <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span>
+            <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">bus_inner_length</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_outer_length</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_radius</span><span class="p">),</span>
+            <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">bus_right</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span>
             <span class="n">p</span><span class="o">.</span><span class="n">bus_inner_length</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_outer_length</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_radius</span><span class="p">,</span>
-            <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_length</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span>
-            <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">bus_inner_length</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_outer_length</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_radius</span><span class="p">),</span>
-            <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span><span class="p">)</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span><span class="p">,</span>
+            <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_length</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span>
+            <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">bus_inner_length</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_outer_length</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_radius</span><span class="p">),</span>
+            <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="c1"># draw the circular charge pads</span>
         <span class="n">left_pad</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span>
-            <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_length</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_inner_length</span> <span class="o">-</span>
-            <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_radius</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span><span class="p">)</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pad_radius</span><span class="p">)</span>
+            <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_length</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_inner_length</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_radius</span><span class="p">,</span>
+            <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span><span class="p">,</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pad_radius</span><span class="p">)</span>
         <span class="n">right_pad</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span>
-            <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_length</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_inner_length</span> <span class="o">+</span>
-            <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_radius</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span><span class="p">)</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pad_radius</span><span class="p">)</span>
+            <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_length</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_inner_length</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_radius</span><span class="p">,</span>
+            <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span><span class="p">,</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pad_radius</span><span class="p">)</span>
         <span class="c1"># draw the flux bias line</span>
         <span class="n">fbl</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span>
-            <span class="n">p</span><span class="o">.</span><span class="n">fbl_width</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">fbl_length</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">fbl_width</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">fbl_length</span><span class="p">,</span>
             <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_length</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">fbl_offset</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">fbl_width</span><span class="p">,</span>
-            <span class="n">p</span><span class="o">.</span><span class="n">bus_JJ_height</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">fbl_length</span><span class="p">)</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">bus_JJ_height</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">fbl_length</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="c1"># draw the pocket surrounding the qubit</span>
         <span class="n">pocket</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pocket_width</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pocket_height</span><span class="p">)</span>
         <span class="c1"># Translate and rotate all shapes</span>
         <span class="n">objects</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">JJ</span><span class="p">,</span> <span class="n">bus_vertical_left</span><span class="p">,</span> <span class="n">bus_vertical_right</span><span class="p">,</span> <span class="n">bus_left</span><span class="p">,</span> <span class="n">bus_right</span><span class="p">,</span>
-            <span class="n">left_pad</span><span class="p">,</span> <span class="n">right_pad</span><span class="p">,</span> <span class="n">fbl</span><span class="p">,</span> <span class="n">pocket</span>
+            <span class="n">JJ</span><span class="p">,</span>
+            <span class="n">bus_vertical_left</span><span class="p">,</span>
+            <span class="n">bus_vertical_right</span><span class="p">,</span>
+            <span class="n">bus_left</span><span class="p">,</span>
+            <span class="n">bus_right</span><span class="p">,</span>
+            <span class="n">left_pad</span><span class="p">,</span>
+            <span class="n">right_pad</span><span class="p">,</span>
+            <span class="n">fbl</span><span class="p">,</span>
+            <span class="n">pocket</span><span class="p">,</span>
         <span class="p">]</span>
         <span class="n">objects</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
         <span class="n">objects</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="n">xoff</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">pos_x</span><span class="p">,</span> <span class="n">yoff</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">pos_y</span><span class="p">)</span>
         <span class="p">[</span>
-            <span class="n">JJ</span><span class="p">,</span> <span class="n">bus_vertical_left</span><span class="p">,</span> <span class="n">bus_vertical_right</span><span class="p">,</span> <span class="n">bus_left</span><span class="p">,</span> <span class="n">bus_right</span><span class="p">,</span>
-            <span class="n">left_pad</span><span class="p">,</span> <span class="n">right_pad</span><span class="p">,</span> <span class="n">fbl</span><span class="p">,</span> <span class="n">pocket</span>
+            <span class="n">JJ</span><span class="p">,</span>
+            <span class="n">bus_vertical_left</span><span class="p">,</span>
+            <span class="n">bus_vertical_right</span><span class="p">,</span>
+            <span class="n">bus_left</span><span class="p">,</span>
+            <span class="n">bus_right</span><span class="p">,</span>
+            <span class="n">left_pad</span><span class="p">,</span>
+            <span class="n">right_pad</span><span class="p">,</span>
+            <span class="n">fbl</span><span class="p">,</span>
+            <span class="n">pocket</span><span class="p">,</span>
         <span class="p">]</span> <span class="o">=</span> <span class="n">objects</span>
         <span class="c1"># give each poly a name to send to qgeometry</span>
-        <span class="n">geom_jj</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly1&#39;</span><span class="p">:</span> <span class="n">JJ</span><span class="p">}</span>
-        <span class="n">geom_bus_vertical_left</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly2&#39;</span><span class="p">:</span> <span class="n">bus_vertical_left</span><span class="p">}</span>
-        <span class="n">geom_bus_vertical_right</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly3&#39;</span><span class="p">:</span> <span class="n">bus_vertical_right</span><span class="p">}</span>
-        <span class="n">geom_bus_left</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly4&#39;</span><span class="p">:</span> <span class="n">bus_left</span><span class="p">}</span>
-        <span class="n">geom_bus_right</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly5&#39;</span><span class="p">:</span> <span class="n">bus_right</span><span class="p">}</span>
-        <span class="n">geom_left_pad</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly6&#39;</span><span class="p">:</span> <span class="n">left_pad</span><span class="p">}</span>
-        <span class="n">geom_right_pad</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly7&#39;</span><span class="p">:</span> <span class="n">right_pad</span><span class="p">}</span>
-        <span class="n">geom_fbl</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly8&#39;</span><span class="p">:</span> <span class="n">fbl</span><span class="p">}</span>
-        <span class="c1">#geom_pocket = {&#39;poly9&#39;: pocket}</span>
+        <span class="n">geom_jj</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly1&quot;</span><span class="p">:</span> <span class="n">JJ</span><span class="p">}</span>
+        <span class="n">geom_bus_vertical_left</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly2&quot;</span><span class="p">:</span> <span class="n">bus_vertical_left</span><span class="p">}</span>
+        <span class="n">geom_bus_vertical_right</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly3&quot;</span><span class="p">:</span> <span class="n">bus_vertical_right</span><span class="p">}</span>
+        <span class="n">geom_bus_left</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly4&quot;</span><span class="p">:</span> <span class="n">bus_left</span><span class="p">}</span>
+        <span class="n">geom_bus_right</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly5&quot;</span><span class="p">:</span> <span class="n">bus_right</span><span class="p">}</span>
+        <span class="n">geom_left_pad</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly6&quot;</span><span class="p">:</span> <span class="n">left_pad</span><span class="p">}</span>
+        <span class="n">geom_right_pad</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly7&quot;</span><span class="p">:</span> <span class="n">right_pad</span><span class="p">}</span>
+        <span class="n">geom_fbl</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly8&quot;</span><span class="p">:</span> <span class="n">fbl</span><span class="p">}</span>
+        <span class="c1"># geom_pocket = {&#39;poly9&#39;: pocket}</span>
         <span class="c1"># add to qgeometry</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;junction&#39;</span><span class="p">,</span>
-                           <span class="n">geom_jj</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">JJ_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span>
-                           <span class="n">geom_bus_vertical_left</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span>
-                           <span class="n">geom_bus_vertical_right</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="n">geom_bus_left</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span>
-                           <span class="n">geom_bus_right</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="n">geom_left_pad</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span>
-                           <span class="n">geom_right_pad</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="n">geom_fbl</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;junction&quot;</span><span class="p">,</span> <span class="n">geom_jj</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">JJ_width</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom_bus_vertical_left</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom_bus_vertical_right</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom_bus_left</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom_bus_right</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom_left_pad</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom_right_pad</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom_fbl</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-        <span class="c1">#self.add_qgeometry(&#39;poly&#39;, geom_pocket, layer=1, subtract=True)</span>
+        <span class="c1"># self.add_qgeometry(&#39;poly&#39;, geom_pocket, layer=1, subtract=True)</span>
         <span class="c1">###########################################################################</span>
         <span class="c1"># Add Qpin connections</span>
         <span class="c1"># define a function that both rotates and translates the qpin coordinates</span>
@@ -861,47 +886,74 @@
             <span class="n">y</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
             <span class="n">z</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
             <span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">orientation</span> <span class="o">*</span> <span class="mf">3.14159</span> <span class="o">/</span> <span class="mi">180</span><span class="p">)</span> <span class="o">-</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span>
-                <span class="n">p</span><span class="o">.</span><span class="n">orientation</span> <span class="o">*</span> <span class="mf">3.14159</span> <span class="o">/</span> <span class="mi">180</span><span class="p">)</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">orientation</span> <span class="o">*</span> <span class="mf">3.14159</span> <span class="o">/</span> <span class="mi">180</span>
+            <span class="p">)</span>
             <span class="n">z</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">orientation</span> <span class="o">*</span> <span class="mf">3.14159</span> <span class="o">/</span> <span class="mi">180</span><span class="p">)</span> <span class="o">+</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span>
-                <span class="n">p</span><span class="o">.</span><span class="n">orientation</span> <span class="o">*</span> <span class="mf">3.14159</span> <span class="o">/</span> <span class="mi">180</span><span class="p">)</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">orientation</span> <span class="o">*</span> <span class="mf">3.14159</span> <span class="o">/</span> <span class="mi">180</span>
+            <span class="p">)</span>
             <span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_x</span>
             <span class="n">z</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_y</span>
             <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">z</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
             <span class="k">return</span> <span class="n">x</span>
 
         <span class="c1"># Right-hand pin</span>
-        <span class="n">qp1b</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_length</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_inner_length</span> <span class="o">+</span>
-                <span class="n">p</span><span class="o">.</span><span class="n">bus_outer_length</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_radius</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span><span class="p">)</span>
-        <span class="n">qp1a</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_length</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span> <span class="o">+</span> <span class="mf">0.9</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_inner_length</span> <span class="o">+</span>
-                <span class="n">p</span><span class="o">.</span><span class="n">bus_outer_length</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_radius</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span><span class="p">)</span>
+        <span class="n">qp1b</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_length</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_inner_length</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_outer_length</span>
+            <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_radius</span><span class="p">,</span>
+            <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">qp1a</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_length</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span>
+            <span class="o">+</span> <span class="mf">0.9</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_inner_length</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_outer_length</span>
+            <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_radius</span><span class="p">,</span>
+            <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">qp1a</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qp1a</span><span class="p">)</span>
         <span class="n">qp1b</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qp1b</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s1">&#39;pin1&#39;</span><span class="p">,</span>
-                     <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qp1a</span><span class="p">,</span> <span class="n">qp1b</span><span class="p">]),</span>
-                     <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
-                     <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
+            <span class="s2">&quot;pin1&quot;</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qp1a</span><span class="p">,</span> <span class="n">qp1b</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
         <span class="c1"># Left-hand pin</span>
-        <span class="n">qp2b</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_length</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_inner_length</span> <span class="o">-</span>
-                <span class="n">p</span><span class="o">.</span><span class="n">bus_outer_length</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_radius</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span><span class="p">)</span>
-        <span class="n">qp2a</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_length</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span> <span class="o">-</span> <span class="mf">0.9</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_inner_length</span> <span class="o">-</span>
-                <span class="n">p</span><span class="o">.</span><span class="n">bus_outer_length</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_radius</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span><span class="p">)</span>
+        <span class="n">qp2b</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_length</span>
+            <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span>
+            <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_inner_length</span>
+            <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_outer_length</span>
+            <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_radius</span><span class="p">,</span>
+            <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">qp2a</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_length</span>
+            <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span>
+            <span class="o">-</span> <span class="mf">0.9</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_inner_length</span>
+            <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_outer_length</span>
+            <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_radius</span><span class="p">,</span>
+            <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">qp2a</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qp2a</span><span class="p">)</span>
         <span class="n">qp2b</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qp2b</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s1">&#39;pin2&#39;</span><span class="p">,</span>
-                     <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qp2a</span><span class="p">,</span> <span class="n">qp2b</span><span class="p">]),</span>
-                     <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
-                     <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
+            <span class="s2">&quot;pin2&quot;</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qp2a</span><span class="p">,</span> <span class="n">qp2b</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
         <span class="c1"># Flux Bias Line pin</span>
-        <span class="n">qp3b</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_length</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">fbl_offset</span> <span class="o">-</span>
-                <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">fbl_width</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_JJ_height</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">fbl_length</span><span class="p">)</span>
-        <span class="n">qp3a</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_length</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">fbl_offset</span> <span class="o">-</span>
-                <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">fbl_width</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_JJ_height</span> <span class="o">+</span> <span class="mf">0.9</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">fbl_length</span><span class="p">)</span>
+        <span class="n">qp3b</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_length</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">fbl_offset</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">fbl_width</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">bus_JJ_height</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">fbl_length</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">qp3a</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_length</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">bus_width</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">fbl_offset</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">fbl_width</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">bus_JJ_height</span> <span class="o">+</span> <span class="mf">0.9</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">fbl_length</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">qp3a</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qp3a</span><span class="p">)</span>
         <span class="n">qp3b</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qp3b</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s1">&#39;fbl&#39;</span><span class="p">,</span>
-                     <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qp3a</span><span class="p">,</span> <span class="n">qp3b</span><span class="p">]),</span>
-                     <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
-                     <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
+            <span class="s2">&quot;fbl&quot;</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qp3a</span><span class="p">,</span> <span class="n">qp3b</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span></div>
 </div>
 
 </pre></div>

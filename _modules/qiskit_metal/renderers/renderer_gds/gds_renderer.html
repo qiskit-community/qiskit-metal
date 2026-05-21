@@ -701,7 +701,6 @@
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
 <span class="sd">&quot;&quot;&quot;This module has a QRenderer to export QDesign to a GDS file.&quot;&quot;&quot;</span>
-<span class="c1"># pylint: disable=too-many-lines</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -1054,7 +1053,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            int: 1 if access is allowed. Else returns 0, if access not given.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">status</span><span class="p">,</span> <span class="n">directory_name</span> <span class="o">=</span> <span class="n">can_write_to_path</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>  <span class="c1"># pylint: disable=possibly-used-before-assignment</span>
+        <span class="n">status</span><span class="p">,</span> <span class="n">directory_name</span> <span class="o">=</span> <span class="n">can_write_to_path</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">status</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">1</span>
 
@@ -1084,10 +1083,9 @@
 <span class="sd">            table_name (str): Name for &quot;table&quot;.  Example is &quot;poly&quot;, and &quot;path&quot;.</span>
 <span class="sd">            table (geopandas.GeoSeries): Table with similar qgeometries.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># pylint: disable=singleton-comparison</span>
-        <span class="n">subtract_true</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="p">[</span><span class="s2">&quot;subtract&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">]</span>
+        <span class="n">subtract_true</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="p">[</span><span class="s2">&quot;subtract&quot;</span><span class="p">]]</span>
 
-        <span class="n">subtract_false</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="p">[</span><span class="s2">&quot;subtract&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">False</span><span class="p">]</span>
+        <span class="n">subtract_false</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="o">~</span><span class="n">table</span><span class="p">[</span><span class="s2">&quot;subtract&quot;</span><span class="p">]]</span>
 
         <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">chip_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">_subtract_true&quot;</span><span class="p">,</span> <span class="n">subtract_true</span><span class="p">)</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">chip_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">_subtract_false&quot;</span><span class="p">,</span> <span class="n">subtract_false</span><span class="p">)</span>
@@ -1249,7 +1247,6 @@
         <span class="c1"># bounding box from design planar.  If list is subset of chip, then</span>
         <span class="c1"># calculate a custom bounding box and scale it.</span>
 
-        <span class="c1"># pylint: disable=protected-access</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">unique_qcomponents</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span><span class="p">):</span>
             <span class="c1"># Since user wants all of the chip to be rendered, use the</span>
             <span class="c1"># design.planar bounding box.</span>
@@ -1440,7 +1437,6 @@
 <span class="sd">            all_sub_true_or_false (str): To be used within self.chip_info:</span>
 <span class="sd">                                &#39;all_subtract_true&#39; or &#39;all_subtract_false&#39;.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># pylint: disable=too-many-locals</span>
         <span class="n">data_frame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chip_info</span><span class="p">[</span><span class="n">chip_name</span><span class="p">][</span><span class="n">chip_layer</span><span class="p">][</span><span class="n">all_sub_true_or_false</span><span class="p">]</span>
         <span class="n">df_fillet</span> <span class="o">=</span> <span class="n">data_frame</span><span class="p">[</span><span class="o">-</span><span class="n">data_frame</span><span class="p">[</span><span class="s2">&quot;fillet&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()]</span>
 
@@ -1512,10 +1508,6 @@
 <span class="sd">            Dict: The key is an index into a_shapely. The value is a dict with</span>
 <span class="sd">            fillet and shorter LineString.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># pylint: disable=too-many-locals</span>
-        <span class="c1"># pylint: disable=too-many-arguments</span>
-        <span class="c1"># pylint: disable=too-many-statements</span>
-        <span class="c1"># pylint: disable=too-many-branches</span>
 
         <span class="c1"># Holds all of the index of when a segment is too short.</span>
         <span class="n">idx_bad_fillet</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
@@ -1883,7 +1875,6 @@
 <span class="sd">            * 5 The chip is not in the default option.</span>
 <span class="sd">            * 6 The layer is not in the chip dict.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># pylint: disable=too-many-return-statements</span>
         <span class="n">code</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">no_cheese_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_no_cheese</span><span class="p">(</span><span class="n">chip</span><span class="p">,</span> <span class="n">layer</span><span class="p">)</span>
         <span class="n">cheese_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_cheese</span><span class="p">(</span><span class="n">chip</span><span class="p">,</span> <span class="n">layer</span><span class="p">)</span>
@@ -1978,8 +1969,6 @@
 <span class="sd">            nocheese_sub_layer (int): User defined datatype, considered a</span>
 <span class="sd">                    sub-layer number for where to place the NO_cheese output.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># pylint: disable=too-many-locals</span>
-        <span class="c1"># pylint: disable=too-many-arguments</span>
 
         <span class="n">max_points</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">max_points</span><span class="p">))</span>
         <span class="n">cheese_shape</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">cheese</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
@@ -2063,8 +2052,6 @@
 <span class="sd">        f&#39;TOP_{chip_name}_{chip_layer}_NoCheese_{sub_layer}&#39;.  The sub_layer</span>
 <span class="sd">        is data_type and denoted in the options.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="c1"># pylint: disable=too-many-nested-blocks</span>
 
         <span class="n">no_cheese_buffer</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">no_cheese</span><span class="o">.</span><span class="n">buffer</span><span class="p">))</span>
         <span class="n">sub_layer</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">no_cheese</span><span class="o">.</span><span class="n">datatype</span><span class="p">))</span>
@@ -2156,7 +2143,6 @@
 <span class="sd">            shapely which combines the polygons and linestrings and creates</span>
 <span class="sd">            buffer as specified through default_options.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># pylint: disable=too-many-locals</span>
         <span class="n">style_cap</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">no_cheese</span><span class="o">.</span><span class="n">cap_style</span><span class="p">))</span>
         <span class="n">style_join</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">no_cheese</span><span class="o">.</span><span class="n">join_style</span><span class="p">))</span>
 
@@ -2530,7 +2516,6 @@
 <span class="sd">            LineString is smaller than width of cell from row.gds_cell_name.</span>
 <span class="sd">            Otherwise the rectangle for pad on RIGHT of row.gds_cell_name.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># pylint: disable=too-many-locals</span>
         <span class="n">junction_pad_overlap</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">junction_pad_overlap</span><span class="p">)</span>
         <span class="p">)</span>
@@ -2550,7 +2535,6 @@
         <span class="n">pad_height</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">width</span>
 
         <span class="k">if</span> <span class="n">pad_height</span> <span class="o">&lt;</span> <span class="n">jj_y_height</span><span class="p">:</span>
-            <span class="c1"># pylint: disable=protected-access</span>
             <span class="n">text_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">component</span><span class="p">]</span><span class="o">.</span><span class="n">_name</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;In junction table, component=</span><span class="si">{</span><span class="n">text_id</span><span class="si">}</span><span class="s2"> with name=</span><span class="si">{</span><span class="n">row</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> &quot;</span>
@@ -2690,8 +2674,6 @@
 <span class="sd">                                                just chip_name.</span>
 <span class="sd">            layers_in_chip (list):  List of all layers in chip.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># pylint: disable=too-many-locals</span>
-        <span class="c1"># pylint: disable=too-many-nested-blocks</span>
 
         <span class="c1"># Make sure the file exists, before trying to read it.</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">directory_name</span> <span class="o">=</span> <span class="n">can_write_to_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">path_filename</span><span class="p">)</span>
@@ -3005,7 +2987,7 @@
         <span class="n">multi_poly</span><span class="p">:</span> <span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">multipolygon</span><span class="o">.</span><span class="n">MultiPolygon</span><span class="p">,</span>
         <span class="n">layer</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">data_type</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="n">no_cheese_buffer</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>  <span class="c1"># pylint: disable=unused-argument</span>
+        <span class="n">no_cheese_buffer</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a shapely MultiPolygon to corresponding gdstk.</span>
 
@@ -3020,7 +3002,6 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            list: Each entry is converted to GDSII.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># pylint: disable=too-many-locals</span>
 
         <span class="n">precision</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">precision</span><span class="p">))</span>
 

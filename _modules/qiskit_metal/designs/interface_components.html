@@ -701,9 +701,11 @@
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
 <span class="sd">&quot;&quot;&quot;Module containing Design interface components.&quot;&quot;&quot;</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deepcopy</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
-<span class="c1">#from typing import Any, Optional, TypeVar, Dict as Dict_, Iterable</span>
+
+<span class="c1"># from typing import Any, Optional, TypeVar, Dict as Dict_, Iterable</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.core._parsed_dynamic_attrs</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_ipython_magic</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
@@ -728,7 +730,7 @@
 <span class="sd">    treat the keys as strings.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">design</span><span class="p">:</span> <span class="s1">&#39;QDesign&#39;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">design</span><span class="p">:</span> <span class="s2">&quot;QDesign&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set up variables and logger which are used to emulate a dict which</span>
 <span class="sd">        is referencing design._components.</span>
 
@@ -797,7 +799,7 @@
             <span class="c1"># https://github.com/jupyter/notebook/issues/2014</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">quiet</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s1">&#39;In Components.find_id(), the name=</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> is not used in design._components&#39;</span>
+                    <span class="sa">f</span><span class="s2">&quot;In Components.find_id(), the name=</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> is not used in design._components&quot;</span>
                 <span class="p">)</span>
             <span class="k">return</span> <span class="mi">0</span>
 
@@ -830,9 +832,7 @@
 
 <div class="viewcode-block" id="Components.__getitem__">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.designs.Components.html#qiskit_metal.designs.Components.__getitem__">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                    <span class="n">quiet</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;QComponent&#39;</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">quiet</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;QComponent&quot;</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the QComponent based on string name vs the unique id of</span>
 <span class="sd">        QComponent.</span>
 
@@ -856,9 +856,10 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="n">is_ipython_magic</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">quiet</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s1">&#39;In Components.__getitem__, name=</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> is not &#39;</span>
-                        <span class="sa">f</span><span class="s1">&#39;registered in the design class. Return &#39;</span>
-                        <span class="sa">f</span><span class="s1">&#39;None for QComponent.&#39;</span><span class="p">)</span>
+                        <span class="sa">f</span><span class="s2">&quot;In Components.__getitem__, name=</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> is not &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;registered in the design class. Return &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;None for QComponent.&quot;</span>
+                    <span class="p">)</span>
                 <span class="k">return</span> <span class="kc">None</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
@@ -868,7 +869,7 @@
         <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="s1">&#39;QComponent&#39;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;QComponent&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Replace QComponent for an existing name. Use this at your own risk.</span>
 <span class="sd">        There are netids used for pins within a component.  The netids are used</span>
 <span class="sd">        in the net_info table and qgeometry tables.</span>
@@ -881,25 +882,26 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">QComponent</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;The value is NOT a QComponent.  Nothing has been assigned to name=</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span>
+                <span class="sa">f</span><span class="s2">&quot;The value is NOT a QComponent.  Nothing has been assigned to name=</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
             <span class="k">return</span>
 
         <span class="n">component_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_id</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">component_id</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;The name=</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> already exists in design._components.  &#39;</span>
-                <span class="sa">f</span><span class="s1">&#39;A component_id=</span><span class="si">{</span><span class="n">component_id</span><span class="si">}</span><span class="s1"> will be replaced.&#39;</span><span class="p">)</span>
+                <span class="sa">f</span><span class="s2">&quot;The name=</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> already exists in design._components.  &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;A component_id=</span><span class="si">{</span><span class="n">component_id</span><span class="si">}</span><span class="s2"> will be replaced.&quot;</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">component_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;Usualy new components are added to design during init.  &#39;</span>
-                <span class="sa">f</span><span class="s1">&#39;The name=</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> is not in design._components, and added as a new component.&#39;</span>
+                <span class="sa">f</span><span class="s2">&quot;Usualy new components are added to design during init.  &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;The name=</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> is not in design._components, and added as a new component.&quot;</span>
             <span class="p">)</span>
             <span class="n">value</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
             <span class="n">value</span><span class="o">.</span><span class="n">_add_to_design</span><span class="p">()</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="s1">&#39;QComponent&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="s2">&quot;QComponent&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Provide same behavior as __getitem__.</span>
 
 <span class="sd">        Args:</span>
@@ -995,9 +997,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            list: List of (key, value) pairs.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">all_items</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-        <span class="p">]</span>
+        <span class="n">all_items</span> <span class="o">=</span> <span class="p">[(</span><span class="n">value</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
         <span class="k">return</span> <span class="n">all_items</span></div>
 
 

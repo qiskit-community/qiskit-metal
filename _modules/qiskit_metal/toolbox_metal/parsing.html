@@ -701,10 +701,7 @@
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
 
-<span class="c1"># pylint: disable-msg=broad-except</span>
-<span class="c1"># pylint: disable-msg=relative-beyond-top-level</span>
-<span class="c1"># pylint: disable-msg=import-error</span>
-<span class="c1"># pylint: disable-msg=line-too-long</span>
+
 <span class="sd">&quot;&quot;&quot;Parsing module Qiskit Metal.</span>
 
 <span class="sd">The main function in this module is `parse_value`, and it explains what</span>
@@ -858,12 +855,11 @@
 <span class="sd">        &#39;dict1&#39;: {&#39;key1&#39;: 4e-06, &#39;2mm&#39;: 0.1}}</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">ast</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Mapping</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numbers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Number</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">ast</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pint</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pint</span><span class="w"> </span><span class="kn">import</span> <span class="n">UnitRegistry</span>
@@ -871,12 +867,12 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">logger</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;parse_value&#39;</span><span class="p">,</span>  <span class="c1"># Main function</span>
-    <span class="s1">&#39;is_variable_name&#39;</span><span class="p">,</span>  <span class="c1"># extra helpers</span>
-    <span class="s1">&#39;is_numeric_possible&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;is_for_ast_eval&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;is_true&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;parse_options&#39;</span>
+    <span class="s2">&quot;parse_value&quot;</span><span class="p">,</span>  <span class="c1"># Main function</span>
+    <span class="s2">&quot;is_variable_name&quot;</span><span class="p">,</span>  <span class="c1"># extra helpers</span>
+    <span class="s2">&quot;is_numeric_possible&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;is_for_ast_eval&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;is_true&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;parse_options&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
 <span class="c1">#########################################################################</span>
@@ -884,12 +880,34 @@
 
 <span class="c1"># Values that can represent True bool</span>
 <span class="n">TRUE_STR</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;true&#39;</span><span class="p">,</span> <span class="s1">&#39;True&#39;</span><span class="p">,</span> <span class="s1">&#39;TRUE&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">,</span> <span class="s1">&#39;YES&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;yeah&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="mf">1.0</span>
+    <span class="s2">&quot;true&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;True&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TRUE&quot;</span><span class="p">,</span>
+    <span class="kc">True</span><span class="p">,</span>
+    <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;t&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;y&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Y&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;YES&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;yes&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;yeah&quot;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">,</span>
+    <span class="mf">1.0</span><span class="p">,</span>
 <span class="p">]</span>
 <span class="n">FALSE_STR</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;false&#39;</span><span class="p">,</span> <span class="s1">&#39;False&#39;</span><span class="p">,</span> <span class="s1">&#39;FALSE&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;NO&#39;</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">,</span> <span class="s1">&#39;na&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="mf">0.0</span>
+    <span class="s2">&quot;false&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;False&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FALSE&quot;</span><span class="p">,</span>
+    <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;f&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;n&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;N&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;NO&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;no&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;na&quot;</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">,</span>
+    <span class="mf">0.0</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -984,8 +1002,9 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        bool: Is test_str a valid list of dict strings</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;[&#39;</span> <span class="ow">in</span> <span class="n">test_str</span> <span class="ow">and</span> <span class="s1">&#39;]&#39;</span> <span class="ow">in</span> <span class="n">test_str</span><span class="p">)</span> <span class="ow">or</span> \
-           <span class="p">(</span><span class="s1">&#39;{&#39;</span> <span class="ow">in</span> <span class="n">test_str</span> <span class="ow">and</span> <span class="s1">&#39;}&#39;</span> <span class="ow">in</span> <span class="n">test_str</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;[&quot;</span> <span class="ow">in</span> <span class="n">test_str</span> <span class="ow">and</span> <span class="s2">&quot;]&quot;</span> <span class="ow">in</span> <span class="n">test_str</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+        <span class="s2">&quot;{&quot;</span> <span class="ow">in</span> <span class="n">test_str</span> <span class="ow">and</span> <span class="s2">&quot;}&quot;</span> <span class="ow">in</span> <span class="n">test_str</span>
+    <span class="p">)</span></div>
 
 
 
@@ -1000,13 +1019,11 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        bool: Is the test string a valid possible numerical</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">test_str</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="ow">or</span> <span class="n">test_str</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">]</span></div>
+    <span class="k">return</span> <span class="n">test_str</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="ow">or</span> <span class="n">test_str</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">]</span></div>
 
     <span class="c1"># look into pyparsing</span>
 
 
-<span class="c1"># pylint: disable-msg=too-many-branches</span>
-<span class="c1"># pylint: disable-msg=too-many-return-statements</span>
 <div class="viewcode-block" id="parse_value">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.parsing.html#qiskit_metal.toolbox_metal.parsing.parse_value">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_value</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">variable_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
@@ -1051,7 +1068,6 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-
         <span class="c1"># remove trailing and leading white spaces in the name</span>
         <span class="n">val</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
@@ -1079,17 +1095,18 @@
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">evaluated</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
                     <span class="c1"># check if list, parse each element of the list</span>
                     <span class="k">return</span> <span class="p">[</span>
-                        <span class="n">parse_value</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">variable_dict</span><span class="p">)</span>
-                        <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">evaluated</span>
+                        <span class="n">parse_value</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">variable_dict</span><span class="p">)</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">evaluated</span>
                     <span class="p">]</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">evaluated</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                    <span class="k">return</span> <span class="n">Dict</span><span class="p">({</span>
-                        <span class="n">key</span><span class="p">:</span> <span class="n">parse_value</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">variable_dict</span><span class="p">)</span>
-                        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">evaluated</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-                    <span class="p">})</span>
+                    <span class="k">return</span> <span class="n">Dict</span><span class="p">(</span>
+                        <span class="p">{</span>
+                            <span class="n">key</span><span class="p">:</span> <span class="n">parse_value</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">variable_dict</span><span class="p">)</span>
+                            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">evaluated</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                        <span class="p">}</span>
+                    <span class="p">)</span>
 
                 <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s1">&#39;Unknown error in `is_for_ast_eval`</span><span class="se">\n</span><span class="s1">val=</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="se">\n</span><span class="s1">evaluated=</span><span class="si">{</span><span class="n">evaluated</span><span class="si">}</span><span class="s1">&#39;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Unknown error in `is_for_ast_eval`</span><span class="se">\n</span><span class="s2">val=</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="se">\n</span><span class="s2">evaluated=</span><span class="si">{</span><span class="n">evaluated</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
                 <span class="k">return</span> <span class="n">evaluated</span>
 
@@ -1101,16 +1118,18 @@
         <span class="c1"># then parse that dictionary. return Dict</span>
         <span class="k">return</span> <span class="n">Dict</span><span class="p">(</span>
             <span class="nb">map</span><span class="p">(</span>
-                <span class="k">lambda</span> <span class="n">item</span><span class="p">:</span>  <span class="c1"># item = [key, value]</span>
-                <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">parse_value</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">variable_dict</span><span class="p">)],</span>
-                <span class="n">value</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+                <span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="p">(</span>  <span class="c1"># item = [key, value]</span>
+                    <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">parse_value</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">variable_dict</span><span class="p">)]</span>
+                <span class="p">),</span>
+                <span class="n">value</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
 
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
         <span class="c1"># list, tuple, ... Return the same type</span>
-        <span class="k">return</span> <span class="p">{</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span>
-        <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">),</span>
-              <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">))([</span><span class="n">parse_value</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">variable_dict</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">value</span><span class="p">])</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">))(</span>
+            <span class="p">[</span><span class="n">parse_value</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">variable_dict</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span>
+        <span class="p">)</span>
 
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Number</span><span class="p">):</span>
         <span class="c1"># If it is an int it will return an int, not a float, etc.</span>
@@ -1139,14 +1158,12 @@
         <span class="n">variable_dict</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">parse_names</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">):</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span>
-        <span class="p">)</span>  <span class="c1"># remove trailing and leading white spaces in the name</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">parse_names</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">):</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>  <span class="c1"># remove trailing and leading white spaces in the name</span>
 
         <span class="c1"># is the name in the options at all?</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;Missing key </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> from params </span><span class="si">{</span><span class="n">params</span><span class="si">}</span><span class="s1">. Skipping ...</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing key </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> from params </span><span class="si">{</span><span class="n">params</span><span class="si">}</span><span class="s2">. Skipping ...</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">continue</span>
 
         <span class="c1"># option_dict[name] should be a string</span>
@@ -1164,11 +1181,11 @@
 <span class="c1"># UNITS</span>
 <span class="c1"># LENGTH_UNIT         --- HFSS UNITS</span>
 <span class="c1"># #Assumed default input units for ansys hfss</span>
-<span class="n">LENGTH_UNIT</span> <span class="o">=</span> <span class="s1">&#39;meter&#39;</span>
+<span class="n">LENGTH_UNIT</span> <span class="o">=</span> <span class="s2">&quot;meter&quot;</span>
 <span class="c1"># LENGTH_UNIT_ASSUMED --- USER UNITS</span>
 <span class="c1"># if a user inputs a blank number with no units in `parse_fix`,</span>
 <span class="c1"># we can assume the following using</span>
-<span class="n">LENGTH_UNIT_ASSUMED</span> <span class="o">=</span> <span class="s1">&#39;mm&#39;</span>
+<span class="n">LENGTH_UNIT_ASSUMED</span> <span class="o">=</span> <span class="s2">&quot;mm&quot;</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="n">u_reg</span> <span class="o">=</span> <span class="n">UnitRegistry</span><span class="p">()</span>
@@ -1183,7 +1200,6 @@
 <span class="sd">    :type units: str</span>
 <span class="sd">    :return: float</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># pylint: disable=broad-except</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">Q</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
@@ -1194,14 +1210,14 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">fix_units</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">unit_assumed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert all numbers to string and append the assumed units if needed.</span>
 <span class="sd">    For an iterable, returns a list</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">unit_assumed</span> <span class="o">=</span> <span class="n">LENGTH_UNIT_ASSUMED</span> <span class="k">if</span> <span class="n">unit_assumed</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">unit_assumed</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="c1"># Check if there are already units defined, assume of form 2.46mm  or 2.0 or 4.</span>
-        <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="ow">or</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;.&#39;</span><span class="p">:</span>  <span class="c1"># number</span>
+        <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="ow">or</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;.&quot;</span><span class="p">:</span>  <span class="c1"># number</span>
             <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">unit_assumed</span>
         <span class="k">else</span><span class="p">:</span>  <span class="c1"># units are already applied</span>
             <span class="k">return</span> <span class="n">x</span>
@@ -1216,10 +1232,10 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_entry</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">convert_to_unit</span><span class="o">=</span><span class="n">LENGTH_UNIT</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Should take a list of tuple of list... of int, float or str...</span>
 <span class="sd">    For iterables, returns lists</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">extract_value_unit</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">convert_to_unit</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
@@ -1231,7 +1247,7 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_units</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert number, string, and lists/arrays/tuples to numbers scaled</span>
 <span class="sd">    in HFSS units.</span>
 
@@ -1239,7 +1255,7 @@
 <span class="sd">    Assumes input units  LENGTH_UNIT_ASSUMED = mm      [USER UNITS]</span>
 
 <span class="sd">    [USER UNITS] ----&gt; [HFSS UNITS]</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">parse_entry</span><span class="p">(</span><span class="n">fix_units</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
 </pre></div>
         </article>

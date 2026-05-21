@@ -726,10 +726,11 @@
 
 <span class="sd">    Values (unless noted) are strings with units included, (e.g., &#39;30um&#39;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s1">&#39;term&#39;</span><span class="p">,</span> <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s1">&#39;True&#39;</span><span class="p">)</span>
+
+    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;term&quot;</span><span class="p">,</span> <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Component metadata&quot;&quot;&quot;</span>
 
-    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s1">&#39;10um&#39;</span><span class="p">,</span> <span class="n">gap</span><span class="o">=</span><span class="s1">&#39;6um&#39;</span><span class="p">,</span> <span class="n">termination_gap</span><span class="o">=</span><span class="s1">&#39;6um&#39;</span><span class="p">)</span>
+    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span> <span class="n">gap</span><span class="o">=</span><span class="s2">&quot;6um&quot;</span><span class="p">,</span> <span class="n">termination_gap</span><span class="o">=</span><span class="s2">&quot;6um&quot;</span><span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Default connector options&quot;&quot;&quot;</span>
 
     <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A basic open to ground termination. &quot;&quot;&quot;</span>
@@ -741,8 +742,9 @@
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>  <span class="c1"># p for parsed parameters. Access to the parsed options.</span>
 
         <span class="n">port_line</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">p</span><span class="o">.</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)])</span>
-        <span class="n">open_termination</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">gap</span><span class="p">),</span>
-                                    <span class="n">p</span><span class="o">.</span><span class="n">termination_gap</span><span class="p">,</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">gap</span><span class="p">))</span>
+        <span class="n">open_termination</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">box</span><span class="p">(</span>
+            <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">gap</span><span class="p">),</span> <span class="n">p</span><span class="o">.</span><span class="n">termination_gap</span><span class="p">,</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">gap</span><span class="p">)</span>
+        <span class="p">)</span>
         <span class="c1"># Rotates and translates the connector polygons (and temporary port_line)</span>
         <span class="n">polys</span> <span class="o">=</span> <span class="p">[</span><span class="n">open_termination</span><span class="p">,</span> <span class="n">port_line</span><span class="p">]</span>
         <span class="n">polys</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">polys</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
@@ -750,12 +752,12 @@
         <span class="p">[</span><span class="n">open_termination</span><span class="p">,</span> <span class="n">port_line</span><span class="p">]</span> <span class="o">=</span> <span class="n">polys</span>
 
         <span class="c1"># Subtracts out ground plane on the layer its on</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;open_to_ground&#39;</span><span class="p">:</span> <span class="n">open_termination</span><span class="p">},</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;open_to_ground&quot;</span><span class="p">:</span> <span class="n">open_termination</span><span class="p">},</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span>
+        <span class="p">)</span>
 
         <span class="c1"># Generates the pins</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s1">&#39;open&#39;</span><span class="p">,</span> <span class="n">port_line</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">width</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s2">&quot;open&quot;</span><span class="p">,</span> <span class="n">port_line</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">width</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

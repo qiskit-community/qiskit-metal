@@ -704,7 +704,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyEPR.ansys</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.designs</span><span class="w"> </span><span class="kn">import</span> <span class="n">QDesign</span>  <span class="c1"># pylint: disable=unused-import</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.designs</span><span class="w"> </span><span class="kn">import</span> <span class="n">QDesign</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">QSimulation</span>
 
@@ -736,24 +736,27 @@
 <span class="sd">        * cap_all_passes (list of pd.DataFrame): intermediate value, for inspection.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">default_setup</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">freq_ghz</span><span class="o">=</span><span class="mf">5.</span><span class="p">,</span>
-                         <span class="n">save_fields</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                         <span class="n">enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                         <span class="n">max_passes</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
-                         <span class="n">min_passes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                         <span class="n">min_converged_passes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                         <span class="n">percent_error</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-                         <span class="n">percent_refinement</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
-                         <span class="n">auto_increase_solution_order</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                         <span class="n">solution_order</span><span class="o">=</span><span class="s1">&#39;High&#39;</span><span class="p">,</span>
-                         <span class="n">solver_type</span><span class="o">=</span><span class="s1">&#39;Iterative&#39;</span><span class="p">)</span>
+
+    <span class="n">default_setup</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+        <span class="n">freq_ghz</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span>
+        <span class="n">save_fields</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">max_passes</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+        <span class="n">min_passes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">min_converged_passes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">percent_error</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">percent_refinement</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+        <span class="n">auto_increase_solution_order</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">solution_order</span><span class="o">=</span><span class="s2">&quot;High&quot;</span><span class="p">,</span>
+        <span class="n">solver_type</span><span class="o">=</span><span class="s2">&quot;Iterative&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Default setup.&quot;&quot;&quot;</span>
 
     <span class="c1"># supported labels for data generated from the simulation</span>
-    <span class="n">data_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;cap_matrix&#39;</span><span class="p">,</span> <span class="s1">&#39;cap_all_passes&#39;</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">,</span> <span class="s1">&#39;is_converged&#39;</span><span class="p">]</span>
+    <span class="n">data_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;cap_matrix&quot;</span><span class="p">,</span> <span class="s2">&quot;cap_all_passes&quot;</span><span class="p">,</span> <span class="s2">&quot;units&quot;</span><span class="p">,</span> <span class="s2">&quot;is_converged&quot;</span><span class="p">]</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Default data labels.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">design</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;QDesign&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">renderer_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;q3d&#39;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">design</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;QDesign&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">renderer_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;q3d&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the class to extract the capacitance matrix.</span>
 
 <span class="sd">        Args:</span>
@@ -769,38 +772,35 @@
 <span class="sd">        to prepare for the capacitance calculation, then it executes it.</span>
 <span class="sd">        Finally it calls _get_results_from_renderer to recovers the simulation output.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># pylint: disable=attribute-defined-outside-init</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sim_setup_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">initialize_cap_extract</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">analyze_setup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sim_setup_name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_get_results_from_renderer</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_results_from_renderer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Recovers the output of the analysis and stores it in self.capacitance_matrix</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Recovers the output of the analysis and stores it in self.capacitance_matrix&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">renderer_initialized</span><span class="p">:</span>
-            <span class="c1"># pylint: disable=attribute-defined-outside-init</span>
             <span class="c1"># extract main (latest) capacitance matrix</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">capacitance_matrix</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">get_capacitance_matrix</span><span class="p">(</span>
-            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">capacitance_matrix</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">get_capacitance_matrix</span><span class="p">()</span>
             <span class="c1"># extract the capacitance matrices for all passes</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">capacitance_all_passes</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">get_capacitance_all_passes</span><span class="p">(</span>
-            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">capacitance_all_passes</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">get_capacitance_all_passes</span><span class="p">()</span>
             <span class="c1"># extract convergence</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">is_converged</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">get_convergence</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                 <span class="s2">&quot;Please initialize renderer before trying to load the simulation results.&quot;</span>
                 <span class="s2">&quot; Consider using the method self.renderer._initiate_renderer()&quot;</span>
-                <span class="s2">&quot; if you did not already connect qiskit-metal to the renderer.&quot;</span><span class="p">)</span>
+                <span class="s2">&quot; if you did not already connect qiskit-metal to the renderer.&quot;</span>
+            <span class="p">)</span>
 
 <div class="viewcode-block" id="LumpedElementsSim.run_sim">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.LumpedElementsSim.html#qiskit_metal.analyses.LumpedElementsSim.run_sim">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">run_sim</span><span class="p">(</span>  <span class="c1"># pylint: disable=arguments-differ</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">components</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">open_terminations</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">box_plus_buffer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run_sim</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">components</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">open_terminations</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">box_plus_buffer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Executes the capacitance matrix extraction.</span>
 <span class="sd">        First it makes sure the tool is running. Then it does the necessary to render the design.</span>
 <span class="sd">        Finally it runs the setup defined in this class. So you need to modify the setup ahead.</span>
@@ -823,7 +823,7 @@
         <span class="c1"># save input variables to run(). This line must be the first in the method</span>
         <span class="k">if</span> <span class="n">components</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">argm</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
-            <span class="k">del</span> <span class="n">argm</span><span class="p">[</span><span class="s1">&#39;self&#39;</span><span class="p">]</span>
+            <span class="k">del</span> <span class="n">argm</span><span class="p">[</span><span class="s2">&quot;self&quot;</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">save_run_args</span><span class="p">(</span><span class="o">**</span><span class="n">argm</span><span class="p">)</span>
         <span class="c1"># wipe data from the previous run (if any)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clear_data</span><span class="p">()</span>
@@ -831,12 +831,14 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">renderer_initialized</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_renderer</span><span class="p">()</span>
 
-        <span class="n">renderer_design_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_render</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
-                                            <span class="n">solution_type</span><span class="o">=</span><span class="s1">&#39;capacitive&#39;</span><span class="p">,</span>
-                                            <span class="n">selection</span><span class="o">=</span><span class="n">components</span><span class="p">,</span>
-                                            <span class="n">open_pins</span><span class="o">=</span><span class="n">open_terminations</span><span class="p">,</span>
-                                            <span class="n">box_plus_buffer</span><span class="o">=</span><span class="n">box_plus_buffer</span><span class="p">,</span>
-                                            <span class="n">vars_to_initialize</span><span class="o">=</span><span class="n">Dict</span><span class="p">())</span>
+        <span class="n">renderer_design_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_render</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">solution_type</span><span class="o">=</span><span class="s2">&quot;capacitive&quot;</span><span class="p">,</span>
+            <span class="n">selection</span><span class="o">=</span><span class="n">components</span><span class="p">,</span>
+            <span class="n">open_pins</span><span class="o">=</span><span class="n">open_terminations</span><span class="p">,</span>
+            <span class="n">box_plus_buffer</span><span class="o">=</span><span class="n">box_plus_buffer</span><span class="p">,</span>
+            <span class="n">vars_to_initialize</span><span class="o">=</span><span class="n">Dict</span><span class="p">(),</span>
+        <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_analyze</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">renderer_design_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim_setup_name</span></div>
@@ -849,7 +851,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            pd.DataFrame: Capacitance matrix data, typically generated by run_sim().</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;cap_matrix&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s2">&quot;cap_matrix&quot;</span><span class="p">)</span>
 
     <span class="nd">@capacitance_matrix</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">capacitance_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
@@ -860,10 +862,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s1">&#39;Unsupported type </span><span class="si">%s</span><span class="s1">. Only accepts pandas dataframes. Please try again.&#39;</span><span class="p">,</span>
-                <span class="p">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)})</span>
+                <span class="s2">&quot;Unsupported type </span><span class="si">%s</span><span class="s2">. Only accepts pandas dataframes. Please try again.&quot;</span><span class="p">,</span>
+                <span class="p">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)},</span>
+            <span class="p">)</span>
             <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="s1">&#39;cap_matrix&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="s2">&quot;cap_matrix&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">capacitance_all_passes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
@@ -873,7 +876,7 @@
 <span class="sd">            dict: of pd.DataFrame. For each pass of the incremental mash refinements,</span>
 <span class="sd">                it retains the capacitance matrix at that pass.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;cap_all_passes&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s2">&quot;cap_all_passes&quot;</span><span class="p">)</span>
 
     <span class="nd">@capacitance_all_passes</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">capacitance_all_passes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
@@ -885,10 +888,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s1">&#39;Unsupported type </span><span class="si">%s</span><span class="s1">. Only accepts dicts of pandas dataframes. Please try again.&#39;</span><span class="p">,</span>
-                <span class="p">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)})</span>
+                <span class="s2">&quot;Unsupported type </span><span class="si">%s</span><span class="s2">. Only accepts dicts of pandas dataframes. Please try again.&quot;</span><span class="p">,</span>
+                <span class="p">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)},</span>
+            <span class="p">)</span>
             <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="s1">&#39;cap_all_passes&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="s2">&quot;cap_all_passes&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">units</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -897,7 +901,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            str: Capacitance matrix units.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;units&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s2">&quot;units&quot;</span><span class="p">)</span>
 
     <span class="nd">@units</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
@@ -908,10 +912,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s1">&#39;Unsupported type </span><span class="si">%s</span><span class="s1">. Only accepts str. Please try again.&#39;</span><span class="p">,</span>
-                <span class="p">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)})</span>
+                <span class="s2">&quot;Unsupported type </span><span class="si">%s</span><span class="s2">. Only accepts str. Please try again.&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)}</span>
+            <span class="p">)</span>
             <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="s1">&#39;units&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="s2">&quot;units&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">is_converged</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -920,7 +924,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: Boolean indicating whether simulation has converged</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;is_converged&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s2">&quot;is_converged&quot;</span><span class="p">)</span>
 
     <span class="nd">@is_converged</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">is_converged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
@@ -931,10 +935,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s1">&#39;Unsupported type </span><span class="si">%s</span><span class="s1">. Only accepts boolean. Please try again.&#39;</span><span class="p">,</span>
-                <span class="p">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)})</span>
+                <span class="s2">&quot;Unsupported type </span><span class="si">%s</span><span class="s2">. Only accepts boolean. Please try again.&quot;</span><span class="p">,</span>
+                <span class="p">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)},</span>
+            <span class="p">)</span>
             <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="s1">&#39;is_converged&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="s2">&quot;is_converged&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></div>
 
 </pre></div>
         </article>

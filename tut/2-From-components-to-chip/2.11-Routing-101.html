@@ -732,8 +732,8 @@
 <span class="n">design</span> <span class="o">=</span> <span class="n">designs</span><span class="o">.</span><span class="n">DesignPlanar</span><span class="p">()</span>
 <span class="n">gui</span> <span class="o">=</span> <span class="n">MetalGUI</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
 
-<span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;cpw_width&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;10 um&#39;</span>
-<span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;cpw_gap&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;6 um&#39;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;cpw_width&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;10 um&quot;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;cpw_gap&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;6 um&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -753,9 +753,11 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># for pins:</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.terminations.open_to_ground</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenToGround</span>
+
 <span class="c1"># for routing:</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.tlines.straight_path</span><span class="w"> </span><span class="kn">import</span> <span class="n">RouteStraight</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.tlines.framed_path</span><span class="w"> </span><span class="kn">import</span> <span class="n">RouteFramed</span>
+
 <span class="c1"># for jogs:</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrderedDict</span>
 </pre></div>
@@ -766,12 +768,12 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pin_opt</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-                                    <span class="n">component</span><span class="o">=</span><span class="s1">&#39;open1i&#39;</span><span class="p">,</span>
-                                    <span class="n">pin</span><span class="o">=</span><span class="s1">&#39;open&#39;</span><span class="p">),</span>
-                                <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-                                    <span class="n">component</span><span class="o">=</span><span class="s1">&#39;open1o&#39;</span><span class="p">,</span>
-                                    <span class="n">pin</span><span class="o">=</span><span class="s1">&#39;open&#39;</span><span class="p">)))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pin_opt</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+    <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
+        <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;open1i&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;open&quot;</span><span class="p">),</span>
+        <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;open1o&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;open&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -783,10 +785,14 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">delete_all_components</span><span class="p">()</span>  <span class="c1">#needed only for rebuilds. will get a warning</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">delete_all_components</span><span class="p">()</span>  <span class="c1"># needed only for rebuilds. will get a warning</span>
 
-<span class="n">otg11</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;open1i&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;0mm&#39;</span><span class="p">,</span>  <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;1mm&#39;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;180&#39;</span><span class="p">))</span>
-<span class="n">otg12</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;open1o&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;0.5mm&#39;</span><span class="p">,</span>  <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;1mm&#39;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;0&#39;</span><span class="p">))</span>
+<span class="n">otg11</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;open1i&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;1mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;180&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">otg12</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;open1o&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0.5mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;1mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">)</span>
+<span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
@@ -798,12 +804,12 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">route1</span> <span class="o">=</span> <span class="n">RouteStraight</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;cpw_1&#39;</span><span class="p">,</span> <span class="n">pin_opt</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">route1</span> <span class="o">=</span> <span class="n">RouteStraight</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;cpw_1&quot;</span><span class="p">,</span> <span class="n">pin_opt</span><span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">highlight_components</span><span class="p">([</span><span class="s1">&#39;open1i&#39;</span><span class="p">,</span><span class="s1">&#39;open1o&#39;</span><span class="p">])</span>
-<span class="c1">#gui.screenshot()</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">highlight_components</span><span class="p">([</span><span class="s2">&quot;open1i&quot;</span><span class="p">,</span> <span class="s2">&quot;open1o&quot;</span><span class="p">])</span>
+<span class="c1"># gui.screenshot()</span>
 </pre></div>
 </div>
 </div>
@@ -815,12 +821,24 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">otg21</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;open2i&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;0mm&#39;</span><span class="p">,</span>  <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;2mm&#39;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;90&#39;</span><span class="p">))</span>
-<span class="n">otg22</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;open2o&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;0mm&#39;</span><span class="p">,</span>  <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;1.5mm&#39;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;-90&#39;</span><span class="p">))</span>
-<span class="n">otg31</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;open3i&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;0.35mm&#39;</span><span class="p">,</span>  <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;1.55mm&#39;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;45&#39;</span><span class="p">))</span>
-<span class="n">otg32</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;open3o&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;0mm&#39;</span><span class="p">,</span>  <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;1.2mm&#39;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;-135&#39;</span><span class="p">))</span>
-<span class="n">otg41</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;open4i&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;0mm&#39;</span><span class="p">,</span>  <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;0.8mm&#39;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;135&#39;</span><span class="p">))</span>
-<span class="n">otg42</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;open4o&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;0.35mm&#39;</span><span class="p">,</span>  <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;0.45mm&#39;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;-45&#39;</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">otg21</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;open2i&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;2mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;90&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">otg22</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;open2o&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;1.5mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;-90&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">otg31</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;open3i&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0.35mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;1.55mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;45&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">otg32</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;open3o&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;1.2mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;-135&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">otg41</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;open4i&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0.8mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;135&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">otg42</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;open4o&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0.35mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0.45mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;-45&quot;</span><span class="p">)</span>
+<span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
@@ -832,15 +850,15 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">start_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;open2i&#39;</span>
-<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">end_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;open2o&#39;</span>
-<span class="n">route2</span> <span class="o">=</span> <span class="n">RouteStraight</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;cpw_2&#39;</span><span class="p">,</span> <span class="n">pin_opt</span><span class="p">)</span>
-<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">start_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;open3i&#39;</span>
-<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">end_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;open3o&#39;</span>
-<span class="n">route3</span> <span class="o">=</span> <span class="n">RouteStraight</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;cpw_3&#39;</span><span class="p">,</span> <span class="n">pin_opt</span><span class="p">)</span>
-<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">start_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;open4i&#39;</span>
-<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">end_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;open4o&#39;</span>
-<span class="n">route4</span> <span class="o">=</span> <span class="n">RouteStraight</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;cpw_4&#39;</span><span class="p">,</span> <span class="n">pin_opt</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">start_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s2">&quot;open2i&quot;</span>
+<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">end_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s2">&quot;open2o&quot;</span>
+<span class="n">route2</span> <span class="o">=</span> <span class="n">RouteStraight</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;cpw_2&quot;</span><span class="p">,</span> <span class="n">pin_opt</span><span class="p">)</span>
+<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">start_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s2">&quot;open3i&quot;</span>
+<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">end_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s2">&quot;open3o&quot;</span>
+<span class="n">route3</span> <span class="o">=</span> <span class="n">RouteStraight</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;cpw_3&quot;</span><span class="p">,</span> <span class="n">pin_opt</span><span class="p">)</span>
+<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">start_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s2">&quot;open4i&quot;</span>
+<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">end_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s2">&quot;open4o&quot;</span>
+<span class="n">route4</span> <span class="o">=</span> <span class="n">RouteStraight</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;cpw_4&quot;</span><span class="p">,</span> <span class="n">pin_opt</span><span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
@@ -856,16 +874,20 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">otg51</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;open5i&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;0.7mm&#39;</span><span class="p">,</span>  <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;1.9mm&#39;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;180&#39;</span><span class="p">))</span>
-<span class="n">otg52</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;open5o&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;0.8mm&#39;</span><span class="p">,</span>  <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;2.0mm&#39;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;90&#39;</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">otg51</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;open5i&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0.7mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;1.9mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;180&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">otg52</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;open5o&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0.8mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;2.0mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;90&quot;</span><span class="p">)</span>
+<span class="p">)</span>
 
-<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">start_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;open5i&#39;</span>
-<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">end_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;open5o&#39;</span>
-<span class="n">route5</span> <span class="o">=</span> <span class="n">RouteStraight</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;cpw_5&#39;</span><span class="p">,</span> <span class="n">pin_opt</span><span class="p">)</span>
+<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">start_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s2">&quot;open5i&quot;</span>
+<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">end_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s2">&quot;open5o&quot;</span>
+<span class="n">route5</span> <span class="o">=</span> <span class="n">RouteStraight</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;cpw_5&quot;</span><span class="p">,</span> <span class="n">pin_opt</span><span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s1">&#39;cpw_5&#39;</span><span class="p">])</span>
-<span class="c1">#gui.screenshot()</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s2">&quot;cpw_5&quot;</span><span class="p">])</span>
+<span class="c1"># gui.screenshot()</span>
 </pre></div>
 </div>
 </div>
@@ -874,19 +896,23 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">otg61</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;open6i&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;0.7mm&#39;</span><span class="p">,</span>  <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;1.7mm&#39;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;180&#39;</span><span class="p">))</span>
-<span class="n">otg62</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;open6o&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;0.8mm&#39;</span><span class="p">,</span>  <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;1.8mm&#39;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;90&#39;</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">otg61</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;open6i&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0.7mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;1.7mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;180&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">otg62</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;open6o&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0.8mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;1.8mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;90&quot;</span><span class="p">)</span>
+<span class="p">)</span>
 
-<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">start_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;open6i&#39;</span>
-<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">end_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;open6o&#39;</span>
+<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">start_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s2">&quot;open6i&quot;</span>
+<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">end_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s2">&quot;open6o&quot;</span>
 
-<span class="n">pin_opt</span><span class="o">.</span><span class="n">lead</span><span class="o">.</span><span class="n">start_straight</span> <span class="o">=</span> <span class="s1">&#39;0.04mm&#39;</span>
-<span class="n">pin_opt</span><span class="o">.</span><span class="n">lead</span><span class="o">.</span><span class="n">end_straight</span> <span class="o">=</span> <span class="s1">&#39;0.06mm&#39;</span>
-<span class="n">route6</span> <span class="o">=</span> <span class="n">RouteStraight</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;cpw_6&#39;</span><span class="p">,</span> <span class="n">pin_opt</span><span class="p">)</span>
+<span class="n">pin_opt</span><span class="o">.</span><span class="n">lead</span><span class="o">.</span><span class="n">start_straight</span> <span class="o">=</span> <span class="s2">&quot;0.04mm&quot;</span>
+<span class="n">pin_opt</span><span class="o">.</span><span class="n">lead</span><span class="o">.</span><span class="n">end_straight</span> <span class="o">=</span> <span class="s2">&quot;0.06mm&quot;</span>
+<span class="n">route6</span> <span class="o">=</span> <span class="n">RouteStraight</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;cpw_6&quot;</span><span class="p">,</span> <span class="n">pin_opt</span><span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s1">&#39;cpw_6&#39;</span><span class="p">])</span>
-<span class="c1">#gui.screenshot()</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s2">&quot;cpw_6&quot;</span><span class="p">])</span>
+<span class="c1"># gui.screenshot()</span>
 </pre></div>
 </div>
 </div>
@@ -898,17 +924,21 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">otg71</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;open7i&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;0.7mm&#39;</span><span class="p">,</span>  <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;1.5mm&#39;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;180&#39;</span><span class="p">))</span>
-<span class="n">otg72</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;open7o&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;0.8mm&#39;</span><span class="p">,</span>  <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;1.6mm&#39;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;90&#39;</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">otg71</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;open7i&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0.7mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;1.5mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;180&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">otg72</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;open7o&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0.8mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;1.6mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;90&quot;</span><span class="p">)</span>
+<span class="p">)</span>
 
-<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">start_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;open7i&#39;</span>
-<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">end_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;open7o&#39;</span>
+<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">start_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s2">&quot;open7i&quot;</span>
+<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">end_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s2">&quot;open7o&quot;</span>
 
-<span class="n">route7</span> <span class="o">=</span> <span class="n">RouteFramed</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;cpw_7&#39;</span><span class="p">,</span> <span class="n">pin_opt</span><span class="p">)</span>
+<span class="n">route7</span> <span class="o">=</span> <span class="n">RouteFramed</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;cpw_7&quot;</span><span class="p">,</span> <span class="n">pin_opt</span><span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s1">&#39;cpw_7&#39;</span><span class="p">])</span>
-<span class="c1">#gui.screenshot()</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s2">&quot;cpw_7&quot;</span><span class="p">])</span>
+<span class="c1"># gui.screenshot()</span>
 </pre></div>
 </div>
 </div>
@@ -917,18 +947,22 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">otg81</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;open8i&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;0.7mm&#39;</span><span class="p">,</span>  <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;1.3mm&#39;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;180&#39;</span><span class="p">))</span>
-<span class="n">otg82</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;open8o&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;0.8mm&#39;</span><span class="p">,</span>  <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;1.4mm&#39;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;90&#39;</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">otg81</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;open8i&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0.7mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;1.3mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;180&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">otg82</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;open8o&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0.8mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;1.4mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;90&quot;</span><span class="p">)</span>
+<span class="p">)</span>
 
-<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">start_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;open8i&#39;</span>
-<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">end_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;open8o&#39;</span>
+<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">start_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s2">&quot;open8i&quot;</span>
+<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">end_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s2">&quot;open8o&quot;</span>
 
-<span class="n">pin_opt</span><span class="o">.</span><span class="n">lead</span><span class="o">.</span><span class="n">start_straight</span> <span class="o">=</span> <span class="s1">&#39;0.15mm&#39;</span>
-<span class="n">pin_opt</span><span class="o">.</span><span class="n">lead</span><span class="o">.</span><span class="n">end_straight</span> <span class="o">=</span> <span class="s1">&#39;0.05mm&#39;</span>
-<span class="n">route8</span> <span class="o">=</span> <span class="n">RouteFramed</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;cpw_8&#39;</span><span class="p">,</span> <span class="n">pin_opt</span><span class="p">)</span>
+<span class="n">pin_opt</span><span class="o">.</span><span class="n">lead</span><span class="o">.</span><span class="n">start_straight</span> <span class="o">=</span> <span class="s2">&quot;0.15mm&quot;</span>
+<span class="n">pin_opt</span><span class="o">.</span><span class="n">lead</span><span class="o">.</span><span class="n">end_straight</span> <span class="o">=</span> <span class="s2">&quot;0.05mm&quot;</span>
+<span class="n">route8</span> <span class="o">=</span> <span class="n">RouteFramed</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;cpw_8&quot;</span><span class="p">,</span> <span class="n">pin_opt</span><span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s1">&#39;cpw_8&#39;</span><span class="p">])</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s2">&quot;cpw_8&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -938,17 +972,21 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">otg91</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;open9i&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;0.7mm&#39;</span><span class="p">,</span>  <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;1.05mm&#39;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;180&#39;</span><span class="p">))</span>
-<span class="n">otg92</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;open9o&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;0.8mm&#39;</span><span class="p">,</span>  <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;1.15mm&#39;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;270&#39;</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">otg91</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;open9i&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0.7mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;1.05mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;180&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">otg92</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;open9o&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0.8mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;1.15mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;270&quot;</span><span class="p">)</span>
+<span class="p">)</span>
 
-<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">start_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;open9i&#39;</span>
-<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">end_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;open9o&#39;</span>
+<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">start_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s2">&quot;open9i&quot;</span>
+<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">end_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s2">&quot;open9o&quot;</span>
 
-<span class="n">route9</span> <span class="o">=</span> <span class="n">RouteFramed</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;cpw_9&#39;</span><span class="p">,</span> <span class="n">pin_opt</span><span class="p">)</span>
+<span class="n">route9</span> <span class="o">=</span> <span class="n">RouteFramed</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;cpw_9&quot;</span><span class="p">,</span> <span class="n">pin_opt</span><span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s1">&#39;cpw_9&#39;</span><span class="p">])</span>
-<span class="c1">#gui.screenshot()</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s2">&quot;cpw_9&quot;</span><span class="p">])</span>
+<span class="c1"># gui.screenshot()</span>
 </pre></div>
 </div>
 </div>
@@ -957,19 +995,23 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">otg101</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;open10i&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;0.7mm&#39;</span><span class="p">,</span>  <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;0.8mm&#39;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;90&#39;</span><span class="p">))</span>
-<span class="n">otg102</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;open10o&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;0.8mm&#39;</span><span class="p">,</span>  <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;0.9mm&#39;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;270&#39;</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">otg101</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;open10i&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0.7mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0.8mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;90&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">otg102</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;open10o&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0.8mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0.9mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;270&quot;</span><span class="p">)</span>
+<span class="p">)</span>
 
-<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">start_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;open10i&#39;</span>
-<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">end_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;open10o&#39;</span>
+<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">start_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s2">&quot;open10i&quot;</span>
+<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">end_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s2">&quot;open10o&quot;</span>
 
-<span class="n">pin_opt</span><span class="o">.</span><span class="n">lead</span><span class="o">.</span><span class="n">start_straight</span> <span class="o">=</span> <span class="s1">&#39;0.03mm&#39;</span>
-<span class="n">pin_opt</span><span class="o">.</span><span class="n">lead</span><span class="o">.</span><span class="n">end_straight</span> <span class="o">=</span> <span class="s1">&#39;0.03mm&#39;</span>
-<span class="n">route10</span> <span class="o">=</span> <span class="n">RouteFramed</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;cpw_10&#39;</span><span class="p">,</span> <span class="n">pin_opt</span><span class="p">)</span>
+<span class="n">pin_opt</span><span class="o">.</span><span class="n">lead</span><span class="o">.</span><span class="n">start_straight</span> <span class="o">=</span> <span class="s2">&quot;0.03mm&quot;</span>
+<span class="n">pin_opt</span><span class="o">.</span><span class="n">lead</span><span class="o">.</span><span class="n">end_straight</span> <span class="o">=</span> <span class="s2">&quot;0.03mm&quot;</span>
+<span class="n">route10</span> <span class="o">=</span> <span class="n">RouteFramed</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;cpw_10&quot;</span><span class="p">,</span> <span class="n">pin_opt</span><span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s1">&#39;cpw_10&#39;</span><span class="p">])</span>
-<span class="c1">#gui.screenshot()</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s2">&quot;cpw_10&quot;</span><span class="p">])</span>
+<span class="c1"># gui.screenshot()</span>
 </pre></div>
 </div>
 </div>
@@ -988,39 +1030,43 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">otg111</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;open11i&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;0.7mm&#39;</span><span class="p">,</span>  <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;0.5mm&#39;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;180&#39;</span><span class="p">))</span>
-<span class="n">otg112</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;open11o&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;0.8mm&#39;</span><span class="p">,</span>  <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;0.6mm&#39;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;270&#39;</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">otg111</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;open11i&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0.7mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0.5mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;180&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">otg112</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;open11o&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0.8mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0.6mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;270&quot;</span><span class="p">)</span>
+<span class="p">)</span>
 
-<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">start_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;open11i&#39;</span>
-<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">end_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;open11o&#39;</span>
+<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">start_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s2">&quot;open11i&quot;</span>
+<span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">end_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s2">&quot;open11o&quot;</span>
 
 <span class="c1"># the first step is always stright, let&#39;s define by how much (minimum is half the route width):</span>
-<span class="n">pin_opt</span><span class="o">.</span><span class="n">lead</span><span class="o">.</span><span class="n">start_straight</span> <span class="o">=</span> <span class="s1">&#39;0.03mm&#39;</span>
-<span class="n">pin_opt</span><span class="o">.</span><span class="n">lead</span><span class="o">.</span><span class="n">end_straight</span> <span class="o">=</span> <span class="s1">&#39;0.04mm&#39;</span>
+<span class="n">pin_opt</span><span class="o">.</span><span class="n">lead</span><span class="o">.</span><span class="n">start_straight</span> <span class="o">=</span> <span class="s2">&quot;0.03mm&quot;</span>
+<span class="n">pin_opt</span><span class="o">.</span><span class="n">lead</span><span class="o">.</span><span class="n">end_straight</span> <span class="o">=</span> <span class="s2">&quot;0.04mm&quot;</span>
 
 <span class="c1"># any subsequent step of the lead_start</span>
 <span class="n">jogsS</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
-<span class="n">jogsS</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="s1">&#39;20um&#39;</span><span class="p">]</span>
-<span class="n">jogsS</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;R&quot;</span><span class="p">,</span> <span class="s1">&#39;50um&#39;</span><span class="p">]</span>
-<span class="n">jogsS</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">90</span><span class="p">,</span> <span class="s1">&#39;30um&#39;</span><span class="p">]</span>
-<span class="n">jogsS</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="s1">&#39;60um&#39;</span><span class="p">]</span>
-<span class="n">jogsS</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;90&quot;</span><span class="p">,</span> <span class="s1">&#39;40um&#39;</span><span class="p">]</span>
-<span class="n">jogsS</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;-90&quot;</span><span class="p">,</span> <span class="s1">&#39;70um&#39;</span><span class="p">]</span>
-<span class="n">jogsS</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;L30&quot;</span><span class="p">,</span> <span class="s1">&#39;30um&#39;</span><span class="p">]</span>
-<span class="n">jogsS</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;A,30&quot;</span><span class="p">,</span> <span class="s1">&#39;30um&#39;</span><span class="p">]</span>
-<span class="n">jogsS</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;left30&quot;</span><span class="p">,</span> <span class="s1">&#39;50um&#39;</span><span class="p">]</span>
+<span class="n">jogsS</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="s2">&quot;20um&quot;</span><span class="p">]</span>
+<span class="n">jogsS</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;R&quot;</span><span class="p">,</span> <span class="s2">&quot;50um&quot;</span><span class="p">]</span>
+<span class="n">jogsS</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">90</span><span class="p">,</span> <span class="s2">&quot;30um&quot;</span><span class="p">]</span>
+<span class="n">jogsS</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="s2">&quot;60um&quot;</span><span class="p">]</span>
+<span class="n">jogsS</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;90&quot;</span><span class="p">,</span> <span class="s2">&quot;40um&quot;</span><span class="p">]</span>
+<span class="n">jogsS</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;-90&quot;</span><span class="p">,</span> <span class="s2">&quot;70um&quot;</span><span class="p">]</span>
+<span class="n">jogsS</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;L30&quot;</span><span class="p">,</span> <span class="s2">&quot;30um&quot;</span><span class="p">]</span>
+<span class="n">jogsS</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;A,30&quot;</span><span class="p">,</span> <span class="s2">&quot;30um&quot;</span><span class="p">]</span>
+<span class="n">jogsS</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;left30&quot;</span><span class="p">,</span> <span class="s2">&quot;50um&quot;</span><span class="p">]</span>
 
 <span class="c1"># single jog on the lead_end, just for kicks</span>
 <span class="n">jogsE</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
-<span class="n">jogsE</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="s1">&#39;30um&#39;</span><span class="p">]</span>
+<span class="n">jogsE</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="s2">&quot;30um&quot;</span><span class="p">]</span>
 
 <span class="n">pin_opt</span><span class="o">.</span><span class="n">lead</span><span class="o">.</span><span class="n">start_jogged_extension</span> <span class="o">=</span> <span class="n">jogsS</span>
 <span class="n">pin_opt</span><span class="o">.</span><span class="n">lead</span><span class="o">.</span><span class="n">end_jogged_extension</span> <span class="o">=</span> <span class="n">jogsE</span>
-<span class="n">route10</span> <span class="o">=</span> <span class="n">RouteFramed</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;cpw_11&#39;</span><span class="p">,</span> <span class="n">pin_opt</span><span class="p">)</span>
+<span class="n">route10</span> <span class="o">=</span> <span class="n">RouteFramed</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;cpw_11&quot;</span><span class="p">,</span> <span class="n">pin_opt</span><span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s1">&#39;cpw_11&#39;</span><span class="p">])</span>
-<span class="c1">#gui.screenshot()</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s2">&quot;cpw_11&quot;</span><span class="p">])</span>
+<span class="c1"># gui.screenshot()</span>
 </pre></div>
 </div>
 </div>

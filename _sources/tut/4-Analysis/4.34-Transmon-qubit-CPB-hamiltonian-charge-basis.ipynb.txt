@@ -136,9 +136,9 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "x = np.linspace(-2.0,2.0,101) # this represents the charging energy (ng)\n",
-    "H_norm = Hcpb(nlevels=2, Ej=1000.0, Ec=1000.0, ng=0.5) # Hamiltonian definition\n",
-    "norm = H_norm.fij(0,1) # normalization constant"
+    "x = np.linspace(-2.0, 2.0, 101)  # this represents the charging energy (ng)\n",
+    "H_norm = Hcpb(nlevels=2, Ej=1000.0, Ec=1000.0, ng=0.5)  # Hamiltonian definition\n",
+    "norm = H_norm.fij(0, 1)  # normalization constant"
    ]
   },
   {
@@ -1276,19 +1276,19 @@
     "# For a given value of offset charge (ng, represented by x) we will calculate the CPB Hamiltonian using the previously assigned values of E_J and E_C. Then we calculate the eigenvalue for a given value of m.\n",
     "for i in x:\n",
     "    H = Hcpb(nlevels=3, Ej=1000.0, Ec=1000.0, ng=i)\n",
-    "    E0.append(H.evalue_k(0)/norm)\n",
-    "    E1.append(H.evalue_k(1)/norm)\n",
-    "    E2.append(H.evalue_k(2)/norm)\n",
+    "    E0.append(H.evalue_k(0) / norm)\n",
+    "    E1.append(H.evalue_k(1) / norm)\n",
+    "    E2.append(H.evalue_k(2) / norm)\n",
     "\n",
     "# define the minimum of E0 and set this to E=0\n",
     "floor = min(E0)\n",
     "\n",
-    "plt.plot(x, E0 - floor, 'k', label=\"m=0\")\n",
-    "plt.plot(x, E1 - floor, 'r', label=\"m=1\")\n",
-    "plt.plot(x, E2 - floor, 'b', label=\"m=2\")\n",
+    "plt.plot(x, E0 - floor, \"k\", label=\"m=0\")\n",
+    "plt.plot(x, E1 - floor, \"r\", label=\"m=1\")\n",
+    "plt.plot(x, E2 - floor, \"b\", label=\"m=2\")\n",
     "plt.xlabel(\"ng\")\n",
     "plt.ylabel(\"Em/E01\")\n",
-    "plt.legend(title=\"Energy Level:\", loc='upper right')"
+    "plt.legend(title=\"Energy Level:\", loc=\"upper right\")"
    ]
   },
   {
@@ -1330,7 +1330,10 @@
     "# print and compare energies\n",
     "print(\"E0 (HCPB):\", H_CPB.evalue_k(0))\n",
     "print(\"E0 (HCPB analytic):\", H_CPB_analytic.evalue_k(0))\n",
-    "print(\"Error:\", 100*(H_CPB_analytic.evalue_k(0) - H_CPB.evalue_k(0)) / H_CPB_analytic.evalue_k(0))\n"
+    "print(\n",
+    "    \"Error:\",\n",
+    "    100 * (H_CPB_analytic.evalue_k(0) - H_CPB.evalue_k(0)) / H_CPB_analytic.evalue_k(0),\n",
+    ")"
    ]
   },
   {
@@ -1377,9 +1380,9 @@
     "print(f\"\"\"\n",
     "Transmon frequencies\n",
     "\n",
-    " ω01/2π = {H.fij(0,1): 6.0f} MHz\n",
+    " ω01/2π = {H.fij(0, 1): 6.0f} MHz\n",
     "   α/2π = {H.anharm(): 6.0f} MHz\n",
-    "\"\"\")\n"
+    "\"\"\")"
    ]
   },
   {
@@ -2754,9 +2757,12 @@
    ],
    "source": [
     "import matplotlib.pyplot as plt\n",
-    "for k in range (3):\n",
-    "    ψ, θ = H.psi_k(k,101)\n",
-    "    plt.plot(θ, ψ.real+ψ.imag, label=f\"|{k}>\") # it's in either quadrature, but not both\n",
+    "\n",
+    "for k in range(3):\n",
+    "    ψ, θ = H.psi_k(k, 101)\n",
+    "    plt.plot(\n",
+    "        θ, ψ.real + ψ.imag, label=f\"|{k}>\"\n",
+    "    )  # it's in either quadrature, but not both\n",
     "plt.xlabel(\"Junction phase θ (wrapped in the interval [-π, π])\")\n",
     "plt.ylabel(\"Re(ψ(θ))\")\n",
     "plt.legend(title=\"Level\")"
@@ -2792,7 +2798,7 @@
    "source": [
     "Psi0, theta0 = H.psi_k(0)\n",
     "Psi1, theta1 = H.psi_k(1)\n",
-    "print(np.dot(Psi0,Psi1.conj()))"
+    "print(np.dot(Psi0, Psi1.conj()))"
    ]
   },
   {
@@ -2857,9 +2863,14 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "E_c=100.0 # charging energy\n",
-    "epsilon0, epsilon1, epsilon2, epsilon3 = [], [], [], []    # charge dispersion for m=0 through m=4\n",
-    "x = np.linspace(1,140,101)           # this this ratio of Ej/Ec which will go on the x-axis."
+    "E_c = 100.0  # charging energy\n",
+    "epsilon0, epsilon1, epsilon2, epsilon3 = (\n",
+    "    [],\n",
+    "    [],\n",
+    "    [],\n",
+    "    [],\n",
+    ")  # charge dispersion for m=0 through m=4\n",
+    "x = np.linspace(1, 140, 101)  # this this ratio of Ej/Ec which will go on the x-axis."
    ]
   },
   {
@@ -2876,17 +2887,17 @@
    "outputs": [],
    "source": [
     "for i in x:\n",
-    "    E_j = i*E_c\n",
-    "    H_zero = Hcpb(nlevels=15, Ej=i*E_c, Ec=E_c, ng=0.0)\n",
-    "    H_half = Hcpb(nlevels=15, Ej=i*E_c, Ec=E_c, ng=0.5)\n",
+    "    E_j = i * E_c\n",
+    "    H_zero = Hcpb(nlevels=15, Ej=i * E_c, Ec=E_c, ng=0.0)\n",
+    "    H_half = Hcpb(nlevels=15, Ej=i * E_c, Ec=E_c, ng=0.5)\n",
     "\n",
-    "    H_norm = Hcpb(nlevels=15, Ej=i*E_c, Ec=E_c, ng=0.5)\n",
-    "    norm = H_norm.fij(0,1)                         # normalization constant\n",
+    "    H_norm = Hcpb(nlevels=15, Ej=i * E_c, Ec=E_c, ng=0.5)\n",
+    "    norm = H_norm.fij(0, 1)  # normalization constant\n",
     "\n",
-    "    epsilon0.append(abs(H_half.evalue_k(0) - H_zero.evalue_k(0))/norm)\n",
-    "    epsilon1.append(abs(H_half.evalue_k(1) - H_zero.evalue_k(1))/norm)\n",
-    "    epsilon2.append(abs(H_half.evalue_k(2) - H_zero.evalue_k(2))/norm)\n",
-    "    epsilon3.append(abs(H_half.evalue_k(3) - H_zero.evalue_k(3))/norm)"
+    "    epsilon0.append(abs(H_half.evalue_k(0) - H_zero.evalue_k(0)) / norm)\n",
+    "    epsilon1.append(abs(H_half.evalue_k(1) - H_zero.evalue_k(1)) / norm)\n",
+    "    epsilon2.append(abs(H_half.evalue_k(2) - H_zero.evalue_k(2)) / norm)\n",
+    "    epsilon3.append(abs(H_half.evalue_k(3) - H_zero.evalue_k(3)) / norm)"
    ]
   },
   {
@@ -4286,14 +4297,14 @@
     }
    ],
    "source": [
-    "plt.plot(x, epsilon0, 'k', label=\"m=0\")\n",
-    "plt.plot(x, epsilon1, 'b', label=\"m=1\")\n",
-    "plt.plot(x, epsilon2, 'r', label=\"m=2\")\n",
-    "plt.plot(x, epsilon3, 'g', label=\"m=3\")\n",
+    "plt.plot(x, epsilon0, \"k\", label=\"m=0\")\n",
+    "plt.plot(x, epsilon1, \"b\", label=\"m=1\")\n",
+    "plt.plot(x, epsilon2, \"r\", label=\"m=2\")\n",
+    "plt.plot(x, epsilon3, \"g\", label=\"m=3\")\n",
     "plt.yscale(\"log\")\n",
     "plt.xlabel(\"EJ/Ec\")\n",
     "plt.ylabel(\"Epsilon/E01\")\n",
-    "plt.legend(title=\"Energy Level\", loc='upper right')"
+    "plt.legend(title=\"Energy Level\", loc=\"upper right\")"
    ]
   },
   {
@@ -4334,15 +4345,15 @@
    "outputs": [],
    "source": [
     "for i in x:\n",
-    "    H = Hcpb(nlevels=15, Ej=i*E_c, Ec=E_c, ng=0.5)\n",
+    "    H = Hcpb(nlevels=15, Ej=i * E_c, Ec=E_c, ng=0.5)\n",
     "    E0 = H.evalue_k(0)\n",
     "    E1 = H.evalue_k(1)\n",
     "    E2 = H.evalue_k(2)\n",
     "    E3 = H.evalue_k(3)\n",
-    "    E00.append((E0 - E0)/E_c)\n",
-    "    E10.append((E1 - E0)/E_c)\n",
-    "    E20.append((E2 - E0)/E_c)\n",
-    "    E30.append((E3 - E0)/E_c)"
+    "    E00.append((E0 - E0) / E_c)\n",
+    "    E10.append((E1 - E0) / E_c)\n",
+    "    E20.append((E2 - E0) / E_c)\n",
+    "    E30.append((E3 - E0) / E_c)"
    ]
   },
   {
@@ -5632,13 +5643,13 @@
     }
    ],
    "source": [
-    "plt.plot(x,E00,'k',label=\"m0\")\n",
-    "plt.plot(x,E10,'b',label=\"m=1\")\n",
-    "plt.plot(x,E20,'g',label=\"m=2\")\n",
-    "plt.plot(x,E30,'r',label=\"m=3\")\n",
+    "plt.plot(x, E00, \"k\", label=\"m0\")\n",
+    "plt.plot(x, E10, \"b\", label=\"m=1\")\n",
+    "plt.plot(x, E20, \"g\", label=\"m=2\")\n",
+    "plt.plot(x, E30, \"r\", label=\"m=3\")\n",
     "plt.xlabel(\"Ej/Ec\")\n",
     "plt.ylabel(\"Em0/Ec\")\n",
-    "plt.legend(title=\"Energy Levels\", loc='upper right')"
+    "plt.legend(title=\"Energy Levels\", loc=\"upper right\")"
    ]
   },
   {
@@ -5663,7 +5674,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "x = np.linspace(0,80,101)   #EJ/EC\n",
+    "x = np.linspace(0, 80, 101)  # EJ/EC\n",
     "alpha = []\n",
     "alpha_r = []"
    ]
@@ -5692,9 +5703,9 @@
    ],
    "source": [
     "for i in x:\n",
-    "    H_anharm = Hcpb(nlevels=15, Ej=i*E_c, Ec=E_c, ng=0.5)\n",
+    "    H_anharm = Hcpb(nlevels=15, Ej=i * E_c, Ec=E_c, ng=0.5)\n",
     "    alpha.append(H_anharm.anharm())\n",
-    "    alpha_r.append(H_anharm.anharm()/H_anharm.fij(0,1))"
+    "    alpha_r.append(H_anharm.anharm() / H_anharm.fij(0, 1))"
    ]
   },
   {
@@ -6699,11 +6710,11 @@
    "source": [
     "plt.figure(1)\n",
     "plt.subplot(131)\n",
-    "plt.plot(x,alpha)\n",
+    "plt.plot(x, alpha)\n",
     "plt.xlabel(\"Ej/Ec\")\n",
     "plt.ylabel(\"alpha\")\n",
     "plt.subplot(133)\n",
-    "plt.plot(x,alpha_r)\n",
+    "plt.plot(x, alpha_r)\n",
     "plt.ylim(-0.2, 1.0)\n",
     "plt.xlabel(\"Ej/Ec\")\n",
     "plt.ylabel(\"alpha_r\")"
@@ -6736,8 +6747,8 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "x = np.linspace(0,80,101)     # ratio of Ej/Ec, varying from 0 to 80\n",
-    "T2 = []                       # empty list for T2"
+    "x = np.linspace(0, 80, 101)  # ratio of Ej/Ec, varying from 0 to 80\n",
+    "T2 = []  # empty list for T2"
    ]
   },
   {
@@ -8052,10 +8063,10 @@
    "source": [
     "E_c = 1000.0\n",
     "for i in x:\n",
-    "    H_half = Hcpb(nlevels=15, Ej=i*E_c, Ec=E_c, ng=0.5)\n",
-    "    H_zero = Hcpb(nlevels=15, Ej=i*E_c, Ec=E_c, ng=0.0)\n",
+    "    H_half = Hcpb(nlevels=15, Ej=i * E_c, Ec=E_c, ng=0.5)\n",
+    "    H_zero = Hcpb(nlevels=15, Ej=i * E_c, Ec=E_c, ng=0.0)\n",
     "    eps = abs(H_half.evalue_k(1) - H_zero.evalue_k(1))\n",
-    "    T2.append(1.0/(2.0*(1E-4)*(1E6)*eps) )\n",
+    "    T2.append(1.0 / (2.0 * (1e-4) * (1e6) * eps))\n",
     "\n",
     "plt.plot(x, T2)\n",
     "plt.yscale(\"log\")\n",
@@ -8186,8 +8197,8 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "x = np.linspace(1,120, 101)\n",
-    "E_c=350.0\n",
+    "x = np.linspace(1, 120, 101)\n",
+    "E_c = 350.0\n",
     "var0 = []\n",
     "var1 = []\n",
     "var2 = []"
@@ -8207,12 +8218,12 @@
    "outputs": [],
    "source": [
     "for i in x:\n",
-    "    H = Hcpb(nlevels=15, Ej=i*E_c, Ec=E_c, ng=0.5)\n",
-    "    n_squared = H.n_to_qutip(6)*H.n_to_qutip(6)\n",
+    "    H = Hcpb(nlevels=15, Ej=i * E_c, Ec=E_c, ng=0.5)\n",
+    "    n_squared = H.n_to_qutip(6) * H.n_to_qutip(6)\n",
     "    n = H.n_to_qutip(6)\n",
-    "    fluc0 = np.sqrt(np.real(n_squared[0,0] - (n[0,0])*(n[0,0])))\n",
-    "    fluc1 = np.sqrt(np.real(n_squared[1,1] - (n[1,1])*(n[1,1])))\n",
-    "    fluc2 = np.sqrt(np.real(n_squared[2,2] - (n[2,2])*(n[2,2])))\n",
+    "    fluc0 = np.sqrt(np.real(n_squared[0, 0] - (n[0, 0]) * (n[0, 0])))\n",
+    "    fluc1 = np.sqrt(np.real(n_squared[1, 1] - (n[1, 1]) * (n[1, 1])))\n",
+    "    fluc2 = np.sqrt(np.real(n_squared[2, 2] - (n[2, 2]) * (n[2, 2])))\n",
     "    var0.append(fluc0)\n",
     "    var1.append(fluc1)\n",
     "    var2.append(fluc2)"
@@ -9480,12 +9491,12 @@
     }
    ],
    "source": [
-    "plt.plot(x,var0,'k', label=\"m=0\")\n",
-    "plt.plot(x,var1,'r', label=\"m=1\")\n",
-    "plt.plot(x,var2,'b', label=\"m=2\")\n",
+    "plt.plot(x, var0, \"k\", label=\"m=0\")\n",
+    "plt.plot(x, var1, \"r\", label=\"m=1\")\n",
+    "plt.plot(x, var2, \"b\", label=\"m=2\")\n",
     "plt.xlabel(\"Ej/Ec\")\n",
     "plt.ylabel(\"Variance\")\n",
-    "plt.legend(title=\"Energy Levels\", loc='upper right')"
+    "plt.legend(title=\"Energy Levels\", loc=\"upper right\")"
    ]
   },
   {
@@ -9515,11 +9526,11 @@
     "\n",
     "# For a given value of offset charge (ng, represented by x) we will calculate the CPB Hamiltonian using the previously assigned values of E_J and E_C. Then we calculate the eigenvalue for a given value of m.\n",
     "for i in x:\n",
-    "    H = Hcpb(nlevels=15, Ej=i*E_c, Ec=E_c, ng=0.5)\n",
-    "    m10.append(np.real(H.n_to_qutip(6)[1,0]))\n",
-    "    m20.append(np.real(H.n_to_qutip(6)[2,0]))\n",
-    "    m30.append(np.real(H.n_to_qutip(6)[3,0]))\n",
-    "    m21.append(np.real(H.n_to_qutip(6)[2,1]))"
+    "    H = Hcpb(nlevels=15, Ej=i * E_c, Ec=E_c, ng=0.5)\n",
+    "    m10.append(np.real(H.n_to_qutip(6)[1, 0]))\n",
+    "    m20.append(np.real(H.n_to_qutip(6)[2, 0]))\n",
+    "    m30.append(np.real(H.n_to_qutip(6)[3, 0]))\n",
+    "    m21.append(np.real(H.n_to_qutip(6)[2, 1]))"
    ]
   },
   {
@@ -10908,13 +10919,13 @@
     }
    ],
    "source": [
-    "plt.plot(x,m10,'k',label=\"<1|n|0>\")\n",
-    "plt.plot(x,m20,'r',label=\"<2|n|0>\")\n",
-    "plt.plot(x,m30,'y',label=\"<3|n|0>\")\n",
-    "plt.plot(x,m21,'b',label=\"<2|n|1>\")\n",
+    "plt.plot(x, m10, \"k\", label=\"<1|n|0>\")\n",
+    "plt.plot(x, m20, \"r\", label=\"<2|n|0>\")\n",
+    "plt.plot(x, m30, \"y\", label=\"<3|n|0>\")\n",
+    "plt.plot(x, m21, \"b\", label=\"<2|n|1>\")\n",
     "plt.xlabel(\"Ej/Ec\")\n",
     "plt.ylabel(\"<i|n|j>\")\n",
-    "plt.legend(title=\"Energy Levels\", loc='upper right')"
+    "plt.legend(title=\"Energy Levels\", loc=\"upper right\")"
    ]
   },
   {
@@ -10955,9 +10966,9 @@
    "source": [
     "# 13971.3, Ec=295.2\n",
     "ω, α = 5431, -341\n",
-    "EjEc = H.params_from_spectrum(ω, α) # set self.Ej, Cj\n",
+    "EjEc = H.params_from_spectrum(ω, α)  # set self.Ej, Cj\n",
     "print(EjEc)\n",
-    "print(\"transmon frequency:\", H.fij(0,1), \"anharmonicity:\", H.anharm())\n"
+    "print(\"transmon frequency:\", H.fij(0, 1), \"anharmonicity:\", H.anharm())"
    ]
   },
   {
@@ -11026,11 +11037,11 @@
     "    EC=0.295179,\n",
     "    ng=0.001,\n",
     "    ncut=40,\n",
-    "    truncated_dim=4     # after diagonalization, we will keep 3 levels\n",
+    "    truncated_dim=4,  # after diagonalization, we will keep 3 levels\n",
     ")\n",
     "evals = qubit.eigenvals(evals_count=12)\n",
-    "print(f\"freq = {(evals[1] - evals[0])* 1000:.0f} MHz\")\n",
-    "print(f\"alpha = {((evals[2] - evals[1]) - (evals[1] - evals[0]))* 1000:.0f} MHz\")"
+    "print(f\"freq = {(evals[1] - evals[0]) * 1000:.0f} MHz\")\n",
+    "print(f\"alpha = {((evals[2] - evals[1]) - (evals[1] - evals[0])) * 1000:.0f} MHz\")"
    ]
   },
   {
@@ -11040,7 +11051,7 @@
    "outputs": [],
    "source": [
     "qubit.plot_n_wavefunction()\n",
-    "qubit.plot_phi_wavefunction(which=[0,1,2], mode='real')\n",
+    "qubit.plot_phi_wavefunction(which=[0, 1, 2], mode=\"real\")\n",
     "qubit.hamiltonian()"
    ]
   },
@@ -11051,8 +11062,9 @@
    "outputs": [],
    "source": [
     "import numpy as np\n",
+    "\n",
     "ng_list = np.linspace(-2, 2, 220)\n",
-    "qubit.plot_evals_vs_paramvals('ng', ng_list, evals_count=6, subtract_ground=False);"
+    "qubit.plot_evals_vs_paramvals(\"ng\", ng_list, evals_count=6, subtract_ground=False);"
    ]
   },
   {

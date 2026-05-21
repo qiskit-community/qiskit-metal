@@ -820,7 +820,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.qubits.transmon_pocket</span><span class="w"> </span><span class="kn">import</span> <span class="n">TransmonPocket</span>
 
 <span class="c1"># Create a new qcomponent object with name &#39;Q1&#39;</span>
-<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;Q1&#39;</span><span class="p">)</span>
+<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">)</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>  <span class="c1"># rebuild the design and plot</span>
 </pre></div>
 </div>
@@ -830,7 +830,7 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># save screenshot</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">edit_component</span><span class="p">(</span><span class="s1">&#39;Q1&#39;</span><span class="p">)</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">edit_component</span><span class="p">(</span><span class="s2">&quot;Q1&quot;</span><span class="p">)</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
 </pre></div>
@@ -928,11 +928,11 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Change options</span>
-<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pos_x</span> <span class="o">=</span> <span class="s1">&#39;0.5 mm&#39;</span>
-<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pos_y</span> <span class="o">=</span> <span class="s1">&#39;0.25 mm&#39;</span>
-<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">=</span> <span class="s1">&#39;225 um&#39;</span>
-<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_width</span>  <span class="o">=</span> <span class="s1">&#39;250 um&#39;</span>
-<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_gap</span>    <span class="o">=</span> <span class="s1">&#39;50 um&#39;</span>
+<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pos_x</span> <span class="o">=</span> <span class="s2">&quot;0.5 mm&quot;</span>
+<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pos_y</span> <span class="o">=</span> <span class="s2">&quot;0.25 mm&quot;</span>
+<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">=</span> <span class="s2">&quot;225 um&quot;</span>
+<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">=</span> <span class="s2">&quot;250 um&quot;</span>
+<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_gap</span> <span class="o">=</span> <span class="s2">&quot;50 um&quot;</span>
 
 <span class="c1"># Update the geometry, since we changed the options</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
@@ -964,7 +964,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s1">&#39;Q1&#39;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">&quot;Q1&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -1077,8 +1077,8 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># THIS ISN&#39;T CHANGING THE DEFAULT OPTIONS - NEEDS UPDATE</span>
-<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pos_x</span> <span class="o">=</span> <span class="s1">&#39;0.5 mm&#39;</span>
-<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pos_y</span> <span class="o">=</span> <span class="s1">&#39;250 um&#39;</span>
+<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pos_x</span> <span class="o">=</span> <span class="s2">&quot;0.5 mm&quot;</span>
+<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pos_y</span> <span class="o">=</span> <span class="s2">&quot;250 um&quot;</span>
 
 <span class="c1"># Rebubild for changes to propagate</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
@@ -1118,14 +1118,18 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Design default units for length: &#39;</span><span class="p">,</span> <span class="n">design</span><span class="o">.</span><span class="n">get_units</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Example 250 micron parsed to design units:&#39;</span><span class="p">,</span> <span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="s1">&#39;250 um&#39;</span><span class="p">),</span> <span class="n">design</span><span class="o">.</span><span class="n">get_units</span><span class="p">())</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Design default units for length: &quot;</span><span class="p">,</span> <span class="n">design</span><span class="o">.</span><span class="n">get_units</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Example 250 micron parsed to design units:&quot;</span><span class="p">,</span>
+    <span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="s2">&quot;250 um&quot;</span><span class="p">),</span>
+    <span class="n">design</span><span class="o">.</span><span class="n">get_units</span><span class="p">(),</span>
+<span class="p">)</span>
 
-<span class="n">dictionary</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;key_in_cm&#39;</span><span class="p">:</span> <span class="s1">&#39;1.2 cm&#39;</span><span class="p">,</span> <span class="s1">&#39;key_in_microns&#39;</span><span class="p">:</span> <span class="s1">&#39;50 um&#39;</span><span class="p">}</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Example parse dict:&#39;</span><span class="p">,</span> <span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dictionary</span><span class="p">))</span>
+<span class="n">dictionary</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;key_in_cm&quot;</span><span class="p">:</span> <span class="s2">&quot;1.2 cm&quot;</span><span class="p">,</span> <span class="s2">&quot;key_in_microns&quot;</span><span class="p">:</span> <span class="s2">&quot;50 um&quot;</span><span class="p">}</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Example parse dict:&quot;</span><span class="p">,</span> <span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dictionary</span><span class="p">))</span>
 
-<span class="n">a_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;1m&#39;</span><span class="p">,</span> <span class="s1">&#39;1mm&#39;</span><span class="p">,</span> <span class="s1">&#39;1um&#39;</span><span class="p">,</span> <span class="s1">&#39;1 nm&#39;</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Example parse list:&#39;</span><span class="p">,</span> <span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">a_list</span><span class="p">))</span>
+<span class="n">a_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;1m&quot;</span><span class="p">,</span> <span class="s2">&quot;1mm&quot;</span><span class="p">,</span> <span class="s2">&quot;1um&quot;</span><span class="p">,</span> <span class="s2">&quot;1 nm&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Example parse list:&quot;</span><span class="p">,</span> <span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">a_list</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -1150,7 +1154,7 @@ Example parse list: [1000.0, 1, 0.001, 1.0000000000000002e-06]
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="s1">&#39;2 * 2um&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="s2">&quot;2 * 2um&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1167,7 +1171,7 @@ Example parse list: [1000.0, 1, 0.001, 1.0000000000000002e-06]
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="s1">&#39;2um + 5um&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="s2">&quot;2um + 5um&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1184,7 +1188,7 @@ Example parse list: [1000.0, 1, 0.001, 1.0000000000000002e-06]
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s1">&#39;junction&#39;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s2">&quot;junction&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -1265,21 +1269,21 @@ Example parse list: [1000.0, 1, 0.001, 1.0000000000000002e-06]
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#### List</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;* &#39;</span><span class="o">*</span><span class="mi">10</span><span class="o">+</span><span class="s1">&#39; LIST &#39;</span><span class="o">+</span><span class="s1">&#39;* &#39;</span><span class="o">*</span><span class="mi">10</span><span class="p">,</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;* &quot;</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="s2">&quot; LIST &quot;</span> <span class="o">+</span> <span class="s2">&quot;* &quot;</span> <span class="o">*</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="n">str_in</span> <span class="o">=</span> <span class="s2">&quot;[1,2,3,&#39;10um&#39;]&quot;</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">str_in</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Parsed output:</span><span class="se">\n</span><span class="s1"> </span><span class="si">{</span><span class="n">str_in</span><span class="si">}</span><span class="s1">  -&gt;  </span><span class="si">{</span><span class="n">out</span><span class="si">}</span><span class="s1"> </span><span class="se">\n</span><span class="s1"> Out type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parsed output:</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">str_in</span><span class="si">}</span><span class="s2">  -&gt;  </span><span class="si">{</span><span class="n">out</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2"> Out type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="n">str_in</span> <span class="o">=</span> <span class="s2">&quot;[&#39;2*2um&#39;, &#39;2um + 5um&#39;]&quot;</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">str_in</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Parsed output:</span><span class="se">\n</span><span class="s1"> </span><span class="si">{</span><span class="n">str_in</span><span class="si">}</span><span class="s1">  -&gt;  </span><span class="si">{</span><span class="n">out</span><span class="si">}</span><span class="s1"> </span><span class="se">\n</span><span class="s1"> Out type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parsed output:</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">str_in</span><span class="si">}</span><span class="s2">  -&gt;  </span><span class="si">{</span><span class="n">out</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2"> Out type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="c1">#### Dict</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;* &#39;</span><span class="o">*</span><span class="mi">10</span><span class="o">+</span><span class="s1">&#39; DICT &#39;</span><span class="o">+</span><span class="s1">&#39;* &#39;</span><span class="o">*</span><span class="mi">10</span><span class="p">,</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;* &quot;</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="s2">&quot; DICT &quot;</span> <span class="o">+</span> <span class="s2">&quot;* &quot;</span> <span class="o">*</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="n">str_in</span> <span class="o">=</span> <span class="s2">&quot;{&#39;key1&#39;: &#39;100um&#39;, &#39;key2&#39;: &#39;1m&#39;}&quot;</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">str_in</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Parsed output:</span><span class="se">\n</span><span class="s1"> </span><span class="si">{</span><span class="n">str_in</span><span class="si">}</span><span class="s1">  -&gt;  </span><span class="si">{</span><span class="n">out</span><span class="si">}</span><span class="s1"> </span><span class="se">\n</span><span class="s1"> Out type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parsed output:</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">str_in</span><span class="si">}</span><span class="s2">  -&gt;  </span><span class="si">{</span><span class="n">out</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2"> Out type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1356,17 +1360,19 @@ Parsed output:
 <span class="n">design</span><span class="o">.</span><span class="n">delete_all_components</span><span class="p">()</span>
 
 <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">pad_width</span> <span class="o">=</span> <span class="s1">&#39;425 um&#39;</span><span class="p">,</span>
-    <span class="n">pocket_height</span> <span class="o">=</span> <span class="s1">&#39;650um&#39;</span><span class="p">,</span>
-    <span class="n">connection_pads</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>  <span class="c1"># pin connectors</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span><span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">),</span>
-        <span class="n">b</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span><span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s1">&#39;30um&#39;</span><span class="p">),</span>
-        <span class="n">c</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span><span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s1">&#39;200um&#39;</span><span class="p">),</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span><span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s1">&#39;50um&#39;</span><span class="p">)</span>
-    <span class="p">)</span>
+    <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;425 um&quot;</span><span class="p">,</span>
+    <span class="n">pocket_height</span><span class="o">=</span><span class="s2">&quot;650um&quot;</span><span class="p">,</span>
+    <span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>  <span class="c1"># pin connectors</span>
+        <span class="n">a</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">b</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span><span class="p">),</span>
+        <span class="n">c</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;200um&quot;</span><span class="p">),</span>
+        <span class="n">d</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s2">&quot;50um&quot;</span><span class="p">),</span>
+    <span class="p">),</span>
 <span class="p">)</span>
 
-<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;+0.5mm&#39;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;+0.5mm&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">))</span>
+<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;+0.5mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;+0.5mm&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1377,9 +1383,9 @@ Parsed output:
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Take a screenshot with the component highlighted and the pins shown</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">edit_component</span><span class="p">(</span><span class="s1">&#39;Q1&#39;</span><span class="p">)</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s1">&#39;Q1&#39;</span><span class="p">])</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">highlight_components</span><span class="p">([</span><span class="s1">&#39;Q1&#39;</span><span class="p">])</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">edit_component</span><span class="p">(</span><span class="s2">&quot;Q1&quot;</span><span class="p">)</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s2">&quot;Q1&quot;</span><span class="p">])</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">highlight_components</span><span class="p">([</span><span class="s2">&quot;Q1&quot;</span><span class="p">])</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1397,7 +1403,7 @@ Parsed output:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span><span class="o">.</span><span class="n">pins</span><span class="o">.</span><span class="n">a</span>
-<span class="n">q1</span><span class="o">.</span><span class="n">pins</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span>
+<span class="n">q1</span><span class="o">.</span><span class="n">pins</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -1427,8 +1433,8 @@ Parsed output:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">edit_component</span><span class="p">(</span><span class="s1">&#39;Q1&#39;</span><span class="p">)</span>
-<br/></pre></div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">edit_component</span><span class="p">(</span><span class="s2">&quot;Q1&quot;</span><span class="p">)</span>
+</pre></div>
 </div>
 </div>
 <p>This will pop open a new source editor window, you can change the source on the fly.</p>
@@ -1469,7 +1475,7 @@ Parsed output:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">delete_all_components</span><span class="p">()</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span> <span class="c1"># refresh</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>  <span class="c1"># refresh</span>
 </pre></div>
 </div>
 </div>
@@ -1486,27 +1492,35 @@ Parsed output:
 <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
     <span class="c1"># Some options we want to modify from the defaults</span>
     <span class="c1"># (see below for defaults)</span>
-    <span class="n">pad_width</span> <span class="o">=</span> <span class="s1">&#39;425 um&#39;</span><span class="p">,</span>
-    <span class="n">pocket_height</span> <span class="o">=</span> <span class="s1">&#39;650um&#39;</span><span class="p">,</span>
+    <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;425 um&quot;</span><span class="p">,</span>
+    <span class="n">pocket_height</span><span class="o">=</span><span class="s2">&quot;650um&quot;</span><span class="p">,</span>
     <span class="c1"># Adding 4 connectors (see below for defaults)</span>
     <span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span><span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">),</span>
-        <span class="n">b</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span><span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s1">&#39;30um&#39;</span><span class="p">),</span>
-        <span class="n">c</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span><span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s1">&#39;200um&#39;</span><span class="p">),</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span><span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s1">&#39;50um&#39;</span><span class="p">)</span>
-    <span class="p">)</span>
+        <span class="n">a</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">b</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span><span class="p">),</span>
+        <span class="n">c</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;200um&quot;</span><span class="p">),</span>
+        <span class="n">d</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s2">&quot;50um&quot;</span><span class="p">),</span>
+    <span class="p">),</span>
 <span class="p">)</span>
 
 <span class="c1">## Create 4 transmons</span>
 
-<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;+2.55mm&#39;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;+0.0mm&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">))</span>
-<span class="n">q2</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;Q2&#39;</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;+0.0mm&#39;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;-0.9mm&#39;</span><span class="p">,</span> <span class="n">orientation</span> <span class="o">=</span> <span class="s1">&#39;90&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">))</span>
-<span class="n">q3</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;Q3&#39;</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;-2.55mm&#39;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;+0.0mm&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">))</span>
-<span class="n">q4</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;Q4&#39;</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;+0.0mm&#39;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;+0.9mm&#39;</span><span class="p">,</span> <span class="n">orientation</span> <span class="o">=</span> <span class="s1">&#39;90&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">))</span>
+<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;+2.55mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;+0.0mm&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">q2</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;Q2&quot;</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;+0.0mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;-0.9mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;90&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">q3</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Q3&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;-2.55mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;+0.0mm&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">q4</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;Q4&quot;</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;+0.0mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;+0.9mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;90&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">),</span>
+<span class="p">)</span>
 
 <span class="c1">## Rebuild the design</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
@@ -1560,6 +1574,7 @@ Parsed output:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.tlines.meandered</span><span class="w"> </span><span class="kn">import</span> <span class="n">RouteMeander</span>
+
 <span class="n">RouteMeander</span><span class="o">.</span><span class="n">get_template_options</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1593,42 +1608,40 @@ Parsed output:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-    <span class="n">meander</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-        <span class="n">lead_start</span><span class="o">=</span><span class="s1">&#39;0.1mm&#39;</span><span class="p">,</span>
-        <span class="n">lead_end</span><span class="o">=</span><span class="s1">&#39;0.1mm&#39;</span><span class="p">,</span>
-        <span class="n">asymmetry</span><span class="o">=</span><span class="s1">&#39;0 um&#39;</span><span class="p">)</span>
-<span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">meander</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">lead_start</span><span class="o">=</span><span class="s2">&quot;0.1mm&quot;</span><span class="p">,</span> <span class="n">lead_end</span><span class="o">=</span><span class="s2">&quot;0.1mm&quot;</span><span class="p">,</span> <span class="n">asymmetry</span><span class="o">=</span><span class="s2">&quot;0 um&quot;</span><span class="p">))</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">connect</span><span class="p">(</span><span class="n">component_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">component1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pin1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">component2</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pin2</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-            <span class="n">length</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-            <span class="n">asymmetry</span><span class="o">=</span><span class="s1">&#39;0 um&#39;</span><span class="p">,</span> <span class="n">flip</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">connect</span><span class="p">(</span>
+    <span class="n">component_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">component1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">pin1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">component2</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">pin2</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">length</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">asymmetry</span><span class="o">=</span><span class="s2">&quot;0 um&quot;</span><span class="p">,</span>
+    <span class="n">flip</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Connect two pins with a CPW.&quot;&quot;&quot;</span>
     <span class="n">myoptions</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
         <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-            <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-                <span class="n">component</span><span class="o">=</span><span class="n">component1</span><span class="p">,</span>
-                <span class="n">pin</span><span class="o">=</span><span class="n">pin1</span><span class="p">),</span>
-            <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-                <span class="n">component</span><span class="o">=</span><span class="n">component2</span><span class="p">,</span>
-                <span class="n">pin</span><span class="o">=</span><span class="n">pin2</span><span class="p">)),</span>
-        <span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-            <span class="n">start_straight</span><span class="o">=</span><span class="s1">&#39;0.13mm&#39;</span>
+            <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="n">component1</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="n">pin1</span><span class="p">),</span>
+            <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="n">component2</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="n">pin2</span><span class="p">),</span>
         <span class="p">),</span>
+        <span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">&quot;0.13mm&quot;</span><span class="p">),</span>
         <span class="n">total_length</span><span class="o">=</span><span class="n">length</span><span class="p">,</span>
-    <span class="n">fillet</span> <span class="o">=</span> <span class="s1">&#39;90um&#39;</span><span class="p">)</span>
+        <span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;90um&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="n">myoptions</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
     <span class="n">myoptions</span><span class="o">.</span><span class="n">meander</span><span class="o">.</span><span class="n">asymmetry</span> <span class="o">=</span> <span class="n">asymmetry</span>
-    <span class="n">myoptions</span><span class="o">.</span><span class="n">meander</span><span class="o">.</span><span class="n">lead_direction_inverted</span> <span class="o">=</span> <span class="s1">&#39;true&#39;</span> <span class="k">if</span> <span class="n">flip</span> <span class="k">else</span> <span class="s1">&#39;false&#39;</span>
+    <span class="n">myoptions</span><span class="o">.</span><span class="n">meander</span><span class="o">.</span><span class="n">lead_direction_inverted</span> <span class="o">=</span> <span class="s2">&quot;true&quot;</span> <span class="k">if</span> <span class="n">flip</span> <span class="k">else</span> <span class="s2">&quot;false&quot;</span>
     <span class="k">return</span> <span class="n">RouteMeander</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="n">component_name</span><span class="p">,</span> <span class="n">myoptions</span><span class="p">)</span>
 
 
 <span class="n">asym</span> <span class="o">=</span> <span class="mi">150</span>
-<span class="n">cpw1</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s1">&#39;cpw1&#39;</span><span class="p">,</span> <span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;Q2&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;6.0 mm&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;+</span><span class="si">{</span><span class="n">asym</span><span class="si">}</span><span class="s1">um&#39;</span><span class="p">)</span>
-<span class="n">cpw2</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s1">&#39;cpw2&#39;</span><span class="p">,</span> <span class="s1">&#39;Q3&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;Q2&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;6.1 mm&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;-</span><span class="si">{</span><span class="n">asym</span><span class="si">}</span><span class="s1">um&#39;</span><span class="p">,</span> <span class="n">flip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">cpw3</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s1">&#39;cpw3&#39;</span><span class="p">,</span> <span class="s1">&#39;Q3&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;Q4&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;6.0 mm&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;+</span><span class="si">{</span><span class="n">asym</span><span class="si">}</span><span class="s1">um&#39;</span><span class="p">)</span>
-<span class="n">cpw4</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s1">&#39;cpw4&#39;</span><span class="p">,</span> <span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;Q4&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;6.1 mm&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;-</span><span class="si">{</span><span class="n">asym</span><span class="si">}</span><span class="s1">um&#39;</span><span class="p">,</span> <span class="n">flip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">cpw1</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s2">&quot;cpw1&quot;</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="s2">&quot;Q2&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;6.0 mm&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;+</span><span class="si">{</span><span class="n">asym</span><span class="si">}</span><span class="s2">um&quot;</span><span class="p">)</span>
+<span class="n">cpw2</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s2">&quot;cpw2&quot;</span><span class="p">,</span> <span class="s2">&quot;Q3&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;Q2&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;6.1 mm&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;-</span><span class="si">{</span><span class="n">asym</span><span class="si">}</span><span class="s2">um&quot;</span><span class="p">,</span> <span class="n">flip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">cpw3</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s2">&quot;cpw3&quot;</span><span class="p">,</span> <span class="s2">&quot;Q3&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;Q4&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;6.0 mm&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;+</span><span class="si">{</span><span class="n">asym</span><span class="si">}</span><span class="s2">um&quot;</span><span class="p">)</span>
+<span class="n">cpw4</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s2">&quot;cpw4&quot;</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;Q4&quot;</span><span class="p">,</span> <span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="s2">&quot;6.1 mm&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;-</span><span class="si">{</span><span class="n">asym</span><span class="si">}</span><span class="s2">um&quot;</span><span class="p">,</span> <span class="n">flip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
@@ -1640,7 +1653,7 @@ Parsed output:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">toggle_docks</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">highlight_components</span><span class="p">([</span><span class="s1">&#39;Q1&#39;</span><span class="p">,</span><span class="s1">&#39;Q2&#39;</span><span class="p">,</span><span class="s1">&#39;Q3&#39;</span><span class="p">,</span><span class="s1">&#39;Q4&#39;</span><span class="p">,</span><span class="s1">&#39;cpw1&#39;</span><span class="p">,</span><span class="s1">&#39;cpw2&#39;</span><span class="p">,</span><span class="s1">&#39;cpw3&#39;</span><span class="p">,</span><span class="s1">&#39;cpw4&#39;</span><span class="p">])</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">highlight_components</span><span class="p">([</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;Q2&quot;</span><span class="p">,</span> <span class="s2">&quot;Q3&quot;</span><span class="p">,</span> <span class="s2">&quot;Q4&quot;</span><span class="p">,</span> <span class="s2">&quot;cpw1&quot;</span><span class="p">,</span> <span class="s2">&quot;cpw2&quot;</span><span class="p">,</span> <span class="s2">&quot;cpw3&quot;</span><span class="p">,</span> <span class="s2">&quot;cpw4&quot;</span><span class="p">])</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1758,8 +1771,8 @@ Parsed output:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">cpw_width</span> <span class="o">=</span> <span class="s1">&#39;10um&#39;</span>
-<span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">cpw_gap</span> <span class="o">=</span> <span class="s1">&#39;6um&#39;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">cpw_width</span> <span class="o">=</span> <span class="s2">&quot;10um&quot;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">cpw_gap</span> <span class="o">=</span> <span class="s2">&quot;6um&quot;</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1769,10 +1782,10 @@ Parsed output:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cpw1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">lead</span><span class="o">.</span><span class="n">end_straight</span> <span class="o">=</span> <span class="s1">&#39;100um&#39;</span>
-<span class="n">cpw2</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">lead</span><span class="o">.</span><span class="n">end_straight</span> <span class="o">=</span> <span class="s1">&#39;100um&#39;</span>
-<span class="n">cpw3</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">lead</span><span class="o">.</span><span class="n">end_straight</span> <span class="o">=</span> <span class="s1">&#39;100um&#39;</span>
-<span class="n">cpw4</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">lead</span><span class="o">.</span><span class="n">end_straight</span> <span class="o">=</span> <span class="s1">&#39;100um&#39;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cpw1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">lead</span><span class="o">.</span><span class="n">end_straight</span> <span class="o">=</span> <span class="s2">&quot;100um&quot;</span>
+<span class="n">cpw2</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">lead</span><span class="o">.</span><span class="n">end_straight</span> <span class="o">=</span> <span class="s2">&quot;100um&quot;</span>
+<span class="n">cpw3</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">lead</span><span class="o">.</span><span class="n">end_straight</span> <span class="o">=</span> <span class="s2">&quot;100um&quot;</span>
+<span class="n">cpw4</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">lead</span><span class="o">.</span><span class="n">end_straight</span> <span class="o">=</span> <span class="s2">&quot;100um&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -1781,15 +1794,15 @@ Parsed output:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set variables in the design</span>
-<span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">=</span> <span class="s1">&#39;450 um&#39;</span>
-<span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">cpw_width</span> <span class="o">=</span> <span class="s1">&#39;25 um&#39;</span>
-<span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">cpw_gap</span> <span class="o">=</span> <span class="s1">&#39;12 um&#39;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">=</span> <span class="s2">&quot;450 um&quot;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">cpw_width</span> <span class="o">=</span> <span class="s2">&quot;25 um&quot;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">cpw_gap</span> <span class="o">=</span> <span class="s2">&quot;12 um&quot;</span>
 
 <span class="c1"># Assign variables to component options</span>
-<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">=</span> <span class="s1">&#39;pad_width&#39;</span>
-<span class="n">q2</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">=</span> <span class="s1">&#39;pad_width&#39;</span>
-<span class="n">q3</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">=</span> <span class="s1">&#39;pad_width&#39;</span>
-<span class="n">q4</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">=</span> <span class="s1">&#39;pad_width&#39;</span>
+<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">=</span> <span class="s2">&quot;pad_width&quot;</span>
+<span class="n">q2</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">=</span> <span class="s2">&quot;pad_width&quot;</span>
+<span class="n">q3</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">=</span> <span class="s2">&quot;pad_width&quot;</span>
+<span class="n">q4</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">=</span> <span class="s2">&quot;pad_width&quot;</span>
 
 <span class="c1"># Rebuild all components and refresh the gui</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
@@ -1858,7 +1871,7 @@ Parsed output:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gds</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">path_filename</span> <span class="o">=</span> <span class="s1">&#39;./resources/Fake_Junctions.GDS&#39;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gds</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">path_filename</span> <span class="o">=</span> <span class="s2">&quot;./resources/Fake_Junctions.GDS&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -2008,18 +2021,22 @@ Parsed output:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.sample_shapes.n_square_spiral</span><span class="w"> </span><span class="kn">import</span> <span class="n">NSquareSpiral</span>
+
 <span class="c1"># print(NSquareSpiral.get_template_options(design))</span>
 <span class="n">ops</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="s1">&#39;10&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="s1">&#39;10um&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;radius&#39;</span><span class="p">:</span> <span class="s1">&#39;100um&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;gap&#39;</span><span class="p">:</span> <span class="s1">&#39;22um&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;pos_x&#39;</span><span class="p">:</span> <span class="s1">&#39;0.65mm&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;pos_y&#39;</span><span class="p">:</span> <span class="s1">&#39;2.2mm&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;orientation&#39;</span><span class="p">:</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;subtract&#39;</span><span class="p">:</span> <span class="s1">&#39;False&#39;</span><span class="p">}</span>
-<span class="n">NSquareSpiral</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;spiral&#39;</span><span class="p">,</span> <span class="n">ops</span><span class="p">)</span>
-<span class="n">NSquareSpiral</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;spiral_cut&#39;</span><span class="p">,</span> <span class="p">{</span><span class="o">**</span><span class="n">ops</span><span class="p">,</span> <span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s1">&#39;22um&#39;</span><span class="p">,</span> <span class="n">gap</span><span class="o">=</span><span class="s1">&#39;10um&#39;</span><span class="p">)})</span>
+    <span class="s2">&quot;n&quot;</span><span class="p">:</span> <span class="s2">&quot;10&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="s2">&quot;10um&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;radius&quot;</span><span class="p">:</span> <span class="s2">&quot;100um&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;gap&quot;</span><span class="p">:</span> <span class="s2">&quot;22um&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pos_x&quot;</span><span class="p">:</span> <span class="s2">&quot;0.65mm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pos_y&quot;</span><span class="p">:</span> <span class="s2">&quot;2.2mm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;subtract&quot;</span><span class="p">:</span> <span class="s2">&quot;False&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">NSquareSpiral</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;spiral&quot;</span><span class="p">,</span> <span class="n">ops</span><span class="p">)</span>
+<span class="n">NSquareSpiral</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;spiral_cut&quot;</span><span class="p">,</span> <span class="p">{</span><span class="o">**</span><span class="n">ops</span><span class="p">,</span> <span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;22um&quot;</span><span class="p">,</span> <span class="n">gap</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">)}</span>
+<span class="p">)</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -2030,19 +2047,17 @@ Parsed output:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.tlines.straight_path</span><span class="w"> </span><span class="kn">import</span> <span class="n">RouteStraight</span>
+
 <span class="c1"># CpwStraightLine.get_template_options(design)</span>
 <span class="n">myoptions</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-            <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-                <span class="n">component</span><span class="o">=</span><span class="s1">&#39;Q4&#39;</span><span class="p">,</span>
-                <span class="n">pin</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="p">),</span>
-            <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-                <span class="n">component</span><span class="o">=</span><span class="s1">&#39;spiral&#39;</span><span class="p">,</span>
-                <span class="n">pin</span><span class="o">=</span><span class="s1">&#39;spiralPin&#39;</span><span class="p">))</span>
-        <span class="p">)</span>
+    <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
+        <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q4&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;c&quot;</span><span class="p">),</span>
+        <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;spiral&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;spiralPin&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
+<span class="p">)</span>
 
 
-<span class="n">RouteStraight</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;cpw_s1&#39;</span><span class="p">,</span> <span class="n">myoptions</span><span class="p">);</span>
+<span class="n">RouteStraight</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;cpw_s1&quot;</span><span class="p">,</span> <span class="n">myoptions</span><span class="p">)</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -2051,7 +2066,7 @@ Parsed output:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[53]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qcomponents</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;spiral&#39;</span><span class="p">,</span> <span class="s1">&#39;cpw_s1&#39;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qcomponents</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;spiral&quot;</span><span class="p">,</span> <span class="s2">&quot;cpw_s1&quot;</span><span class="p">]</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">highlight_components</span><span class="p">(</span><span class="n">qcomponents</span><span class="p">)</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">(</span><span class="n">qcomponents</span><span class="p">)</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
@@ -2072,19 +2087,21 @@ Parsed output:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.sample_shapes.n_gon</span><span class="w"> </span><span class="kn">import</span> <span class="n">NGon</span>
+
 <span class="c1"># display(NGon.get_template_options(design))</span>
 <span class="n">ops</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="s1">&#39;5&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;radius&#39;</span><span class="p">:</span> <span class="s1">&#39;250um&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;pos_x&#39;</span><span class="p">:</span> <span class="s1">&#39;-0.85mm&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;pos_y&#39;</span><span class="p">:</span> <span class="s1">&#39;2.0mm&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;orientation&#39;</span><span class="p">:</span> <span class="s1">&#39;15&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;subtract&#39;</span><span class="p">:</span> <span class="s1">&#39;False&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;helper&#39;</span><span class="p">:</span> <span class="s1">&#39;False&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;chip&#39;</span><span class="p">:</span> <span class="s1">&#39;main&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;layer&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">}</span>
-<span class="n">NGon</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;ngon&#39;</span><span class="p">,</span> <span class="n">ops</span><span class="p">)</span>
-<span class="n">NGon</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;ngon_negative&#39;</span><span class="p">,</span> <span class="p">{</span><span class="o">**</span><span class="n">ops</span><span class="p">,</span> <span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="s1">&#39;350um&#39;</span><span class="p">)})</span>
+    <span class="s2">&quot;n&quot;</span><span class="p">:</span> <span class="s2">&quot;5&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;radius&quot;</span><span class="p">:</span> <span class="s2">&quot;250um&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pos_x&quot;</span><span class="p">:</span> <span class="s2">&quot;-0.85mm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pos_y&quot;</span><span class="p">:</span> <span class="s2">&quot;2.0mm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="s2">&quot;15&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;subtract&quot;</span><span class="p">:</span> <span class="s2">&quot;False&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;helper&quot;</span><span class="p">:</span> <span class="s2">&quot;False&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;chip&quot;</span><span class="p">:</span> <span class="s2">&quot;main&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;layer&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">NGon</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;ngon&quot;</span><span class="p">,</span> <span class="n">ops</span><span class="p">)</span>
+<span class="n">NGon</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;ngon_negative&quot;</span><span class="p">,</span> <span class="p">{</span><span class="o">**</span><span class="n">ops</span><span class="p">,</span> <span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="s2">&quot;350um&quot;</span><span class="p">)})</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -2093,7 +2110,7 @@ Parsed output:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[55]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s1">&#39;ngon_negative&#39;</span><span class="p">])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s2">&quot;ngon_negative&quot;</span><span class="p">])</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -2110,18 +2127,21 @@ Parsed output:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.sample_shapes.circle_raster</span><span class="w"> </span><span class="kn">import</span> <span class="n">CircleRaster</span>
+
 <span class="n">display</span><span class="p">(</span><span class="n">CircleRaster</span><span class="o">.</span><span class="n">get_template_options</span><span class="p">(</span><span class="n">design</span><span class="p">))</span>
 
-<span class="n">ops</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;radius&#39;</span><span class="p">:</span> <span class="s1">&#39;300um&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;pos_x&#39;</span><span class="p">:</span> <span class="s1">&#39;-1.5mm&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;pos_y&#39;</span><span class="p">:</span> <span class="s1">&#39;2mm&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="s1">&#39;16&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;cap_style&#39;</span><span class="p">:</span> <span class="s1">&#39;round&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;subtract&#39;</span><span class="p">:</span> <span class="s1">&#39;False&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;helper&#39;</span><span class="p">:</span> <span class="s1">&#39;False&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;chip&#39;</span><span class="p">:</span> <span class="s1">&#39;main&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;layer&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">}</span>
-<span class="n">CircleRaster</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;CircleRaster&#39;</span><span class="p">,</span> <span class="n">ops</span><span class="p">)</span>
+<span class="n">ops</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;radius&quot;</span><span class="p">:</span> <span class="s2">&quot;300um&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pos_x&quot;</span><span class="p">:</span> <span class="s2">&quot;-1.5mm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pos_y&quot;</span><span class="p">:</span> <span class="s2">&quot;2mm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;resolution&quot;</span><span class="p">:</span> <span class="s2">&quot;16&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cap_style&quot;</span><span class="p">:</span> <span class="s2">&quot;round&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;subtract&quot;</span><span class="p">:</span> <span class="s2">&quot;False&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;helper&quot;</span><span class="p">:</span> <span class="s2">&quot;False&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;chip&quot;</span><span class="p">:</span> <span class="s2">&quot;main&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;layer&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">CircleRaster</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;CircleRaster&quot;</span><span class="p">,</span> <span class="n">ops</span><span class="p">)</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -2146,7 +2166,7 @@ Parsed output:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[57]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s1">&#39;CircleRaster&#39;</span><span class="p">])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s2">&quot;CircleRaster&quot;</span><span class="p">])</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -2163,23 +2183,28 @@ Parsed output:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.sample_shapes.rectangle_hollow</span><span class="w"> </span><span class="kn">import</span> <span class="n">RectangleHollow</span>
+
 <span class="n">display</span><span class="p">(</span><span class="n">RectangleHollow</span><span class="o">.</span><span class="n">get_template_options</span><span class="p">(</span><span class="n">design</span><span class="p">))</span>
 
-<span class="n">ops</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="s1">&#39;500um&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="s1">&#39;300um&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;pos_x&#39;</span><span class="p">:</span> <span class="s1">&#39;-2.3mm&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;pos_y&#39;</span><span class="p">:</span> <span class="s1">&#39;2mm&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;orientation&#39;</span><span class="p">:</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;subtract&#39;</span><span class="p">:</span> <span class="s1">&#39;False&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;helper&#39;</span><span class="p">:</span> <span class="s1">&#39;False&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;chip&#39;</span><span class="p">:</span> <span class="s1">&#39;main&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;layer&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;inner&#39;</span><span class="p">:</span> <span class="p">{</span>  <span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="s1">&#39;250um&#39;</span><span class="p">,</span>
-                    <span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="s1">&#39;100um&#39;</span><span class="p">,</span>
-                    <span class="s1">&#39;offset_x&#39;</span><span class="p">:</span> <span class="s1">&#39;40um&#39;</span><span class="p">,</span>
-                    <span class="s1">&#39;offset_y&#39;</span><span class="p">:</span> <span class="s1">&#39;-20um&#39;</span><span class="p">,</span>
-                    <span class="s1">&#39;orientation&#39;</span><span class="p">:</span> <span class="s1">&#39;15&#39;</span><span class="p">}}</span>
-<span class="n">RectangleHollow</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;RectangleHollow&#39;</span><span class="p">,</span> <span class="n">ops</span><span class="p">)</span>
+<span class="n">ops</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="s2">&quot;500um&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;height&quot;</span><span class="p">:</span> <span class="s2">&quot;300um&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pos_x&quot;</span><span class="p">:</span> <span class="s2">&quot;-2.3mm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pos_y&quot;</span><span class="p">:</span> <span class="s2">&quot;2mm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;subtract&quot;</span><span class="p">:</span> <span class="s2">&quot;False&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;helper&quot;</span><span class="p">:</span> <span class="s2">&quot;False&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;chip&quot;</span><span class="p">:</span> <span class="s2">&quot;main&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;layer&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;inner&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="s2">&quot;250um&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;height&quot;</span><span class="p">:</span> <span class="s2">&quot;100um&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;offset_x&quot;</span><span class="p">:</span> <span class="s2">&quot;40um&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;offset_y&quot;</span><span class="p">:</span> <span class="s2">&quot;-20um&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="s2">&quot;15&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+<span class="n">RectangleHollow</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;RectangleHollow&quot;</span><span class="p">,</span> <span class="n">ops</span><span class="p">)</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -2209,7 +2234,7 @@ Parsed output:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[59]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s1">&#39;RectangleHollow&#39;</span><span class="p">])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s2">&quot;RectangleHollow&quot;</span><span class="p">])</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -2307,7 +2332,7 @@ RectangleHollow : [-2.55  1.85 -2.05  2.15]
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[63]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span><span class="o">.</span><span class="n">qgeometry_table</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span><span class="o">.</span><span class="n">qgeometry_table</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2431,7 +2456,7 @@ RectangleHollow : [-2.55  1.85 -2.05  2.15]
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[64]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span><span class="o">.</span><span class="n">qgeometry_table</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span><span class="o">.</span><span class="n">qgeometry_table</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2593,7 +2618,7 @@ RectangleHollow : [-2.55  1.85 -2.05  2.15]
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[65]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span><span class="o">.</span><span class="n">qgeometry_table</span><span class="p">(</span><span class="s1">&#39;junction&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span><span class="o">.</span><span class="n">qgeometry_table</span><span class="p">(</span><span class="s2">&quot;junction&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

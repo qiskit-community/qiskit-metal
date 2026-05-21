@@ -741,14 +741,16 @@
 
 <span class="n">q1options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
     <span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>  <span class="c1"># pin connectors</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span><span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">),</span>
-        <span class="n">b</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span><span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">),</span>
-        <span class="n">c</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span><span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span><span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">a</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">b</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">c</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">d</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span>
     <span class="p">)</span>
 <span class="p">)</span>
 
-<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="n">q1options</span><span class="p">)</span>  <span class="c1"># this line only creates the object in memory and executes its __init__(), but does not &quot;implement&quot;</span>
+<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">q1options</span>
+<span class="p">)</span>  <span class="c1"># this line only creates the object in memory and executes its __init__(), but does not &quot;implement&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -902,7 +904,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">rename_component</span><span class="p">(</span><span class="n">q1</span><span class="o">.</span><span class="n">id</span><span class="p">,</span><span class="s1">&#39;Q1&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">rename_component</span><span class="p">(</span><span class="n">q1</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -924,7 +926,7 @@ True
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;-1.5mm&#39;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pos_x</span> <span class="o">=</span> <span class="s2">&quot;-1.5mm&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -932,8 +934,8 @@ True
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q2</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">copy_qcomponent</span><span class="p">(</span><span class="n">q1</span><span class="p">,</span> <span class="s1">&#39;Q2&#39;</span><span class="p">)</span>
-<span class="n">q2</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;1.5mm&#39;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q2</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">copy_qcomponent</span><span class="p">(</span><span class="n">q1</span><span class="p">,</span> <span class="s2">&quot;Q2&quot;</span><span class="p">)</span>
+<span class="n">q2</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pos_x</span> <span class="o">=</span> <span class="s2">&quot;1.5mm&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -946,14 +948,10 @@ True
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.tlines.meandered</span><span class="w"> </span><span class="kn">import</span> <span class="n">RouteMeander</span>
 
 <span class="n">options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-    <span class="n">total_length</span> <span class="o">=</span> <span class="s1">&#39;8mm&#39;</span><span class="p">,</span>
-    <span class="n">pin_inputs</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">start_pin</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-            <span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;Q1&#39;</span><span class="p">,</span>
-            <span class="n">pin</span> <span class="o">=</span> <span class="s1">&#39;a&#39;</span><span class="p">),</span>
-        <span class="n">end_pin</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-            <span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;Q2&#39;</span><span class="p">,</span>
-            <span class="n">pin</span> <span class="o">=</span> <span class="s1">&#39;b&#39;</span><span class="p">)),</span>
+    <span class="n">total_length</span><span class="o">=</span><span class="s2">&quot;8mm&quot;</span><span class="p">,</span>
+    <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
+        <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">),</span> <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q2&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+    <span class="p">),</span>
 <span class="p">)</span>
 
 <span class="n">cpw</span> <span class="o">=</span> <span class="n">RouteMeander</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
@@ -967,8 +965,8 @@ True
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cpw</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">fillet</span> <span class="o">=</span> <span class="s1">&#39;90um&#39;</span>
-<span class="n">cpw</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">lead</span><span class="o">.</span><span class="n">start_straight</span> <span class="o">=</span> <span class="s1">&#39;90um&#39;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cpw</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">fillet</span> <span class="o">=</span> <span class="s2">&quot;90um&quot;</span>
+<span class="n">cpw</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">lead</span><span class="o">.</span><span class="n">start_straight</span> <span class="o">=</span> <span class="s2">&quot;90um&quot;</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
@@ -1065,7 +1063,7 @@ True
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">delete_component</span><span class="p">(</span><span class="s1">&#39;Q2&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">delete_component</span><span class="p">(</span><span class="s2">&quot;Q2&quot;</span><span class="p">)</span>
 <span class="n">cpw</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1120,7 +1118,8 @@ True
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># from qiskit_metal.qlibrary.user_components.my429_qcomponents import MyQComponent1</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;../../resources&#39;</span><span class="p">)</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;../../resources&quot;</span><span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">my429_qcomponents</span><span class="w"> </span><span class="kn">import</span> <span class="n">MyQComponent1</span>
 </pre></div>
 </div>
@@ -1130,7 +1129,7 @@ True
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">myQC</span> <span class="o">=</span> <span class="n">MyQComponent1</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;myQC&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">myQC</span> <span class="o">=</span> <span class="n">MyQComponent1</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;myQC&quot;</span><span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>  <span class="c1"># this is need to actually make() the component</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
@@ -1143,17 +1142,13 @@ True
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-    <span class="n">total_length</span> <span class="o">=</span> <span class="s1">&#39;4mm&#39;</span><span class="p">,</span>
-    <span class="n">pin_inputs</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">start_pin</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-            <span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;Q1&#39;</span><span class="p">,</span>
-            <span class="n">pin</span> <span class="o">=</span> <span class="s1">&#39;a&#39;</span><span class="p">),</span>
-        <span class="n">end_pin</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-            <span class="n">component</span> <span class="o">=</span> <span class="n">myQC</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="n">pin</span> <span class="o">=</span> <span class="s1">&#39;in&#39;</span><span class="p">)),</span>
-    <span class="n">fillet</span> <span class="o">=</span> <span class="s1">&#39;90um&#39;</span><span class="p">,</span>
-    <span class="n">lead</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">start_straight</span> <span class="o">=</span> <span class="s1">&#39;90um&#39;</span><span class="p">)</span>
+    <span class="n">total_length</span><span class="o">=</span><span class="s2">&quot;4mm&quot;</span><span class="p">,</span>
+    <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
+        <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">),</span>
+        <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="n">myQC</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;in&quot;</span><span class="p">),</span>
+    <span class="p">),</span>
+    <span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;90um&quot;</span><span class="p">,</span>
+    <span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">&quot;90um&quot;</span><span class="p">),</span>
 <span class="p">)</span>
 
 <span class="n">cpw</span> <span class="o">=</span> <span class="n">RouteMeander</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
@@ -1173,8 +1168,8 @@ True
 <span class="c1"># from qiskit_metal.qlibrary.user_components.my429_qcomponents import MyQComponent2</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">my429_qcomponents</span><span class="w"> </span><span class="kn">import</span> <span class="n">MyQComponent2</span>
 
-<span class="n">opt_myqc</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s1">&#39;1mm&#39;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s1">&#39;0.01mm&#39;</span><span class="p">,</span> <span class="n">pos_x</span><span class="o">=</span><span class="s1">&#39;0.1mm&#39;</span><span class="p">)</span>
-<span class="n">myQC</span> <span class="o">=</span> <span class="n">MyQComponent2</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;myQC&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">opt_myqc</span><span class="p">)</span>
+<span class="n">opt_myqc</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;1mm&quot;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s2">&quot;0.01mm&quot;</span><span class="p">,</span> <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0.1mm&quot;</span><span class="p">)</span>
+<span class="n">myQC</span> <span class="o">=</span> <span class="n">MyQComponent2</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;myQC&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">opt_myqc</span><span class="p">)</span>
 
 <span class="n">cpw</span> <span class="o">=</span> <span class="n">RouteMeander</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>  <span class="c1"># this is need to actually make() the component</span>
@@ -1212,25 +1207,24 @@ True
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cpw</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
 <span class="n">myQC</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
 
-<span class="n">opt_myqc</span><span class="o">.</span><span class="n">gap</span> <span class="o">=</span> <span class="s1">&#39;8um&#39;</span>
-<span class="n">opt_myqc</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="s1">&#39;20um&#39;</span>
+<span class="n">opt_myqc</span><span class="o">.</span><span class="n">gap</span> <span class="o">=</span> <span class="s2">&quot;8um&quot;</span>
+<span class="n">opt_myqc</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="s2">&quot;20um&quot;</span>
 <span class="c1"># from qiskit_metal.qlibrary.user_components.my429_qcomponents import MyQComponent4</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">my429_qcomponents</span><span class="w"> </span><span class="kn">import</span> <span class="n">MyQComponent4</span>
 
-<span class="n">myQC</span> <span class="o">=</span> <span class="n">MyQComponent4</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">opt_myqc</span><span class="p">)</span> <span class="c1">#opt_myqc defined earlier</span>
+<span class="n">myQC</span> <span class="o">=</span> <span class="n">MyQComponent4</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">opt_myqc</span><span class="p">)</span>  <span class="c1"># opt_myqc defined earlier</span>
 
 <span class="n">options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-    <span class="n">total_length</span> <span class="o">=</span> <span class="s1">&#39;4mm&#39;</span><span class="p">,</span>
-    <span class="n">pin_inputs</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">start_pin</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-            <span class="n">component</span> <span class="o">=</span> <span class="s1">&#39;Q1&#39;</span><span class="p">,</span>
-            <span class="n">pin</span> <span class="o">=</span> <span class="s1">&#39;a&#39;</span><span class="p">),</span>
-        <span class="n">end_pin</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-            <span class="n">component</span> <span class="o">=</span> <span class="n">myQC</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="c1">#updating this</span>
-            <span class="n">pin</span> <span class="o">=</span> <span class="s1">&#39;in&#39;</span><span class="p">)),</span>
-    <span class="n">fillet</span> <span class="o">=</span> <span class="s1">&#39;90um&#39;</span><span class="p">,</span>
-    <span class="n">lead</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">start_straight</span> <span class="o">=</span> <span class="s1">&#39;90um&#39;</span><span class="p">)</span>
+    <span class="n">total_length</span><span class="o">=</span><span class="s2">&quot;4mm&quot;</span><span class="p">,</span>
+    <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
+        <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">),</span>
+        <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
+            <span class="n">component</span><span class="o">=</span><span class="n">myQC</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>  <span class="c1"># updating this</span>
+            <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;in&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">),</span>
+    <span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;90um&quot;</span><span class="p">,</span>
+    <span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">&quot;90um&quot;</span><span class="p">),</span>
 <span class="p">)</span>
 
 <span class="n">cpw</span> <span class="o">=</span> <span class="n">RouteMeander</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>

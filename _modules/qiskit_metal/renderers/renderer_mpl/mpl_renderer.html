@@ -768,8 +768,11 @@
 <span class="sd">                logger if ``None``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span> <span class="k">if</span> <span class="n">logger</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span>
-            <span class="s2">&quot;qiskit_metal.renderer_mpl&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">logger</span>
+            <span class="k">if</span> <span class="n">logger</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;qiskit_metal.renderer_mpl&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span> <span class="o">=</span> <span class="n">canvas</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">design</span> <span class="o">=</span> <span class="n">design</span>
@@ -828,7 +831,7 @@
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): Component name</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">comp_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
+        <span class="n">comp_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>  <span class="c1"># noqa: F841</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_hidden_components</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
 
 
@@ -903,8 +906,9 @@
         <span class="c1"># rebuilt ``mask`` from scratch on the second line, silently</span>
         <span class="c1"># discarding the ``hidden_layers`` filter — visible from the</span>
         <span class="c1"># Qt GUI only when a user hid both at once.</span>
-        <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden_layers</span><span class="p">)</span>
-                <span class="o">|</span> <span class="n">table</span><span class="o">.</span><span class="n">component</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hidden_components</span><span class="p">))</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden_layers</span><span class="p">)</span> <span class="o">|</span> <span class="n">table</span><span class="o">.</span><span class="n">component</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_hidden_components</span>
+        <span class="p">)</span>
 
         <span class="k">return</span> <span class="o">~</span><span class="n">mask</span>  <span class="c1"># not</span></div>
 
@@ -986,7 +990,7 @@
             <span class="n">table</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_mask</span><span class="p">(</span><span class="n">table</span><span class="p">)]</span>
 
             <span class="c1"># subtracted</span>
-            <span class="n">mask</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="s2">&quot;subtract&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="s2">&quot;subtract&quot;</span><span class="p">]</span>
             <span class="n">render_func</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;render_</span><span class="si">{</span><span class="n">element_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">render_func</span><span class="p">(</span><span class="n">table</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span> <span class="n">ax</span><span class="p">,</span> <span class="n">subtracted</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 

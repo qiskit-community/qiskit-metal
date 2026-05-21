@@ -710,21 +710,23 @@
 
 <div class="viewcode-block" id="AnimatedText">
 <a class="viewcode-back" href="../../../../../apidocs/qiskit_metal.renderers.AnimatedText.html#qiskit_metal.renderers.AnimatedText">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">AnimatedText</span><span class="p">():</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">AnimatedText</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Class that animates text.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">ax</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">Axes</span><span class="p">,</span>
-                 <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                 <span class="n">canvas</span><span class="p">,</span>
-                 <span class="n">kw</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">anim_start</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
-                 <span class="n">anim_dt_ms</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
-                 <span class="n">anim_delta</span><span class="o">=-</span><span class="mf">0.0005</span><span class="p">,</span>
-                 <span class="n">anim_stop</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                 <span class="n">anim_accel</span><span class="o">=-</span><span class="mf">0.0005</span><span class="p">,</span>
-                 <span class="n">start</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                 <span class="n">loc</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">ax</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">Axes</span><span class="p">,</span>
+        <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">canvas</span><span class="p">,</span>
+        <span class="n">kw</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">anim_start</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
+        <span class="n">anim_dt_ms</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+        <span class="n">anim_delta</span><span class="o">=-</span><span class="mf">0.0005</span><span class="p">,</span>
+        <span class="n">anim_stop</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">anim_accel</span><span class="o">=-</span><span class="mf">0.0005</span><span class="p">,</span>
+        <span class="n">start</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">loc</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Args:</span>
 <span class="sd">            ax (plt.Axes): The axis.</span>
@@ -752,15 +754,17 @@
         <span class="c1"># MPL text</span>
         <span class="c1"># Create the text</span>
         <span class="n">kw</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span>
-                   <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span>
-                   <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
-                   <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
-                   <span class="n">alpha</span><span class="o">=</span><span class="n">anim_start</span><span class="p">,</span>
-                   <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
-                   <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#00356B&#39;</span><span class="p">,</span>
-                   <span class="n">zorder</span><span class="o">=</span><span class="mi">200</span><span class="p">),</span>
-            <span class="o">**</span><span class="p">(</span><span class="n">kw</span> <span class="k">if</span> <span class="n">kw</span> <span class="k">else</span> <span class="p">{})</span>
+            <span class="o">**</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">fontsize</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span>
+                <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span>
+                <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                <span class="n">alpha</span><span class="o">=</span><span class="n">anim_start</span><span class="p">,</span>
+                <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
+                <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#00356B&quot;</span><span class="p">,</span>
+                <span class="n">zorder</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="o">**</span><span class="p">(</span><span class="n">kw</span> <span class="k">if</span> <span class="n">kw</span> <span class="k">else</span> <span class="p">{}),</span>
         <span class="p">}</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="o">*</span><span class="n">loc</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
@@ -816,7 +820,7 @@
                 <span class="k">try</span><span class="p">:</span>
                     <span class="c1"># remove text from axis</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
-                <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
                     <span class="c1"># could raise ValueError: list.remove(x): x not in list</span>
                     <span class="k">pass</span>
 

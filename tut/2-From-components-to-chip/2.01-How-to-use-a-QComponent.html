@@ -782,7 +782,7 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a new qcomponent object with name &#39;Q1&#39;</span>
-<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s1">&#39;Q1&#39;</span><span class="p">)</span>
+<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">)</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>  <span class="c1"># rebuild the design and plot</span>
 </pre></div>
 </div>
@@ -898,10 +898,10 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Change options</span>
-<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pos_x</span> <span class="o">=</span> <span class="s1">&#39;2.0 mm&#39;</span>
-<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pos_y</span> <span class="o">=</span> <span class="s1">&#39;2.0 mm&#39;</span>
-<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">=</span> <span class="s1">&#39;250 um&#39;</span>
-<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_width</span>  <span class="o">=</span> <span class="s1">&#39;300 um&#39;</span>
+<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pos_x</span> <span class="o">=</span> <span class="s2">&quot;2.0 mm&quot;</span>
+<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pos_y</span> <span class="o">=</span> <span class="s2">&quot;2.0 mm&quot;</span>
+<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">=</span> <span class="s2">&quot;250 um&quot;</span>
+<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">=</span> <span class="s2">&quot;300 um&quot;</span>
 
 <span class="c1"># Update the geometry and render to the gui, since we changed the options</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
@@ -917,8 +917,8 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Copy q1 and place the new Qcomponent (&quot;q1_copy&quot;) at (-2,2):</span>
-<span class="n">q1_copy</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">copy_qcomponent</span><span class="p">(</span><span class="n">q1</span><span class="p">,</span> <span class="s1">&#39;Q1_copy&#39;</span><span class="p">)</span>
-<span class="n">q1_copy</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;pos_x&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;-2.0mm&#39;</span>
+<span class="n">q1_copy</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">copy_qcomponent</span><span class="p">(</span><span class="n">q1</span><span class="p">,</span> <span class="s2">&quot;Q1_copy&quot;</span><span class="p">)</span>
+<span class="n">q1_copy</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;pos_x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;-2.0mm&quot;</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
 </pre></div>
@@ -930,7 +930,9 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s copy the two QComponents and change the y-coordinates of the copies to both be -2:</span>
-<span class="n">newcopies</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">copy_multiple_qcomponents</span><span class="p">([</span><span class="n">q1</span><span class="p">,</span> <span class="n">q1_copy</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Q3&#39;</span><span class="p">,</span> <span class="s1">&#39;Q4&#39;</span><span class="p">],</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;-2.0mm&#39;</span><span class="p">),</span> <span class="nb">dict</span><span class="p">(</span><span class="n">pos_y</span><span class="o">=</span><span class="s1">&#39;-2.0mm&#39;</span><span class="p">)])</span>
+<span class="n">newcopies</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">copy_multiple_qcomponents</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">q1</span><span class="p">,</span> <span class="n">q1_copy</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;Q3&quot;</span><span class="p">,</span> <span class="s2">&quot;Q4&quot;</span><span class="p">],</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;-2.0mm&quot;</span><span class="p">),</span> <span class="nb">dict</span><span class="p">(</span><span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;-2.0mm&quot;</span><span class="p">)]</span>
+<span class="p">)</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
 </pre></div>
@@ -962,7 +964,7 @@ whether the deletion should not be executed in the event the QComponent does hav
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">delete_component</span><span class="p">(</span><span class="s1">&#39;Q1&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">delete_component</span><span class="p">(</span><span class="s2">&quot;Q1&quot;</span><span class="p">)</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
 </pre></div>
@@ -987,8 +989,8 @@ whether the deletion should not be executed in the event the QComponent does hav
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">rename_component</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="s1">&#39;Q_three&#39;</span><span class="p">)</span> <span class="c1"># rename &quot;Q3&quot; to &quot;Q_three&quot;</span>
-<span class="n">design</span><span class="o">.</span><span class="n">rename_component</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="s1">&#39;Q_four&#39;</span><span class="p">)</span> <span class="c1"># rename &quot;Q4&quot; to &quot;Q_four&quot;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">rename_component</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;Q_three&quot;</span><span class="p">)</span>  <span class="c1"># rename &quot;Q3&quot; to &quot;Q_three&quot;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">rename_component</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;Q_four&quot;</span><span class="p">)</span>  <span class="c1"># rename &quot;Q4&quot; to &quot;Q_four&quot;</span>
 </pre></div>
 </div>
 </div>

@@ -700,16 +700,15 @@
 <span class="c1"># Any modifications or derivative works of this code must retain this</span>
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
-<span class="sd">&quot;&quot;&quot;Interdigitated Transmon.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Interdigitated Transmon.&quot;&quot;&quot;</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">sin</span><span class="p">,</span> <span class="n">cos</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">draw</span><span class="p">,</span> <span class="n">Dict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.core.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">QComponent</span>
 
-<span class="c1">#from ... import config</span>
-<span class="c1">#if not config.is_building_docs():</span>
+<span class="c1"># from ... import config</span>
+<span class="c1"># if not config.is_building_docs():</span>
 <span class="c1">#    from qiskit_metal import is_true</span>
 
 
@@ -770,32 +769,34 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Default drawing options</span>
-    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">pad_width</span><span class="o">=</span><span class="s1">&#39;1000um&#39;</span><span class="p">,</span>
-                           <span class="n">pad_height</span><span class="o">=</span><span class="s1">&#39;300um&#39;</span><span class="p">,</span>
-                           <span class="n">finger_width</span><span class="o">=</span><span class="s1">&#39;50um&#39;</span><span class="p">,</span>
-                           <span class="n">finger_height</span><span class="o">=</span><span class="s1">&#39;100um&#39;</span><span class="p">,</span>
-                           <span class="n">finger_space</span><span class="o">=</span><span class="s1">&#39;50um&#39;</span><span class="p">,</span>
-                           <span class="n">pad_pos_x</span><span class="o">=</span><span class="s1">&#39;0um&#39;</span><span class="p">,</span>
-                           <span class="n">pad_pos_y</span><span class="o">=</span><span class="s1">&#39;0um&#39;</span><span class="p">,</span>
-                           <span class="n">comb_width</span><span class="o">=</span><span class="s1">&#39;50um&#39;</span><span class="p">,</span>
-                           <span class="n">comb_space_vert</span><span class="o">=</span><span class="s1">&#39;50um&#39;</span><span class="p">,</span>
-                           <span class="n">comb_space_hor</span><span class="o">=</span><span class="s1">&#39;50um&#39;</span><span class="p">,</span>
-                           <span class="n">jj_width</span><span class="o">=</span><span class="s1">&#39;20um&#39;</span><span class="p">,</span>
-                           <span class="n">cc_space</span><span class="o">=</span><span class="s1">&#39;50um&#39;</span><span class="p">,</span>
-                           <span class="n">cc_width</span><span class="o">=</span><span class="s1">&#39;100um&#39;</span><span class="p">,</span>
-                           <span class="n">cc_height</span><span class="o">=</span><span class="s1">&#39;100um&#39;</span><span class="p">,</span>
-                           <span class="n">cc_topleft_space</span><span class="o">=</span><span class="s1">&#39;50um&#39;</span><span class="p">,</span>
-                           <span class="n">cc_topleft_width</span><span class="o">=</span><span class="s1">&#39;100um&#39;</span><span class="p">,</span>
-                           <span class="n">cc_topleft_height</span><span class="o">=</span><span class="s1">&#39;100um&#39;</span><span class="p">,</span>
-                           <span class="n">cc_topright_space</span><span class="o">=</span><span class="s1">&#39;50um&#39;</span><span class="p">,</span>
-                           <span class="n">cc_topright_width</span><span class="o">=</span><span class="s1">&#39;100um&#39;</span><span class="p">,</span>
-                           <span class="n">cc_topright_height</span><span class="o">=</span><span class="s1">&#39;100um&#39;</span><span class="p">,</span>
-                           <span class="n">rotation_top_pad</span><span class="o">=</span><span class="s1">&#39;180&#39;</span><span class="p">,</span>
-                           <span class="n">inductor_width</span><span class="o">=</span><span class="s1">&#39;20um&#39;</span><span class="p">)</span>
+    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+        <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;1000um&quot;</span><span class="p">,</span>
+        <span class="n">pad_height</span><span class="o">=</span><span class="s2">&quot;300um&quot;</span><span class="p">,</span>
+        <span class="n">finger_width</span><span class="o">=</span><span class="s2">&quot;50um&quot;</span><span class="p">,</span>
+        <span class="n">finger_height</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">,</span>
+        <span class="n">finger_space</span><span class="o">=</span><span class="s2">&quot;50um&quot;</span><span class="p">,</span>
+        <span class="n">pad_pos_x</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">,</span>
+        <span class="n">pad_pos_y</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">,</span>
+        <span class="n">comb_width</span><span class="o">=</span><span class="s2">&quot;50um&quot;</span><span class="p">,</span>
+        <span class="n">comb_space_vert</span><span class="o">=</span><span class="s2">&quot;50um&quot;</span><span class="p">,</span>
+        <span class="n">comb_space_hor</span><span class="o">=</span><span class="s2">&quot;50um&quot;</span><span class="p">,</span>
+        <span class="n">jj_width</span><span class="o">=</span><span class="s2">&quot;20um&quot;</span><span class="p">,</span>
+        <span class="n">cc_space</span><span class="o">=</span><span class="s2">&quot;50um&quot;</span><span class="p">,</span>
+        <span class="n">cc_width</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">,</span>
+        <span class="n">cc_height</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">,</span>
+        <span class="n">cc_topleft_space</span><span class="o">=</span><span class="s2">&quot;50um&quot;</span><span class="p">,</span>
+        <span class="n">cc_topleft_width</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">,</span>
+        <span class="n">cc_topleft_height</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">,</span>
+        <span class="n">cc_topright_space</span><span class="o">=</span><span class="s2">&quot;50um&quot;</span><span class="p">,</span>
+        <span class="n">cc_topright_width</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">,</span>
+        <span class="n">cc_topright_height</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">,</span>
+        <span class="n">rotation_top_pad</span><span class="o">=</span><span class="s2">&quot;180&quot;</span><span class="p">,</span>
+        <span class="n">inductor_width</span><span class="o">=</span><span class="s2">&quot;20um&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Default drawing options&quot;&quot;&quot;</span>
 
     <span class="c1"># Name prefix of component, if user doesn&#39;t provide name</span>
-    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s1">&#39;component&#39;</span><span class="p">)</span>
+    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;component&quot;</span><span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Component metadata&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="TransmonInterdigitated.make">
@@ -806,61 +807,79 @@
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_options</span><span class="p">()</span>  <span class="c1"># Parse the string options into numbers</span>
 
         <span class="c1"># draw the lower pad as a rectangle</span>
-        <span class="n">pad_lower</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pad_width</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_pos_x</span><span class="p">,</span>
-                                   <span class="n">p</span><span class="o">.</span><span class="n">pad_pos_y</span><span class="p">)</span>
+        <span class="n">pad_lower</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pad_width</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_pos_x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_pos_y</span><span class="p">)</span>
 
         <span class="c1"># draw the lower finger as a rectangle</span>
         <span class="n">finger_lower</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span>
-            <span class="n">p</span><span class="o">.</span><span class="n">finger_width</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_pos_x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_pos_y</span> <span class="o">+</span>
-            <span class="mf">0.49999</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pad_height</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.49999</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">finger_height</span><span class="p">))</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">finger_width</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">pad_pos_x</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">pad_pos_y</span> <span class="o">+</span> <span class="mf">0.49999</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pad_height</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.49999</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">finger_height</span><span class="p">),</span>
+        <span class="p">)</span>
 
         <span class="c1"># draw the Josephson Junction as a LineString</span>
-        <span class="n">rect_jj</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([</span>
-            <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span><span class="p">),</span>
-            <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span><span class="p">)</span>
-        <span class="p">])</span>
+        <span class="n">rect_jj</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span><span class="p">),</span>
+                <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span><span class="p">),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
 
         <span class="c1"># draw the first comb to the right of the lower finger as a rectangle</span>
         <span class="n">comb1_lower</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span>
-            <span class="n">p</span><span class="o">.</span><span class="n">comb_width</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span><span class="p">),</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">comb_width</span><span class="p">,</span>
+            <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span><span class="p">),</span>
             <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_width</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">comb_space_hor</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">comb_width</span><span class="p">),</span>
-            <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pad_pos_y</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">+</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span><span class="p">))</span>
+            <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pad_pos_y</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">+</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span><span class="p">),</span>
+        <span class="p">)</span>
 
         <span class="c1"># draw the second comb to the right of the lower finger by translating the first comb</span>
-        <span class="n">comb2_lower</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">comb1_lower</span><span class="p">,</span>
-                                     <span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">comb_space_hor</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">comb_width</span><span class="p">),</span>
-                                     <span class="mf">0.0</span><span class="p">)</span>
+        <span class="n">comb2_lower</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span>
+            <span class="n">comb1_lower</span><span class="p">,</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">comb_space_hor</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">comb_width</span><span class="p">),</span> <span class="mf">0.0</span>
+        <span class="p">)</span>
 
         <span class="c1"># draw the first comb to the left of the lower finger</span>
         <span class="n">comb3_lower</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span>
-            <span class="n">p</span><span class="o">.</span><span class="n">comb_width</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span><span class="p">),</span>
-            <span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_width</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">comb_space_hor</span> <span class="o">-</span>
-             <span class="mf">1.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">comb_width</span><span class="p">),</span>
-            <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pad_pos_y</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">+</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span><span class="p">))</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">comb_width</span><span class="p">,</span>
+            <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span><span class="p">),</span>
+            <span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_width</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">comb_space_hor</span> <span class="o">-</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">comb_width</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pad_pos_y</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">+</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span><span class="p">),</span>
+        <span class="p">)</span>
 
         <span class="c1"># draw the second comb to the left of the lower finger</span>
-        <span class="n">comb4_lower</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">comb3_lower</span><span class="p">,</span>
-                                     <span class="o">-</span><span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">comb_space_hor</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">comb_width</span><span class="p">),</span>
-                                     <span class="mf">0.0</span><span class="p">)</span>
+        <span class="n">comb4_lower</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span>
+            <span class="n">comb3_lower</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">comb_space_hor</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">comb_width</span><span class="p">),</span> <span class="mf">0.0</span>
+        <span class="p">)</span>
 
         <span class="n">coupling_capacitor</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span>
-            <span class="n">p</span><span class="o">.</span><span class="n">cc_width</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_height</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_pos_x</span><span class="p">,</span>
-            <span class="n">p</span><span class="o">.</span><span class="n">pad_pos_y</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pad_height</span><span class="p">)</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_space</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_height</span><span class="p">)</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">cc_width</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">cc_height</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">pad_pos_x</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">pad_pos_y</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pad_height</span><span class="p">)</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_space</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_height</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="n">cc_topleft</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span>
-            <span class="n">p</span><span class="o">.</span><span class="n">cc_topleft_width</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_topleft_height</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">cc_topleft_width</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">cc_topleft_height</span><span class="p">,</span>
             <span class="n">p</span><span class="o">.</span><span class="n">pad_pos_x</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_topleft_width</span><span class="p">,</span>
-            <span class="n">p</span><span class="o">.</span><span class="n">pad_pos_y</span> <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span> <span class="o">+</span>
-            <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_topleft_space</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_topleft_height</span><span class="p">)</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">pad_pos_y</span>
+            <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span>
+            <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_topleft_space</span>
+            <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_topleft_height</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="n">cc_topright</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span>
             <span class="n">cc_topleft</span><span class="p">,</span>
             <span class="n">p</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_topleft_width</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_topright_width</span><span class="p">,</span>
-            <span class="mf">0.0</span><span class="p">)</span>
+            <span class="mf">0.0</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="c1"># merge the bottom elements</span>
-        <span class="n">bottom</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">pad_lower</span><span class="p">,</span> <span class="n">finger_lower</span><span class="p">,</span> <span class="n">comb1_lower</span><span class="p">,</span> <span class="n">comb2_lower</span><span class="p">,</span>
-                            <span class="n">comb3_lower</span><span class="p">,</span> <span class="n">comb4_lower</span><span class="p">)</span>
+        <span class="n">bottom</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">union</span><span class="p">(</span>
+            <span class="n">pad_lower</span><span class="p">,</span> <span class="n">finger_lower</span><span class="p">,</span> <span class="n">comb1_lower</span><span class="p">,</span> <span class="n">comb2_lower</span><span class="p">,</span> <span class="n">comb3_lower</span><span class="p">,</span> <span class="n">comb4_lower</span>
+        <span class="p">)</span>
 
         <span class="c1"># create the top portion of the comb by translating and rotating</span>
         <span class="c1"># the bottom portion of the comb</span>
@@ -873,34 +892,39 @@
         <span class="c1"># the origin is originally set to the middle of the lower pad.</span>
         <span class="c1"># Let&#39;s move it to the center of the JJ.</span>
         <span class="n">bottom</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span>
-            <span class="n">bottom</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span>
-            <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span><span class="p">)</span>
+            <span class="n">bottom</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span>
+        <span class="p">)</span>
         <span class="n">top</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span>
-            <span class="n">top</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span>
-            <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span><span class="p">)</span>
+            <span class="n">top</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span>
+        <span class="p">)</span>
         <span class="n">coupling_capacitor</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span>
-            <span class="n">coupling_capacitor</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span>
-            <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span><span class="p">)</span>
+            <span class="n">coupling_capacitor</span><span class="p">,</span>
+            <span class="mf">0.0</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">cc_topleft</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span>
-            <span class="n">cc_topleft</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span>
-            <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span><span class="p">)</span>
+            <span class="n">cc_topleft</span><span class="p">,</span>
+            <span class="mf">0.0</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">cc_topright</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span>
-            <span class="n">cc_topright</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span>
-            <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span><span class="p">)</span>
+            <span class="n">cc_topright</span><span class="p">,</span>
+            <span class="mf">0.0</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">rect_jj</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span>
-            <span class="n">rect_jj</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span>
-            <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span><span class="p">)</span>
+            <span class="n">rect_jj</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span>
+        <span class="p">)</span>
 
         <span class="c1"># now translate the final structure according to the user input</span>
         <span class="n">bottom</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">bottom</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
         <span class="n">bottom</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">bottom</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_y</span><span class="p">)</span>
         <span class="n">top</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
         <span class="n">top</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_y</span><span class="p">)</span>
-        <span class="n">coupling_capacitor</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">coupling_capacitor</span><span class="p">,</span>
-                                         <span class="n">p</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span>
-                                         <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-        <span class="n">coupling_capacitor</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">coupling_capacitor</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_x</span><span class="p">,</span>
-                                            <span class="n">p</span><span class="o">.</span><span class="n">pos_y</span><span class="p">)</span>
+        <span class="n">coupling_capacitor</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span>
+            <span class="n">coupling_capacitor</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">coupling_capacitor</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">coupling_capacitor</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_y</span><span class="p">)</span>
         <span class="n">cc_topleft</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">cc_topleft</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
         <span class="n">cc_topleft</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">cc_topleft</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_y</span><span class="p">)</span>
         <span class="n">cc_topright</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">cc_topright</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
@@ -911,27 +935,25 @@
         <span class="n">pocket</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">pocket</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_y</span><span class="p">)</span>
 
         <span class="c1"># add each shape separately</span>
-        <span class="n">geom1</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;pad_bot&#39;</span><span class="p">:</span> <span class="n">bottom</span><span class="p">}</span>
-        <span class="n">geom2</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;pad_top&#39;</span><span class="p">:</span> <span class="n">top</span><span class="p">}</span>
-        <span class="n">geom3</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;readout&#39;</span><span class="p">:</span> <span class="n">coupling_capacitor</span><span class="p">}</span>
-        <span class="n">geom4</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;bus1&#39;</span><span class="p">:</span> <span class="n">cc_topleft</span><span class="p">}</span>
-        <span class="n">geom5</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;bus2&#39;</span><span class="p">:</span> <span class="n">cc_topright</span><span class="p">}</span>
-        <span class="n">geom_pocket</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;pocket&#39;</span><span class="p">:</span> <span class="n">pocket</span><span class="p">}</span>
-        <span class="n">geom_jj</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;design&#39;</span><span class="p">:</span> <span class="n">rect_jj</span><span class="p">}</span>
+        <span class="n">geom1</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;pad_bot&quot;</span><span class="p">:</span> <span class="n">bottom</span><span class="p">}</span>
+        <span class="n">geom2</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;pad_top&quot;</span><span class="p">:</span> <span class="n">top</span><span class="p">}</span>
+        <span class="n">geom3</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;readout&quot;</span><span class="p">:</span> <span class="n">coupling_capacitor</span><span class="p">}</span>
+        <span class="n">geom4</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bus1&quot;</span><span class="p">:</span> <span class="n">cc_topleft</span><span class="p">}</span>
+        <span class="n">geom5</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bus2&quot;</span><span class="p">:</span> <span class="n">cc_topright</span><span class="p">}</span>
+        <span class="n">geom_pocket</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;pocket&quot;</span><span class="p">:</span> <span class="n">pocket</span><span class="p">}</span>
+        <span class="n">geom_jj</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;design&quot;</span><span class="p">:</span> <span class="n">rect_jj</span><span class="p">}</span>
 
         <span class="c1"># add to qgeometry</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="n">geom1</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="n">geom2</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="n">geom3</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="n">geom4</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="n">geom5</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom1</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom2</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom3</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom4</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom5</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="n">geom_pocket</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;junction&#39;</span><span class="p">,</span>
-                           <span class="n">geom_jj</span><span class="p">,</span>
-                           <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                           <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">inductor_width</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom_pocket</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
+            <span class="s2">&quot;junction&quot;</span><span class="p">,</span> <span class="n">geom_jj</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">inductor_width</span>
+        <span class="p">)</span>
 
         <span class="c1">###################################################################</span>
 
@@ -940,16 +962,18 @@
         <span class="c1"># define a function that both rotates and translates the</span>
         <span class="c1"># qpin coordinates</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">qpin_rotate_translate</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-<span class="w">            </span><span class="sd">&quot;&quot;&quot; This function rotates the coordinates of the three qpins</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;This function rotates the coordinates of the three qpins</span>
 <span class="sd">            according to the user inputs for &quot;pos_x&quot;, &quot;pos_y&quot;</span>
 <span class="sd">            and &quot;orientation&quot;.</span>
 <span class="sd">            &quot;&quot;&quot;</span>
             <span class="n">y</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
             <span class="n">z</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
             <span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">orientation</span> <span class="o">*</span> <span class="mf">3.14159</span> <span class="o">/</span> <span class="mi">180</span><span class="p">)</span> <span class="o">-</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span>
-                <span class="n">p</span><span class="o">.</span><span class="n">orientation</span> <span class="o">*</span> <span class="mf">3.14159</span> <span class="o">/</span> <span class="mi">180</span><span class="p">)</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">orientation</span> <span class="o">*</span> <span class="mf">3.14159</span> <span class="o">/</span> <span class="mi">180</span>
+            <span class="p">)</span>
             <span class="n">z</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">orientation</span> <span class="o">*</span> <span class="mf">3.14159</span> <span class="o">/</span> <span class="mi">180</span><span class="p">)</span> <span class="o">+</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span>
-                <span class="n">p</span><span class="o">.</span><span class="n">orientation</span> <span class="o">*</span> <span class="mf">3.14159</span> <span class="o">/</span> <span class="mi">180</span><span class="p">)</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">orientation</span> <span class="o">*</span> <span class="mf">3.14159</span> <span class="o">/</span> <span class="mi">180</span>
+            <span class="p">)</span>
             <span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_x</span>
             <span class="n">z</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_y</span>
             <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">z</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
@@ -957,59 +981,92 @@
 
         <span class="c1"># Add Qpin connections for the bottom coupling capacitor</span>
 
-        <span class="n">qp1a</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span>
-                <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span><span class="p">)</span>
-        <span class="n">qp1b</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_space</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_height</span> <span class="o">-</span>
-                <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span><span class="p">)</span>
+        <span class="n">qp1a</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span><span class="p">)</span>
+        <span class="n">qp1b</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mf">0.0</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span>
+            <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_space</span>
+            <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_height</span>
+            <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span>
+            <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span>
+            <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="c1"># rotate and translate the qpin coordinates</span>
         <span class="n">qp1a</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qp1a</span><span class="p">)</span>
         <span class="n">qp1b</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qp1b</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s1">&#39;readout&#39;</span><span class="p">,</span>
-                     <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qp1a</span><span class="p">,</span> <span class="n">qp1b</span><span class="p">]),</span>
-                     <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
-                     <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
+            <span class="s2">&quot;readout&quot;</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qp1a</span><span class="p">,</span> <span class="n">qp1b</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
 
         <span class="c1"># Add Qpin connections for top left coupling capacitor</span>
 
-        <span class="n">qp2a</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pad_pos_x</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_topleft_width</span><span class="p">,</span>
-                <span class="n">p</span><span class="o">.</span><span class="n">pad_pos_y</span> <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span> <span class="o">+</span>
-                <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_topleft_space</span> <span class="o">+</span>
-                <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_topleft_height</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">-</span>
-                <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span><span class="p">)</span>
-        <span class="n">qp2b</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pad_pos_x</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_width</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_pos_y</span> <span class="o">+</span>
-                <span class="mf">1.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span> <span class="o">+</span>
-                <span class="n">p</span><span class="o">.</span><span class="n">cc_topleft_space</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_topleft_height</span> <span class="o">-</span>
-                <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span><span class="p">)</span>
+        <span class="n">qp2a</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">pad_pos_x</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_topleft_width</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">pad_pos_y</span>
+            <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span>
+            <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_topleft_space</span>
+            <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_topleft_height</span>
+            <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span>
+            <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span>
+            <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">qp2b</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">pad_pos_x</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_width</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">pad_pos_y</span>
+            <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span>
+            <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_topleft_space</span>
+            <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_topleft_height</span>
+            <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span>
+            <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span>
+            <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="n">qp2a</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qp2a</span><span class="p">)</span>
         <span class="n">qp2b</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qp2b</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s1">&#39;bus1&#39;</span><span class="p">,</span>
-                     <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qp2a</span><span class="p">,</span> <span class="n">qp2b</span><span class="p">]),</span>
-                     <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
-                     <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
+            <span class="s2">&quot;bus1&quot;</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qp2a</span><span class="p">,</span> <span class="n">qp2b</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
 
         <span class="c1"># Add Qpin connections for top right coupling capacitor</span>
 
-        <span class="n">qp3a</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pad_pos_x</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_topleft_width</span><span class="p">,</span>
-                <span class="n">p</span><span class="o">.</span><span class="n">pad_pos_y</span> <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span> <span class="o">+</span>
-                <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_topleft_space</span> <span class="o">+</span>
-                <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_topleft_height</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">-</span>
-                <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span><span class="p">)</span>
-        <span class="n">qp3b</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pad_pos_x</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_width</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_pos_y</span> <span class="o">+</span>
-                <span class="mf">1.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span> <span class="o">+</span>
-                <span class="n">p</span><span class="o">.</span><span class="n">cc_topleft_space</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_topleft_height</span> <span class="o">-</span>
-                <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span><span class="p">)</span>
+        <span class="n">qp3a</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">pad_pos_x</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_topleft_width</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">pad_pos_y</span>
+            <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span>
+            <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_topleft_space</span>
+            <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_topleft_height</span>
+            <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span>
+            <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span>
+            <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">qp3b</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">pad_pos_x</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_width</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">pad_pos_y</span>
+            <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span>
+            <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span>
+            <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_topleft_space</span>
+            <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cc_topleft_height</span>
+            <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span>
+            <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span>
+            <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="n">qp3a</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qp3a</span><span class="p">)</span>
         <span class="n">qp3b</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qp3b</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s1">&#39;bus2&#39;</span><span class="p">,</span>
-                     <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qp3a</span><span class="p">,</span> <span class="n">qp3b</span><span class="p">]),</span>
-                     <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
-                     <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
+            <span class="s2">&quot;bus2&quot;</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qp3a</span><span class="p">,</span> <span class="n">qp3b</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span></div>
 </div>
 
 </pre></div>

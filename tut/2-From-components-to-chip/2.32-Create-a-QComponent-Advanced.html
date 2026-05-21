@@ -733,6 +733,7 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.qubits.transmon_pocket</span><span class="w"> </span><span class="kn">import</span> <span class="n">TransmonPocket</span>
+
 <span class="o">?</span>TransmonPocket
 </pre></div>
 </div>
@@ -808,8 +809,8 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">big_square</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">cut_rectangle</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">big_square</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">cut_rectangle</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="n">multi_poly</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">big_square</span><span class="p">,</span> <span class="n">cut_rectangle</span><span class="p">)</span>
 <span class="n">multi_poly</span>
 </pre></div>
@@ -856,7 +857,7 @@ shapely.geometry.multipolygon.MultiPolygon
 <p>As is the case with python classes, one can extend a given component by creating a qcomponent which inherits said class, making it a parent/child relationship. While python does support multiple inheritances, Metal may run into some bugs, so it is best to keep inheritances as single paths of heritage.</p>
 <p>A good example is <code class="docutils literal notranslate"><span class="pre">TransmonPocketCL</span></code>, which adds a “charge line” the a “standard” <code class="docutils literal notranslate"><span class="pre">TransmonPocket</span></code>. As can be seen in the below code, none of the charge islands or other connection pads are present, but will still be generated via the <code class="docutils literal notranslate"><span class="pre">super().make()</span></code> line in the <code class="docutils literal notranslate"><span class="pre">make()</span></code> method.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -864,7 +865,7 @@ shapely.geometry.multipolygon.MultiPolygon
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.qubits.transmon_pocket</span><span class="w"> </span><span class="kn">import</span> <span class="n">TransmonPocket</span>
 
 
-<span class="k">class</span><span class="w"> </span><span class="nc">TransmonPocketCL</span><span class="p">(</span><span class="n">TransmonPocket</span><span class="p">):</span>  <span class="c1"># pylint: disable=invalid-name</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TransmonPocketCL</span><span class="p">(</span><span class="n">TransmonPocket</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The base `TransmonPocketCL` class</span>
 
@@ -907,22 +908,21 @@ shapely.geometry.multipolygon.MultiPolygon
 <span class="sd">          -180 to +180 from the &#39;west edge&#39;, will round to the nearest 90.</span>
 <span class="sd">        * cl_off_center (string):  Distance from the center axis the qubit pocket is referenced to</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s1">&#39;Q&#39;</span><span class="p">,</span> <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s1">&#39;True&#39;</span><span class="p">)</span>
+
+    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;Q&quot;</span><span class="p">,</span> <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Component metadata&quot;&quot;&quot;</span>
 
     <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
         <span class="n">make_CL</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">cl_gap</span><span class="o">=</span><span class="s1">&#39;6um&#39;</span><span class="p">,</span>  <span class="c1"># the cpw dielectric gap of the charge line</span>
-        <span class="n">cl_width</span><span class="o">=</span><span class="s1">&#39;10um&#39;</span><span class="p">,</span>  <span class="c1"># the cpw trace width of the charge line</span>
+        <span class="n">cl_gap</span><span class="o">=</span><span class="s2">&quot;6um&quot;</span><span class="p">,</span>  <span class="c1"># the cpw dielectric gap of the charge line</span>
+        <span class="n">cl_width</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>  <span class="c1"># the cpw trace width of the charge line</span>
         <span class="c1"># the length of the charge line &#39;arm&#39; coupling the the qubit pocket.</span>
-        <span class="n">cl_length</span><span class="o">=</span><span class="s1">&#39;20um&#39;</span><span class="p">,</span>
+        <span class="n">cl_length</span><span class="o">=</span><span class="s2">&quot;20um&quot;</span><span class="p">,</span>
         <span class="c1"># Measured from the base of the 90 degree bend</span>
-        <span class="n">cl_ground_gap</span><span class="o">=</span>
-        <span class="s1">&#39;6um&#39;</span><span class="p">,</span>  <span class="c1"># how much ground between the charge line and the qubit pocket</span>
+        <span class="n">cl_ground_gap</span><span class="o">=</span><span class="s2">&quot;6um&quot;</span><span class="p">,</span>  <span class="c1"># how much ground between the charge line and the qubit pocket</span>
         <span class="c1"># -180 to +180 from the &#39;left edge&#39;, will round to the nearest 90.</span>
-        <span class="n">cl_pocket_edge</span><span class="o">=</span><span class="s1">&#39;0&#39;</span><span class="p">,</span>
-        <span class="n">cl_off_center</span><span class="o">=</span>
-        <span class="s1">&#39;100um&#39;</span><span class="p">,</span>  <span class="c1"># distance from the center axis the qubit pocket is built on</span>
+        <span class="n">cl_pocket_edge</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+        <span class="n">cl_off_center</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">,</span>  <span class="c1"># distance from the center axis the qubit pocket is built on</span>
     <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Default drawing options&quot;&quot;&quot;</span>
 
@@ -930,18 +930,16 @@ shapely.geometry.multipolygon.MultiPolygon
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Define the way the options are turned into QGeometry.&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">make</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">make_CL</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">make_CL</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">make_charge_line</span><span class="p">()</span>
 
-
-<span class="c1">#####################################################################</span>
+    <span class="c1">#####################################################################</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">make_charge_line</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates the charge line if the user has charge line option to TRUE</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates the charge line if the user has charge line option to TRUE&quot;&quot;&quot;</span>
 
         <span class="c1"># Grab option values</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Charge_Line&#39;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Charge_Line&quot;</span>
 
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
 
@@ -951,8 +949,9 @@ shapely.geometry.multipolygon.MultiPolygon
 
         <span class="n">cl_etcher</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="n">cl_metal</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">cl_gap</span><span class="p">)</span>
 
-        <span class="n">port_line</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">([(</span><span class="o">-</span><span class="mi">8</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cl_width</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-                                     <span class="p">(</span><span class="o">-</span><span class="mi">8</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cl_width</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">cl_width</span><span class="p">)])</span>
+        <span class="n">port_line</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">(</span>
+            <span class="p">[(</span><span class="o">-</span><span class="mi">8</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cl_width</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">8</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cl_width</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">cl_width</span><span class="p">)]</span>
+        <span class="p">)</span>
 
         <span class="n">polys</span> <span class="o">=</span> <span class="p">[</span><span class="n">cl_metal</span><span class="p">,</span> <span class="n">cl_etcher</span><span class="p">,</span> <span class="n">port_line</span><span class="p">]</span>
 
@@ -960,16 +959,20 @@ shapely.geometry.multipolygon.MultiPolygon
         <span class="n">cl_rotate</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">if</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">cl_pocket_edge</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">135</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">cl_pocket_edge</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">45</span><span class="p">):</span>
             <span class="n">polys</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span>
-                <span class="n">polys</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pocket_width</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cl_ground_gap</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cl_gap</span><span class="p">),</span>
-                <span class="o">-</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pad_gap</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">cl_pocket_edge</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">135</span><span class="p">):</span>
+                <span class="n">polys</span><span class="p">,</span>
+                <span class="o">-</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pocket_width</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cl_ground_gap</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cl_gap</span><span class="p">),</span>
+                <span class="o">-</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pad_gap</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">cl_pocket_edge</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">135</span><span class="p">:</span>
                 <span class="n">p</span><span class="o">.</span><span class="n">cl_rotate</span> <span class="o">=</span> <span class="mi">180</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">polys</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span>
-                <span class="n">polys</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pocket_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cl_groundGap</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cl_gap</span><span class="p">),</span>
-                <span class="o">-</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pad_width</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="n">polys</span><span class="p">,</span>
+                <span class="o">-</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pocket_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cl_groundGap</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cl_gap</span><span class="p">),</span>
+                <span class="o">-</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pad_width</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="p">)</span>
             <span class="n">cl_rotate</span> <span class="o">=</span> <span class="mi">90</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">cl_pocket_edge</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">cl_pocket_edge</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">cl_rotate</span> <span class="o">=</span> <span class="o">-</span><span class="mi">90</span>
 
         <span class="c1"># Rotate it to the pockets orientation</span>
@@ -985,8 +988,8 @@ shapely.geometry.multipolygon.MultiPolygon
         <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">cl_width</span><span class="p">)</span>  <span class="c1"># TODO: chip</span>
 
         <span class="c1"># Adding to element table</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">cl_metal</span><span class="o">=</span><span class="n">cl_metal</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">cl_etcher</span><span class="o">=</span><span class="n">cl_etcher</span><span class="p">),</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">cl_metal</span><span class="o">=</span><span class="n">cl_metal</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">cl_etcher</span><span class="o">=</span><span class="n">cl_etcher</span><span class="p">),</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1003,7 +1006,11 @@ shapely.geometry.multipolygon.MultiPolygon
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_transmon_cl</span> <span class="o">=</span> <span class="n">TransmonPocketCL</span><span class="p">(</span><span class="n">design</span><span class="p">,</span><span class="s1">&#39;my_transmon_cl&#39;</span><span class="p">,</span><span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="nb">dict</span><span class="p">(),</span><span class="n">b</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">))))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_transmon_cl</span> <span class="o">=</span> <span class="n">TransmonPocketCL</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;my_transmon_cl&quot;</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="nb">dict</span><span class="p">(),</span> <span class="n">b</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">))),</span>
+<span class="p">)</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
