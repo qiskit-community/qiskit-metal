@@ -363,9 +363,51 @@ manifest. PR #1055 fixed 5 instances.
 `renderer_ansys_pyaedt`, E721 type comparisons in `_gui/`, an
 F811 dead `render_chip` stub in `ansys_renderer.py:1053`).
 
-**Fix**: Documented in PR #1057's commit message. Wait for HFSS /
-Qt validation environment (AWS Palace, dedicated Windows
-runner) before fixing.
+**Fix**: Resolved by PR #1070 (community ruff sweep by
+PositroniumJS). Validated by CI on the lite path; HFSS / Qt
+runtime paths *not* validated (no AEDT in CI). Behavioral
+equivalence is theoretically sound for every change except
+one — see the next entry.
+
+### PR #1070 wirebond filter — watch this if HFSS issues land
+
+**Where**: `src/qiskit_metal/renderers/renderer_ansys/ansys_renderer.py:1624-1625`
+(the `add_wirebond` path on `QAnsysRenderer`).
+
+**What changed**: Ruff rule E712 rewrote two pandas DataFrame
+filter expressions:
+
+```python
+# before
+wb_table  = table.loc[table["hfss_wire_bonds"] == True]
+wb_table2 = wb_table.loc[wb_table["subtract"] == True]
+# after
+wb_table  = table.loc[table["hfss_wire_bonds"]]
+wb_table2 = wb_table.loc[wb_table["subtract"]]
+```
+
+**Why this needs an entry**: For a pandas column with
+`dtype=bool`, the two forms are identical — both select rows
+where the value is True. **But** if the qgeometry column ever
+holds non-bool truthy values (Python `1`, the string `"True"`,
+etc. from a misconfigured component), the two forms diverge:
+`== True` is exact equality (matches only literal True);
+the bare mask uses Python truthiness (matches any truthy).
+
+The qgeometry tables *should* always be bool-typed for these
+flags, and CI is green — but CI can't actually exercise the
+HFSS wirebond path (no AEDT license).
+
+**What to do if a bug report lands**:
+1. Look for "wirebonds not appearing in HFSS" or "extra
+   wirebonds" symptoms in `add_wirebond`.
+2. Check the dtype of `table["hfss_wire_bonds"]` at the call
+   site — if it's `object`, that's the problem.
+3. Revert is one-liner: restore `== True` on both lines.
+
+The pyaedt-side equivalent is commented-out code at
+`renderer_ansys_pyaedt/pyaedt_base.py:887`, also rewritten by
+PR #1070. Same caveat applies if/when that path is revived.
 
 ## Geometry / pin / HFSS-adjacent
 
