@@ -16,8 +16,6 @@ import pandas as pd
 from pint import UnitRegistry
 from typing import Optional
 
-from pyEPR.calcs.convert import Convert
-
 from qiskit_metal.designs import QDesign
 from qiskit_metal.analyses.core import QAnalysis
 from qiskit_metal.analyses.simulation import LumpedElementsSim
@@ -160,6 +158,8 @@ class LOManalysis(QAnalysis):
                 return
             if self.sim.capacitance_all_passes == {}:
                 self.sim.capacitance_all_passes[1] = self.sim.capacitance_matrix.values
+
+        from pyEPR.calcs.convert import Convert
 
         ureg = UnitRegistry()
         ic_amps = Convert.Ic_from_Lj(s.junctions.Lj, "nH", "A")
