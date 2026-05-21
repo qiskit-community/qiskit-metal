@@ -16,12 +16,6 @@ from typing import Tuple, Optional
 import pandas as pd
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from pyEPR.reports import (
-    plot_convergence_f_vspass,
-    plot_convergence_max_df,
-    plot_convergence_maxdf_vs_sol,
-    plot_convergence_solved_elem,
-)
 from qiskit_metal.designs import QDesign
 
 from qiskit_metal import Dict

@@ -29,7 +29,6 @@ import numpy as np
 import pandas as pd
 import scipy.optimize as opt
 from pint import UnitRegistry
-from pyEPR.calcs.convert import Convert
 
 from qiskit_metal.analyses.quantization.constants import e, h, hbar, phi0, phinot
 
@@ -796,6 +795,8 @@ def lumped_oscillator_from_path(
     Returns:
         dict: A single dataframe corresponding to a single capacitance matrix
     """
+    from pyEPR.calcs.convert import Convert
+
     ureg = UnitRegistry()
     IC_Amps = Convert.Ic_from_Lj(Lj_nH, "nH", "A")
     CJ = ureg(f"{Cj_fF} fF").to("farad").magnitude
