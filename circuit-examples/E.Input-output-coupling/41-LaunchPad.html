@@ -1,26 +1,26 @@
 <!doctype html>
-<html class="no-js" lang="en">
-  <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+<html class="no-js" lang="en" data-content_root="../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Readout line" href="42-ResonatorAndLaunchPad.html" /><link rel="prev" title="Bus Resonator Coupler (transmon-transmon)" href="../D.Qubit-couplers/33-TwoTransmonsWithMeander.html" />
+<link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="Readout line" href="42-ResonatorAndLaunchPad.html"><link rel="prev" title="Bus Resonator Coupler (transmon-transmon)" href="../D.Qubit-couplers/33-TwoTransmonsWithMeander.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>CPW Launch Pad - Quantum Metal 0.6.1</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+      <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
 
 
 <style>
   body {
-    --color-code-background: #f8f8f8;
-  --color-code-foreground: black;
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
   
   }
   @media not print {
@@ -139,14 +139,10 @@
   </symbol>
 </svg>
 
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
-<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
-<label class="overlay sidebar-overlay" for="__navigation">
-  <div class="visually-hidden">Hide navigation sidebar</div>
-</label>
-<label class="overlay toc-overlay" for="__toc">
-  <div class="visually-hidden">Hide table of contents sidebar</div>
-</label>
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
 
 <a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
@@ -156,8 +152,7 @@
   <header class="mobile-header">
     <div class="header-left">
       <label class="nav-overlay-icon" for="__navigation">
-        <div class="visually-hidden">Toggle site navigation sidebar</div>
-        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
       </label>
     </div>
     <div class="header-center">
@@ -165,8 +160,7 @@
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
-        <button class="theme-toggle">
-          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
           <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
           <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
@@ -174,8 +168,7 @@
         </button>
       </div>
       <label class="toc-overlay-icon toc-header-icon" for="__toc">
-        <div class="visually-hidden">Toggle table of contents sidebar</div>
-        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
       </label>
     </div>
   </header>
@@ -210,7 +203,7 @@
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../videoseducation.html">Videos &amp; Education</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../tut/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Tutorials</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../tut/index.html">Tutorials</a><input aria-label="Toggle navigation of Tutorials" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../tut/1-Overview/1.1-Bird%27s-eye-view-of-Qiskit-Metal.html">Bird’s eye view of Qiskit Metal</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tut/1-Overview/1.2-Quick-start.html">Quick Start: Build your first 4-qubit processor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tut/1-Overview/1.3-Saving-Your-Chip-Design.html">Save your chip design</a></li>
@@ -264,7 +257,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../tut/quick-topics/QComponent-Interdigitated-transmon.html">QComponent - Interdigitated transmon qubit</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">Example Designs</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Example Designs</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">Example Designs</a><input aria-label="Toggle navigation of Example Designs" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../A.Qubits/01-Transmon_cross.html">Single Transmon - Grounded (xmon)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../A.Qubits/02-Transmon_floating.html">Single Transmon - Floating</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../A.Qubits/03-concentric_transmon.html">Concentric Transmon</a></li>
@@ -295,7 +288,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
 <ul>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/qlibrary.html">All Quantum Devices</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of All Quantum Devices</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/qlibrary.html">All Quantum Devices</a><input aria-label="Toggle navigation of All Quantum Devices" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.QComponent.html">QComponent</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.ParsedDynamicAttributes_Component.html">ParsedDynamicAttributes_Component</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.BaseQubit.html">BaseQubit</a></li>
@@ -350,7 +343,7 @@
 <p class="caption" role="heading"><span class="caption-text">API References</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/designs.html">QDesigns</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of QDesigns</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/designs.html">QDesigns</a><input aria-label="Toggle navigation of QDesigns" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.designs.QDesign.html">QDesign</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.designs.DesignPlanar.html">DesignPlanar</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.designs.MultiPlanar.html">MultiPlanar</a></li>
@@ -359,7 +352,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.designs.Components.html">Components</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/qlibrary.html">QComponents</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of QComponents</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/qlibrary.html">QComponents</a><input aria-label="Toggle navigation of QComponents" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.QComponent.html">QComponent</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.ParsedDynamicAttributes_Component.html">ParsedDynamicAttributes_Component</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.BaseQubit.html">BaseQubit</a></li>
@@ -411,7 +404,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../apidocs/analyses.html">Analyses</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/renderers.html">QRenderers</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of QRenderers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/renderers.html">QRenderers</a><input aria-label="Toggle navigation of QRenderers" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QRenderer.html">QRenderer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QRendererGui.html">QRendererGui</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QRendererAnalysis.html">QRendererAnalysis</a></li>
@@ -435,7 +428,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.Vec3DArray.html">Vec3DArray</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/toolbox_metal.html">Toolbox</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Toolbox</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/toolbox_metal.html">Toolbox</a><input aria-label="Toggle navigation of Toolbox" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.QiskitMetalExceptions.html">QiskitMetalExceptions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.QiskitMetalDesignError.html">QiskitMetalDesignError</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.about.html">about</a></li>
@@ -447,11 +440,11 @@
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.determine_larger_box.html">determine_larger_box</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/qgeometries.html">QGeometry</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of QGeometry</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/qgeometries.html">QGeometry</a><input aria-label="Toggle navigation of QGeometry" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html">QGeometryTables</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/gui.html">GUI</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/gui.html">GUI</a><input aria-label="Toggle navigation of GUI" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal._gui.MetalGUI.html">MetalGUI</a></li>
 </ul>
 </li>
@@ -461,7 +454,7 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../apidocs/analyses.html">Analyses (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.analyses</span></code>)</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/designs.html">Designs (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.designs</span></code>)</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of Designs (qiskit_metal.designs)</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/designs.html">Designs (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.designs</span></code>)</a><input aria-label="Toggle navigation of Designs (qiskit_metal.designs)" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.designs.QDesign.html">QDesign</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.designs.DesignPlanar.html">DesignPlanar</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.designs.MultiPlanar.html">MultiPlanar</a></li>
@@ -470,11 +463,11 @@
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.designs.Components.html">Components</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/gui.html">GUI (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal._gui</span></code>)</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of GUI (qiskit_metal._gui)</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/gui.html">GUI (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal._gui</span></code>)</a><input aria-label="Toggle navigation of GUI (qiskit_metal._gui)" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal._gui.MetalGUI.html">MetalGUI</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/qgeometries.html">QGeometryTables (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.qgeometries</span></code>)</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of QGeometryTables (qiskit_metal.qgeometries)</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/qgeometries.html">QGeometryTables (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.qgeometries</span></code>)</a><input aria-label="Toggle navigation of QGeometryTables (qiskit_metal.qgeometries)" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html">QGeometryTables</a></li>
 </ul>
 </li>
@@ -578,7 +571,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.layer_stack_handler.html">layer_stack_handler</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.math_and_overrides.html">math_and_overrides</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.parsing.html">parsing</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/qlibrary.html">QLibrary (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.qlibrary</span></code>)</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of QLibrary (qiskit_metal.qlibrary)</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/qlibrary.html">QLibrary (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.qlibrary</span></code>)</a><input aria-label="Toggle navigation of QLibrary (qiskit_metal.qlibrary)" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.QComponent.html">QComponent</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.ParsedDynamicAttributes_Component.html">ParsedDynamicAttributes_Component</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.BaseQubit.html">BaseQubit</a></li>
@@ -629,7 +622,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.anchored_path.html">anchored_path</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/renderers.html">Renderers (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.renderers</span></code>)</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of Renderers (qiskit_metal.renderers)</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/renderers.html">Renderers (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.renderers</span></code>)</a><input aria-label="Toggle navigation of Renderers (qiskit_metal.renderers)" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QRenderer.html">QRenderer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QRendererGui.html">QRendererGui</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QRendererAnalysis.html">QRendererAnalysis</a></li>
@@ -653,7 +646,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.Vec3DArray.html">Vec3DArray</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/toolbox_metal.html">Toolbox_metal (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.toolbox_metal</span></code>)</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of Toolbox_metal (qiskit_metal.toolbox_metal)</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/toolbox_metal.html">Toolbox_metal (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.toolbox_metal</span></code>)</a><input aria-label="Toggle navigation of Toolbox_metal (qiskit_metal.toolbox_metal)" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.QiskitMetalExceptions.html">QiskitMetalExceptions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.QiskitMetalDesignError.html">QiskitMetalDesignError</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.about.html">about</a></li>
@@ -689,8 +682,7 @@
   </a>
 </div>
 <div class="theme-toggle-container theme-toggle-content">
-            <button class="theme-toggle">
-              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
               <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
               <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
@@ -698,8 +690,7 @@
             </button>
           </div>
           <label class="toc-overlay-icon toc-content-icon" for="__toc">
-            <div class="visually-hidden">Toggle table of contents sidebar</div>
-            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
           </label>
         </div>
         <article role="main" id="furo-main-content">
@@ -834,7 +825,7 @@
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/circuit-examples_E.Input-output-coupling_41-LaunchPad_11_0.png" class="no-scaled-link" src="../../_images/circuit-examples_E.Input-output-coupling_41-LaunchPad_11_0.png" style="width: 500px;" />
+<img alt="../../_images/circuit-examples_E.Input-output-coupling_41-LaunchPad_11_0.png" class="no-scaled-link" src="../../_images/circuit-examples_E.Input-output-coupling_41-LaunchPad_11_0.png" width="500" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -854,7 +845,7 @@
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/circuit-examples_E.Input-output-coupling_41-LaunchPad_12_0.png" class="no-scaled-link" src="../../_images/circuit-examples_E.Input-output-coupling_41-LaunchPad_12_0.png" style="width: 500px;" />
+<img alt="../../_images/circuit-examples_E.Input-output-coupling_41-LaunchPad_12_0.png" class="no-scaled-link" src="../../_images/circuit-examples_E.Input-output-coupling_41-LaunchPad_12_0.png" width="500" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -949,7 +940,7 @@ True
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/05/17</div>
+              Last updated on 2026/05/21</div>
           </div>
           <div class="right-details">
             
@@ -984,12 +975,12 @@ True
     </aside>
   </div>
 </div><script src="../../_static/documentation_options.js?v=2bd037f0"></script>
-    <script src="../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     </body>
 </html>
