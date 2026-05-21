@@ -48,9 +48,6 @@ import scqubits as scq
 from sympy import Matrix
 from scipy import optimize, integrate
 
-from pyEPR.calcs.convert import Convert
-from pyEPR.calcs.constants import e_el as ele, hbar
-
 from qiskit_metal.toolbox_python.utility_functions import get_all_args
 from qiskit_metal.analyses.em.cpw_calculations import guided_wavelength
 from qiskit_metal.analyses.hamiltonian.states_energies import extract_energies
@@ -105,6 +102,8 @@ def analyze_loaded_tl(fr, vp, Z0, cap_loading: Dict[str, float], shorted=False):
     # Ultimately, the energy particpation of the shorted end doesn't matter as
     # long as it's close to zero and not infinity since it's energy participation
     # of the other (loaded with finite capacitance) end that matters.
+    from pyEPR.calcs.constants import hbar
+
     _POS_INFTY = 1e30
     # Convert to SI
     wr = fr * MHzRad
@@ -949,6 +948,9 @@ class TransmonBuilder(QuantumBuilder):
         Subsystem object
         """
         cg = self.cg
+        from pyEPR.calcs.convert import Convert
+        from pyEPR.calcs.constants import e_el as ele
+
         l_inv_k = cg.L_inv_k
         c_inv_k = cg.C_inv_k
 
@@ -1001,6 +1003,9 @@ class FluxoniumBuilder(QuantumBuilder):
         system based on default options and input options set for the
         Subsystem object
         """
+        from pyEPR.calcs.convert import Convert
+        from pyEPR.calcs.constants import e_el as ele
+
         cg = self.cg
         c_inv_k = cg.C_inv_k
 
@@ -1158,6 +1163,8 @@ class LumpedResonatorBuilder(QuantumBuilder):
         subsystem_idx = _find_subsystem_mat_index(cg, subsystem, single_node=True)
         ss_idx = subsystem_idx[0]
         subsystem.system_params["subsystem_idx"] = subsystem_idx
+
+        from pyEPR.calcs.constants import hbar
 
         builder_options = self.builder_options
 
@@ -1383,6 +1390,8 @@ class CompositeSystem:
         Note: the resulting matrix is in the basis of nodes_keep, which may not be in the same order of
         subsystems
         """
+        from pyEPR.calcs.constants import hbar
+
         cg = self.circuitGraph()
         nodes = cg.get_nodes_keep()
 
