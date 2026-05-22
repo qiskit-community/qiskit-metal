@@ -142,3 +142,14 @@ docs/qiskit_metal.*.rst
 # JupyterLite build artifacts (docs/conf.py adds jupyterlite_sphinx)
 docs/.jupyterlite.doit.db
 docs/_build/
+
+# Tutorial-notebook output artifacts. These are regenerated whenever a
+# tutorial is executed; tracking them just makes ``git status`` noisy
+# after each run and bloats the working tree of new clones. (Untracked
+# from main in chore/cleanup-tracked-junk; the existing ``*.gds`` /
+# ``*.msh`` patterns above already prevent re-staging.)
+**/shot.png
+**/shot750.png
+**/my_design*.png
+**/batch_output/
+**/sweep_output/
