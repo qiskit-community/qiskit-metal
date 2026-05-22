@@ -25,7 +25,7 @@
     readme = { file = "README.md", content-type = "text/markdown" }
     requires-python = ">=3.10,<3.13"
     urls = { bugtracker = "https://github.com/qiskit-community/qiskit-metal/issues", documentation = "https://qiskit-community.github.io/qiskit-metal/", source = "https://github.com/qiskit-community/qiskit-metal" }
-    version = "0.6.2"
+    version = "0.6.3"
     # Core deps required for ``import qiskit_metal`` + ``qm.view()``
     # to work in any environment. Heavy / optional deps (Qt GUI,
     # pyaedt, gmsh) live in the ``[project.optional-dependencies]``

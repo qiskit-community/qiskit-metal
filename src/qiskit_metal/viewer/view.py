@@ -93,6 +93,7 @@ def view(
 
         qm.view(design, components=["Q1"])
     """
+    caller_supplied_ax = ax is not None
     if ax is None:
         fig, ax = plt.subplots(figsize=figsize)
     else:
@@ -131,8 +132,11 @@ def view(
     # plt.close(): it destroys the live widget canvas and the figure falls back
     # to a static PNG when IPython tries to display it.  Those backends handle
     # de-duplication themselves, so no close is needed.
+    # Only close figures that *we* created. If the caller supplied their own ax,
+    # they own the figure lifecycle — closing it here would destroy their canvas.
     import matplotlib as _mpl
-    if "inline" in _mpl.get_backend().lower() or _mpl.get_backend().lower() == "agg":
+    backend = _mpl.get_backend().lower()
+    if not caller_supplied_ax and ("inline" in backend or backend == "agg"):
         plt.close(fig)
 
     return fig

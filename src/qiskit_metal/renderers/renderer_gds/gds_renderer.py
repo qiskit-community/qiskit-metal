@@ -2140,7 +2140,7 @@ class QGDSRenderer(QRenderer):
             lib.remove(diff_pad_cell_layer)
 
         for ref in list(hold_all_pads_cell.references):
-            lib.remove(ref.ref_cell)
+            lib.remove(ref.cell)
         lib.remove(hold_all_pads_cell)
 
     def _gather_negative_extension_for_jj(

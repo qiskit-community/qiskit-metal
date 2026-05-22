@@ -174,7 +174,6 @@ PlotCanvas
    .. automethod:: PlotCanvas.isMaximized
    .. automethod:: PlotCanvas.isMinimized
    .. automethod:: PlotCanvas.isModal
-   .. automethod:: PlotCanvas.isQmlExposed
    .. automethod:: PlotCanvas.isQuickItemType
    .. automethod:: PlotCanvas.isRightToLeft
    .. automethod:: PlotCanvas.isSignalConnected
