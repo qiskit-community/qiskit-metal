@@ -6,6 +6,48 @@ For the offical user-facing changelog for a particular release can be found in t
 
 The changelog for all releases can be found in the release page: [![Releases](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)
 
+## Quantum Metal v0.6.2 (deprecation-notice release)
+
+**Pre-flip release.** All v0.6.x install behaviour is unchanged
+— but a `FutureWarning` now fires on `import qiskit_metal` letting
+users know v0.7.0 will move the heavy dependencies (PySide6,
+qdarkstyle, pyaedt, pyEPR-quantum, gmsh) out of base into opt-in
+extras. To preserve current behaviour, install with
+`pip install 'quantum-metal[full]'` before upgrading to v0.7.0.
+
+This release also lazifies the last remaining eager heavy-dep
+import — gmsh — so the `tests-lite` CI matrix can validate the
+full v0.7.0 install behaviour ahead of the actual deps flip.
+
+### What landed
+
+- **gmsh lazification** in `renderer_gmsh/gmsh_utils.py` and
+  `renderer_gmsh/gmsh_renderer.py`: same `try/except` +
+  `_require_gmsh()` pattern as the pyEPR/pyaedt lazification in
+  v0.6.x. `QGmshRenderer.__init__` raises a clear
+  `ImportError: ... pip install 'quantum-metal[fem]'` when gmsh
+  isn't available. The `_start_renderers` skip-and-log path
+  catches it.
+- **gmsh version pin tighten**: `gmsh>=4.11.1` → `gmsh>=4.15.0,<5`.
+  The dev env already ships gmsh 4.15.0 (bumped in v0.5.3.post1
+  but the floor wasn't updated). Upper bound caps before any
+  future gmsh 5 lands.
+- **`FutureWarning` on `import qiskit_metal`** advertising the
+  v0.7.0 lite-flip. Fires once per process via Python's standard
+  warning deduplication. Suppress with
+  `QISKIT_METAL_SUPPRESS_LITE_FLIP_WARNING=1`.
+- **Version bumped** to 0.6.2.
+
+### Nothing else changed
+
+- Public API: unchanged
+- Test behaviour: unchanged (all 458 tests still pass)
+- Install behaviour: unchanged (heavies still in base)
+- Headless / lite paths: unchanged
+
+The next release (v0.7.0) will flip `pyproject.toml`'s base
+dependencies and the warning becomes truth.
+
 ## Quantum Metal v0.7.0 (Unreleased — planned)
 
 **Headline: lite-by-default install.** This release moves the heavy
