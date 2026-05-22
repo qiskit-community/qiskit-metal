@@ -2,13 +2,15 @@
  "cells": [
   {
    "cell_type": "markdown",
+   "id": "8efdb0ee",
    "metadata": {},
    "source": [
-    "# Sweeps - Capacitance matrix"
+    "# 4.21 Sweeps - Capacitance matrix"
    ]
   },
   {
    "cell_type": "markdown",
+   "id": "57f0c49e",
    "metadata": {},
    "source": [
     "## Prerequisite\n",
@@ -17,6 +19,7 @@
   },
   {
    "cell_type": "markdown",
+   "id": "e7765b3d",
    "metadata": {},
    "source": [
     "## 1. Perform the necessary imports and create a QDesign in Metal first."
@@ -25,6 +28,7 @@
   {
    "cell_type": "code",
    "execution_count": 1,
+   "id": "1185ddb5",
    "metadata": {},
    "outputs": [],
    "source": [
@@ -35,6 +39,7 @@
   {
    "cell_type": "code",
    "execution_count": 2,
+   "id": "9304e1f5",
    "metadata": {},
    "outputs": [],
    "source": [
@@ -48,6 +53,7 @@
   {
    "cell_type": "code",
    "execution_count": 3,
+   "id": "2b9aec05",
    "metadata": {},
    "outputs": [],
    "source": [
@@ -60,6 +66,7 @@
   {
    "cell_type": "code",
    "execution_count": 4,
+   "id": "98cfc95d",
    "metadata": {},
    "outputs": [],
    "source": [
@@ -69,6 +76,7 @@
   },
   {
    "cell_type": "markdown",
+   "id": "c994a329",
    "metadata": {},
    "source": [
     "### In this example, the design consists of 4 qubits and 4 CPWs."
@@ -77,6 +85,7 @@
   {
    "cell_type": "code",
    "execution_count": 5,
+   "id": "c7de0319",
    "metadata": {},
    "outputs": [],
    "source": [
@@ -169,6 +178,7 @@
   {
    "cell_type": "code",
    "execution_count": 6,
+   "id": "43fc8398",
    "metadata": {
     "tags": [
      "nbsphinx-thumbnail"
@@ -196,6 +206,7 @@
   },
   {
    "cell_type": "markdown",
+   "id": "7a8540a2",
    "metadata": {},
    "source": [
     "## 2 Metal passes information to the simulator \"q3d\" to extract the capacitance matrix.\n"
@@ -204,6 +215,7 @@
   {
    "cell_type": "code",
    "execution_count": 7,
+   "id": "e51b03af",
    "metadata": {},
    "outputs": [],
    "source": [
@@ -212,6 +224,7 @@
   },
   {
    "cell_type": "markdown",
+   "id": "a05a568e",
    "metadata": {},
    "source": [
     "Prepare data to pass as arguments for method run_sweep()."
@@ -220,6 +233,7 @@
   {
    "cell_type": "code",
    "execution_count": 8,
+   "id": "38c70df9",
    "metadata": {},
    "outputs": [],
    "source": [
@@ -231,6 +245,7 @@
   {
    "cell_type": "code",
    "execution_count": 9,
+   "id": "c19398de",
    "metadata": {},
    "outputs": [
     {
@@ -266,6 +281,7 @@
   {
    "cell_type": "code",
    "execution_count": 10,
+   "id": "056f440f",
    "metadata": {},
    "outputs": [],
    "source": [
@@ -284,6 +300,7 @@
   },
   {
    "cell_type": "markdown",
+   "id": "823c37d3",
    "metadata": {},
    "source": [
     "\n",
@@ -307,6 +324,7 @@
   {
    "cell_type": "code",
    "execution_count": 11,
+   "id": "93851495",
    "metadata": {},
    "outputs": [
     {
@@ -522,6 +540,7 @@
   {
    "cell_type": "code",
    "execution_count": 12,
+   "id": "103f2396",
    "metadata": {},
    "outputs": [
     {
@@ -596,6 +615,7 @@
   },
   {
    "cell_type": "markdown",
+   "id": "9b009ed4",
    "metadata": {},
    "source": [
     "We can grab specific values from the results as seen below;"
@@ -604,6 +624,7 @@
   {
    "cell_type": "code",
    "execution_count": 13,
+   "id": "50af981a",
    "metadata": {},
    "outputs": [
     {
@@ -624,6 +645,7 @@
   {
    "cell_type": "code",
    "execution_count": 14,
+   "id": "3aeb0d17",
    "metadata": {},
    "outputs": [
     {
@@ -645,6 +667,7 @@
   {
    "cell_type": "code",
    "execution_count": 15,
+   "id": "6aded99e",
    "metadata": {},
    "outputs": [
     {
@@ -665,6 +688,7 @@
   {
    "cell_type": "code",
    "execution_count": 16,
+   "id": "20887a56",
    "metadata": {},
    "outputs": [
     {
@@ -685,6 +709,7 @@
   {
    "attachments": {},
    "cell_type": "markdown",
+   "id": "171470d2",
    "metadata": {},
    "source": [
     "A boolean flag indicating whether a sweep has converged can be obtained from the `is_converged` key within the `sim_variables`. For instance, the following code retrieves the convergence result for the sweep parameter, 20um. The convergence is extracted from the Ansys Q3D renderer."
@@ -693,6 +718,7 @@
   {
    "cell_type": "code",
    "execution_count": 17,
+   "id": "bcdab1ce",
    "metadata": {},
    "outputs": [
     {
@@ -713,6 +739,7 @@
   {
    "cell_type": "code",
    "execution_count": 18,
+   "id": "72d48e6e",
    "metadata": {},
    "outputs": [
     {
@@ -1171,9 +1198,10 @@
   },
   {
    "cell_type": "markdown",
+   "id": "9dd231d3",
    "metadata": {},
    "source": [
-    "# READ THIS BEFORE running the cell.\n",
+    "## READ THIS BEFORE running the cell.\n",
     "This cell is to demonstrate that if you have already executed c1.sim.run(), you don't have to set up \n",
     "the environment again for c1.run_sweep().  In another words, if you don't pass updated arguments to\n",
     "c1.run_sweep(), then c1.run_sweep() looks for the previous desgin arguments. \n",
@@ -1201,6 +1229,7 @@
   {
    "cell_type": "code",
    "execution_count": 19,
+   "id": "ba82589c",
    "metadata": {},
    "outputs": [],
    "source": [
@@ -1210,6 +1239,7 @@
   {
    "cell_type": "code",
    "execution_count": 20,
+   "id": "e1cacb40",
    "metadata": {},
    "outputs": [
     {
@@ -1231,6 +1261,7 @@
   {
    "cell_type": "code",
    "execution_count": null,
+   "id": "d6b3c2d6",
    "metadata": {},
    "outputs": [],
    "source": []
@@ -1262,5 +1293,5 @@
   }
  },
  "nbformat": 4,
- "nbformat_minor": 4
+ "nbformat_minor": 5
 }

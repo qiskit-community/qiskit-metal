@@ -5,7 +5,7 @@
    "id": "92c512aa",
    "metadata": {},
    "source": [
-    "# Analyzing and tuning a transmon qubit with a resonator\n",
+    "# 4.13 Analyzing and tuning a transmon qubit with a resonator\n",
     "We will showcase two methods (EPR amd LOM) to analyze the same design. Specifically, we will use here the `advanced` methods to run the simulations and analysis, which directly contorl renderers and external packages. Please refer to the tutorial notebooks 4.1 and 4.2 to follow the `suggested` flow to run the analysis."
    ]
   },

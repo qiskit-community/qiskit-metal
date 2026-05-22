@@ -5,7 +5,7 @@
    "id": "1b236e0a",
    "metadata": {},
    "source": [
-    "# Sweeps - Impedance, scattering and admittance (Z S Y) matrices"
+    "# 4.23 Sweeps - Impedance, scattering and admittance (Z S Y) matrices"
    ]
   },
   {

@@ -15,7 +15,7 @@ Outline of Installation
    :margin: 1 0 2 0
 
    .. grid-item-card::
-      :class-card: sd-bg-light sd-border
+      :class-card: sd-border
       :class-header: sd-bg-secondary sd-text-white
       :text-align: left
 
@@ -27,22 +27,22 @@ Outline of Installation
       - For most users; matches CI-tested wheels
 
    .. grid-item-card::
-      :class-card: sd-bg-light sd-border
+      :class-card: sd-border
       :class-header: sd-bg-primary sd-text-white
       :text-align: left
 
-      **Installation from source (v0.5)**
+      **Installation from source**
 
       Install the active Quantum Metal source tree.
 
       **Options:**
 
-      - **Fast path: uv** (recommended during the v0.5 transition)
+      - **Fast path: uv** (recommended)
       - **Conda environment setup** (best for Windows / binary-heavy stacks)
       - **Without conda** (standard Python ``venv``)
 
    .. grid-item-card::
-      :class-card: sd-bg-light sd-border
+      :class-card: sd-border
       :class-header: sd-bg-success sd-text-white
       :text-align: left
 
@@ -51,13 +51,13 @@ Outline of Installation
       - Optional Jupyter Lab integration
       - Installation hints and tips
       - Common Issues / FAQ
-      - Video instructions for legacy package (``qiskit-metal<0.5``)
+      - Video instructions for legacy package (``qiskit-metal``)
 
 
 ==================================================
 Basic Installation
 ==================================================
-Quantum Metal v0.5+ is available on PyPI (Project page: https://pypi.org/project/quantum-metal/).
+Quantum Metal is available on PyPI (Project page: https://pypi.org/project/quantum-metal/).
 
 
 .. tab-set::
@@ -88,7 +88,7 @@ Quantum Metal v0.5+ is available on PyPI (Project page: https://pypi.org/project
 
 
 
-If you specifically need the legacy pre-0.5 package, install ``qiskit-metal`` instead. Otherwise, use ``quantum-metal`` to get the current release.
+If you specifically need the legacy pre-v0.5 package (archived), install ``qiskit-metal`` instead. Otherwise, use ``quantum-metal`` for the current release.
 
 .. For source installs or development, clone the repository and follow the advanced installation paths below.
 
@@ -107,7 +107,7 @@ mesher — are opt-in **extras**.
    :margin: 1 0 2 0
 
    .. grid-item-card:: 🪶 Lite (default)
-      :class-card: sd-bg-light sd-border
+      :class-card: sd-border
       :class-header: sd-bg-info sd-text-white
       :text-align: left
 
@@ -124,7 +124,7 @@ mesher — are opt-in **extras**.
       *No Qt, no Ansys, no gmsh — small, fast, no GUI surprises.*
 
    .. grid-item-card:: 🖥️ GUI
-      :class-card: sd-bg-light sd-border
+      :class-card: sd-border
       :class-header: sd-bg-primary sd-text-white
       :text-align: left
 
@@ -138,7 +138,7 @@ mesher — are opt-in **extras**.
       **Best for:** interactive design work, GUI-driven editing.
 
    .. grid-item-card:: 🧲 Ansys / HFSS / Q3D
-      :class-card: sd-bg-light sd-border
+      :class-card: sd-border
       :class-header: sd-bg-secondary sd-text-white
       :text-align: left
 
@@ -152,26 +152,27 @@ mesher — are opt-in **extras**.
       **Best for:** Ansys-driven simulation. Requires an Ansys
       AEDT license (typically Windows).
 
-   .. grid-item-card:: 🔺 Open FEM (gmsh + Elmer)
-      :class-card: sd-bg-light sd-border
+   .. grid-item-card:: 🔺 Open FEM mesher (gmsh)
+      :class-card: sd-border
       :class-header: sd-bg-success sd-text-white
       :text-align: left
 
       .. code-block:: sh
 
-         pip install "quantum-metal[fem]"
+         pip install "quantum-metal[mesh]"
 
-      **Adds:** gmsh-based meshing, Elmer FEM solver path.
+      **Adds:** gmsh-based meshing — the foundation for the
+      open FEM toolchain (Elmer today, Palace on the roadmap).
 
       **Best for:** open-source FEM workflow without an Ansys
-      license.
+      license. (``[fem]`` is a backward-compatible alias.)
 
 .. grid:: 1
    :gutter: 2
    :margin: 2 0 2 0
 
-   .. grid-item-card:: 📦 Everything (v0.6.x compatibility set)
-      :class-card: sd-bg-light sd-border
+   .. grid-item-card:: 📦 Everything
+      :class-card: sd-border
       :class-header: sd-bg-warning sd-text-dark
       :text-align: left
 
@@ -179,9 +180,8 @@ mesher — are opt-in **extras**.
 
          pip install "quantum-metal[full]"
 
-      All of the above. Use this if you're upgrading from v0.6.x
-      and want **zero** behavior change — the install is bit-for-bit
-      the same dep set you had pre-v0.7.0.
+      All of the above — GUI + Ansys + FEM. Use this if you're
+      upgrading from v0.6.x and want **zero** behavior change.
 
 .. tip::
 
@@ -190,7 +190,7 @@ mesher — are opt-in **extras**.
    .. code-block:: sh
 
       pip install "quantum-metal[gui,ansys]"   # MetalGUI + HFSS/Q3D
-      pip install "quantum-metal[gui,fem]"     # MetalGUI + gmsh
+      pip install "quantum-metal[gui,mesh]"    # MetalGUI + gmsh
 
 **Feature matrix** — what each install gives you, at a glance:
 
@@ -202,7 +202,7 @@ mesher — are opt-in **extras**.
      - lite
      - ``[gui]``
      - ``[ansys]``
-     - ``[fem]``
+     - ``[mesh]``
      - ``[full]``
    * - ``import qiskit_metal``
      - ✅
@@ -252,7 +252,7 @@ mesher — are opt-in **extras**.
      - ✅
      - —
      - ✅
-   * - gmsh / Elmer mesher
+   * - gmsh mesher (foundation for Elmer / Palace)
      - —
      - —
      - —
@@ -267,8 +267,9 @@ mesher — are opt-in **extras**.
 
    **CI coverage:** the ``tests-lite`` CI job validates the lite
    path on every commit; the ``tests-extras`` job exercises
-   ``[gui]``, ``[ansys]``, and ``[fem]`` independently so a
-   regression on any one extra surfaces before release.
+   ``[gui]``, ``[ansys]``, ``[mesh]``, and ``[fem]`` (alias)
+   independently so a regression on any one extra surfaces
+   before release.
 
 For the headless / Qt-free workflow that the lite install supports
 out of the box, see :doc:`headless-usage`.
@@ -421,7 +422,7 @@ Here are some things to consider when setting up a development environment:
 
 * If using a virtual environment, make sure ``pip`` is up to date. 
 
-* Add the path of your qiskit-metal folder to your PATH.
+* Add the path of your quantum-metal folder to your PATH.
 
 * Library errors when activating conda environments or initializing Jupyter Notebook/Lab indicate a conflict between Python libraries in the base and sub-environments. Go ahead and manually delete the library from the base environment ``site-packages`` folder shown in the error message. You might need to reinstall them in the sub-environment or create a new one.
 
@@ -444,12 +445,12 @@ If you run into problems, consult the FAQ's page :ref:`here <faq_setup>`, or ope
 
 
 ============================================================
-Video Instructions for Legacy package (qiskit-metal<0.5)
+Video Instructions for Legacy package (qiskit-metal)
 ============================================================
 
 .. attention::
 
-   The following instructions are for the legacy ``qiskit-metal<0.5`` release. For the latest release and ``quantum-metal`` v0.5+, please follow the text instructions above. An updated video tutorial will be added soon.
+   The following video covers the legacy ``qiskit-metal`` (pre-v0.5) release. For the current ``quantum-metal`` release, follow the text instructions above. An updated video tutorial will be added soon.
 
 .. raw:: html
 

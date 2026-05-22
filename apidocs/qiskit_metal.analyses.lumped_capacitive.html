@@ -3,10 +3,10 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="transmon_analytics" href="qiskit_metal.analyses.transmon_analytics.html"><link rel="prev" title="kappa_calculation" href="qiskit_metal.analyses.kappa_calculation.html">
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Sweeper" href="qiskit_metal.analyses.Sweeper.html"><link rel="prev" title="kappa_calculation" href="qiskit_metal.analyses.kappa_calculation.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>lumped_capacitive - Quantum Metal 0.7.0</title>
+        <title>lumped_capacitive - Quantum Metal 0.7.1</title>
       <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
@@ -155,7 +155,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">Quantum Metal 0.7.0</div></a>
+      <a href="../index.html"><div class="brand">Quantum Metal 0.7.1</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -177,7 +177,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">Quantum Metal 0.7.0</span>
+  <span class="sidebar-brand-text">Quantum Metal 0.7.1</span>
   
 </a>
 <form class="sidebar-search-container" method="get" action="../search.html" role="search">
@@ -186,105 +186,59 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <ul>
-<li class="toctree-l1"><a class="reference internal" href="../index.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installing Qiskit Metal</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../headless-usage.html">Using Quantum Metal without the Qt GUI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../migration-to-v0.7.0.html">Migrating to v0.7.0 (lite install)</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+  <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../workflow.html">Roadmap</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../workflow.html#qiskit-metal-workflow">Qiskit Metal Workflow</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../workflow.html#quantization-methods-overview">Quantization Methods Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../contributor-guide.html">Contributor Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installing Quantum Metal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tut/1-Overview/1.2-Quick-start.html">Quick Start</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../videoseducation.html">Videos &amp; Education</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../tut/index.html">Tutorials</a><input aria-label="Toggle navigation of Tutorials" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../tut/1-Overview/1.1-Bird%27s-eye-view-of-Qiskit-Metal.html">Bird’s eye view of Quantum Metal (Formerly: Qiskit Metal)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/1-Overview/1.2-Quick-start.html">Quick start</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/1-Overview/1.3-Saving-Your-Chip-Design.html">Saving Your Chip Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/1-Overview/1.4-Headless-quick-view-%28no-Qt-GUI%29.html">Headless Quick View — using Quantum Metal without the Qt GUI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/1-Overview/1.1-Bird%27s-eye-view-of-Qiskit-Metal.html">1.1 Bird’s eye view of Quantum Metal (Formerly: Qiskit Metal)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/1-Overview/1.2-Quick-start.html">1.2 Quick start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/1-Overview/1.3-Saving-Your-Chip-Design.html">1.3 Saving Your Chip Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/1-Overview/1.4-Headless-quick-view-%28no-Qt-GUI%29.html">1.4 Headless Quick View — using Quantum Metal without the Qt GUI</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tut/1-Overview/1.5-Parametric-design---iterate-and-compare.html">1.5 Parametric Design: Iterate and Compare</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tut/1-Overview/1.6-QComponent-shape-library.html">1.6 QComponent Shape Library</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html">How to use a QComponent</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html#QComponent-Default-Options">QComponent Default Options</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html#Modifying-the-Options">Modifying the Options</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html#Copying-a-QComponent">Copying a QComponent</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html#Deleting-a-QComponent">Deleting a QComponent</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html#Renaming-a-QComponent">Renaming a QComponent</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html#Overwriting-a-QComponent">Overwriting a QComponent</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html#Closing-the-Qiskit-Metal-GUI">Closing the Qiskit Metal GUI</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.02-How-to-copy-a-QComponent.html">How to copy a QComponent</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.11-Routing-101.html">Routing 101</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.12-Simple-Meander.html">Simple Meander</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.12-Simple-Meander.html#Using-CPW-meanders-to-connect-the-3-Qbits">Using CPW meanders to connect the 3 Qbits</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.13-Hybrid-Auto-and-AStar.html">Hybrid Auto and AStar</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.14-Get-them-all-with-MixedRoute.html">Get them all with MixedRoute</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.21-Design-a-4-qubit-full-chip.html">Design a 4 qubit full chip</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.22-Design-100-qubits-programmatically.html">Design 100 qubits programmatically</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.23-Modify-chip-options.html">Modify chip options</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.31-Create-a-QComponent-Basic.html">Create a QComponent - Basic</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.32-Create-a-QComponent-Advanced.html">Create a QComponent - Advanced</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.33-Add-my-QComponent-to-a-reusable-python-file.html">Add my QComponent to a reusable python file</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/3-Renderers/3.1-Introduction-to-QRenderers.html">Introduction to QRenderers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/3-Renderers/3.1-Introduction-to-QRenderers.html#Note:">Note:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/3-Renderers/3.2-Export-your-design-to-GDS.html">Export your design to GDS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/3-Renderers/3.3-Render-your-design-to-Ansys.html">Render your design to Ansys</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/3-Renderers/3.4-How-do-I-make-my-custom-QRenderer.html">How do I make my custom QRenderer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/3-Renderers/3.5-Render-your-design-to-Gmsh.html">Render your design to Gmsh</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/3-Renderers/3.5-Render-your-design-to-Gmsh.html#Some-necessary-imports">Some necessary imports</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.01-Capacitance-and-LOM.html">Capacitance matrix and LOM analysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.02-Eigenmode-and-EPR.html">Eigenmode and EPR analysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.03-Impedance.html">Impedance, admittance and scattering analysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.04-New-LOM-and-Fluxonium-Example.html">1. load fluxonium cell Q3d simulation results</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.04-New-LOM-and-Fluxonium-Example.html#load-transmon-cell-Q3d-simulation-results">load transmon cell Q3d simulation results</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.04-New-LOM-and-Fluxonium-Example.html#2.-Create-LOM-cells-from-capacitance-matrices">2. Create LOM cells from capacitance matrices</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.04-New-LOM-and-Fluxonium-Example.html#3.-Create-subsystems">3. Create subsystems</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.04-New-LOM-and-Fluxonium-Example.html#4.-Creat-the-composite-system-from-the-cells-and-the-subsystems">4. Creat the composite system from the cells and the subsystems</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.04-New-LOM-and-Fluxonium-Example.html#5.-Generate-the-hilberspace-from-the-composite-system,-leveraging-the-scqubits-package">5. Generate the hilberspace from the composite system, leveraging the scqubits package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.04-New-LOM-and-Fluxonium-Example.html#6.-Print-the-results">6. Print the results</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.04-New-LOM-and-Fluxonium-Example.html#7.-let's-sweep-some-parameters-now">7. let’s sweep some parameters now</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.05-New-LOM-and-Two-Coupled-Transmon-Example.html">Example: two transmons coupled by a direct coupler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence.html">Example: two transmons coupled by a direct coupler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.11-Analyze-and-tune-a-transmon.html">Analyzing and tuning a transmon qubit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.11-Analyze-and-tune-a-transmon.html#1.-Create-the-Qbit-design">1. Create the Qbit design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.12-Analyze-a-resonator.html">Analyzing and tuning a resonator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.13-Analyze-transmon-and-resonator.html">Analyzing and tuning a transmon qubit with a resonator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.14-Analyze-a-double-hanger-resonator.html">Analyzing a double hanger resonator (S Param)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.15-CPW-kappa-calculation.html">CPW Kappa Calculation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.16-Analyze-S21-of-Hange-Geometry-with-WirebondLunchpadDriven.html">S21 simulation of a resonator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.16-Analyze-S21-of-Hange-Geometry-with-WirebondLunchpadDriven.html#Set-up-the-design">Set up the design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.16-Analyze-S21-of-Hange-Geometry-with-WirebondLunchpadDriven.html#Define-the-geometry">Define the geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.16-Analyze-S21-of-Hange-Geometry-with-WirebondLunchpadDriven.html#Scattering-Analysis">Scattering Analysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.16-Analyze-S21-of-Hange-Geometry-with-WirebondLunchpadDriven.html#Broad-sweet-to-find-the-resonance">Broad sweet to find the resonance</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.16-Analyze-S21-of-Hange-Geometry-with-WirebondLunchpadDriven.html#Narrow-sweep-around-the-resonance-found-above">Narrow sweep around the resonance found above</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.16-Analyze-S21-of-Hange-Geometry-with-WirebondLunchpadDriven.html#Close-connections">Close connections</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.17-Fit-S21-of-Hanger-Resonator-Geometry.html">S21 simulation and fitting of a resonator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.17-Fit-S21-of-Hanger-Resonator-Geometry.html#Set-up-the-design">Set up the design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.17-Fit-S21-of-Hanger-Resonator-Geometry.html#Define-the-geometry">Define the geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.17-Fit-S21-of-Hanger-Resonator-Geometry.html#Scattering-Analysis">Scattering Analysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.17-Fit-S21-of-Hanger-Resonator-Geometry.html#Broad-sweet-to-find-the-resonance">Broad sweet to find the resonance</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.17-Fit-S21-of-Hanger-Resonator-Geometry.html#Narrow-sweep-around-the-resonance-found-above">Narrow sweep around the resonance found above</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.17-Fit-S21-of-Hanger-Resonator-Geometry.html#Very-Narrow-sweep-around-the-resonance-found-above">Very-Narrow sweep around the resonance found above</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.17-Fit-S21-of-Hanger-Resonator-Geometry.html#Close-connections">Close connections</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.18-Analyse-a-Resonator-with-Ports.html">Eigenmode simulation with Ports</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.18-Analyse-a-Resonator-with-Ports.html#Set-up-the-design">Set up the design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.18-Analyse-a-Resonator-with-Ports.html#Define-the-geometry">Define the geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.18-Analyse-a-Resonator-with-Ports.html#Perfoming-Eigenmode-Simulation">Perfoming Eigenmode Simulation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.19-Analyze-a-transmon-using-ElmerFEM.html">Analyse a Transmon Qubit using ElmerFEM</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.19-Analyze-a-transmon-using-ElmerFEM.html#Necessary-Imports">Necessary Imports</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.21-Capacitance-matrix.html">Sweeps - Capacitance matrix</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.21-Capacitance-matrix.html#READ-THIS-BEFORE-running-the-cell.">READ THIS BEFORE running the cell.</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.22-Eigenmode-matrix.html">Sweeps - Eigenmode matrix</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.23-Impedance-and-scattering-Z-S-Y-matrices.html">Sweeps - Impedance, scattering and admittance (Z S Y) matrices</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.31-Plot-quantum-oscillator-wavefunction.html">Plotting Wavefunctions of the Quantum Harmonic Oscillator (LC Circuit)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.32-Transmon-analytics-HCPB.html">Transmon Analytics: Plotting Eigenvalues as a Function of Offset Charge</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.33-Transmon-analytics.html">Transmon Analytics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.34-Transmon-qubit-CPB-hamiltonian-charge-basis.html">Modeling transmon qubit Cooper-pair box Hamiltonian in the charge basis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html">2.01 How to use a QComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.02-How-to-copy-a-QComponent.html">2.02 How to copy a QComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.11-Routing-101.html">2.11 Routing 101</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.12-Simple-Meander.html">2.12 Simple Meander</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.13-Hybrid-Auto-and-AStar.html">2.13 Hybrid Auto and AStar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.14-Get-them-all-with-MixedRoute.html">2.14 Get them all with MixedRoute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.21-Design-a-4-qubit-full-chip.html">2.21 Design a 4 qubit full chip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.22-Design-100-qubits-programmatically.html">2.22 Design 100 qubits programmatically</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.23-Modify-chip-options.html">2.23 Modify chip options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.31-Create-a-QComponent-Basic.html">2.31 Create a QComponent - Basic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.32-Create-a-QComponent-Advanced.html">2.32 Create a QComponent - Advanced</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.33-Add-my-QComponent-to-a-reusable-python-file.html">2.33 Add my QComponent to a reusable python file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/3-Renderers/3.1-Introduction-to-QRenderers.html">3.1 Introduction to QRenderers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/3-Renderers/3.2-Export-your-design-to-GDS.html">3.2 Export your design to GDS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/3-Renderers/3.3-Render-your-design-to-Ansys.html">3.3 Render your design to Ansys</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/3-Renderers/3.4-How-do-I-make-my-custom-QRenderer.html">3.4 How do I make my custom QRenderer?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/3-Renderers/3.5-Render-your-design-to-Gmsh.html">3.5 Render your design to Gmsh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.01-Capacitance-and-LOM.html">4.01 Capacitance matrix and LOM analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.02-Eigenmode-and-EPR.html">4.02 Eigenmode and EPR analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.03-Impedance.html">4.03 Impedance, admittance and scattering analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.04-New-LOM-and-Fluxonium-Example.html">4.04 New LOM and Fluxonium Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.05-New-LOM-and-Two-Coupled-Transmon-Example.html">4.05 New LOM and Two Coupled Transmon Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence.html">4.05 New LOM and Two Coupled Transmon Example with sequence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.11-Analyze-and-tune-a-transmon.html">4.11 Analyzing and tuning a transmon qubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.12-Analyze-a-resonator.html">4.12 Analyzing and tuning a resonator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.13-Analyze-transmon-and-resonator.html">4.13 Analyzing and tuning a transmon qubit with a resonator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.14-Analyze-a-double-hanger-resonator.html">4.14 Analyzing a double hanger resonator (S Param)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.15-CPW-kappa-calculation.html">4.15 CPW Kappa Calculation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.16-Analyze-S21-of-Hange-Geometry-with-WirebondLunchpadDriven.html">4.16 S21 simulation of a resonator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.17-Fit-S21-of-Hanger-Resonator-Geometry.html">4.17 S21 simulation and fitting of a resonator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.18-Analyse-a-Resonator-with-Ports.html">4.18 Eigenmode simulation with Ports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.19-Analyze-a-transmon-using-ElmerFEM.html">4.19 Analyse a Transmon Qubit using ElmerFEM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.21-Capacitance-matrix.html">4.21 Sweeps - Capacitance matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.22-Eigenmode-matrix.html">4.22 Sweeps - Eigenmode matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.23-Impedance-and-scattering-Z-S-Y-matrices.html">4.23 Sweeps - Impedance, scattering and admittance (Z S Y) matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.31-Plot-quantum-oscillator-wavefunction.html">4.31 Plotting Wavefunctions of the Quantum Harmonic Oscillator (LC Circuit)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.32-Transmon-analytics-HCPB.html">4.32 Transmon Analytics: Plotting Eigenvalues as a Function of Offset Charge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.33-Transmon-analytics.html">4.33 Transmon Analytics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.34-Transmon-qubit-CPB-hamiltonian-charge-basis.html">4.34 Modeling transmon qubit Cooper-pair box Hamiltonian in the charge basis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/Design-and-Simulation-of-a-Cross-Resonance-Gate.html">The Cross Resonance (CR) Gate</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/cQED-with-the-Jaynes-Cummings-Interaction-Model.html">Circuit Quantum Electrodynamics (cQED) and the Jaynes-Cummings Interaction Model Using the HCPB Class and QuTip</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tut/quick-topics/JJ-Demo-Notebook.html">Josephson Junction QComponent Demo Notebook</a></li>
@@ -324,65 +278,19 @@
 <li class="toctree-l2"><a class="reference internal" href="../circuit-examples/full-design-flow-examples/Exercise-for-the-South-Korea-Hackathon%2720.html">South Korea Qiskit Hackathon’20 - Qiskit Metal exercise</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../videoseducation.html">Videos &amp; Education</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<p class="caption" role="heading"><span class="caption-text">Concepts</span></p>
 <ul>
-<li class="toctree-l1 has-children"><a class="reference internal" href="qlibrary.html">All Quantum Devices</a><input aria-label="Toggle navigation of All Quantum Devices" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.QComponent.html">QComponent</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.ParsedDynamicAttributes_Component.html">ParsedDynamicAttributes_Component</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.BaseQubit.html">BaseQubit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.QRoute.html">QRoute</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.QRouteLead.html">QRouteLead</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.QRoutePoint.html">QRoutePoint</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.CircleCaterpillar.html">CircleCaterpillar</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.CircleRaster.html">CircleRaster</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.NGon.html">NGon</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.NSquareSpiral.html">NSquareSpiral</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.Rectangle.html">Rectangle</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.RectangleHollow.html">RectangleHollow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.Cap3Interdigital.html">Cap3Interdigital</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.CapNInterdigital.html">CapNInterdigital</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.ResonatorCoilRect.html">ResonatorCoilRect</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.CoupledLineTee.html">CoupledLineTee</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.LineTee.html">LineTee</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.CapNInterdigitalTee.html">CapNInterdigitalTee</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.TunableCoupler01.html">TunableCoupler01</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.TunableCoupler02.html">TunableCoupler02</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.ReadoutResFC.html">ReadoutResFC</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.ResonatorLumped.html">ResonatorLumped</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.LaunchpadWirebond.html">LaunchpadWirebond</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.LaunchpadWirebondCoupled.html">LaunchpadWirebondCoupled</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.LaunchpadWirebondDriven.html">LaunchpadWirebondDriven</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.OpenToGround.html">OpenToGround</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.ShortToGround.html">ShortToGround</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.RouteStraight.html">RouteStraight</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.RouteFramed.html">RouteFramed</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.RouteMeander.html">RouteMeander</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.RouteAnchors.html">RouteAnchors</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.RouteMixed.html">RouteMixed</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.RoutePathfinder.html">RoutePathfinder</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.jj_dolan.html">jj_dolan</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.jj_manhattan.html">jj_manhattan</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.TransmonConcentric.html">TransmonConcentric</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.TransmonConcentricType2.html">TransmonConcentricType2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.TransmonCross.html">TransmonCross</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.TransmonCrossFL.html">TransmonCrossFL</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.TransmonInterdigitated.html">TransmonInterdigitated</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.TransmonPocket.html">TransmonPocket</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.TransmonPocketCL.html">TransmonPocketCL</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.TransmonPocket6.html">TransmonPocket6</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.TransmonPocketTeeth.html">TransmonPocketTeeth</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.TunableCoupler01.html">TunableCoupler01</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.SQUID_LOOP.html">SQUID_LOOP</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.StarQubit.html">StarQubit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.anchored_path.html">anchored_path</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../workflow.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../workflow.html#quantum-metal-workflow">Quantum Metal Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../workflow.html#quantization-methods-overview">Quantization Methods Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
 </ul>
-</li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">API References</span></p>
-<ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="designs.html">QDesigns</a><input aria-label="Toggle navigation of QDesigns" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="designs.html">QDesigns</a><input aria-label="Toggle navigation of QDesigns" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="qiskit_metal.designs.QDesign.html">QDesign</a></li>
 <li class="toctree-l2"><a class="reference internal" href="qiskit_metal.designs.DesignPlanar.html">DesignPlanar</a></li>
 <li class="toctree-l2"><a class="reference internal" href="qiskit_metal.designs.MultiPlanar.html">MultiPlanar</a></li>
@@ -391,7 +299,7 @@
 <li class="toctree-l2"><a class="reference internal" href="qiskit_metal.designs.Components.html">Components</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="qlibrary.html">QComponents</a><input aria-label="Toggle navigation of QComponents" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="qlibrary.html">QComponents</a><input aria-label="Toggle navigation of QComponents" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.QComponent.html">QComponent</a></li>
 <li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.ParsedDynamicAttributes_Component.html">ParsedDynamicAttributes_Component</a></li>
 <li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.BaseQubit.html">BaseQubit</a></li>
@@ -442,7 +350,24 @@
 <li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.anchored_path.html">anchored_path</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="analyses.html">Analyses</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="analyses.html">Analyses</a><input aria-label="Toggle navigation of Analyses" checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.analyses.QAnalysis.html">QAnalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.analyses.QSimulation.html">QSimulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.analyses.LOManalysis.html">LOManalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.analyses.EPRanalysis.html">EPRanalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.analyses.LumpedElementsSim.html">LumpedElementsSim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.analyses.EigenmodeSim.html">EigenmodeSim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.analyses.ScatteringImpedanceSim.html">ScatteringImpedanceSim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.analyses.Hcpb.html">Hcpb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.analyses.Hcpb_analytic.html">Hcpb_analytic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.analyses.HO_wavefunctions.html">HO_wavefunctions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.analyses.transmon_analytics.html">transmon_analytics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.analyses.cpw_calculations.html">cpw_calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.analyses.kappa_calculation.html">kappa_calculation</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">lumped_capacitive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.analyses.Sweeper.html">Sweeper</a></li>
+</ul>
+</li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="renderers.html">QRenderers</a><input aria-label="Toggle navigation of QRenderers" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="qiskit_metal.renderers.QRenderer.html">QRenderer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="qiskit_metal.renderers.QRendererGui.html">QRendererGui</a></li>
@@ -488,215 +413,12 @@
 </ul>
 </li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Community &amp; Contributing</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../contributor-guide.html">Contributor Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../headless-usage.html">Using Quantum Metal without Qt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../migration-to-v0.7.0.html">Migrating to v0.7.0</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/Qiskit/qiskit/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
-</ul>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="analyses.html">Analyses (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.analyses</span></code>)</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="designs.html">Designs (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.designs</span></code>)</a><input aria-label="Toggle navigation of Designs (qiskit_metal.designs)" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.designs.QDesign.html">QDesign</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.designs.DesignPlanar.html">DesignPlanar</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.designs.MultiPlanar.html">MultiPlanar</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.designs.DesignFlipChip.html">DesignFlipChip</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.designs.QNet.html">QNet</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.designs.Components.html">Components</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="gui.html">GUI (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal._gui</span></code>)</a><input aria-label="Toggle navigation of GUI (qiskit_metal._gui)" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal._gui.MetalGUI.html">MetalGUI</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="qgeometries.html">QGeometryTables (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.qgeometries</span></code>)</a><input aria-label="Toggle navigation of QGeometryTables (qiskit_metal.qgeometries)" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qgeometries.QGeometryTables.html">QGeometryTables</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal._gui.MetalGUI.html">MetalGUI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.analyses.EPRanalysis.html">EPRanalysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.analyses.EigenmodeSim.html">EigenmodeSim</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.analyses.HO_wavefunctions.html">HO_wavefunctions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.analyses.Hcpb.html">Hcpb</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.analyses.Hcpb_analytic.html">Hcpb_analytic</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.analyses.LOManalysis.html">LOManalysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.analyses.LumpedElementsSim.html">LumpedElementsSim</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.analyses.QAnalysis.html">QAnalysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.analyses.QSimulation.html">QSimulation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.analyses.ScatteringImpedanceSim.html">ScatteringImpedanceSim</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.analyses.Sweeper.html">Sweeper</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.analyses.cpw_calculations.html">cpw_calculations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.analyses.kappa_calculation.html">kappa_calculation</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">lumped_capacitive</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.analyses.transmon_analytics.html">transmon_analytics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.designs.Components.html">Components</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.designs.DesignFlipChip.html">DesignFlipChip</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.designs.DesignPlanar.html">DesignPlanar</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.designs.MultiPlanar.html">MultiPlanar</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.designs.QDesign.html">QDesign</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.designs.QNet.html">QNet</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qgeometries.QGeometryTables.html">QGeometryTables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.BaseQubit.html">BaseQubit</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.Cap3Interdigital.html">Cap3Interdigital</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.CapNInterdigital.html">CapNInterdigital</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.CapNInterdigitalTee.html">CapNInterdigitalTee</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.CircleCaterpillar.html">CircleCaterpillar</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.CircleRaster.html">CircleRaster</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.CoupledLineTee.html">CoupledLineTee</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.LaunchpadWirebond.html">LaunchpadWirebond</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.LaunchpadWirebondCoupled.html">LaunchpadWirebondCoupled</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.LaunchpadWirebondDriven.html">LaunchpadWirebondDriven</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.LineTee.html">LineTee</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.NGon.html">NGon</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.NSquareSpiral.html">NSquareSpiral</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.OpenToGround.html">OpenToGround</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.ParsedDynamicAttributes_Component.html">ParsedDynamicAttributes_Component</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.QComponent.html">QComponent</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.QRoute.html">QRoute</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.QRouteLead.html">QRouteLead</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.QRoutePoint.html">QRoutePoint</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.ReadoutResFC.html">ReadoutResFC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.Rectangle.html">Rectangle</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.RectangleHollow.html">RectangleHollow</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.ResonatorCoilRect.html">ResonatorCoilRect</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.ResonatorLumped.html">ResonatorLumped</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.RouteAnchors.html">RouteAnchors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.RouteFramed.html">RouteFramed</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.RouteMeander.html">RouteMeander</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.RouteMixed.html">RouteMixed</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.RoutePathfinder.html">RoutePathfinder</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.RouteStraight.html">RouteStraight</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.SQUID_LOOP.html">SQUID_LOOP</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.ShortToGround.html">ShortToGround</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.StarQubit.html">StarQubit</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.TransmonConcentric.html">TransmonConcentric</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.TransmonConcentricType2.html">TransmonConcentricType2</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.TransmonCross.html">TransmonCross</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.TransmonCrossFL.html">TransmonCrossFL</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.TransmonInterdigitated.html">TransmonInterdigitated</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.TransmonPocket.html">TransmonPocket</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.TransmonPocket6.html">TransmonPocket6</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.TransmonPocketCL.html">TransmonPocketCL</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.TransmonPocketTeeth.html">TransmonPocketTeeth</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.TunableCoupler01.html">TunableCoupler01</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.TunableCoupler02.html">TunableCoupler02</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.anchored_path.html">anchored_path</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.jj_dolan.html">jj_dolan</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.qlibrary.jj_manhattan.html">jj_manhattan</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.renderers.AnimatedText.html">AnimatedText</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.renderers.Cheesing.html">Cheesing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.renderers.MplInteraction.html">MplInteraction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.renderers.PanAndZoom.html">PanAndZoom</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.renderers.PlotCanvas.html">PlotCanvas</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.renderers.QAnsysRenderer.html">QAnsysRenderer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.renderers.QGDSRenderer.html">QGDSRenderer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.renderers.QGmshRenderer.html">QGmshRenderer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.html">QHFSSDrivenmodalPyaedt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.renderers.QHFSSEigenmodePyaedt.html">QHFSSEigenmodePyaedt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.renderers.QHFSSPyaedt.html">QHFSSPyaedt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.renderers.QHFSSRenderer.html">QHFSSRenderer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.renderers.QMplRenderer.html">QMplRenderer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.renderers.QPyaedt.html">QPyaedt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.renderers.QQ3DPyaedt.html">QQ3DPyaedt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.renderers.QQ3DRenderer.html">QQ3DRenderer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.renderers.QRenderer.html">QRenderer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.renderers.QRendererAnalysis.html">QRendererAnalysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.renderers.QRendererGui.html">QRendererGui</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.renderers.Vec3DArray.html">Vec3DArray</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.renderers.ZoomOnWheel.html">ZoomOnWheel</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.toolbox_metal.QiskitMetalDesignError.html">QiskitMetalDesignError</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.toolbox_metal.QiskitMetalExceptions.html">QiskitMetalExceptions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.toolbox_metal.about.html">about</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables.html">bounds_for_path_and_poly_tables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.toolbox_metal.determine_larger_box.html">determine_larger_box</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.toolbox_metal.import_export.html">import_export</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.toolbox_metal.layer_stack_handler.html">layer_stack_handler</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.toolbox_metal.math_and_overrides.html">math_and_overrides</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qiskit_metal.toolbox_metal.parsing.html">parsing</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="qlibrary.html">QLibrary (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.qlibrary</span></code>)</a><input aria-label="Toggle navigation of QLibrary (qiskit_metal.qlibrary)" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.QComponent.html">QComponent</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.ParsedDynamicAttributes_Component.html">ParsedDynamicAttributes_Component</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.BaseQubit.html">BaseQubit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.QRoute.html">QRoute</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.QRouteLead.html">QRouteLead</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.QRoutePoint.html">QRoutePoint</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.CircleCaterpillar.html">CircleCaterpillar</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.CircleRaster.html">CircleRaster</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.NGon.html">NGon</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.NSquareSpiral.html">NSquareSpiral</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.Rectangle.html">Rectangle</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.RectangleHollow.html">RectangleHollow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.Cap3Interdigital.html">Cap3Interdigital</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.CapNInterdigital.html">CapNInterdigital</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.ResonatorCoilRect.html">ResonatorCoilRect</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.CoupledLineTee.html">CoupledLineTee</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.LineTee.html">LineTee</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.CapNInterdigitalTee.html">CapNInterdigitalTee</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.TunableCoupler01.html">TunableCoupler01</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.TunableCoupler02.html">TunableCoupler02</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.ReadoutResFC.html">ReadoutResFC</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.ResonatorLumped.html">ResonatorLumped</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.LaunchpadWirebond.html">LaunchpadWirebond</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.LaunchpadWirebondCoupled.html">LaunchpadWirebondCoupled</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.LaunchpadWirebondDriven.html">LaunchpadWirebondDriven</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.OpenToGround.html">OpenToGround</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.ShortToGround.html">ShortToGround</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.RouteStraight.html">RouteStraight</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.RouteFramed.html">RouteFramed</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.RouteMeander.html">RouteMeander</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.RouteAnchors.html">RouteAnchors</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.RouteMixed.html">RouteMixed</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.RoutePathfinder.html">RoutePathfinder</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.jj_dolan.html">jj_dolan</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.jj_manhattan.html">jj_manhattan</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.TransmonConcentric.html">TransmonConcentric</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.TransmonConcentricType2.html">TransmonConcentricType2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.TransmonCross.html">TransmonCross</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.TransmonCrossFL.html">TransmonCrossFL</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.TransmonInterdigitated.html">TransmonInterdigitated</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.TransmonPocket.html">TransmonPocket</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.TransmonPocketCL.html">TransmonPocketCL</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.TransmonPocket6.html">TransmonPocket6</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.TransmonPocketTeeth.html">TransmonPocketTeeth</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.TunableCoupler01.html">TunableCoupler01</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.SQUID_LOOP.html">SQUID_LOOP</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.StarQubit.html">StarQubit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.qlibrary.anchored_path.html">anchored_path</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="renderers.html">Renderers (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.renderers</span></code>)</a><input aria-label="Toggle navigation of Renderers (qiskit_metal.renderers)" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.renderers.QRenderer.html">QRenderer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.renderers.QRendererGui.html">QRendererGui</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.renderers.QRendererAnalysis.html">QRendererAnalysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.renderers.PlotCanvas.html">PlotCanvas</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.renderers.MplInteraction.html">MplInteraction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.renderers.ZoomOnWheel.html">ZoomOnWheel</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.renderers.PanAndZoom.html">PanAndZoom</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.renderers.QMplRenderer.html">QMplRenderer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.renderers.AnimatedText.html">AnimatedText</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.renderers.QGDSRenderer.html">QGDSRenderer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.renderers.Cheesing.html">Cheesing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.renderers.QAnsysRenderer.html">QAnsysRenderer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.renderers.QHFSSRenderer.html">QHFSSRenderer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.renderers.QQ3DRenderer.html">QQ3DRenderer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.renderers.QPyaedt.html">QPyaedt</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.renderers.QQ3DPyaedt.html">QQ3DPyaedt</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.renderers.QHFSSPyaedt.html">QHFSSPyaedt</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.html">QHFSSDrivenmodalPyaedt</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.renderers.QHFSSEigenmodePyaedt.html">QHFSSEigenmodePyaedt</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.renderers.QGmshRenderer.html">QGmshRenderer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.renderers.Vec3DArray.html">Vec3DArray</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="toolbox_metal.html">Toolbox_metal (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.toolbox_metal</span></code>)</a><input aria-label="Toggle navigation of Toolbox_metal (qiskit_metal.toolbox_metal)" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.toolbox_metal.QiskitMetalExceptions.html">QiskitMetalExceptions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.toolbox_metal.QiskitMetalDesignError.html">QiskitMetalDesignError</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.toolbox_metal.about.html">about</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.toolbox_metal.import_export.html">import_export</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.toolbox_metal.math_and_overrides.html">math_and_overrides</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.toolbox_metal.parsing.html">parsing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.toolbox_metal.layer_stack_handler.html">layer_stack_handler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables.html">bounds_for_path_and_poly_tables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="qiskit_metal.toolbox_metal.determine_larger_box.html">determine_larger_box</a></li>
-</ul>
-</li>
 </ul>
 
 </div></div>
@@ -799,51 +521,51 @@ using the Duffing model. Typical input is the capacitance matrix calculated from
 </div>
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.lumped_capacitive.Cs_from_Ec">
-<span class="sig-name descname"><span class="pre">Cs_from_Ec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#Cs_from_Ec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.Cs_from_Ec" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">Cs_from_Ec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#Cs_from_Ec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.Cs_from_Ec" title="Link to this definition">¶</a></dt>
 <dd><p>Get total shunt capacitance from charging energy In SI units.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>Ec</strong> (<em>float</em>) – In Joules</p>
+<dd class="field-odd"><p><strong>Ec</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – In Joules</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>In farads</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.lumped_capacitive.Ic_from_Ej">
-<span class="sig-name descname"><span class="pre">Ic_from_Ej</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ej</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#Ic_from_Ej"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.Ic_from_Ej" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">Ic_from_Ej</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ej</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#Ic_from_Ej"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.Ic_from_Ej" title="Link to this definition">¶</a></dt>
 <dd><p>Critical current In SI units.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>Ej</strong> (<em>float</em>) – In Joules</p>
+<dd class="field-odd"><p><strong>Ej</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – In Joules</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>In Amps</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.lumped_capacitive.Ic_from_Lj">
-<span class="sig-name descname"><span class="pre">Ic_from_Lj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Lj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#Ic_from_Lj"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.Ic_from_Lj" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">Ic_from_Lj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Lj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#Ic_from_Lj"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.Ic_from_Lj" title="Link to this definition">¶</a></dt>
 <dd><p>Critical current In SI units.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>Lj</strong> (<em>float</em>) – In Henries</p>
+<dd class="field-odd"><p><strong>Lj</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – In Henries</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>In Amps</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -855,23 +577,23 @@ using the Duffing model. Typical input is the capacitance matrix calculated from
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>Cchare</strong> (<em>float</em>) – Ccharge</p></li>
-<li><p><strong>Cq</strong> (<em>float</em>) – Cq</p></li>
-<li><p><strong>f01</strong> (<em>float</em>) – f01</p></li>
+<li><p><strong>Cchare</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Ccharge</p></li>
+<li><p><strong>Cq</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Cq</p></li>
+<li><p><strong>f01</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – f01</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Calculated chargeline T1</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.lumped_capacitive.chi">
-<span class="sig-name descname"><span class="pre">chi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w01</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w12</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#chi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.chi" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">chi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">wr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">w01</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">w12</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#chi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.chi" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate the dispersive shift $chi$, where $2*chi$ is
 the <cite>|0&gt; –&gt; |1&gt;</cite> splitting).</p>
 <p>Accounts for push on the i-th transmon level due to the j-th transmon level,
@@ -880,17 +602,17 @@ mediated by cavity.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>g</strong> (<em>float</em>) – Qubit-cavity linear coupling.</p></li>
-<li><p><strong>wr</strong> (<em>float</em>) – Frequency of resonator.</p></li>
-<li><p><strong>w01</strong> (<em>float</em>) – Qubit 01 transition frequency</p></li>
-<li><p><strong>w12</strong> (<em>float</em>) – Qubit 12 transition frequency</p></li>
+<li><p><strong>g</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Qubit-cavity linear coupling.</p></li>
+<li><p><strong>wr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Frequency of resonator.</p></li>
+<li><p><strong>w01</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Qubit 01 transition frequency</p></li>
+<li><p><strong>w12</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Qubit 12 transition frequency</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Calculated chi value</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -904,24 +626,24 @@ f01,f02on2.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>Cin</strong> (<em>float</em>) – Cin</p></li>
-<li><p><strong>ICin</strong> (<em>float</em>) – ICin</p></li>
-<li><p><strong>f01</strong> (<em>float</em>) – f01</p></li>
-<li><p><strong>f02on2</strong> (<em>float</em>) – f02on2</p></li>
+<li><p><strong>Cin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Cin</p></li>
+<li><p><strong>ICin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – ICin</p></li>
+<li><p><strong>f01</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – f01</p></li>
+<li><p><strong>f02on2</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – f02on2</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Calculated value</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.lumped_capacitive.df_cmat_style_print">
-<span class="sig-name descname"><span class="pre">df_cmat_style_print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_cmat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#df_cmat_style_print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.df_cmat_style_print" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">df_cmat_style_print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_cmat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.3)"><span class="pre">DataFrame</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#df_cmat_style_print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.df_cmat_style_print" title="Link to this definition">¶</a></dt>
 <dd><p>Display the dataframe in the cmat style.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -938,8 +660,8 @@ f01,f02on2.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>df</strong> (<em>DataFrame</em>) – Data frame to swap</p></li>
-<li><p><strong>i_from</strong> (<em>int</em>) – Index to move from</p></li>
-<li><p><strong>i_to</strong> (<em>int</em>) – Index to move to</p></li>
+<li><p><strong>i_from</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Index to move from</p></li>
+<li><p><strong>i_to</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Index to move to</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -953,7 +675,7 @@ f01,f02on2.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.lumped_capacitive.extract_transmon_coupled_Noscillator">
-<span class="sig-name descname"><span class="pre">extract_transmon_coupled_Noscillator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">capMatrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">CJ</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">res_L4_corr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#extract_transmon_coupled_Noscillator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.extract_transmon_coupled_Noscillator" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">extract_transmon_coupled_Noscillator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">capMatrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">CJ</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">res_L4_corr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#extract_transmon_coupled_Noscillator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.extract_transmon_coupled_Noscillator" title="Link to this definition">¶</a></dt>
 <dd><p>Primary analysis function called by the user for lumped-element mode
 (LOM) analysis. Uses a Maxwell capacitance matrix generated by a capacitive
 extractor, such as Q3D. Additionally takes more values to determine many
@@ -969,30 +691,30 @@ bus1…busN-1, ground, Qubit_pad1, Qubit_pad2, readout. (in F)
 If not in the correct order, use df_reorder_matrix_basis() to put
 it in the proper order. It is advised that the user follow a naming scheme
 in QiskitMetal or Q3D which results in the necessary order by default (eg. alphabetical)</p></li>
-<li><p><strong>Ic</strong> (<em>float</em>) – Junction Ic (in A)</p></li>
-<li><p><strong>Cj</strong> (<em>float</em>) – Junction capacitance (in F)</p></li>
-<li><p><strong>N</strong> (<em>int</em>) – Coupling pads (1 readout, N-1 bus)</p></li>
-<li><p><strong>fb</strong> (<em>float</em>) – Coupling bus and readout frequencies (in GHz).
+<li><p><strong>Ic</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Junction Ic (in A)</p></li>
+<li><p><strong>Cj</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Junction capacitance (in F)</p></li>
+<li><p><strong>N</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Coupling pads (1 readout, N-1 bus)</p></li>
+<li><p><strong>fb</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Coupling bus and readout frequencies (in GHz).
 fb can be a list with the order the order they appear in the capMatrix.</p></li>
-<li><p><strong>fr</strong> (<em>float</em>) – Coupling bus and readout frequencies (in GHz).
+<li><p><strong>fr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Coupling bus and readout frequencies (in GHz).
 fr can be a list with the order the order they appear in the capMatrix.</p></li>
-<li><p><strong>res_L4_corr</strong> (<em>list</em>) – Correction factor is the resonators are L/4
+<li><p><strong>res_L4_corr</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a>) – Correction factor is the resonators are L/4
 if none it ignores, otherwise this is a list of length N
 in the form [1,0,1,…].  Defaults to None.</p></li>
-<li><p><strong>g_scale</strong> (<em>float</em>) – Scale factor</p></li>
-<li><p><strong>print_info</strong> (<em>bool</em>) – Print transmon and coupling properties. Defaults to False.</p></li>
+<li><p><strong>g_scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Scale factor</p></li>
+<li><p><strong>print_info</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – Print transmon and coupling properties. Defaults to False.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><cite>ham_dict</cite> is a dictionary of all the calculated values</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>ValueError</strong> – If N is not positive</p></li>
-<li><p><strong>ValueError</strong> – If the capacitance matrix is the wrong size</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If N is not positive</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If the capacitance matrix is the wrong size</p></li>
 </ul>
 </dd>
 </dl>
@@ -1006,10 +728,10 @@ frequency and anharmonicity.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>Cin_est</strong> (<em>float</em>) – Initial guess for capacitance (in fF)</p></li>
-<li><p><strong>Icin_est</strong> (<em>float</em>) – Initial guess for critical current (in nA)</p></li>
-<li><p><strong>f01</strong> (<em>float</em>) – Transmon frequency (in GHz)</p></li>
-<li><p><strong>f02on2</strong> (<em>float</em>) – 02/2 frequency (in GHz)</p></li>
+<li><p><strong>Cin_est</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Initial guess for capacitance (in fF)</p></li>
+<li><p><strong>Icin_est</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Initial guess for critical current (in nA)</p></li>
+<li><p><strong>f01</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Transmon frequency (in GHz)</p></li>
+<li><p><strong>f02on2</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – 02/2 frequency (in GHz)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1017,7 +739,7 @@ frequency and anharmonicity.</p>
 specified frequency and anharmonicity</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1031,21 +753,21 @@ the ground state is set to zero energy.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>C</strong> (<em>float</em>) – In fF</p></li>
-<li><p><strong>Ic</strong> (<em>float</em>) – In nA</p></li>
-<li><p><strong>N</strong> (<em>int</em>) – Number of charge values to use (needs to be odd)</p></li>
-<li><p><strong>do_disp</strong> (<em>int</em>) – Will print out the values</p></li>
-<li><p><strong>do_plots</strong> (<em>int</em>) – Will plot the data</p></li>
+<li><p><strong>C</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – In fF</p></li>
+<li><p><strong>Ic</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – In nA</p></li>
+<li><p><strong>N</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Number of charge values to use (needs to be odd)</p></li>
+<li><p><strong>do_disp</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Will print out the values</p></li>
+<li><p><strong>do_plots</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Will plot the data</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>fqubitGHz, anharMHz, disp, tphi_ms</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a></p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> – If the matrix is not Hermitian</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If the matrix is not Hermitian</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1058,9 +780,9 @@ conductance. Units are read in automatically and converted to user units.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> (<em>str</em>) – Path to file.</p></li>
-<li><p><strong>user_units</strong> (<em>str</em>) – Units.  Defaults to ‘fF’.</p></li>
-<li><p><strong>_disp</strong> (<em>bool</em>) – whehter or not to display messages.  Defaults to True.</p></li>
+<li><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Path to file.</p></li>
+<li><p><strong>user_units</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Units.  Defaults to ‘fF’.</p></li>
+<li><p><strong>_disp</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – whehter or not to display messages.  Defaults to True.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1074,69 +796,69 @@ conductance. Units are read in automatically and converted to user units.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.lumped_capacitive.lumped_oscillator_from_path">
-<span class="sig-name descname"><span class="pre">lumped_oscillator_from_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Lj_nH</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cj_fF</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#lumped_oscillator_from_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.lumped_oscillator_from_path" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">lumped_oscillator_from_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">Lj_nH</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cj_fF</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.3)"><span class="pre">DataFrame</span></a></span></span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#lumped_oscillator_from_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.lumped_oscillator_from_path" title="Link to this definition">¶</a></dt>
 <dd><p>Obtain a single result dataframe from a Q3D capacitance file pointed to by path.
 Similar to member method lumped_oscillator_vs_passes() of QQ3DRenderer but for a user
 provided capacitance matrix file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> (<em>str</em>) – Path to file.</p></li>
-<li><p><strong>Lj_nH</strong> (<em>float</em>) – Junction inductance (in nH)</p></li>
-<li><p><strong>Cj_fF</strong> (<em>float</em>) – Junction capacitance (in fF)</p></li>
-<li><p><strong>N</strong> (<em>int</em>) – Coupling pads (1 readout, N - 1 bus)</p></li>
-<li><p><strong>fr</strong> (<em>Union</em><em>[</em><em>list</em><em>, </em><em>float</em><em>]</em>) – Readout frequencies (in GHz). fr can be a list with the order
+<li><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Path to file.</p></li>
+<li><p><strong>Lj_nH</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Junction inductance (in nH)</p></li>
+<li><p><strong>Cj_fF</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Junction capacitance (in fF)</p></li>
+<li><p><strong>N</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Coupling pads (1 readout, N - 1 bus)</p></li>
+<li><p><strong>fr</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>]</em>) – Readout frequencies (in GHz). fr can be a list with the order
 they appear in the capMatrix.</p></li>
-<li><p><strong>fb</strong> (<em>Union</em><em>[</em><em>list</em><em>, </em><em>float</em><em>]</em>) – Coupling bus frequencies (in GHz). fb can be a list with the order
+<li><p><strong>fb</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>]</em>) – Coupling bus frequencies (in GHz). fb can be a list with the order
 they appear in the capMatrix.</p></li>
-<li><p><strong>g_scale</strong> (<em>float</em><em>, </em><em>optional</em>) – Scale factor. Defaults to 1..</p></li>
+<li><p><strong>g_scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Scale factor. Defaults to 1..</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A single dataframe corresponding to a single capacitance matrix</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.lumped_capacitive.move_index_to">
-<span class="sig-name descname"><span class="pre">move_index_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i_from</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i_to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">len_</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#move_index_to"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.move_index_to" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">move_index_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i_from</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i_to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">len_</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#move_index_to"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.move_index_to" title="Link to this definition">¶</a></dt>
 <dd><p>Utility function to swap index.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>i_from</strong> (<em>int</em>) – Data frame to swap index</p></li>
-<li><p><strong>i_to</strong> (<em>int</em>) – Data frame to index</p></li>
-<li><p><strong>len</strong> (<em>int</em>) – Length of array</p></li>
+<li><p><strong>i_from</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Data frame to swap index</p></li>
+<li><p><strong>i_to</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Data frame to index</p></li>
+<li><p><strong>len</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Length of array</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>list of indecies, such as  array([1, 2, 3, 4, 0, 5])</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.lumped_capacitive.readin_q3d_matrix">
-<span class="sig-name descname"><span class="pre">readin_q3d_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delim_whitespace</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#readin_q3d_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.readin_q3d_matrix" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">readin_q3d_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">delim_whitespace</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#readin_q3d_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.readin_q3d_matrix" title="Link to this definition">¶</a></dt>
 <dd><p>Read in the txt file created from q3d export as CSV and output the
 capacitance matrix file exported by Ansys Q3D.</p>
 <p>When exporting pick “save as type: data table”</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – Path to file</p>
+<dd class="field-odd"><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Path to file</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>df_cmat, units, design_variation, df_cond</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a></p>
 </dd>
 </dl>
 <p>Example file:</p>
@@ -1170,11 +892,11 @@ Q1_readout_connector_pad        0       0       0       0       0       0
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.lumped_capacitive.readin_q3d_matrix_m">
-<span class="sig-name descname"><span class="pre">readin_q3d_matrix_m</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#readin_q3d_matrix_m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.readin_q3d_matrix_m" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">readin_q3d_matrix_m</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.3)"><span class="pre">DataFrame</span></a></span></span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#readin_q3d_matrix_m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.readin_q3d_matrix_m" title="Link to this definition">¶</a></dt>
 <dd><p>Read in Q3D cap matrix from a .m file exported by Ansys Q3d.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – Path to .m file</p>
+<dd class="field-odd"><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Path to .m file</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>pd.DataFrame of cap matrix, with no names of columns.</p>
@@ -1184,21 +906,21 @@ Q1_readout_connector_pad        0       0       0       0       0       0
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.lumped_capacitive.transmon_props">
-<span class="sig-name descname"><span class="pre">transmon_props</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cq</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#transmon_props"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.transmon_props" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">transmon_props</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cq</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#transmon_props"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.transmon_props" title="Link to this definition">¶</a></dt>
 <dd><p>Properties of a transmon qubit.</p>
 <p>Calculate LJ, EJ, EC, wq, eps from Ic,Cq.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>Ic</strong> (<em>float</em>) – Junction Ic (in A)</p></li>
-<li><p><strong>Cq</strong> (<em>float</em>) – Junction capacitance (in F)</p></li>
+<li><p><strong>Ic</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Junction Ic (in A)</p></li>
+<li><p><strong>Cq</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Junction capacitance (in F)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>[LJ, EJ, Zqp, EC, wq, wq0, eps1] – Inductance</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1210,12 +932,12 @@ Q1_readout_connector_pad        0       0       0       0       0       0
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="qiskit_metal.analyses.transmon_analytics.html">
+          <a class="next-page" href="qiskit_metal.analyses.Sweeper.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">transmon_analytics</div>
+                <div class="title">Sweeper</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -1290,7 +1012,7 @@ Q1_readout_connector_pad        0       0       0       0       0       0
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=fe7df9b0"></script>
+</div><script src="../_static/documentation_options.js?v=5a057da9"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
