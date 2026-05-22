@@ -190,39 +190,57 @@ def _add_center_cross_showcase(design):
     design.rebuild()
 
 
-def _cpw_factory(cpw_spec):
-    """Returns a function that adds one CPW meander and rebuilds."""
-    name, qa, pa, qb, pb = cpw_spec
-    # Meander geometry asymmetry between horizontal vs vertical routes was
-    # caused by:
-    #   1. ``snap=true`` (default) — rounds the wiggle count to integer
-    #      multiples, and the rounding outcome differs by orientation.
-    #   2. ``meander.spacing=200um`` (default) was too tight for fillet=100,
-    #      forcing sharp corners where the fillet couldn't fit.
-    #   3. ``total_length=2.6mm`` left enough excess length for multiple
-    #      wiggles, amplifying the per-orientation rounding difference.
-    # Fix: wider meander spacing, snap off, and shorter total_length so
-    # each route has only 1–2 visible wiggles.
-    cpw_opts = Dict(
+def _compute_robust_cpw_opts(design, qa, pa, qb, pb):
+    """Compute CPW meander options sized to the ACTUAL pin-to-pin distance.
+
+    Why this is dynamic, not hardcoded: RouteMeander has a known geometry
+    bug — ``meander_number = np.floor(length_direct / spacing)`` (see
+    src/qiskit_metal/qlibrary/tlines/meandered.py:~166) — that produces
+    different wiggle counts for geometrically-equivalent horizontal vs
+    vertical routes, because tiny floating-point asymmetries in
+    ``length_direct`` push the floor() result across integer boundaries.
+    The per-wiggle excursion is then ``length_excess/(meander_number*2)``,
+    so a one-extra-wiggle route ends up with much smaller bumps that
+    render as sharp "kinks" / castellations.
+
+    The portable workaround across ANY qubit layout: pick ``spacing``
+    LARGER than the actual pin-to-pin distance, so ``floor()`` is
+    guaranteed to land on 1. One big symmetric hump every time, regardless
+    of route orientation or chip size. We read the distance from the live
+    design's pin positions instead of hardcoding a value, so this keeps
+    working if Q_SPEC changes (different qubit spacing, or someone forks
+    the script for a new layout).
+    """
+    import numpy as np
+    p1 = np.asarray(design.components[qa].pins[pa]["middle"], dtype=float)
+    p2 = np.asarray(design.components[qb].pins[pb]["middle"], dtype=float)
+    distance_mm = float(np.linalg.norm(p2 - p1))   # design units are mm
+
+    spacing_mm = distance_mm * 1.10                # > distance → floor()=1
+    total_length_mm = distance_mm * 1.55           # excess for one visible hump
+    # Fillet must fit inside the wiggle envelope — cap at spacing/4 for safety,
+    # floor at 40um so very short routes still get a visible curve.
+    fillet_um = min(120, max(40, int(spacing_mm * 1000 / 4)))
+
+    return Dict(
         lead=Dict(start_straight="180um", end_straight="180um"),
-        fillet="120 um",
-        total_length="2.4 mm",
-        trace_width="10 um",
-        trace_gap="6 um",
-        # Workaround for a real RouteMeander bug (meandered.py line ~166):
-        #   meander_number = np.floor(length_direct / spacing)
-        # length_direct varies by tiny floating-point amounts between
-        # geometrically-equivalent horizontal vs vertical routes, and the
-        # floor() then gives different integer wiggle counts (e.g. 2 vs 3)
-        # for the same rotated shape. The per-wiggle excursion is then
-        # length_excess/(meander_number*2), so a one-extra-wiggle route
-        # ends up with much smaller bumps (visible as a "kink").
-        # Setting spacing > length_direct forces meander_number = 1 for
-        # every route, so all four are guaranteed to be one big hump and
-        # the orientation-dependent rounding can't bite.
-        meander=Dict(spacing="1.2mm", asymmetry="0um"),
+        fillet=f"{fillet_um} um",
+        total_length=f"{total_length_mm:.3f}mm",
+        trace_width="10 um", trace_gap="6 um",
+        meander=Dict(spacing=f"{spacing_mm:.3f}mm", asymmetry="0um"),
         snap="false",
     )
+
+
+def _cpw_factory(cpw_spec):
+    """Returns a function that adds one CPW meander and rebuilds.
+
+    CPW geometry params are computed from the LIVE design's pin positions
+    inside the closure (not hardcoded), so the meander workaround is
+    correct for any qubit-spacing or chip-size choice — not tied to the
+    current ±1.1mm hero-GIF layout.
+    """
+    name, qa, pa, qb, pb = cpw_spec
 
     def add(design):
         RouteMeander(
@@ -233,7 +251,7 @@ def _cpw_factory(cpw_spec):
                     start_pin=Dict(component=qa, pin=pa),
                     end_pin=Dict(component=qb, pin=pb),
                 ),
-                **cpw_opts,
+                **_compute_robust_cpw_opts(design, qa, pa, qb, pb),
             ),
         )
         design.rebuild()
