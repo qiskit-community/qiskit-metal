@@ -85,6 +85,8 @@ GMSH Renderer
 
 """
 
+import warnings as _warnings
+
 from qiskit_metal.renderers.setup_default import setup_renderers
 
 from qiskit_metal import config
@@ -135,5 +137,16 @@ if config.is_building_docs():
         from qiskit_metal.renderers.renderer_ansys_pyaedt.hfss_renderer_eigenmode_aedt import (
             QHFSSEigenmodePyaedt,
         )
-    except (ImportError, OSError):
-        pass
+    except (ImportError, OSError) as _exc:
+        # Non-fatal on headless doc runners that lack native shared libraries
+        # (libEGL for Qt, libGLU for gmsh, etc.).  Sphinx autodoc will skip
+        # any class that failed to import and emit its own WARNING.  The
+        # message below makes the root cause visible in the build log so a
+        # developer adding a new renderer can tell why it's missing from the
+        # API docs rather than seeing a silent disappearance.
+        _warnings.warn(
+            f"Some renderer classes could not be imported for autodoc "
+            f"(missing native library or optional dependency): {_exc}",
+            ImportWarning,
+            stacklevel=1,
+        )
