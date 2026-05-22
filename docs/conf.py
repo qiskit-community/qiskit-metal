@@ -189,7 +189,23 @@ numfig = True
 
 # Mock heavy/external modules so autodoc does not pull in their docstrings
 # (e.g., matplotlib roles that are not defined in our docs build).
-autodoc_mock_imports = ["matplotlib"]
+#
+# As of v0.7.0 the docs tox env installs only the base/lite package
+# (no [full] extras). The heavies below are not on disk during a docs
+# build; mocking them keeps autodoc's cross-reference walk from blowing
+# up when it follows type hints into Qt / pyEPR / pyaedt / gmsh /
+# IPython symbols. With these mocks in place, the renderer modules can
+# import cleanly under autodoc even though their native libs are absent.
+autodoc_mock_imports = [
+    "matplotlib",
+    "PySide6",
+    "qdarkstyle",
+    "pyEPR",
+    "pyaedt",
+    "ansys",  # ansys.aedt.core etc.
+    "gmsh",
+    "IPython",  # Jupyter-environment only; lazified in display.py
+]
 
 # A dictionary mapping 'figure', 'table', 'code-block' and 'section' to
 # strings that are used for format of figure numbers. As a special character,

@@ -183,13 +183,11 @@
     description = "Build the documentation using sphinx"
     base_python = [ "py3.12" ]
     pass_env = [ "DOCS_FROM_MASTER", "QISKIT_DOCS_BUILD_TUTORIALS" ]
-    # Sphinx autosummary walks all qiskit_metal submodules including
-    # the HFSS/Q3D and gmsh renderers; those modules can be imported
-    # cleanly without their heavies (everything is lazy), but they
-    # type-hint against pyEPR / pyaedt / gmsh symbols and autodoc
-    # would emit warnings without the runtime symbols available.
-    # Install ``[full]`` so docs builds match v0.6.x output.
-    extras            = [ "full" ]
+    # Lite install only. The heavy backends (PySide6, pyaedt, pyEPR,
+    # gmsh) are mocked via ``autodoc_mock_imports`` in
+    # ``docs/conf.py`` so Sphinx autodoc can walk renderer modules
+    # without those packages on disk. Keeps docs CI fast and
+    # decoupled from native-lib availability on the runner.
     dependency_groups = [ "docs" ]
     commands = [
         [
