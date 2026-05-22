@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>qiskit_metal.renderers.renderer_gds.gds_renderer - Quantum Metal 0.6.2</title>
+        <title>qiskit_metal.renderers.renderer_gds.gds_renderer - Quantum Metal 0.6.3</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
@@ -154,7 +154,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">Quantum Metal 0.6.2</div></a>
+      <a href="../../../../index.html"><div class="brand">Quantum Metal 0.6.3</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -176,7 +176,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
   
   
-  <span class="sidebar-brand-text">Quantum Metal 0.6.2</span>
+  <span class="sidebar-brand-text">Quantum Metal 0.6.3</span>
   
 </a>
 <form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
@@ -203,9 +203,12 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../videoseducation.html">Videos &amp; Education</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../tut/index.html">Tutorials</a><input aria-label="Toggle navigation of Tutorials" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../tut/1-Overview/1.1-Bird%27s-eye-view-of-Qiskit-Metal.html">Bird’s eye view of Qiskit Metal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../tut/1-Overview/1.2-Quick-start.html">Quick Start: Build your first 4-qubit processor</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../tut/1-Overview/1.3-Saving-Your-Chip-Design.html">Save your chip design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/1-Overview/1.1-Bird%27s-eye-view-of-Qiskit-Metal.html">Bird’s eye view of Quantum Metal (Formerly: Qiskit Metal)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/1-Overview/1.2-Quick-start.html">Quick start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/1-Overview/1.3-Saving-Your-Chip-Design.html">Saving Your Chip Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/1-Overview/1.4-Headless-quick-view-%28no-Qt-GUI%29.html">Headless Quick View — using Quantum Metal without the Qt GUI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/1-Overview/1.5-Parametric-design---iterate-and-compare.html">1.5 Parametric Design: Iterate and Compare</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/1-Overview/1.6-QComponent-shape-library.html">1.6 QComponent Shape Library</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html">How to use a QComponent</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html#QComponent-Default-Options">QComponent Default Options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html#Modifying-the-Options">Modifying the Options</a></li>
@@ -231,15 +234,48 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/3-Renderers/3.2-Export-your-design-to-GDS.html">Export your design to GDS</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/3-Renderers/3.3-Render-your-design-to-Ansys.html">Render your design to Ansys</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/3-Renderers/3.4-How-do-I-make-my-custom-QRenderer.html">How do I make my custom QRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/3-Renderers/3.5-Render-your-design-to-Gmsh.html">Render your design to Gmsh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/3-Renderers/3.5-Render-your-design-to-Gmsh.html#Some-necessary-imports">Some necessary imports</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.01-Capacitance-and-LOM.html">Capacitance matrix and LOM analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.02-Eigenmode-and-EPR.html">Eigenmode and EPR analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.03-Impedance.html">Impedance, admittance and scattering analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.04-New-LOM-and-Fluxonium-Example.html">1. load fluxonium cell Q3d simulation results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.04-New-LOM-and-Fluxonium-Example.html#load-transmon-cell-Q3d-simulation-results">load transmon cell Q3d simulation results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.04-New-LOM-and-Fluxonium-Example.html#2.-Create-LOM-cells-from-capacitance-matrices">2. Create LOM cells from capacitance matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.04-New-LOM-and-Fluxonium-Example.html#3.-Create-subsystems">3. Create subsystems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.04-New-LOM-and-Fluxonium-Example.html#4.-Creat-the-composite-system-from-the-cells-and-the-subsystems">4. Creat the composite system from the cells and the subsystems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.04-New-LOM-and-Fluxonium-Example.html#5.-Generate-the-hilberspace-from-the-composite-system,-leveraging-the-scqubits-package">5. Generate the hilberspace from the composite system, leveraging the scqubits package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.04-New-LOM-and-Fluxonium-Example.html#6.-Print-the-results">6. Print the results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.04-New-LOM-and-Fluxonium-Example.html#7.-let's-sweep-some-parameters-now">7. let’s sweep some parameters now</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.05-New-LOM-and-Two-Coupled-Transmon-Example.html">Example: two transmons coupled by a direct coupler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence.html">Example: two transmons coupled by a direct coupler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.11-Analyze-and-tune-a-transmon.html">Analyzing and tuning a transmon qubit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.11-Analyze-and-tune-a-transmon.html#1.-Create-the-Qbit-design">1. Create the Qbit design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.12-Analyze-a-resonator.html">Analyzing and tuning a resonator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.13-Analyze-transmon-and-resonator.html">Analyzing and tuning a transmon qubit with a resonator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.14-Analyze-a-double-hanger-resonator.html">Analyzing a double hanger resonator (S Param)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.15-CPW-kappa-calculation.html">CPW Kappa Calculation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.16-Analyze-S21-of-Hange-Geometry-with-WirebondLunchpadDriven.html">S21 simulation of a resonator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.16-Analyze-S21-of-Hange-Geometry-with-WirebondLunchpadDriven.html#Set-up-the-design">Set up the design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.16-Analyze-S21-of-Hange-Geometry-with-WirebondLunchpadDriven.html#Define-the-geometry">Define the geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.16-Analyze-S21-of-Hange-Geometry-with-WirebondLunchpadDriven.html#Scattering-Analysis">Scattering Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.16-Analyze-S21-of-Hange-Geometry-with-WirebondLunchpadDriven.html#Broad-sweet-to-find-the-resonance">Broad sweet to find the resonance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.16-Analyze-S21-of-Hange-Geometry-with-WirebondLunchpadDriven.html#Narrow-sweep-around-the-resonance-found-above">Narrow sweep around the resonance found above</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.16-Analyze-S21-of-Hange-Geometry-with-WirebondLunchpadDriven.html#Close-connections">Close connections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.17-Fit-S21-of-Hanger-Resonator-Geometry.html">S21 simulation and fitting of a resonator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.17-Fit-S21-of-Hanger-Resonator-Geometry.html#Set-up-the-design">Set up the design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.17-Fit-S21-of-Hanger-Resonator-Geometry.html#Define-the-geometry">Define the geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.17-Fit-S21-of-Hanger-Resonator-Geometry.html#Scattering-Analysis">Scattering Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.17-Fit-S21-of-Hanger-Resonator-Geometry.html#Broad-sweet-to-find-the-resonance">Broad sweet to find the resonance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.17-Fit-S21-of-Hanger-Resonator-Geometry.html#Narrow-sweep-around-the-resonance-found-above">Narrow sweep around the resonance found above</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.17-Fit-S21-of-Hanger-Resonator-Geometry.html#Very-Narrow-sweep-around-the-resonance-found-above">Very-Narrow sweep around the resonance found above</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.17-Fit-S21-of-Hanger-Resonator-Geometry.html#Close-connections">Close connections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.18-Analyse-a-Resonator-with-Ports.html">Eigenmode simulation with Ports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.18-Analyse-a-Resonator-with-Ports.html#Set-up-the-design">Set up the design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.18-Analyse-a-Resonator-with-Ports.html#Define-the-geometry">Define the geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.18-Analyse-a-Resonator-with-Ports.html#Perfoming-Eigenmode-Simulation">Perfoming Eigenmode Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.19-Analyze-a-transmon-using-ElmerFEM.html">Analyse a Transmon Qubit using ElmerFEM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.19-Analyze-a-transmon-using-ElmerFEM.html#Necessary-Imports">Necessary Imports</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.21-Capacitance-matrix.html">Sweeps - Capacitance matrix</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.21-Capacitance-matrix.html#READ-THIS-BEFORE-running-the-cell.">READ THIS BEFORE running the cell.</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.22-Eigenmode-matrix.html">Sweeps - Eigenmode matrix</a></li>
@@ -248,12 +284,15 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.32-Transmon-analytics-HCPB.html">Transmon Analytics: Plotting Eigenvalues as a Function of Offset Charge</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.33-Transmon-analytics.html">Transmon Analytics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/4.34-Transmon-qubit-CPB-hamiltonian-charge-basis.html">Modeling transmon qubit Cooper-pair box Hamiltonian in the charge basis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/Design-and-Simulation-of-a-Cross-Resonance-Gate.html">The Cross Resonance (CR) Gate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/4-Analysis/cQED-with-the-Jaynes-Cummings-Interaction-Model.html">Circuit Quantum Electrodynamics (cQED) and the Jaynes-Cummings Interaction Model Using the HCPB Class and QuTip</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/quick-topics/JJ-Demo-Notebook.html">Josephson Junction QComponent Demo Notebook</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/quick-topics/Managing-pins.html">Managing pins</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/quick-topics/Managing-variables.html">Managing variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/quick-topics/Opening-documentation.html">Opening the documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/quick-topics/QComponent-3-fingers-capacitor.html">QComponent - 3-fingers capacitor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/quick-topics/QComponent-Interdigitated-transmon.html">QComponent - Interdigitated transmon qubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/quick-topics/Testing-QComponents-for-overlap-and-collisions.html">Demo Notebook Demonstrating How to Test for Component/CPW Overlap</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../circuit-examples/index.html">Example Designs</a><input aria-label="Toggle navigation of Example Designs" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -407,24 +446,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QRenderer.html">QRenderer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QRendererGui.html">QRendererGui</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QRendererAnalysis.html">QRendererAnalysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.PlotCanvas.html">PlotCanvas</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.MplInteraction.html">MplInteraction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.ZoomOnWheel.html">ZoomOnWheel</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.PanAndZoom.html">PanAndZoom</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QMplRenderer.html">QMplRenderer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.AnimatedText.html">AnimatedText</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QGDSRenderer.html">QGDSRenderer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.Cheesing.html">Cheesing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QAnsysRenderer.html">QAnsysRenderer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QHFSSRenderer.html">QHFSSRenderer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QQ3DRenderer.html">QQ3DRenderer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QPyaedt.html">QPyaedt</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QQ3DPyaedt.html">QQ3DPyaedt</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QHFSSPyaedt.html">QHFSSPyaedt</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.html">QHFSSDrivenmodalPyaedt</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QHFSSEigenmodePyaedt.html">QHFSSEigenmodePyaedt</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QGmshRenderer.html">QGmshRenderer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.Vec3DArray.html">Vec3DArray</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../apidocs/toolbox_metal.html">Toolbox</a><input aria-label="Toggle navigation of Toolbox" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -443,17 +466,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html">QGeometryTables</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../apidocs/gui.html">GUI</a><input aria-label="Toggle navigation of GUI" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal._gui.MetalGUI.html">MetalGUI</a></li>
-</ul>
-</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/Qiskit/qiskit/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../apidocs/analyses.html">Analyses (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.analyses</span></code>)</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../apidocs/designs.html">Designs (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.designs</span></code>)</a><input aria-label="Toggle navigation of Designs (qiskit_metal.designs)" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../apidocs/designs.html">Designs (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.designs</span></code>)</a><input aria-label="Toggle navigation of Designs (qiskit_metal.designs)" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.designs.QDesign.html">QDesign</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.designs.DesignPlanar.html">DesignPlanar</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.designs.MultiPlanar.html">MultiPlanar</a></li>
@@ -462,11 +481,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.designs.Components.html">Components</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../apidocs/gui.html">GUI (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal._gui</span></code>)</a><input aria-label="Toggle navigation of GUI (qiskit_metal._gui)" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal._gui.MetalGUI.html">MetalGUI</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../apidocs/qgeometries.html">QGeometryTables (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.qgeometries</span></code>)</a><input aria-label="Toggle navigation of QGeometryTables (qiskit_metal.qgeometries)" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../apidocs/qgeometries.html">QGeometryTables (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.qgeometries</span></code>)</a><input aria-label="Toggle navigation of QGeometryTables (qiskit_metal.qgeometries)" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html">QGeometryTables</a></li>
 </ul>
 </li>
@@ -570,7 +585,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../apidocs/qiskit_metal.toolbox_metal.layer_stack_handler.html">layer_stack_handler</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../apidocs/qiskit_metal.toolbox_metal.math_and_overrides.html">math_and_overrides</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../apidocs/qiskit_metal.toolbox_metal.parsing.html">parsing</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../apidocs/qlibrary.html">QLibrary (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.qlibrary</span></code>)</a><input aria-label="Toggle navigation of QLibrary (qiskit_metal.qlibrary)" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../apidocs/qlibrary.html">QLibrary (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.qlibrary</span></code>)</a><input aria-label="Toggle navigation of QLibrary (qiskit_metal.qlibrary)" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.QComponent.html">QComponent</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.ParsedDynamicAttributes_Component.html">ParsedDynamicAttributes_Component</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.BaseQubit.html">BaseQubit</a></li>
@@ -621,31 +636,15 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.qlibrary.anchored_path.html">anchored_path</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../apidocs/renderers.html">Renderers (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.renderers</span></code>)</a><input aria-label="Toggle navigation of Renderers (qiskit_metal.renderers)" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../apidocs/renderers.html">Renderers (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.renderers</span></code>)</a><input aria-label="Toggle navigation of Renderers (qiskit_metal.renderers)" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QRenderer.html">QRenderer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QRendererGui.html">QRendererGui</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QRendererAnalysis.html">QRendererAnalysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.PlotCanvas.html">PlotCanvas</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.MplInteraction.html">MplInteraction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.ZoomOnWheel.html">ZoomOnWheel</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.PanAndZoom.html">PanAndZoom</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QMplRenderer.html">QMplRenderer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.AnimatedText.html">AnimatedText</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QGDSRenderer.html">QGDSRenderer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.Cheesing.html">Cheesing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QAnsysRenderer.html">QAnsysRenderer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QHFSSRenderer.html">QHFSSRenderer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QQ3DRenderer.html">QQ3DRenderer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QPyaedt.html">QPyaedt</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QQ3DPyaedt.html">QQ3DPyaedt</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QHFSSPyaedt.html">QHFSSPyaedt</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.html">QHFSSDrivenmodalPyaedt</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QHFSSEigenmodePyaedt.html">QHFSSEigenmodePyaedt</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.QGmshRenderer.html">QGmshRenderer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.renderers.Vec3DArray.html">Vec3DArray</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../apidocs/toolbox_metal.html">Toolbox_metal (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.toolbox_metal</span></code>)</a><input aria-label="Toggle navigation of Toolbox_metal (qiskit_metal.toolbox_metal)" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../apidocs/toolbox_metal.html">Toolbox_metal (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.toolbox_metal</span></code>)</a><input aria-label="Toggle navigation of Toolbox_metal (qiskit_metal.toolbox_metal)" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.toolbox_metal.QiskitMetalExceptions.html">QiskitMetalExceptions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.toolbox_metal.QiskitMetalDesignError.html">QiskitMetalDesignError</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../apidocs/qiskit_metal.toolbox_metal.about.html">about</a></li>
@@ -2468,8 +2467,8 @@
 <span class="sd">            Tuple:</span>
 <span class="sd">            * 1st entry is Tuple[float,float]: The midpoint of Linestring from</span>
 <span class="sd">            row.geometry in format (x,y).</span>
-<span class="sd">            * 2nd entry is float: The angle in degrees of Linestring from</span>
-<span class="sd">            row.geometry.</span>
+<span class="sd">            * 2nd entry is float: The angle in radians of Linestring from</span>
+<span class="sd">            row.geometry. gdstk.Reference expects radians.</span>
 <span class="sd">            * 3rd entry is float: Is the magnitude of Linestring from</span>
 <span class="sd">            row.geometry.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2479,7 +2478,8 @@
         <span class="p">[(</span><span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">),</span> <span class="p">(</span><span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span><span class="p">)]</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">coords</span><span class="p">[:]</span>
 
         <span class="n">center</span> <span class="o">=</span> <span class="n">QGDSRenderer</span><span class="o">.</span><span class="n">_midpoint_xy</span><span class="p">(</span><span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span><span class="p">)</span>
-        <span class="n">rotation</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">((</span><span class="n">maxy</span> <span class="o">-</span> <span class="n">miny</span><span class="p">),</span> <span class="p">(</span><span class="n">maxx</span> <span class="o">-</span> <span class="n">minx</span><span class="p">)))</span>
+        <span class="c1"># gdstk.Reference.rotation is in radians (unlike the old gdspy which used degrees).</span>
+        <span class="n">rotation</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">((</span><span class="n">maxy</span> <span class="o">-</span> <span class="n">miny</span><span class="p">),</span> <span class="p">(</span><span class="n">maxx</span> <span class="o">-</span> <span class="n">minx</span><span class="p">))</span>
         <span class="n">magnitude</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span>
             <span class="n">distance</span><span class="o">.</span><span class="n">euclidean</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">row</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
             <span class="n">for_rounding</span><span class="p">,</span>
@@ -2506,8 +2506,8 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Tuple:</span>
-<span class="sd">            * 1st entry is float: The angle in degrees of Linestring from</span>
-<span class="sd">            row.geometry.</span>
+<span class="sd">            * 1st entry is float: The angle in radians of Linestring from</span>
+<span class="sd">            row.geometry (as required by gdstk.Reference.rotation).</span>
 <span class="sd">            * 2nd entry is Tuple[float,float]: The midpoint of Linestring</span>
 <span class="sd">            from row.geometry in format (x,y).</span>
 <span class="sd">            * 3rd entry is gdstk.Rectangle: None if Magnitude of</span>
@@ -2625,25 +2625,32 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">message_str</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
 
-        <span class="c1"># replicate old gdspy `units=&quot;convert&quot;` behavior:</span>
-        <span class="c1"># # rescale imported cells so their physical size matches this renderer&#39;s lib.</span>
-        <span class="c1"># # coord_target = coord_imported * (imported_lib.unit / lib.unit)</span>
-        <span class="c1"># scale = imported_lib.unit / lib.unit</span>
+        <span class="c1"># Rescale imported cells so their physical size matches this renderer&#39;s lib.</span>
+        <span class="c1"># gdspy did this automatically via units=&quot;convert&quot;; gdstk requires it explicitly.</span>
+        <span class="c1"># coord_target = coord_imported * (imported_lib.unit / lib.unit)</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">imported_lib</span><span class="o">.</span><span class="n">unit</span> <span class="o">/</span> <span class="n">lib</span><span class="o">.</span><span class="n">unit</span>
 
-        <span class="c1"># # only do work if there is a real difference</span>
-        <span class="c1"># if not math.isclose(scale, 1.0, rel_tol=1e-12, abs_tol=0.0):</span>
-        <span class="c1">#     self.logger.info(</span>
-        <span class="c1">#         &quot;Rescaling imported junction library from unit=%g to unit=%g &quot;</span>
-        <span class="c1">#         &quot;(scale factor=%g).&quot;,</span>
-        <span class="c1">#         imported_lib.unit,</span>
-        <span class="c1">#         lib.unit,</span>
-        <span class="c1">#         scale,</span>
-        <span class="c1">#     )</span>
-        <span class="c1">#     for cell in imported_cells:</span>
-        <span class="c1">#         # scale in-place; affects polygons, paths, labels, references</span>
-        <span class="c1">#         cell.scale(scale, scale)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">math</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">rel_tol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span> <span class="n">abs_tol</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;Rescaling imported junction library from unit=</span><span class="si">%g</span><span class="s2"> to unit=</span><span class="si">%g</span><span class="s2"> &quot;</span>
+                <span class="s2">&quot;(scale factor=</span><span class="si">%g</span><span class="s2">).&quot;</span><span class="p">,</span>
+                <span class="n">imported_lib</span><span class="o">.</span><span class="n">unit</span><span class="p">,</span>
+                <span class="n">lib</span><span class="o">.</span><span class="n">unit</span><span class="p">,</span>
+                <span class="n">scale</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">imported_cells</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">polygon</span> <span class="ow">in</span> <span class="n">cell</span><span class="o">.</span><span class="n">polygons</span><span class="p">:</span>
+                    <span class="n">polygon</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">cell</span><span class="o">.</span><span class="n">paths</span><span class="p">:</span>
+                    <span class="n">path</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">cell</span><span class="o">.</span><span class="n">labels</span><span class="p">:</span>
+                    <span class="n">label</span><span class="o">.</span><span class="n">origin</span> <span class="o">=</span> <span class="p">(</span><span class="n">label</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale</span><span class="p">,</span> <span class="n">label</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">ref</span> <span class="ow">in</span> <span class="n">cell</span><span class="o">.</span><span class="n">references</span><span class="p">:</span>
+                    <span class="n">ref</span><span class="o">.</span><span class="n">origin</span> <span class="o">=</span> <span class="p">(</span><span class="n">ref</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale</span><span class="p">,</span> <span class="n">ref</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">ref</span><span class="o">.</span><span class="n">magnification</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">ref</span><span class="o">.</span><span class="n">magnification</span> <span class="o">*=</span> <span class="n">scale</span>
 
-        <span class="c1"># merge imported cells into main library, like old lib.read_gds did</span>
+        <span class="c1"># merge imported cells into main library</span>
         <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">imported_cells</span><span class="p">:</span>
             <span class="n">lib</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
 
@@ -2833,7 +2840,7 @@
             <span class="n">lib</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">diff_pad_cell_layer</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">ref</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">hold_all_pads_cell</span><span class="o">.</span><span class="n">references</span><span class="p">):</span>
-            <span class="n">lib</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">ref</span><span class="o">.</span><span class="n">ref_cell</span><span class="p">)</span>
+            <span class="n">lib</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">ref</span><span class="o">.</span><span class="n">cell</span><span class="p">)</span>
         <span class="n">lib</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">hold_all_pads_cell</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_gather_negative_extension_for_jj</span><span class="p">(</span>
@@ -3281,7 +3288,9 @@
 <div class="viewcode-block" id="QGDSRenderer.debug_summarize_gds_library">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QGDSRenderer.html#qiskit_metal.renderers.QGDSRenderer.debug_summarize_gds_library">[docs]</a>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">debug_summarize_gds_library</span><span class="p">(</span><span class="n">lib</span><span class="p">:</span> <span class="n">gdstk</span><span class="o">.</span><span class="n">Library</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">debug_summarize_gds_library</span><span class="p">(</span>
+        <span class="n">lib</span><span class="p">:</span> <span class="n">gdstk</span><span class="o">.</span><span class="n">Library</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">100.0</span><span class="p">,</span> <span class="n">width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">800</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Print a concise summary report for a gdstk.Library.</span>
 
 <span class="sd">        The summary includes:</span>
@@ -3294,6 +3303,10 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            lib: Loaded gdstk.Library instance.</span>
+<span class="sd">            show: If True, render and display the library as an SVG in Jupyter.</span>
+<span class="sd">            scale: SVG coordinate scaling factor. Increase for larger / more</span>
+<span class="sd">                detailed chips. Default 100.0.</span>
+<span class="sd">            width: Display width in pixels when rendering in Jupyter. Default 800.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            .. code-block:: python</span>
@@ -3301,30 +3314,9 @@
 <span class="sd">                import gdstk</span>
 
 <span class="sd">                lib = gdstk.read_gds(&quot;awesome_design.gds&quot;)</span>
-<span class="sd">                summarize_gds_library(lib)</span>
+<span class="sd">                gds.debug_summarize_gds_library(lib, show=True, scale=200, width=1000)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
-            <span class="n">write_library_overview_svg</span><span class="p">(</span><span class="n">lib</span><span class="p">,</span> <span class="s2">&quot;test_output.svg&quot;</span><span class="p">)</span>
-            <span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">SVG</span><span class="p">,</span> <span class="n">display</span>
-
-            <span class="n">display</span><span class="p">(</span><span class="n">SVG</span><span class="p">(</span><span class="s2">&quot;test_output.svg&quot;</span><span class="p">))</span>
-
-        <span class="c1"># Basic library info</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== GDS LIBRARY SUMMARY ===&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;name:      </span><span class="si">{</span><span class="nb">getattr</span><span class="p">(</span><span class="n">lib</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;name&#39;</span><span class="p">,</span><span class="w"> </span><span class="kc">None</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;unit:      </span><span class="si">{</span><span class="n">lib</span><span class="o">.</span><span class="n">unit</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;precision: </span><span class="si">{</span><span class="n">lib</span><span class="o">.</span><span class="n">precision</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cells:     </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">lib</span><span class="o">.</span><span class="n">cells</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-        <span class="c1"># Cell list</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">CELLS:&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">lib</span><span class="o">.</span><span class="n">cells</span><span class="p">:</span>
-            <span class="n">has_geom</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">cell</span><span class="o">.</span><span class="n">polygons</span> <span class="ow">or</span> <span class="n">cell</span><span class="o">.</span><span class="n">paths</span> <span class="ow">or</span> <span class="n">cell</span><span class="o">.</span><span class="n">references</span><span class="p">)</span>
-            <span class="n">bbox</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">bounding_box</span><span class="p">()</span>
-            <span class="n">bbox_str</span> <span class="o">=</span> <span class="s2">&quot;None&quot;</span> <span class="k">if</span> <span class="n">bbox</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">bbox</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  - </span><span class="si">{</span><span class="n">cell</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s2">30s</span><span class="si">}</span><span class="s2"> geom=</span><span class="si">{</span><span class="n">has_geom</span><span class="si">}</span><span class="s2"> bbox=</span><span class="si">{</span><span class="n">bbox_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-        <span class="c1"># Collect per (layer, datatype) stats</span>
+        <span class="c1"># Collect per (layer, datatype) stats first so we can colour the SVG.</span>
         <span class="n">layer_stats</span><span class="p">:</span> <span class="n">DictType</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">DictType</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span>
             <span class="k">lambda</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;polygons&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;paths&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
         <span class="p">)</span>
@@ -3353,11 +3345,79 @@
                     <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">lyr</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">dt</span><span class="p">))</span>
                     <span class="n">layer_stats</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;paths&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
 
-        <span class="c1"># If lib.layers_and_datatypes() is available, we can cross-check:</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">lad</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">layers_and_datatypes</span><span class="p">()</span>
-        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-            <span class="n">lad</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+            <span class="c1"># Assign deterministic colors — same palette as plot_gds_zoom so the</span>
+            <span class="c1"># two views are visually consistent.</span>
+            <span class="n">color_map</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">key</span><span class="p">:</span> <span class="n">_GDS_LAYER_PALETTE</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">_GDS_LAYER_PALETTE</span><span class="p">)]</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">layer_stats</span><span class="p">))</span>
+            <span class="p">}</span>
+            <span class="n">svg_style</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">key</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;fill&quot;</span><span class="p">:</span> <span class="n">color</span><span class="p">,</span> <span class="s2">&quot;stroke&quot;</span><span class="p">:</span> <span class="n">color</span><span class="p">,</span> <span class="s2">&quot;fill-opacity&quot;</span><span class="p">:</span> <span class="s2">&quot;0.80&quot;</span><span class="p">}</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="n">color_map</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="p">}</span>
+            <span class="n">write_library_overview_svg</span><span class="p">(</span>
+                <span class="n">lib</span><span class="p">,</span> <span class="s2">&quot;test_output.svg&quot;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="n">svg_style</span>
+            <span class="p">)</span>
+
+            <span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">HTML</span>
+
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;test_output.svg&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">_f</span><span class="p">:</span>
+                <span class="n">_svg</span> <span class="o">=</span> <span class="n">_f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+            <span class="c1"># Build an HTML legend table that matches the SVG colours.</span>
+            <span class="n">_DATATYPE_LABELS</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;metal (boolean result)&quot;</span><span class="p">,</span>
+                <span class="mi">10</span><span class="p">:</span> <span class="s2">&quot;component polygon input&quot;</span><span class="p">,</span>
+                <span class="mi">11</span><span class="p">:</span> <span class="s2">&quot;CPW FlexPath trace&quot;</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="n">rows</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">for</span> <span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">dtype</span><span class="p">),</span> <span class="n">color</span> <span class="ow">in</span> <span class="n">color_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">counts</span> <span class="o">=</span> <span class="n">layer_stats</span><span class="p">[(</span><span class="n">layer</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)]</span>
+                <span class="n">desc</span> <span class="o">=</span> <span class="n">_DATATYPE_LABELS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="n">rows</span> <span class="o">+=</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;&lt;tr&gt;&quot;</span>
+                    <span class="sa">f</span><span class="s1">&#39;&lt;td&gt;&lt;div style=&quot;width:18px;height:12px;background:</span><span class="si">{</span><span class="n">color</span><span class="si">}</span><span class="s1">;&#39;</span>
+                    <span class="sa">f</span><span class="s1">&#39;border:1px solid #888;border-radius:2px;margin:2px 0&quot;&gt;&lt;/div&gt;&lt;/td&gt;&#39;</span>
+                    <span class="sa">f</span><span class="s1">&#39;&lt;td style=&quot;padding:1px 10px&quot;&gt;</span><span class="si">{</span><span class="n">layer</span><span class="si">}</span><span class="s1">&lt;/td&gt;&#39;</span>
+                    <span class="sa">f</span><span class="s1">&#39;&lt;td style=&quot;padding:1px 10px&quot;&gt;</span><span class="si">{</span><span class="n">dtype</span><span class="si">}</span><span class="s1">&lt;/td&gt;&#39;</span>
+                    <span class="sa">f</span><span class="s1">&#39;&lt;td style=&quot;padding:1px 10px;color:#555&quot;&gt;</span><span class="si">{</span><span class="n">desc</span><span class="si">}</span><span class="s1">&lt;/td&gt;&#39;</span>
+                    <span class="sa">f</span><span class="s1">&#39;&lt;td style=&quot;padding:1px 10px;text-align:right&quot;&gt;&#39;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">counts</span><span class="p">[</span><span class="s1">&#39;polygons&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> poly&lt;/td&gt;&quot;</span>
+                    <span class="sa">f</span><span class="s1">&#39;&lt;td style=&quot;padding:1px 10px;text-align:right&quot;&gt;&#39;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">counts</span><span class="p">[</span><span class="s1">&#39;paths&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> paths&lt;/td&gt;&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;&lt;/tr&gt;&quot;</span>
+                <span class="p">)</span>
+            <span class="n">legend</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s1">&#39;&lt;table style=&quot;font-size:12px;font-family:monospace;&#39;</span>
+                <span class="s1">&#39;border-collapse:collapse;margin-top:8px&quot;&gt;&#39;</span>
+                <span class="s1">&#39;&lt;thead&gt;&lt;tr style=&quot;border-bottom:1px solid #ccc;text-align:left&quot;&gt;&#39;</span>
+                <span class="s2">&quot;&lt;th&gt;&lt;/th&gt;&quot;</span>
+                <span class="s1">&#39;&lt;th style=&quot;padding:1px 10px&quot;&gt;Layer&lt;/th&gt;&#39;</span>
+                <span class="s1">&#39;&lt;th style=&quot;padding:1px 10px&quot;&gt;DType&lt;/th&gt;&#39;</span>
+                <span class="s1">&#39;&lt;th style=&quot;padding:1px 10px&quot;&gt;Description&lt;/th&gt;&#39;</span>
+                <span class="s1">&#39;&lt;th style=&quot;padding:1px 10px&quot;&gt;Polygons&lt;/th&gt;&#39;</span>
+                <span class="s1">&#39;&lt;th style=&quot;padding:1px 10px&quot;&gt;Paths&lt;/th&gt;&#39;</span>
+                <span class="sa">f</span><span class="s2">&quot;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;</span><span class="si">{</span><span class="n">rows</span><span class="si">}</span><span class="s2">&lt;/tbody&gt;&lt;/table&gt;&quot;</span>
+            <span class="p">)</span>
+            <span class="n">display</span><span class="p">(</span>
+                <span class="n">HTML</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&lt;div style=&quot;width:</span><span class="si">{</span><span class="n">width</span><span class="si">}</span><span class="s1">px;overflow:auto&quot;&gt;</span><span class="si">{</span><span class="n">_svg</span><span class="si">}</span><span class="s1">&lt;/div&gt;</span><span class="si">{</span><span class="n">legend</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Basic library info</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== GDS LIBRARY SUMMARY ===&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;name:      </span><span class="si">{</span><span class="nb">getattr</span><span class="p">(</span><span class="n">lib</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;name&#39;</span><span class="p">,</span><span class="w"> </span><span class="kc">None</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;unit:      </span><span class="si">{</span><span class="n">lib</span><span class="o">.</span><span class="n">unit</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;precision: </span><span class="si">{</span><span class="n">lib</span><span class="o">.</span><span class="n">precision</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cells:     </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">lib</span><span class="o">.</span><span class="n">cells</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Cell list</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">CELLS:&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">lib</span><span class="o">.</span><span class="n">cells</span><span class="p">:</span>
+            <span class="n">has_geom</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">cell</span><span class="o">.</span><span class="n">polygons</span> <span class="ow">or</span> <span class="n">cell</span><span class="o">.</span><span class="n">paths</span> <span class="ow">or</span> <span class="n">cell</span><span class="o">.</span><span class="n">references</span><span class="p">)</span>
+            <span class="n">bbox</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">bounding_box</span><span class="p">()</span>
+            <span class="n">bbox_str</span> <span class="o">=</span> <span class="s2">&quot;None&quot;</span> <span class="k">if</span> <span class="n">bbox</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">bbox</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  - </span><span class="si">{</span><span class="n">cell</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s2">30s</span><span class="si">}</span><span class="s2"> geom=</span><span class="si">{</span><span class="n">has_geom</span><span class="si">}</span><span class="s2"> bbox=</span><span class="si">{</span><span class="n">bbox_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">LAYER / DATATYPE USAGE:&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">layer_stats</span><span class="p">:</span>
@@ -3371,15 +3431,137 @@
                     <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">counts</span><span class="p">[</span><span class="s1">&#39;polygons&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">5d</span><span class="si">}</span><span class="s2">   </span><span class="si">{</span><span class="n">counts</span><span class="p">[</span><span class="s1">&#39;paths&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">5d</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">lad</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="c1"># Show the raw set from lib.layers_and_datatypes() for comparison</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">lib.layers_and_datatypes():&quot;</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">layer</span><span class="p">,</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">lad</span><span class="p">):</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  (layer=</span><span class="si">{</span><span class="n">layer</span><span class="si">}</span><span class="s2">, datatype=</span><span class="si">{</span><span class="n">dtype</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
-
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== END SUMMARY ===</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="QGDSRenderer.plot_gds_zoom">
+<a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QGDSRenderer.html#qiskit_metal.renderers.QGDSRenderer.plot_gds_zoom">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_gds_zoom</span><span class="p">(</span>
+        <span class="n">lib</span><span class="p">:</span> <span class="n">gdstk</span><span class="o">.</span><span class="n">Library</span><span class="p">,</span>
+        <span class="n">center_mm</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">span_mm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.10</span><span class="p">,</span>
+        <span class="n">title</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ax</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">object</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">figsize</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">),</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Render a zoomed window of a GDS library using matplotlib.</span>
+
+<span class="sd">        Flattens the TOP cell hierarchy and draws every polygon whose</span>
+<span class="sd">        bounding box overlaps the requested window, coloured by</span>
+<span class="sd">        ``(layer, datatype)``.  Useful for inspecting junction placement</span>
+<span class="sd">        and pad geometry without opening KLayout.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            lib: Library returned by ``gdstk.read_gds``.</span>
+<span class="sd">            center_mm: Centre of the zoom window in the same unit as</span>
+<span class="sd">                ``lib.unit`` (mm when ``lib.unit = 0.001``).</span>
+<span class="sd">            span_mm: Half-width of the square zoom window.</span>
+<span class="sd">                Default ``0.10`` gives a 200 µm window.</span>
+<span class="sd">            title: Optional axes title.</span>
+<span class="sd">            ax: Render into an existing</span>
+<span class="sd">                :class:`~matplotlib.axes.Axes`.  If *None* a new</span>
+<span class="sd">                figure is created.</span>
+<span class="sd">            figsize: Figure size in inches, used only when *ax* is</span>
+<span class="sd">                *None*.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The :class:`~matplotlib.figure.Figure` containing the</span>
+<span class="sd">            render.  If *ax* was supplied this is ``ax.figure``;</span>
+<span class="sd">            otherwise it is the newly created figure (deregistered from</span>
+<span class="sd">            pyplot so it does not double-render in JupyterLab).</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                import gdstk</span>
+<span class="sd">                import matplotlib.pyplot as plt</span>
+
+<span class="sd">                lib = gdstk.read_gds(&quot;my_chip.gds&quot;)</span>
+
+<span class="sd">                # Single panel</span>
+<span class="sd">                fig = gds.plot_gds_zoom(lib, center_mm=(0.70, 0.0),</span>
+<span class="sd">                                        span_mm=0.10, title=&quot;Q1 junction&quot;)</span>
+<span class="sd">                display(fig)</span>
+
+<span class="sd">                # Side-by-side</span>
+<span class="sd">                fig, axes = plt.subplots(1, 2, figsize=(13, 6))</span>
+<span class="sd">                gds.plot_gds_zoom(lib, center_mm=( 0.70, 0.0), ax=axes[0], title=&quot;Q1&quot;)</span>
+<span class="sd">                gds.plot_gds_zoom(lib, center_mm=(-0.70, 0.0), ax=axes[1], title=&quot;Q2&quot;)</span>
+<span class="sd">                plt.tight_layout()</span>
+<span class="sd">                plt.close(fig)</span>
+<span class="sd">                display(fig)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpatches</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+        <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="n">center_mm</span>
+        <span class="n">x0</span><span class="p">,</span> <span class="n">x1</span> <span class="o">=</span> <span class="n">cx</span> <span class="o">-</span> <span class="n">span_mm</span><span class="p">,</span> <span class="n">cx</span> <span class="o">+</span> <span class="n">span_mm</span>
+        <span class="n">y0</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">cy</span> <span class="o">-</span> <span class="n">span_mm</span><span class="p">,</span> <span class="n">cy</span> <span class="o">+</span> <span class="n">span_mm</span>
+
+        <span class="n">owns_fig</span> <span class="o">=</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">owns_fig</span><span class="p">:</span>
+            <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fig</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">figure</span>
+
+        <span class="n">top</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">lib</span><span class="o">.</span><span class="n">cells</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;TOP&quot;</span><span class="p">),</span> <span class="n">lib</span><span class="o">.</span><span class="n">cells</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="c1"># Collect visible polygons grouped by (layer, datatype)</span>
+        <span class="n">groups</span><span class="p">:</span> <span class="n">DictType</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">poly</span> <span class="ow">in</span> <span class="n">top</span><span class="o">.</span><span class="n">get_polygons</span><span class="p">(</span><span class="n">depth</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="n">pts</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">points</span>
+            <span class="k">if</span> <span class="n">pts</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">x0</span> <span class="ow">or</span> <span class="n">pts</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">x1</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">pts</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">y0</span> <span class="ow">or</span> <span class="n">pts</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">y1</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">poly</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">poly</span><span class="o">.</span><span class="n">datatype</span><span class="p">)</span>
+            <span class="n">groups</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span>
+
+        <span class="n">palette</span> <span class="o">=</span> <span class="n">_GDS_LAYER_PALETTE</span>
+        <span class="n">legend_handles</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">pts_list</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">groups</span><span class="o">.</span><span class="n">items</span><span class="p">())):</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="n">palette</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">palette</span><span class="p">)]</span>
+            <span class="n">layer</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">key</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Layer </span><span class="si">{</span><span class="n">layer</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  dt=</span><span class="si">{</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">dtype</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">pts</span> <span class="ow">in</span> <span class="n">pts_list</span><span class="p">:</span>
+                <span class="n">patch</span> <span class="o">=</span> <span class="n">mpatches</span><span class="o">.</span><span class="n">Polygon</span><span class="p">(</span>
+                    <span class="n">pts</span><span class="p">,</span> <span class="n">closed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span>
+                <span class="p">)</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">patch</span><span class="p">)</span>
+            <span class="n">legend_handles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">))</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">y0</span><span class="p">,</span> <span class="n">y1</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;x (mm)&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;y (mm)&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">title</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">legend_handles</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">legend_handles</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">owns_fig</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fig</span></div>
 </div>
 
+
+
+<span class="c1"># Shared colour palette used by debug_summarize_gds_library and plot_gds_zoom</span>
+<span class="c1"># so the SVG overview and the matplotlib zoom panels are visually consistent.</span>
+<span class="n">_GDS_LAYER_PALETTE</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;#4C9BE8&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#F5A623&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#7ED321&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#D0021B&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#9013FE&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#50E3C2&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#E8794C&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#A8D8EA&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#F7CAC9&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#92A8D1&quot;</span><span class="p">,</span>
+<span class="p">]</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">write_library_overview_svg</span><span class="p">(</span>
@@ -3387,6 +3569,7 @@
     <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;library_overview.svg&quot;</span><span class="p">,</span>
     <span class="n">background</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="s2">&quot;white&quot;</span><span class="p">,</span>
     <span class="n">scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">10.0</span><span class="p">,</span>
+    <span class="n">style</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Write a single SVG that references all cells in a library.</span>
 
@@ -3395,11 +3578,16 @@
 <span class="sd">        filename: Output SVG filename.</span>
 <span class="sd">        background: SVG background color, or None for transparent.</span>
 <span class="sd">        scale: Coordinate scaling factor applied when writing SVG.</span>
+<span class="sd">        style: Optional dict mapping ``(layer, datatype)`` tuples to CSS</span>
+<span class="sd">            property dicts (e.g. ``{&quot;fill&quot;: &quot;#4C9BE8&quot;, &quot;fill-opacity&quot;: &quot;0.8&quot;}``).</span>
+<span class="sd">            Passed to ``gdstk.Cell.write_svg`` as ``shape_style``.  When</span>
+<span class="sd">            *None*, gdstk uses its built-in default colours.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">top</span> <span class="o">=</span> <span class="n">gdstk</span><span class="o">.</span><span class="n">Cell</span><span class="p">(</span><span class="s2">&quot;LIB_OVERVIEW&quot;</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">lib</span><span class="o">.</span><span class="n">top_level</span><span class="p">():</span>  <span class="c1"># for cell in lib.cells:</span>
+    <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">lib</span><span class="o">.</span><span class="n">top_level</span><span class="p">():</span>
         <span class="n">top</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">gdstk</span><span class="o">.</span><span class="n">Reference</span><span class="p">(</span><span class="n">cell</span><span class="p">))</span>
-    <span class="n">top</span><span class="o">.</span><span class="n">write_svg</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="n">background</span><span class="p">,</span> <span class="n">scaling</span><span class="o">=</span><span class="n">scale</span><span class="p">)</span>
+    <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span> <span class="k">if</span> <span class="n">style</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{</span><span class="s2">&quot;shape_style&quot;</span><span class="p">:</span> <span class="n">style</span><span class="p">}</span>
+    <span class="n">top</span><span class="o">.</span><span class="n">write_svg</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="n">background</span><span class="p">,</span> <span class="n">scaling</span><span class="o">=</span><span class="n">scale</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </pre></div>
         </article>
       </div>
@@ -3433,7 +3621,7 @@
       
     </aside>
   </div>
-</div><script src="../../../../_static/documentation_options.js?v=1c28bd9a"></script>
+</div><script src="../../../../_static/documentation_options.js?v=b8503983"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>
