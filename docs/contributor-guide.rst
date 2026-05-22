@@ -485,9 +485,9 @@ The ``.rst`` files in the ``docs/apidocs``
    module docstrings from a specified import path. For example, the analyses.rst
    file contains
    
-   .. code-block:: rst
+   For example, the ``analyses.rst`` file contains::
 
-      .. automodule:: qiskit_metal.analyses
+      .\. automodule\:\: qiskit_metal.analyses
          :no-members:
          :no-inherited-members:
          :no-special-members:

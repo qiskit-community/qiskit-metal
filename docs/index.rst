@@ -211,21 +211,9 @@ in a simple, open, community-driven framework.
     Migrating to v0.7.0<migration-to-v0.7.0>
     Code of Conduct<https://github.com/Qiskit/qiskit/blob/master/CODE_OF_CONDUCT.md>
 
-.. Hidden glob toctree for per-class autodoc stubs (files named
-   ``apidocs/qiskit_metal.*.rst``). Most stubs are reached via the
+.. Per-class autodoc stubs in ``apidocs/`` are reached via the
    autosummary ``:toctree: .`` directives in each module's
-   ``__init__.py``, but ``qiskit_metal/analyses/__init__.py`` does
-   NOT have an autosummary block (adding one would re-document each
-   analysis class via its alias path AND its real path, triggering
-   ~600 ``duplicate object description`` warnings). The glob below
-   makes the orphan analyses stubs reachable. We deliberately use
-   ``qiskit_metal.*`` (not just ``*``) so we don't pick up the
-   top-level overview pages (``analyses.rst``, ``designs.rst``, etc.)
-   which are already in the explicit "API Reference" toctree above —
-   doubling them would emit "document is referenced in multiple
-   toctrees" warnings.
-.. toctree::
-    :hidden:
-    :glob:
-
-    apidocs/qiskit_metal.*
+   ``__init__.py`` (e.g. ``qiskit_metal._gui/__init__.py`` lists
+   ``MetalGUI`` under autosummary, which registers
+   ``apidocs/qiskit_metal._gui.MetalGUI`` in a toctree). No hidden
+   glob is needed.

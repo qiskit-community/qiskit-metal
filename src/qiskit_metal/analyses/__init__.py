@@ -22,6 +22,69 @@ Module containing all Quantum Metal analyses.
 
 .. _qanalysis:
 
+
+Core analysis bases
+-------------------
+
+.. autosummary::
+    :toctree: .
+
+    QAnalysis
+    QSimulation
+
+
+Quantization
+------------
+
+.. autosummary::
+    :toctree: .
+
+    LOManalysis
+    EPRanalysis
+
+
+Simulation
+----------
+
+.. autosummary::
+    :toctree: .
+
+    LumpedElementsSim
+    EigenmodeSim
+    ScatteringImpedanceSim
+
+
+Hamiltonians
+------------
+
+.. autosummary::
+    :toctree: .
+
+    Hcpb
+    Hcpb_analytic
+    HO_wavefunctions
+    transmon_analytics
+
+
+Electromagnetics
+----------------
+
+.. autosummary::
+    :toctree: .
+
+    cpw_calculations
+    kappa_calculation
+    lumped_capacitive
+
+
+Sweeping
+--------
+
+.. autosummary::
+    :toctree: .
+
+    Sweeper
+
 """
 
 from qiskit_metal import config

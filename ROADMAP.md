@@ -262,6 +262,56 @@ after the v0.7.0 lite-by-default flip made one-click trial finally viable.
 
 ---
 
+## Docs build cleanup `[research]`
+
+Items deferred during the May 2026 docs-build pass (see PR #1085).
+The build is now clean (0 warnings) but a few latent fragilities remain:
+
+- **Analyses-module alias-path documentation.** Classes in
+  ``qiskit_metal.analyses`` are reachable through two paths:
+  (1) the alias path via ``__init__.py`` re-export
+  (``qiskit_metal.analyses.EPRanalysis``), and (2) the real submodule
+  path (``qiskit_metal.analyses.quantization.energy_participation_ratio.EPRanalysis``).
+  Autodoc currently registers each class under both, which is
+  benign for users but emits ``duplicate object description``
+  warnings whenever the per-class stubs are reached via *both* an
+  autosummary toctree and an automodule member walk simultaneously.
+  Today this is avoided by careful toctree structuring; ideally we
+  pick one canonical documentation path per class. Options:
+  (a) stop re-exporting from ``__init__.py`` and require users to
+  import from submodules (breaking API change — not desirable);
+  (b) add ``:no-index:`` to all 16 per-class stubs in
+  ``docs/apidocs/qiskit_metal.analyses.*.rst`` so only the
+  ``automodule`` walk wins;
+  (c) regenerate the stubs to use the full submodule path in their
+  ``currentmodule`` directives. (c) is the cleanest if we ever
+  re-run ``sphinx-autogen`` to refresh the stubs.
+
+- **Hard-touch ``_gui/`` docstrings.** Most of ``_gui/`` is excluded
+  from active maintenance per ``CLAUDE.md`` (requires Qt session to
+  validate). Docstring-only fixes that don't touch behavior are
+  safe but should be batched and reviewed when someone has Qt
+  available — see the docstring lint pass done in PR #1085 (only
+  the ``MetalGUI`` class docstring was fixed; the rest of ``_gui/``
+  has minor RST issues that don't currently emit warnings but may
+  in the future).
+
+- **Sphinx-autosummary code-block leak.** Sphinx's autosummary
+  extension scans *every* ``.rst`` file for ``.. autosummary::``
+  and ``.. automodule::`` directives, **including those nested
+  inside ``.. code-block:: rst`` / ``.. code-block:: python``
+  blocks** used for documentation examples. PR #1085 worked around
+  this by escaping directive names (``.\.``) in the contributor
+  guide so the examples don't accidentally fire at build time, but
+  the underlying behavior is a foot-gun: any future docs example
+  that includes a real autosummary directive will silently
+  generate phantom RST files in ``docs/``. Possible fixes:
+  (a) replace the in-text examples with ``literalinclude`` of a
+  fixture file (out of scope of autosummary's scanner);
+  (b) configure autosummary to ignore specific directories.
+
+---
+
 ## How to help
 
 - **Use it and file issues.** Especially: anything that
