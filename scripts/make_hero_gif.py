@@ -49,44 +49,80 @@ FRAME_TITLES = [
     "Step 4 — Add launchpad wirebonds",
     "qm.view(design)   →   chip ready for fab/sim",
 ]
-# Keep the same axis across every frame so the chip doesn't jump
-AXIS_LIMITS_MM = ((-3.5, 3.5), (-3.5, 3.5))
+# Padding factor applied to the final-design bbox to compute axis limits.
+# Set once, used for every frame, so the chip never jumps or autoscales
+# asymmetrically between frames (a known matplotlib pitfall the user has
+# fought multiple times — see "centering" note below).
+AXIS_PADDING_FRAC = 0.10  # 10% padding around the final bbox
 
 
-def render_frame(design, title):
-    """Render the current design state to a matplotlib Figure with title overlay."""
+def compute_centered_square_limits(design, pad_frac=AXIS_PADDING_FRAC):
+    """Compute symmetric, square axis limits centered on the FINAL design bbox.
+
+    Called once after the design is fully built, then reused for every frame
+    so the chip stays geometrically centered (no autoscale drift, no per-frame
+    margin shifts). This is the "do it at the very end" pattern.
+    """
+    xs, ys = [], []
+    for name, comp in design.components.items():
+        try:
+            b = comp.qgeometry_bounds()  # [minx, miny, maxx, maxy]
+            xs += [b[0], b[2]]
+            ys += [b[1], b[3]]
+        except Exception:
+            continue
+    if not xs:
+        # Empty design — fall back to a sensible default
+        return (-3.5, 3.5), (-3.5, 3.5)
+    cx = (min(xs) + max(xs)) / 2
+    cy = (min(ys) + max(ys)) / 2
+    # Square extent: take the larger dimension so the chip fits with equal
+    # padding on all four sides (true geometric centering).
+    half = max(max(xs) - min(xs), max(ys) - min(ys)) / 2
+    half *= (1.0 + pad_frac)
+    return (cx - half, cx + half), (cy - half, cy + half)
+
+
+def render_frame(design, title, xlim, ylim):
+    """Render the current design state to a fixed-layout figure.
+
+    xlim/ylim are passed in (computed from the FINAL design once) so the chip
+    is in the same screen position in every frame.
+    """
     fig = qm.view(design)
     ax = fig.gca()
-    ax.set_xlim(*AXIS_LIMITS_MM[0])
-    ax.set_ylim(*AXIS_LIMITS_MM[1])
+    ax.set_xlim(*xlim)
+    ax.set_ylim(*ylim)
     ax.set_aspect("equal", adjustable="box")
-    ax.set_title(title, fontsize=13, fontweight="bold", loc="left", pad=8)
+    # Title CENTERED (loc='center' is the default — not 'left' which makes the
+    # whole frame look asymmetric).
+    ax.set_title(title, fontsize=13, fontweight="bold", pad=10)
     fig.set_size_inches(*FIGSIZE_INCH)
-    fig.tight_layout()
+    # Explicit subplots_adjust — DON'T use tight_layout/bbox_inches=tight here;
+    # both produce varying per-frame padding which makes the GIF "jump."
+    fig.subplots_adjust(left=0.10, right=0.97, top=0.92, bottom=0.10)
     return fig
 
 
 def save_frame(fig, path):
-    fig.savefig(path, dpi=DPI, bbox_inches="tight", pad_inches=0.15,
+    # Fixed pad_inches (no bbox_inches='tight') so every frame has identical
+    # pixel dimensions — required for clean GIF stitching.
+    fig.savefig(path, dpi=DPI, pad_inches=0.15,
                 facecolor=fig.get_facecolor())
     plt.close(fig)
 
 
-def build_4qubit_chip_progressively(frame_dir):
-    """Yield (frame_path, frame_index) as the design grows. Saves PNGs to frame_dir."""
+def _make_design():
+    """Build the design from scratch — no rendering. Returns the empty design."""
     design = designs.DesignPlanar()
     design.variables["cpw_width"] = "10 um"
     design.variables["cpw_gap"] = "6 um"
     design._chips["main"]["size"]["size_x"] = "6 mm"
     design._chips["main"]["size"]["size_y"] = "6 mm"
+    return design
 
-    # --- Frame 1: empty chip ---
-    fig = render_frame(design, FRAME_TITLES[0])
-    p = frame_dir / "01_canvas.png"
-    save_frame(fig, p)
-    yield p
 
-    # --- Add 4 qubits at corners of a 1.5mm-radius ring ---
+def _add_qubits(design):
     qubit_opts = Dict(
         pad_width="425 um", pad_height="250 um",
         pocket_width="600 um", pocket_height="600 um",
@@ -103,17 +139,12 @@ def build_4qubit_chip_progressively(frame_dir):
     TransmonPocket(design, "Q4", options=Dict(pos_x="+1.5mm", pos_y="-1.5mm", **qubit_opts))
     design.rebuild()
 
-    # --- Frame 2: qubits placed ---
-    fig = render_frame(design, FRAME_TITLES[1])
-    p = frame_dir / "02_qubits.png"
-    save_frame(fig, p)
-    yield p
 
-    # --- Add 4 CPW meander routes (Q1↔Q2, Q2↔Q3, Q3↔Q4, Q4↔Q1) ---
-    fillet = "90 um"
+def _add_routing(design):
     cpw_opts = Dict(
         lead=Dict(start_straight="100um", end_straight="100um"),
-        fillet=fillet, total_length="3 mm", trace_width="10 um", trace_gap="6 um",
+        fillet="90 um", total_length="3 mm",
+        trace_width="10 um", trace_gap="6 um",
     )
 
     def cpw(name, qa, pa, qb, pb):
@@ -134,30 +165,53 @@ def build_4qubit_chip_progressively(frame_dir):
     cpw("cpw_41", "Q4", "a", "Q1", "d")  # right edge
     design.rebuild()
 
-    # --- Frame 3: with routing ---
-    fig = render_frame(design, FRAME_TITLES[2])
-    p = frame_dir / "03_routing.png"
-    save_frame(fig, p)
-    yield p
 
-    # --- Add 4 launchpads at the chip edges ---
+def _add_launchpads(design):
     LaunchpadWirebond(design, "P1", options=Dict(pos_x="+2.8mm", pos_y="0mm", orientation="180"))
     LaunchpadWirebond(design, "P2", options=Dict(pos_x="0mm", pos_y="+2.8mm", orientation="270"))
     LaunchpadWirebond(design, "P3", options=Dict(pos_x="-2.8mm", pos_y="0mm", orientation="0"))
     LaunchpadWirebond(design, "P4", options=Dict(pos_x="0mm", pos_y="-2.8mm", orientation="90"))
     design.rebuild()
 
-    # --- Frame 4: with launchpads ---
-    fig = render_frame(design, FRAME_TITLES[3])
-    p = frame_dir / "04_launchpads.png"
-    save_frame(fig, p)
-    yield p
 
-    # --- Frame 5: final "qm.view(design)" hold ---
-    fig = render_frame(design, FRAME_TITLES[4])
-    p = frame_dir / "05_final.png"
-    save_frame(fig, p)
-    yield p
+def _populate_full_design(design):
+    """Apply every stage so the FINAL design exists. Used for centering compute."""
+    _add_qubits(design)
+    _add_routing(design)
+    _add_launchpads(design)
+
+
+def build_4qubit_chip_progressively(frame_dir):
+    """Yield frame_path as the design grows. Saves PNGs to frame_dir.
+
+    Centering pattern (per the user's "do it at the very end" rule):
+      1. Build the FINAL design first (no rendering) → compute centered limits.
+      2. Replay the build step-by-step, capturing each stage with THOSE
+         fixed limits. The chip never autoscales or shifts between frames.
+    """
+    # === Step 1: build the full final design, get centered limits ===
+    final = _make_design()
+    _populate_full_design(final)
+    xlim, ylim = compute_centered_square_limits(final)
+
+    # === Step 2: replay the build progressively, snapshot each stage ===
+    stages = [
+        # (stage_fn or None for empty, frame filename, title)
+        (None,              "01_canvas.png",     FRAME_TITLES[0]),
+        (_add_qubits,       "02_qubits.png",     FRAME_TITLES[1]),
+        (_add_routing,      "03_routing.png",    FRAME_TITLES[2]),
+        (_add_launchpads,   "04_launchpads.png", FRAME_TITLES[3]),
+        # Final hold — same content as frame 4, different title
+        (None,              "05_final.png",      FRAME_TITLES[4]),
+    ]
+    design = _make_design()
+    for stage_fn, filename, title in stages:
+        if stage_fn is not None:
+            stage_fn(design)
+        fig = render_frame(design, title, xlim, ylim)
+        p = frame_dir / filename
+        save_frame(fig, p)
+        yield p
 
 
 def stitch_gif(frame_paths):
