@@ -22,6 +22,6 @@ dependencies:
   - pip
   - pip:
       - pyaedt>=0.21,<0.24 # Synced with pyproject.toml ceiling (pyaedt 0.24 has bugs).
-      - gmsh>=4.11.1
+      - gmsh>=4.15.0,<5
       - gdstk~=0.9 # Used to be gdspy>=1.6.12
       - pyside6~=6.8 # Critical to building gui, can causes lots of problems, careful.
