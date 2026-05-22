@@ -15,6 +15,12 @@
 >
 > **Quantum Metal** is an open-source framework for engineers and scientists to design superconducting quantum devices with ease.
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/qiskit-community/qiskit-metal/main/docs/_static/hero.gif" alt="Build a 4-qubit chip in ~15 lines of Python — qubits, CPW routing, launchpads, qm.view()" width="640"/>
+</p>
+
+<p align="center"><sub><a href="./scripts/make_hero_gif.py">Regenerate this GIF</a> · <a href="./tutorials/2 From components to chip/C. My first full quantum chip design/2.21 Design a 4 qubit full chip.ipynb">Full tutorial: 2.21</a></sub></p>
+
 ### 🚀 Try it now — zero install
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/qiskit-community/qiskit-metal/blob/main/tutorials/1%20Overview/1.2%20Quick%20start.ipynb)
