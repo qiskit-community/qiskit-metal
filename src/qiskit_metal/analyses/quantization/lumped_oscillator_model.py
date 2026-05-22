@@ -19,6 +19,7 @@ from typing import Optional
 from qiskit_metal.designs import QDesign
 from qiskit_metal.analyses.core import QAnalysis
 from qiskit_metal.analyses.simulation import LumpedElementsSim
+from qiskit_metal.analyses.quantization.constants import Ic_from_Lj
 from qiskit_metal import Dict, config
 
 if not config.is_building_docs():
@@ -159,10 +160,8 @@ class LOManalysis(QAnalysis):
             if self.sim.capacitance_all_passes == {}:
                 self.sim.capacitance_all_passes[1] = self.sim.capacitance_matrix.values
 
-        from pyEPR.calcs.convert import Convert
-
         ureg = UnitRegistry()
-        ic_amps = Convert.Ic_from_Lj(s.junctions.Lj, "nH", "A")
+        ic_amps = Ic_from_Lj(s.junctions.Lj, "nH", "A")
         cj = ureg(f"{s.junctions.Cj} fF").to("farad").magnitude
         fread = ureg(f"{s.freq_readout} GHz").to("GHz").magnitude
         fbus = [ureg(f"{freq} GHz").to("GHz").magnitude for freq in s.freq_bus]

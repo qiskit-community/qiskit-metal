@@ -1,12 +1,20 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import annotations
+
 from typing import Union, Tuple, Optional
 
 from qiskit_metal.renderers.renderer_ansys_pyaedt.pyaedt_base import QPyaedt
 from qiskit_metal.toolbox_metal.parsing import is_true
 
 from qiskit_metal import Dict
-from ansys.aedt.core import settings
+
+# pyaedt is an opt-in dep; friendly error propagates via QPyaedt.__init__.
+try:
+    from ansys.aedt.core import settings
+except ImportError:  # pragma: no cover — exercised on lite installs
+    settings = None
+
 import pandas as pd
 import numpy as np
 import shapely

@@ -1,13 +1,36 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import annotations
+
 from typing import List, Union
 import pandas as pd
 import math
 import numpy as np
 import inspect
 
-from ansys.aedt.core import Desktop, Hfss, Q3d
-from ansys.aedt.core.modeler.cad.primitives import Polyline
+# pyaedt (``ansys.aedt.core``) is an opt-in dependency
+# (``quantum-metal[ansys]``). Keep this module importable on the lite
+# install — the friendly error is raised in ``_require_pyaedt()`` from
+# constructors and entry-point methods. ``from __future__ import
+# annotations`` makes ``Desktop`` / ``Polyline`` type hints lazy.
+try:
+    from ansys.aedt.core import Desktop, Hfss, Q3d
+    from ansys.aedt.core.modeler.cad.primitives import Polyline
+except ImportError:  # pragma: no cover — exercised on lite installs
+    Desktop = None
+    Hfss = None
+    Q3d = None
+    Polyline = None
+
+
+def _require_pyaedt() -> None:
+    """Raise a clear error if pyaedt isn't installed."""
+    if Desktop is None:
+        raise ImportError(
+            "QPyaedt requires pyaedt (ansys.aedt.core). Install with: "
+            "pip install 'quantum-metal[ansys]'"
+        )
+
 
 from qiskit_metal.renderers.renderer_base import QRendererAnalysis
 
@@ -142,6 +165,8 @@ class QPyaedt(QRendererAnalysis):
             initiate (bool, optional):  True to initiate the renderer. Defaults to False.
             options (Dict, optional): Used to override all options. Defaults to None.
         """
+        _require_pyaedt()
+
         self._desktop = None
         # Initialize renderer first so we can use self.options
 

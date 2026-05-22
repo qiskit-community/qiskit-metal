@@ -1,11 +1,21 @@
+from __future__ import annotations
+
 from qiskit_metal.renderers.renderer_ansys_pyaedt.hfss_renderer_aedt import QHFSSPyaedt
 from qiskit_metal.toolbox_metal.parsing import parse_entry
 from qiskit_metal import Dict
 from typing import Union
 from collections import OrderedDict
 import pandas as pd
-from ansys.aedt.core import settings
-from ansys.aedt.core.visualization.post.solution_data import SolutionData
+
+# pyaedt is an opt-in dep; the friendly error comes via QPyaedt.__init__
+# (inherited through QHFSSPyaedt). Lazy module-level handles let this
+# file import without ansys.aedt.core installed.
+try:
+    from ansys.aedt.core import settings
+    from ansys.aedt.core.visualization.post.solution_data import SolutionData
+except ImportError:  # pragma: no cover — exercised on lite installs
+    settings = None
+    SolutionData = None
 
 
 class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):

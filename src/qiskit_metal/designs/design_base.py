@@ -1015,7 +1015,19 @@ class QDesign:
 
             # check if class_name is in module
             if class_renderer is not None:
-                a_renderer = class_renderer(self, initiate=False)
+                try:
+                    a_renderer = class_renderer(self, initiate=False)
+                except ImportError as e:
+                    # The renderer module imported (lazy stubs in place)
+                    # but its ``__init__`` raises ImportError because the
+                    # actual heavy dep (pyEPR / pyaedt / gmsh) isn't
+                    # installed. Same outcome as a missing module:
+                    # skip + log + keep going.
+                    self.logger.info(
+                        f"Renderer={renderer_key} skipped: "
+                        f"runtime dependency not installed ({e})."
+                    )
+                    continue
 
                 # register renderers here.
                 self._renderers[renderer_key] = a_renderer
