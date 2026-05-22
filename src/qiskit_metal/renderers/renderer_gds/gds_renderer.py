@@ -1770,8 +1770,8 @@ class QGDSRenderer(QRenderer):
             Tuple:
             * 1st entry is Tuple[float,float]: The midpoint of Linestring from
             row.geometry in format (x,y).
-            * 2nd entry is float: The angle in degrees of Linestring from
-            row.geometry.
+            * 2nd entry is float: The angle in radians of Linestring from
+            row.geometry. gdstk.Reference expects radians.
             * 3rd entry is float: Is the magnitude of Linestring from
             row.geometry.
         """
@@ -1781,7 +1781,8 @@ class QGDSRenderer(QRenderer):
         [(minx, miny), (maxx, maxy)] = row.geometry.coords[:]
 
         center = QGDSRenderer._midpoint_xy(minx, miny, maxx, maxy)
-        rotation = math.degrees(math.atan2((maxy - miny), (maxx - minx)))
+        # gdstk.Reference.rotation is in radians (unlike the old gdspy which used degrees).
+        rotation = math.atan2((maxy - miny), (maxx - minx))
         magnitude = np.round(
             distance.euclidean(row.geometry.coords[0], row.geometry.coords[1]),
             for_rounding,
@@ -1808,8 +1809,8 @@ class QGDSRenderer(QRenderer):
 
         Returns:
             Tuple:
-            * 1st entry is float: The angle in degrees of Linestring from
-            row.geometry.
+            * 1st entry is float: The angle in radians of Linestring from
+            row.geometry (as required by gdstk.Reference.rotation).
             * 2nd entry is Tuple[float,float]: The midpoint of Linestring
             from row.geometry in format (x,y).
             * 3rd entry is gdstk.Rectangle: None if Magnitude of
@@ -1925,25 +1926,32 @@ class QGDSRenderer(QRenderer):
             self.logger.warning(message_str)
             return False
 
-        # replicate old gdspy `units="convert"` behavior:
-        # # rescale imported cells so their physical size matches this renderer's lib.
-        # # coord_target = coord_imported * (imported_lib.unit / lib.unit)
-        # scale = imported_lib.unit / lib.unit
+        # Rescale imported cells so their physical size matches this renderer's lib.
+        # gdspy did this automatically via units="convert"; gdstk requires it explicitly.
+        # coord_target = coord_imported * (imported_lib.unit / lib.unit)
+        scale = imported_lib.unit / lib.unit
 
-        # # only do work if there is a real difference
-        # if not math.isclose(scale, 1.0, rel_tol=1e-12, abs_tol=0.0):
-        #     self.logger.info(
-        #         "Rescaling imported junction library from unit=%g to unit=%g "
-        #         "(scale factor=%g).",
-        #         imported_lib.unit,
-        #         lib.unit,
-        #         scale,
-        #     )
-        #     for cell in imported_cells:
-        #         # scale in-place; affects polygons, paths, labels, references
-        #         cell.scale(scale, scale)
+        if not math.isclose(scale, 1.0, rel_tol=1e-12, abs_tol=0.0):
+            self.logger.info(
+                "Rescaling imported junction library from unit=%g to unit=%g "
+                "(scale factor=%g).",
+                imported_lib.unit,
+                lib.unit,
+                scale,
+            )
+            for cell in imported_cells:
+                for polygon in cell.polygons:
+                    polygon.scale(scale, scale)
+                for path in cell.paths:
+                    path.scale(scale, scale)
+                for label in cell.labels:
+                    label.origin = (label.origin[0] * scale, label.origin[1] * scale)
+                for ref in cell.references:
+                    ref.origin = (ref.origin[0] * scale, ref.origin[1] * scale)
+                    if ref.magnification is not None:
+                        ref.magnification *= scale
 
-        # merge imported cells into main library, like old lib.read_gds did
+        # merge imported cells into main library
         for cell in imported_cells:
             lib.add(cell)
 
@@ -2132,7 +2140,7 @@ class QGDSRenderer(QRenderer):
             lib.remove(diff_pad_cell_layer)
 
         for ref in list(hold_all_pads_cell.references):
-            lib.remove(ref.ref_cell)
+            lib.remove(ref.cell)
         lib.remove(hold_all_pads_cell)
 
     def _gather_negative_extension_for_jj(
@@ -2569,7 +2577,9 @@ class QGDSRenderer(QRenderer):
         print("=== end ===\n")
 
     @staticmethod
-    def debug_summarize_gds_library(lib: gdstk.Library, show=False) -> None:
+    def debug_summarize_gds_library(
+        lib: gdstk.Library, show=False, scale: float = 100.0, width: int = 800
+    ) -> None:
         """Print a concise summary report for a gdstk.Library.
 
         The summary includes:
@@ -2582,6 +2592,10 @@ class QGDSRenderer(QRenderer):
 
         Args:
             lib: Loaded gdstk.Library instance.
+            show: If True, render and display the library as an SVG in Jupyter.
+            scale: SVG coordinate scaling factor. Increase for larger / more
+                detailed chips. Default 100.0.
+            width: Display width in pixels when rendering in Jupyter. Default 800.
 
         Example:
             .. code-block:: python
@@ -2589,30 +2603,9 @@ class QGDSRenderer(QRenderer):
                 import gdstk
 
                 lib = gdstk.read_gds("awesome_design.gds")
-                summarize_gds_library(lib)
+                gds.debug_summarize_gds_library(lib, show=True, scale=200, width=1000)
         """
-        if show:
-            write_library_overview_svg(lib, "test_output.svg")
-            from IPython.display import SVG, display
-
-            display(SVG("test_output.svg"))
-
-        # Basic library info
-        print("\n=== GDS LIBRARY SUMMARY ===")
-        print(f"name:      {getattr(lib, 'name', None)}")
-        print(f"unit:      {lib.unit}")
-        print(f"precision: {lib.precision}")
-        print(f"cells:     {len(lib.cells)}")
-
-        # Cell list
-        print("\nCELLS:")
-        for cell in lib.cells:
-            has_geom = bool(cell.polygons or cell.paths or cell.references)
-            bbox = cell.bounding_box()
-            bbox_str = "None" if bbox is None else f"{bbox}"
-            print(f"  - {cell.name:30s} geom={has_geom} bbox={bbox_str}")
-
-        # Collect per (layer, datatype) stats
+        # Collect per (layer, datatype) stats first so we can colour the SVG.
         layer_stats: DictType[Tuple[int, int], DictType[str, int]] = defaultdict(
             lambda: {"polygons": 0, "paths": 0}
         )
@@ -2641,11 +2634,79 @@ class QGDSRenderer(QRenderer):
                     key = (int(lyr), int(dt))
                     layer_stats[key]["paths"] += 1
 
-        # If lib.layers_and_datatypes() is available, we can cross-check:
-        try:
-            lad = lib.layers_and_datatypes()
-        except AttributeError:
-            lad = None
+        if show:
+            # Assign deterministic colors — same palette as plot_gds_zoom so the
+            # two views are visually consistent.
+            color_map = {
+                key: _GDS_LAYER_PALETTE[i % len(_GDS_LAYER_PALETTE)]
+                for i, key in enumerate(sorted(layer_stats))
+            }
+            svg_style = {
+                key: {"fill": color, "stroke": color, "fill-opacity": "0.80"}
+                for key, color in color_map.items()
+            }
+            write_library_overview_svg(
+                lib, "test_output.svg", scale=scale, style=svg_style
+            )
+
+            from IPython.display import display, HTML
+
+            with open("test_output.svg") as _f:
+                _svg = _f.read()
+
+            # Build an HTML legend table that matches the SVG colours.
+            _DATATYPE_LABELS = {
+                0: "metal (boolean result)",
+                10: "component polygon input",
+                11: "CPW FlexPath trace",
+            }
+            rows = ""
+            for (layer, dtype), color in color_map.items():
+                counts = layer_stats[(layer, dtype)]
+                desc = _DATATYPE_LABELS.get(dtype, "")
+                rows += (
+                    f"<tr>"
+                    f'<td><div style="width:18px;height:12px;background:{color};'
+                    f'border:1px solid #888;border-radius:2px;margin:2px 0"></div></td>'
+                    f'<td style="padding:1px 10px">{layer}</td>'
+                    f'<td style="padding:1px 10px">{dtype}</td>'
+                    f'<td style="padding:1px 10px;color:#555">{desc}</td>'
+                    f'<td style="padding:1px 10px;text-align:right">'
+                    f"{counts['polygons']} poly</td>"
+                    f'<td style="padding:1px 10px;text-align:right">'
+                    f"{counts['paths']} paths</td>"
+                    f"</tr>"
+                )
+            legend = (
+                '<table style="font-size:12px;font-family:monospace;'
+                'border-collapse:collapse;margin-top:8px">'
+                '<thead><tr style="border-bottom:1px solid #ccc;text-align:left">'
+                "<th></th>"
+                '<th style="padding:1px 10px">Layer</th>'
+                '<th style="padding:1px 10px">DType</th>'
+                '<th style="padding:1px 10px">Description</th>'
+                '<th style="padding:1px 10px">Polygons</th>'
+                '<th style="padding:1px 10px">Paths</th>'
+                f"</tr></thead><tbody>{rows}</tbody></table>"
+            )
+            display(
+                HTML(f'<div style="width:{width}px;overflow:auto">{_svg}</div>{legend}')
+            )
+
+        # Basic library info
+        print("\n=== GDS LIBRARY SUMMARY ===")
+        print(f"name:      {getattr(lib, 'name', None)}")
+        print(f"unit:      {lib.unit}")
+        print(f"precision: {lib.precision}")
+        print(f"cells:     {len(lib.cells)}")
+
+        # Cell list
+        print("\nCELLS:")
+        for cell in lib.cells:
+            has_geom = bool(cell.polygons or cell.paths or cell.references)
+            bbox = cell.bounding_box()
+            bbox_str = "None" if bbox is None else f"{bbox}"
+            print(f"  - {cell.name:30s} geom={has_geom} bbox={bbox_str}")
 
         print("\nLAYER / DATATYPE USAGE:")
         if not layer_stats:
@@ -2659,13 +2720,132 @@ class QGDSRenderer(QRenderer):
                     f"{counts['polygons']:5d}   {counts['paths']:5d}"
                 )
 
-        if lad is not None:
-            # Show the raw set from lib.layers_and_datatypes() for comparison
-            print("\nlib.layers_and_datatypes():")
-            for layer, dtype in sorted(lad):
-                print(f"  (layer={layer}, datatype={dtype})")
-
         print("\n=== END SUMMARY ===\n")
+
+    @staticmethod
+    def plot_gds_zoom(
+        lib: gdstk.Library,
+        center_mm: Tuple[float, float],
+        span_mm: float = 0.10,
+        title: Optional[str] = None,
+        ax: Optional[object] = None,
+        figsize: Tuple[float, float] = (5.0, 5.0),
+    ) -> object:
+        """Render a zoomed window of a GDS library using matplotlib.
+
+        Flattens the TOP cell hierarchy and draws every polygon whose
+        bounding box overlaps the requested window, coloured by
+        ``(layer, datatype)``.  Useful for inspecting junction placement
+        and pad geometry without opening KLayout.
+
+        Args:
+            lib: Library returned by ``gdstk.read_gds``.
+            center_mm: Centre of the zoom window in the same unit as
+                ``lib.unit`` (mm when ``lib.unit = 0.001``).
+            span_mm: Half-width of the square zoom window.
+                Default ``0.10`` gives a 200 µm window.
+            title: Optional axes title.
+            ax: Render into an existing
+                :class:`~matplotlib.axes.Axes`.  If *None* a new
+                figure is created.
+            figsize: Figure size in inches, used only when *ax* is
+                *None*.
+
+        Returns:
+            The :class:`~matplotlib.figure.Figure` containing the
+            render.  If *ax* was supplied this is ``ax.figure``;
+            otherwise it is the newly created figure (deregistered from
+            pyplot so it does not double-render in JupyterLab).
+
+        Example:
+            .. code-block:: python
+
+                import gdstk
+                import matplotlib.pyplot as plt
+
+                lib = gdstk.read_gds("my_chip.gds")
+
+                # Single panel
+                fig = gds.plot_gds_zoom(lib, center_mm=(0.70, 0.0),
+                                        span_mm=0.10, title="Q1 junction")
+                display(fig)
+
+                # Side-by-side
+                fig, axes = plt.subplots(1, 2, figsize=(13, 6))
+                gds.plot_gds_zoom(lib, center_mm=( 0.70, 0.0), ax=axes[0], title="Q1")
+                gds.plot_gds_zoom(lib, center_mm=(-0.70, 0.0), ax=axes[1], title="Q2")
+                plt.tight_layout()
+                plt.close(fig)
+                display(fig)
+        """
+        import matplotlib.patches as mpatches
+        import matplotlib.pyplot as plt
+
+        cx, cy = center_mm
+        x0, x1 = cx - span_mm, cx + span_mm
+        y0, y1 = cy - span_mm, cy + span_mm
+
+        owns_fig = ax is None
+        if owns_fig:
+            fig, ax = plt.subplots(figsize=figsize)
+        else:
+            fig = ax.figure
+
+        top = next((c for c in lib.cells if c.name == "TOP"), lib.cells[0])
+
+        # Collect visible polygons grouped by (layer, datatype)
+        groups: DictType[Tuple[int, int], list] = {}
+        for poly in top.get_polygons(depth=None):
+            pts = poly.points
+            if pts[:, 0].max() < x0 or pts[:, 0].min() > x1:
+                continue
+            if pts[:, 1].max() < y0 or pts[:, 1].min() > y1:
+                continue
+            key = (poly.layer, poly.datatype)
+            groups.setdefault(key, []).append(pts)
+
+        palette = _GDS_LAYER_PALETTE
+        legend_handles = []
+        for i, (key, pts_list) in enumerate(sorted(groups.items())):
+            color = palette[i % len(palette)]
+            layer, dtype = key
+            label = f"Layer {layer}" + (f"  dt={dtype}" if dtype else "")
+            for pts in pts_list:
+                patch = mpatches.Polygon(
+                    pts, closed=True, facecolor=color, edgecolor="none", alpha=0.85
+                )
+                ax.add_patch(patch)
+            legend_handles.append(mpatches.Patch(color=color, label=label))
+
+        ax.set_xlim(x0, x1)
+        ax.set_ylim(y0, y1)
+        ax.set_aspect("equal")
+        ax.set_xlabel("x (mm)")
+        ax.set_ylabel("y (mm)")
+        if title:
+            ax.set_title(title, fontsize=10)
+        if legend_handles:
+            ax.legend(handles=legend_handles, fontsize=7, loc="upper right")
+
+        if owns_fig:
+            plt.close(fig)
+        return fig
+
+
+# Shared colour palette used by debug_summarize_gds_library and plot_gds_zoom
+# so the SVG overview and the matplotlib zoom panels are visually consistent.
+_GDS_LAYER_PALETTE = [
+    "#4C9BE8",
+    "#F5A623",
+    "#7ED321",
+    "#D0021B",
+    "#9013FE",
+    "#50E3C2",
+    "#E8794C",
+    "#A8D8EA",
+    "#F7CAC9",
+    "#92A8D1",
+]
 
 
 def write_library_overview_svg(
@@ -2673,6 +2853,7 @@ def write_library_overview_svg(
     filename: str = "library_overview.svg",
     background: str | None = "white",
     scale: float = 10.0,
+    style: dict | None = None,
 ) -> None:
     """Write a single SVG that references all cells in a library.
 
@@ -2681,8 +2862,13 @@ def write_library_overview_svg(
         filename: Output SVG filename.
         background: SVG background color, or None for transparent.
         scale: Coordinate scaling factor applied when writing SVG.
+        style: Optional dict mapping ``(layer, datatype)`` tuples to CSS
+            property dicts (e.g. ``{"fill": "#4C9BE8", "fill-opacity": "0.8"}``).
+            Passed to ``gdstk.Cell.write_svg`` as ``shape_style``.  When
+            *None*, gdstk uses its built-in default colours.
     """
     top = gdstk.Cell("LIB_OVERVIEW")
-    for cell in lib.top_level():  # for cell in lib.cells:
+    for cell in lib.top_level():
         top.add(gdstk.Reference(cell))
-    top.write_svg(filename, background=background, scaling=scale)
+    kwargs = {} if style is None else {"shape_style": style}
+    top.write_svg(filename, background=background, scaling=scale, **kwargs)

@@ -39,6 +39,7 @@ QGDSRenderer
    .. automethod:: QGDSRenderer.load
    .. automethod:: QGDSRenderer.new_gds_library
    .. automethod:: QGDSRenderer.parse_value
+   .. automethod:: QGDSRenderer.plot_gds_zoom
    .. automethod:: QGDSRenderer.populate_element_extensions
    .. automethod:: QGDSRenderer.render_design
    .. automethod:: QGDSRenderer.show_imported_junction_gds

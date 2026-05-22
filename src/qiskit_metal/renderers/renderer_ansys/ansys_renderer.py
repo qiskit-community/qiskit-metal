@@ -337,7 +337,20 @@ class QAnsysRenderer(QRendererAnalysis):
         # need to make it so that it waits for the Ansys boot to end
         # after opening, should establish a connection (able to create a new project)
 
-        self.rapp = HfssApp()
+        try:
+            self.rapp = HfssApp()
+        except NameError:
+            raise RuntimeError(
+                "\n\nCannot connect to Ansys HFSS — win32com (Windows COM) is not available.\n\n"
+                "This renderer requires:\n"
+                "  1. Microsoft Windows  (COM automation is Windows-only)\n"
+                "  2. Ansys Electronics Desktop (HFSS) installed and licensed\n"
+                "  3. pywin32 installed:  pip install pywin32\n\n"
+                "Running on macOS or Linux? Use one of these alternatives instead:\n"
+                "  • ElmerFEM open-source FEM:  see tutorial 4.19 (tutorials/4-Analysis/)\n"
+                "  • Export to GDS and simulate externally:  see tutorial 3.2\n"
+                "  • pyaedt-based renderer (Windows + Ansys 2022+):  QAnsysPyaedtRenderer\n"
+            ) from None
         self.rdesktop = self.rapp.get_app_desktop()
         if self.rdesktop.project_count() == 0:
             self.rdesktop.new_project()
