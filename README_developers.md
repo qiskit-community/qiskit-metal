@@ -276,26 +276,48 @@ python -m pip install -r requirements-dev.txt
 ```
 You may also want to also use these instructions to [setup user environment](/docs/NEW_DEVELOPER_SETUP.md)
 
-## Setting up precommit hooks
+## Setting up git hooks (recommended)
 
-If are planning on committing, you can run the following in the root of your project to link the available precommit hooks.
-```
-./hook_setup
-```
-Please make sure the command is run from the same shell you plan on using to commit. If running on Windows, please make sure that this script is run from git-bash or another Linux-style shell. Currently, the precommit hook will check for yapf formatting.
+`./hook_setup.sh` installs two hooks that mirror the cheapest CI gates locally — so most "passed locally, fails in CI" surprises get caught at commit/push time instead of after a cloud round-trip:
 
-## Get more information when you commit code and CI gives linting error(s)
+| Hook | Runs | When |
+|---|---|---|
+| **pre-commit** | `ruff check` + `ruff format --check` on **staged** Python files | every `git commit` (fast — ~2s) |
+| **pre-push** | full-repo `ruff check` + `ruff format --check` + `check_env_consistency.py` + `check_tutorials_sync.py` (notebook touches only) | every `git push` (~15s) |
 
-If are planning on committing, code and get a linting error. Sometimes the log does not have enough details to fix the error.
-```
-yapf --diff --recursive --style .style.yapf qiskit_metal
-```
-Go to directory with qiskit-metal/.style.yapf  file and run the above command to lint locally. This may give more meaningful feedback for linting failure.
+Install once:
 
-## Uninstall precommit hook
+```bash
+./hook_setup.sh
+```
+
+This symlinks `.git/hooks/{pre-commit,pre-push}` → `hooks/{pre-commit,pre-push}`. On Windows, run from Git Bash or another POSIX-compatible shell. Both hooks invoke `ruff` via `uvx ruff@<pinned-version>` (matching CI), so no global ruff install needed.
+
+Example output on commit:
 
 ```
-rm /hooks/pre-commit
+Pre-commit: checking 3 staged Python file(s) with ruff 0.15.14
+  → ruff check
+  → ruff format --check
+  ✓ ruff checks pass
+```
+
+If something needs reformatting, the hook prints the exact command. **Emergency bypass** (e.g. WIP push of a draft branch): `git commit --no-verify` / `git push --no-verify`.
+
+### Reproducing CI's lint/format locally without the hooks
+
+```bash
+uvx ruff@0.15.14 check .              # lint
+uvx ruff@0.15.14 format --check .     # format check
+uvx ruff@0.15.14 format .             # auto-fix formatting
+uv run scripts/check_env_consistency.py
+uv run scripts/check_tutorials_sync.py
+```
+
+## Uninstall git hooks
+
+```bash
+rm .git/hooks/pre-commit .git/hooks/pre-push
 ```
 
 If you need to uninstall the precommit hook, go to the root of the project and run the above command.
