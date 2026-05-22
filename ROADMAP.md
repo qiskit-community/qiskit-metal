@@ -44,44 +44,32 @@ Two things shape the next year:
 
 ---
 
-## Now — the lite-by-default flip (v0.7.0)
+## Lite-by-default flip (v0.7.0) `[shipped]`
 
-The current v0.6.x line ships every heavy dependency
-(`pyside6`, `gmsh`, `pyaedt`, `pyEPR-quantum`, `qdarkstyle`)
-in `[project.dependencies]`, so `pip install quantum-metal`
-pulls hundreds of MB and assumes Qt is welcome. The v0.7.0
-release flips this: heavies move into extras (`[gui]`,
-`[fem]`, `[ansys]`, `[full]`) and the base install becomes
+The v0.6.x line shipped every heavy dependency in `[project.dependencies]`,
+so `pip install quantum-metal` pulled hundreds of MB and assumed Qt was
+welcome. **v0.7.0 flipped this**: heavies moved into opt-in extras
+(`[gui]` / `[ansys]` / `[mesh]` / `[full]`) and the base install became
 the orchestration-friendly minimal surface.
 
-The work is sequenced as several smaller PRs so each lands
-green:
+Items shipped under this initiative (across v0.6.1 → v0.7.1):
 
-- **Eager-import audit** `[in-progress]`
-  Sweep `src/qiskit_metal/` for module-level imports of
-  the heavies, classify each as already-lazy, safely
-  guarded, or needs-lazification. Output drives the rest
-  of the flip.
-- **Lazify the heavies** `[planned, v0.7.0]`
-  Move every `import pyside6 / gmsh / pyaedt / pyEPR`
-  out of module top-level into functions or
-  `__getattr__` shims. Friendly `ImportError`s point
-  users at the right extra.
-- **Test-suite skip-cleanliness** `[planned, v0.7.0]`
-  Add `pytest.importorskip` where needed so the full
-  suite passes on a lite install (with skips, not
-  failures).
-- **Expanded `tests-lite` CI matrix** `[planned, v0.7.0]`
-  Current `tests-lite` runs one combo; expand to
-  3.10/3.11/3.12 × ubuntu/macos/windows so the lite
-  path has the same safety net as the full path.
-- **v0.6.2 deprecation release** `[planned, before v0.7.0]`
-  Ship `DeprecationWarning` on `import qiskit_metal`
-  telling users to install `quantum-metal[full]` if they
-  want the current all-in experience after v0.7.0.
-- **The flip** `[planned, v0.7.0]`
-  Move heavies out of base deps. Bump to v0.7.0. Update
-  changelog, tutorials, README install matrix.
+- ✅ Eager-import audit + lazification of `pyside6`, `gmsh`, `pyaedt`,
+  `pyEPR-quantum`. Module top-level imports moved into functions or
+  `__getattr__` shims; friendly `ImportError`s point users at the right
+  extra.
+- ✅ Test-suite skip-cleanliness via `pytest.importorskip` so the full
+  suite passes on a lite install (with skips, not failures).
+- ✅ `tests-lite` and `tests-extras` CI matrices — both run cleanly on
+  every PR. `tests-extras` runs `gui` / `ansys` / `mesh` / `fem`
+  independently.
+- ✅ `v0.6.2` deprecation release with `FutureWarning` advertising the
+  upcoming flip + the `[full]` opt-in path for stay-the-same users.
+- ✅ `v0.7.0` the actual flip — heavies out of base deps. README, install
+  matrix, migration guide all updated.
+- ✅ `v0.7.1` cleanup — added `[mesh]` as the canonical name for the
+  gmsh extra (`[fem]` kept as a backward-compatible alias); the
+  `README_Open_FEM_Stack.md` rename; ElmerFEM error-message UX fix.
 
 ---
 
@@ -194,51 +182,53 @@ but are worth tracking:
 
 ---
 
-## Adoption, DevRel, and onboarding `[planned / research]`
+## Adoption, DevRel, and onboarding
 
-The technical roadmap above gets us a great library. This section is about
-making sure people *find* it, *try* it, and *stick with* it. Ideated May 2026
-after the v0.7.0 lite-by-default flip made one-click trial finally viable.
+Making sure people *find* the project, *try* it, and *stick with* it.
+Ideated post-v0.7.0 lite-by-default flip (which finally made one-click
+trial viable).
 
-### Quick wins (each <2 hours)
+### Shipped (v0.7.1)
 
-- **"Open in Colab" button** in the README `[planned]` — single biggest
-  adoption lever. The lite install + `qm.view()` makes Colab a 60-second
-  zero-friction trial path. Link directly to tutorial 1.2 Quick Start.
-- **`CITATION.cff` file** `[planned]` — GitHub renders a "Cite this
-  repository" widget on the repo landing page. Massive academic-credibility
-  signal at near-zero effort. Source from existing `Qiskit_Metal.bib`.
-- **Badge row refresh** `[planned]` — add PyPI downloads/month, GitHub
-  stars, contributors, Python versions supported, CI status, docs.
-- **Repo description + GitHub topics** `[planned]` — punchy one-liner and
-  tags (`quantum-computing`, `superconducting-qubits`, `eda`,
-  `quantum-chip-design`, `hfss`, `gmsh`, `quantum-hardware`) for GitHub
-  search discoverability.
-- **Hero animated GIF** `[planned]` — 6-second screen recording of
-  `qm.view(design)` rendering a transmon inline. Show, don't tell.
+- ✅ **"Open in Colab" button** in the README → tutorial 1.2 Quick Start
+- ✅ **"Open in Codespaces" button** in the README
+- ✅ **`CITATION.cff`** — GitHub "Cite this repository" widget on the repo page
+- ✅ **Badge row refresh** — PyPI downloads, Python versions, CI, docs, stars, contributors
+- ✅ **Repo description + GitHub topics** — punchy one-liner + tags for
+  GitHub-search discoverability
+- ✅ **Hero animated GIF** — 4-qubit chip built in 5 frames, embedded in README
+- ✅ **Issue-template modernization** — Bug / Feature / Docs templates
+  refreshed with v0.7.0 install paths, code-block sections for repros and
+  tracebacks, and ROADMAP / FAQ pointers. Issues (not Discord) are the
+  canonical route for support requests so nothing gets lost in chat
+  scrollback. `.github/ISSUE_TEMPLATE/config.yml` surfaces Docs / Roadmap
+  / PyPI links plus Discord as a community-chat link (NOT a support route).
+- ✅ **JupyterLite tutorials on the docs site** — every notebook runnable
+  in-browser via the Pyodide kernel, zero install. Lives under `/lite/`
+  on the published docs site.
+
+### Quick wins on deck (each <2 hours)
+
 - **Open Graph image** `[research]` — controls how the repo / docs preview
-  when shared on Twitter/Slack/Discord.
+  when shared on Twitter / Slack / Discord. Currently uses the GitHub
+  default which is much weaker than a designed image would be.
 
 ### Medium effort (~half-day each)
 
-- **JupyterLite tutorials in the docs** `[planned]` — `jupyterlite-sphinx`
-  extension makes each notebook runnable in-browser, zero install. Major
-  unlock for classroom / academic use.
 - **Gallery page** (`docs/gallery.rst`) `[planned]` — eye-candy rendered
   images of representative designs (single transmon, two-qubit, surface-code
   patch, examples from `tutorials/E.Input-output-coupling/`). Showcases
   capability visually.
 - **`SUPPORT.md` + `GOVERNANCE.md`** `[planned]` — currently support info is
-  scattered across README/FAQ/contributor-guide. A single `SUPPORT.md`
+  scattered across README / FAQ / contributor-guide. A single `SUPPORT.md`
   consolidates "where to ask, response expectations." `GOVERNANCE.md`
   matters for institutional adopters (labs, companies) deciding whether to
   commit time.
-- **`.github/ISSUE_TEMPLATE/` audit + polish** `[planned]` — bug report,
-  feature request, docs-issue templates. Reduces friction for first-time
-  contributors and improves triage signal.
-- **Codespaces / devcontainer config** (`.devcontainer/devcontainer.json`)
+- **Devcontainer config** (`.devcontainer/devcontainer.json`)
   `[planned]` — one-click cloud dev environment from any GitHub page.
-  Pairs with the lite install for a 90-second "open and run."
+  Pairs with the lite install for a 90-second "open and run." (Note:
+  Codespaces *button* already shipped in v0.7.1 — this is the
+  devcontainer that customizes the env it launches into.)
 - **Recipes section in docs** `[planned]` — short focused how-tos
   ("Design a CPW resonator at 5 GHz", "Sweep transmon pad gap and extract
   frequency", "Export GDS with custom layer mapping"). Each <50 LOC,

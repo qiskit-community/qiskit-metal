@@ -1,0 +1,31 @@
+# Issue template chooser config.
+# https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository
+#
+# We deliberately point everything actionable at GitHub Issues (including
+# questions and ideas) rather than off-platform chat. Reasons:
+#  - Issues are tracked, searchable, and link back to PRs / commits.
+#  - Issues are AI-friendly — maintainers can triage with tooling.
+#  - Discord channel monitoring is best-effort by the community; we don't
+#    want to silently lose questions in chat scrollback.
+#
+# Discord is kept as a "general community chat" link below (live tutorials,
+# announcements, social), but it's NOT the routing destination for
+# bug / feature / docs / question issues.
+blank_issues_enabled: true
+
+contact_links:
+  - name: 📚 Documentation site
+    url: https://qiskit-community.github.io/qiskit-metal/
+    about: "Tutorials, API reference, installation guide, FAQ. Worth a quick search before filing — your question might already be answered."
+
+  - name: 🗺️ Roadmap
+    url: https://github.com/qiskit-community/qiskit-metal/blob/main/ROADMAP.md
+    about: "What's planned next. If your idea is already on the roadmap, comment there rather than filing a new feature request."
+
+  - name: 📦 PyPI
+    url: https://pypi.org/project/quantum-metal/
+    about: "Current release. Note: package name is `quantum-metal` as of v0.5+."
+
+  - name: 💬 Community chat (Discord)
+    url: https://discord.gg/kaZ3UFuq
+    about: "Live tutorials, announcements, and social chat. NOT for support requests — open an issue above so it's tracked and we don't lose it in scrollback."
