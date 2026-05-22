@@ -2564,6 +2564,9 @@ gui = [
     { name = "pyside6" },
     { name = "qdarkstyle" },
 ]
+mesh = [
+    { name = "gmsh" },
+]
 
 [package.dev-dependencies]
 docs = [
@@ -2601,6 +2604,7 @@ requires-dist = [
     { name = "geopandas", specifier = ">=1.0" },
     { name = "gmsh", marker = "extra == 'fem'", specifier = ">=4.15.0,<5" },
     { name = "gmsh", marker = "extra == 'full'", specifier = ">=4.15.0,<5" },
+    { name = "gmsh", marker = "extra == 'mesh'", specifier = ">=4.15.0,<5" },
     { name = "matplotlib", specifier = ">=3.7.0" },
     { name = "numpy", specifier = ">=1.24.2,<2" },
     { name = "pandas", specifier = ">=2.1.1" },
@@ -2620,7 +2624,7 @@ requires-dist = [
     { name = "scqubits", specifier = ">=4.1.0" },
     { name = "shapely", specifier = ">=2.0.1" },
 ]
-provides-extras = ["gui", "ansys", "fem", "full"]
+provides-extras = ["gui", "ansys", "mesh", "fem", "full"]
 
 [package.metadata.requires-dev]
 docs = [

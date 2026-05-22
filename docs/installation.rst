@@ -152,19 +152,20 @@ mesher — are opt-in **extras**.
       **Best for:** Ansys-driven simulation. Requires an Ansys
       AEDT license (typically Windows).
 
-   .. grid-item-card:: 🔺 Open FEM (gmsh + Elmer)
+   .. grid-item-card:: 🔺 Open FEM mesher (gmsh)
       :class-card: sd-border
       :class-header: sd-bg-success sd-text-white
       :text-align: left
 
       .. code-block:: sh
 
-         pip install "quantum-metal[fem]"
+         pip install "quantum-metal[mesh]"
 
-      **Adds:** gmsh-based meshing, Elmer FEM solver path.
+      **Adds:** gmsh-based meshing — the foundation for the
+      open FEM toolchain (Elmer today, Palace on the roadmap).
 
       **Best for:** open-source FEM workflow without an Ansys
-      license.
+      license. (``[fem]`` is a backward-compatible alias.)
 
 .. grid:: 1
    :gutter: 2
@@ -189,7 +190,7 @@ mesher — are opt-in **extras**.
    .. code-block:: sh
 
       pip install "quantum-metal[gui,ansys]"   # MetalGUI + HFSS/Q3D
-      pip install "quantum-metal[gui,fem]"     # MetalGUI + gmsh
+      pip install "quantum-metal[gui,mesh]"    # MetalGUI + gmsh
 
 **Feature matrix** — what each install gives you, at a glance:
 
@@ -201,7 +202,7 @@ mesher — are opt-in **extras**.
      - lite
      - ``[gui]``
      - ``[ansys]``
-     - ``[fem]``
+     - ``[mesh]``
      - ``[full]``
    * - ``import qiskit_metal``
      - ✅
@@ -251,7 +252,7 @@ mesher — are opt-in **extras**.
      - ✅
      - —
      - ✅
-   * - gmsh / Elmer mesher
+   * - gmsh mesher (foundation for Elmer / Palace)
      - —
      - —
      - —
@@ -266,8 +267,9 @@ mesher — are opt-in **extras**.
 
    **CI coverage:** the ``tests-lite`` CI job validates the lite
    path on every commit; the ``tests-extras`` job exercises
-   ``[gui]``, ``[ansys]``, and ``[fem]`` independently so a
-   regression on any one extra surfaces before release.
+   ``[gui]``, ``[ansys]``, ``[mesh]``, and ``[fem]`` (alias)
+   independently so a regression on any one extra surfaces
+   before release.
 
 For the headless / Qt-free workflow that the lite install supports
 out of the box, see :doc:`headless-usage`.

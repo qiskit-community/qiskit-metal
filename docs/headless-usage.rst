@@ -103,7 +103,8 @@ Install extras
 * ``pip install quantum-metal`` — lite default: no Qt, no Ansys, no gmsh
 * ``pip install "quantum-metal[gui]"`` — + PySide6 + qdarkstyle
 * ``pip install "quantum-metal[ansys]"`` — + pyaedt + pyEPR-quantum
-* ``pip install "quantum-metal[fem]"`` — + gmsh + Elmer path
+* ``pip install "quantum-metal[mesh]"`` — + gmsh (foundation for Elmer / Palace).
+  ``[fem]`` is a backward-compatible alias.
 * ``pip install "quantum-metal[full]"`` — all extras (v0.6.x behavior)
 
 See :doc:`installation` for the full feature matrix and

@@ -43,7 +43,7 @@ Pick the install command that matches your workflow:
 | **🪶 Lite** `pip install quantum-metal` | Core API, `qm.view(design)` headless viewer, GDS export, pure-Python analyses | AI orchestration, Colab / Binder, cloud Jupyter, CI, any non-interactive workflow |
 | **🖥️ GUI** `pip install "quantum-metal[gui]"` | + `MetalGUI` desktop app (PySide6, qdarkstyle) | Interactive design work |
 | **🧲 Ansys** `pip install "quantum-metal[ansys]"` | + HFSS / Q3D renderers, EPR analyses (pyaedt, pyEPR-quantum) | HFSS / Q3D simulation (Windows + Ansys AEDT license) |
-| **🔺 Open FEM** `pip install "quantum-metal[fem]"` | + gmsh meshing, Elmer FEM | Open-source FEM (no Ansys license needed) |
+| **🔺 Open FEM mesher** `pip install "quantum-metal[mesh]"` | + gmsh meshing (foundation for Elmer / Palace) | Open-source FEM (no Ansys license). `[fem]` is a backward-compat alias. |
 | **📦 Full** `pip install "quantum-metal[full]"` | All of the above | Migrating from v0.6.x, want zero behavior change |
 
 Extras compose: `pip install "quantum-metal[gui,ansys]"` works.
@@ -51,7 +51,7 @@ Extras compose: `pip install "quantum-metal[gui,ansys]"` works.
 <details>
 <summary>Feature matrix — what each install gives you</summary>
 
-| | lite | `[gui]` | `[ansys]` | `[fem]` | `[full]` |
+| | lite | `[gui]` | `[ansys]` | `[mesh]` | `[full]` |
 |---|---|---|---|---|---|
 | `import qiskit_metal` | ✅ | ✅ | ✅ | ✅ | ✅ |
 | `qm.view(design)` (headless matplotlib) | ✅ | ✅ | ✅ | ✅ | ✅ |
@@ -61,7 +61,9 @@ Extras compose: `pip install "quantum-metal[gui,ansys]"` works.
 | `MetalGUI` desktop app | — | ✅ | — | — | ✅ |
 | HFSS / Q3D renderers | — | — | ✅ | — | ✅ |
 | EPR analyses (`EigenmodeSim`, `LumpedElementsSim`) | — | — | ✅ | — | ✅ |
-| gmsh / Elmer mesher | — | — | — | ✅ | ✅ |
+| gmsh mesher (for Elmer / Palace) | — | — | — | ✅ | ✅ |
+
+`[fem]` is a backward-compatible alias of `[mesh]` — both install gmsh.
 
 </details>
 

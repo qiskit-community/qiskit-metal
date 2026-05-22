@@ -117,37 +117,6 @@ explicit support for that use case:
 
 ---
 
-## Split ``[fem]`` extra into mesher + solver layers `[planned]`
-
-Today ``[fem]`` is a single extra that pulls ``gmsh``. The naming
-implies a coupled "gmsh + Elmer + FEM" bundle, but Elmer is an
-external CLI binary (no Python package) and gmsh is actually the
-*universal mesher* that will also feed Palace and any other open
-FEM backend.
-
-The right shape:
-
-```toml
-mesh   = ["gmsh>=4.15.0,<5"]                  # universal mesher
-fem    = ["quantum-metal[mesh]"]              # legacy alias, kept
-palace = ["quantum-metal[mesh]", "py-palace"] # future, when py-palace exists
-```
-
-Reasoning:
-
-- gmsh ↔ mesher (used by Elmer today, Palace tomorrow, any FEM later)
-- Elmer ↔ LOM-2.0 capacitance only — declining priority as Palace lands
-- ``[fem]`` stays as an alias so we don't break v0.7.x users
-- New users get the cleaner mental model
-
-Also rename ``README_Gmsh_Elmer.md`` → ``README_Open_FEM_Stack.md`` to
-match the longer-term scope (gmsh + Elmer + Palace, not gmsh + Elmer).
-
-Land alongside the first Palace integration so the rename has a
-forcing function.
-
----
-
 ## Open FEM stack — gmsh + Elmer + AWS Palace `[research]`
 
 Today the only validated analysis path for full-field

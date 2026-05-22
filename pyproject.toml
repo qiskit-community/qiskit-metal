@@ -36,7 +36,8 @@
     #
     #   pip install "quantum-metal[gui]"    # MetalGUI + PySide6
     #   pip install "quantum-metal[ansys]"  # HFSS/Q3D + pyEPR
-    #   pip install "quantum-metal[fem]"    # gmsh / Elmer
+    #   pip install "quantum-metal[mesh]"   # gmsh mesher (for Elmer/Palace/etc.)
+    #   pip install "quantum-metal[fem]"    # alias for [mesh] (v0.7.x compat)
     #   pip install "quantum-metal[full]"   # v0.6.x batteries-included
     #
     # Users upgrading from v0.6.x who want zero behavior change should
@@ -72,6 +73,17 @@
             "pyaedt>=0.21,<0.24",
             "pyEPR-quantum>=0.9.5",
         ]
+        # gmsh — the universal mesher. Used by Elmer (today), Palace
+        # (future), and any other open FEM backend. The mesher itself is
+        # decoupled from any specific solver, so [mesh] is the right
+        # primary name; [fem] below remains as a backward-compatible
+        # alias for v0.7.x users.
+        mesh = [
+            "gmsh>=4.15.0,<5",
+        ]
+        # Backward-compatible alias of [mesh]. Kept so v0.7.0/v0.7.1
+        # users who installed quantum-metal[fem] keep working through
+        # the rename. Prefer [mesh] in new docs and error messages.
         fem = [
             "gmsh>=4.15.0,<5",
         ]

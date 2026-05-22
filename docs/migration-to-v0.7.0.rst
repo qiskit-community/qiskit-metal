@@ -34,8 +34,9 @@ The fastest migration is one of:
     # Just HFSS / Q3D / EPR (no GUI)?
     pip install "quantum-metal[ansys]"
 
-    # Just gmsh meshing?
-    pip install "quantum-metal[fem]"
+    # Just gmsh meshing (for Elmer / Palace / open FEM)?
+    pip install "quantum-metal[mesh]"
+    # ``[fem]`` is a backward-compatible alias of ``[mesh]``.
 
     # Headless designs, GDS export, qm.view, no heavy deps?
     pip install quantum-metal      # base install — much smaller
@@ -86,7 +87,8 @@ Extra             Pulls
 ================  ================================================
 ``[gui]``         ``pyside6``, ``qdarkstyle``
 ``[ansys]``       ``pyaedt``, ``pyEPR-quantum``
-``[fem]``         ``gmsh``
+``[mesh]``        ``gmsh`` (foundation for Elmer / Palace / open FEM)
+``[fem]``         alias of ``[mesh]`` — kept for v0.7.x compatibility
 ``[full]``        all of the above — v0.6.x compatibility set
 ================  ================================================
 
@@ -135,10 +137,12 @@ I use the gmsh / Elmer FEM path
 
 .. code-block:: bash
 
-    pip install "quantum-metal[fem]"
+    pip install "quantum-metal[mesh]"     # or [fem] (alias)
 
 Note that gmsh on Apple Silicon Macs still needs the brew
-``gmsh`` package — see ``README_Gmsh_Elmer.md``.
+``gmsh`` package — see ``README_Open_FEM_Stack.md``.
+ElmerFEM itself is an **external CLI binary** — it does not
+ship with the extra and must be installed separately.
 
 
 I want the v0.6.x all-batteries-included install
@@ -175,7 +179,7 @@ only that extra at the dispatch layer:
     pip install "quantum-metal[ansys]"
 
     # Worker pod handling gmsh-based meshing
-    pip install "quantum-metal[fem]"
+    pip install "quantum-metal[mesh]"
 
 
 Common errors and fixes
@@ -212,7 +216,7 @@ a lite install. Fix:
 
 .. code-block:: bash
 
-    pip install "quantum-metal[fem]"
+    pip install "quantum-metal[mesh]"     # or [fem] (alias)
 
 
 ``Could not load the Qt platform plugin 'xcb'`` (and similar

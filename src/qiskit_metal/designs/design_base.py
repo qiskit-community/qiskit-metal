@@ -1005,7 +1005,7 @@ class QDesign:
                     f"Renderer={renderer_key} skipped: "
                     f"an optional dependency for {path_name} is not "
                     f"installed ({e}). Install the corresponding extra "
-                    f"(e.g. `pip install quantum-metal[fem]` for gmsh, "
+                    f"(e.g. `pip install quantum-metal[mesh]` for gmsh, "
                     f"`pip install quantum-metal[ansys]` for pyaedt) "
                     f"to enable it."
                 )

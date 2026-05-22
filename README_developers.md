@@ -187,9 +187,9 @@ Here are some things to consider when setting up a development environment:
 
 ### Installing other dependencies for Open-source Renderers (Gmsh and ElmerFEM)
 
-If you want to use the recently added open-source renderers for [Gmsh](./qiskit_metal/renderers/renderer_gmsh) and [ElmerFEM](./qiskit_metal/renderers/renderer_elmer) for simulation of your design, please make sure that both of them have been installed successfully in your system before running Qiskit Metal. On Windows, Linux, and MacOS (with x86_64 architecture CPUs), Gmsh will be installed automatically using the `environment.yml` file during the conda installation step above. For more detailed steps to install ElmerFEM, please refer to [this](./README_Gmsh_Elmer.md) document.
+If you want to use the open-source renderers for [Gmsh](./qiskit_metal/renderers/renderer_gmsh) and [ElmerFEM](./qiskit_metal/renderers/renderer_elmer) for simulation of your design, install the `[mesh]` extra (`pip install "quantum-metal[mesh]"` — or its alias `[fem]`) to get the gmsh Python binding, and install ElmerFEM separately (it's an external CLI binary, not a Python package). For the full open FEM toolchain setup — gmsh, Elmer, and the planned Palace path — see [`README_Open_FEM_Stack.md`](./README_Open_FEM_Stack.md).
 
-**NOTE on Apple Silicon (M1/M2/M3/M4):** As of v0.5+, Quantum Metal uses **PySide6** (Qt 6), which is native on Apple Silicon — `MetalGUI` works out of the box with `pip install "quantum-metal[gui]"`. For the headless lite install (default in v0.7.0+) you don't need PySide6 at all; use `qm.view(design)` instead. See [`docs/headless-usage.rst`](./docs/headless-usage.rst). Gmsh on Apple Silicon may still need extra setup — see [`README_Gmsh_Elmer.md`](./README_Gmsh_Elmer.md).
+**NOTE on Apple Silicon (M1/M2/M3/M4):** As of v0.5+, Quantum Metal uses **PySide6** (Qt 6), which is native on Apple Silicon — `MetalGUI` works out of the box with `pip install "quantum-metal[gui]"`. For the headless lite install (default in v0.7.0+) you don't need PySide6 at all; use `qm.view(design)` instead. See [`docs/headless-usage.rst`](./docs/headless-usage.rst). Gmsh on Apple Silicon may still need extra setup — see [`README_Open_FEM_Stack.md`](./README_Open_FEM_Stack.md).
 
 # Other Common Issues
 

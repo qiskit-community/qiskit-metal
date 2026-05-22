@@ -70,7 +70,8 @@ def _resolve_elmer_binary(name: str, explicit_path: str | None = None) -> str:
     raise FileNotFoundError(
         f"ElmerFEM binary {name!r} was not found on PATH or at its standard install "
         "location. ElmerFEM is an external solver and must be installed separately — "
-        "it does not ship with `pip install \"quantum-metal[fem]\"`.\n\n"
+        "it does not ship with `pip install \"quantum-metal[mesh]\"` "
+        "(or its alias `quantum-metal[fem]`).\n\n"
         "Quantum Metal is tested against Elmer 9.0+; newer releases are expected to "
         "work since we use only the stable ElmerGrid / ElmerSolver CLI surface.\n\n"
         "Install instructions:\n"
@@ -79,7 +80,7 @@ def _resolve_elmer_binary(name: str, explicit_path: str | None = None) -> str:
         "      https://github.com/ElmerCSC/elmerfem#elmer-fem\n"
         "  - Linux: `sudo apt install elmerfem-csc` (Ubuntu) or build from source.\n"
         "  - Windows: install the official `ElmerFEM-gui-mpi-Windows-AMD64` build.\n\n"
-        "See `README_Gmsh_Elmer.md` in the repository root for the full setup guide.\n"
+        "See `README_Open_FEM_Stack.md` in the repository root for the full setup guide.\n"
         f"If {name} is installed but not on PATH, pass an explicit path via the "
         f"`{name.lower()}=` argument."
     )
