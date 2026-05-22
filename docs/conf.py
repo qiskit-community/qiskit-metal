@@ -40,6 +40,47 @@ os.environ["QISKIT_METAL_DOCS_BUILD"] = "1"
 os.environ.setdefault("QT_API", "pyside6")
 
 
+# Pre-mock heavy / native-extension dependencies BEFORE importing
+# qiskit_metal. As of v0.7.0 the docs tox env installs only the
+# lite package — PySide6, pyaedt, pyEPR, gmsh, qdarkstyle, IPython
+# are not on disk. ``autodoc_mock_imports`` (set further down) only
+# kicks in for autodoc's cross-reference walk; it does not protect
+# THIS file's own ``import qiskit_metal`` below, which transitively
+# touches ``mpl_canvas`` → ``matplotlib.backends.backend_qt5agg`` →
+# ``from PySide6 import ...`` and various ``_gui/`` widgets that
+# subclass ``QTableView`` etc.
+#
+# Use sphinx's own ``_MockObject`` (rather than ``unittest.mock.
+# MagicMock``) because the former handles being used as a class
+# base — Python's ``MagicMock`` triggers ``TypeError: metaclass
+# conflict`` when two mocked classes are listed as bases.
+import sys
+from sphinx.ext.autodoc.mock import _MockModule
+
+_MOCKED_MODULES = [
+    "PySide6",
+    "PySide6.QtCore",
+    "PySide6.QtGui",
+    "PySide6.QtWidgets",
+    "qdarkstyle",
+    "gmsh",
+    "pyEPR",
+    "pyaedt",
+    "ansys",
+    "ansys.aedt",
+    "ansys.aedt.core",
+    "IPython",
+    "IPython.core",
+    "IPython.core.magic",
+    "IPython.display",
+    "matplotlib.backends.backend_qt5agg",
+    "matplotlib.backends.backend_qtagg",
+    "matplotlib.backends.qt_compat",
+]
+for _mod in _MOCKED_MODULES:
+    sys.modules.setdefault(_mod, _MockModule(_mod))
+
+
 import qiskit_metal
 import qiskit_sphinx_theme
 

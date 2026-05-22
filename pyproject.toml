@@ -188,6 +188,15 @@
     # ``docs/conf.py`` so Sphinx autodoc can walk renderer modules
     # without those packages on disk. Keeps docs CI fast and
     # decoupled from native-lib availability on the runner.
+    #
+    # IMPORTANT: ``extras = []`` is REQUIRED to override the
+    # ``extras = ["full"]`` set in ``[tool.tox.env_run_base]``.
+    # Without this explicit empty list, tox env inheritance would
+    # install ``[full]`` here too — and PySide6's ``libEGL.so.1``
+    # is absent on the CI runner, crashing ``import qiskit_metal``
+    # at the top of ``conf.py`` (autodoc_mock_imports only kicks
+    # in when a module is *absent*, not present-but-broken).
+    extras            = []
     dependency_groups = [ "docs" ]
     commands = [
         [

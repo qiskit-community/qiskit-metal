@@ -166,19 +166,22 @@ mesher — are opt-in **extras**.
       **Best for:** open-source FEM workflow without an Ansys
       license.
 
-.. grid-item-card:: 📦 Everything (v0.6.x compatibility set)
-   :class-card: sd-bg-light sd-border
-   :class-header: sd-bg-warning sd-text-dark
-   :text-align: left
+.. grid:: 1
+   :gutter: 2
    :margin: 2 0 2 0
 
-   .. code-block:: sh
+   .. grid-item-card:: 📦 Everything (v0.6.x compatibility set)
+      :class-card: sd-bg-light sd-border
+      :class-header: sd-bg-warning sd-text-dark
+      :text-align: left
 
-      pip install "quantum-metal[full]"
+      .. code-block:: sh
 
-   All of the above. Use this if you're upgrading from v0.6.x
-   and want **zero** behavior change — the install is bit-for-bit
-   the same dep set you had pre-v0.7.0.
+         pip install "quantum-metal[full]"
+
+      All of the above. Use this if you're upgrading from v0.6.x
+      and want **zero** behavior change — the install is bit-for-bit
+      the same dep set you had pre-v0.7.0.
 
 .. tip::
 
@@ -189,10 +192,7 @@ mesher — are opt-in **extras**.
       pip install "quantum-metal[gui,ansys]"   # MetalGUI + HFSS/Q3D
       pip install "quantum-metal[gui,fem]"     # MetalGUI + gmsh
 
-Feature matrix
-~~~~~~~~~~~~~~
-
-What each install gives you, at a glance:
+**Feature matrix** — what each install gives you, at a glance:
 
 .. list-table::
    :header-rows: 1
