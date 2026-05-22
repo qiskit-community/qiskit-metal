@@ -131,7 +131,6 @@ jobs:
             'numpy>=1.24.2,<2' \
             'pandas>=2.1.1' \
             'pint>=0.21.0' \
-            'pyEPR-quantum>=0.9.5' \
             'pygments>=2.14.0' \
             'qutip>=5.0.0' \
             'scipy>=1.10.0' \
@@ -206,6 +205,70 @@ jobs:
             --output-dir /tmp/exec_check \
             'tutorials/1 Overview/1.4 Headless quick view (no Qt GUI).ipynb'
           echo "OK: 1.4 Headless quick view executed cleanly"
+
+  tests-extras:
+    # Exercises each opt-in extra independently. As of v0.7.0
+    # (lite-by-default), ``[gui]`` / ``[ansys]`` / ``[fem]`` are the
+    # three install pathways most users actually take after the lite
+    # path. Without this matrix, a regression on (say) ``[gui]``
+    # would only surface after release.
+    name: tests-extras-${{ matrix.extra }}
+    runs-on: ubuntu-24.04
+    env:
+      FORCE_COLOR: "1"
+      QISKIT_METAL_HEADLESS: "1"
+    strategy:
+      fail-fast: false
+      matrix:
+        extra: [gui, ansys, fem]
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.9.24"
+          enable-cache: true
+      - name: Install Gmsh OS deps (only needed for fem extra)
+        if: matrix.extra == 'fem'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libglu1-mesa libglu1-mesa-dev libegl1-mesa-dev
+      - name: Install with extra
+        # Install the package WITH the matrix extra (e.g.,
+        # ``quantum-metal[gui]``). Uses ``uv pip install`` against a
+        # fresh venv so we control exactly what's present — same
+        # rationale as tests-lite.
+        run: |
+          uv venv --python 3.12
+          uv pip install -e '.[${{ matrix.extra }}]'
+          uv pip install 'pytest>=8.4.1' 'pytest-rich>=0.2.0'
+      - name: Smoke test — import qiskit_metal + qm.view()
+        # The same smoke test as tests-lite. With the extra
+        # installed, this should still work (the extra is additive,
+        # not replacing the lite path).
+        run: |
+          .venv/bin/python -c "
+          import qiskit_metal as qm
+          from qiskit_metal.designs import DesignPlanar
+          from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
+          design = DesignPlanar()
+          TransmonPocket(design, 'Q1',
+                         options={'connection_pads': {'a': {}}})
+          fig = qm.view(design)
+          assert fig is not None, 'qm.view returned None'
+          print('OK: qm.view(design) with extra ${{ matrix.extra }}')
+          "
+      - name: Run no-Qt test files
+        # Same set as tests-lite. Ensures the extra doesn't break
+        # core behavior.
+        run: |
+          .venv/bin/python -m pytest \
+            tests/test_viewer.py \
+            tests/test_qlibrary_idempotency.py \
+            tests/test_qlibrary_pin_sanity.py \
+            tests/test_solution_types.py \
+            -v
 
   coverage:
     name: coverage
