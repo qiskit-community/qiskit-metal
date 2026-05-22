@@ -1,9 +1,16 @@
-# Qiskit Metal For Developers
+# Quantum Metal — Developer Guide
 
+> Companion to [`README.md`](./README.md) (user-facing) and
+> [`docs/contributor-guide.rst`](./docs/contributor-guide.rst) (rendered into
+> the docs site). This file collects the practical recipes — env setup,
+> tests, docs build, tutorials sync, common gotchas — for working on
+> Quantum Metal itself.
 
-## Development Setup for version 0.5+
+## Development Setup
 
-The new version of Qiskit Metal (soon to be Quantum Metal) has transitioned to [uv](https://docs.astral.sh/uv/) for project/dependency management. This guide describes how to set up your local development environment in light of these updates. First, you should install uv on your system, as described by the [instructions here](https://docs.astral.sh/uv/getting-started/installation/).
+Quantum Metal uses [`uv`](https://docs.astral.sh/uv/) for project/dependency
+management. Install uv first, following the
+[official instructions](https://docs.astral.sh/uv/getting-started/installation/).
 
 
 ### Development (virtual) environments
@@ -59,11 +66,77 @@ Note that we have not yet settled on a formatting configuration other than defau
 
 ### Building docs
 
-Documentation is built using Sphinx. Please refer to the guide presented in the [package documentation](https://qiskit-community.github.io/qiskit-metal/contributor-guide.html#contributing-to-documentation) for an extensive description. Briefly, docs can be built using tox with the following command: 
+Documentation is built using Sphinx + nbsphinx. The detailed guide lives in the
+[contributor guide](https://qiskit-community.github.io/qiskit-metal/contributor-guide.html#contributing-to-documentation).
+Quick recipes:
 
+```bash
+# Full build (fast — ~1–2 min; skips notebook re-execution by default)
+uvx --with tox-uv tox -e docs
+
+# Full build, re-execute every tutorial notebook (slow; needs all extras
+# installed, e.g. [full] — used for releases / docs deploys)
+QISKIT_DOCS_BUILD_TUTORIALS=always uvx --with tox-uv tox -e docs
+
+# Open the result
+open docs/_build/html/index.html
 ```
-tox -e docs
+
+For iterative `.rst` editing — live reload at `http://localhost:8000`:
+
+```bash
+uv sync --group docs          # one-time
+uv run sphinx-autobuild docs docs/_build/html
 ```
+
+If autodoc emits stale or duplicated stubs, blow them away and rebuild clean:
+
+```bash
+rm -rf docs/_build docs/stubs && uvx --with tox-uv tox -e docs
+```
+
+### Tutorials sync — dual-folder workflow
+
+Every numbered tutorial notebook lives in **two places** that must stay
+content-identical:
+
+| Path                | Why                                                            |
+|---------------------|----------------------------------------------------------------|
+| `tutorials/`        | User-facing — spaces in filenames, browsable on GitHub         |
+| `docs/tut/`         | Sphinx + nbsphinx source — hyphenated filenames for clean URLs |
+
+**CI fails any PR where the two folders drift** (`scripts/check_tutorials_sync.py`
+runs on every push). The check compares **cell source content** only, so
+metadata churn (kernel ids, execution counts) doesn't cause false drift.
+
+Recipes:
+
+```bash
+# 1. Authoritative drift check — use this as the source of truth
+uv run scripts/check_tutorials_sync.py
+#    → "✓ All 54 notebook pairs in sync."  = you're done.
+
+# 2. If drift IS detected: dry-run the sync to see what will change
+python3 _dev/sync_two_folders.py
+#    Reports per-pair: in-sync vs. would-copy, with the chosen direction.
+
+# 3. Apply the sync (overwrites the non-canonical side)
+python3 _dev/sync_two_folders.py --write
+
+# 4. Re-run the check to confirm
+uv run scripts/check_tutorials_sync.py
+```
+
+Per-notebook canonical choices ("which folder wins on conflict") live in the
+`CANONICAL` dict in `_dev/sync_two_folders.py`. Update it there if you
+intentionally want the other folder to be authoritative for a specific
+notebook, then re-sync.
+
+> **Gotcha:** `_dev/sync_two_folders.py`'s "src→dst" column shows the
+> *direction it would copy if there's drift*. The actual decision of whether
+> to copy is in the `status` column (`in-sync` vs. `would copy`). Don't be
+> alarmed if every row prints — what matters is the summary line at the
+> bottom and the `status` column per row.
 
 
 ## Old Instructions

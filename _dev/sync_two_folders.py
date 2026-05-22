@@ -174,14 +174,37 @@ def file_size(p):
         return 0
 
 
+def cells_match(a: Path, b: Path) -> bool:
+    """Return True if two notebook files have identical cell content.
+
+    We compare the ``source`` field of every cell (the user-visible code
+    or markdown), not the full JSON — because saving a notebook in
+    different Jupyter sessions perturbs metadata (kernel id, execution
+    counts, timestamps) without changing the actual content. This
+    matches the equality definition used by
+    ``scripts/check_tutorials_sync.py``.
+    """
+    try:
+        with open(a) as fa, open(b) as fb:
+            nb_a = json.load(fa)
+            nb_b = json.load(fb)
+    except (OSError, json.JSONDecodeError):
+        return False
+
+    src_a = [c.get("source", "") for c in nb_a.get("cells", [])]
+    src_b = [c.get("source", "") for c in nb_b.get("cells", [])]
+    return src_a == src_b
+
+
 def main():
     write_mode = '--write' in sys.argv
     print(f"Mode: {'WRITE' if write_mode else 'DRY-RUN'}")
-    print(f"{'key':<8} {'choice':<6} {'src→dst':<8} {'src size':>9} {'dst size':>9}  notebook")
-    print('-' * 95)
+    print(f"{'key':<8} {'status':<10} {'choice':<6} {'src→dst':<8} {'src size':>9} {'dst size':>9}  notebook")
+    print('-' * 105)
 
     tut_wins = 0
     docs_wins = 0
+    in_sync = 0
     skipped = 0
 
     for key in sorted(PAIRS.keys()):
@@ -199,11 +222,9 @@ def main():
         if choice == 'tut':
             src, dst = tut_p, docs_p
             direction = 'tut→docs'
-            tut_wins += 1
         elif choice == 'docs':
             src, dst = docs_p, tut_p
             direction = 'docs→tut'
-            docs_wins += 1
         else:
             print(f"{key:<8} UNDECIDED — skipping")
             skipped += 1
@@ -211,15 +232,32 @@ def main():
 
         src_sz = file_size(src) // 1024
         dst_sz = file_size(dst) // 1024
-        print(f"{key:<8} {choice:<6} {direction:<8} {src_sz:>6} kB {dst_sz:>6} kB  {Path(docs_p).name}")
 
-        if write_mode:
+        # Skip the actual copy when content already matches — saves
+        # disk churn and gives an accurate "what would change" summary.
+        already_in_sync = cells_match(Path(src), Path(dst))
+        if already_in_sync:
+            status = 'in-sync'
+            in_sync += 1
+        else:
+            status = 'WILL COPY' if write_mode else 'would copy'
+            if choice == 'tut':
+                tut_wins += 1
+            else:
+                docs_wins += 1
+
+        print(f"{key:<8} {status:<10} {choice:<6} {direction:<8} {src_sz:>6} kB {dst_sz:>6} kB  {Path(docs_p).name}")
+
+        if write_mode and not already_in_sync:
             shutil.copyfile(src, dst)
 
-    print('-' * 95)
-    print(f"tut→docs: {tut_wins} | docs→tut: {docs_wins} | skipped: {skipped}")
+    print('-' * 105)
+    print(f"in-sync: {in_sync} | tut→docs: {tut_wins} | docs→tut: {docs_wins} | skipped: {skipped}")
     if not write_mode:
-        print("\nDry-run only. Re-run with --write to apply.")
+        if tut_wins == 0 and docs_wins == 0:
+            print("\nNothing to do — all pairs are already in sync.")
+        else:
+            print("\nDry-run only. Re-run with --write to apply.")
 
 
 if __name__ == '__main__':
