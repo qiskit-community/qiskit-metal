@@ -21,13 +21,23 @@ based on user demand and contributor availability.
 
 ## Vision
 
-Quantum Metal is the open-source design plane for
-superconducting quantum chips: a Python library where you
-build a chip from `QComponent`s, attach analyses, and hand
-the result to whichever solver / fab / orchestrator you
-want. The library itself is solver-agnostic; the renderers
-are the integration layer with the outside world (GDS,
-HFSS, Q3D, gmsh, Elmer, AWS Palace, ...).
+Quantum Metal is the open-source **chip-design layer** for
+superconducting quantum hardware: a Python library where
+you build a chip from `QComponent`s, attach analyses, and
+hand the result to whichever solver / fab / orchestrator
+you want. The library itself is solver-agnostic; the
+renderers are the integration layer with the outside world
+(GDS, HFSS, Q3D, gmsh, Elmer, AWS Palace, ...).
+
+We sit inside a broader open-source ecosystem — design
+discovery ([SQuADDS](https://github.com/LFL-Lab/SQuADDS)),
+Palace simulation wrappers ([SQDMetal](https://github.com/sqdlab/SQDMetal),
+[pypalace](https://pypalace.readthedocs.io/)),
+mesh utilities, quantization tools. Full map:
+[`docs/ecosystem.rst`](./docs/ecosystem.rst) (rendered at
+the docs site). Items below are about Metal's own
+direction; ecosystem-level coordination is tracked
+alongside.
 
 Two things shape the next year:
 
