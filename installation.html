@@ -772,6 +772,73 @@ Add to a Pixi workspace</label><div class="sd-tab-content docutils">
 </div>
 <p>If you specifically need the legacy pre-0.5 package, install <code class="docutils literal notranslate"><span class="pre">qiskit-metal</span></code> instead. Otherwise, use <code class="docutils literal notranslate"><span class="pre">quantum-metal</span></code> to get the current release.</p>
 </section>
+<section id="optional-extras-lite-by-default-preview">
+<h2>Optional extras (lite-by-default preview)<a class="headerlink" href="#optional-extras-lite-by-default-preview" title="Link to this heading">¶</a></h2>
+<p>Quantum Metal ships heavy backends — the Qt desktop GUI, the
+Ansys HFSS/Q3D bridge, the gmsh mesher — as <strong>opt-in extras</strong>.
+You can install only the subset you need.</p>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 22.0%" />
+<col style="width: 38.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Extra</p></th>
+<th class="head"><p>Pulls</p></th>
+<th class="head"><p>When to use it</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>(none — base install)</p></td>
+<td><p>Core API, <code class="docutils literal notranslate"><span class="pre">qm.view(design)</span></code> headless viewer, GDS export, pure-Python analyses</p></td>
+<td><p>AI orchestration, Colab / Binder, cloud Jupyter, CI, any non-interactive workflow</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">[gui]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pyside6</span></code>, <code class="docutils literal notranslate"><span class="pre">qdarkstyle</span></code></p></td>
+<td><p>Desktop GUI (<code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">[ansys]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pyaedt</span></code>, <code class="docutils literal notranslate"><span class="pre">pyEPR-quantum</span></code></p></td>
+<td><p>HFSS / Q3D / EPR analyses (requires an Ansys AEDT license)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">[fem]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">gmsh</span></code></p></td>
+<td><p>Gmsh-based meshing + Elmer FEM path</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">[full]</span></code></p></td>
+<td><p>All of the above</p></td>
+<td><p>The v0.6.x “all batteries included” experience</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Install one or several extras (comma-separated, no spaces):</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># Just the GUI</span>
+pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;quantum-metal[gui]&quot;</span>
+
+<span class="c1"># GUI + Ansys</span>
+pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;quantum-metal[gui,ansys]&quot;</span>
+
+<span class="c1"># Everything</span>
+pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;quantum-metal[full]&quot;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>In v0.6.x</strong>, every extra’s deps are <em>also</em> in the base
+<code class="docutils literal notranslate"><span class="pre">[project.dependencies]</span></code> — so <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">quantum-metal</span></code>
+gives you everything regardless of whether you list extras.
+The <code class="docutils literal notranslate"><span class="pre">[gui]</span></code> / <code class="docutils literal notranslate"><span class="pre">[ansys]</span></code> / <code class="docutils literal notranslate"><span class="pre">[fem]</span></code> / <code class="docutils literal notranslate"><span class="pre">[full]</span></code> selectors
+are informational today; the <code class="docutils literal notranslate"><span class="pre">tests-lite</span></code> CI job exercises
+what <em>would</em> be in the lite install so the path stays green.</p>
+<p><strong>In v0.7.0</strong>, the base install becomes lite — see
+<a class="reference internal" href="migration-to-v0.7.0.html"><span class="doc">Migrating to v0.7.0 (lite-by-default install)</span></a> for the migration recipes.</p>
+</div>
+<p>For the headless / Qt-free workflow that the base install
+supports out of the box, see <a class="reference internal" href="headless-usage.html"><span class="doc">Using Quantum Metal without the Qt GUI</span></a>.</p>
+</section>
 <section id="installation-from-source">
 <h2>Installation from source<a class="headerlink" href="#installation-from-source" title="Link to this heading">¶</a></h2>
 <p>We recommend setting up a proper git linkage, which will simplify the retrieval of code updates and the possible contributions back to the source code. If you intend to contribute to the project, please also read the <a class="reference internal" href="contributor-guide.html#contributor-guide"><span class="std std-ref">contributor guide</span></a>.</p>
@@ -988,6 +1055,7 @@ Click for YouTube Video</a><br><br>
 <li><a class="reference internal" href="#">Installation</a><ul>
 <li><a class="reference internal" href="#outline-of-installation">Outline of Installation</a></li>
 <li><a class="reference internal" href="#basic-installation">Basic Installation</a></li>
+<li><a class="reference internal" href="#optional-extras-lite-by-default-preview">Optional extras (lite-by-default preview)</a></li>
 <li><a class="reference internal" href="#installation-from-source">Installation from source</a><ul>
 <li><a class="reference internal" href="#choose-an-install-method">Choose an install method</a><ul>
 <li><a class="reference internal" href="#optional-jupyter-lab">(Optional) Jupyter Lab</a></li>
