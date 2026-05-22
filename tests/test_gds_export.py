@@ -253,10 +253,15 @@ class TestJunctionRotationRadians(unittest.TestCase):
     def test_vertical_linestring_returns_pi_over_2(self):
         """A vertical junction line (pointing straight up) must give π/2 rad, not 90."""
         import math
+
         row = self._make_row(0.0, 0.0, 0.0, 1.0)
         _, rotation, _ = self.gds._get_linestring_characteristics(row)
-        self.assertAlmostEqual(rotation, math.pi / 2, places=6,
-            msg="Vertical junction should give π/2 rad — got degrees instead of radians?")
+        self.assertAlmostEqual(
+            rotation,
+            math.pi / 2,
+            places=6,
+            msg="Vertical junction should give π/2 rad — got degrees instead of radians?",
+        )
 
     def test_horizontal_linestring_returns_zero(self):
         """A horizontal junction line must give 0 rad."""
@@ -267,12 +272,16 @@ class TestJunctionRotationRadians(unittest.TestCase):
     def test_diagonal_linestring_is_in_radian_range(self):
         """Any linestring rotation must be in (-π, π], never a degree value like 45 or 135."""
         import math
+
         row = self._make_row(0.0, 0.0, 1.0, 1.0)
         _, rotation, _ = self.gds._get_linestring_characteristics(row)
         self.assertAlmostEqual(rotation, math.pi / 4, places=6)
         # If degrees were returned this would be ~45.0, way outside (-π, π].
-        self.assertLessEqual(abs(rotation), math.pi,
-            msg=f"rotation={rotation} looks like degrees, not radians")
+        self.assertLessEqual(
+            abs(rotation),
+            math.pi,
+            msg=f"rotation={rotation} looks like degrees, not radians",
+        )
 
     def test_rotation_is_used_in_exported_junction_reference(self):
         """End-to-end: export a design with a 90° qubit and confirm the
@@ -298,8 +307,11 @@ class TestJunctionRotationRadians(unittest.TestCase):
             angle = ref.rotation  # radians
             # Must be in (-π, π] — a degree value of 90 would be ~1.57 rad ✓,
             # but the old bug gave math.degrees(π/2) ≈ 90 rad ≈ 116° effective.
-            self.assertLessEqual(abs(angle), math.pi,
-                msg=f"Junction ref.rotation={angle} is outside radian range — degrees bug?")
+            self.assertLessEqual(
+                abs(angle),
+                math.pi,
+                msg=f"Junction ref.rotation={angle} is outside radian range — degrees bug?",
+            )
 
 
 class TestPlotGDSZoom(unittest.TestCase):
@@ -315,17 +327,20 @@ class TestPlotGDSZoom(unittest.TestCase):
 
     def tearDown(self):
         import matplotlib.pyplot as plt
+
         plt.close("all")
         self.tmpdir.cleanup()
 
     def test_returns_figure(self):
         from matplotlib.figure import Figure
+
         fig = self.gds.plot_gds_zoom(self.lib, center_mm=(0.70, 0.0), span_mm=0.15)
         self.assertIsInstance(fig, Figure)
 
     def test_accepts_existing_axes(self):
         import matplotlib.pyplot as plt
         from matplotlib.figure import Figure
+
         fig, ax = plt.subplots()
         returned = self.gds.plot_gds_zoom(
             self.lib, center_mm=(0.70, 0.0), span_mm=0.15, ax=ax
@@ -336,6 +351,7 @@ class TestPlotGDSZoom(unittest.TestCase):
         """A zoom window with no geometry should produce an empty figure, not an error."""
         fig = self.gds.plot_gds_zoom(self.lib, center_mm=(99.0, 99.0), span_mm=0.01)
         from matplotlib.figure import Figure
+
         self.assertIsInstance(fig, Figure)
 
     def test_title_is_set(self):
@@ -347,6 +363,7 @@ class TestPlotGDSZoom(unittest.TestCase):
     def test_side_by_side_panels(self):
         """plot_gds_zoom into two axes on the same figure must not raise."""
         import matplotlib.pyplot as plt
+
         fig, axes = plt.subplots(1, 2, figsize=(10, 5))
         self.gds.plot_gds_zoom(self.lib, center_mm=(0.70, 0.0), ax=axes[0])
         self.gds.plot_gds_zoom(self.lib, center_mm=(-0.70, 0.0), ax=axes[1])
@@ -369,7 +386,9 @@ class TestDebugSummarizeGDSLibrary(unittest.TestCase):
 
     def test_show_false_does_not_raise(self):
         """show=False must run cleanly — just prints to stdout."""
-        import io, contextlib
+        import contextlib
+        import io
+
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             self.gds.debug_summarize_gds_library(self.lib, show=False)
@@ -380,6 +399,7 @@ class TestDebugSummarizeGDSLibrary(unittest.TestCase):
     def test_show_true_writes_svg(self):
         """show=True must write test_output.svg to disk."""
         import os
+
         svg_path = "test_output.svg"
         if os.path.exists(svg_path):
             os.remove(svg_path)
@@ -389,8 +409,10 @@ class TestDebugSummarizeGDSLibrary(unittest.TestCase):
                 self.gds.debug_summarize_gds_library(self.lib, show=True)
             except Exception:
                 pass  # IPython display will fail outside Jupyter — that's expected
-            self.assertTrue(os.path.exists(svg_path),
-                "show=True must write test_output.svg even outside Jupyter")
+            self.assertTrue(
+                os.path.exists(svg_path),
+                "show=True must write test_output.svg even outside Jupyter",
+            )
         finally:
             if os.path.exists(svg_path):
                 os.remove(svg_path)
@@ -399,10 +421,15 @@ class TestDebugSummarizeGDSLibrary(unittest.TestCase):
         """write_library_overview_svg must accept shape_style without TypeError.
         Regression for gdstk 0.9.x where the kwarg is shape_style not style.
         """
-        import tempfile, os
-        from qiskit_metal.renderers.renderer_gds.gds_renderer import write_library_overview_svg
+        import os
+        import tempfile
+        from qiskit_metal.renderers.renderer_gds.gds_renderer import (
+            write_library_overview_svg,
+        )
 
-        style = {(1, 0): {"fill": "#4C9BE8", "stroke": "#4C9BE8", "fill-opacity": "0.8"}}
+        style = {
+            (1, 0): {"fill": "#4C9BE8", "stroke": "#4C9BE8", "fill-opacity": "0.8"}
+        }
         with tempfile.TemporaryDirectory() as d:
             out = os.path.join(d, "styled.svg")
             try:
@@ -412,7 +439,6 @@ class TestDebugSummarizeGDSLibrary(unittest.TestCase):
                     f"write_library_overview_svg raised TypeError with shape_style: {exc}"
                 )
             self.assertTrue(os.path.exists(out))
-
 
 
 if __name__ == "__main__":

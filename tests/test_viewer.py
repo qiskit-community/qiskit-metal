@@ -234,6 +234,7 @@ class TestViewBackendConditionalClose(unittest.TestCase):
         """Closing from pyplot must not corrupt the Figure object —
         savefig and axes access must still work after view() returns."""
         import io
+
         design = _make_design_with_two_components()
         fig = view(design)
         # axes still accessible
