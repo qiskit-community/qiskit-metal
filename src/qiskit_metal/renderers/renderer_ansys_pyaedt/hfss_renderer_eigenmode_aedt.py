@@ -1,9 +1,18 @@
 #
+from __future__ import annotations
+
 from ast import parse
 from typing import List, Tuple, Union
 
 import pandas as pd
-import pyEPR as epr
+
+# pyEPR is an opt-in dep; the friendly error propagates via
+# QAnsysRenderer.__init__ (inherited through QHFSSPyaedt). Module-level
+# try/except keeps this file importable on the lite install.
+try:
+    import pyEPR as epr
+except ImportError:  # pragma: no cover — exercised on lite installs
+    epr = None
 
 from qiskit_metal import Dict
 from qiskit_metal.renderers.renderer_ansys_pyaedt.hfss_renderer_aedt import QHFSSPyaedt

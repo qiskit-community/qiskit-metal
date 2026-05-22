@@ -12,14 +12,29 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
+from __future__ import annotations
+
 from collections import defaultdict
 from typing import List, Tuple, Union
 
 import pandas as pd
-import pyEPR as epr
-from pyEPR.ansys import ureg
-from pyEPR.calcs.convert import Convert
-from pyEPR.reports import _plot_q3d_convergence_chi_f, _plot_q3d_convergence_main
+
+# pyEPR is an opt-in dependency (``quantum-metal[ansys]``); see
+# ``ansys_renderer.py`` for the same pattern. The unused ``Convert``
+# import (was at the top of this file before lite-flip) has been
+# removed — it was dead code.
+try:
+    import pyEPR as epr
+    from pyEPR.ansys import ureg
+    from pyEPR.reports import (
+        _plot_q3d_convergence_chi_f,
+        _plot_q3d_convergence_main,
+    )
+except ImportError:  # pragma: no cover — exercised on lite installs
+    epr = None
+    ureg = None
+    _plot_q3d_convergence_chi_f = None
+    _plot_q3d_convergence_main = None
 
 from qiskit_metal import Dict, config
 from qiskit_metal.renderers.renderer_ansys.ansys_renderer import QAnsysRenderer

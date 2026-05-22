@@ -12,6 +12,8 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
+from __future__ import annotations
+
 import math
 import os
 import re
@@ -23,11 +25,39 @@ from typing import List, Tuple, Union
 import geopandas
 import numpy as np
 import pandas as pd
-import pyEPR as epr
 import shapely
 from numpy.linalg import norm
-from pyEPR.ansys import HfssApp, parse_units, release
 from scipy.spatial import distance
+
+# pyEPR is an opt-in dependency (``quantum-metal[ansys]``). The
+# QAnsysRenderer's actual COM bridge requires pyEPR at runtime — the
+# friendly error is raised in ``_require_pyEPR()`` called from
+# constructors and entry-point methods. ``from __future__ import
+# annotations`` makes ``epr.ProjectInfo`` etc. in type-hint position
+# evaluate lazily so this module imports even when pyEPR is absent.
+try:
+    import pyEPR as epr
+    from pyEPR.ansys import HfssApp, parse_units, release
+except ImportError:  # pragma: no cover — exercised on lite installs
+    epr = None
+    HfssApp = None
+    parse_units = None
+    release = None
+
+
+def _require_pyEPR() -> None:
+    """Raise a clear error if pyEPR isn't installed.
+
+    QAnsysRenderer needs pyEPR for its HFSS COM bridge. Other parts
+    of qiskit_metal (designs, qlibrary, qm.view, GDS export) work
+    without it.
+    """
+    if epr is None:
+        raise ImportError(
+            "QAnsysRenderer requires pyEPR. Install with: "
+            "pip install 'quantum-metal[ansys]'"
+        )
+
 
 from qiskit_metal import Dict, config
 from qiskit_metal.designs.design_base import QDesign
@@ -222,7 +252,14 @@ class QAnsysRenderer(QRendererAnalysis):
             inductance=default_options["Lj"],
             capacitance=default_options["Cj"],
             resistance=default_options["_Rj"],
-            mesh_kw_jj=parse_units(default_options["max_mesh_length_jj"]),
+            # Previously: ``parse_units(default_options["max_mesh_length_jj"])``
+            # — parsed via pyEPR at class-definition time. Now hardcoded so
+            # this module imports without pyEPR installed. Value is the
+            # SI conversion of "7um" (the ``max_mesh_length_jj`` default
+            # above). If you change ``max_mesh_length_jj``, also update
+            # this number — or refactor to a class-method that computes
+            # it lazily.
+            mesh_kw_jj=7e-6,
         ),
     )
     """Element table data."""
@@ -235,6 +272,8 @@ class QAnsysRenderer(QRendererAnalysis):
             initiate (bool, optional): True to initiate the renderer. Defaults to True.
             options (Dict, optional):  Used to override all options. Defaults to None.
         """
+        _require_pyEPR()
+
         # Variables to connect to Ansys
         self._rapp = None
         self._rdesktop = None

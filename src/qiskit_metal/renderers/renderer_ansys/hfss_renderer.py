@@ -15,6 +15,8 @@
 # modified by Chalmers/SK/20210621
 # modified by Samarth Hawaldar
 
+from __future__ import annotations
+
 from collections import defaultdict
 from pathlib import Path
 from typing import Optional, Tuple
@@ -23,8 +25,18 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import pyEPR as epr
-from pyEPR.ansys import parse_units, set_property
+
+# pyEPR is an opt-in dependency (``quantum-metal[ansys]``); see
+# ``ansys_renderer.py`` for the same pattern. ``from __future__ import
+# annotations`` keeps ``epr.X`` type hints lazy so this module imports
+# clean even without pyEPR installed.
+try:
+    import pyEPR as epr
+    from pyEPR.ansys import parse_units, set_property
+except ImportError:  # pragma: no cover — exercised on lite installs
+    epr = None
+    parse_units = None
+    set_property = None
 
 from qiskit_metal import Dict
 from qiskit_metal.draw.utility import to_vec3D

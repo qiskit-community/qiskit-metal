@@ -57,6 +57,10 @@ from qiskit_metal.analyses.quantization.constants import (
     NANO,
     FEMTO,
     ONE_OVER_FEMTO,
+    hbar,
+    e as ele,
+    Ej_from_Lj,
+    Ec_from_Cs,
 )
 
 from qiskit_metal import logger
@@ -102,8 +106,6 @@ def analyze_loaded_tl(fr, vp, Z0, cap_loading: Dict[str, float], shorted=False):
     # Ultimately, the energy particpation of the shorted end doesn't matter as
     # long as it's close to zero and not infinity since it's energy participation
     # of the other (loaded with finite capacitance) end that matters.
-    from pyEPR.calcs.constants import hbar
-
     _POS_INFTY = 1e30
     # Convert to SI
     wr = fr * MHzRad
@@ -948,9 +950,6 @@ class TransmonBuilder(QuantumBuilder):
         Subsystem object
         """
         cg = self.cg
-        from pyEPR.calcs.convert import Convert
-        from pyEPR.calcs.constants import e_el as ele
-
         l_inv_k = cg.L_inv_k
         c_inv_k = cg.C_inv_k
 
@@ -959,8 +958,8 @@ class TransmonBuilder(QuantumBuilder):
         subsystem.system_params["subsystem_idx"] = subsystem_idx
 
         # EJ and EC are in MHz
-        EJ = Convert.Ej_from_Lj(1 / l_inv_k[ss_idx, ss_idx])
-        EC = Convert.Ec_from_Cs(1 / c_inv_k[ss_idx, ss_idx])
+        EJ = Ej_from_Lj(1 / l_inv_k[ss_idx, ss_idx])
+        EC = Ec_from_Cs(1 / c_inv_k[ss_idx, ss_idx])
         Q_zpf = 2 * ele
         builder_options = self.builder_options
         builder_options.EJ = EJ
@@ -1003,9 +1002,6 @@ class FluxoniumBuilder(QuantumBuilder):
         system based on default options and input options set for the
         Subsystem object
         """
-        from pyEPR.calcs.convert import Convert
-        from pyEPR.calcs.constants import e_el as ele
-
         cg = self.cg
         c_inv_k = cg.C_inv_k
 
@@ -1014,7 +1010,7 @@ class FluxoniumBuilder(QuantumBuilder):
         subsystem.system_params["subsystem_idx"] = subsystem_idx
 
         # EJ and EC are in MHz
-        EC = Convert.Ec_from_Cs(1 / c_inv_k[ss_idx, ss_idx])
+        EC = Ec_from_Cs(1 / c_inv_k[ss_idx, ss_idx])
         Q_zpf = 2 * ele
         builder_options = self.builder_options
         builder_options.EC = EC
@@ -1163,8 +1159,6 @@ class LumpedResonatorBuilder(QuantumBuilder):
         subsystem_idx = _find_subsystem_mat_index(cg, subsystem, single_node=True)
         ss_idx = subsystem_idx[0]
         subsystem.system_params["subsystem_idx"] = subsystem_idx
-
-        from pyEPR.calcs.constants import hbar
 
         builder_options = self.builder_options
 
@@ -1390,8 +1384,6 @@ class CompositeSystem:
         Note: the resulting matrix is in the basis of nodes_keep, which may not be in the same order of
         subsystems
         """
-        from pyEPR.calcs.constants import hbar
-
         cg = self.circuitGraph()
         nodes = cg.get_nodes_keep()
 
