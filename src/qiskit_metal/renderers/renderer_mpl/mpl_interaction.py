@@ -129,7 +129,7 @@ class MplInteraction(object):
     def __init__(self, figure):
         """
         Args:
-            figure (figure): The matplotlib figure to attach the behavior to.
+            figure (matplotlib.figure.Figure): The matplotlib figure to attach the behavior to.
         """
         self._fig_ref = weakref.ref(figure)
         self._cids = []
@@ -212,7 +212,7 @@ class ZoomOnWheel(MplInteraction):
     def __init__(self, figure=None, scale_factor=1.1):
         """
         Args:
-            figure (figure): The matplotlib figure to attach the behavior to.
+            figure (matplotlib.figure.Figure): The matplotlib figure to attach the behavior to.
             scale_factor (float): The scale factor to apply on wheel event.
         """
         super(ZoomOnWheel, self).__init__(figure)
@@ -358,7 +358,7 @@ class PanAndZoom(ZoomOnWheel):
     def __init__(self, figure=None, scale_factor=1.1):
         """
         Args:
-            figure (figure): The matplotlib figure to attach the behavior to.
+            figure (matplotlib.figure.Figure): The matplotlib figure to attach the behavior to.
             scale_factor (float): The scale factor to apply on wheel event.
         """
         super(PanAndZoom, self).__init__(figure, scale_factor)

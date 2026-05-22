@@ -295,7 +295,7 @@ class PlotCanvas(FigureCanvas):
         Args:
             design (QDesign): The design.
             parent (QMainWindowPlot): The main window.  Defaults to None.
-            logger (logger): The logger.  Defaults to None.
+            logger (logging.Logger): The logger.  Defaults to None.
             statusbar_label (str): Statusbar label.  Defaults to None.
         """
 

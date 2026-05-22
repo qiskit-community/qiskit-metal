@@ -299,6 +299,34 @@ templates so users know to expect it.
 
 ## Tutorials / docs
 
+### Tutorials live in TWO folders that must stay in sync
+
+**Symptom**: edits to one of `tutorials/X.YY ...ipynb` or
+`docs/tut/X.YY-...ipynb` silently don't show up in the other; the docs site
+ends up out of date relative to what users open in JupyterLab (or vice versa).
+
+**Cause**: every numbered notebook is mirrored into both folders for
+distinct reasons — `tutorials/` is the conventional GitHub-browse + JupyterLab
+file-tree location (with space-separated names that don't work in nbsphinx
+URLs), and `docs/tut/` is the Sphinx source tree (hyphenated names that do).
+Until the planned single-folder collapse lands, they MUST be edited together.
+
+**Fix** (after editing one folder): re-sync from a script with per-notebook
+canonical-choice baked in:
+
+```bash
+python3 _dev/sync_two_folders.py --write
+uv run scripts/check_tutorials_sync.py   # must exit 0
+```
+
+CI runs the check on every push/PR (`tutorials-sync` job in
+`.github/workflows/main.yml`). Drift fails the PR loudly with a
+file-by-file list and the re-sync command in the error message.
+
+If you genuinely want a different canonical-folder choice for a notebook
+(e.g. "this one tutorials/ should win"), update the `CANONICAL` dict in
+`_dev/sync_two_folders.py` and re-run with `--write`.
+
 ### Notebook heading-level skips trip nbsphinx
 
 **Symptom**: Sphinx docs build prints `CRITICAL: Title level

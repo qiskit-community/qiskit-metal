@@ -167,12 +167,41 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
+    "sphinx.ext.intersphinx",
     "sphinx.ext.mathjax",
     "sphinx.ext.viewcode",
     "sphinx.ext.extlinks",
     "nbsphinx",
     "qiskit_sphinx_theme",
     "sphinx_design",
+]
+
+# Intersphinx — resolve cross-references to external project docs so that
+# type annotations like ``logging.Logger`` and ``matplotlib.figure.Figure``
+# in docstrings become hyperlinks instead of "unresolved reference"
+# warnings. Without this, bare names like ``logger`` and ``figure`` in
+# Napoleon-style docstrings get resolved against every ``logger`` /
+# ``figure`` attribute in our own codebase, causing the "more than one
+# target found" ambiguity warnings that previously flooded the build.
+intersphinx_mapping = {
+    "python": ("https://docs.python.org/3", None),
+    "matplotlib": ("https://matplotlib.org/stable/", None),
+    "numpy": ("https://numpy.org/doc/stable/", None),
+    "pandas": ("https://pandas.pydata.org/docs/", None),
+}
+
+# When autodoc encounters a bare type name in a docstring that matches an
+# attribute on many of our classes (``logger``, ``figure``, ...), Sphinx
+# emits "more than one target found for cross-reference" warnings. The
+# real fix is in the docstrings themselves (use qualified types like
+# ``logging.Logger`` or ``matplotlib.figure.Figure``), but this list
+# keeps stragglers from breaking builds and matches the patterns that
+# have shown up historically.
+nitpick_ignore = [
+    ("py:attr", "logger"),
+    ("py:attr", "figure"),
+    ("py:class", "logger"),
+    ("py:class", "figure"),
 ]
 
 html_static_path = ["_static"]

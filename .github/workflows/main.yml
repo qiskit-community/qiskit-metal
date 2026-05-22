@@ -94,6 +94,24 @@ jobs:
       - name: Check environment.yml against pyproject.toml
         run: uv run --quiet scripts/check_env_consistency.py
 
+  tutorials-sync:
+    name: docs/tut/ ↔ tutorials/ sync
+    runs-on: ubuntu-24.04
+    env:
+      FORCE_COLOR: "1"
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.9.24"
+          enable-cache: true
+      - name: Check docs/tut/ and tutorials/ contain identical cell content
+        # The two folders carry every numbered notebook twice — see the
+        # script docstring for why and how to fix drift.
+        run: uv run --quiet scripts/check_tutorials_sync.py
+
   tests-lite:
     # Exercises the "lite" install path — no PySide6, no pyaedt, no
     # gmsh. Catches accidental top-level Qt/Ansys/FEM imports that

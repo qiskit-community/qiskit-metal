@@ -36,7 +36,7 @@ class QRendererGui(QRenderer):
             gui (MetalGUI): the GUI.
             design (QDesign): The design.
             initiate (bool): True to initiate the renderer.  Defaults to True.
-            fig (figure): current figure.  Defaults to None.
+            fig (matplotlib.figure.Figure): current figure.  Defaults to None.
             ax (ax): current ax.  Defaults to None.
         """
         super().__init__(design=design, initiate=initiate)
@@ -49,7 +49,7 @@ class QRendererGui(QRenderer):
         """Set the given figure.
 
         Args:
-            fig (figure): Figure to set
+            fig (matplotlib.figure.Figure): Figure to set
         """
         self.fig = fig
 
@@ -65,7 +65,7 @@ class QRendererGui(QRenderer):
         """Setup the given figure.
 
         Args:
-            fig (figure): figure to setup
+            fig (matplotlib.figure.Figure): figure to setup
 
         Raises:
             NotImplementedError: Function not written yet

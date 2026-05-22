@@ -34,9 +34,42 @@ the optional desktop GUI · `pyEPR-quantum` / `pyaedt` / `gmsh` /
 | `src/qiskit_metal/_gui/` | The Qt desktop GUI (`MetalGUI`). Hard-touch zone unless you have a Qt session to test in. |
 | `src/qiskit_metal/analyses/` | Pure-Python analyses (Hamiltonian, capacitance, EPR). qutip 5+. |
 | `tests/` | unittest-style suite. `pytest tests/` to run; gated in CI on every PR. |
-| `tutorials/` | 40+ Jupyter notebooks. Numbered (1-Overview / 2-Components / 3-Renderers / 4-Analysis). |
+| `tutorials/` | 40+ Jupyter notebooks. Numbered (1-Overview / 2-Components / 3-Renderers / 4-Analysis). **Mirrored 1:1 in `docs/tut/`** — see "Dual-folder tutorials" below. |
+| `docs/tut/` | Sphinx-rendered copy of `tutorials/` with hyphenated filenames (so nbsphinx URLs work). Must stay content-identical to `tutorials/` — CI enforces. |
 | `docs/` | Sphinx. `tox -e docs` to build. |
 | `scripts/check_env_consistency.py` | CI gate that asserts `environment.yml` and `pyproject.toml` agree. |
+| `scripts/check_tutorials_sync.py` | CI gate that asserts `tutorials/` and `docs/tut/` notebook cell content is byte-identical. |
+
+## Dual-folder tutorials — read before editing notebooks
+
+Every numbered notebook (1.x, 2.xx, 3.x, 4.xx) lives in **two places** that
+must stay content-identical:
+
+| Path                          | Why                                                         |
+|-------------------------------|-------------------------------------------------------------|
+| `tutorials/`                  | User-facing: GitHub browse, JupyterLab file tree open       |
+| `docs/tut/` (hyphenated names)| Sphinx + nbsphinx source for the rendered docs site         |
+
+**Editing one without the other silently breaks the docs site or the
+notebook the user opens.** CI fails the PR if drift is detected
+(`scripts/check_tutorials_sync.py` runs on every push/PR).
+
+If you intentionally edit one folder, re-sync the other with:
+
+```bash
+python3 _dev/sync_two_folders.py --write
+```
+
+Per-notebook canonical choices ("which folder wins on conflict") live in
+that script's `CANONICAL` dict — update them there if you intentionally
+want a different canonical for a notebook. Then re-run the check:
+
+```bash
+uv run scripts/check_tutorials_sync.py
+```
+
+The long-term goal is to collapse to a single folder, but until then
+both must move together.
 
 ## Hard constraints — do not touch without explicit human approval
 
