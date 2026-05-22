@@ -2567,6 +2567,8 @@ gui = [
 
 [package.dev-dependencies]
 docs = [
+    { name = "ipython", version = "8.38.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "ipython", version = "9.9.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
     { name = "nbsphinx" },
     { name = "numpydoc" },
     { name = "qiskit-sphinx-theme" },
@@ -2622,6 +2624,7 @@ provides-extras = ["gui", "ansys", "fem", "full"]
 
 [package.metadata.requires-dev]
 docs = [
+    { name = "ipython", specifier = ">=8.0" },
     { name = "nbsphinx", specifier = ">=0.9.8" },
     { name = "numpydoc", specifier = ">=1.5.0" },
     { name = "qiskit-sphinx-theme", specifier = ">=2.0.0" },
