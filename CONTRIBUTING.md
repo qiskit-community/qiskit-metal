@@ -1,19 +1,20 @@
-# Contributing to Qiskit Metal
-Qiskit Metal follows the overall Qiskit project contributing guidelines. These are all included in the [Qiskit Documentation](https://github.com/Qiskit/qiskit/blob/main/CONTRIBUTING.md).
+# Contributing to Quantum Metal
+
+Quantum Metal (formerly Qiskit Metal) is community-maintained — see [ROADMAP.md](./ROADMAP.md) for the direction. Contributions follow the guidelines below, with the original Qiskit-project guidelines as background reading: [Qiskit Documentation](https://github.com/Qiskit/qiskit/blob/main/CONTRIBUTING.md).
 
 Please read those general guidelines first, then the specific details for contributing to Metal below.
 
 ## CLA - Contributor License Agreement
-Contributors need to submit a CLA before they can be granted write access to the repository. The CLA is a one time action that allows you to contribute to all the Qiskit repositories.
+Contributors sign a CLA before their first contribution is merged. It's a one-time action and applies to all future contributions.
 
-During the early-access phase, follow the prompts at this link: https://cla-assistant.io/Qiskit/qiskit . After you are done, contact us via slack or e-mail to be granted write access to the repository.
+Sign here: https://cla-assistant.io/qiskit-community/qiskit-metal
 
-Past the early-access phase, the qiskit-metal repository will become public, which will allow to fully streamline and automate this process.
+Once you open a pull request, the CLA bot will leave a comment with a link to sign if you haven't already. The PR's required `license/cla` check turns green once signed.
 
 ## Adding a New Issue
 ### Reporting a Bug
 When you encounter a problem while using Metal, please open an issue in the
-[Issue Tracker](https://github.com/Qiskit/qiskit-metal/issues).
+[Issue Tracker](https://github.com/qiskit-community/qiskit-metal/issues).
 
 When reporting an issue, please follow this template::
 
@@ -186,4 +187,4 @@ If you make changes to the codebase and want to rebuild the documentation: `tox 
 Sometimes Sphinx can have bad cache state. Run `tox -e docs-clean` to reset Tox.
 
 ## Check-list for specific types of Pull Requests
-Please refer to [these instructions](https://github.com/Qiskit/qiskit-metal/blob/main/contributor_guidelines/pull_request_rules.md)
+Please refer to [these instructions](https://github.com/qiskit-community/qiskit-metal/blob/main/contributor_guidelines/pull_request_rules.md)
