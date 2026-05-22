@@ -194,6 +194,12 @@ nbsphinx_execute_arguments = [
 
 nbsphinx_execute = os.getenv("QISKIT_DOCS_BUILD_TUTORIALS", "never")
 
+# nbsphinx emits ``.. code:: ipython3`` blocks. Without the IPython package
+# (which registers an "ipython3" Pygments lexer), Sphinx falls back to a
+# generic warning per code cell — ~1500 warnings on a clean build. Setting
+# the codecell lexer explicitly to "python3" silences them.
+nbsphinx_codecell_lexer = "python3"
+
 # Let Sphinx/nbsphinx choose the appropriate parser for each suffix.
 # source_suffix = ['.rst', '.ipynb']
 source_suffix = {".rst": "restructuredtext"}
