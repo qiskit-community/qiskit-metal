@@ -205,6 +205,46 @@ class TestQMplRendererStandalone(unittest.TestCase):
         self.assertIs(renderer.canvas, sentinel)
 
 
+class TestViewBackendConditionalClose(unittest.TestCase):
+    """Regression for the plt.close() on widget backend bug in view.py.
+
+    With Agg/inline, the figure must be deregistered from pyplot after
+    view() so it doesn't double-render in Jupyter.  With interactive
+    backends (ipympl, Qt) plt.close() destroys the canvas — so view()
+    must NOT close in those cases.  This file forces Agg at the module
+    level, so only the Agg branch is exercised here.
+    """
+
+    def tearDown(self):
+        plt.close("all")
+
+    def test_agg_figure_not_in_pyplot_manager_after_view(self):
+        """With Agg, view() must deregister the figure from pyplot so
+        Jupyter's post_execute hook doesn't display it a second time."""
+        design = _make_design_with_two_components()
+        fig = view(design)
+        self.assertNotIn(
+            fig.number,
+            plt.get_fignums(),
+            "With Agg backend, view() must close the figure to prevent "
+            "double-rendering in Jupyter (plt.close regression).",
+        )
+
+    def test_agg_returned_figure_is_still_usable(self):
+        """Closing from pyplot must not corrupt the Figure object —
+        savefig and axes access must still work after view() returns."""
+        import io
+
+        design = _make_design_with_two_components()
+        fig = view(design)
+        # axes still accessible
+        self.assertEqual(len(fig.axes), 1)
+        # savefig still works
+        buf = io.BytesIO()
+        fig.savefig(buf, format="png", dpi=60)
+        self.assertGreater(buf.tell(), 0)
+
+
 class TestAboutNoQt(unittest.TestCase):
     """``qm.about()`` must not require PySide6 — it's a debug helper
     that lite-mode users rely on. Lives in test_viewer.py because

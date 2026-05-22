@@ -108,6 +108,8 @@ Hamiltonian models
     :glob:
 
     4-Analysis/4.3*
+    4-Analysis/Design-and-Simulation-of-a-Cross-Resonance-Gate
+    4-Analysis/cQED-with-the-Jaynes-Cummings-Interaction-Model
 
 
 Quick Topics

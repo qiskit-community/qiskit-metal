@@ -93,6 +93,7 @@ def view(
 
         qm.view(design, components=["Q1"])
     """
+    caller_supplied_ax = ax is not None
     if ax is None:
         fig, ax = plt.subplots(figsize=figsize)
     else:
@@ -120,5 +121,23 @@ def view(
 
     if title is not None:
         ax.set_title(title)
+
+    # With the inline / Agg backend, pyplot's figure manager keeps every figure
+    # created by plt.subplots() open.  IPython's post_execute hook then calls
+    # plt.show(), which displays the figure (render #1); returning `fig` from
+    # the cell displays it a second time (render #2).  Closing deregisters the
+    # figure from the manager and prevents the duplicate.
+    #
+    # With interactive backends (ipympl / widget, Qt, Tk, …) we must NOT call
+    # plt.close(): it destroys the live widget canvas and the figure falls back
+    # to a static PNG when IPython tries to display it.  Those backends handle
+    # de-duplication themselves, so no close is needed.
+    # Only close figures that *we* created. If the caller supplied their own ax,
+    # they own the figure lifecycle — closing it here would destroy their canvas.
+    import matplotlib as _mpl
+
+    backend = _mpl.get_backend().lower()
+    if not caller_supplied_ax and ("inline" in backend or backend == "agg"):
+        plt.close(fig)
 
     return fig
