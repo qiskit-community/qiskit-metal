@@ -151,6 +151,13 @@
     description       = "Run tests against the wheel using pytest"
     packages          = [ "wheel" ]
     set_env           = { VIRTUAL_ENV = "{envdir}", LANGUAGE = "en_US", QISKIT_METAL_HEADLESS = "1", LC_ALL = "en_US.utf-8" }
+    # As of v0.7.0 (lite-by-default), base deps don't include the
+    # heavies. The ``tests`` matrix needs all of them so existing
+    # HFSS / gmsh / GUI test files can collect — pull ``[full]``.
+    # The ``tests-lite`` and ``tests-extras-*`` jobs install
+    # differently (see ``.github/workflows/main.yml``) and don't
+    # use this tox env.
+    extras            = [ "full" ]
     dependency_groups = [ "test" ]
     commands          = [ [ "python", "-m", "pytest", { replace = "posargs", default = [  ], extend = true } ] ]
 
@@ -176,6 +183,13 @@
     description = "Build the documentation using sphinx"
     base_python = [ "py3.12" ]
     pass_env = [ "DOCS_FROM_MASTER", "QISKIT_DOCS_BUILD_TUTORIALS" ]
+    # Sphinx autosummary walks all qiskit_metal submodules including
+    # the HFSS/Q3D and gmsh renderers; those modules can be imported
+    # cleanly without their heavies (everything is lazy), but they
+    # type-hint against pyEPR / pyaedt / gmsh symbols and autodoc
+    # would emit warnings without the runtime symbols available.
+    # Install ``[full]`` so docs builds match v0.6.x output.
+    extras            = [ "full" ]
     dependency_groups = [ "docs" ]
     commands = [
         [
