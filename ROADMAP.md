@@ -293,6 +293,93 @@ The build is now clean (0 warnings) but a few latent fragilities remain:
 
 ---
 
+## Known bug-triage queue `[needs re-verification]`
+
+10 issues triaged on 2026-05-22. **All reports are on Metal 0.5.x or earlier**
+(0.1.5 / 0.5.2.post4 / 0.5.3.post1); none re-verified against v0.7.x. Before
+acting on any, reproduce on a current `quantum-metal[full]` install — some
+may have been fixed by the lite-flip / renderer-protocol / Qt6 work and just
+need closing.
+
+**Real bugs with reproducer + community-proposed fix:**
+
+- [#1036](https://github.com/qiskit-community/qiskit-metal/issues/1036)
+  `RoutePathFinder` path-penetrates-component — `unobstructed()` returns
+  True when both segment endpoints lie inside a component bounding box even
+  though the segment intersects the actual contour. Reporter included
+  reproducer + proposed fix. **High value: real correctness bug, easy win.**
+- [#1086](https://github.com/qiskit-community/qiskit-metal/issues/1086)
+  `RouteMeander` produces asymmetric geometry for rotated routes (filed
+  2026-05-22 with HFSS-validation rubric, workaround already in
+  `scripts/make_hero_gif.py`).
+
+**Easy / small fixes:**
+
+- [#1042](https://github.com/qiskit-community/qiskit-metal/issues/1042)
+  `design.to_python_script()` omits `from numpy import array` from the
+  generated header. One-line fix in the export template. Good first-PR.
+
+**Ansys 2025R1 compatibility cluster** (likely related):
+
+- [#1041](https://github.com/qiskit-community/qiskit-metal/issues/1041)
+  `EPR Analysis: TypeError: tuple indices must be integers or slices,
+  not Quantity` in pyEPR's `DistributedAnalysis`.
+- [#1046](https://github.com/qiskit-community/qiskit-metal/issues/1046)
+  `sim.save_screenshot()` throws COM/RPC error on Ansys 2025R1.
+
+  Both on Metal 0.5.x + old `renderer_ansys` COM path. Worth re-trying
+  with v0.7.x + the new `renderer_ansys_pyaedt` (no COM); may already
+  be resolved.
+
+**Qt6 / native crashes — `qm.view()` headless alternative now exists:**
+
+- [#1048](https://github.com/qiskit-community/qiskit-metal/issues/1048)
+  MetalGUI segfaults at `main_window.show()` on Ubuntu 24.04 + PySide6
+  6.11.0. Plain `QMainWindow().show()` works, so it's a Metal-specific
+  Qt6 interaction. v0.7.0's `qm.view()` is the documented headless path
+  for these users; longer-term plan is the Jupyter `qm.gui()` widget.
+
+**Needs reproducer:**
+
+- [#1052](https://github.com/qiskit-community/qiskit-metal/issues/1052)
+  Xmon angle bug — bus angle 270° doesn't put pin at bottom. Reporter
+  posted screenshots but left "Steps to reproduce" + "Expected behavior"
+  sections blank.
+
+**Filed by us (info-only, needs external action):**
+
+- [#1079](https://github.com/qiskit-community/qiskit-metal/issues/1079)
+  HFSS / Q3D runtime validation needed for the lite-flip lazy-imports
+  (PR #1078). Needs someone with an AEDT license to spot-check.
+
+---
+
+## External workshops & training `[reference]`
+
+Curated workshop materials that exercise Metal end-to-end.  Not maintained
+as part of this repo — version pins float independently.
+
+- **QDW 2025 — `tutorials_quantum_device_design`** `[frozen, pre-v0.5]`
+  https://github.com/zlatko-minev/tutorials_quantum_device_design
+
+  4-notebook walkthrough: layout → transmon+resonator → qubit-qubit
+  coupling → end-to-end project. Uses **Palace** (open FEM) via
+  **SQDMetal**. Pinned to `pyepr-quantum==0.8.5.7` + `pyaedt==0.6.46`,
+  Metal pre-v0.5 era. Historical reference — bringing it forward would
+  mean re-validating against current SQDMetal + Palace + Metal chain
+  (high effort, not planned).
+
+- **QDW 2026 — `qdw26-workshop-materials`** `[active, near-mainline]`
+  https://github.com/quantum-device-consortium/qdw26-workshop-materials
+
+  Same 4-notebook progression, now Dockerized with `uv` lockfile.
+  Currently pinned to `abhishekchak52/qiskit-metal@gui-import-isolation`
+  (a pre-release fork of what is now v0.7.0 lite-flip). **Quick
+  follow-up:** swap that pin for mainline `quantum-metal>=0.7.1` from
+  PyPI (one-line change, removes the fork dependency).
+
+---
+
 ## GUI / UX wishes `[wish-list]`
 
 Small UX improvements collected from real use. Lower priority than the
