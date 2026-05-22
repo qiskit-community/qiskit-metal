@@ -25,16 +25,23 @@
     readme = { file = "README.md", content-type = "text/markdown" }
     requires-python = ">=3.10,<3.13"
     urls = { bugtracker = "https://github.com/qiskit-community/qiskit-metal/issues", documentation = "https://qiskit-community.github.io/qiskit-metal/", source = "https://github.com/qiskit-community/qiskit-metal" }
-    version = "0.6.3"
-    # Core deps required for ``import qiskit_metal`` + ``qm.view()``
-    # to work in any environment. Heavy / optional deps (Qt GUI,
-    # pyaedt, gmsh) live in the ``[project.optional-dependencies]``
-    # section below so users can opt in. Note: for v0.6.x backward
-    # compatibility, the GUI / ANSYS / FEM stacks are still in the
-    # *base* deps list — the extras are additive. A future v0.7.0
-    # release plans to flip the default to lite (base = no Qt) and
-    # require ``pip install quantum-metal[full]`` for the current
-    # experience. See ``docs/headless-usage.rst`` for the timeline.
+    version = "0.7.0"
+    # ────────────────────────────────────────────────────────────────
+    # v0.7.0: LITE-BY-DEFAULT. Core deps only — what's needed to
+    # ``import qiskit_metal``, build designs, run ``qm.view()``,
+    # export GDS, and run pure-Python analyses.
+    #
+    # Heavy / optional backends live in ``[project.optional-dependencies]``
+    # below and must be opted into:
+    #
+    #   pip install "quantum-metal[gui]"    # MetalGUI + PySide6
+    #   pip install "quantum-metal[ansys]"  # HFSS/Q3D + pyEPR
+    #   pip install "quantum-metal[fem]"    # gmsh / Elmer
+    #   pip install "quantum-metal[full]"   # v0.6.x batteries-included
+    #
+    # Users upgrading from v0.6.x who want zero behavior change should
+    # install ``quantum-metal[full]``. See ``docs/migration-to-v0.7.0.rst``.
+    # ────────────────────────────────────────────────────────────────
     dependencies = [
         "addict>=2.4.0",
         "gdstk>=0.9",
@@ -43,25 +50,19 @@
         "numpy>=1.24.2,<2",
         "pandas>=2.1.1",
         "pint>=0.21.0",
-        "pyEPR-quantum>=0.9.5",
-        "pygments>=2.14.0", # Needed for docs and GUI widgets.
-        "pyside6>=6.8",
-        "qdarkstyle>=3.1", # Needed for GUI styling.
+        "pygments>=2.14.0", # Used by docs builders + some GUI widgets.
         "qutip>=5.0.0",
         "scipy>=1.10.0",
         "shapely>=2.0.1",
         "scqubits>=4.1.0",
-        "gmsh>=4.15.0,<5",
-        "pyaedt>=0.21,<0.24", # pyaedt 0.24 has some bugs (Jan 23, 2026)
-        "pyyaml>=6.0", # Used for the Elmer runner.
+        "pyyaml>=6.0", # Used for the Elmer runner config (pure-Python).
     ]
 
-    # Opt-in extras. Currently informational — every extra's deps are
-    # also in the base list above so v0.6.x users keep the
-    # all-batteries-included install. The CI ``tests-lite`` job
-    # exercises an install pruned of these extras to keep the
-    # lite-mode rendering path provably working, ahead of the v0.7.0
-    # flip when ``[full]`` becomes opt-in.
+    # Opt-in extras. As of v0.7.0 these are NO LONGER duplicated in the
+    # base ``dependencies`` list above — installing the package without
+    # an extra gives you the lite install. The CI ``tests-lite`` job
+    # validates that path; ``tests-extras`` validates each individual
+    # extra. ``[full]`` is the v0.6.x compatibility set.
     [project.optional-dependencies]
         gui = [
             "pyside6>=6.8",
@@ -150,6 +151,13 @@
     description       = "Run tests against the wheel using pytest"
     packages          = [ "wheel" ]
     set_env           = { VIRTUAL_ENV = "{envdir}", LANGUAGE = "en_US", QISKIT_METAL_HEADLESS = "1", LC_ALL = "en_US.utf-8" }
+    # As of v0.7.0 (lite-by-default), base deps don't include the
+    # heavies. The ``tests`` matrix needs all of them so existing
+    # HFSS / gmsh / GUI test files can collect — pull ``[full]``.
+    # The ``tests-lite`` and ``tests-extras-*`` jobs install
+    # differently (see ``.github/workflows/main.yml``) and don't
+    # use this tox env.
+    extras            = [ "full" ]
     dependency_groups = [ "test" ]
     commands          = [ [ "python", "-m", "pytest", { replace = "posargs", default = [  ], extend = true } ] ]
 
@@ -175,6 +183,13 @@
     description = "Build the documentation using sphinx"
     base_python = [ "py3.12" ]
     pass_env = [ "DOCS_FROM_MASTER", "QISKIT_DOCS_BUILD_TUTORIALS" ]
+    # Sphinx autosummary walks all qiskit_metal submodules including
+    # the HFSS/Q3D and gmsh renderers; those modules can be imported
+    # cleanly without their heavies (everything is lazy), but they
+    # type-hint against pyEPR / pyaedt / gmsh symbols and autodoc
+    # would emit warnings without the runtime symbols available.
+    # Install ``[full]`` so docs builds match v0.6.x output.
+    extras            = [ "full" ]
     dependency_groups = [ "docs" ]
     commands = [
         [

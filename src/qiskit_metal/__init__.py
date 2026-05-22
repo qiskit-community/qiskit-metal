@@ -187,37 +187,37 @@ from qiskit_metal.viewer import view
 
 
 # -----------------------------------------------------------------------------
-# v0.7.0 lite-by-default deprecation notice (shipped in v0.6.2)
+# Upcoming-breaking-change notice: package & import path rename
 # -----------------------------------------------------------------------------
-# Heads-up for users upgrading via ``pip install --upgrade quantum-metal``:
-# v0.7.0 will move PySide6 / qdarkstyle / pyaedt / pyEPR-quantum / gmsh out of
-# ``[project.dependencies]`` and into opt-in extras (``[gui]`` / ``[ansys]`` /
-# ``[fem]`` / ``[full]``). To preserve the current v0.6.x experience, run
-# ``pip install 'quantum-metal[full]'`` before upgrading.
+# Heads-up for current users: a future major release (target v0.8 or v1.0)
+# will rename the Python import path from ``qiskit_metal`` to
+# ``quantum_metal`` to match the PyPI package name. Update your imports
+# ahead of that release. The PyPI package ``quantum-metal`` already
+# ships as the canonical wheel; only the import path is changing next.
 #
-# Fires once per process via Python's default warning deduplication. Users
-# who want it silent can set ``QISKIT_METAL_SUPPRESS_LITE_FLIP_WARNING=1`` or
+# Fires once per process via Python's default warning deduplication.
+# Silence with ``QISKIT_METAL_SUPPRESS_RENAME_WARNING=1`` or via
 # ``warnings.filterwarnings("ignore", category=FutureWarning, module="qiskit_metal")``.
-def _maybe_warn_lite_flip() -> None:
+def _maybe_warn_import_rename() -> None:
     import os
     import warnings
 
-    if os.environ.get("QISKIT_METAL_SUPPRESS_LITE_FLIP_WARNING") == "1":
+    if os.environ.get("QISKIT_METAL_SUPPRESS_RENAME_WARNING") == "1":
         return
 
     msg = (
-        "quantum-metal v0.7.0 will move PySide6, qdarkstyle, pyaedt, "
-        "pyEPR-quantum, and gmsh out of base dependencies into opt-in "
-        "extras. To preserve the current v0.6.x install behaviour, run "
-        "`pip install 'quantum-metal[full]'` before upgrading. See "
-        "ROADMAP.md and docs/migration-to-v0.7.0.rst for details. "
-        "Set QISKIT_METAL_SUPPRESS_LITE_FLIP_WARNING=1 to silence."
+        "A future major release of quantum-metal (target v0.8 / v1.0) "
+        "will rename the Python import path from `qiskit_metal` to "
+        "`quantum_metal` to match the PyPI package name. Plan to "
+        "update your imports ahead of that release. See ROADMAP.md "
+        "and the README rebrand notice. Suppress this warning with "
+        "QISKIT_METAL_SUPPRESS_RENAME_WARNING=1."
     )
 
     # Log via metal's logger so the message is *visible* by default. The
-    # logger fires before ``logging.captureWarnings(True)`` (set by
-    # ``setup_logger`` higher in this file) would redirect a plain
-    # ``warnings.warn`` to a silent py.warnings logger.
+    # logger fires regardless of ``logging.captureWarnings(True)`` (set
+    # by ``setup_logger`` higher in this file), which would otherwise
+    # silently redirect a plain ``warnings.warn`` to a no-handler logger.
     logger.warning("[FutureWarning] %s", msg)
 
     # Also raise via the warnings module so programmatic callers (tests,
@@ -225,5 +225,5 @@ def _maybe_warn_lite_flip() -> None:
     warnings.warn(msg, FutureWarning, stacklevel=1)
 
 
-_maybe_warn_lite_flip()
-del _maybe_warn_lite_flip
+_maybe_warn_import_rename()
+del _maybe_warn_import_rename

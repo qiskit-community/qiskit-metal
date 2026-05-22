@@ -766,13 +766,13 @@ wheels = [
 
 [[package]]
 name = "gmsh"
-version = "4.15.2"
+version = "4.15.0"
 source = { registry = "https://pypi.org/simple" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/19/a6/f3f74f53234c812ffa0191ce2aceb0811ea82bdf12867a73bebb03f28f7a/gmsh-4.15.2-py2.py3-none-macosx_10_15_x86_64.whl", hash = "sha256:9f5a97b6633e40be331cb777ab571cef96e6ff5979bb7b20aad2438724ca417b", size = 40171095, upload-time = "2026-03-24T19:33:46.37Z" },
-    { url = "https://files.pythonhosted.org/packages/3d/b4/0d25938ad62ea4db6bcbdecbc77c72d05d8a6a679abe4addcd86167ffd77/gmsh-4.15.2-py2.py3-none-macosx_12_0_arm64.whl", hash = "sha256:f6649b3e59f49272e7ee8ab282ecb4d1a6e0d627e86cf3e3b1a83fd07417e4f8", size = 36427761, upload-time = "2026-03-24T19:33:51.161Z" },
-    { url = "https://files.pythonhosted.org/packages/ab/d4/336becb1488ac4fbab205043987128839c8c62d54e2036b7e887bd009040/gmsh-4.15.2-py2.py3-none-manylinux_2_24_x86_64.whl", hash = "sha256:4076a948ce22625330d1413d4982e22b5c69fc2f0f7951f5df64c778cf54108c", size = 40006930, upload-time = "2026-03-24T19:33:55.549Z" },
-    { url = "https://files.pythonhosted.org/packages/78/e9/63c763c0d75544680800651d5ea8c7c3203ae4b5e054706f19a54021a7fb/gmsh-4.15.2-py2.py3-none-win_amd64.whl", hash = "sha256:7b36083bb410fa27c5d0e052929d1a9844a5b09169d66017b72b41aabd49d711", size = 42235999, upload-time = "2026-03-24T19:34:00.529Z" },
+    { url = "https://files.pythonhosted.org/packages/d6/95/01df2f928b4498bd4705c5cf81b0ed191b6d3b6ce4eaa6fddf6890f4f7cd/gmsh-4.15.0-py2.py3-none-macosx_10_15_x86_64.whl", hash = "sha256:1a7951836982f97e21e8b2de106fe1e8455cde53719191a3950784b56e2606af", size = 40170061, upload-time = "2025-10-26T20:30:21.097Z" },
+    { url = "https://files.pythonhosted.org/packages/29/a4/b1e9b4997c6f4a29fb8a9736851430bf306701e5f7f1266eafc1f860cbfe/gmsh-4.15.0-py2.py3-none-macosx_12_0_arm64.whl", hash = "sha256:042f76562244dfbad46edfeacaa092c8c95a9df8fb4fd7611771477f0031be0d", size = 36425180, upload-time = "2025-10-26T20:30:25.241Z" },
+    { url = "https://files.pythonhosted.org/packages/63/22/27f88a5a1c48b833c5893a23b71cf74b5270fac82d88e337ec2c138e8853/gmsh-4.15.0-py2.py3-none-manylinux_2_24_x86_64.whl", hash = "sha256:998527cb172f2529c6beca7334a6ca788fa54fbb3d4f817deb0903005d49344d", size = 40003017, upload-time = "2025-10-26T20:30:28.718Z" },
+    { url = "https://files.pythonhosted.org/packages/23/51/21175eb9c6a592431a5c87f288ce447af1cea68a6ad4169765dc7ab7a9e7/gmsh-4.15.0-py2.py3-none-win_amd64.whl", hash = "sha256:a5b9867f88af59aff269a93abbd009551fbc263eb94a165a25a0c8072bae13db", size = 42233991, upload-time = "2025-10-26T20:30:32.722Z" },
 ]
 
 [[package]]
@@ -2524,24 +2524,19 @@ wheels = [
 
 [[package]]
 name = "quantum-metal"
-version = "0.6.3"
+version = "0.7.0"
 source = { editable = "." }
 dependencies = [
     { name = "addict" },
     { name = "gdstk" },
     { name = "geopandas" },
-    { name = "gmsh" },
     { name = "matplotlib" },
     { name = "numpy" },
     { name = "pandas" },
     { name = "pint", version = "0.24.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "pint", version = "0.25.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
-    { name = "pyaedt" },
-    { name = "pyepr-quantum" },
     { name = "pygments" },
-    { name = "pyside6" },
     { name = "pyyaml" },
-    { name = "qdarkstyle" },
     { name = "qutip" },
     { name = "scipy", version = "1.15.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "scipy", version = "1.17.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
@@ -2602,25 +2597,20 @@ requires-dist = [
     { name = "addict", specifier = ">=2.4.0" },
     { name = "gdstk", specifier = ">=0.9" },
     { name = "geopandas", specifier = ">=1.0" },
-    { name = "gmsh", specifier = ">=4.15.0,<5" },
     { name = "gmsh", marker = "extra == 'fem'", specifier = ">=4.15.0,<5" },
     { name = "gmsh", marker = "extra == 'full'", specifier = ">=4.15.0,<5" },
     { name = "matplotlib", specifier = ">=3.7.0" },
     { name = "numpy", specifier = ">=1.24.2,<2" },
     { name = "pandas", specifier = ">=2.1.1" },
     { name = "pint", specifier = ">=0.21.0" },
-    { name = "pyaedt", specifier = ">=0.21,<0.24" },
     { name = "pyaedt", marker = "extra == 'ansys'", specifier = ">=0.21,<0.24" },
     { name = "pyaedt", marker = "extra == 'full'", specifier = ">=0.21,<0.24" },
-    { name = "pyepr-quantum", specifier = ">=0.9.5" },
     { name = "pyepr-quantum", marker = "extra == 'ansys'", specifier = ">=0.9.5" },
     { name = "pyepr-quantum", marker = "extra == 'full'", specifier = ">=0.9.5" },
     { name = "pygments", specifier = ">=2.14.0" },
-    { name = "pyside6", specifier = ">=6.8" },
     { name = "pyside6", marker = "extra == 'full'", specifier = ">=6.8" },
     { name = "pyside6", marker = "extra == 'gui'", specifier = ">=6.8" },
     { name = "pyyaml", specifier = ">=6.0" },
-    { name = "qdarkstyle", specifier = ">=3.1" },
     { name = "qdarkstyle", marker = "extra == 'full'", specifier = ">=3.1" },
     { name = "qdarkstyle", marker = "extra == 'gui'", specifier = ">=3.1" },
     { name = "qutip", specifier = ">=5.0.0" },

@@ -1,28 +1,74 @@
 # Quantum Metal (formerly: Qiskit Metal)
-[![License](https://img.shields.io/github/license/Qiskit/qiskit-metal.svg?style=popout-square)](https://opensource.org/licenses/Apache-2.0)<!--- long-description-skip-begin -->[![Release](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)<!--- long-description-skip-begin -->[![join slack](https://img.shields.io/badge/slack-@qiskit-yellow.svg?logo=slack&style=popout-square)](https://qisk.it/join-slack)[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4618153.svg)](https://doi.org/10.5281/zenodo.4618153) [Discord](https://discord.gg/kaZ3UFuq)
+[![License](https://img.shields.io/github/license/Qiskit/qiskit-metal.svg?style=popout-square)](https://opensource.org/licenses/Apache-2.0)<!--- long-description-skip-begin -->[![Release](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)<!--- long-description-skip-begin -->[![PyPI](https://img.shields.io/pypi/v/quantum-metal.svg?style=popout-square)](https://pypi.org/project/quantum-metal/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4618153.svg)](https://doi.org/10.5281/zenodo.4618153) [Discord](https://discord.gg/kaZ3UFuq)
 
->![Welcome to Qiskit Metal!](https://raw.githubusercontent.com/Qiskit/qiskit-metal/main/docs/images/zkm_banner.png 'Welcome to Qiskit Metal')
+>![Welcome to Quantum Metal!](https://raw.githubusercontent.com/Qiskit/qiskit-metal/main/docs/images/zkm_banner.png 'Welcome to Quantum Metal')
 > Quantum Metal is an open-source framework for engineers and scientists to design superconducting quantum devices with ease.
 
 > **Where we're heading:** see [ROADMAP.md](./ROADMAP.md) for the
-> lite-by-default flip (v0.7.0), AI-orchestration profile, and
-> the open FEM stack (gmsh + Elmer + AWS Palace).
+> lite-by-default install (v0.7.0, shipped), the AI-orchestration
+> profile, the open FEM stack (gmsh + Elmer + AWS Palace), and the
+> upcoming import-path rename.
 
 
+## Install
+
+```bash
+pip install quantum-metal             # lite (v0.7.0+ default)
+pip install "quantum-metal[full]"     # everything (v0.6.x compatibility)
+```
+
+Pick the install command that matches your workflow:
+
+| | What you get | When |
+|---|---|---|
+| **🪶 Lite** `pip install quantum-metal` | Core API, `qm.view(design)` headless viewer, GDS export, pure-Python analyses | AI orchestration, Colab / Binder, cloud Jupyter, CI, any non-interactive workflow |
+| **🖥️ GUI** `pip install "quantum-metal[gui]"` | + `MetalGUI` desktop app (PySide6, qdarkstyle) | Interactive design work |
+| **🧲 Ansys** `pip install "quantum-metal[ansys]"` | + HFSS / Q3D renderers, EPR analyses (pyaedt, pyEPR-quantum) | HFSS / Q3D simulation (Windows + Ansys AEDT license) |
+| **🔺 Open FEM** `pip install "quantum-metal[fem]"` | + gmsh meshing, Elmer FEM | Open-source FEM (no Ansys license needed) |
+| **📦 Full** `pip install "quantum-metal[full]"` | All of the above | Migrating from v0.6.x, want zero behavior change |
+
+Extras compose: `pip install "quantum-metal[gui,ansys]"` works.
+
+<details>
+<summary>Feature matrix — what each install gives you</summary>
+
+| | lite | `[gui]` | `[ansys]` | `[fem]` | `[full]` |
+|---|---|---|---|---|---|
+| `import qiskit_metal` | ✅ | ✅ | ✅ | ✅ | ✅ |
+| `qm.view(design)` (headless matplotlib) | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Build designs + components from `qlibrary` | ✅ | ✅ | ✅ | ✅ | ✅ |
+| GDS export | ✅ | ✅ | ✅ | ✅ | ✅ |
+| `LOManalysis`, LOM math, capacitance reductions | ✅ | ✅ | ✅ | ✅ | ✅ |
+| `MetalGUI` desktop app | — | ✅ | — | — | ✅ |
+| HFSS / Q3D renderers | — | — | ✅ | — | ✅ |
+| EPR analyses (`EigenmodeSim`, `LumpedElementsSim`) | — | — | ✅ | — | ✅ |
+| gmsh / Elmer mesher | — | — | — | ✅ | ✅ |
+
+</details>
+
+Full migration recipes (per persona) live in
+[`docs/migration-to-v0.7.0.rst`](./docs/migration-to-v0.7.0.rst).
 
 
-## ⚠️ Transition Notice – Qiskit Metal → Quantum Metal (v0.5)
+## ⚠️ Transition notices
 
-As part of the **v0.5 release**, we are formally beginning the transition of the project:
+**v0.5 → v0.7 (in progress, mostly complete).** The project is
+mid-rebrand from Qiskit Metal to **Quantum Metal**:
 
-- **New project name:** Quantum Metal
-- **Current import path:** `qiskit_metal` (will remain until a follow-up PR)
-- **Repository rename:** This repository will soon be renamed to **`quantum-metal`**
-- **GitHub continuity:** We will keep the same repo, issues, stars, forks, and history
-- **PyPI transition:** `qiskit-metal` will remain available in a stable, archived state
-- **Future package:** `quantum-metal` (or similar) will be published after the import change PR
+- ✅ **New project name**: Quantum Metal
+- ✅ **PyPI package**: `quantum-metal` (the new canonical wheel; the
+  old `qiskit-metal` package stays archived at its pre-0.5 state)
+- ✅ **GitHub continuity**: same repo, issues, stars, forks, history
+- 🔜 **Repository rename to `quantum-metal`**: scheduled — will keep
+  redirects so existing clones / links continue to work
+- 🔜 **Python import path rename** (`qiskit_metal` → `quantum_metal`):
+  scheduled for a future major release (**target v0.8 or v1.0**).
+  Plan to update your imports ahead of that release. A
+  `FutureWarning` fires on `import qiskit_metal` advertising this.
 
-This ensures a smooth, non-breaking transition for all existing users.
+Suppress the rename warning with
+`QISKIT_METAL_SUPPRESS_RENAME_WARNING=1` until you're ready to
+migrate.
 
 
 ## 🌐 Part of the Quantum Device Design Ecosystem
@@ -187,12 +233,13 @@ If needed, add your environment as a Jupyter kernel:
 python -m ipykernel install --user --name quantum-metal
 ```
 
-## Quick Start: Creating Your First Quantum Component in Qiskit Metal:
-Now that Qiskit Metal is installed, it's time to begin working with it.
+## Quick Start: Creating Your First Quantum Component in Quantum Metal:
+Now that Quantum Metal is installed, it's time to begin working with it.
 We are ready to try out a quantum chip example, which is simulated locally using
-the Qiskit MetalGUI element. This is a simple example that makes a qubit.
+the Quantum Metal GUI element. This is a simple example that makes a qubit.
 
-> **Install note:** the example below uses ``MetalGUI``, which requires PySide6. On v0.6.x this comes by default with ``pip install quantum-metal``. On v0.7.0+ (lite-by-default), install the GUI extra explicitly:
+> **Install note:** the example below uses ``MetalGUI``, which requires PySide6.
+> Install with:
 > ```bash
 > pip install "quantum-metal[gui]"
 > ```

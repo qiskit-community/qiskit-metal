@@ -11,15 +11,45 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""Utility display functions used in the tutorials."""
+"""Utility display functions used in the tutorials.
+
+IPython is a Jupyter-environment dependency, not strictly needed
+for ``import qiskit_metal``. We import it lazily so the lite install
+(``pip install quantum-metal`` without notebook tooling) still loads
+this module cleanly. Tutorial-side users always have IPython through
+their Jupyter environment.
+"""
 
 import re
 from pathlib import Path
 from typing import Dict as Dict_
 
-from IPython import get_ipython
-from IPython.core.magic import Magics, line_magic, magics_class
-from IPython.display import HTML, Image, display
+try:
+    from IPython import get_ipython
+    from IPython.core.magic import Magics, line_magic, magics_class
+    from IPython.display import HTML, Image, display
+
+    _HAVE_IPYTHON = True
+except ImportError:  # pragma: no cover — exercised on lite installs without Jupyter
+    get_ipython = None
+    HTML = None
+    Image = None
+    display = None
+
+    # Provide minimal no-op stand-ins so the module-level class body
+    # below evaluates without errors. The ``MetalTutorialMagics`` class
+    # is only useful inside IPython anyway; on a lite install nobody
+    # registers it.
+    def magics_class(cls):
+        return cls
+
+    def line_magic(fn):
+        return fn
+
+    class Magics:
+        pass
+
+    _HAVE_IPYTHON = False
 
 __all__ = ["get_screenshot", "format_dict_ala_z"]
 
@@ -69,7 +99,7 @@ class MetalTutorialMagics(Magics):
         )
 
 
-_IP = get_ipython()
+_IP = get_ipython() if _HAVE_IPYTHON else None
 if _IP is not None:
     _IP.register_magics(MetalTutorialMagics)
 
