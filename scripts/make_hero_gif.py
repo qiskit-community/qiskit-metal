@@ -212,12 +212,13 @@ def _compute_robust_cpw_opts(design, qa, pa, qb, pb):
     the script for a new layout).
     """
     import numpy as np
+
     p1 = np.asarray(design.components[qa].pins[pa]["middle"], dtype=float)
     p2 = np.asarray(design.components[qb].pins[pb]["middle"], dtype=float)
-    distance_mm = float(np.linalg.norm(p2 - p1))   # design units are mm
+    distance_mm = float(np.linalg.norm(p2 - p1))  # design units are mm
 
-    spacing_mm = distance_mm * 1.10                # > distance → floor()=1
-    total_length_mm = distance_mm * 1.55           # excess for one visible hump
+    spacing_mm = distance_mm * 1.10  # > distance → floor()=1
+    total_length_mm = distance_mm * 1.55  # excess for one visible hump
     # Fillet must fit inside the wiggle envelope — cap at spacing/4 for safety,
     # floor at 40um so very short routes still get a visible curve.
     fillet_um = min(120, max(40, int(spacing_mm * 1000 / 4)))
@@ -226,7 +227,8 @@ def _compute_robust_cpw_opts(design, qa, pa, qb, pb):
         lead=Dict(start_straight="180um", end_straight="180um"),
         fillet=f"{fillet_um} um",
         total_length=f"{total_length_mm:.3f}mm",
-        trace_width="10 um", trace_gap="6 um",
+        trace_width="10 um",
+        trace_gap="6 um",
         meander=Dict(spacing=f"{spacing_mm:.3f}mm", asymmetry="0um"),
         snap="false",
     )
