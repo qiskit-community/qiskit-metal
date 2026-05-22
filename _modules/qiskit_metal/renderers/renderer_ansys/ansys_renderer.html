@@ -702,6 +702,8 @@
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
 <span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
@@ -713,11 +715,38 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pyEPR</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">epr</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">shapely</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.linalg</span><span class="w"> </span><span class="kn">import</span> <span class="n">norm</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pyEPR.ansys</span><span class="w"> </span><span class="kn">import</span> <span class="n">HfssApp</span><span class="p">,</span> <span class="n">parse_units</span><span class="p">,</span> <span class="n">release</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.spatial</span><span class="w"> </span><span class="kn">import</span> <span class="n">distance</span>
+
+<span class="c1"># pyEPR is an opt-in dependency (``quantum-metal[ansys]``). The</span>
+<span class="c1"># QAnsysRenderer&#39;s actual COM bridge requires pyEPR at runtime — the</span>
+<span class="c1"># friendly error is raised in ``_require_pyEPR()`` called from</span>
+<span class="c1"># constructors and entry-point methods. ``from __future__ import</span>
+<span class="c1"># annotations`` makes ``epr.ProjectInfo`` etc. in type-hint position</span>
+<span class="c1"># evaluate lazily so this module imports even when pyEPR is absent.</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyEPR</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">epr</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pyEPR.ansys</span><span class="w"> </span><span class="kn">import</span> <span class="n">HfssApp</span><span class="p">,</span> <span class="n">parse_units</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: no cover — exercised on lite installs</span>
+    <span class="n">epr</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">HfssApp</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">parse_units</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_require_pyEPR</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raise a clear error if pyEPR isn&#39;t installed.</span>
+
+<span class="sd">    QAnsysRenderer needs pyEPR for its HFSS COM bridge. Other parts</span>
+<span class="sd">    of qiskit_metal (designs, qlibrary, qm.view, GDS export) work</span>
+<span class="sd">    without it.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">epr</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+            <span class="s2">&quot;QAnsysRenderer requires pyEPR. Install with: &quot;</span>
+            <span class="s2">&quot;pip install &#39;quantum-metal[ansys]&#39;&quot;</span>
+        <span class="p">)</span>
+
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">config</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.designs.design_base</span><span class="w"> </span><span class="kn">import</span> <span class="n">QDesign</span>
@@ -914,7 +943,14 @@
             <span class="n">inductance</span><span class="o">=</span><span class="n">default_options</span><span class="p">[</span><span class="s2">&quot;Lj&quot;</span><span class="p">],</span>
             <span class="n">capacitance</span><span class="o">=</span><span class="n">default_options</span><span class="p">[</span><span class="s2">&quot;Cj&quot;</span><span class="p">],</span>
             <span class="n">resistance</span><span class="o">=</span><span class="n">default_options</span><span class="p">[</span><span class="s2">&quot;_Rj&quot;</span><span class="p">],</span>
-            <span class="n">mesh_kw_jj</span><span class="o">=</span><span class="n">parse_units</span><span class="p">(</span><span class="n">default_options</span><span class="p">[</span><span class="s2">&quot;max_mesh_length_jj&quot;</span><span class="p">]),</span>
+            <span class="c1"># Previously: ``parse_units(default_options[&quot;max_mesh_length_jj&quot;])``</span>
+            <span class="c1"># — parsed via pyEPR at class-definition time. Now hardcoded so</span>
+            <span class="c1"># this module imports without pyEPR installed. Value is the</span>
+            <span class="c1"># SI conversion of &quot;7um&quot; (the ``max_mesh_length_jj`` default</span>
+            <span class="c1"># above). If you change ``max_mesh_length_jj``, also update</span>
+            <span class="c1"># this number — or refactor to a class-method that computes</span>
+            <span class="c1"># it lazily.</span>
+            <span class="n">mesh_kw_jj</span><span class="o">=</span><span class="mf">7e-6</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Element table data.&quot;&quot;&quot;</span>
@@ -927,6 +963,8 @@
 <span class="sd">            initiate (bool, optional): True to initiate the renderer. Defaults to True.</span>
 <span class="sd">            options (Dict, optional):  Used to override all options. Defaults to None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_require_pyEPR</span><span class="p">()</span>
+
         <span class="c1"># Variables to connect to Ansys</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_rapp</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_rdesktop</span> <span class="o">=</span> <span class="kc">None</span>

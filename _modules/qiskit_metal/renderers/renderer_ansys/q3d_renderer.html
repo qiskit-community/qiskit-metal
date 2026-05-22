@@ -702,14 +702,29 @@
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pyEPR</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">epr</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pyEPR.ansys</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pyEPR.calcs.convert</span><span class="w"> </span><span class="kn">import</span> <span class="n">Convert</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pyEPR.reports</span><span class="w"> </span><span class="kn">import</span> <span class="n">_plot_q3d_convergence_chi_f</span><span class="p">,</span> <span class="n">_plot_q3d_convergence_main</span>
+
+<span class="c1"># pyEPR is an opt-in dependency (``quantum-metal[ansys]``); see</span>
+<span class="c1"># ``ansys_renderer.py`` for the same pattern. The unused ``Convert``</span>
+<span class="c1"># import (was at the top of this file before lite-flip) has been</span>
+<span class="c1"># removed — it was dead code.</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyEPR</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">epr</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pyEPR.ansys</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pyEPR.reports</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+        <span class="n">_plot_q3d_convergence_chi_f</span><span class="p">,</span>
+        <span class="n">_plot_q3d_convergence_main</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: no cover — exercised on lite installs</span>
+    <span class="n">epr</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">ureg</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_plot_q3d_convergence_chi_f</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_plot_q3d_convergence_main</span> <span class="o">=</span> <span class="kc">None</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">config</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_ansys.ansys_renderer</span><span class="w"> </span><span class="kn">import</span> <span class="n">QAnsysRenderer</span>

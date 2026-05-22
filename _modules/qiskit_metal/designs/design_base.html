@@ -1779,7 +1779,19 @@
 
             <span class="c1"># check if class_name is in module</span>
             <span class="k">if</span> <span class="n">class_renderer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">a_renderer</span> <span class="o">=</span> <span class="n">class_renderer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initiate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">a_renderer</span> <span class="o">=</span> <span class="n">class_renderer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initiate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="c1"># The renderer module imported (lazy stubs in place)</span>
+                    <span class="c1"># but its ``__init__`` raises ImportError because the</span>
+                    <span class="c1"># actual heavy dep (pyEPR / pyaedt / gmsh) isn&#39;t</span>
+                    <span class="c1"># installed. Same outcome as a missing module:</span>
+                    <span class="c1"># skip + log + keep going.</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Renderer=</span><span class="si">{</span><span class="n">renderer_key</span><span class="si">}</span><span class="s2"> skipped: &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;runtime dependency not installed (</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">).&quot;</span>
+                    <span class="p">)</span>
+                    <span class="k">continue</span>
 
                 <span class="c1"># register renderers here.</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_renderers</span><span class="p">[</span><span class="n">renderer_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">a_renderer</span>

@@ -705,6 +705,8 @@
 <span class="c1"># modified by Chalmers/SK/20210621</span>
 <span class="c1"># modified by Samarth Hawaldar</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
@@ -713,8 +715,18 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pyEPR</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">epr</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pyEPR.ansys</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_units</span><span class="p">,</span> <span class="n">set_property</span>
+
+<span class="c1"># pyEPR is an opt-in dependency (``quantum-metal[ansys]``); see</span>
+<span class="c1"># ``ansys_renderer.py`` for the same pattern. ``from __future__ import</span>
+<span class="c1"># annotations`` keeps ``epr.X`` type hints lazy so this module imports</span>
+<span class="c1"># clean even without pyEPR installed.</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyEPR</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">epr</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pyEPR.ansys</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_units</span><span class="p">,</span> <span class="n">set_property</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: no cover — exercised on lite installs</span>
+    <span class="n">epr</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">parse_units</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">set_property</span> <span class="o">=</span> <span class="kc">None</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.draw.utility</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_vec3D</span>

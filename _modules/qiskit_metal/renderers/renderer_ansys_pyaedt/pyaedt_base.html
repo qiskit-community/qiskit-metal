@@ -690,14 +690,37 @@
           <h1>Source code for qiskit_metal.renderers.renderer_ansys_pyaedt.pyaedt_base</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.aedt.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">Desktop</span><span class="p">,</span> <span class="n">Hfss</span><span class="p">,</span> <span class="n">Q3d</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.aedt.core.modeler.cad.primitives</span><span class="w"> </span><span class="kn">import</span> <span class="n">Polyline</span>
+<span class="c1"># pyaedt (``ansys.aedt.core``) is an opt-in dependency</span>
+<span class="c1"># (``quantum-metal[ansys]``). Keep this module importable on the lite</span>
+<span class="c1"># install — the friendly error is raised in ``_require_pyaedt()`` from</span>
+<span class="c1"># constructors and entry-point methods. ``from __future__ import</span>
+<span class="c1"># annotations`` makes ``Desktop`` / ``Polyline`` type hints lazy.</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">ansys.aedt.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">Desktop</span><span class="p">,</span> <span class="n">Hfss</span><span class="p">,</span> <span class="n">Q3d</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">ansys.aedt.core.modeler.cad.primitives</span><span class="w"> </span><span class="kn">import</span> <span class="n">Polyline</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: no cover — exercised on lite installs</span>
+    <span class="n">Desktop</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">Hfss</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">Q3d</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">Polyline</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_require_pyaedt</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raise a clear error if pyaedt isn&#39;t installed.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">Desktop</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+            <span class="s2">&quot;QPyaedt requires pyaedt (ansys.aedt.core). Install with: &quot;</span>
+            <span class="s2">&quot;pip install &#39;quantum-metal[ansys]&#39;&quot;</span>
+        <span class="p">)</span>
+
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_base</span><span class="w"> </span><span class="kn">import</span> <span class="n">QRendererAnalysis</span>
 
@@ -834,6 +857,8 @@
 <span class="sd">            initiate (bool, optional):  True to initiate the renderer. Defaults to False.</span>
 <span class="sd">            options (Dict, optional): Used to override all options. Defaults to None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_require_pyaedt</span><span class="p">()</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_desktop</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="c1"># Initialize renderer first so we can use self.options</span>
 
