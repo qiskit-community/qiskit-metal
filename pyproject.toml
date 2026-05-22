@@ -25,7 +25,7 @@
     readme = { file = "README.md", content-type = "text/markdown" }
     requires-python = ">=3.10,<3.13"
     urls = { bugtracker = "https://github.com/qiskit-community/qiskit-metal/issues", documentation = "https://qiskit-community.github.io/qiskit-metal/", source = "https://github.com/qiskit-community/qiskit-metal" }
-    version = "0.6.1"
+    version = "0.6.2"
     # Core deps required for ``import qiskit_metal`` + ``qm.view()``
     # to work in any environment. Heavy / optional deps (Qt GUI,
     # pyaedt, gmsh) live in the ``[project.optional-dependencies]``
@@ -51,7 +51,7 @@
         "scipy>=1.10.0",
         "shapely>=2.0.1",
         "scqubits>=4.1.0",
-        "gmsh>=4.11.1",
+        "gmsh>=4.15.0,<5",
         "pyaedt>=0.21,<0.24", # pyaedt 0.24 has some bugs (Jan 23, 2026)
         "pyyaml>=6.0", # Used for the Elmer runner.
     ]
@@ -72,14 +72,14 @@
             "pyEPR-quantum>=0.9.5",
         ]
         fem = [
-            "gmsh>=4.11.1",
+            "gmsh>=4.15.0,<5",
         ]
         full = [
             "pyside6>=6.8",
             "qdarkstyle>=3.1",
             "pyaedt>=0.21,<0.24",
             "pyEPR-quantum>=0.9.5",
-            "gmsh>=4.11.1",
+            "gmsh>=4.15.0,<5",
         ]
 
 [build-system]

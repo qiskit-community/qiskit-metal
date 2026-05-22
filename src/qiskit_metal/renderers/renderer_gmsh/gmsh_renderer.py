@@ -1,9 +1,21 @@
+from __future__ import annotations
+
 from typing import Union, List, Optional
 from collections import defaultdict
 import pandas as pd
-import gmsh
 import numpy as np
 
+# gmsh is an opt-in dependency (``quantum-metal[fem]``). Keep this
+# module importable on the lite install — ``QGmshRenderer.__init__``
+# raises a clear ``ImportError`` via ``_require_gmsh`` if gmsh isn't
+# available. The "renderer skipped" path in
+# ``QDesign._start_renderers`` catches that and logs.
+try:
+    import gmsh
+except ImportError:  # pragma: no cover — exercised on lite installs
+    gmsh = None
+
+from qiskit_metal.renderers.renderer_gmsh.gmsh_utils import _require_gmsh
 from qiskit_metal.renderers.renderer_base import QRenderer
 
 from qiskit_metal.renderers.renderer_gmsh.gmsh_utils import (
@@ -95,6 +107,7 @@ class QGmshRenderer(QRenderer):
             initiate (bool): True to initiate the renderer (Default: False).
             options (Dict, optional): Used to override default options. Defaults to None.
         """
+        _require_gmsh()
         super().__init__(design=design, initiate=initiate, render_options=options)
         self._model_name = "gmsh_model"
 

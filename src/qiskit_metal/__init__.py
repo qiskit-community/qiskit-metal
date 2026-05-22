@@ -184,3 +184,46 @@ from qiskit_metal.toolbox_metal.about import about, open_docs
 
 # Headless matplotlib viewer (``qm.view(design)``) — no Qt required.
 from qiskit_metal.viewer import view
+
+
+# -----------------------------------------------------------------------------
+# v0.7.0 lite-by-default deprecation notice (shipped in v0.6.2)
+# -----------------------------------------------------------------------------
+# Heads-up for users upgrading via ``pip install --upgrade quantum-metal``:
+# v0.7.0 will move PySide6 / qdarkstyle / pyaedt / pyEPR-quantum / gmsh out of
+# ``[project.dependencies]`` and into opt-in extras (``[gui]`` / ``[ansys]`` /
+# ``[fem]`` / ``[full]``). To preserve the current v0.6.x experience, run
+# ``pip install 'quantum-metal[full]'`` before upgrading.
+#
+# Fires once per process via Python's default warning deduplication. Users
+# who want it silent can set ``QISKIT_METAL_SUPPRESS_LITE_FLIP_WARNING=1`` or
+# ``warnings.filterwarnings("ignore", category=FutureWarning, module="qiskit_metal")``.
+def _maybe_warn_lite_flip() -> None:
+    import os
+    import warnings
+
+    if os.environ.get("QISKIT_METAL_SUPPRESS_LITE_FLIP_WARNING") == "1":
+        return
+
+    msg = (
+        "quantum-metal v0.7.0 will move PySide6, qdarkstyle, pyaedt, "
+        "pyEPR-quantum, and gmsh out of base dependencies into opt-in "
+        "extras. To preserve the current v0.6.x install behaviour, run "
+        "`pip install 'quantum-metal[full]'` before upgrading. See "
+        "ROADMAP.md and docs/migration-to-v0.7.0.rst for details. "
+        "Set QISKIT_METAL_SUPPRESS_LITE_FLIP_WARNING=1 to silence."
+    )
+
+    # Log via metal's logger so the message is *visible* by default. The
+    # logger fires before ``logging.captureWarnings(True)`` (set by
+    # ``setup_logger`` higher in this file) would redirect a plain
+    # ``warnings.warn`` to a silent py.warnings logger.
+    logger.warning("[FutureWarning] %s", msg)
+
+    # Also raise via the warnings module so programmatic callers (tests,
+    # ``warnings.catch_warnings``, etc.) can detect the upcoming change.
+    warnings.warn(msg, FutureWarning, stacklevel=1)
+
+
+_maybe_warn_lite_flip()
+del _maybe_warn_lite_flip

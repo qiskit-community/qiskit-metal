@@ -1,7 +1,28 @@
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from typing import Union, List, Tuple
 import numpy as np
-import gmsh
+
+# gmsh is an opt-in dependency (``quantum-metal[fem]``). Keep this
+# module importable on the lite install — the free functions below
+# that call into ``gmsh.model`` raise via ``_require_gmsh()`` at use
+# time rather than at ``import qiskit_metal`` time.
+try:
+    import gmsh
+except ImportError:  # pragma: no cover — exercised on lite installs
+    gmsh = None
+
+
+def _require_gmsh() -> None:
+    """Raise a clear error if gmsh isn't installed."""
+    if gmsh is None:
+        raise ImportError(
+            "renderer_gmsh requires gmsh. Install with: "
+            "pip install 'quantum-metal[fem]'"
+        )
+
+
 from qiskit_metal.draw.utility import Vec3D
 
 
