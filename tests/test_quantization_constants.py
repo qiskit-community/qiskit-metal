@@ -24,8 +24,6 @@ from __future__ import annotations
 import math
 import unittest
 
-import numpy as np
-
 from qiskit_metal.analyses.quantization import constants as C
 
 
