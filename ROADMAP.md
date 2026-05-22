@@ -131,6 +131,18 @@ The open FEM stack is the long-term answer. Three pieces:
 - **gmsh mesher** — `renderer_gmsh/` already exists. The
   next step is tighter mesh control and port / boundary
   tagging that both Elmer and Palace can consume.
+- **gmsh version audit** `[research]` — we currently pin
+  `gmsh>=4.11.1` (no upper bound) with 4.15.0 shipped in
+  the dev env. The 30 distinct `gmsh.*` API entry points
+  we use are all stable core OCC + meshing + lifecycle
+  calls, but with gmsh 5 on the horizon we should
+  (a) tighten the pin to `>=4.15.0,<5`, (b) walk the API
+  call sites against the latest 4.x release notes to spot
+  anything deprecated, and (c) survey newer 4.x APIs
+  (e.g. richer mesh refinement, boundary-tag protocol
+  improvements) that would unblock cleaner Palace and
+  Elmer integration. Likely lands as one small PR for
+  the pin tighten + a research note for the API survey.
 - **Elmer eigenmode solver** — `renderer_elmer/` already
   exists. The integration needs a parity-check pass to
   confirm it still works against current Elmer releases,
