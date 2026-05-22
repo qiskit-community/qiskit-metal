@@ -31,7 +31,6 @@ import gdstk
 from qiskit_metal import designs, Dict
 from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 from qiskit_metal.qlibrary.tlines.meandered import RouteMeander
-from qiskit_metal.renderers.renderer_gds.gds_renderer import QGDSRenderer
 
 # Path to the sample junction GDS shipped with the repo.
 _RESOURCES = pathlib.Path(__file__).parent.parent / "tutorials" / "resources"
