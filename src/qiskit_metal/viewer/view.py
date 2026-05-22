@@ -121,4 +121,18 @@ def view(
     if title is not None:
         ax.set_title(title)
 
+    # With the inline / Agg backend, pyplot's figure manager keeps every figure
+    # created by plt.subplots() open.  IPython's post_execute hook then calls
+    # plt.show(), which displays the figure (render #1); returning `fig` from
+    # the cell displays it a second time (render #2).  Closing deregisters the
+    # figure from the manager and prevents the duplicate.
+    #
+    # With interactive backends (ipympl / widget, Qt, Tk, …) we must NOT call
+    # plt.close(): it destroys the live widget canvas and the figure falls back
+    # to a static PNG when IPython tries to display it.  Those backends handle
+    # de-duplication themselves, so no close is needed.
+    import matplotlib as _mpl
+    if "inline" in _mpl.get_backend().lower() or _mpl.get_backend().lower() == "agg":
+        plt.close(fig)
+
     return fig
