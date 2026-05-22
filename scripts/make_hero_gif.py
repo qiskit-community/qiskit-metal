@@ -73,7 +73,7 @@ def compute_centered_square_limits(design, pad_frac=AXIS_PADDING_FRAC):
     # Square extent: take the larger dimension so the chip fits with equal
     # padding on all four sides (true geometric centering).
     half = max(max(xs) - min(xs), max(ys) - min(ys)) / 2
-    half *= (1.0 + pad_frac)
+    half *= 1.0 + pad_frac
     return (cx - half, cx + half), (cy - half, cy + half)
 
 
@@ -101,8 +101,7 @@ def render_frame(design, title, xlim, ylim):
 def save_frame(fig, path):
     # Fixed pad_inches (no bbox_inches='tight') so every frame has identical
     # pixel dimensions — required for clean GIF stitching.
-    fig.savefig(path, dpi=DPI, pad_inches=0.15,
-                facecolor=fig.get_facecolor())
+    fig.savefig(path, dpi=DPI, pad_inches=0.15, facecolor=fig.get_facecolor())
     plt.close(fig)
 
 
@@ -156,7 +155,7 @@ LAUNCHPADS = [
     # (name, x, y, orient°, connect_to_qubit, connect_to_pin)
     ("P1", "+2.0mm", "+2.0mm", "225", "Q1", "a"),  # NE
     ("P2", "-2.0mm", "+2.0mm", "315", "Q2", "b"),  # NW
-    ("P3", "-2.0mm", "-2.0mm",  "45", "Q3", "c"),  # SW
+    ("P3", "-2.0mm", "-2.0mm", "45", "Q3", "c"),  # SW
     ("P4", "+2.0mm", "-2.0mm", "135", "Q4", "d"),  # SE
 ]
 
@@ -168,6 +167,7 @@ def _qubit_factory(name):
     def add(design):
         TransmonPocket(design, name, options=Dict(pos_x=x, pos_y=y, **_POCKET_PADS))
         design.rebuild()
+
     return add
 
 
@@ -176,10 +176,17 @@ def _add_center_cross_showcase(design):
     dedicated frame after the rest of the chip is built, to showcase a
     second qubit-type without disturbing the ring's pocket-based routing.
     """
-    TransmonCross(design, "Qx", options=Dict(
-        pos_x="0mm", pos_y="0mm",
-        cross_length="180um", cross_gap="25um", cross_width="20um",
-    ))
+    TransmonCross(
+        design,
+        "Qx",
+        options=Dict(
+            pos_x="0mm",
+            pos_y="0mm",
+            cross_length="180um",
+            cross_gap="25um",
+            cross_width="20um",
+        ),
+    )
     design.rebuild()
 
 
@@ -198,20 +205,29 @@ def _cpw_factory(cpw_spec):
     # each route has only 1–2 visible wiggles.
     cpw_opts = Dict(
         lead=Dict(start_straight="180um", end_straight="180um"),
-        # Keep total_length JUST a bit longer than the straight-line distance
-        # (~1.55 mm pin-to-pin) so each route gets only one gentle hump
-        # instead of multiple short wiggles. The orientation-dependent snap
-        # rounding only causes visible asymmetry when the meander has >1
-        # wiggle per side; one-hump routes look symmetric.
-        fillet="120 um", total_length="2.4 mm",
-        trace_width="10 um", trace_gap="6 um",
-        meander=Dict(spacing="450um", asymmetry="0um"),
+        fillet="120 um",
+        total_length="2.4 mm",
+        trace_width="10 um",
+        trace_gap="6 um",
+        # Workaround for a real RouteMeander bug (meandered.py line ~166):
+        #   meander_number = np.floor(length_direct / spacing)
+        # length_direct varies by tiny floating-point amounts between
+        # geometrically-equivalent horizontal vs vertical routes, and the
+        # floor() then gives different integer wiggle counts (e.g. 2 vs 3)
+        # for the same rotated shape. The per-wiggle excursion is then
+        # length_excess/(meander_number*2), so a one-extra-wiggle route
+        # ends up with much smaller bumps (visible as a "kink").
+        # Setting spacing > length_direct forces meander_number = 1 for
+        # every route, so all four are guaranteed to be one big hump and
+        # the orientation-dependent rounding can't bite.
+        meander=Dict(spacing="1.2mm", asymmetry="0um"),
         snap="false",
     )
 
     def add(design):
         RouteMeander(
-            design, name,
+            design,
+            name,
             options=Dict(
                 pin_inputs=Dict(
                     start_pin=Dict(component=qa, pin=pa),
@@ -221,6 +237,7 @@ def _cpw_factory(cpw_spec):
             ),
         )
         design.rebuild()
+
     return add
 
 
@@ -232,16 +249,26 @@ def _add_launchpads_and_connections(design):
     feed_opts = Dict(
         lead=Dict(start_straight="60um", end_straight="60um"),
         fillet="80 um",
-        trace_width="10 um", trace_gap="6 um",
+        trace_width="10 um",
+        trace_gap="6 um",
     )
     for name, x, y, orient, q, pin in LAUNCHPADS:
-        LaunchpadWirebond(design, name, options=Dict(
-            pos_x=x, pos_y=y, orientation=orient,
-            pad_width="120um", pad_height="120um",
-            pad_gap="80um", lead_length="20um",
-        ))
+        LaunchpadWirebond(
+            design,
+            name,
+            options=Dict(
+                pos_x=x,
+                pos_y=y,
+                orientation=orient,
+                pad_width="120um",
+                pad_height="120um",
+                pad_gap="80um",
+                lead_length="20um",
+            ),
+        )
         RoutePathfinder(
-            design, f"feed_{name}",
+            design,
+            f"feed_{name}",
             options=Dict(
                 pin_inputs=Dict(
                     start_pin=Dict(component=q, pin=pin),
@@ -276,7 +303,9 @@ def build_storyboard():
     ]
     for i, name in enumerate(Q_SPEC):
         dur = 500 if i == len(Q_SPEC) - 1 else 320  # slight hold on the last
-        stages.append((_qubit_factory(name), f"0{i+1}_{name}.png", qubit_titles[i], dur))
+        stages.append(
+            (_qubit_factory(name), f"0{i + 1}_{name}.png", qubit_titles[i], dur)
+        )
     # Then CPWs one by one
     cpw_titles = [
         "Step 3 — Route Q1↔Q2 (CPW meander)",
@@ -286,17 +315,32 @@ def build_storyboard():
     ]
     for i, spec in enumerate(RING_CPWS):
         dur = 550 if i == len(RING_CPWS) - 1 else 320
-        stages.append((_cpw_factory(spec), f"0{i+5}_{spec[0]}.png", cpw_titles[i], dur))
+        stages.append(
+            (_cpw_factory(spec), f"0{i + 5}_{spec[0]}.png", cpw_titles[i], dur)
+        )
     # Launchpads + their connecting CPWs in one shot
-    stages.append((_add_launchpads_and_connections, "09_launchpads.png",
-                   "Step 4 — Launchpads + feed lines", 600))
+    stages.append(
+        (
+            _add_launchpads_and_connections,
+            "09_launchpads.png",
+            "Step 4 — Launchpads + feed lines",
+            600,
+        )
+    )
     # Showcase a second qubit type (TransmonCross) appearing at the centre —
     # demonstrates the qlibrary has more than one transmon kind.
-    stages.append((_add_center_cross_showcase, "10_cross.png",
-                   "Or pick from 13+ qubit types  (TransmonCross shown)", 800))
+    stages.append(
+        (
+            _add_center_cross_showcase,
+            "10_cross.png",
+            "Or pick from 13+ qubit types  (TransmonCross shown)",
+            800,
+        )
+    )
     # Final long hold so viewers register the result
-    stages.append((None, "11_final.png",
-                   "qm.view(design)   →   chip ready for fab/sim", 1600))
+    stages.append(
+        (None, "11_final.png", "qm.view(design)   →   chip ready for fab/sim", 1600)
+    )
     return stages
 
 
@@ -326,14 +370,20 @@ def build_4qubit_chip_progressively(frame_dir):
 
 def stitch_gif(frame_paths, durations_ms):
     """Combine PNG frames into a looping GIF with per-frame durations."""
-    imgs = [Image.open(p).convert("P", palette=Image.Palette.ADAPTIVE) for p in frame_paths]
+    imgs = [
+        Image.open(p).convert("P", palette=Image.Palette.ADAPTIVE) for p in frame_paths
+    ]
     # Normalize all frames to the size of frame 0 (savefig may pad differently)
     target_size = imgs[0].size
     imgs = [im.resize(target_size, Image.Resampling.LANCZOS) for im in imgs]
     OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     imgs[0].save(
-        OUT_PATH, save_all=True, append_images=imgs[1:],
-        duration=durations_ms, loop=LOOP, optimize=True,
+        OUT_PATH,
+        save_all=True,
+        append_images=imgs[1:],
+        duration=durations_ms,
+        loop=LOOP,
+        optimize=True,
     )
 
 
@@ -344,10 +394,12 @@ def main():
         frame_paths = list(build_4qubit_chip_progressively(Path(tmp)))
         stitch_gif(frame_paths, durations)
     size_kb = OUT_PATH.stat().st_size // 1024
-    print(f"✓ wrote {OUT_PATH} ({size_kb} KB, {len(durations)} frames, "
-          f"{sum(durations)/1000:.1f}s loop)")
+    print(
+        f"✓ wrote {OUT_PATH} ({size_kb} KB, {len(durations)} frames, "
+        f"{sum(durations) / 1000:.1f}s loop)"
+    )
     if size_kb > 1024:
-        print(f"  ⚠ over 1 MB — consider reducing FIGSIZE_INCH or DPI")
+        print("  ⚠ over 1 MB — consider reducing FIGSIZE_INCH or DPI")
     return 0
 
 

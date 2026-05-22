@@ -139,6 +139,17 @@
     testpaths  = [ "tests/" ]
 
 
+[tool.ruff]
+    # ``_dev/`` is the dev/design-doc scratch directory (prototype notebooks,
+    # planning markdown, throwaway scripts). Not user-facing code; should
+    # not be lint-gated. Same goes for the ``_archive/`` historical
+    # directories under ``docs/``.
+    extend-exclude = [
+        "_dev",
+        "docs/_archive",
+        "docs/_build",
+    ]
+
 [tool.ruff.lint]
     ignore = [ "E402", "F401", "E731", "E722", "E741", "F821" ]
     # Ruff ignore codes:
