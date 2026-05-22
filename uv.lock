@@ -2524,7 +2524,7 @@ wheels = [
 
 [[package]]
 name = "quantum-metal"
-version = "0.6.1"
+version = "0.6.2"
 source = { editable = "." }
 dependencies = [
     { name = "addict" },
@@ -2602,9 +2602,9 @@ requires-dist = [
     { name = "addict", specifier = ">=2.4.0" },
     { name = "gdstk", specifier = ">=0.9" },
     { name = "geopandas", specifier = ">=1.0" },
-    { name = "gmsh", specifier = ">=4.11.1" },
-    { name = "gmsh", marker = "extra == 'fem'", specifier = ">=4.11.1" },
-    { name = "gmsh", marker = "extra == 'full'", specifier = ">=4.11.1" },
+    { name = "gmsh", specifier = ">=4.15.0,<5" },
+    { name = "gmsh", marker = "extra == 'fem'", specifier = ">=4.15.0,<5" },
+    { name = "gmsh", marker = "extra == 'full'", specifier = ">=4.15.0,<5" },
     { name = "matplotlib", specifier = ">=3.7.0" },
     { name = "numpy", specifier = ">=1.24.2,<2" },
     { name = "pandas", specifier = ">=2.1.1" },
