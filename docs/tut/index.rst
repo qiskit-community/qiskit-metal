@@ -134,6 +134,26 @@ Quick Topics
     </table>
 
 
+External Workshops
+==================
+
+Independently-maintained workshop materials that exercise Quantum Metal
+end-to-end (layout → simulation → analysis) using open-source EM solvers
+via `SQDMetal <https://github.com/sqdlab/SQDMetal>`_.
+
+- `QDW 2025 — tutorials_quantum_device_design
+  <https://github.com/zlatko-minev/tutorials_quantum_device_design>`_
+  *(historical, Metal pre-v0.5)* — 4 notebooks covering layout,
+  transmon+resonator, qubit-qubit coupling, and an end-to-end project,
+  simulated with **Palace** via SQDMetal.
+
+- `QDW 2026 — qdw26-workshop-materials
+  <https://github.com/quantum-device-consortium/qdw26-workshop-materials>`_
+  *(active, near-mainline Metal)* — Dockerized re-tooling of the same
+  4-notebook progression. Shared ``uv`` environment, JupyterLab + VS Code
+  attach paths, Brev / cloud-instance support.
+
+
 .. Hiding - Indices and tables
    :ref:`genindex`
    :ref:`modindex`
