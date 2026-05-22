@@ -2656,7 +2656,7 @@ class QGDSRenderer(QRenderer):
 
             # Build an HTML legend table that matches the SVG colours.
             _DATATYPE_LABELS = {
-                0:  "metal (boolean result)",
+                0: "metal (boolean result)",
                 10: "component polygon input",
                 11: "CPW FlexPath trace",
             }
@@ -2672,9 +2672,9 @@ class QGDSRenderer(QRenderer):
                     f'<td style="padding:1px 10px">{dtype}</td>'
                     f'<td style="padding:1px 10px;color:#555">{desc}</td>'
                     f'<td style="padding:1px 10px;text-align:right">'
-                    f'{counts["polygons"]} poly</td>'
+                    f"{counts['polygons']} poly</td>"
                     f'<td style="padding:1px 10px;text-align:right">'
-                    f'{counts["paths"]} paths</td>'
+                    f"{counts['paths']} paths</td>"
                     f"</tr>"
                 )
             legend = (
@@ -2689,10 +2689,9 @@ class QGDSRenderer(QRenderer):
                 '<th style="padding:1px 10px">Paths</th>'
                 f"</tr></thead><tbody>{rows}</tbody></table>"
             )
-            display(HTML(
-                f'<div style="width:{width}px;overflow:auto">{_svg}</div>'
-                f"{legend}"
-            ))
+            display(
+                HTML(f'<div style="width:{width}px;overflow:auto">{_svg}</div>{legend}')
+            )
 
         # Basic library info
         print("\n=== GDS LIBRARY SUMMARY ===")
@@ -2836,9 +2835,16 @@ class QGDSRenderer(QRenderer):
 # Shared colour palette used by debug_summarize_gds_library and plot_gds_zoom
 # so the SVG overview and the matplotlib zoom panels are visually consistent.
 _GDS_LAYER_PALETTE = [
-    "#4C9BE8", "#F5A623", "#7ED321", "#D0021B",
-    "#9013FE", "#50E3C2", "#E8794C", "#A8D8EA",
-    "#F7CAC9", "#92A8D1",
+    "#4C9BE8",
+    "#F5A623",
+    "#7ED321",
+    "#D0021B",
+    "#9013FE",
+    "#50E3C2",
+    "#E8794C",
+    "#A8D8EA",
+    "#F7CAC9",
+    "#92A8D1",
 ]
 
 

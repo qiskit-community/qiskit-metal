@@ -135,6 +135,7 @@ def view(
     # Only close figures that *we* created. If the caller supplied their own ax,
     # they own the figure lifecycle — closing it here would destroy their canvas.
     import matplotlib as _mpl
+
     backend = _mpl.get_backend().lower()
     if not caller_supplied_ax and ("inline" in backend or backend == "agg"):
         plt.close(fig)
