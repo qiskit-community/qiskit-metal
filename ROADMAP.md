@@ -194,6 +194,74 @@ but are worth tracking:
 
 ---
 
+## Adoption, DevRel, and onboarding `[planned / research]`
+
+The technical roadmap above gets us a great library. This section is about
+making sure people *find* it, *try* it, and *stick with* it. Ideated May 2026
+after the v0.7.0 lite-by-default flip made one-click trial finally viable.
+
+### Quick wins (each <2 hours)
+
+- **"Open in Colab" button** in the README `[planned]` — single biggest
+  adoption lever. The lite install + `qm.view()` makes Colab a 60-second
+  zero-friction trial path. Link directly to tutorial 1.2 Quick Start.
+- **`CITATION.cff` file** `[planned]` — GitHub renders a "Cite this
+  repository" widget on the repo landing page. Massive academic-credibility
+  signal at near-zero effort. Source from existing `Qiskit_Metal.bib`.
+- **Badge row refresh** `[planned]` — add PyPI downloads/month, GitHub
+  stars, contributors, Python versions supported, CI status, docs.
+- **Repo description + GitHub topics** `[planned]` — punchy one-liner and
+  tags (`quantum-computing`, `superconducting-qubits`, `eda`,
+  `quantum-chip-design`, `hfss`, `gmsh`, `quantum-hardware`) for GitHub
+  search discoverability.
+- **Hero animated GIF** `[planned]` — 6-second screen recording of
+  `qm.view(design)` rendering a transmon inline. Show, don't tell.
+- **Open Graph image** `[research]` — controls how the repo / docs preview
+  when shared on Twitter/Slack/Discord.
+
+### Medium effort (~half-day each)
+
+- **JupyterLite tutorials in the docs** `[planned]` — `jupyterlite-sphinx`
+  extension makes each notebook runnable in-browser, zero install. Major
+  unlock for classroom / academic use.
+- **Gallery page** (`docs/gallery.rst`) `[planned]` — eye-candy rendered
+  images of representative designs (single transmon, two-qubit, surface-code
+  patch, examples from `tutorials/E.Input-output-coupling/`). Showcases
+  capability visually.
+- **`SUPPORT.md` + `GOVERNANCE.md`** `[planned]` — currently support info is
+  scattered across README/FAQ/contributor-guide. A single `SUPPORT.md`
+  consolidates "where to ask, response expectations." `GOVERNANCE.md`
+  matters for institutional adopters (labs, companies) deciding whether to
+  commit time.
+- **`.github/ISSUE_TEMPLATE/` audit + polish** `[planned]` — bug report,
+  feature request, docs-issue templates. Reduces friction for first-time
+  contributors and improves triage signal.
+- **Codespaces / devcontainer config** (`.devcontainer/devcontainer.json`)
+  `[planned]` — one-click cloud dev environment from any GitHub page.
+  Pairs with the lite install for a 90-second "open and run."
+- **Recipes section in docs** `[planned]` — short focused how-tos
+  ("Design a CPW resonator at 5 GHz", "Sweep transmon pad gap and extract
+  frequency", "Export GDS with custom layer mapping"). Each <50 LOC,
+  copy-paste-runnable. Tutorials are deep dives; recipes are the
+  Stack-Overflow-style "I just want to do X" entry point.
+
+### Bigger plays (multi-day)
+
+- **`awesome-quantum-metal` companion repo** `[research]` — curated list:
+  papers using Metal, lab tooling on top of Metal, talks, integrations.
+  Community-curated, standard `awesome-*` pattern.
+- **Comparison page** ("Metal vs. ...") `[research]` — honest comparison
+  vs. Ansys Workbench / commercial EDA / hand-coded GDS. Highly searched
+  by evaluators.
+- **Web-based read-only design viewer** `[research]` — overlaps with the
+  Jupyter widget viewer in the renderer roadmap; a web-hosted version on
+  the docs site would be a flagship demo.
+- **Annual / quarterly community report** `[research]` — "State of Quantum
+  Metal 202X" with downloads, contributors, papers citing, new features.
+  Doubles as institutional fundraising / partnership signal.
+
+---
+
 ## How to help
 
 - **Use it and file issues.** Especially: anything that

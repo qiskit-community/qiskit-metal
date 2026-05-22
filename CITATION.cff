@@ -1,0 +1,61 @@
+cff-version: 1.2.0
+message: "If you use Quantum Metal (formerly Qiskit Metal) in your research, please cite it as below."
+title: "Quantum Metal: An Open-Source Framework for Quantum Device Design & Analysis"
+abstract: >-
+  Quantum Metal is an open-source Python framework for designing and analysing
+  superconducting quantum chips. It provides a Python API and optional desktop
+  GUI for composing quantum device designs from a library of qcomponents
+  (transmons, resonators, couplers, routes, terminations), rendering to GDS
+  and EM-simulator targets (HFSS / Q3D / gmsh / Elmer), and running pure-Python
+  and field-aware (EPR) quantization analyses.
+type: software
+authors:
+  - family-names: "Minev"
+    given-names: "Zlatko K."
+    orcid: "https://orcid.org/0000-0002-1731-9624"
+    affiliation: "Quantum Device Consortium"
+  - family-names: "McConkey"
+    given-names: "Thomas G."
+  - family-names: "Drysdale"
+    given-names: "Jeremy"
+  - family-names: "Shah"
+    given-names: "Priti"
+  - family-names: "Wang"
+    given-names: "Dennis"
+  - family-names: "Facchini"
+    given-names: "Marco"
+  - family-names: "Harper"
+    given-names: "Grace"
+  - family-names: "Blair"
+    given-names: "John"
+  - family-names: "Zhang"
+    given-names: "Helena"
+  - family-names: "Lanzillo"
+    given-names: "Nick"
+  - family-names: "Mukesh"
+    given-names: "Sagarika"
+  - family-names: "Shanks"
+    given-names: "Will"
+  - family-names: "Warren"
+    given-names: "Chris"
+  - family-names: "Gambetta"
+    given-names: "Jay M."
+  - name: "Quantum Metal community contributors"
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.4618153
+    description: "Concept DOI (resolves to the latest release)."
+repository-code: "https://github.com/qiskit-community/qiskit-metal"
+url: "https://qiskit-community.github.io/qiskit-metal/"
+license: Apache-2.0
+keywords:
+  - quantum-computing
+  - superconducting-qubits
+  - quantum-chip-design
+  - quantum-hardware
+  - eda
+  - electronic-design-automation
+  - hfss
+  - gmsh
+  - python
+year-original: 2021

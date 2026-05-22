@@ -1,14 +1,26 @@
 # Quantum Metal (formerly: Qiskit Metal)
 
-[![License](https://img.shields.io/github/license/qiskit-community/qiskit-metal.svg?style=popout-square)](https://opensource.org/licenses/Apache-2.0)
-[![Release](https://img.shields.io/github/release/qiskit-community/qiskit-metal.svg?style=popout-square)](https://github.com/qiskit-community/qiskit-metal/releases)
-[![PyPI](https://img.shields.io/pypi/v/quantum-metal.svg?style=popout-square)](https://pypi.org/project/quantum-metal/)
+[![PyPI](https://img.shields.io/pypi/v/quantum-metal.svg?logo=pypi&logoColor=white&style=flat-square)](https://pypi.org/project/quantum-metal/)
+[![Python versions](https://img.shields.io/pypi/pyversions/quantum-metal.svg?style=flat-square&logo=python&logoColor=white)](https://pypi.org/project/quantum-metal/)
+[![PyPI downloads](https://img.shields.io/pypi/dm/quantum-metal.svg?style=flat-square&label=PyPI%20downloads)](https://pypi.org/project/quantum-metal/)
+[![License](https://img.shields.io/github/license/qiskit-community/qiskit-metal.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
+[![CI](https://img.shields.io/github/actions/workflow/status/qiskit-community/qiskit-metal/main.yml?branch=main&style=flat-square&label=CI&logo=github)](https://github.com/qiskit-community/qiskit-metal/actions)
+[![Docs](https://img.shields.io/badge/docs-online-blue.svg?style=flat-square&logo=read-the-docs&logoColor=white)](https://qiskit-community.github.io/qiskit-metal/)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4618153.svg)](https://doi.org/10.5281/zenodo.4618153)
-[![Discord](https://img.shields.io/badge/Discord-Join_Community-5865F2?logo=discord&logoColor=white&style=popout-square)](https://discord.gg/kaZ3UFuq)
+[![GitHub stars](https://img.shields.io/github/stars/qiskit-community/qiskit-metal.svg?style=flat-square&logo=github)](https://github.com/qiskit-community/qiskit-metal/stargazers)
+[![Contributors](https://img.shields.io/github/contributors/qiskit-community/qiskit-metal.svg?style=flat-square&logo=github)](https://github.com/qiskit-community/qiskit-metal/graphs/contributors)
+[![Discord](https://img.shields.io/badge/Discord-Join_Community-5865F2?logo=discord&logoColor=white&style=flat-square)](https://discord.gg/kaZ3UFuq)
 
 > ![Welcome to Quantum Metal!](https://raw.githubusercontent.com/qiskit-community/qiskit-metal/main/docs/images/zkm_banner.png 'Welcome to Quantum Metal')
 >
 > **Quantum Metal** is an open-source framework for engineers and scientists to design superconducting quantum devices with ease.
+
+### 🚀 Try it now — zero install
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/qiskit-community/qiskit-metal/blob/main/tutorials/1%20Overview/1.2%20Quick%20start.ipynb)
+[![Open in GitHub Codespaces](https://img.shields.io/badge/Open_in-Codespaces-181717?logo=github&logoColor=white&style=flat-square)](https://codespaces.new/qiskit-community/qiskit-metal)
+
+One click → working Quantum Metal in your browser in 60 seconds (lite install, no Qt required).
 
 📍 **Where we're heading:** see [ROADMAP.md](./ROADMAP.md) for the
 lite-by-default install (v0.7.0, shipped), the AI-orchestration profile,
