@@ -303,6 +303,27 @@ The build is now clean (0 warnings) but a few latent fragilities remain:
 
 ---
 
+## GUI / UX wishes `[wish-list]`
+
+Small UX improvements collected from real use. Lower priority than the
+roadmap items above, but tracked here so they don't get lost.
+
+- **Thumbnail icons for every qubit / component in the GUI library
+  toolbar** `[wish]` — the left-side component browser currently shows
+  a flat text list of `TransmonPocket`, `TransmonCross`,
+  `TransmonInterdigitated`, etc. A small (~64×64) preview icon next to
+  each name would let users pick a geometry visually instead of having
+  to remember which class is which shape. Applies to both the Qt
+  `MetalGUI` (`src/qiskit_metal/_gui/widgets/qlibrary_display/`) and
+  the future Jupyter `qm.gui()` library panel (planning in
+  `_dev/jupyter_gui/feature-map.md`). Implementation: render each
+  component once headlessly via `qm.view(component)` and cache as PNG
+  in `docs/_static/component_icons/` — same reproducible-asset pattern
+  the hero GIF (`scripts/make_hero_gif.py`) uses. Existing assets in
+  `_imgs/components/` may already cover some.
+
+---
+
 ## How to help
 
 - **Use it and file issues.** Especially: anything that
