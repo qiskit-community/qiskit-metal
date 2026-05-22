@@ -27,12 +27,13 @@ jobs:
       # Install OS dependencies.
       # graphviz: used by sphinx.ext.graphviz for inheritance diagrams.
       # pandoc: required by nbsphinx to convert notebook markdown cells.
-      # No Qt packages needed: nbsphinx_execute defaults to "never" so no
-      # notebook cells are executed and no Qt code ever runs during the build.
+      # libegl1: PySide6 is imported at module level in mpl_canvas.py (via
+      #   renderers/__init__.py during autodoc). Qt needs libEGL at import
+      #   time even on headless runners — without it Sphinx crashes in conf.py.
       - name: Fetch OS updates and upgrade packages
         run: sudo apt-get update
       - name: Install OS dependencies
-        run: sudo apt-get install -y graphviz=2.42.2-9ubuntu0.1 pandoc=3.1.3+ds-2
+        run: sudo apt-get install -y graphviz=2.42.2-9ubuntu0.1 pandoc=3.1.3+ds-2 libegl1
       - name: Build docs
         run: uvx --with tox-uv tox -vv -e docs
       - name: Bypass Jekyll Processing # Necessary for setting the correct css path

@@ -97,7 +97,10 @@ if config.is_building_docs():
     from qiskit_metal.renderers.renderer_gds.gds_renderer import QGDSRenderer
     from qiskit_metal.renderers.renderer_gds.make_cheese import Cheesing
 
-    from qiskit_metal.renderers.renderer_mpl.mpl_canvas import PlotCanvas
+    try:
+        from qiskit_metal.renderers.renderer_mpl.mpl_canvas import PlotCanvas
+    except ImportError:
+        pass  # PySide6/EGL unavailable on headless doc runners
     from qiskit_metal.renderers.renderer_mpl.mpl_interaction import MplInteraction
     from qiskit_metal.renderers.renderer_mpl.mpl_interaction import ZoomOnWheel
     from qiskit_metal.renderers.renderer_mpl.mpl_interaction import PanAndZoom
