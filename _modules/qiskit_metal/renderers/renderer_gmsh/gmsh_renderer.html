@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>qiskit_metal.renderers.renderer_gmsh.gmsh_renderer - Quantum Metal 0.6.1</title>
+        <title>qiskit_metal.renderers.renderer_gmsh.gmsh_renderer - Quantum Metal 0.6.2</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
@@ -154,7 +154,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">Quantum Metal 0.6.1</div></a>
+      <a href="../../../../index.html"><div class="brand">Quantum Metal 0.6.2</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -176,7 +176,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
   
   
-  <span class="sidebar-brand-text">Quantum Metal 0.6.1</span>
+  <span class="sidebar-brand-text">Quantum Metal 0.6.2</span>
   
 </a>
 <form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
@@ -688,12 +688,24 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for qiskit_metal.renderers.renderer_gmsh.gmsh_renderer</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">gmsh</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
+<span class="c1"># gmsh is an opt-in dependency (``quantum-metal[fem]``). Keep this</span>
+<span class="c1"># module importable on the lite install — ``QGmshRenderer.__init__``</span>
+<span class="c1"># raises a clear ``ImportError`` via ``_require_gmsh`` if gmsh isn&#39;t</span>
+<span class="c1"># available. The &quot;renderer skipped&quot; path in</span>
+<span class="c1"># ``QDesign._start_renderers`` catches that and logs.</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">gmsh</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: no cover — exercised on lite installs</span>
+    <span class="n">gmsh</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_gmsh.gmsh_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">_require_gmsh</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_base</span><span class="w"> </span><span class="kn">import</span> <span class="n">QRenderer</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_gmsh.gmsh_utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
@@ -787,6 +799,7 @@
 <span class="sd">            initiate (bool): True to initiate the renderer (Default: False).</span>
 <span class="sd">            options (Dict, optional): Used to override default options. Defaults to None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_require_gmsh</span><span class="p">()</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">design</span><span class="o">=</span><span class="n">design</span><span class="p">,</span> <span class="n">initiate</span><span class="o">=</span><span class="n">initiate</span><span class="p">,</span> <span class="n">render_options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_model_name</span> <span class="o">=</span> <span class="s2">&quot;gmsh_model&quot;</span>
 
@@ -2242,7 +2255,7 @@
       
     </aside>
   </div>
-</div><script src="../../../../_static/documentation_options.js?v=2bd037f0"></script>
+</div><script src="../../../../_static/documentation_options.js?v=1c28bd9a"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>

@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>qiskit_metal.renderers.renderer_gmsh.gmsh_utils - Quantum Metal 0.6.1</title>
+        <title>qiskit_metal.renderers.renderer_gmsh.gmsh_utils - Quantum Metal 0.6.2</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
@@ -154,7 +154,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">Quantum Metal 0.6.1</div></a>
+      <a href="../../../../index.html"><div class="brand">Quantum Metal 0.6.2</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -176,7 +176,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
   
   
-  <span class="sidebar-brand-text">Quantum Metal 0.6.1</span>
+  <span class="sidebar-brand-text">Quantum Metal 0.6.2</span>
   
 </a>
 <form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
@@ -688,10 +688,31 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for qiskit_metal.renderers.renderer_gmsh.gmsh_utils</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">gmsh</span>
+
+<span class="c1"># gmsh is an opt-in dependency (``quantum-metal[fem]``). Keep this</span>
+<span class="c1"># module importable on the lite install — the free functions below</span>
+<span class="c1"># that call into ``gmsh.model`` raise via ``_require_gmsh()`` at use</span>
+<span class="c1"># time rather than at ``import qiskit_metal`` time.</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">gmsh</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: no cover — exercised on lite installs</span>
+    <span class="n">gmsh</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_require_gmsh</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raise a clear error if gmsh isn&#39;t installed.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">gmsh</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+            <span class="s2">&quot;renderer_gmsh requires gmsh. Install with: &quot;</span>
+            <span class="s2">&quot;pip install &#39;quantum-metal[fem]&#39;&quot;</span>
+        <span class="p">)</span>
+
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.draw.utility</span><span class="w"> </span><span class="kn">import</span> <span class="n">Vec3D</span>
 
 
@@ -1119,7 +1140,7 @@
       
     </aside>
   </div>
-</div><script src="../../../../_static/documentation_options.js?v=2bd037f0"></script>
+</div><script src="../../../../_static/documentation_options.js?v=1c28bd9a"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>
