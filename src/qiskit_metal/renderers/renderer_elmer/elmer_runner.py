@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from typing import Union, Any
+import glob
 import os
 import subprocess
 import shutil
@@ -47,11 +48,18 @@ def _resolve_elmer_binary(name: str, explicit_path: str | None = None) -> str:
                 )
         return explicit_path
 
-    # Standard Windows install location (Elmer 9.0 default).
+    # Standard Windows install location. ElmerFEM installers create
+    # ``C:\Program Files\Elmer <version>-Release\bin\``. We glob the
+    # version segment so a newer release (e.g. Elmer 10.x when it ships)
+    # is picked up without code changes. Sort descending so the highest
+    # version wins if multiple are installed side by side.
     if platform.system() == "Windows":
-        win_path = f"C:/Program Files/Elmer 9.0-Release/bin/{name}.exe"
-        if os.path.exists(win_path):
-            return win_path
+        candidates = sorted(
+            glob.glob(f"C:/Program Files/Elmer *-Release/bin/{name}.exe"),
+            reverse=True,
+        )
+        if candidates:
+            return candidates[0]
 
     # Look on PATH.
     resolved = shutil.which(name)
@@ -63,6 +71,8 @@ def _resolve_elmer_binary(name: str, explicit_path: str | None = None) -> str:
         f"ElmerFEM binary {name!r} was not found on PATH or at its standard install "
         "location. ElmerFEM is an external solver and must be installed separately — "
         "it does not ship with `pip install \"quantum-metal[fem]\"`.\n\n"
+        "Quantum Metal is tested against Elmer 9.0+; newer releases are expected to "
+        "work since we use only the stable ElmerGrid / ElmerSolver CLI surface.\n\n"
         "Install instructions:\n"
         "  - All platforms: https://www.elmerfem.org/blog/binaries/\n"
         "  - macOS (recommended: build from source for reliability):\n"
