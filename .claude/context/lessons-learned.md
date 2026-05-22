@@ -309,7 +309,12 @@ ends up out of date relative to what users open in JupyterLab (or vice versa).
 distinct reasons — `tutorials/` is the conventional GitHub-browse + JupyterLab
 file-tree location (with space-separated names that don't work in nbsphinx
 URLs), and `docs/tut/` is the Sphinx source tree (hyphenated names that do).
-Until the planned single-folder collapse lands, they MUST be edited together.
+**This is the permanent design, not a stopgap** — the naming constraints are
+mutually exclusive (Sphinx/nbsphinx need hyphenated filenames for clean URL
+resolution; JupyterLab/GitHub-browse/external citations need the human
+space-separated form). No single naming scheme satisfies both, so both
+folders must coexist and be edited together. Do not propose "simplifying"
+by deleting one of them.
 
 **Fix** (after editing one folder): re-sync from a script with per-notebook
 canonical-choice baked in:

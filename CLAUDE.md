@@ -68,8 +68,12 @@ want a different canonical for a notebook. Then re-run the check:
 uv run scripts/check_tutorials_sync.py
 ```
 
-The long-term goal is to collapse to a single folder, but until then
-both must move together.
+**Why two folders, not one:** the naming constraints are mutually exclusive
+— Sphinx + nbsphinx need hyphenated filenames for clean URLs and link
+resolution, JupyterLab + GitHub-browse + external citations need the
+human-readable space-separated form. There is no single naming scheme
+that satisfies both. Drift is the failure mode; CI prevents it. Do not
+"simplify" by deleting one folder.
 
 ## Hard constraints — do not touch without explicit human approval
 
