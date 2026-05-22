@@ -174,7 +174,33 @@ extensions = [
     "nbsphinx",
     "qiskit_sphinx_theme",
     "sphinx_design",
+    # JupyterLite — builds an in-browser Jupyter runtime into the docs
+    # site so visitors can run any tutorial without installing anything.
+    # See the ``jupyterlite_*`` config block further down for content
+    # selection and kernel choice.
+    "jupyterlite_sphinx",
 ]
+
+# --- JupyterLite ----------------------------------------------------------
+# Ship a JupyterLite instance under ``/lite/`` on the docs site with the
+# tutorial notebooks pre-loaded. nbsphinx pages automatically gain a
+# "Try it live" / "Launch in JupyterLite" button.
+#
+# Trade-off: build time +1-2 min, output size +~20 MB. Worth it — every
+# tutorial becomes a zero-install try-it experience for newcomers, which
+# is the single biggest adoption lever for a library that already has a
+# lite-by-default install path.
+#
+# The Pyodide kernel runs Python in WebAssembly. Quantum Metal's lite
+# install (no Qt / Ansys / gmsh) works in Pyodide; the GUI / Ansys / FEM
+# extras don't, so we only surface the lite-compatible tutorials by
+# default (Section 1 + most of Section 2).
+jupyterlite_contents = ["tutorials/"]
+jupyterlite_dir = "."
+jupyterlite_silence = True  # quiet build-time chatter
+# Each tutorial notebook gets a "Launch in JupyterLite" link in its header
+# (default behavior — no extra config needed since contents include
+# the ``tutorials/`` tree).
 
 # Intersphinx — resolve cross-references to external project docs so that
 # type annotations like ``logging.Logger`` and ``matplotlib.figure.Figure``

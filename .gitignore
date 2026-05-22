@@ -138,3 +138,7 @@ docs/qiskit_metal.*.rst
 # Elmer FEM simulation outputs (from running tutorial notebooks)
 *.msh
 **/simdata/
+
+# JupyterLite build artifacts (docs/conf.py adds jupyterlite_sphinx)
+docs/.jupyterlite.doit.db
+docs/_build/
