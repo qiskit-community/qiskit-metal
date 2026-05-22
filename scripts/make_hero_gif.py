@@ -30,15 +30,19 @@ from PIL import Image
 
 import qiskit_metal as qm
 from qiskit_metal import Dict, designs
+from qiskit_metal.qlibrary.qubits.transmon_cross import TransmonCross
 from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 from qiskit_metal.qlibrary.terminations.launchpad_wb import LaunchpadWirebond
 from qiskit_metal.qlibrary.tlines.meandered import RouteMeander
+from qiskit_metal.qlibrary.tlines.pathfinder import RoutePathfinder
 
 
 # --- Configuration ---
 OUT_PATH = Path("docs/_static/hero.gif")
-FIGSIZE_INCH = (7.2, 5.4)
-DPI = 100  # → 720×540 PNG frames (smaller than v1's 800×600)
+# Square figure — the chip is square (axes ratio 1:1), so a square frame
+# avoids the wide white bars on the sides that 16:9 / 4:3 figures leave.
+FIGSIZE_INCH = (6.4, 6.4)
+DPI = 100  # → 640×640 PNG frames
 LOOP = 0  # 0 = infinite loop
 # Padding factor applied to the final-design bbox to compute axis limits.
 # Set once, used for every frame, so the chip never jumps or autoscales
@@ -112,31 +116,31 @@ def _make_design():
     return design
 
 
-# Standard TransmonPocket geometry — uses library defaults (pad 455×90 um,
-# pocket 650×650 um) so the shape is the canonical "thin pads + square
-# pocket" transmon every superconducting-qubit reader recognises. Only the
-# connection_pads dict is customised (4 pins at the corners for ring routing).
-_QUBIT_OPTS = Dict(
+# --- Qubit definitions ---
+# 4 TransmonPockets on the ring (uniform type so the CPW pin geometry stays
+# consistent — TransmonPocket has corner pins, TransmonCross has cardinal
+# pins, and mixing them broke the routing). The qubit-type VARIETY comes
+# instead from a single TransmonCross placed at the centre as a separate
+# "qlibrary showcase" component, added in its own animation frame.
+
+_POCKET_PADS = Dict(
     connection_pads=Dict(
-        a=Dict(loc_W=+1, loc_H=+1, pad_width="120um", cpw_extend="80um"),
-        b=Dict(loc_W=-1, loc_H=+1, pad_width="120um", cpw_extend="80um"),
-        c=Dict(loc_W=-1, loc_H=-1, pad_width="120um", cpw_extend="80um"),
-        d=Dict(loc_W=+1, loc_H=-1, pad_width="120um", cpw_extend="80um"),
+        a=Dict(loc_W=+1, loc_H=+1, pad_width="120um", cpw_extend="80um"),  # NE corner
+        b=Dict(loc_W=-1, loc_H=+1, pad_width="120um", cpw_extend="80um"),  # NW
+        c=Dict(loc_W=-1, loc_H=-1, pad_width="120um", cpw_extend="80um"),  # SW
+        d=Dict(loc_W=+1, loc_H=-1, pad_width="120um", cpw_extend="80um"),  # SE
     ),
 )
 
-# Tighter qubit ring: ±1.0 mm (was ±1.5) — pulls components closer together
-# so the whole chip fits in a more zoomed-in view.
-Q_POS = {
-    "Q1": ("+1.0mm", "+1.0mm"),
-    "Q2": ("-1.0mm", "+1.0mm"),
-    "Q3": ("-1.0mm", "-1.0mm"),
-    "Q4": ("+1.0mm", "-1.0mm"),
+# Q_SPEC: name → (pos_x, pos_y) — all pockets
+Q_SPEC = {
+    "Q1": ("+1.1mm", "+1.1mm"),
+    "Q2": ("-1.1mm", "+1.1mm"),
+    "Q3": ("-1.1mm", "-1.1mm"),
+    "Q4": ("+1.1mm", "-1.1mm"),
 }
 
-# Ring routing: 4 CPW meanders connecting adjacent qubits (Q1↔Q2 top edge,
-# Q2↔Q3 left, Q3↔Q4 bottom, Q4↔Q1 right). The order is also the build order
-# (each frame adds one CPW).
+# Ring routing: 4 CPW meanders connecting adjacent qubits.
 RING_CPWS = [
     ("cpw_12", "Q1", "b", "Q2", "a"),  # top edge
     ("cpw_23", "Q2", "c", "Q3", "b"),  # left edge
@@ -144,33 +148,50 @@ RING_CPWS = [
     ("cpw_41", "Q4", "a", "Q1", "d"),  # right edge
 ]
 
-# Launchpads at corners (±1.9, ±1.9) — closer to qubits than v1's ±2.8 — and
-# connected to each qubit's outward pin via a short CPW. Direction matters:
-# the launchpad orientation must face inward toward its qubit.
+# Launchpads at corners (±2.0, ±2.0) — close to qubits, connected via short
+# CPW feed lines to each qubit's outward (free) pin. Pin name "N" on Q1
+# (NE-facing pocket pin) → P1 at the NE corner pointing back at it, etc.
+# Direction matters: launchpad orientation must face inward toward its qubit.
 LAUNCHPADS = [
     # (name, x, y, orient°, connect_to_qubit, connect_to_pin)
-    ("P1", "+1.9mm", "+1.9mm", "225", "Q1", "a"),  # NE
-    ("P2", "-1.9mm", "+1.9mm", "315", "Q2", "b"),  # NW
-    ("P3", "-1.9mm", "-1.9mm",  "45", "Q3", "c"),  # SW
-    ("P4", "+1.9mm", "-1.9mm", "135", "Q4", "d"),  # SE
+    ("P1", "+2.0mm", "+2.0mm", "225", "Q1", "a"),  # NE
+    ("P2", "-2.0mm", "+2.0mm", "315", "Q2", "b"),  # NW
+    ("P3", "-2.0mm", "-2.0mm",  "45", "Q3", "c"),  # SW
+    ("P4", "+2.0mm", "-2.0mm", "135", "Q4", "d"),  # SE
 ]
 
 
 def _qubit_factory(name):
-    """Returns a function that adds qubit `name` and rebuilds."""
+    """Returns a function that adds a TransmonPocket `name` and rebuilds."""
+    x, y = Q_SPEC[name]
+
     def add(design):
-        x, y = Q_POS[name]
-        TransmonPocket(design, name, options=Dict(pos_x=x, pos_y=y, **_QUBIT_OPTS))
+        TransmonPocket(design, name, options=Dict(pos_x=x, pos_y=y, **_POCKET_PADS))
         design.rebuild()
     return add
+
+
+def _add_center_cross_showcase(design):
+    """Add a single TransmonCross at the centre — unconnected. Used in a
+    dedicated frame after the rest of the chip is built, to showcase a
+    second qubit-type without disturbing the ring's pocket-based routing.
+    """
+    TransmonCross(design, "Qx", options=Dict(
+        pos_x="0mm", pos_y="0mm",
+        cross_length="180um", cross_gap="25um", cross_width="20um",
+    ))
+    design.rebuild()
 
 
 def _cpw_factory(cpw_spec):
     """Returns a function that adds one CPW meander and rebuilds."""
     name, qa, pa, qb, pb = cpw_spec
+    # Kinks at the meander-to-straight transitions come from too-short
+    # straight leads + too-tight fillet for the chosen total_length. Giving
+    # the lead 180um and the fillet 100um produces visibly smooth arcs.
     cpw_opts = Dict(
-        lead=Dict(start_straight="60um", end_straight="60um"),
-        fillet="60 um", total_length="2 mm",
+        lead=Dict(start_straight="180um", end_straight="180um"),
+        fillet="100 um", total_length="2.6 mm",
         trace_width="10 um", trace_gap="6 um",
     )
 
@@ -191,9 +212,12 @@ def _cpw_factory(cpw_spec):
 
 def _add_launchpads_and_connections(design):
     """All 4 launchpads + their connecting CPWs in one shot (last build frame)."""
+    # Use RoutePathfinder (straight + fillet) rather than RouteMeander —
+    # the launchpad-to-qubit feeds are short and don't need wiggle. This
+    # also removes the spurious meander-segment kinks at corners.
     feed_opts = Dict(
-        lead=Dict(start_straight="40um", end_straight="40um"),
-        fillet="40 um", total_length="0.6 mm",
+        lead=Dict(start_straight="60um", end_straight="60um"),
+        fillet="80 um",
         trace_width="10 um", trace_gap="6 um",
     )
     for name, x, y, orient, q, pin in LAUNCHPADS:
@@ -202,7 +226,7 @@ def _add_launchpads_and_connections(design):
             pad_width="120um", pad_height="120um",
             pad_gap="80um", lead_length="20um",
         ))
-        RouteMeander(
+        RoutePathfinder(
             design, f"feed_{name}",
             options=Dict(
                 pin_inputs=Dict(
@@ -217,11 +241,12 @@ def _add_launchpads_and_connections(design):
 
 def _populate_full_design(design):
     """Apply every stage so the FINAL design exists. Used for centering compute."""
-    for name in Q_POS:
+    for name in Q_SPEC:
         _qubit_factory(name)(design)
     for spec in RING_CPWS:
         _cpw_factory(spec)(design)
     _add_launchpads_and_connections(design)
+    _add_center_cross_showcase(design)
 
 
 def build_storyboard():
@@ -235,8 +260,8 @@ def build_storyboard():
         "Step 2 — Add qubit Q3",
         "Step 2 — All 4 transmons placed",
     ]
-    for i, name in enumerate(Q_POS):
-        dur = 500 if i == len(Q_POS) - 1 else 320  # slight hold on the last
+    for i, name in enumerate(Q_SPEC):
+        dur = 500 if i == len(Q_SPEC) - 1 else 320  # slight hold on the last
         stages.append((_qubit_factory(name), f"0{i+1}_{name}.png", qubit_titles[i], dur))
     # Then CPWs one by one
     cpw_titles = [
@@ -250,10 +275,14 @@ def build_storyboard():
         stages.append((_cpw_factory(spec), f"0{i+5}_{spec[0]}.png", cpw_titles[i], dur))
     # Launchpads + their connecting CPWs in one shot
     stages.append((_add_launchpads_and_connections, "09_launchpads.png",
-                   "Step 4 — Launchpads + feed lines", 700))
+                   "Step 4 — Launchpads + feed lines", 600))
+    # Showcase a second qubit type (TransmonCross) appearing at the centre —
+    # demonstrates the qlibrary has more than one transmon kind.
+    stages.append((_add_center_cross_showcase, "10_cross.png",
+                   "Or pick from 13+ qubit types  (TransmonCross shown)", 800))
     # Final long hold so viewers register the result
-    stages.append((None, "10_final.png",
-                   "qm.view(design)   →   chip ready for fab/sim", 1700))
+    stages.append((None, "11_final.png",
+                   "qm.view(design)   →   chip ready for fab/sim", 1600))
     return stages
 
 
