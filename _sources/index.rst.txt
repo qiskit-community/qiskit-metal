@@ -267,6 +267,7 @@ The goal of Qiskit Metal is to allow for easy quantum hardware modeling with red
     About<self>
     Installing Qiskit Metal<installation>
     Using Quantum Metal without the Qt GUI<headless-usage>
+    Migrating to v0.7.0 (lite install)<migration-to-v0.7.0>
 
 .. toctree::
     :maxdepth: 2
