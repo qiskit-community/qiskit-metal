@@ -32,6 +32,8 @@ Nothing decided. Just an idea we've been kicking around and wanted to think thro
 
 [`SQDMetal/PALACE/`](https://github.com/sqdlab/SQDMetal/tree/main/SQDMetal/PALACE) already covers all four of those services end-to-end, accepts Quantum Metal `QDesign` objects directly, and is more actively maintained than Quantum Metal is right now. The work is real and the math is already there — it would feel silly to reimplement it in parallel when the community win is to coordinate (in some form, or none at all if that's what fits best).
 
+(For full honesty: we've also seen [pypalace](https://pypalace.readthedocs.io/) on the radar — Northwestern's newer Python toolkit for AWS Palace that also supports gmsh export from Quantum Metal layouts. We don't know how (or if) it intersects with your work and we'd value your read. We're reaching out to SQDMetal first because of the maturity and `QDesign`-direct integration, not as an exclusive offer.)
+
 ### One thing we noticed while reading around
 
 Currently SQDMetal's `pyproject.toml` has three properties that make "Quantum Metal pip-depends on SQDMetal" structurally tricky:

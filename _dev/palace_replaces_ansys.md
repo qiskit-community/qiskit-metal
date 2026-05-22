@@ -85,16 +85,30 @@ designs that are well-understood in both — not just one.
 
 ---
 
-## 3. Prior art and allies — SQDMetal
+## 3. Prior art and allies — SQDMetal (and pypalace)
 
-[sqdlab/SQDMetal](https://github.com/sqdlab/SQDMetal) is community-aligned
-(self-described as "an extension of Qiskit Metal", Apache 2.0, accepts
-`QDesign` objects directly). More active than Metal right now: ~30
-commits in 6 months, 6+ contributors, MRU 2026-05-20. **They are friends,
-not competitors.**
+There are **two** existing Python wrappers for AWS Palace that already
+integrate with Quantum Metal:
 
-Their PALACE module covers all four services above end-to-end, including
-EPR-flavoured analysis on Palace outputs.
+1. **[sqdlab/SQDMetal](https://github.com/sqdlab/SQDMetal)** (SQDLab @ UQ)
+   — community-aligned (self-described as "an extension of Qiskit Metal",
+   Apache 2.0, accepts `QDesign` objects directly). More active than
+   Metal right now: ~30 commits in 6 months, 6+ contributors, MRU
+   2026-05-20. Their PALACE module covers all four services end-to-end,
+   including EPR-flavoured analysis on Palace outputs.
+   **They are friends, not competitors.**
+2. **[pypalace](https://pypalace.readthedocs.io/)** (Firas Abouzahr @
+   Northwestern) — newer Python toolkit for Palace, supports gmsh export
+   from Qiskit Metal layouts, includes LOM analysis utilities. Smaller /
+   more recent than SQDMetal; maintenance cadence and exact API surface
+   less established.
+
+We prioritize the SQDMetal conversation first because their work is more
+mature and `QDesign`-direct, but we should **not** silently bless one
+project as the canonical Palace wrapper. Both deserve to be referenced
+in our ecosystem docs, and the [SQDMetal outreach draft](./sqdmetal_coordination_issue_draft.md)
+explicitly acknowledges pypalace exists. See also the broader ecosystem
+map at [`_dev/ecosystem_landscape.md`](./ecosystem_landscape.md).
 
 **Honest caveats on the prior-art claim:**
 

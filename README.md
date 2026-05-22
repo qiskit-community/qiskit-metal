@@ -159,8 +159,23 @@ covering the full API) or the
 
 ## 🌐 Ecosystem
 
-Quantum Metal is one of the core tools in a growing community ecosystem for
-superconducting quantum device design and education:
+Quantum Metal sits at the **chip-design** layer of a growing open-source
+community for superconducting quantum device design. Other projects plug in
+at adjacent layers — design-discovery databases, simulation wrappers,
+mesh generators, quantization tools. **Full map and integration status:
+[Ecosystem](https://qiskit-community.github.io/qiskit-metal/ecosystem.html)**.
+
+Highlights of who's in the picture:
+
+- **Design discovery**: [SQuADDS](https://github.com/LFL-Lab/SQuADDS) (LFL-Lab @ USC) — validated qubit-design database + parameter interpolation, uses Quantum Metal.
+- **Simulation wrappers** for AWS Palace:
+  [SQDMetal](https://github.com/sqdlab/SQDMetal) (SQDLab @ UQ),
+  [pypalace](https://pypalace.readthedocs.io/) (Northwestern). Both accept Quantum Metal `QDesign` objects.
+- **Solver**: [AWS Palace](https://github.com/awslabs/palace) (AWS Center for Quantum Computing) — Apache 2.0 open-source Maxwell solver.
+- **Quantization**: [pyEPR](https://github.com/zlatko-minev/pyEPR), [scqubits](https://github.com/scqubits/scqubits), [QuTiP](https://github.com/qutip/qutip) — all integrated.
+- **Other design tools**: [KQCircuits](https://github.com/iqm-finland/KQCircuits) (IQM, GDS-centric), [gdsfactory](https://github.com/gdsfactory/gdsfactory) (broader scope).
+
+Community organization & events:
 
 - **[Quantum Device Workshop (QDW)](https://qdw-ucla.squarespace.com/)** — annual
   workshop at UCLA/USC with invited leaders in the field. Recent speakers:
@@ -168,9 +183,10 @@ superconducting quantum device design and education:
   [Video recordings](https://www.youtube.com/@uclaqcsa) ·
   [Sign for 2026](https://qdw-ucla.squarespace.com/qdw2026).
 - **[Quantum Device Consortium (QDC)](https://qdc-qcsa.vercel.app)** — the
-  community organization stewarding Quantum Metal alongside companion tools
-  (SQUADDS, SQDMetal, scqubits, pyEPR, and others).
+  community organization stewarding Quantum Metal alongside the tools above.
   [Join the QDC Discord](https://discord.gg/kaZ3UFuq).
+
+Maintain a project we should list? [Open an issue](https://github.com/qiskit-community/qiskit-metal/issues/new/choose) or ping us on Discord.
 
 ---
 

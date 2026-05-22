@@ -185,6 +185,7 @@ in a simple, open, community-driven framework.
     :hidden:
 
     Quantum Metal Workflow<workflow>
+    Ecosystem<ecosystem>
     Frequently Asked Questions<faq>
 
 .. toctree::
