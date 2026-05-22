@@ -186,13 +186,27 @@ def _add_center_cross_showcase(design):
 def _cpw_factory(cpw_spec):
     """Returns a function that adds one CPW meander and rebuilds."""
     name, qa, pa, qb, pb = cpw_spec
-    # Kinks at the meander-to-straight transitions come from too-short
-    # straight leads + too-tight fillet for the chosen total_length. Giving
-    # the lead 180um and the fillet 100um produces visibly smooth arcs.
+    # Meander geometry asymmetry between horizontal vs vertical routes was
+    # caused by:
+    #   1. ``snap=true`` (default) — rounds the wiggle count to integer
+    #      multiples, and the rounding outcome differs by orientation.
+    #   2. ``meander.spacing=200um`` (default) was too tight for fillet=100,
+    #      forcing sharp corners where the fillet couldn't fit.
+    #   3. ``total_length=2.6mm`` left enough excess length for multiple
+    #      wiggles, amplifying the per-orientation rounding difference.
+    # Fix: wider meander spacing, snap off, and shorter total_length so
+    # each route has only 1–2 visible wiggles.
     cpw_opts = Dict(
         lead=Dict(start_straight="180um", end_straight="180um"),
-        fillet="100 um", total_length="2.6 mm",
+        # Keep total_length JUST a bit longer than the straight-line distance
+        # (~1.55 mm pin-to-pin) so each route gets only one gentle hump
+        # instead of multiple short wiggles. The orientation-dependent snap
+        # rounding only causes visible asymmetry when the meander has >1
+        # wiggle per side; one-hump routes look symmetric.
+        fillet="120 um", total_length="2.4 mm",
         trace_width="10 um", trace_gap="6 um",
+        meander=Dict(spacing="450um", asymmetry="0um"),
+        snap="false",
     )
 
     def add(design):
