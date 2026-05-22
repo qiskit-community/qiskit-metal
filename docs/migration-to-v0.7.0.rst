@@ -3,14 +3,12 @@
 Migrating to v0.7.0 (lite-by-default install)
 ==============================================
 
-.. attention::
+.. note::
 
-    **v0.7.0 is not yet released.** This document describes the
-    migration path so you can prepare. Until v0.7.0 lands,
-    ``pip install quantum-metal`` keeps the v0.6.x behaviour of
-    pulling every dependency. See the changelog and
-    `ROADMAP <https://github.com/qiskit-community/qiskit-metal/blob/main/ROADMAP.md>`_
-    for status.
+    **v0.7.0 is released.** ``pip install quantum-metal`` now installs
+    the lite-by-default configuration described below. See the
+    `changelog <https://github.com/qiskit-community/qiskit-metal/blob/main/changelog.md>`_
+    for the full list of changes.
 
 .. contents::
    :local:

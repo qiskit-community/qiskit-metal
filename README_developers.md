@@ -80,7 +80,7 @@ To do that, you will need to `git clone` this repository's main branch following
 
 1. Open any command line shell that has been configured with git and execute the following command:
 ```sh
-git clone https://github.com/Qiskit/qiskit-metal.git
+git clone https://github.com/qiskit-community/qiskit-metal.git
 ```
 2. Alternatively, you can download and use the user interface [GitHub Desktop GUI](https://desktop.github.com/) and refer to these [notes](https://help.github.com/en/desktop/contributing-to-projects/cloning-a-repository-from-github-to-github-desktop).
 
@@ -180,7 +180,7 @@ where `<virtual_env_path/name>` is the name of your new Python virtual environme
 
 Here are some things to consider when setting up a development environment:
 * Remember to type the period (".") at the end of the pip install command.
-* If using a virtual environment, make sure `pip` is up to date. In initial environment testing, PySide2 is installable with only the latest version of `pip`.
+* If using a virtual environment, make sure `pip` is up to date. PySide6 (used by the optional `[gui]` extra) requires a recent `pip`.
 * In some setups, you might need to add the qiskit-metal folder path to your PATH variable
 * Library errors when activating conda environments, or initializing jupyter notebook/lab, might indicate a conflict between python libraries in the base and sub environments. Go ahead and manually delete the library from the base environment `site-packages` folder, shown in the error message. You might need to reinstall them in the sub environment, or create a new one.
 * If Jupyter notebook has trouble finding a dll for a package that works in the new environment outside of Jupyter, then try opening Jupyter notebook from the new environment instead of from `base`
@@ -189,7 +189,7 @@ Here are some things to consider when setting up a development environment:
 
 If you want to use the recently added open-source renderers for [Gmsh](./qiskit_metal/renderers/renderer_gmsh) and [ElmerFEM](./qiskit_metal/renderers/renderer_elmer) for simulation of your design, please make sure that both of them have been installed successfully in your system before running Qiskit Metal. On Windows, Linux, and MacOS (with x86_64 architecture CPUs), Gmsh will be installed automatically using the `environment.yml` file during the conda installation step above. For more detailed steps to install ElmerFEM, please refer to [this](./README_Gmsh_Elmer.md) document.
 
-**NOTE:** We would like to give a disclaimer for users on Apple silicon Macs (M1 and M2-series). Currently, Qiskit Metal uses PySide2 which is not natively supported on the ARM architecture. This will lead to error in instantiating the `MetalGUI` as of now. However, if you still want to use Qiskit Metal without the GUI, the process for installing Gmsh software is a bit different and can be found in [this](./README_Gmsh_Elmer.md) document.
+**NOTE on Apple Silicon (M1/M2/M3/M4):** As of v0.5+, Quantum Metal uses **PySide6** (Qt 6), which is native on Apple Silicon — `MetalGUI` works out of the box with `pip install "quantum-metal[gui]"`. For the headless lite install (default in v0.7.0+) you don't need PySide6 at all; use `qm.view(design)` instead. See [`docs/headless-usage.rst`](./docs/headless-usage.rst). Gmsh on Apple Silicon may still need extra setup — see [`README_Gmsh_Elmer.md`](./README_Gmsh_Elmer.md).
 
 # Other Common Issues
 

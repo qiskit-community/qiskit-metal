@@ -28,7 +28,7 @@ $ brew install gmsh
 ```
 - Restart your terminal, activate the environment, and check if you're able to do `import gmsh` in a python REPL or a scratch jupyter notebook. If the import is successful, then congratulations, you've installed Gmsh successfully!
 
-- **Note:** If the above steps still gives error in importing gmsh using `import gmsh` in your python environment, refer [this issue](https://gitlab.onelab.info/gmsh/gmsh/-/issues/1705), on the Gmsh GitLab repository, for more information. Also please feel free to contact us through the Qiskit Slack workspace on the `#metal` channel.
+- **Note:** If the above steps still gives error in importing gmsh using `import gmsh` in your python environment, refer [this issue](https://gitlab.onelab.info/gmsh/gmsh/-/issues/1705), on the Gmsh GitLab repository, for more information. Also please feel free to reach out on the [Quantum Metal Discord](https://discord.gg/kaZ3UFuq).
 
 ## ElmerFEM
 - Congratulations on making it until here! Now we'll see how to install ElmerFEM.
@@ -36,7 +36,7 @@ $ brew install gmsh
 - ElmerFEM doesn't come as a python library and has different installation options on your operating system.
 - Please follow the official guide provided by Elmer Foundation CSC, [here](https://github.com/ElmerCSC/elmerfem#elmer-fem)
 
-**NOTE:** For Windows, please consider installing `ElmerFEM-gui-mpi-Windows-AMD64` and not `ElmerFEM-gui-nompi-Windows-AMD64` as it may not let ElmerGrid run on the input mesh from Gmsh. Refer [this issue](https://github.com/Qiskit/qiskit-metal/issues/933).
+**NOTE:** For Windows, please consider installing `ElmerFEM-gui-mpi-Windows-AMD64` and not `ElmerFEM-gui-nompi-Windows-AMD64` as it may not let ElmerGrid run on the input mesh from Gmsh. Refer [this issue](https://github.com/qiskit-community/qiskit-metal/issues/933).
 
 **NOTE:** For MacOS, please consider building the software from source rather than using Homebrew on Mac, as the homebrew install isn't very consistent and may cause issues in the future.
 

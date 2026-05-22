@@ -1,14 +1,21 @@
 # Quantum Metal (formerly: Qiskit Metal)
-[![License](https://img.shields.io/github/license/Qiskit/qiskit-metal.svg?style=popout-square)](https://opensource.org/licenses/Apache-2.0)<!--- long-description-skip-begin -->[![Release](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)<!--- long-description-skip-begin -->[![PyPI](https://img.shields.io/pypi/v/quantum-metal.svg?style=popout-square)](https://pypi.org/project/quantum-metal/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4618153.svg)](https://doi.org/10.5281/zenodo.4618153) [Discord](https://discord.gg/kaZ3UFuq)
 
->![Welcome to Quantum Metal!](https://raw.githubusercontent.com/Qiskit/qiskit-metal/main/docs/images/zkm_banner.png 'Welcome to Quantum Metal')
-> Quantum Metal is an open-source framework for engineers and scientists to design superconducting quantum devices with ease.
+[![License](https://img.shields.io/github/license/qiskit-community/qiskit-metal.svg?style=popout-square)](https://opensource.org/licenses/Apache-2.0)
+[![Release](https://img.shields.io/github/release/qiskit-community/qiskit-metal.svg?style=popout-square)](https://github.com/qiskit-community/qiskit-metal/releases)
+[![PyPI](https://img.shields.io/pypi/v/quantum-metal.svg?style=popout-square)](https://pypi.org/project/quantum-metal/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4618153.svg)](https://doi.org/10.5281/zenodo.4618153)
+[![Discord](https://img.shields.io/badge/Discord-Join_Community-5865F2?logo=discord&logoColor=white&style=popout-square)](https://discord.gg/kaZ3UFuq)
 
-> **Where we're heading:** see [ROADMAP.md](./ROADMAP.md) for the
-> lite-by-default install (v0.7.0, shipped), the AI-orchestration
-> profile, the open FEM stack (gmsh + Elmer + AWS Palace), and the
-> upcoming import-path rename.
+> ![Welcome to Quantum Metal!](https://raw.githubusercontent.com/qiskit-community/qiskit-metal/main/docs/images/zkm_banner.png 'Welcome to Quantum Metal')
+>
+> **Quantum Metal** is an open-source framework for engineers and scientists to design superconducting quantum devices with ease.
 
+📍 **Where we're heading:** see [ROADMAP.md](./ROADMAP.md) for the
+lite-by-default install (v0.7.0, shipped), the AI-orchestration profile,
+the open FEM stack (gmsh + Elmer + AWS Palace), and the upcoming
+import-path rename.
+
+---
 
 ## Install
 
@@ -46,437 +53,173 @@ Extras compose: `pip install "quantum-metal[gui,ansys]"` works.
 
 </details>
 
-Full migration recipes (per persona) live in
+Source install, conda, troubleshooting, and per-persona migration recipes:
+[`docs/installation.rst`](./docs/installation.rst) ·
 [`docs/migration-to-v0.7.0.rst`](./docs/migration-to-v0.7.0.rst).
 
-
-## ⚠️ Transition notices
-
-**v0.5 → v0.7 (in progress, mostly complete).** The project is
-mid-rebrand from Qiskit Metal to **Quantum Metal**:
-
-- ✅ **New project name**: Quantum Metal
-- ✅ **PyPI package**: `quantum-metal` (the new canonical wheel; the
-  old `qiskit-metal` package stays archived at its pre-0.5 state)
-- ✅ **GitHub continuity**: same repo, issues, stars, forks, history
-- 🔜 **Repository rename to `quantum-metal`**: scheduled — will keep
-  redirects so existing clones / links continue to work
-- 🔜 **Python import path rename** (`qiskit_metal` → `quantum_metal`):
-  scheduled for a future major release (**target v0.8 or v1.0**).
-  Plan to update your imports ahead of that release. A
-  `FutureWarning` fires on `import qiskit_metal` advertising this.
-
-Suppress the rename warning with
-`QISKIT_METAL_SUPPRESS_RENAME_WARNING=1` until you're ready to
-migrate.
-
-
-## 🌐 Part of the Quantum Device Design Ecosystem
-
-Quantum Metal has graduated from being an IBM maintained project and is now one of the core tools in a growing community ecosystem for superconducting quantum device design and education, including:
-
-- **Quantum Device Workspace (QDW)** – https://qdw-ucla.squarespace.com/
-  Hosted annually at UCLA/USC with invited leaders in the field.
-  Recent speakers include: *Michel Devoret, Andreas Wallraff, Zlatko Minev, Eli Levenson-Falk.*
-  [Video recordings](https://www.youtube.com/@uclaqcsa)
-
-  [Sign for 2026](https://qdw-ucla.squarespace.com/qdw2026) to meet the community, learn from experts, and participate directly.*
-
-- **Quantum Device Consortium (QDC)** — an upcoming community organization that will maintain and evolve Quantum Metal as part of a shared ecosystem of tools (including SQUADDS, SQDMetal, scqubits, pyEPR, and many others).
-  *([Website and governance page](https://qdc-qcsa.vercel.app))* [Discord Channel here](https://discord.gg/kaZ3UFuq)
-
-
-## 🌱 From IBM to a Community-Maintained Project
-
-Originally developed at IBM, originated by **Dr. Zlatko K. Minev**, Qiskit Metal has, over the last two years, naturally transitioned into a **community-driven project** supported by multiple universities, research groups, labs, and individual contributors.
-
-This v0.5 release marks the formal graduation into that next phase of the project’s life.
-
-Development continues through the **QDC**, the community, and active maintainers, working in close collaboration with Zlatko Minev and contributors across QDW/QDC who are shaping this next chapter.
+CI runs on **Python 3.10 / 3.11 / 3.12** across Linux, macOS, and Windows.
 
 ---
 
-## 🙏 BIG THANK YOU to Community Contributors (PR #1002)
+## Quick Start
 
-This release is the result of a substantial collective effort.
-Our deepest thanks go to:
-
-**Sadman Ahmed Shanto**, **Abhishek Chakraborty**, **PositroniumJS**, **SamWolski**,
-**Nicolas Dirnegger**, **Eli Levenson-Falk**, and **Murat Can Sarıhan**
-
-for their extensive testing, debugging, patching, platform validation, and contributions to the massive PySide6 transition in PR #1002.
-
-We are grateful to all users, contributors, and maintainers who continue to move the project forward.
-
-
-
-<!-- ## Installation
-If you are interested in customizing your experience, or if you are unable to install qiskit-metal using the `pip install` instructions below, consider installing directly the source code, following the instructions in the [documentation](https://qiskit-community.github.io/qiskit-metal/installation.html) and/or the [installation instructions for developers](https://github.com/Qiskit/qiskit-metal/blob/main/README_Developers.md).
-
-For normal use, please continue reading.
-
-### The Qiskit Metal deployed package
-You can install Qiskit Metal via the pip tool (a python package manager).
-```bash
-pip install qiskit-metal
-```
-PIP will handle most of the dependencies automatically and you will always install the latest (and well-tested) version of the package.
-
-Some of the dependencies, namely pyside2 and geopandas, might require manual installation, depending on your specific system compatibility. If you encounter installation or execution errors, please refer first to the [FAQ](https://qiskit-community.github.io/qiskit-metal/faq.html).
-
-We recommend to install qiskit-metal in a conda environment or venv, to prevent version conflicts with pre-existing package versions.
-
-### Jupyter Notebook
-At this time, we recommend using Jupyter notebook/lab to be able to access all the Qiskit Metal features. Jupyter is not installed with the default dependencies, to accommodate those users intending to utilize a centralized or customized installation.
-
-If you require a fresh installation, please refer to either [anaconda.org](https://anaconda.org/) or [jupyter.org](https://jupyter.org/install).
-
-Unless you installed the entire `jupyter` package in your current environment, do not forget to create the appropriate kernel to make the environment (thus qiskit-metal) available to jupyter (instructions in the [FAQ](https://qiskit-community.github.io/qiskit-metal/faq.html)) -->
-
-## Installation
-
-During the transition to **Quantum Metal**, the package is still published on PyPI under the legacy name `qiskit-metal` until the import path is updated in a follow-up release. The instructions below ensure users can install the new **v0.5** release while keeping compatibility.
-
-If you prefer installing from source or contributing, please follow the developer installation guide in the [documentation](https://qiskit-community.github.io/qiskit-metal/installation.html) and/or the [developer README](https://github.com/Qiskit/qiskit-metal/blob/main/README_Developers.md).
-
-### Installing the Current Release (v0.5)
-
-Quantum Metal is now available on PyPI:  
-`pip install quantum-metal`  
-Project page: https://pypi.org/project/quantum-metal/
-
-If you prefer installing from source, clone and install locally (steps below). Continuous integration runs on **Python 3.10, 3.11 and 3.12** across Linux (Ubuntu 24.04), macOS 15, and Windows, plus separate jobs for lint and docs. Sticking to those versions mirrors the CI-tested setup; on Ubuntu you may need extra system libs for Gmsh (see CI script).
-
-> **Key notes to keep in mind:**
->
-> * Python **3.10/3.11/3.12** mirror the CI matrix.
-> * macOS ARM users should avoid Python 3.12+ to prevent C/C++ toolchain errors.
-> * `uv` is the **preferred and fastest** method and avoids most scientific‑stack headaches.
-
-### Preferred: `uv` (fast, modern, reliable)
-First install `uv`, then clone the repository, use Python 3.11, set up the virtual environment, then install requirements and Quantum Metal.
-
-- **macOS / Linux (bash):**
-  ```bash
-  # Install uv on linux/macOS
-  curl -LsSf https://astral.sh/uv/install.sh | sh
-  # Clone the repository
-  git clone https://github.com/qiskit-community/qiskit-metal.git quantum-metal
-  # Change to the repository directory
-  cd quantum-metal
-  # Create a new virtual environment
-  uv venv --python 3.11  # could also be 3.10 or 3.12
-  # Install the package in editable mode
-  uv pip install -e .
-  # Activate the virtual environment
-  source .venv/bin/activate
-  ```
-- **Windows (PowerShell):**
-  ```powershell
-  # install uv on Windows 
-  iwr https://astral.sh/uv/install.ps1 -UseBasicParsing | iex
-  # Clone the repository
-  git clone https://github.com/qiskit-community/qiskit-metal.git quantum-metal
-  # Change to the repository directory
-  cd quantum-metal
-  # Create a new virtual environment
-  uv venv --python 3.11  # could also be 3.10 or 3.12
-  # Install the package in editable mode
-  uv pip install -e .
-  # Activate the virtual environment
-  .\.venv\Scripts\Activate.ps1
-  ```
-On Ubuntu you may need system packages for Gmsh/Qt (see CI: `libglu1-mesa`, `libegl1-mesa-dev`), and on Windows/macOS ensure build tools/CLT are present if you add native extensions.
-
-### Option 2: Conda (best for binary-heavy scientific stacks)
-
-```bash
-  # Clone the repository
-  git clone https://github.com/qiskit-community/qiskit-metal.git quantum-metal
-  # Change to the repository directory
-  cd quantum-metal
-  # Create a new conda environment
-  conda create -n quantum-metal -f environment.yml python=3.11 
-  # activate the conda environment
-  conda activate quantum-metal
-  # Install the package in editable mode 
-  python -m pip install --no-deps -e .
-```
-
-### Option 3: Standard venv (simple, lightweight)
-
-First, ensure that Python 3.11 is installed on your system. You may also use Python 3.10 or 3.12.
-
-```bash
-# Create a new virtual environment
-python3.11 -m venv qm_env
-# Activate the virtual environment
-source qm_env/bin/activate
-# Upgrade pip to the latest version
-pip install --upgrade pip
-# Install the package in editable mode (with its dependencies)
-pip install -e .
-```
-
-
-### Using Jupyter Notebook
-
-We recommend using Jupyter Notebook/Lab to access the full GUI and interactive features. If Jupyter is not installed in your environment, install it with:
-
-```bash
-pip install jupyterlab
-```
-
-If needed, add your environment as a Jupyter kernel:
-
-```bash
-python -m ipykernel install --user --name quantum-metal
-```
-
-## Quick Start: Creating Your First Quantum Component in Quantum Metal:
-Now that Quantum Metal is installed, it's time to begin working with it.
-We are ready to try out a quantum chip example, which is simulated locally using
-the Quantum Metal GUI element. This is a simple example that makes a qubit.
-
-> **Install note:** the example below uses ``MetalGUI``, which requires PySide6.
-> Install with:
-> ```bash
-> pip install "quantum-metal[gui]"
-> ```
-> Prefer no-Qt? Replace ``gui = MetalGUI(design)`` and the ``gui.rebuild()`` / ``gui.autoscale()`` calls with ``fig = qm.view(design)`` — see [docs/headless-usage.rst](./docs/headless-usage.rst). The headless path also covers AI-orchestration / Colab / Binder / cloud-Jupyter use cases.
+Create your first quantum design in a notebook or script — **no Qt required**:
 
 ```python
-from qiskit_metal import designs, MetalGUI, open_docs, draw
+import qiskit_metal as qm
+from qiskit_metal import designs
+from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 
 # Start a planar-chip quantum device design
 design = designs.DesignPlanar()
 design.chips.main.size.size_x = '11mm'
 design.chips.main.size.size_y = '9mm'
-print(design.chips.main)
 
-# Launch the Qiskit Metal GUI to interactively view, edit, and simulate the design
-gui = MetalGUI(design)
+# Add a transmon qubit with a connector pad "a"
+q1 = TransmonPocket(design, 'Q1', options=dict(
+    pos_x='0.5 mm', pos_y='0.25 mm',
+    pad_height='90um', pad_width='455um', pad_gap='30um',
+    connection_pads=dict(a=dict()),
+))
 
-# Create a new qubit form the library, a transmon, by creating an object of this class.
-from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
-# Let's also add a connector pad, called "a" with default options, you can overwrite them as dictionary keys
-q1 = TransmonPocket(design, 'Q1', options=dict(connection_pads=dict(a=dict())))
-
-# To see qubit, rebuild the design with this new qubit in place
-gui.rebuild()
-# Select for editing, highlight, and autoscale gui view
-gui.edit_component('Q1')
-gui.autoscale()
-
-# Change options.
-q1.options.pos_x      = '0.5 mm'
-q1.options.pos_y      = '0.25 mm'
-q1.options.pad_height = '90um'
-q1.options.pad_width  = '455um'
-q1.options.pad_gap    = '30 um'
-
-# Update the component geometry after changing the options.
-gui.rebuild()
-gui.autoscale()
+# Render to an inline matplotlib figure — works in Colab, CI, any notebook
+fig = qm.view(design)
+fig.savefig("my_first_chip.png")
 ```
 
-![Example_Image!](https://raw.githubusercontent.com/Qiskit/qiskit-metal/main/docs/images/1_1_Birds_eye_view_of_Qiskit_Metal_example_image.jpg 'Example_Image')
+![Example image](https://raw.githubusercontent.com/qiskit-community/qiskit-metal/main/docs/images/1_1_Birds_eye_view_of_Qiskit_Metal_example_image.jpg)
 
-Get a list of all the qcomponents in QDesign and then zoom on them.
+<details>
+<summary>Prefer the interactive desktop GUI?</summary>
+
+Install with `pip install "quantum-metal[gui]"`, then replace the `qm.view(...)`
+line with the GUI flow:
+
 ```python
-all_component_names = design.components.keys()
-gui.zoom_on_components(all_component_names)
+from qiskit_metal import MetalGUI
+
+gui = MetalGUI(design)        # launch the interactive editor
+gui.rebuild()                 # re-render after edits
+gui.edit_component('Q1')      # select for editing
+gui.autoscale()
+# ... later
+gui.main_window.close()
 ```
 
-<!-- ```python
-# Lets the design automatically delete an existing component when you create a new component with the same name, so the new component replaces the old one.
-design.overwrite_enabled = True
-``` -->
+See [`docs/headless-usage.rst`](./docs/headless-usage.rst) for the full
+no-Qt workflow and what to use when.
 
-#### Closing the Qiskit Metal GUI.
-```python
->>> gui.main_window.close()
-```
+</details>
 
-A script is available [here](https://qiskit-community.github.io/qiskit-metal/tut/overview/1.1%20High%20Level%20Demo%20of%20Qiskit%20Metal.html), where we also show the overview of Qiskit Metal.
+**Next:** browse the [tutorial notebooks](./tutorials/) (40+ Jupyter notebooks
+covering the full API) or the
+[online documentation](https://qiskit-community.github.io/qiskit-metal/).
+
+---
+
+## Transition notices
+
+<details>
+<summary><b>Qiskit Metal → Quantum Metal</b> rebrand (in progress)</summary>
+
+- ✅ **New project name**: Quantum Metal
+- ✅ **PyPI package**: `quantum-metal` (current; the old `qiskit-metal` package
+  stays archived at its pre-v0.5 state)
+- ✅ **Lite-by-default install** (v0.7.0)
+- 🔜 **Repository rename to `quantum-metal`** — will keep redirects so existing
+  clones and links continue to work
+- 🔜 **Python import path rename** (`qiskit_metal` → `quantum_metal`) — target
+  v0.8 or v1.0. Plan to update your imports ahead of that release. A
+  `FutureWarning` fires on `import qiskit_metal` advertising this. Suppress with
+  `QISKIT_METAL_SUPPRESS_RENAME_WARNING=1`.
+
+</details>
+
+---
+
+## 🌐 Ecosystem
+
+Quantum Metal is one of the core tools in a growing community ecosystem for
+superconducting quantum device design and education:
+
+- **[Quantum Device Workshop (QDW)](https://qdw-ucla.squarespace.com/)** — annual
+  workshop at UCLA/USC with invited leaders in the field. Recent speakers:
+  *Michel Devoret, Andreas Wallraff, Zlatko Minev, Eli Levenson-Falk.*
+  [Video recordings](https://www.youtube.com/@uclaqcsa) ·
+  [Sign for 2026](https://qdw-ucla.squarespace.com/qdw2026).
+- **[Quantum Device Consortium (QDC)](https://qdc-qcsa.vercel.app)** — the
+  community organization stewarding Quantum Metal alongside companion tools
+  (SQUADDS, SQDMetal, scqubits, pyEPR, and others).
+  [Join the QDC Discord](https://discord.gg/kaZ3UFuq).
+
+---
+
+## 🌱 From IBM to a Community-Maintained Project
+
+Originally developed at IBM, **conceived and led by [Dr. Zlatko K. Minev](https://www.zlatko-minev.com)**,
+Quantum Metal has transitioned into a **community-driven project** supported by
+universities, research groups, labs, and individual contributors worldwide.
+
+Development continues through the **Quantum Device Consortium (QDC)**, the
+broader community, and active maintainers — in close collaboration with Zlatko
+Minev and contributors across QDW/QDC shaping this next chapter.
+
+Acknowledgements for the v0.5+ community release effort and ongoing
+contributors are tracked in the [changelog](./changelog.md) and the
+[contributors graph](https://github.com/qiskit-community/qiskit-metal/graphs/contributors).
+
+---
 
 ## Community and Support
 
-#### Watch the recorded tutorials
-[![Video Tutorials](https://img.shields.io/badge/youtube-Video_Tutorials-red.svg?logo=youtube)](https://youtube.com/playlist?list=PLOFEBzvs-VvqHl5ZqVmhB_FcSqmLufsjb)
-
-The streaming will also be recorded and made available [here](https://www.youtube.com/playlist?list=PLOFEBzvs-VvqHl5ZqVmhB_FcSqmLufsjb) for offline review.
-
-#### Take part in the live tutorials and discussion
-Through June 2021 we are offering live tutorials and Q&A. [Sign up](https://airtable.com/shrxQEgKqZCf319F3) to receive an invite to the upcoming sessions.  The streaming will also be recorded and made available for offline review.  Find [here](https://github.com/Qiskit/qiskit-metal/blob/main/README_Tutorials.md) more details on schedule and use the Slack channel to give us feedback and to request the most relevant content to you.
-
-#### Get help: Slack
-[![join slack](https://img.shields.io/badge/slack-blue.svg?logo=slack)](https://qisk.it/join-slack)
-
-Use the slack channel.  Join [qiskit slack](https://qisk.it/join-slack) and then join the `#metal` channel to communicate with the developers and other participants.  You may also use this channel to inquire about collaborations.
-
-## Contribution Guidelines
-If you'd like to contribute to Qiskit Metal, please take a look at our
-[contribution guidelines](https://github.com/Qiskit/qiskit-metal/blob/main/CONTRIBUTING.md). This project adheres to Qiskit's [code of conduct](https://github.com/Qiskit/qiskit-metal/blob/main/CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
-We use [GitHub issues](https://github.com/Qiskit/qiskit-metal/issues) for tracking requests and bugs. Please
-[join the Qiskit Slack community](https://qisk.it/join-slack)
-and use our [Qiskit Slack channel](https://qiskit.slack.com) for discussion and simple questions.
-For questions that are more suited for a forum we use the Qiskit tag in the [Stack Exchange](https://quantumcomputing.stackexchange.com/questions/tagged/qiskit).
-
-## Next Steps
-Now you're set up and ready to check out some of the other examples from our
-[Qiskit Metal Tutorials](https://github.com/Qiskit/qiskit-metal/blob/main/tutorials/) repository or [Qiskit Metal Documentation](https://qiskit-community.github.io/qiskit-metal/tut/).
-
+- 💬 **[Discord](https://discord.gg/kaZ3UFuq)** — fastest way to reach maintainers
+  and the broader community. *Primary community channel.*
+- 📺 **[YouTube video tutorials](https://youtube.com/playlist?list=PLOFEBzvs-VvqHl5ZqVmhB_FcSqmLufsjb)**
+- 💻 **[GitHub Issues](https://github.com/qiskit-community/qiskit-metal/issues)** — bugs and feature requests
+- 🟪 **[Qiskit Slack `#metal`](https://qiskit.slack.com/archives/C01R8KP5WP7)** — legacy channel, being phased out in favor of Discord
 
 ---
 
-# Big Picture Architecutre Overview
+## Contributing
 
-### Diagram
-
-The **Qiskit Metal** codebase is organized into several key modules, each with a distinct role in enabling the design, analysis, and visualization of quantum circuits. Below is an overview of the primary components and their interactions, discussed deeper in the [Architecture Readme](README_Architecture.md) and the docs:
-
-```mermaid
-   %%{init: {"flowchart": {"htmlLabels": true}, 'theme':'forest'} }%%
-    graph TB
-        classDef core fill:#87cefa,stroke:#000000;
-        classDef gui fill:#FFDDC1,stroke:#000000;
-        classDef renderer fill:#DBB9FF,stroke:#000000;
-        classDef utility fill:#FFD700,stroke:#000000;
-        classDef design fill:#90EE90,stroke:#000000;
-        classDef analysis fill:#FFB6C1,stroke:#000000;
-
-        subgraph Qiskit_Metal
-            subgraph Core
-                QLibraryComponents["QLibrary Components"]
-                QDesign["QDesign"]
-                QComponent["QComponent"]
-                QRoute["QRoute"]
-                BaseQubit["BaseQubit"]
-            end
-
-            subgraph GUI
-                MetalGUI["MetalGUI"]
-            end
-
-            subgraph Renderers
-                QRenderer["QRenderer"]
-                QRendererGui["QRendererGui"]
-                QGDSRenderer["QGDSRenderer"]
-                QAnsysRenderer["QAnsysRenderer"]
-                QHFSSRenderer["QHFSSRenderer"]
-                QQ3DRenderer["QQ3DRenderer"]
-                QPyaedt["QPyaedt"]
-                QGmshRenderer["QGmshRenderer"]
-                QElmerRenderer["QElmerRenderer"]
-            end
-
-            subgraph Analyses
-                Hamiltonian["Hamiltonian"]
-                Sweep_Options["Sweep_Options"]
-            end
-
-            subgraph Utilities
-                Parsing["Parsing"]
-                Exceptions["Exceptions"]
-                Logging["Logging"]
-                Toolbox["Toolbox"]
-            end
-        end
-
-        QLibraryComponents --> QDesign
-        QRenderer --> QDesign
-        QRendererGui --> QRenderer
-        MetalGUI --> QRendererGui
-        MetalGUI --> QLibraryComponents
-        MetalGUI --> QDesign
-        QGDSRenderer --> QRenderer
-        QAnsysRenderer --> QRenderer
-        QHFSSRenderer --> QRenderer
-        QQ3DRenderer --> QRenderer
-        QPyaedt --> QRenderer
-        QGmshRenderer --> QRenderer
-        QElmerRenderer --> QRenderer
-        Parsing --> QDesign
-        Exceptions --> QDesign
-        Logging --> QDesign
-        Toolbox --> QDesign
-        QDesign --> QComponent
-        QDesign --> QRoute
-        QDesign --> BaseQubit
-        Hamiltonian --> QDesign
-        Sweep_Options --> QDesign
-
-        class QLibraryComponents,QDesign,QComponent,QRoute,BaseQubit core;
-        class MetalGUI gui;
-        class QRenderer,QRendererGui,QGDSRenderer,QAnsysRenderer,QHFSSRenderer,QQ3DRenderer,QPyaedt,QGmshRenderer,QElmerRenderer renderer;
-        class Parsing,Exceptions,Logging,Toolbox utility;
-        class Hamiltonian,Sweep_Options analysis;
-```
-
-
-### Core
-The **Core** module serves as the backbone of Qiskit Metal, housing essential elements for design and component creation:
-- **QLibrary Components**: Predefined library of quantum circuit elements, such as qubits and resonators, that can be used in designs.
-- **QDesign**: The central design framework that integrates all components and handles design rules.
-- **QComponent**: Base class for all components in the design.
-- **QRoute**: Specialized class for managing connections between components.
-- **BaseQubit**: Represents foundational qubit structures used in circuit designs.
-
-### Renderers
-The **Renderers** module facilitates exporting designs to external tools for electromagnetic simulation and layout rendering:
-- **QRenderer**: Base class for all renderers.
-- **QRendererGui**: GUI interface for managing renderers.
-- Specialized renderers like:
-  - **QGDSRenderer**
-  - **QAnsysRenderer**
-  - **QHFSSRenderer**
-  - **QQ3DRenderer**
-  - **QPyaedt**
-  - **QGmshRenderer**
-  - **QElmerRenderer**
-
-These renderers enable integration with industry-standard tools for detailed simulation and fabrication.
-
-### Analyses
-The **Analyses** module includes tools for performing simulations and extracting insights from designs:
-- **Hamiltonian**: Supports calculations of Hamiltonian parameters.
-- **Sweep Options**: Provides tools for parametric sweeps and optimizations.
-
-
-### GUI
-The **GUI** module provides tools for user-friendly interaction with Qiskit Metal. The **MetalGUI** clas is the primary graphical interface for managing designs and visualizations. It is discussed in more depth in the [Architecture Readme](README_Architecture.md).
-
-### Utilities
-The **Utilities** module supports the overall functionality of Qiskit Metal by offering supplementary tools.
-
-
-
-### Key Interactions
-- The **Core** modules form the foundation and integrate tightly with the **Renderers**, **GUI**, and **Analyses** modules.
-- The **GUI** depends on the **Core** and **Renderers** to provide visualization and interactivity.
-- The **Renderers** serve as bridges between Qiskit Metal and external tools, interacting with the **Core** to export designs.
-- The **Analyses** modules leverage the **Core** to extract meaningful data for optimization and validation.
-- The **Utilities** modules provide essential supporting functionalities across the entire codebase.
-
-This modular structure ensures scalability, flexibility, and ease of use for designing, analyzing, and fabricating quantum circuits.
-
+If you'd like to contribute, please read the
+[contribution guidelines](https://github.com/qiskit-community/qiskit-metal/blob/main/CONTRIBUTING.md)
+and the [contributor guide in the docs](https://qiskit-community.github.io/qiskit-metal/contributor-guide.html).
+This project adheres to the [code of conduct](https://github.com/qiskit-community/qiskit-metal/blob/main/CODE_OF_CONDUCT.md).
+We use [GitHub issues](https://github.com/qiskit-community/qiskit-metal/issues)
+for bugs and feature requests.
 
 ---
 
-# Backmatter
+## Architecture
+
+For a high-level walkthrough of the codebase — Core, Renderers, Analyses, GUI,
+Utilities — and how they interact, see
+[`README_Architecture.md`](./README_Architecture.md).
+
+Module-level deep dive:
+[`docs/overview.rst`](./docs/overview.rst) ·
+[`docs/workflow.rst`](./docs/workflow.rst).
+
+---
 
 ## Authors and Citation
-Qiskit Metal is the work of [many people](https://github.com/Qiskit/qiskit-metal/pulse/monthly) who contribute to the project at different levels. Metal was conceived and developed by [Zlatko Minev](https://www.zlatko-minev.com) at IBM; then co-led with Thomas McConkey. If you use Qiskit Metal, please cite as per the included [BibTeX file](https://github.com/Qiskit/qiskit-metal/blob/main/Qiskit_Metal.bib). For icon attributions, see [here](https://github.com/Qiskit/qiskit-metal/blob/main/qiskit_metal/_gui/_imgs/icon_attributions.txt).
+
+Quantum Metal is the work of [many people](https://github.com/qiskit-community/qiskit-metal/pulse/monthly)
+who contribute to the project at different levels. The project was **conceived
+and developed by [Zlatko Minev](https://www.zlatko-minev.com)** at IBM, then
+co-led with Thomas McConkey, and has since transitioned to community maintenance
+through the QDC.
+
+If you use Quantum Metal in your research, please cite it — see the
+[BibTeX entry](https://github.com/qiskit-community/qiskit-metal/blob/main/Qiskit_Metal.bib).
 
 ## Changelog and Release Notes
-The changelog provides a quick overview of notable changes for a given release.
 
-The changelog for a particular release can be found in the correspondent Github release page. For example, you can find the changelog for the `0.0.4` release [here](https://github.com/Qiskit/qiskit-metal/releases/tag/0.0.4)
-
-The changelog for all releases can be found in the release page: [![Releases](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)
-
-Additionally, as part of each release detailed release notes are written to document in detail what has changed as part of a release. This includes any documentation on potential breaking changes on upgrade and new features.
+Release notes for each version are published on the
+[GitHub releases page](https://github.com/qiskit-community/qiskit-metal/releases).
+Developer notes for in-flight releases live in [`changelog.md`](./changelog.md).
 
 ## License
-[Apache License 2.0](https://github.com/Qiskit/qiskit-metal/blob/main/LICENSE.txt)
+
+[Apache License 2.0](https://github.com/qiskit-community/qiskit-metal/blob/main/LICENSE.txt)
