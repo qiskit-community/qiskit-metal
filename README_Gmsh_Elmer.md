@@ -1,7 +1,10 @@
-# Softwares to Install for Open-source simulation toolchain for Qiskit Metal
+# Software to Install for the Open-source Simulation Toolchain (Quantum Metal)
 ## Gmsh
-- This is a design rendering and meshing software that we will be using to render our design and then divide it into fine elements (called a `mesh`), in order to solve the necessary differential equations (PDE's of Maxwell's Electromagnetic Laws). This is completely integrated with Qiskit Metal and is semi-automated.
-- This will be automatically installed when you make a new `venv` environment and install qiskit metal using the instructions given above (except in Apple Silicon Macs, see the Note below).
+- This is a design rendering and meshing software that we use to render a design and divide it into fine elements (a `mesh`), in order to solve the necessary differential equations (PDEs of Maxwell's Electromagnetic Laws). This is fully integrated with Quantum Metal and is semi-automated.
+- **How to install gmsh depends on which Quantum Metal install you have:**
+  - **v0.6.x (current):** gmsh installs by default with `pip install quantum-metal` — already there if you followed the standard install.
+  - **v0.7.0 (lite-by-default, upcoming):** you'll need to opt in with `pip install "quantum-metal[fem]"` — see [docs/migration-to-v0.7.0.rst](./docs/migration-to-v0.7.0.rst) and [ROADMAP.md](./ROADMAP.md).
+- **Apple Silicon Macs** (M-series chips): `pip install gmsh` doesn't always wire up the Python binding correctly. See the Note below for the Homebrew-based fix.
 
 ### Test if Gmsh is properly installed
 - Run the following in your terminal. A blank Gmsh window should open up. If it does, then hurray, you did it! 😄

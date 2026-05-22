@@ -90,7 +90,66 @@ Quantum Metal v0.5+ is available on PyPI (Project page: https://pypi.org/project
 
 If you specifically need the legacy pre-0.5 package, install ``qiskit-metal`` instead. Otherwise, use ``quantum-metal`` to get the current release.
 
-.. For source installs or development, clone the repository and follow the advanced installation paths below.  
+.. For source installs or development, clone the repository and follow the advanced installation paths below.
+
+==================================================
+Optional extras (lite-by-default preview)
+==================================================
+
+Quantum Metal ships heavy backends — the Qt desktop GUI, the
+Ansys HFSS/Q3D bridge, the gmsh mesher — as **opt-in extras**.
+You can install only the subset you need.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 22 38 40
+
+   * - Extra
+     - Pulls
+     - When to use it
+   * - (none — base install)
+     - Core API, ``qm.view(design)`` headless viewer, GDS export, pure-Python analyses
+     - AI orchestration, Colab / Binder, cloud Jupyter, CI, any non-interactive workflow
+   * - ``[gui]``
+     - ``pyside6``, ``qdarkstyle``
+     - Desktop GUI (``MetalGUI``)
+   * - ``[ansys]``
+     - ``pyaedt``, ``pyEPR-quantum``
+     - HFSS / Q3D / EPR analyses (requires an Ansys AEDT license)
+   * - ``[fem]``
+     - ``gmsh``
+     - Gmsh-based meshing + Elmer FEM path
+   * - ``[full]``
+     - All of the above
+     - The v0.6.x "all batteries included" experience
+
+Install one or several extras (comma-separated, no spaces):
+
+.. code-block:: sh
+
+    # Just the GUI
+    pip install "quantum-metal[gui]"
+
+    # GUI + Ansys
+    pip install "quantum-metal[gui,ansys]"
+
+    # Everything
+    pip install "quantum-metal[full]"
+
+.. note::
+
+   **In v0.6.x**, every extra's deps are *also* in the base
+   ``[project.dependencies]`` — so ``pip install quantum-metal``
+   gives you everything regardless of whether you list extras.
+   The ``[gui]`` / ``[ansys]`` / ``[fem]`` / ``[full]`` selectors
+   are informational today; the ``tests-lite`` CI job exercises
+   what *would* be in the lite install so the path stays green.
+
+   **In v0.7.0**, the base install becomes lite — see
+   :doc:`migration-to-v0.7.0` for the migration recipes.
+
+For the headless / Qt-free workflow that the base install
+supports out of the box, see :doc:`headless-usage`.
 
 ==================================================
 Installation from source

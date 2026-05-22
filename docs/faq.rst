@@ -119,11 +119,15 @@ Then open the applicable settings.json in your VS Code. (See how to open command
 
 **A:** it has been observed for pip installation on fresh conda environments that this error might show up: ``Could not load the Qt platform plugin "xcb" in "" even though it was found.``
 
-For `xcb`. Based on `this source <https://forum.qt.io/topic/93247/qt-qpa-plugin-could-not-load-the-qt-platform-plugin-xcb-in-even-though-it-was-found>`_ You might be able to resolve this error by installing the dependency with ``sudo apt-get install libxcb-xinerama0``
+.. note::
 
-For `windows`. This error intermittently shows in conda environments. It was found that the problem resolves if PySide2 is installed manually thorugh conda, with: `conda install pyside2`.
+   These errors come from PySide6 / Qt starting up — they only fire if you instantiate ``MetalGUI`` or import code that pulls Qt. If you're on the lite install (v0.7.0+ ``pip install quantum-metal`` without ``[gui]``) and you see one of these, you either need ``pip install "quantum-metal[gui]"`` or you should switch to the headless ``qm.view(design)`` path — see :doc:`headless-usage`.
 
-if the methods above do not work, consider utilizing an older version of python (and related dependencies)
+For ``xcb``: based on `this source <https://forum.qt.io/topic/93247/qt-qpa-plugin-could-not-load-the-qt-platform-plugin-xcb-in-even-though-it-was-found>`_, you might be able to resolve this error by installing the dependency with ``sudo apt-get install libxcb-xinerama0``.
+
+For ``windows``: this error intermittently shows in conda environments. It was found that the problem resolves if PySide6 is installed manually through conda: ``conda install pyside6``.
+
+If the methods above do not work, consider trying an older version of Python (and related dependencies).
 
 **Q: Why am I not able to start Jupyter Lab in the new environment?**
 
