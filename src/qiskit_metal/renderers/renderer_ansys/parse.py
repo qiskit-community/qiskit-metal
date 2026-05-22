@@ -24,20 +24,15 @@
 # from ... import Dict
 from qiskit_metal.toolbox_metal.parsing import parse_value
 
-__all__ = ["parse_value_hfss", "unparse_units"]  # noqa: F822 (unparse_units is exposed via __getattr__)
+__all__ = ["parse_value_hfss", "unparse_units"]
 
 
 def __getattr__(name):
-    """PEP 562 module-level ``__getattr__`` — lazy-load pyEPR symbols.
-
-    Lets ``from .parse import unparse_units`` work in callers without
-    pulling pyEPR at this module's import time. The actual import
-    happens on the first attribute access.
+    """PEP 562 module-level ``__getattr__`` — kept for the rarely-used
+    ``__parse_units_hfss__`` alias that some external callers may still
+    reference. The public ``unparse_units`` and ``parse_value_hfss``
+    are real functions below (so static tools see them in ``__all__``).
     """
-    if name == "unparse_units":
-        from pyEPR.ansys import unparse_units as _u
-
-        return _u
     if name == "__parse_units_hfss__":
         from pyEPR.ansys import parse_units as _p
 
@@ -50,6 +45,18 @@ def parse_value_hfss(*args):
     from pyEPR.ansys import parse_units as _parse_units_hfss
 
     return _parse_units_hfss(*args)
+
+
+def unparse_units(*args, **kwargs):
+    """Inverse of HFSS unit parsing — wraps ``pyEPR.ansys.unparse_units``.
+
+    Defined as a real wrapper (rather than a module ``__getattr__``
+    lookup) so it shows up in ``__all__`` and in any static-analysis
+    or autodoc pass.
+    """
+    from pyEPR.ansys import unparse_units as _u
+
+    return _u(*args, **kwargs)
 
 
 # TODO: function to itterate and convert user units to

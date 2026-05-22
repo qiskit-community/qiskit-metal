@@ -37,12 +37,11 @@ from scipy.spatial import distance
 # evaluate lazily so this module imports even when pyEPR is absent.
 try:
     import pyEPR as epr
-    from pyEPR.ansys import HfssApp, parse_units, release
+    from pyEPR.ansys import HfssApp, parse_units
 except ImportError:  # pragma: no cover — exercised on lite installs
     epr = None
     HfssApp = None
     parse_units = None
-    release = None
 
 
 def _require_pyEPR() -> None:
