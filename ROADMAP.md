@@ -287,15 +287,6 @@ The build is now clean (0 warnings) but a few latent fragilities remain:
   ``currentmodule`` directives. (c) is the cleanest if we ever
   re-run ``sphinx-autogen`` to refresh the stubs.
 
-- **Hard-touch ``_gui/`` docstrings.** Most of ``_gui/`` is excluded
-  from active maintenance per ``CLAUDE.md`` (requires Qt session to
-  validate). Docstring-only fixes that don't touch behavior are
-  safe but should be batched and reviewed when someone has Qt
-  available — see the docstring lint pass done in PR #1085 (only
-  the ``MetalGUI`` class docstring was fixed; the rest of ``_gui/``
-  has minor RST issues that don't currently emit warnings but may
-  in the future).
-
 - **Sphinx-autosummary code-block leak.** Sphinx's autosummary
   extension scans *every* ``.rst`` file for ``.. autosummary::``
   and ``.. automodule::`` directives, **including those nested
