@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="Josephson Junction QComponent Demo Notebook" href="../quick-topics/JJ-Demo-Notebook.html"><link rel="prev" title="The Cross Resonance (CR) Gate" href="Design-and-Simulation-of-a-Cross-Resonance-Gate.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>Circuit Quantum Electrodynamics (cQED) and the Jaynes-Cummings Interaction Model Using the HCPB Class and QuTip - Quantum Metal 0.6.3</title>
+        <title>Circuit Quantum Electrodynamics (cQED) and the Jaynes-Cummings Interaction Model Using the HCPB Class and QuTip - Quantum Metal 0.7.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
@@ -156,7 +156,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">Quantum Metal 0.6.3</div></a>
+      <a href="../../index.html"><div class="brand">Quantum Metal 0.7.0</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -178,7 +178,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
   
-  <span class="sidebar-brand-text">Quantum Metal 0.6.3</span>
+  <span class="sidebar-brand-text">Quantum Metal 0.7.0</span>
   
 </a>
 <form class="sidebar-search-container" method="get" action="../../search.html" role="search">
@@ -448,8 +448,24 @@
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QRenderer.html">QRenderer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QRendererGui.html">QRendererGui</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QRendererAnalysis.html">QRendererAnalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.PlotCanvas.html">PlotCanvas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.MplInteraction.html">MplInteraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.ZoomOnWheel.html">ZoomOnWheel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.PanAndZoom.html">PanAndZoom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QMplRenderer.html">QMplRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.AnimatedText.html">AnimatedText</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QGDSRenderer.html">QGDSRenderer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.Cheesing.html">Cheesing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QAnsysRenderer.html">QAnsysRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QHFSSRenderer.html">QHFSSRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QQ3DRenderer.html">QQ3DRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QPyaedt.html">QPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QQ3DPyaedt.html">QQ3DPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QHFSSPyaedt.html">QHFSSPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.html">QHFSSDrivenmodalPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QHFSSEigenmodePyaedt.html">QHFSSEigenmodePyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QGmshRenderer.html">QGmshRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.Vec3DArray.html">Vec3DArray</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/toolbox_metal.html">Toolbox</a><input aria-label="Toggle navigation of Toolbox" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -468,13 +484,17 @@
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html">QGeometryTables</a></li>
 </ul>
 </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/gui.html">GUI</a><input aria-label="Toggle navigation of GUI" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal._gui.MetalGUI.html">MetalGUI</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/Qiskit/qiskit/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../apidocs/analyses.html">Analyses (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.analyses</span></code>)</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/designs.html">Designs (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.designs</span></code>)</a><input aria-label="Toggle navigation of Designs (qiskit_metal.designs)" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/designs.html">Designs (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.designs</span></code>)</a><input aria-label="Toggle navigation of Designs (qiskit_metal.designs)" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.designs.QDesign.html">QDesign</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.designs.DesignPlanar.html">DesignPlanar</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.designs.MultiPlanar.html">MultiPlanar</a></li>
@@ -483,7 +503,11 @@
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.designs.Components.html">Components</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/qgeometries.html">QGeometryTables (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.qgeometries</span></code>)</a><input aria-label="Toggle navigation of QGeometryTables (qiskit_metal.qgeometries)" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/gui.html">GUI (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal._gui</span></code>)</a><input aria-label="Toggle navigation of GUI (qiskit_metal._gui)" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal._gui.MetalGUI.html">MetalGUI</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/qgeometries.html">QGeometryTables (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.qgeometries</span></code>)</a><input aria-label="Toggle navigation of QGeometryTables (qiskit_metal.qgeometries)" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html">QGeometryTables</a></li>
 </ul>
 </li>
@@ -587,7 +611,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.layer_stack_handler.html">layer_stack_handler</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.math_and_overrides.html">math_and_overrides</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.parsing.html">parsing</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/qlibrary.html">QLibrary (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.qlibrary</span></code>)</a><input aria-label="Toggle navigation of QLibrary (qiskit_metal.qlibrary)" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/qlibrary.html">QLibrary (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.qlibrary</span></code>)</a><input aria-label="Toggle navigation of QLibrary (qiskit_metal.qlibrary)" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.QComponent.html">QComponent</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.ParsedDynamicAttributes_Component.html">ParsedDynamicAttributes_Component</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.BaseQubit.html">BaseQubit</a></li>
@@ -638,15 +662,31 @@
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.anchored_path.html">anchored_path</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/renderers.html">Renderers (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.renderers</span></code>)</a><input aria-label="Toggle navigation of Renderers (qiskit_metal.renderers)" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/renderers.html">Renderers (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.renderers</span></code>)</a><input aria-label="Toggle navigation of Renderers (qiskit_metal.renderers)" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QRenderer.html">QRenderer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QRendererGui.html">QRendererGui</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QRendererAnalysis.html">QRendererAnalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.PlotCanvas.html">PlotCanvas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.MplInteraction.html">MplInteraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.ZoomOnWheel.html">ZoomOnWheel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.PanAndZoom.html">PanAndZoom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QMplRenderer.html">QMplRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.AnimatedText.html">AnimatedText</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QGDSRenderer.html">QGDSRenderer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.Cheesing.html">Cheesing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QAnsysRenderer.html">QAnsysRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QHFSSRenderer.html">QHFSSRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QQ3DRenderer.html">QQ3DRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QPyaedt.html">QPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QQ3DPyaedt.html">QQ3DPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QHFSSPyaedt.html">QHFSSPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.html">QHFSSDrivenmodalPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QHFSSEigenmodePyaedt.html">QHFSSEigenmodePyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QGmshRenderer.html">QGmshRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.Vec3DArray.html">Vec3DArray</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/toolbox_metal.html">Toolbox_metal (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.toolbox_metal</span></code>)</a><input aria-label="Toggle navigation of Toolbox_metal (qiskit_metal.toolbox_metal)" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/toolbox_metal.html">Toolbox_metal (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.toolbox_metal</span></code>)</a><input aria-label="Toggle navigation of Toolbox_metal (qiskit_metal.toolbox_metal)" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.QiskitMetalExceptions.html">QiskitMetalExceptions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.QiskitMetalDesignError.html">QiskitMetalDesignError</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.about.html">about</a></li>
@@ -741,19 +781,19 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
-<span class="o">%</span><span class="k">autoreload</span> 2
-<span class="o">%</span><span class="k">config</span> IPCompleter.greedy = True
-<span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="o">%</span><span class="k">config</span> Completer.use_jedi = False
-<span class="o">%</span><span class="k">config</span> InlineBackend.figure_format = &#39;svg&#39;
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>%load_ext autoreload
+%autoreload 2
+%config IPCompleter.greedy = True
+%matplotlib inline
+%config Completer.use_jedi = False
+%config InlineBackend.figure_format = &#39;svg&#39;
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.hamiltonian.transmon_charge_basis</span><span class="w"> </span><span class="kn">import</span> <span class="n">Hcpb</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qutip</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+from qiskit_metal.analyses.hamiltonian.transmon_charge_basis import Hcpb
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+from qutip import *
+from math import *
 </pre></div>
 </div>
 </div>
@@ -765,16 +805,16 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This contructs the HCPB Hamiltonian for the qubit</span>
-<span class="n">H1</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.00</span><span class="p">)</span>  <span class="c1"># Hamiltonian definition</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># This contructs the HCPB Hamiltonian for the qubit
+H1 = Hcpb(nlevels=20, Ej=20.0, Ec=0.4, ng=0.00)  # Hamiltonian definition
 
-<span class="c1"># convert to qutip matrices</span>
-<span class="n">Ham</span> <span class="o">=</span> <span class="n">H1</span><span class="o">.</span><span class="n">h0_to_qutip</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># Hamiltonian matrix for transmon</span>
-<span class="n">Num</span> <span class="o">=</span> <span class="n">H1</span><span class="o">.</span><span class="n">n_to_qutip</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># Number operator matrix for transmon</span>
+# convert to qutip matrices
+Ham = H1.h0_to_qutip(4)  # Hamiltonian matrix for transmon
+Num = H1.n_to_qutip(4)  # Number operator matrix for transmon
 
-<span class="c1"># This calculates the 0-&gt;1 transition frequency of the qubit</span>
-<span class="n">f01</span> <span class="o">=</span> <span class="n">H1</span><span class="o">.</span><span class="n">fij</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">f01</span>
+# This calculates the 0-&gt;1 transition frequency of the qubit
+f01 = H1.fij(0, 1)
+f01
 </pre></div>
 </div>
 </div>
@@ -783,7 +823,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Ham</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>Ham
 </pre></div>
 </div>
 </div>
@@ -795,11 +835,11 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wc</span> <span class="o">=</span> <span class="mf">7.5</span>  <span class="c1"># frequency of the CPW resonator cavity</span>
-<span class="n">N</span> <span class="o">=</span> <span class="mi">5</span>  <span class="c1"># number of Fock states in the resonator cavity</span>
-<span class="n">a</span> <span class="o">=</span> <span class="n">destroy</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>  <span class="c1"># lowering operator</span>
-<span class="n">Ham_CPW</span> <span class="o">=</span> <span class="n">wc</span> <span class="o">*</span> <span class="n">a</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span> <span class="o">*</span> <span class="n">a</span>  <span class="c1"># resonator Hamiltonian</span>
-<span class="n">Ham_CPW</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>wc = 7.5  # frequency of the CPW resonator cavity
+N = 5  # number of Fock states in the resonator cavity
+a = destroy(5)  # lowering operator
+Ham_CPW = wc * a.dag() * a  # resonator Hamiltonian
+Ham_CPW
 </pre></div>
 </div>
 </div>
@@ -813,14 +853,14 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tensor Product for Transmon Hamiltonian (N=number of Fock states in the CPW)</span>
-<span class="n">Ham_t</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">(</span><span class="n">qeye</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">Ham</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Tensor Product for Transmon Hamiltonian (N=number of Fock states in the CPW)
+Ham_t = tensor(qeye(N), Ham)
 
-<span class="c1"># Tensor Product for Transmon Charge Number Operator  (N=number of Fock states in the CPW)</span>
-<span class="n">Num_t</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">(</span><span class="n">qeye</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">Num</span><span class="p">)</span>
+# Tensor Product for Transmon Charge Number Operator  (N=number of Fock states in the CPW)
+Num_t = tensor(qeye(N), Num)
 
-<span class="c1"># Tensor Product for CPW resonator creation/annihilation operators  (4=number of Fock states in the transmon)</span>
-<span class="n">a</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">(</span><span class="n">destroy</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">qeye</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+# Tensor Product for CPW resonator creation/annihilation operators  (4=number of Fock states in the transmon)
+a = tensor(destroy(N), qeye(4))
 </pre></div>
 </div>
 </div>
@@ -830,10 +870,10 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="mf">0.1</span>  <span class="c1"># transmon-cavity coupling</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>g = 0.1  # transmon-cavity coupling
 
-<span class="n">Ham_JC</span> <span class="o">=</span> <span class="n">Ham_t</span> <span class="o">+</span> <span class="n">wc</span> <span class="o">*</span> <span class="n">a</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span> <span class="o">*</span> <span class="n">a</span> <span class="o">+</span> <span class="n">g</span> <span class="o">*</span> <span class="n">Num_t</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">a</span><span class="o">.</span><span class="n">dag</span><span class="p">())</span>
-<span class="n">Ham_JC</span>
+Ham_JC = Ham_t + wc * a.dag() * a + g * Num_t * (a + a.dag())
+Ham_JC
 </pre></div>
 </div>
 </div>
@@ -845,16 +885,16 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This defines the initial state of the cavity; recall that we set N=5</span>
-<span class="c1"># (N,n) = (Number of Fock states in the cavity, initial state of the cavity)</span>
-<span class="n">Psi0_cavity</span> <span class="o">=</span> <span class="n">basis</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># start with ground state of cavity</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># This defines the initial state of the cavity; recall that we set N=5
+# (N,n) = (Number of Fock states in the cavity, initial state of the cavity)
+Psi0_cavity = basis(N, 0)  # start with ground state of cavity
 
-<span class="c1"># This defines the initial state of the transmon qubit</span>
-<span class="c1"># Ham.eigenstates()[1][x] returns the xth state</span>
-<span class="n">Psi_qubit</span> <span class="o">=</span> <span class="n">Ham</span><span class="o">.</span><span class="n">eigenstates</span><span class="p">()[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># first excited state</span>
+# This defines the initial state of the transmon qubit
+# Ham.eigenstates()[1][x] returns the xth state
+Psi_qubit = Ham.eigenstates()[1][1]  # first excited state
 
-<span class="c1"># Tensor Product for Initial State of Composite System</span>
-<span class="n">psi0</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">(</span><span class="n">Psi0_cavity</span><span class="p">,</span> <span class="n">Psi_qubit</span><span class="p">)</span>
+# Tensor Product for Initial State of Composite System
+psi0 = tensor(Psi0_cavity, Psi_qubit)
 </pre></div>
 </div>
 </div>
@@ -867,27 +907,27 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create occupation operators for the transmon qubit (using HCPB class)</span>
-<span class="n">s0</span> <span class="o">=</span> <span class="n">Ham</span><span class="o">.</span><span class="n">eigenstates</span><span class="p">()[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># n=0 state</span>
-<span class="n">n0</span> <span class="o">=</span> <span class="n">s0</span> <span class="o">*</span> <span class="n">s0</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span>  <span class="c1"># occupation operator for n=0</span>
-<span class="n">s1</span> <span class="o">=</span> <span class="n">Ham</span><span class="o">.</span><span class="n">eigenstates</span><span class="p">()[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># n=1 state</span>
-<span class="n">n1</span> <span class="o">=</span> <span class="n">s1</span> <span class="o">*</span> <span class="n">s1</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span>  <span class="c1"># occupation operator for n=1</span>
-<span class="n">s2</span> <span class="o">=</span> <span class="n">Ham</span><span class="o">.</span><span class="n">eigenstates</span><span class="p">()[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>  <span class="c1"># n=2 state</span>
-<span class="n">n2</span> <span class="o">=</span> <span class="n">s2</span> <span class="o">*</span> <span class="n">s2</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span>  <span class="c1"># occupation operator for n=2</span>
-<span class="n">s3</span> <span class="o">=</span> <span class="n">Ham</span><span class="o">.</span><span class="n">eigenstates</span><span class="p">()[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>  <span class="c1"># n=3 state</span>
-<span class="n">n3</span> <span class="o">=</span> <span class="n">s3</span> <span class="o">*</span> <span class="n">s3</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span>  <span class="c1"># occupation operator for n=3</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Create occupation operators for the transmon qubit (using HCPB class)
+s0 = Ham.eigenstates()[1][0]  # n=0 state
+n0 = s0 * s0.dag()  # occupation operator for n=0
+s1 = Ham.eigenstates()[1][1]  # n=1 state
+n1 = s1 * s1.dag()  # occupation operator for n=1
+s2 = Ham.eigenstates()[1][2]  # n=2 state
+n2 = s2 * s2.dag()  # occupation operator for n=2
+s3 = Ham.eigenstates()[1][3]  # n=3 state
+n3 = s3 * s3.dag()  # occupation operator for n=3
 
-<span class="c1"># Create occupation operators for the CPW resonator (using QuTiP)</span>
-<span class="n">c0</span> <span class="o">=</span> <span class="n">basis</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># n=0 state</span>
-<span class="n">n0_cavity</span> <span class="o">=</span> <span class="n">c0</span> <span class="o">*</span> <span class="n">c0</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span>  <span class="c1"># occupation operator for n=0</span>
-<span class="n">c1</span> <span class="o">=</span> <span class="n">basis</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># n=1 state</span>
-<span class="n">n1_cavity</span> <span class="o">=</span> <span class="n">c1</span> <span class="o">*</span> <span class="n">c1</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span>  <span class="c1"># occupation operator for n=1</span>
-<span class="n">c2</span> <span class="o">=</span> <span class="n">basis</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># n=2 state</span>
-<span class="n">n2_cavity</span> <span class="o">=</span> <span class="n">c2</span> <span class="o">*</span> <span class="n">c2</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span>  <span class="c1"># occupation operator for n=2</span>
-<span class="n">c3</span> <span class="o">=</span> <span class="n">basis</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>  <span class="c1"># n=3 state</span>
-<span class="n">n3_cavity</span> <span class="o">=</span> <span class="n">c3</span> <span class="o">*</span> <span class="n">c3</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span>  <span class="c1"># occupation operator for n=3</span>
-<span class="n">c4</span> <span class="o">=</span> <span class="n">basis</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>  <span class="c1"># n=4 state</span>
-<span class="n">n4_cavity</span> <span class="o">=</span> <span class="n">c4</span> <span class="o">*</span> <span class="n">c4</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span>  <span class="c1"># occupation operator for n=4</span>
+# Create occupation operators for the CPW resonator (using QuTiP)
+c0 = basis(N, 0)  # n=0 state
+n0_cavity = c0 * c0.dag()  # occupation operator for n=0
+c1 = basis(N, 1)  # n=1 state
+n1_cavity = c1 * c1.dag()  # occupation operator for n=1
+c2 = basis(N, 2)  # n=2 state
+n2_cavity = c2 * c2.dag()  # occupation operator for n=2
+c3 = basis(N, 3)  # n=3 state
+n3_cavity = c3 * c3.dag()  # occupation operator for n=3
+c4 = basis(N, 4)  # n=4 state
+n4_cavity = c4 * c4.dag()  # occupation operator for n=4
 </pre></div>
 </div>
 </div>
@@ -896,18 +936,18 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># occupation probability matrices for the qubit</span>
-<span class="n">n0_qubit</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">(</span><span class="n">qeye</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">n0</span><span class="p">)</span>
-<span class="n">n1_qubit</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">(</span><span class="n">qeye</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">n1</span><span class="p">)</span>
-<span class="n">n2_qubit</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">(</span><span class="n">qeye</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">n2</span><span class="p">)</span>
-<span class="n">n3_qubit</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">(</span><span class="n">qeye</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">n3</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># occupation probability matrices for the qubit
+n0_qubit = tensor(qeye(N), n0)
+n1_qubit = tensor(qeye(N), n1)
+n2_qubit = tensor(qeye(N), n2)
+n3_qubit = tensor(qeye(N), n3)
 
-<span class="c1"># occupation probability matrices for the CPW resonator</span>
-<span class="n">n0_resonator</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">(</span><span class="n">n0_cavity</span><span class="p">,</span> <span class="n">qeye</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
-<span class="n">n1_resonator</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">(</span><span class="n">n1_cavity</span><span class="p">,</span> <span class="n">qeye</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
-<span class="n">n2_resonator</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">(</span><span class="n">n2_cavity</span><span class="p">,</span> <span class="n">qeye</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
-<span class="n">n3_resonator</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">(</span><span class="n">n3_cavity</span><span class="p">,</span> <span class="n">qeye</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
-<span class="n">n4_resonator</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">(</span><span class="n">n4_cavity</span><span class="p">,</span> <span class="n">qeye</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+# occupation probability matrices for the CPW resonator
+n0_resonator = tensor(n0_cavity, qeye(4))
+n1_resonator = tensor(n1_cavity, qeye(4))
+n2_resonator = tensor(n2_cavity, qeye(4))
+n3_resonator = tensor(n3_cavity, qeye(4))
+n4_resonator = tensor(n4_cavity, qeye(4))
 </pre></div>
 </div>
 </div>
@@ -918,50 +958,50 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># time will vary from t=0 to t=50s with 1001 increments</span>
-<span class="n">tlist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">1001</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># time will vary from t=0 to t=50s with 1001 increments
+tlist = np.linspace(0, 50, 1001)
 
-<span class="c1"># initial list of collapse operators (empty here)</span>
-<span class="n">c_ops</span> <span class="o">=</span> <span class="p">[]</span>
+# initial list of collapse operators (empty here)
+c_ops = []
 
-<span class="c1"># solve master equation and for output calculate the occupation numbers</span>
-<span class="n">output</span> <span class="o">=</span> <span class="n">mesolve</span><span class="p">(</span>
-    <span class="n">Ham_JC</span><span class="p">,</span>
-    <span class="n">psi0</span><span class="p">,</span>
-    <span class="n">tlist</span><span class="p">,</span>
-    <span class="n">c_ops</span><span class="p">,</span>
-    <span class="p">[</span><span class="n">n0_resonator</span><span class="p">,</span> <span class="n">n1_resonator</span><span class="p">,</span> <span class="n">n2_resonator</span><span class="p">,</span> <span class="n">n0_qubit</span><span class="p">,</span> <span class="n">n1_qubit</span><span class="p">,</span> <span class="n">n2_qubit</span><span class="p">],</span>
-<span class="p">)</span>
+# solve master equation and for output calculate the occupation numbers
+output = mesolve(
+    Ham_JC,
+    psi0,
+    tlist,
+    c_ops,
+    [n0_resonator, n1_resonator, n2_resonator, n0_qubit, n1_qubit, n2_qubit],
+)
 
-<span class="c1"># tabulate the occupation probabilities for resonator and qubit</span>
-<span class="n">occ0_resonator</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">occ1_resonator</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-<span class="n">occ2_resonator</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-<span class="n">occ0_qubit</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
-<span class="n">occ1_qubit</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
-<span class="n">occ2_qubit</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+# tabulate the occupation probabilities for resonator and qubit
+occ0_resonator = output.expect[0]
+occ1_resonator = output.expect[1]
+occ2_resonator = output.expect[2]
+occ0_qubit = output.expect[3]
+occ1_qubit = output.expect[4]
+occ2_qubit = output.expect[5]
 
-<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+fig, axes = plt.subplots(1, 1, figsize=(10, 5))
 
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Resonator&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">occ0_resonator</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;n=0&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">occ1_resonator</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;n=1&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">occ2_resonator</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;n=2&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Occupation Probability&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Energy Levels&quot;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+plt.figure(1)
+plt.subplot(121)
+plt.title(&quot;Resonator&quot;)
+plt.plot(tlist, occ0_resonator, &quot;b&quot;, label=&quot;n=0&quot;)
+plt.plot(tlist, occ1_resonator, &quot;r&quot;, label=&quot;n=1&quot;)
+plt.plot(tlist, occ2_resonator, &quot;g&quot;, label=&quot;n=2&quot;)
+plt.xlabel(&quot;Time&quot;)
+plt.ylabel(&quot;Occupation Probability&quot;)
+plt.legend(title=&quot;Energy Levels&quot;, loc=&quot;upper right&quot;)
 
-<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Qubit&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">occ0_qubit</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;n=0&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">occ1_qubit</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;n=1&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">occ2_qubit</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;n=2&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Occupation Probability&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Energy Levels&quot;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+plt.subplot(122)
+plt.legend()
+plt.title(&quot;Qubit&quot;)
+plt.plot(tlist, occ0_qubit, &quot;b&quot;, label=&quot;n=0&quot;)
+plt.plot(tlist, occ1_qubit, &quot;r&quot;, label=&quot;n=1&quot;)
+plt.plot(tlist, occ2_qubit, &quot;g&quot;, label=&quot;n=2&quot;)
+plt.xlabel(&quot;Time&quot;)
+plt.ylabel(&quot;Occupation Probability&quot;)
+plt.legend(title=&quot;Energy Levels&quot;, loc=&quot;upper right&quot;)
 </pre></div>
 </div>
 </div>
@@ -974,64 +1014,64 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="mf">0.1</span>  <span class="c1"># transmon-cavity coupling; set to be strong</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>g = 0.1  # transmon-cavity coupling; set to be strong
 
-<span class="c1"># rebuild Hamiltonian matrix of composite system</span>
-<span class="n">Ham_JC</span> <span class="o">=</span> <span class="n">Ham_t</span> <span class="o">+</span> <span class="n">wc</span> <span class="o">*</span> <span class="n">a</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span> <span class="o">*</span> <span class="n">a</span> <span class="o">+</span> <span class="n">g</span> <span class="o">*</span> <span class="n">Num_t</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">a</span><span class="o">.</span><span class="n">dag</span><span class="p">())</span>
+# rebuild Hamiltonian matrix of composite system
+Ham_JC = Ham_t + wc * a.dag() * a + g * Num_t * (a + a.dag())
 
-<span class="c1"># time will vary from t=0 to t=100s</span>
-<span class="n">tlist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1001</span><span class="p">)</span>
+# time will vary from t=0 to t=100s
+tlist = np.linspace(0, 100, 1001)
 
-<span class="c1"># photon relaxation rates of the transmon and the CPW cavity</span>
-<span class="n">kappa</span> <span class="o">=</span> <span class="mf">0.05</span>  <span class="c1"># 0.005 # cavity photon relaxation rate</span>
-<span class="n">n_th_a</span> <span class="o">=</span> <span class="mf">0.0</span>  <span class="c1"># avg number of thermal bath excitations</span>
+# photon relaxation rates of the transmon and the CPW cavity
+kappa = 0.05  # 0.005 # cavity photon relaxation rate
+n_th_a = 0.0  # avg number of thermal bath excitations
 
-<span class="c1"># initial list of collapse operators</span>
-<span class="n">c_ops</span> <span class="o">=</span> <span class="p">[]</span>
+# initial list of collapse operators
+c_ops = []
 
-<span class="c1"># cavity relaxation</span>
-<span class="n">rate</span> <span class="o">=</span> <span class="n">kappa</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">n_th_a</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">rate</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
-    <span class="n">c_ops</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span>
+# cavity relaxation
+rate = kappa * (1 + n_th_a)
+if rate &gt; 0.0:
+    c_ops.append(sqrt(rate) * a)
 
-<span class="c1"># solve master equation and for output calculate the occupation numbers</span>
-<span class="n">output</span> <span class="o">=</span> <span class="n">mesolve</span><span class="p">(</span>
-    <span class="n">Ham_JC</span><span class="p">,</span>
-    <span class="n">psi0</span><span class="p">,</span>
-    <span class="n">tlist</span><span class="p">,</span>
-    <span class="n">c_ops</span><span class="p">,</span>
-    <span class="p">[</span><span class="n">n0_resonator</span><span class="p">,</span> <span class="n">n1_resonator</span><span class="p">,</span> <span class="n">n2_resonator</span><span class="p">,</span> <span class="n">n0_qubit</span><span class="p">,</span> <span class="n">n1_qubit</span><span class="p">,</span> <span class="n">n2_qubit</span><span class="p">],</span>
-<span class="p">)</span>
+# solve master equation and for output calculate the occupation numbers
+output = mesolve(
+    Ham_JC,
+    psi0,
+    tlist,
+    c_ops,
+    [n0_resonator, n1_resonator, n2_resonator, n0_qubit, n1_qubit, n2_qubit],
+)
 
-<span class="c1"># tabulate the occupation probabilities for resonator and qubit</span>
-<span class="n">occ0_resonator</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">occ1_resonator</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-<span class="n">occ2_resonator</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-<span class="n">occ0_qubit</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
-<span class="n">occ1_qubit</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
-<span class="n">occ2_qubit</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+# tabulate the occupation probabilities for resonator and qubit
+occ0_resonator = output.expect[0]
+occ1_resonator = output.expect[1]
+occ2_resonator = output.expect[2]
+occ0_qubit = output.expect[3]
+occ1_qubit = output.expect[4]
+occ2_qubit = output.expect[5]
 
-<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+fig, axes = plt.subplots(1, 1, figsize=(10, 5))
 
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Resonator&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">occ0_resonator</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;n=0&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">occ1_resonator</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;n=1&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">occ2_resonator</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;n=2&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Occupation Probability&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Energy Levels&quot;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+plt.figure(1)
+plt.subplot(121)
+plt.title(&quot;Resonator&quot;)
+plt.plot(tlist, occ0_resonator, &quot;b&quot;, label=&quot;n=0&quot;)
+plt.plot(tlist, occ1_resonator, &quot;r&quot;, label=&quot;n=1&quot;)
+plt.plot(tlist, occ2_resonator, &quot;g&quot;, label=&quot;n=2&quot;)
+plt.xlabel(&quot;Time&quot;)
+plt.ylabel(&quot;Occupation Probability&quot;)
+plt.legend(title=&quot;Energy Levels&quot;, loc=&quot;upper right&quot;)
 
-<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Qubit&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">occ0_qubit</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;n=0&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">occ1_qubit</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;n=1&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">occ2_qubit</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;n=2&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Occupation Probability&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Energy Levels&quot;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+plt.subplot(122)
+plt.legend()
+plt.title(&quot;Qubit&quot;)
+plt.plot(tlist, occ0_qubit, &quot;b&quot;, label=&quot;n=0&quot;)
+plt.plot(tlist, occ1_qubit, &quot;r&quot;, label=&quot;n=1&quot;)
+plt.plot(tlist, occ2_qubit, &quot;g&quot;, label=&quot;n=2&quot;)
+plt.xlabel(&quot;Time&quot;)
+plt.ylabel(&quot;Occupation Probability&quot;)
+plt.legend(title=&quot;Energy Levels&quot;, loc=&quot;upper right&quot;)
 </pre></div>
 </div>
 </div>
@@ -1041,25 +1081,25 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>fig, axes = plt.subplots(1, 1, figsize=(10, 5))
 
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;n=0&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">occ0_resonator</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;resonator&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">occ0_qubit</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;qubit&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Occupation Probability&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Energy Levels&quot;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+plt.figure(1)
+plt.subplot(121)
+plt.title(&quot;n=0&quot;)
+plt.plot(tlist, occ0_resonator, &quot;b&quot;, label=&quot;resonator&quot;)
+plt.plot(tlist, occ0_qubit, &quot;r&quot;, label=&quot;qubit&quot;)
+plt.xlabel(&quot;Time&quot;)
+plt.ylabel(&quot;Occupation Probability&quot;)
+plt.legend(title=&quot;Energy Levels&quot;, loc=&quot;upper right&quot;)
 
-<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;n=1&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">occ1_resonator</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;resonator&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">occ1_qubit</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;qubit&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Occupation Probability&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Energy Levels&quot;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+plt.subplot(122)
+plt.legend()
+plt.title(&quot;n=1&quot;)
+plt.plot(tlist, occ1_resonator, &quot;b&quot;, label=&quot;resonator&quot;)
+plt.plot(tlist, occ1_qubit, &quot;r&quot;, label=&quot;qubit&quot;)
+plt.xlabel(&quot;Time&quot;)
+plt.ylabel(&quot;Occupation Probability&quot;)
+plt.legend(title=&quot;Energy Levels&quot;, loc=&quot;upper right&quot;)
 </pre></div>
 </div>
 </div>
@@ -1072,16 +1112,16 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This defines the initial state of the cavity; recall that we set N=5</span>
-<span class="c1"># (N,n) = (Number of Fock states in the cavity, initial state of the cavity)</span>
-<span class="n">Psi0_cavity</span> <span class="o">=</span> <span class="n">basis</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># start with ground state of cavity</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># This defines the initial state of the cavity; recall that we set N=5
+# (N,n) = (Number of Fock states in the cavity, initial state of the cavity)
+Psi0_cavity = basis(N, 2)  # start with ground state of cavity
 
-<span class="c1"># This defines the initial state of the transmon qubit</span>
-<span class="c1"># Ham.eigenstates()[1][x] returns the xth state</span>
-<span class="n">Psi_qubit</span> <span class="o">=</span> <span class="n">Ham</span><span class="o">.</span><span class="n">eigenstates</span><span class="p">()[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># first excited state</span>
+# This defines the initial state of the transmon qubit
+# Ham.eigenstates()[1][x] returns the xth state
+Psi_qubit = Ham.eigenstates()[1][0]  # first excited state
 
-<span class="c1"># Tensor Product for Initial State of Composite System</span>
-<span class="n">psi0</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">(</span><span class="n">Psi0_cavity</span><span class="p">,</span> <span class="n">Psi_qubit</span><span class="p">)</span>
+# Tensor Product for Initial State of Composite System
+psi0 = tensor(Psi0_cavity, Psi_qubit)
 </pre></div>
 </div>
 </div>
@@ -1090,50 +1130,50 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># time will vary from t=0 to t=50s with 1001 increments</span>
-<span class="n">tlist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">1001</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># time will vary from t=0 to t=50s with 1001 increments
+tlist = np.linspace(0, 50, 1001)
 
-<span class="c1"># initial list of collapse operators (empty here)</span>
-<span class="n">c_ops</span> <span class="o">=</span> <span class="p">[]</span>
+# initial list of collapse operators (empty here)
+c_ops = []
 
-<span class="c1"># solve master equation and for output calculate the occupation numbers</span>
-<span class="n">output</span> <span class="o">=</span> <span class="n">mesolve</span><span class="p">(</span>
-    <span class="n">Ham_JC</span><span class="p">,</span>
-    <span class="n">psi0</span><span class="p">,</span>
-    <span class="n">tlist</span><span class="p">,</span>
-    <span class="n">c_ops</span><span class="p">,</span>
-    <span class="p">[</span><span class="n">n0_resonator</span><span class="p">,</span> <span class="n">n1_resonator</span><span class="p">,</span> <span class="n">n2_resonator</span><span class="p">,</span> <span class="n">n0_qubit</span><span class="p">,</span> <span class="n">n1_qubit</span><span class="p">,</span> <span class="n">n2_qubit</span><span class="p">],</span>
-<span class="p">)</span>
+# solve master equation and for output calculate the occupation numbers
+output = mesolve(
+    Ham_JC,
+    psi0,
+    tlist,
+    c_ops,
+    [n0_resonator, n1_resonator, n2_resonator, n0_qubit, n1_qubit, n2_qubit],
+)
 
-<span class="c1"># tabulate the occupation probabilities for resonator and qubit</span>
-<span class="n">occ0_resonator</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">occ1_resonator</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-<span class="n">occ2_resonator</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-<span class="n">occ0_qubit</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
-<span class="n">occ1_qubit</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
-<span class="n">occ2_qubit</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+# tabulate the occupation probabilities for resonator and qubit
+occ0_resonator = output.expect[0]
+occ1_resonator = output.expect[1]
+occ2_resonator = output.expect[2]
+occ0_qubit = output.expect[3]
+occ1_qubit = output.expect[4]
+occ2_qubit = output.expect[5]
 
-<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+fig, axes = plt.subplots(1, 1, figsize=(10, 5))
 
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Resonator&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">occ0_resonator</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;n=0&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">occ1_resonator</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;n=1&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">occ2_resonator</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;n=2&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Occupation Probability&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Energy Levels&quot;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+plt.figure(1)
+plt.subplot(121)
+plt.title(&quot;Resonator&quot;)
+plt.plot(tlist, occ0_resonator, &quot;b&quot;, label=&quot;n=0&quot;)
+plt.plot(tlist, occ1_resonator, &quot;r&quot;, label=&quot;n=1&quot;)
+plt.plot(tlist, occ2_resonator, &quot;g&quot;, label=&quot;n=2&quot;)
+plt.xlabel(&quot;Time&quot;)
+plt.ylabel(&quot;Occupation Probability&quot;)
+plt.legend(title=&quot;Energy Levels&quot;, loc=&quot;upper right&quot;)
 
-<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Qubit&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">occ0_qubit</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;n=0&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">occ1_qubit</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;n=1&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">occ2_qubit</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;n=2&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Occupation Probability&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Energy Levels&quot;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+plt.subplot(122)
+plt.legend()
+plt.title(&quot;Qubit&quot;)
+plt.plot(tlist, occ0_qubit, &quot;b&quot;, label=&quot;n=0&quot;)
+plt.plot(tlist, occ1_qubit, &quot;r&quot;, label=&quot;n=1&quot;)
+plt.plot(tlist, occ2_qubit, &quot;g&quot;, label=&quot;n=2&quot;)
+plt.xlabel(&quot;Time&quot;)
+plt.ylabel(&quot;Occupation Probability&quot;)
+plt.legend(title=&quot;Energy Levels&quot;, loc=&quot;upper right&quot;)
 </pre></div>
 </div>
 </div>
@@ -1142,59 +1182,59 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># time will vary from t=0 to t=100s</span>
-<span class="n">tlist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1001</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># time will vary from t=0 to t=100s
+tlist = np.linspace(0, 100, 1001)
 
-<span class="c1"># photon relaxation rates of the transmon and the CPW cavity</span>
-<span class="n">kappa</span> <span class="o">=</span> <span class="mf">0.05</span>  <span class="c1"># 0.005 # cavity photon relaxation rate</span>
-<span class="n">n_th_a</span> <span class="o">=</span> <span class="mf">0.0</span>  <span class="c1"># avg number of thermal bath excitations</span>
+# photon relaxation rates of the transmon and the CPW cavity
+kappa = 0.05  # 0.005 # cavity photon relaxation rate
+n_th_a = 0.0  # avg number of thermal bath excitations
 
-<span class="c1"># initial list of collapse operators</span>
-<span class="n">c_ops</span> <span class="o">=</span> <span class="p">[]</span>
+# initial list of collapse operators
+c_ops = []
 
-<span class="c1"># cavity relaxation</span>
-<span class="n">rate</span> <span class="o">=</span> <span class="n">kappa</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">n_th_a</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">rate</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
-    <span class="n">c_ops</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span>
+# cavity relaxation
+rate = kappa * (1 + n_th_a)
+if rate &gt; 0.0:
+    c_ops.append(sqrt(rate) * a)
 
-<span class="c1"># solve master equation and for output calculate the occupation numbers</span>
-<span class="n">output</span> <span class="o">=</span> <span class="n">mesolve</span><span class="p">(</span>
-    <span class="n">Ham_JC</span><span class="p">,</span>
-    <span class="n">psi0</span><span class="p">,</span>
-    <span class="n">tlist</span><span class="p">,</span>
-    <span class="n">c_ops</span><span class="p">,</span>
-    <span class="p">[</span><span class="n">n0_resonator</span><span class="p">,</span> <span class="n">n1_resonator</span><span class="p">,</span> <span class="n">n2_resonator</span><span class="p">,</span> <span class="n">n0_qubit</span><span class="p">,</span> <span class="n">n1_qubit</span><span class="p">,</span> <span class="n">n2_qubit</span><span class="p">],</span>
-<span class="p">)</span>
+# solve master equation and for output calculate the occupation numbers
+output = mesolve(
+    Ham_JC,
+    psi0,
+    tlist,
+    c_ops,
+    [n0_resonator, n1_resonator, n2_resonator, n0_qubit, n1_qubit, n2_qubit],
+)
 
-<span class="c1"># tabulate the occupation probabilities for resonator and qubit</span>
-<span class="n">occ0_resonator</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">occ1_resonator</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-<span class="n">occ2_resonator</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-<span class="n">occ0_qubit</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
-<span class="n">occ1_qubit</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
-<span class="n">occ2_qubit</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+# tabulate the occupation probabilities for resonator and qubit
+occ0_resonator = output.expect[0]
+occ1_resonator = output.expect[1]
+occ2_resonator = output.expect[2]
+occ0_qubit = output.expect[3]
+occ1_qubit = output.expect[4]
+occ2_qubit = output.expect[5]
 
-<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+fig, axes = plt.subplots(1, 1, figsize=(10, 5))
 
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Resonator&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">occ0_resonator</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;n=0&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">occ1_resonator</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;n=1&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">occ2_resonator</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;n=2&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Occupation Probability&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Energy Levels&quot;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+plt.figure(1)
+plt.subplot(121)
+plt.title(&quot;Resonator&quot;)
+plt.plot(tlist, occ0_resonator, &quot;b&quot;, label=&quot;n=0&quot;)
+plt.plot(tlist, occ1_resonator, &quot;r&quot;, label=&quot;n=1&quot;)
+plt.plot(tlist, occ2_resonator, &quot;g&quot;, label=&quot;n=2&quot;)
+plt.xlabel(&quot;Time&quot;)
+plt.ylabel(&quot;Occupation Probability&quot;)
+plt.legend(title=&quot;Energy Levels&quot;, loc=&quot;upper right&quot;)
 
-<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Qubit&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">occ0_qubit</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;n=0&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">occ1_qubit</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;n=1&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">occ2_qubit</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;n=2&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Occupation Probability&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Energy Levels&quot;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+plt.subplot(122)
+plt.legend()
+plt.title(&quot;Qubit&quot;)
+plt.plot(tlist, occ0_qubit, &quot;b&quot;, label=&quot;n=0&quot;)
+plt.plot(tlist, occ1_qubit, &quot;r&quot;, label=&quot;n=1&quot;)
+plt.plot(tlist, occ2_qubit, &quot;g&quot;, label=&quot;n=2&quot;)
+plt.xlabel(&quot;Time&quot;)
+plt.ylabel(&quot;Occupation Probability&quot;)
+plt.legend(title=&quot;Energy Levels&quot;, loc=&quot;upper right&quot;)
 </pre></div>
 </div>
 </div>
@@ -1316,7 +1356,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=b8503983"></script>
+</div><script src="../../_static/documentation_options.js?v=fe7df9b0"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>

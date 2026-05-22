@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="Analyse a Transmon Qubit using ElmerFEM" href="4.19-Analyze-a-transmon-using-ElmerFEM.html"><link rel="prev" title="S21 simulation and fitting of a resonator" href="4.17-Fit-S21-of-Hanger-Resonator-Geometry.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>Eigenmode simulation with Ports - Quantum Metal 0.6.3</title>
+        <title>Eigenmode simulation with Ports - Quantum Metal 0.7.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
@@ -156,7 +156,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">Quantum Metal 0.6.3</div></a>
+      <a href="../../index.html"><div class="brand">Quantum Metal 0.7.0</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -178,7 +178,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
   
-  <span class="sidebar-brand-text">Quantum Metal 0.6.3</span>
+  <span class="sidebar-brand-text">Quantum Metal 0.7.0</span>
   
 </a>
 <form class="sidebar-search-container" method="get" action="../../search.html" role="search">
@@ -448,8 +448,24 @@
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QRenderer.html">QRenderer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QRendererGui.html">QRendererGui</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QRendererAnalysis.html">QRendererAnalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.PlotCanvas.html">PlotCanvas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.MplInteraction.html">MplInteraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.ZoomOnWheel.html">ZoomOnWheel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.PanAndZoom.html">PanAndZoom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QMplRenderer.html">QMplRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.AnimatedText.html">AnimatedText</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QGDSRenderer.html">QGDSRenderer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.Cheesing.html">Cheesing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QAnsysRenderer.html">QAnsysRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QHFSSRenderer.html">QHFSSRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QQ3DRenderer.html">QQ3DRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QPyaedt.html">QPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QQ3DPyaedt.html">QQ3DPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QHFSSPyaedt.html">QHFSSPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.html">QHFSSDrivenmodalPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QHFSSEigenmodePyaedt.html">QHFSSEigenmodePyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QGmshRenderer.html">QGmshRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.Vec3DArray.html">Vec3DArray</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/toolbox_metal.html">Toolbox</a><input aria-label="Toggle navigation of Toolbox" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -468,13 +484,17 @@
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html">QGeometryTables</a></li>
 </ul>
 </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/gui.html">GUI</a><input aria-label="Toggle navigation of GUI" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal._gui.MetalGUI.html">MetalGUI</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/Qiskit/qiskit/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../apidocs/analyses.html">Analyses (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.analyses</span></code>)</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/designs.html">Designs (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.designs</span></code>)</a><input aria-label="Toggle navigation of Designs (qiskit_metal.designs)" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/designs.html">Designs (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.designs</span></code>)</a><input aria-label="Toggle navigation of Designs (qiskit_metal.designs)" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.designs.QDesign.html">QDesign</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.designs.DesignPlanar.html">DesignPlanar</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.designs.MultiPlanar.html">MultiPlanar</a></li>
@@ -483,7 +503,11 @@
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.designs.Components.html">Components</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/qgeometries.html">QGeometryTables (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.qgeometries</span></code>)</a><input aria-label="Toggle navigation of QGeometryTables (qiskit_metal.qgeometries)" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/gui.html">GUI (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal._gui</span></code>)</a><input aria-label="Toggle navigation of GUI (qiskit_metal._gui)" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal._gui.MetalGUI.html">MetalGUI</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/qgeometries.html">QGeometryTables (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.qgeometries</span></code>)</a><input aria-label="Toggle navigation of QGeometryTables (qiskit_metal.qgeometries)" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html">QGeometryTables</a></li>
 </ul>
 </li>
@@ -587,7 +611,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.layer_stack_handler.html">layer_stack_handler</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.math_and_overrides.html">math_and_overrides</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.parsing.html">parsing</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/qlibrary.html">QLibrary (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.qlibrary</span></code>)</a><input aria-label="Toggle navigation of QLibrary (qiskit_metal.qlibrary)" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/qlibrary.html">QLibrary (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.qlibrary</span></code>)</a><input aria-label="Toggle navigation of QLibrary (qiskit_metal.qlibrary)" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.QComponent.html">QComponent</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.ParsedDynamicAttributes_Component.html">ParsedDynamicAttributes_Component</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.BaseQubit.html">BaseQubit</a></li>
@@ -638,15 +662,31 @@
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.anchored_path.html">anchored_path</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/renderers.html">Renderers (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.renderers</span></code>)</a><input aria-label="Toggle navigation of Renderers (qiskit_metal.renderers)" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/renderers.html">Renderers (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.renderers</span></code>)</a><input aria-label="Toggle navigation of Renderers (qiskit_metal.renderers)" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QRenderer.html">QRenderer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QRendererGui.html">QRendererGui</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QRendererAnalysis.html">QRendererAnalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.PlotCanvas.html">PlotCanvas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.MplInteraction.html">MplInteraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.ZoomOnWheel.html">ZoomOnWheel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.PanAndZoom.html">PanAndZoom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QMplRenderer.html">QMplRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.AnimatedText.html">AnimatedText</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QGDSRenderer.html">QGDSRenderer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.Cheesing.html">Cheesing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QAnsysRenderer.html">QAnsysRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QHFSSRenderer.html">QHFSSRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QQ3DRenderer.html">QQ3DRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QPyaedt.html">QPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QQ3DPyaedt.html">QQ3DPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QHFSSPyaedt.html">QHFSSPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.html">QHFSSDrivenmodalPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QHFSSEigenmodePyaedt.html">QHFSSEigenmodePyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QGmshRenderer.html">QGmshRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.Vec3DArray.html">Vec3DArray</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/toolbox_metal.html">Toolbox_metal (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.toolbox_metal</span></code>)</a><input aria-label="Toggle navigation of Toolbox_metal (qiskit_metal.toolbox_metal)" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/toolbox_metal.html">Toolbox_metal (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.toolbox_metal</span></code>)</a><input aria-label="Toggle navigation of Toolbox_metal (qiskit_metal.toolbox_metal)" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.QiskitMetalExceptions.html">QiskitMetalExceptions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.QiskitMetalDesignError.html">QiskitMetalDesignError</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.about.html">about</a></li>
@@ -711,22 +751,22 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import useful packages</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">metal</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">designs</span><span class="p">,</span> <span class="n">draw</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">MetalGUI</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">open_docs</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Import useful packages
+import qiskit_metal as metal
+from qiskit_metal import designs, draw
+from qiskit_metal import MetalGUI, Dict, open_docs
 
-<span class="c1"># Packages for the simple design</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.tlines.meandered</span><span class="w"> </span><span class="kn">import</span> <span class="n">RouteMeander</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.tlines.pathfinder</span><span class="w"> </span><span class="kn">import</span> <span class="n">RoutePathfinder</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.terminations.launchpad_wb_driven</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">LaunchpadWirebondDriven</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.terminations.open_to_ground</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenToGround</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.couplers.coupled_line_tee</span><span class="w"> </span><span class="kn">import</span> <span class="n">CoupledLineTee</span>
+# Packages for the simple design
+from qiskit_metal.qlibrary.tlines.meandered import RouteMeander
+from qiskit_metal.qlibrary.tlines.pathfinder import RoutePathfinder
+from qiskit_metal.qlibrary.terminations.launchpad_wb_driven import (
+    LaunchpadWirebondDriven,
+)
+from qiskit_metal.qlibrary.terminations.open_to_ground import OpenToGround
+from qiskit_metal.qlibrary.couplers.coupled_line_tee import CoupledLineTee
 
-<span class="c1"># Analysis</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.quantization</span><span class="w"> </span><span class="kn">import</span> <span class="n">EPRanalysis</span>
+# Analysis
+from qiskit_metal.analyses.quantization import EPRanalysis
 </pre></div>
 </div>
 </div>
@@ -737,22 +777,22 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set up chip dimensions</span>
-<span class="n">design</span> <span class="o">=</span> <span class="n">designs</span><span class="o">.</span><span class="n">DesignPlanar</span><span class="p">()</span>
-<span class="n">design</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">][</span><span class="s2">&quot;size&quot;</span><span class="p">][</span><span class="s2">&quot;size_x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;2mm&quot;</span>
-<span class="n">design</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">][</span><span class="s2">&quot;size&quot;</span><span class="p">][</span><span class="s2">&quot;size_y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;2mm&quot;</span>
-<span class="n">design</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">][</span><span class="s2">&quot;size&quot;</span><span class="p">][</span><span class="s2">&quot;size_z&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;-280um&quot;</span>
-<span class="c1"># Resonator and feedline gap width (W) and center conductor width (S) from reference 2</span>
-<span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;cpw_width&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;10 um&quot;</span>  <span class="c1"># S from reference 2</span>
-<span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;cpw_gap&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;6 um&quot;</span>  <span class="c1"># W from reference 2</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Set up chip dimensions
+design = designs.DesignPlanar()
+design._chips[&quot;main&quot;][&quot;size&quot;][&quot;size_x&quot;] = &quot;2mm&quot;
+design._chips[&quot;main&quot;][&quot;size&quot;][&quot;size_y&quot;] = &quot;2mm&quot;
+design._chips[&quot;main&quot;][&quot;size&quot;][&quot;size_z&quot;] = &quot;-280um&quot;
+# Resonator and feedline gap width (W) and center conductor width (S) from reference 2
+design.variables[&quot;cpw_width&quot;] = &quot;10 um&quot;  # S from reference 2
+design.variables[&quot;cpw_gap&quot;] = &quot;6 um&quot;  # W from reference 2
 
 
-<span class="n">design</span><span class="o">.</span><span class="n">overwrite_enabled</span> <span class="o">=</span> <span class="kc">True</span>
+design.overwrite_enabled = True
 
-<span class="n">hfss</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">hfss</span>
+hfss = design.renderers.hfss
 
-<span class="c1"># Open GUI</span>
-<span class="n">gui</span> <span class="o">=</span> <span class="n">MetalGUI</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
+# Open GUI
+gui = MetalGUI(design)
 </pre></div>
 </div>
 </div>
@@ -766,42 +806,42 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###################</span>
-<span class="c1"># Single feedline #</span>
-<span class="c1">###################</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>###################
+# Single feedline #
+###################
 
-<span class="c1"># Driven Lauchpad 1</span>
-<span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;-0.5mm&quot;</span>
-<span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;0.5mm&quot;</span>
-<span class="n">launch_options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">chip</span><span class="o">=</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="n">pos_x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;360&quot;</span><span class="p">,</span> <span class="n">lead_length</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span>
-<span class="p">)</span>
-<span class="n">LP1</span> <span class="o">=</span> <span class="n">LaunchpadWirebondDriven</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;LP1&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">launch_options</span><span class="p">)</span>
+# Driven Lauchpad 1
+x = &quot;-0.5mm&quot;
+y = &quot;0.5mm&quot;
+launch_options = dict(
+    chip=&quot;main&quot;, pos_x=x, pos_y=y, orientation=&quot;360&quot;, lead_length=&quot;30um&quot;
+)
+LP1 = LaunchpadWirebondDriven(design, &quot;LP1&quot;, options=launch_options)
 
-<span class="c1"># Driven Launchpad 2</span>
-<span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;0.5mm&quot;</span>
-<span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;0.5mm&quot;</span>
-<span class="n">launch_options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">chip</span><span class="o">=</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="n">pos_x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;180&quot;</span><span class="p">,</span> <span class="n">lead_length</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span>
-<span class="p">)</span>
-<span class="n">LP2</span> <span class="o">=</span> <span class="n">LaunchpadWirebondDriven</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;LP2&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">launch_options</span><span class="p">)</span>
+# Driven Launchpad 2
+x = &quot;0.5mm&quot;
+y = &quot;0.5mm&quot;
+launch_options = dict(
+    chip=&quot;main&quot;, pos_x=x, pos_y=y, orientation=&quot;180&quot;, lead_length=&quot;30um&quot;
+)
+LP2 = LaunchpadWirebondDriven(design, &quot;LP2&quot;, options=launch_options)
 
-<span class="c1"># coupling resonator to feedline</span>
-<span class="n">q_read</span> <span class="o">=</span> <span class="n">CoupledLineTee</span><span class="p">(</span>
-    <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;Q_Read_T&quot;</span><span class="p">,</span>
-    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-        <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0.0mm&quot;</span><span class="p">,</span>
-        <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0.5mm&quot;</span><span class="p">,</span>
-        <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
-        <span class="n">coupling_space</span><span class="o">=</span><span class="s2">&quot;6um&quot;</span><span class="p">,</span>
-        <span class="n">coupling_length</span><span class="o">=</span><span class="s2">&quot;300um&quot;</span><span class="p">,</span>
-        <span class="n">open_termination</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="p">),</span>
-<span class="p">)</span>
+# coupling resonator to feedline
+q_read = CoupledLineTee(
+    design,
+    &quot;Q_Read_T&quot;,
+    options=dict(
+        pos_x=&quot;0.0mm&quot;,
+        pos_y=&quot;0.5mm&quot;,
+        orientation=&quot;0&quot;,
+        coupling_space=&quot;6um&quot;,
+        coupling_length=&quot;300um&quot;,
+        open_termination=False,
+    ),
+)
 
 
-<span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
+gui.rebuild()
 </pre></div>
 </div>
 </div>
@@ -809,41 +849,41 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Using path finder to connect the two launchpads</span>
-<span class="n">TL_LP1_T</span> <span class="o">=</span> <span class="n">RoutePathfinder</span><span class="p">(</span>
-    <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;TL_LP1_T&quot;</span><span class="p">,</span>
-    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-        <span class="n">chip</span><span class="o">=</span><span class="s2">&quot;main&quot;</span><span class="p">,</span>
-        <span class="n">trace_width</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
-        <span class="n">trace_gap</span><span class="o">=</span><span class="s2">&quot;6um&quot;</span><span class="p">,</span>
-        <span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;99um&quot;</span><span class="p">,</span>
-        <span class="n">hfss_wire_bonds</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">lead</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">end_straight</span><span class="o">=</span><span class="s2">&quot;0.1mm&quot;</span><span class="p">),</span>
-        <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-            <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;LP1&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;tie&quot;</span><span class="p">),</span>
-            <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q_Read_T&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;prime_start&quot;</span><span class="p">),</span>
-        <span class="p">),</span>
-    <span class="p">),</span>
-<span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Using path finder to connect the two launchpads
+TL_LP1_T = RoutePathfinder(
+    design,
+    &quot;TL_LP1_T&quot;,
+    options=dict(
+        chip=&quot;main&quot;,
+        trace_width=&quot;10um&quot;,
+        trace_gap=&quot;6um&quot;,
+        fillet=&quot;99um&quot;,
+        hfss_wire_bonds=True,
+        lead=dict(end_straight=&quot;0.1mm&quot;),
+        pin_inputs=Dict(
+            start_pin=Dict(component=&quot;LP1&quot;, pin=&quot;tie&quot;),
+            end_pin=Dict(component=&quot;Q_Read_T&quot;, pin=&quot;prime_start&quot;),
+        ),
+    ),
+)
 
-<span class="n">TL_T_LP2</span> <span class="o">=</span> <span class="n">RoutePathfinder</span><span class="p">(</span>
-    <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;TL_T_LP2&quot;</span><span class="p">,</span>
-    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-        <span class="n">chip</span><span class="o">=</span><span class="s2">&quot;main&quot;</span><span class="p">,</span>
-        <span class="n">trace_width</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
-        <span class="n">trace_gap</span><span class="o">=</span><span class="s2">&quot;6um&quot;</span><span class="p">,</span>
-        <span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;99um&quot;</span><span class="p">,</span>
-        <span class="n">hfss_wire_bonds</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">lead</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">end_straight</span><span class="o">=</span><span class="s2">&quot;0.1mm&quot;</span><span class="p">),</span>
-        <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-            <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q_Read_T&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;prime_end&quot;</span><span class="p">),</span>
-            <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;LP2&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;tie&quot;</span><span class="p">),</span>
-        <span class="p">),</span>
-    <span class="p">),</span>
-<span class="p">)</span>
-<span class="c1"># # Rebuild the GUI</span>
+TL_T_LP2 = RoutePathfinder(
+    design,
+    &quot;TL_T_LP2&quot;,
+    options=dict(
+        chip=&quot;main&quot;,
+        trace_width=&quot;10um&quot;,
+        trace_gap=&quot;6um&quot;,
+        fillet=&quot;99um&quot;,
+        hfss_wire_bonds=True,
+        lead=dict(end_straight=&quot;0.1mm&quot;),
+        pin_inputs=Dict(
+            start_pin=Dict(component=&quot;Q_Read_T&quot;, pin=&quot;prime_end&quot;),
+            end_pin=Dict(component=&quot;LP2&quot;, pin=&quot;tie&quot;),
+        ),
+    ),
+)
+# # Rebuild the GUI
 </pre></div>
 </div>
 </div>
@@ -851,37 +891,37 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">######################</span>
-<span class="c1"># lambda/4 resonator #</span>
-<span class="c1">######################</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>######################
+# lambda/4 resonator #
+######################
 
-<span class="c1"># First we define the two end-points</span>
-<span class="n">otg</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
-    <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;otg&quot;</span><span class="p">,</span>
-    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">chip</span><span class="o">=</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0.0mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;-0.7mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;-90&quot;</span><span class="p">),</span>
-<span class="p">)</span>
+# First we define the two end-points
+otg = OpenToGround(
+    design,
+    &quot;otg&quot;,
+    options=dict(chip=&quot;main&quot;, pos_x=&quot;0.0mm&quot;, pos_y=&quot;-0.7mm&quot;, orientation=&quot;-90&quot;),
+)
 
-<span class="c1"># Use RouteMeander to fix the total length of the resonator</span>
-<span class="n">rt_meander</span> <span class="o">=</span> <span class="n">RouteMeander</span><span class="p">(</span>
-    <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;meander&quot;</span><span class="p">,</span>
-    <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">trace_width</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
-        <span class="n">trace_gap</span><span class="o">=</span><span class="s2">&quot;6um&quot;</span><span class="p">,</span>
-        <span class="n">total_length</span><span class="o">=</span><span class="s2">&quot;3.7mm&quot;</span><span class="p">,</span>
-        <span class="n">hfss_wire_bonds</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;99 um&quot;</span><span class="p">,</span>
-        <span class="n">lead</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">&quot;250um&quot;</span><span class="p">),</span>
-        <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-            <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;otg&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;open&quot;</span><span class="p">),</span>
-            <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q_Read_T&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;second_end&quot;</span><span class="p">),</span>
-        <span class="p">),</span>
-    <span class="p">),</span>
-<span class="p">)</span>
+# Use RouteMeander to fix the total length of the resonator
+rt_meander = RouteMeander(
+    design,
+    &quot;meander&quot;,
+    Dict(
+        trace_width=&quot;10um&quot;,
+        trace_gap=&quot;6um&quot;,
+        total_length=&quot;3.7mm&quot;,
+        hfss_wire_bonds=True,
+        fillet=&quot;99 um&quot;,
+        lead=dict(start_straight=&quot;250um&quot;),
+        pin_inputs=Dict(
+            start_pin=Dict(component=&quot;otg&quot;, pin=&quot;open&quot;),
+            end_pin=Dict(component=&quot;Q_Read_T&quot;, pin=&quot;second_end&quot;),
+        ),
+    ),
+)
 
-<span class="c1"># rebuild the GUI</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
+# rebuild the GUI
+gui.rebuild()
 </pre></div>
 </div>
 </div>
@@ -889,8 +929,8 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>gui.autoscale()
+gui.screenshot()
 </pre></div>
 </div>
 </div>
@@ -901,11 +941,11 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.quantization</span><span class="w"> </span><span class="kn">import</span> <span class="n">EPRanalysis</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from qiskit_metal.analyses.quantization import EPRanalysis
 
-<span class="n">eig_qb</span> <span class="o">=</span> <span class="n">EPRanalysis</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;hfss&quot;</span><span class="p">)</span>
-<span class="n">hfss</span> <span class="o">=</span> <span class="n">eig_qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">renderer</span>
-<span class="n">hfss</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+eig_qb = EPRanalysis(design, &quot;hfss&quot;)
+hfss = eig_qb.sim.renderer
+hfss.start()
 </pre></div>
 </div>
 </div>
@@ -913,16 +953,16 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">em_p</span> <span class="o">=</span> <span class="n">eig_qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span>
-<span class="n">em_p</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;HangerReso&quot;</span>
-<span class="n">em_p</span><span class="o">.</span><span class="n">min_freq_ghz</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">em_p</span><span class="o">.</span><span class="n">n_modes</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">em_p</span><span class="o">.</span><span class="n">max_passes</span> <span class="o">=</span> <span class="mi">15</span>
-<span class="n">em_p</span><span class="o">.</span><span class="n">max_delta_f</span> <span class="o">=</span> <span class="mf">0.1</span>
-<span class="n">em_p</span><span class="o">.</span><span class="n">min_converged</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">em_p</span><span class="o">.</span><span class="n">basis_order</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="c1"># Design variables can also be added in for direct simulation sweeps.</span>
-<span class="n">em_p</span><span class="o">.</span><span class="n">vars</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">({</span><span class="s2">&quot;Lj&quot;</span><span class="p">:</span> <span class="s2">&quot;0nH&quot;</span><span class="p">,</span> <span class="s2">&quot;Cj&quot;</span><span class="p">:</span> <span class="s2">&quot;0 fF&quot;</span><span class="p">})</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>em_p = eig_qb.sim.setup
+em_p.name = &quot;HangerReso&quot;
+em_p.min_freq_ghz = 1
+em_p.n_modes = 1
+em_p.max_passes = 15
+em_p.max_delta_f = 0.1
+em_p.min_converged = 2
+em_p.basis_order = 2
+# Design variables can also be added in for direct simulation sweeps.
+em_p.vars = Dict({&quot;Lj&quot;: &quot;0nH&quot;, &quot;Cj&quot;: &quot;0 fF&quot;})
 </pre></div>
 </div>
 </div>
@@ -930,15 +970,15 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">_render</span><span class="p">(</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;HangerReso&quot;</span><span class="p">,</span>
-    <span class="n">selection</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">solution_type</span><span class="o">=</span><span class="s2">&quot;eigenmode&quot;</span><span class="p">,</span>
-    <span class="n">vars_to_initialize</span><span class="o">=</span><span class="n">em_p</span><span class="o">.</span><span class="n">vars</span><span class="p">,</span>
-    <span class="n">open_pins</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">port_list</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;LP1&quot;</span><span class="p">,</span> <span class="s2">&quot;in&quot;</span><span class="p">,</span> <span class="s2">&quot;50&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;LP2&quot;</span><span class="p">,</span> <span class="s2">&quot;in&quot;</span><span class="p">,</span> <span class="s2">&quot;50&quot;</span><span class="p">)],</span>
-    <span class="n">box_plus_buffer</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>eig_qb.sim._render(
+    name=&quot;HangerReso&quot;,
+    selection=[],
+    solution_type=&quot;eigenmode&quot;,
+    vars_to_initialize=em_p.vars,
+    open_pins=[],
+    port_list=[(&quot;LP1&quot;, &quot;in&quot;, &quot;50&quot;), (&quot;LP2&quot;, &quot;in&quot;, &quot;50&quot;)],
+    box_plus_buffer=False,
+)
 </pre></div>
 </div>
 </div>
@@ -946,7 +986,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">_analyze</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>eig_qb.sim._analyze()
 </pre></div>
 </div>
 </div>
@@ -954,7 +994,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">plot_convergences</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>eig_qb.sim.plot_convergences()
 </pre></div>
 </div>
 </div>
@@ -962,7 +1002,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># eig_qb.sim.save_screenshot()       #optional</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># eig_qb.sim.save_screenshot()       #optional
 </pre></div>
 </div>
 </div>
@@ -970,7 +1010,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_qb</span><span class="o">.</span><span class="n">get_frequencies</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>eig_qb.get_frequencies()
 </pre></div>
 </div>
 </div>
@@ -978,7 +1018,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hfss</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>hfss.close()
 </pre></div>
 </div>
 </div>
@@ -986,17 +1026,17 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Data obtained during testing</span>
-<span class="c1"># Data ANSYS:</span>
-<span class="c1"># Mesh Size = 50um, Q = 18875, f = 7.3167</span>
-<span class="c1"># Mesh Size = 15um, Q = 4269, f = 7.3031</span>
-<span class="c1"># Mesh Size = 7um, Q = 14943, f = 7.3316</span>
-<span class="c1"># Data COMSOL:</span>
-<span class="c1"># Mesh = Normal, Q = 18858, f = 7.1315</span>
-<span class="c1"># Mesh = Fine, Q = 18584, f = 7.1176</span>
-<span class="c1"># Mesh = Finer, Q = 17042, f = 7.1426</span>
-<span class="c1"># Mesh = Extra Fine, Q = 16986, f = 7.2079</span>
-<span class="c1"># Mesh = Extremely Fine, Q = 14591, f = 7.2092</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Data obtained during testing
+# Data ANSYS:
+# Mesh Size = 50um, Q = 18875, f = 7.3167
+# Mesh Size = 15um, Q = 4269, f = 7.3031
+# Mesh Size = 7um, Q = 14943, f = 7.3316
+# Data COMSOL:
+# Mesh = Normal, Q = 18858, f = 7.1315
+# Mesh = Fine, Q = 18584, f = 7.1176
+# Mesh = Finer, Q = 17042, f = 7.1426
+# Mesh = Extra Fine, Q = 16986, f = 7.2079
+# Mesh = Extremely Fine, Q = 14591, f = 7.2092
 </pre></div>
 </div>
 </div>
@@ -1080,7 +1120,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=b8503983"></script>
+</div><script src="../../_static/documentation_options.js?v=fe7df9b0"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>

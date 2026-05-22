@@ -9,12 +9,28 @@ Quantum Device Design & Analysis (Q-EDA)
 
 .. attention::
 
-    **v0.5 transition in progress.** Qiskit Metal is officially becoming **Quantum Metal**.
-    The Python import path remains ``qiskit_metal`` for now; a follow-up release will update it.
-    The PyPI package ``qiskit-metal`` stays archived at the pre-0.5 state—install v0.5 **from source**
-    via the :doc:`installation </installation>` guide. For details on the transition and the roadmap, see the :doc:`Roadmap </workflow>`. 
-    
-    **Breaking changes should be expected at least until v0.6.** Thereafter, patch version updates (v0.6.x) will maintain compatibility with the previous version. Minor version updates (v0.x.y) will add new features with potential breaking changes. We will switch to `SemVer <https://semver.org>`_ or `EffVer <https://jacobtomlinson.dev/effver/>`_ for versioning after v1.0 (release date TBD).
+    **Rebrand in progress: Qiskit Metal → Quantum Metal.** The PyPI
+    package ``quantum-metal`` is the canonical wheel as of v0.5+
+    (``qiskit-metal`` remains archived at its pre-0.5 state).
+
+    A future major release (**target v0.8 or v1.0**) will rename
+    the Python import path from ``qiskit_metal`` to
+    ``quantum_metal`` to match. ``import qiskit_metal`` raises a
+    ``FutureWarning`` advertising this — plan to update your
+    imports ahead of that release. Silence the warning with
+    ``QISKIT_METAL_SUPPRESS_RENAME_WARNING=1``.
+
+    See :doc:`installation` for the install pathway cards and
+    :doc:`migration-to-v0.7.0` for the v0.6 → v0.7 migration
+    recipes.
+
+.. tip::
+
+    **v0.7.0 is lite-by-default.** ``pip install quantum-metal``
+    is now small and fast — no Qt, no Ansys, no gmsh. Add extras
+    (``[gui]`` / ``[ansys]`` / ``[fem]`` / ``[full]``) for the
+    backends you actually need. See :doc:`installation` for the
+    full card grid.
 
 .. hint::
     **Community support?**

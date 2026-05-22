@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="The Cross Resonance (CR) Gate" href="Design-and-Simulation-of-a-Cross-Resonance-Gate.html"><link rel="prev" title="Transmon Analytics" href="4.33-Transmon-analytics.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>Modeling transmon qubit Cooper-pair box Hamiltonian in the charge basis - Quantum Metal 0.6.3</title>
+        <title>Modeling transmon qubit Cooper-pair box Hamiltonian in the charge basis - Quantum Metal 0.7.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
@@ -156,7 +156,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">Quantum Metal 0.6.3</div></a>
+      <a href="../../index.html"><div class="brand">Quantum Metal 0.7.0</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -178,7 +178,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
   
-  <span class="sidebar-brand-text">Quantum Metal 0.6.3</span>
+  <span class="sidebar-brand-text">Quantum Metal 0.7.0</span>
   
 </a>
 <form class="sidebar-search-container" method="get" action="../../search.html" role="search">
@@ -448,8 +448,24 @@
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QRenderer.html">QRenderer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QRendererGui.html">QRendererGui</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QRendererAnalysis.html">QRendererAnalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.PlotCanvas.html">PlotCanvas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.MplInteraction.html">MplInteraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.ZoomOnWheel.html">ZoomOnWheel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.PanAndZoom.html">PanAndZoom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QMplRenderer.html">QMplRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.AnimatedText.html">AnimatedText</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QGDSRenderer.html">QGDSRenderer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.Cheesing.html">Cheesing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QAnsysRenderer.html">QAnsysRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QHFSSRenderer.html">QHFSSRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QQ3DRenderer.html">QQ3DRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QPyaedt.html">QPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QQ3DPyaedt.html">QQ3DPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QHFSSPyaedt.html">QHFSSPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.html">QHFSSDrivenmodalPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QHFSSEigenmodePyaedt.html">QHFSSEigenmodePyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QGmshRenderer.html">QGmshRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.Vec3DArray.html">Vec3DArray</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/toolbox_metal.html">Toolbox</a><input aria-label="Toggle navigation of Toolbox" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -468,13 +484,17 @@
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html">QGeometryTables</a></li>
 </ul>
 </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/gui.html">GUI</a><input aria-label="Toggle navigation of GUI" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal._gui.MetalGUI.html">MetalGUI</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/Qiskit/qiskit/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../apidocs/analyses.html">Analyses (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.analyses</span></code>)</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/designs.html">Designs (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.designs</span></code>)</a><input aria-label="Toggle navigation of Designs (qiskit_metal.designs)" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/designs.html">Designs (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.designs</span></code>)</a><input aria-label="Toggle navigation of Designs (qiskit_metal.designs)" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.designs.QDesign.html">QDesign</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.designs.DesignPlanar.html">DesignPlanar</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.designs.MultiPlanar.html">MultiPlanar</a></li>
@@ -483,7 +503,11 @@
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.designs.Components.html">Components</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/qgeometries.html">QGeometryTables (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.qgeometries</span></code>)</a><input aria-label="Toggle navigation of QGeometryTables (qiskit_metal.qgeometries)" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/gui.html">GUI (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal._gui</span></code>)</a><input aria-label="Toggle navigation of GUI (qiskit_metal._gui)" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal._gui.MetalGUI.html">MetalGUI</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/qgeometries.html">QGeometryTables (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.qgeometries</span></code>)</a><input aria-label="Toggle navigation of QGeometryTables (qiskit_metal.qgeometries)" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html">QGeometryTables</a></li>
 </ul>
 </li>
@@ -587,7 +611,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.layer_stack_handler.html">layer_stack_handler</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.math_and_overrides.html">math_and_overrides</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.parsing.html">parsing</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/qlibrary.html">QLibrary (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.qlibrary</span></code>)</a><input aria-label="Toggle navigation of QLibrary (qiskit_metal.qlibrary)" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/qlibrary.html">QLibrary (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.qlibrary</span></code>)</a><input aria-label="Toggle navigation of QLibrary (qiskit_metal.qlibrary)" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.QComponent.html">QComponent</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.ParsedDynamicAttributes_Component.html">ParsedDynamicAttributes_Component</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.BaseQubit.html">BaseQubit</a></li>
@@ -638,15 +662,31 @@
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.anchored_path.html">anchored_path</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/renderers.html">Renderers (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.renderers</span></code>)</a><input aria-label="Toggle navigation of Renderers (qiskit_metal.renderers)" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/renderers.html">Renderers (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.renderers</span></code>)</a><input aria-label="Toggle navigation of Renderers (qiskit_metal.renderers)" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QRenderer.html">QRenderer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QRendererGui.html">QRendererGui</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QRendererAnalysis.html">QRendererAnalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.PlotCanvas.html">PlotCanvas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.MplInteraction.html">MplInteraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.ZoomOnWheel.html">ZoomOnWheel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.PanAndZoom.html">PanAndZoom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QMplRenderer.html">QMplRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.AnimatedText.html">AnimatedText</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QGDSRenderer.html">QGDSRenderer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.Cheesing.html">Cheesing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QAnsysRenderer.html">QAnsysRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QHFSSRenderer.html">QHFSSRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QQ3DRenderer.html">QQ3DRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QPyaedt.html">QPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QQ3DPyaedt.html">QQ3DPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QHFSSPyaedt.html">QHFSSPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.html">QHFSSDrivenmodalPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QHFSSEigenmodePyaedt.html">QHFSSEigenmodePyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QGmshRenderer.html">QGmshRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.Vec3DArray.html">Vec3DArray</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/toolbox_metal.html">Toolbox_metal (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.toolbox_metal</span></code>)</a><input aria-label="Toggle navigation of Toolbox_metal (qiskit_metal.toolbox_metal)" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/toolbox_metal.html">Toolbox_metal (<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.toolbox_metal</span></code>)</a><input aria-label="Toggle navigation of Toolbox_metal (qiskit_metal.toolbox_metal)" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.QiskitMetalExceptions.html">QiskitMetalExceptions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.QiskitMetalDesignError.html">QiskitMetalDesignError</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.about.html">about</a></li>
@@ -744,18 +784,18 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
-<span class="o">%</span><span class="k">autoreload</span> 2
-<span class="o">%</span><span class="k">config</span> IPCompleter.greedy = True
-<span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="o">%</span><span class="k">config</span> Completer.use_jedi = False
-<span class="o">%</span><span class="k">config</span> InlineBackend.figure_format = &#39;svg&#39;
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>%load_ext autoreload
+%autoreload 2
+%config IPCompleter.greedy = True
+%matplotlib inline
+%config Completer.use_jedi = False
+%config InlineBackend.figure_format = &#39;svg&#39;
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.hamiltonian.transmon_charge_basis</span><span class="w"> </span><span class="kn">import</span> <span class="n">Hcpb</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.hamiltonian.transmon_CPB_analytic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Hcpb_analytic</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+from qiskit_metal.analyses.hamiltonian.transmon_charge_basis import Hcpb
+from qiskit_metal.analyses.hamiltonian.transmon_CPB_analytic import Hcpb_analytic
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
 </pre></div>
 </div>
 </div>
@@ -779,9 +819,9 @@ energy:</p>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>  <span class="c1"># this represents the charging energy (ng)</span>
-<span class="n">H_norm</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>  <span class="c1"># Hamiltonian definition</span>
-<span class="n">norm</span> <span class="o">=</span> <span class="n">H_norm</span><span class="o">.</span><span class="n">fij</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># normalization constant</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>x = np.linspace(-2.0, 2.0, 101)  # this represents the charging energy (ng)
+H_norm = Hcpb(nlevels=2, Ej=1000.0, Ec=1000.0, ng=0.5)  # Hamiltonian definition
+norm = H_norm.fij(0, 1)  # normalization constant
 </pre></div>
 </div>
 </div>
@@ -790,24 +830,24 @@ energy:</p>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">E0</span><span class="p">,</span> <span class="n">E1</span><span class="p">,</span> <span class="n">E2</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>E0, E1, E2 = [], [], []
 
-<span class="c1"># For a given value of offset charge (ng, represented by x) we will calculate the CPB Hamiltonian using the previously assigned values of E_J and E_C. Then we calculate the eigenvalue for a given value of m.</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
-    <span class="n">H</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
-    <span class="n">E0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">norm</span><span class="p">)</span>
-    <span class="n">E1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">norm</span><span class="p">)</span>
-    <span class="n">E2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">norm</span><span class="p">)</span>
+# For a given value of offset charge (ng, represented by x) we will calculate the CPB Hamiltonian using the previously assigned values of E_J and E_C. Then we calculate the eigenvalue for a given value of m.
+for i in x:
+    H = Hcpb(nlevels=3, Ej=1000.0, Ec=1000.0, ng=i)
+    E0.append(H.evalue_k(0) / norm)
+    E1.append(H.evalue_k(1) / norm)
+    E2.append(H.evalue_k(2) / norm)
 
-<span class="c1"># define the minimum of E0 and set this to E=0</span>
-<span class="n">floor</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">E0</span><span class="p">)</span>
+# define the minimum of E0 and set this to E=0
+floor = min(E0)
 
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">E0</span> <span class="o">-</span> <span class="n">floor</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;m=0&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">E1</span> <span class="o">-</span> <span class="n">floor</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;m=1&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">E2</span> <span class="o">-</span> <span class="n">floor</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;m=2&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;ng&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Em/E01&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Energy Level:&quot;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+plt.plot(x, E0 - floor, &quot;k&quot;, label=&quot;m=0&quot;)
+plt.plot(x, E1 - floor, &quot;r&quot;, label=&quot;m=1&quot;)
+plt.plot(x, E2 - floor, &quot;b&quot;, label=&quot;m=2&quot;)
+plt.xlabel(&quot;ng&quot;)
+plt.ylabel(&quot;Em/E01&quot;)
+plt.legend(title=&quot;Energy Level:&quot;, loc=&quot;upper right&quot;)
 </pre></div>
 </div>
 </div>
@@ -834,19 +874,19 @@ energy:</p>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># this is using the Hcpb approach as above, solving the charge basis tridiagonal eigenvalue problem:</span>
-<span class="n">H_CPB</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="mf">13971.3</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="mf">295.2</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># this is using the Hcpb approach as above, solving the charge basis tridiagonal eigenvalue problem:
+H_CPB = Hcpb(nlevels=15, Ej=13971.3, Ec=295.2, ng=0.0)
 
-<span class="c1"># this using the Hcpb_analytic class, which solves using the exact (analytic) solutions in terms of Mathieu characteristic values:</span>
-<span class="n">H_CPB_analytic</span> <span class="o">=</span> <span class="n">Hcpb_analytic</span><span class="p">(</span><span class="n">Ej</span><span class="o">=</span><span class="mf">13971.3</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="mf">295.2</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+# this using the Hcpb_analytic class, which solves using the exact (analytic) solutions in terms of Mathieu characteristic values:
+H_CPB_analytic = Hcpb_analytic(Ej=13971.3, Ec=295.2, ng=0.0)
 
-<span class="c1"># print and compare energies</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;E0 (HCPB):&quot;</span><span class="p">,</span> <span class="n">H_CPB</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;E0 (HCPB analytic):&quot;</span><span class="p">,</span> <span class="n">H_CPB_analytic</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span>
-    <span class="s2">&quot;Error:&quot;</span><span class="p">,</span>
-    <span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="n">H_CPB_analytic</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">H_CPB</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="n">H_CPB_analytic</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
-<span class="p">)</span>
+# print and compare energies
+print(&quot;E0 (HCPB):&quot;, H_CPB.evalue_k(0))
+print(&quot;E0 (HCPB analytic):&quot;, H_CPB_analytic.evalue_k(0))
+print(
+    &quot;Error:&quot;,
+    100 * (H_CPB_analytic.evalue_k(0) - H_CPB.evalue_k(0)) / H_CPB_analytic.evalue_k(0),
+)
 </pre></div>
 </div>
 </div>
@@ -869,13 +909,13 @@ Error: -1.6277142726798518e-14
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">H</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="mf">13971.3</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="mf">295.2</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">Transmon frequencies</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>H = Hcpb(nlevels=3, Ej=13971.3, Ec=295.2, ng=0.001)
+print(f&quot;&quot;&quot;
+Transmon frequencies
 
-<span class="s2"> ω01/2π = </span><span class="si">{</span><span class="n">H</span><span class="o">.</span><span class="n">fij</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="si">:</span><span class="s2"> 6.0f</span><span class="si">}</span><span class="s2"> MHz</span>
-<span class="s2">   α/2π = </span><span class="si">{</span><span class="n">H</span><span class="o">.</span><span class="n">anharm</span><span class="p">()</span><span class="si">:</span><span class="s2"> 6.0f</span><span class="si">}</span><span class="s2"> MHz</span>
-<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+ ω01/2π = {H.fij(0, 1): 6.0f} MHz
+   α/2π = {H.anharm(): 6.0f} MHz
+&quot;&quot;&quot;)
 </pre></div>
 </div>
 </div>
@@ -898,16 +938,16 @@ Transmon frequencies
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import matplotlib.pyplot as plt
 
-<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
-    <span class="n">ψ</span><span class="p">,</span> <span class="n">θ</span> <span class="o">=</span> <span class="n">H</span><span class="o">.</span><span class="n">psi_k</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-        <span class="n">θ</span><span class="p">,</span> <span class="n">ψ</span><span class="o">.</span><span class="n">real</span> <span class="o">+</span> <span class="n">ψ</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;|</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&gt;&quot;</span>
-    <span class="p">)</span>  <span class="c1"># it&#39;s in either quadrature, but not both</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Junction phase θ (wrapped in the interval [-π, π])&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Re(ψ(θ))&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Level&quot;</span><span class="p">)</span>
+for k in range(3):
+    ψ, θ = H.psi_k(k, 101)
+    plt.plot(
+        θ, ψ.real + ψ.imag, label=f&quot;|{k}&gt;&quot;
+    )  # it&#39;s in either quadrature, but not both
+plt.xlabel(&quot;Junction phase θ (wrapped in the interval [-π, π])&quot;)
+plt.ylabel(&quot;Re(ψ(θ))&quot;)
+plt.legend(title=&quot;Level&quot;)
 </pre></div>
 </div>
 </div>
@@ -935,9 +975,9 @@ Transmon frequencies
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Psi0</span><span class="p">,</span> <span class="n">theta0</span> <span class="o">=</span> <span class="n">H</span><span class="o">.</span><span class="n">psi_k</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">Psi1</span><span class="p">,</span> <span class="n">theta1</span> <span class="o">=</span> <span class="n">H</span><span class="o">.</span><span class="n">psi_k</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Psi0</span><span class="p">,</span> <span class="n">Psi1</span><span class="o">.</span><span class="n">conj</span><span class="p">()))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>Psi0, theta0 = H.psi_k(0)
+Psi1, theta1 = H.psi_k(1)
+print(np.dot(Psi0, Psi1.conj()))
 </pre></div>
 </div>
 </div>
@@ -954,8 +994,8 @@ Transmon frequencies
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Psi0</span><span class="p">,</span> <span class="n">Psi0</span><span class="o">.</span><span class="n">conj</span><span class="p">()))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Psi1</span><span class="p">,</span> <span class="n">Psi1</span><span class="o">.</span><span class="n">conj</span><span class="p">()))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>print(np.dot(Psi0, Psi0.conj()))
+print(np.dot(Psi1, Psi1.conj()))
 </pre></div>
 </div>
 </div>
@@ -981,14 +1021,14 @@ Transmon frequencies
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">E_c</span> <span class="o">=</span> <span class="mf">100.0</span>  <span class="c1"># charging energy</span>
-<span class="n">epsilon0</span><span class="p">,</span> <span class="n">epsilon1</span><span class="p">,</span> <span class="n">epsilon2</span><span class="p">,</span> <span class="n">epsilon3</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="p">[],</span>
-    <span class="p">[],</span>
-    <span class="p">[],</span>
-    <span class="p">[],</span>
-<span class="p">)</span>  <span class="c1"># charge dispersion for m=0 through m=4</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">140</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>  <span class="c1"># this this ratio of Ej/Ec which will go on the x-axis.</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>E_c = 100.0  # charging energy
+epsilon0, epsilon1, epsilon2, epsilon3 = (
+    [],
+    [],
+    [],
+    [],
+)  # charge dispersion for m=0 through m=4
+x = np.linspace(1, 140, 101)  # this this ratio of Ej/Ec which will go on the x-axis.
 </pre></div>
 </div>
 </div>
@@ -997,18 +1037,18 @@ Transmon frequencies
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
-    <span class="n">E_j</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="n">E_c</span>
-    <span class="n">H_zero</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="n">i</span> <span class="o">*</span> <span class="n">E_c</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="n">E_c</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
-    <span class="n">H_half</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="n">i</span> <span class="o">*</span> <span class="n">E_c</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="n">E_c</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>for i in x:
+    E_j = i * E_c
+    H_zero = Hcpb(nlevels=15, Ej=i * E_c, Ec=E_c, ng=0.0)
+    H_half = Hcpb(nlevels=15, Ej=i * E_c, Ec=E_c, ng=0.5)
 
-    <span class="n">H_norm</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="n">i</span> <span class="o">*</span> <span class="n">E_c</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="n">E_c</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-    <span class="n">norm</span> <span class="o">=</span> <span class="n">H_norm</span><span class="o">.</span><span class="n">fij</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># normalization constant</span>
+    H_norm = Hcpb(nlevels=15, Ej=i * E_c, Ec=E_c, ng=0.5)
+    norm = H_norm.fij(0, 1)  # normalization constant
 
-    <span class="n">epsilon0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">H_half</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">H_zero</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="n">norm</span><span class="p">)</span>
-    <span class="n">epsilon1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">H_half</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">H_zero</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="n">norm</span><span class="p">)</span>
-    <span class="n">epsilon2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">H_half</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">H_zero</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="n">norm</span><span class="p">)</span>
-    <span class="n">epsilon3</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">H_half</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">-</span> <span class="n">H_zero</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span> <span class="o">/</span> <span class="n">norm</span><span class="p">)</span>
+    epsilon0.append(abs(H_half.evalue_k(0) - H_zero.evalue_k(0)) / norm)
+    epsilon1.append(abs(H_half.evalue_k(1) - H_zero.evalue_k(1)) / norm)
+    epsilon2.append(abs(H_half.evalue_k(2) - H_zero.evalue_k(2)) / norm)
+    epsilon3.append(abs(H_half.evalue_k(3) - H_zero.evalue_k(3)) / norm)
 </pre></div>
 </div>
 </div>
@@ -1017,14 +1057,14 @@ Transmon frequencies
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">epsilon0</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;m=0&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">epsilon1</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;m=1&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">epsilon2</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;m=2&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">epsilon3</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;m=3&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;EJ/Ec&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Epsilon/E01&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Energy Level&quot;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>plt.plot(x, epsilon0, &quot;k&quot;, label=&quot;m=0&quot;)
+plt.plot(x, epsilon1, &quot;b&quot;, label=&quot;m=1&quot;)
+plt.plot(x, epsilon2, &quot;r&quot;, label=&quot;m=2&quot;)
+plt.plot(x, epsilon3, &quot;g&quot;, label=&quot;m=3&quot;)
+plt.yscale(&quot;log&quot;)
+plt.xlabel(&quot;EJ/Ec&quot;)
+plt.ylabel(&quot;Epsilon/E01&quot;)
+plt.legend(title=&quot;Energy Level&quot;, loc=&quot;upper right&quot;)
 </pre></div>
 </div>
 </div>
@@ -1051,8 +1091,8 @@ Transmon frequencies
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">E00</span><span class="p">,</span> <span class="n">E10</span><span class="p">,</span> <span class="n">E20</span><span class="p">,</span> <span class="n">E30</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
-<span class="n">E0</span><span class="p">,</span> <span class="n">E1</span><span class="p">,</span> <span class="n">E2</span><span class="p">,</span> <span class="n">E3</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>E00, E10, E20, E30 = [], [], [], []
+E0, E1, E2, E3 = [], [], [], []
 </pre></div>
 </div>
 </div>
@@ -1061,16 +1101,16 @@ Transmon frequencies
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
-    <span class="n">H</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="n">i</span> <span class="o">*</span> <span class="n">E_c</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="n">E_c</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-    <span class="n">E0</span> <span class="o">=</span> <span class="n">H</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">E1</span> <span class="o">=</span> <span class="n">H</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">E2</span> <span class="o">=</span> <span class="n">H</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-    <span class="n">E3</span> <span class="o">=</span> <span class="n">H</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-    <span class="n">E00</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">E0</span> <span class="o">-</span> <span class="n">E0</span><span class="p">)</span> <span class="o">/</span> <span class="n">E_c</span><span class="p">)</span>
-    <span class="n">E10</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">E1</span> <span class="o">-</span> <span class="n">E0</span><span class="p">)</span> <span class="o">/</span> <span class="n">E_c</span><span class="p">)</span>
-    <span class="n">E20</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">E2</span> <span class="o">-</span> <span class="n">E0</span><span class="p">)</span> <span class="o">/</span> <span class="n">E_c</span><span class="p">)</span>
-    <span class="n">E30</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">E3</span> <span class="o">-</span> <span class="n">E0</span><span class="p">)</span> <span class="o">/</span> <span class="n">E_c</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>for i in x:
+    H = Hcpb(nlevels=15, Ej=i * E_c, Ec=E_c, ng=0.5)
+    E0 = H.evalue_k(0)
+    E1 = H.evalue_k(1)
+    E2 = H.evalue_k(2)
+    E3 = H.evalue_k(3)
+    E00.append((E0 - E0) / E_c)
+    E10.append((E1 - E0) / E_c)
+    E20.append((E2 - E0) / E_c)
+    E30.append((E3 - E0) / E_c)
 </pre></div>
 </div>
 </div>
@@ -1079,13 +1119,13 @@ Transmon frequencies
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">E00</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;m0&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">E10</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;m=1&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">E20</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;m=2&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">E30</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;m=3&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Ej/Ec&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Em0/Ec&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Energy Levels&quot;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>plt.plot(x, E00, &quot;k&quot;, label=&quot;m0&quot;)
+plt.plot(x, E10, &quot;b&quot;, label=&quot;m=1&quot;)
+plt.plot(x, E20, &quot;g&quot;, label=&quot;m=2&quot;)
+plt.plot(x, E30, &quot;r&quot;, label=&quot;m=3&quot;)
+plt.xlabel(&quot;Ej/Ec&quot;)
+plt.ylabel(&quot;Em0/Ec&quot;)
+plt.legend(title=&quot;Energy Levels&quot;, loc=&quot;upper right&quot;)
 </pre></div>
 </div>
 </div>
@@ -1114,9 +1154,9 @@ anharmonicity is defined as <span class="math notranslate nohighlight">\(\alpha_
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>  <span class="c1"># EJ/EC</span>
-<span class="n">alpha</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">alpha_r</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>x = np.linspace(0, 80, 101)  # EJ/EC
+alpha = []
+alpha_r = []
 </pre></div>
 </div>
 </div>
@@ -1125,10 +1165,10 @@ anharmonicity is defined as <span class="math notranslate nohighlight">\(\alpha_
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
-    <span class="n">H_anharm</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="n">i</span> <span class="o">*</span> <span class="n">E_c</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="n">E_c</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-    <span class="n">alpha</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">H_anharm</span><span class="o">.</span><span class="n">anharm</span><span class="p">())</span>
-    <span class="n">alpha_r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">H_anharm</span><span class="o">.</span><span class="n">anharm</span><span class="p">()</span> <span class="o">/</span> <span class="n">H_anharm</span><span class="o">.</span><span class="n">fij</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>for i in x:
+    H_anharm = Hcpb(nlevels=15, Ej=i * E_c, Ec=E_c, ng=0.5)
+    alpha.append(H_anharm.anharm())
+    alpha_r.append(H_anharm.anharm() / H_anharm.fij(0, 1))
 </pre></div>
 </div>
 </div>
@@ -1147,16 +1187,16 @@ WARNING:py.warnings:C:\Users\NICKLANZILLO\Anaconda3\envs\metal2\lib\site-package
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">131</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Ej/Ec&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;alpha&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">133</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">alpha_r</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Ej/Ec&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;alpha_r&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>plt.figure(1)
+plt.subplot(131)
+plt.plot(x, alpha)
+plt.xlabel(&quot;Ej/Ec&quot;)
+plt.ylabel(&quot;alpha&quot;)
+plt.subplot(133)
+plt.plot(x, alpha_r)
+plt.ylim(-0.2, 1.0)
+plt.xlabel(&quot;Ej/Ec&quot;)
+plt.ylabel(&quot;alpha_r&quot;)
 </pre></div>
 </div>
 </div>
@@ -1184,8 +1224,8 @@ Text(0, 0.5, &#39;alpha_r&#39;)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>  <span class="c1"># ratio of Ej/Ec, varying from 0 to 80</span>
-<span class="n">T2</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># empty list for T2</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>x = np.linspace(0, 80, 101)  # ratio of Ej/Ec, varying from 0 to 80
+T2 = []  # empty list for T2
 </pre></div>
 </div>
 </div>
@@ -1194,17 +1234,17 @@ Text(0, 0.5, &#39;alpha_r&#39;)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">E_c</span> <span class="o">=</span> <span class="mf">1000.0</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
-    <span class="n">H_half</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="n">i</span> <span class="o">*</span> <span class="n">E_c</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="n">E_c</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-    <span class="n">H_zero</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="n">i</span> <span class="o">*</span> <span class="n">E_c</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="n">E_c</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
-    <span class="n">eps</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">H_half</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">H_zero</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
-    <span class="n">T2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1e-4</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1e6</span><span class="p">)</span> <span class="o">*</span> <span class="n">eps</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>E_c = 1000.0
+for i in x:
+    H_half = Hcpb(nlevels=15, Ej=i * E_c, Ec=E_c, ng=0.5)
+    H_zero = Hcpb(nlevels=15, Ej=i * E_c, Ec=E_c, ng=0.0)
+    eps = abs(H_half.evalue_k(1) - H_zero.evalue_k(1))
+    T2.append(1.0 / (2.0 * (1e-4) * (1e6) * eps))
 
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">T2</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Ej/Ec&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;T2 (sec)&quot;</span><span class="p">)</span>
+plt.plot(x, T2)
+plt.yscale(&quot;log&quot;)
+plt.xlabel(&quot;Ej/Ec&quot;)
+plt.ylabel(&quot;T2 (sec)&quot;)
 </pre></div>
 </div>
 </div>
@@ -1235,7 +1275,7 @@ Text(0, 0.5, &#39;T2 (sec)&#39;)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">H</span><span class="o">.</span><span class="n">h0_to_qutip</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>H.h0_to_qutip(6)
 </pre></div>
 </div>
 </div>
@@ -1257,7 +1297,7 @@ Quantum object: dims = [[6], [6]], shape = (6, 6), type = oper, isherm = True\be
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">H</span><span class="o">.</span><span class="n">n_to_qutip</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>H.n_to_qutip(6)
 </pre></div>
 </div>
 </div>
@@ -1277,11 +1317,11 @@ Quantum object: dims = [[6], [6]], shape = (6, 6), type = oper, isherm = True\be
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
-<span class="n">E_c</span> <span class="o">=</span> <span class="mf">350.0</span>
-<span class="n">var0</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">var1</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">var2</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>x = np.linspace(1, 120, 101)
+E_c = 350.0
+var0 = []
+var1 = []
+var2 = []
 </pre></div>
 </div>
 </div>
@@ -1290,16 +1330,16 @@ Quantum object: dims = [[6], [6]], shape = (6, 6), type = oper, isherm = True\be
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
-    <span class="n">H</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="n">i</span> <span class="o">*</span> <span class="n">E_c</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="n">E_c</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-    <span class="n">n_squared</span> <span class="o">=</span> <span class="n">H</span><span class="o">.</span><span class="n">n_to_qutip</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="o">*</span> <span class="n">H</span><span class="o">.</span><span class="n">n_to_qutip</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="n">H</span><span class="o">.</span><span class="n">n_to_qutip</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
-    <span class="n">fluc0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">n_squared</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])))</span>
-    <span class="n">fluc1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">n_squared</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])))</span>
-    <span class="n">fluc2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">n_squared</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">])))</span>
-    <span class="n">var0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fluc0</span><span class="p">)</span>
-    <span class="n">var1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fluc1</span><span class="p">)</span>
-    <span class="n">var2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fluc2</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>for i in x:
+    H = Hcpb(nlevels=15, Ej=i * E_c, Ec=E_c, ng=0.5)
+    n_squared = H.n_to_qutip(6) * H.n_to_qutip(6)
+    n = H.n_to_qutip(6)
+    fluc0 = np.sqrt(np.real(n_squared[0, 0] - (n[0, 0]) * (n[0, 0])))
+    fluc1 = np.sqrt(np.real(n_squared[1, 1] - (n[1, 1]) * (n[1, 1])))
+    fluc2 = np.sqrt(np.real(n_squared[2, 2] - (n[2, 2]) * (n[2, 2])))
+    var0.append(fluc0)
+    var1.append(fluc1)
+    var2.append(fluc2)
 </pre></div>
 </div>
 </div>
@@ -1308,12 +1348,12 @@ Quantum object: dims = [[6], [6]], shape = (6, 6), type = oper, isherm = True\be
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">var0</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;m=0&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">var1</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;m=1&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">var2</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;m=2&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Ej/Ec&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Variance&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Energy Levels&quot;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>plt.plot(x, var0, &quot;k&quot;, label=&quot;m=0&quot;)
+plt.plot(x, var1, &quot;r&quot;, label=&quot;m=1&quot;)
+plt.plot(x, var2, &quot;b&quot;, label=&quot;m=2&quot;)
+plt.xlabel(&quot;Ej/Ec&quot;)
+plt.ylabel(&quot;Variance&quot;)
+plt.legend(title=&quot;Energy Levels&quot;, loc=&quot;upper right&quot;)
 </pre></div>
 </div>
 </div>
@@ -1339,18 +1379,18 @@ Quantum object: dims = [[6], [6]], shape = (6, 6), type = oper, isherm = True\be
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m10</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">m20</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">m30</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">m21</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>m10 = []
+m20 = []
+m30 = []
+m21 = []
 
-<span class="c1"># For a given value of offset charge (ng, represented by x) we will calculate the CPB Hamiltonian using the previously assigned values of E_J and E_C. Then we calculate the eigenvalue for a given value of m.</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
-    <span class="n">H</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="n">i</span> <span class="o">*</span> <span class="n">E_c</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="n">E_c</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-    <span class="n">m10</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">n_to_qutip</span><span class="p">(</span><span class="mi">6</span><span class="p">)[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
-    <span class="n">m20</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">n_to_qutip</span><span class="p">(</span><span class="mi">6</span><span class="p">)[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
-    <span class="n">m30</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">n_to_qutip</span><span class="p">(</span><span class="mi">6</span><span class="p">)[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
-    <span class="n">m21</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">n_to_qutip</span><span class="p">(</span><span class="mi">6</span><span class="p">)[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))</span>
+# For a given value of offset charge (ng, represented by x) we will calculate the CPB Hamiltonian using the previously assigned values of E_J and E_C. Then we calculate the eigenvalue for a given value of m.
+for i in x:
+    H = Hcpb(nlevels=15, Ej=i * E_c, Ec=E_c, ng=0.5)
+    m10.append(np.real(H.n_to_qutip(6)[1, 0]))
+    m20.append(np.real(H.n_to_qutip(6)[2, 0]))
+    m30.append(np.real(H.n_to_qutip(6)[3, 0]))
+    m21.append(np.real(H.n_to_qutip(6)[2, 1]))
 </pre></div>
 </div>
 </div>
@@ -1359,13 +1399,13 @@ Quantum object: dims = [[6], [6]], shape = (6, 6), type = oper, isherm = True\be
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">m10</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;&lt;1|n|0&gt;&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">m20</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;&lt;2|n|0&gt;&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">m30</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;&lt;3|n|0&gt;&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">m21</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;&lt;2|n|1&gt;&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Ej/Ec&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;&lt;i|n|j&gt;&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Energy Levels&quot;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>plt.plot(x, m10, &quot;k&quot;, label=&quot;&lt;1|n|0&gt;&quot;)
+plt.plot(x, m20, &quot;r&quot;, label=&quot;&lt;2|n|0&gt;&quot;)
+plt.plot(x, m30, &quot;y&quot;, label=&quot;&lt;3|n|0&gt;&quot;)
+plt.plot(x, m21, &quot;b&quot;, label=&quot;&lt;2|n|1&gt;&quot;)
+plt.xlabel(&quot;Ej/Ec&quot;)
+plt.ylabel(&quot;&lt;i|n|j&gt;&quot;)
+plt.legend(title=&quot;Energy Levels&quot;, loc=&quot;upper right&quot;)
 </pre></div>
 </div>
 </div>
@@ -1395,11 +1435,11 @@ Quantum object: dims = [[6], [6]], shape = (6, 6), type = oper, isherm = True\be
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 13971.3, Ec=295.2</span>
-<span class="n">ω</span><span class="p">,</span> <span class="n">α</span> <span class="o">=</span> <span class="mi">5431</span><span class="p">,</span> <span class="o">-</span><span class="mi">341</span>
-<span class="n">EjEc</span> <span class="o">=</span> <span class="n">H</span><span class="o">.</span><span class="n">params_from_spectrum</span><span class="p">(</span><span class="n">ω</span><span class="p">,</span> <span class="n">α</span><span class="p">)</span>  <span class="c1"># set self.Ej, Cj</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">EjEc</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;transmon frequency:&quot;</span><span class="p">,</span> <span class="n">H</span><span class="o">.</span><span class="n">fij</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;anharmonicity:&quot;</span><span class="p">,</span> <span class="n">H</span><span class="o">.</span><span class="n">anharm</span><span class="p">())</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># 13971.3, Ec=295.2
+ω, α = 5431, -341
+EjEc = H.params_from_spectrum(ω, α)  # set self.Ej, Cj
+print(EjEc)
+print(&quot;transmon frequency:&quot;, H.fij(0, 1), &quot;anharmonicity:&quot;, H.anharm())
 </pre></div>
 </div>
 </div>
@@ -1417,8 +1457,8 @@ transmon frequency: 5431.003285965414 anharmonicity: -340.9980226844036
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Ej</span> <span class="o">=</span> <span class="n">H</span><span class="o">.</span><span class="n">params_from_freq_fixEC</span><span class="p">(</span><span class="n">ω</span><span class="p">,</span> <span class="mf">295.17</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Ej:&quot;</span><span class="p">,</span> <span class="n">Ej</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>Ej = H.params_from_freq_fixEC(ω, 295.17)
+print(&quot;Ej:&quot;, Ej)
 </pre></div>
 </div>
 </div>
@@ -1439,7 +1479,7 @@ Ej: 14424.680512350775
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">scqubits</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">scq</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import scqubits as scq
 </pre></div>
 </div>
 </div>
@@ -1447,16 +1487,16 @@ Ej: 14424.680512350775
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qubit</span> <span class="o">=</span> <span class="n">scq</span><span class="o">.</span><span class="n">Transmon</span><span class="p">(</span>
-    <span class="n">EJ</span><span class="o">=</span><span class="mf">13.97124102543</span><span class="p">,</span>
-    <span class="n">EC</span><span class="o">=</span><span class="mf">0.295179</span><span class="p">,</span>
-    <span class="n">ng</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
-    <span class="n">ncut</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
-    <span class="n">truncated_dim</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>  <span class="c1"># after diagonalization, we will keep 3 levels</span>
-<span class="p">)</span>
-<span class="n">evals</span> <span class="o">=</span> <span class="n">qubit</span><span class="o">.</span><span class="n">eigenvals</span><span class="p">(</span><span class="n">evals_count</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;freq = </span><span class="si">{</span><span class="p">(</span><span class="n">evals</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">evals</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1000</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> MHz&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;alpha = </span><span class="si">{</span><span class="p">((</span><span class="n">evals</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">evals</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="n">evals</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">evals</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1000</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> MHz&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>qubit = scq.Transmon(
+    EJ=13.97124102543,
+    EC=0.295179,
+    ng=0.001,
+    ncut=40,
+    truncated_dim=4,  # after diagonalization, we will keep 3 levels
+)
+evals = qubit.eigenvals(evals_count=12)
+print(f&quot;freq = {(evals[1] - evals[0]) * 1000:.0f} MHz&quot;)
+print(f&quot;alpha = {((evals[2] - evals[1]) - (evals[1] - evals[0])) * 1000:.0f} MHz&quot;)
 </pre></div>
 </div>
 </div>
@@ -1464,9 +1504,9 @@ Ej: 14424.680512350775
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qubit</span><span class="o">.</span><span class="n">plot_n_wavefunction</span><span class="p">()</span>
-<span class="n">qubit</span><span class="o">.</span><span class="n">plot_phi_wavefunction</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;real&quot;</span><span class="p">)</span>
-<span class="n">qubit</span><span class="o">.</span><span class="n">hamiltonian</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>qubit.plot_n_wavefunction()
+qubit.plot_phi_wavefunction(which=[0, 1, 2], mode=&quot;real&quot;)
+qubit.hamiltonian()
 </pre></div>
 </div>
 </div>
@@ -1474,10 +1514,10 @@ Ej: 14424.680512350775
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import numpy as np
 
-<span class="n">ng_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">220</span><span class="p">)</span>
-<span class="n">qubit</span><span class="o">.</span><span class="n">plot_evals_vs_paramvals</span><span class="p">(</span><span class="s2">&quot;ng&quot;</span><span class="p">,</span> <span class="n">ng_list</span><span class="p">,</span> <span class="n">evals_count</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">subtract_ground</span><span class="o">=</span><span class="kc">False</span><span class="p">);</span>
+ng_list = np.linspace(-2, 2, 220)
+qubit.plot_evals_vs_paramvals(&quot;ng&quot;, ng_list, evals_count=6, subtract_ground=False);
 </pre></div>
 </div>
 </div>
@@ -1607,7 +1647,7 @@ Ej: 14424.680512350775
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=b8503983"></script>
+</div><script src="../../_static/documentation_options.js?v=fe7df9b0"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>

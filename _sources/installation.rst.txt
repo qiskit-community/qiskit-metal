@@ -93,63 +93,185 @@ If you specifically need the legacy pre-0.5 package, install ``qiskit-metal`` in
 .. For source installs or development, clone the repository and follow the advanced installation paths below.
 
 ==================================================
-Optional extras (lite-by-default preview)
+Choose your install pathway
 ==================================================
 
-Quantum Metal ships heavy backends — the Qt desktop GUI, the
-Ansys HFSS/Q3D bridge, the gmsh mesher — as **opt-in extras**.
-You can install only the subset you need.
+Quantum Metal v0.7.0+ is **lite by default**. The base install is
+small, fast, and contains just the core API (designs, components,
+GDS export, headless ``qm.view``, pure-Python analyses). Heavy
+backends — the desktop GUI, the Ansys HFSS / Q3D bridge, the gmsh
+mesher — are opt-in **extras**.
+
+.. grid:: 1 2 2 2
+   :gutter: 2
+   :margin: 1 0 2 0
+
+   .. grid-item-card:: 🪶 Lite (default)
+      :class-card: sd-bg-light sd-border
+      :class-header: sd-bg-info sd-text-white
+      :text-align: left
+
+      .. code-block:: sh
+
+         pip install quantum-metal
+
+      Core API, ``qm.view(design)`` headless viewer, GDS export,
+      pure-Python analyses.
+
+      **Best for:** AI orchestration loops, Colab / Binder, cloud
+      Jupyter, CI, headless / non-interactive workflows.
+
+      *No Qt, no Ansys, no gmsh — small, fast, no GUI surprises.*
+
+   .. grid-item-card:: 🖥️ GUI
+      :class-card: sd-bg-light sd-border
+      :class-header: sd-bg-primary sd-text-white
+      :text-align: left
+
+      .. code-block:: sh
+
+         pip install "quantum-metal[gui]"
+
+      **Adds:** ``MetalGUI`` desktop application (PySide6,
+      qdarkstyle).
+
+      **Best for:** interactive design work, GUI-driven editing.
+
+   .. grid-item-card:: 🧲 Ansys / HFSS / Q3D
+      :class-card: sd-bg-light sd-border
+      :class-header: sd-bg-secondary sd-text-white
+      :text-align: left
+
+      .. code-block:: sh
+
+         pip install "quantum-metal[ansys]"
+
+      **Adds:** HFSS / Q3D renderers, EPR analyses (pyaedt,
+      pyEPR-quantum).
+
+      **Best for:** Ansys-driven simulation. Requires an Ansys
+      AEDT license (typically Windows).
+
+   .. grid-item-card:: 🔺 Open FEM (gmsh + Elmer)
+      :class-card: sd-bg-light sd-border
+      :class-header: sd-bg-success sd-text-white
+      :text-align: left
+
+      .. code-block:: sh
+
+         pip install "quantum-metal[fem]"
+
+      **Adds:** gmsh-based meshing, Elmer FEM solver path.
+
+      **Best for:** open-source FEM workflow without an Ansys
+      license.
+
+.. grid:: 1
+   :gutter: 2
+   :margin: 2 0 2 0
+
+   .. grid-item-card:: 📦 Everything (v0.6.x compatibility set)
+      :class-card: sd-bg-light sd-border
+      :class-header: sd-bg-warning sd-text-dark
+      :text-align: left
+
+      .. code-block:: sh
+
+         pip install "quantum-metal[full]"
+
+      All of the above. Use this if you're upgrading from v0.6.x
+      and want **zero** behavior change — the install is bit-for-bit
+      the same dep set you had pre-v0.7.0.
+
+.. tip::
+
+   **Extras compose** — combine them with comma-separated names:
+
+   .. code-block:: sh
+
+      pip install "quantum-metal[gui,ansys]"   # MetalGUI + HFSS/Q3D
+      pip install "quantum-metal[gui,fem]"     # MetalGUI + gmsh
+
+**Feature matrix** — what each install gives you, at a glance:
 
 .. list-table::
    :header-rows: 1
-   :widths: 22 38 40
+   :widths: 36 12 12 12 12 12
 
-   * - Extra
-     - Pulls
-     - When to use it
-   * - (none — base install)
-     - Core API, ``qm.view(design)`` headless viewer, GDS export, pure-Python analyses
-     - AI orchestration, Colab / Binder, cloud Jupyter, CI, any non-interactive workflow
-   * - ``[gui]``
-     - ``pyside6``, ``qdarkstyle``
-     - Desktop GUI (``MetalGUI``)
-   * - ``[ansys]``
-     - ``pyaedt``, ``pyEPR-quantum``
-     - HFSS / Q3D / EPR analyses (requires an Ansys AEDT license)
-   * - ``[fem]``
-     - ``gmsh``
-     - Gmsh-based meshing + Elmer FEM path
-   * - ``[full]``
-     - All of the above
-     - The v0.6.x "all batteries included" experience
-
-Install one or several extras (comma-separated, no spaces):
-
-.. code-block:: sh
-
-    # Just the GUI
-    pip install "quantum-metal[gui]"
-
-    # GUI + Ansys
-    pip install "quantum-metal[gui,ansys]"
-
-    # Everything
-    pip install "quantum-metal[full]"
+   * - Feature
+     - lite
+     - ``[gui]``
+     - ``[ansys]``
+     - ``[fem]``
+     - ``[full]``
+   * - ``import qiskit_metal``
+     - ✅
+     - ✅
+     - ✅
+     - ✅
+     - ✅
+   * - ``qm.view(design)`` (headless matplotlib)
+     - ✅
+     - ✅
+     - ✅
+     - ✅
+     - ✅
+   * - Build designs + components from ``qlibrary``
+     - ✅
+     - ✅
+     - ✅
+     - ✅
+     - ✅
+   * - GDS export
+     - ✅
+     - ✅
+     - ✅
+     - ✅
+     - ✅
+   * - ``LOManalysis``, LOM math, capacitance reductions
+     - ✅
+     - ✅
+     - ✅
+     - ✅
+     - ✅
+   * - ``MetalGUI`` desktop app
+     - —
+     - ✅
+     - —
+     - —
+     - ✅
+   * - HFSS / Q3D renderers
+     - —
+     - —
+     - ✅
+     - —
+     - ✅
+   * - EPR analyses (``EigenmodeSim``, ``LumpedElementsSim``)
+     - —
+     - —
+     - ✅
+     - —
+     - ✅
+   * - gmsh / Elmer mesher
+     - —
+     - —
+     - —
+     - ✅
+     - ✅
 
 .. note::
 
-   **In v0.6.x**, every extra's deps are *also* in the base
-   ``[project.dependencies]`` — so ``pip install quantum-metal``
-   gives you everything regardless of whether you list extras.
-   The ``[gui]`` / ``[ansys]`` / ``[fem]`` / ``[full]`` selectors
-   are informational today; the ``tests-lite`` CI job exercises
-   what *would* be in the lite install so the path stays green.
+   **Migrating from v0.6.x?** See :doc:`migration-to-v0.7.0` for
+   per-persona migration recipes (GUI user / HFSS user / FEM user /
+   AI orchestrator) and common-error fixes.
 
-   **In v0.7.0**, the base install becomes lite — see
-   :doc:`migration-to-v0.7.0` for the migration recipes.
+   **CI coverage:** the ``tests-lite`` CI job validates the lite
+   path on every commit; the ``tests-extras`` job exercises
+   ``[gui]``, ``[ansys]``, and ``[fem]`` independently so a
+   regression on any one extra surfaces before release.
 
-For the headless / Qt-free workflow that the base install
-supports out of the box, see :doc:`headless-usage`.
+For the headless / Qt-free workflow that the lite install supports
+out of the box, see :doc:`headless-usage`.
 
 ==================================================
 Installation from source
