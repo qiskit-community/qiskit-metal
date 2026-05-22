@@ -159,23 +159,38 @@ covering the full API) or the
 
 ## 🌐 Ecosystem
 
-Quantum Metal sits at the **chip-design** layer of a growing open-source
-community for superconducting quantum device design. Other projects plug in
-at adjacent layers — design-discovery databases, simulation wrappers,
-mesh generators, quantization tools. **Full map and integration status:
-[Ecosystem](https://qiskit-community.github.io/qiskit-metal/ecosystem.html)**.
+Quantum Metal is the **open-source chip-design layer** for superconducting
+quantum hardware. A growing community of tools builds on it, extends it
+with new simulation backends, and plugs into it for quantization and
+discovery. **Full map: [docs.../ecosystem](https://qiskit-community.github.io/qiskit-metal/ecosystem.html)**.
 
-Highlights of who's in the picture:
+### Built on Quantum Metal
 
-- **Design discovery**: [SQuADDS](https://github.com/LFL-Lab/SQuADDS) (LFL-Lab @ USC) — validated qubit-design database + parameter interpolation, uses Quantum Metal.
-- **Simulation wrappers** for AWS Palace:
-  [SQDMetal](https://github.com/sqdlab/SQDMetal) (SQDLab @ UQ),
-  [pypalace](https://pypalace.readthedocs.io/) (Northwestern). Both accept Quantum Metal `QDesign` objects.
-- **Solver**: [AWS Palace](https://github.com/awslabs/palace) (AWS Center for Quantum Computing) — Apache 2.0 open-source Maxwell solver.
-- **Quantization**: [pyEPR](https://github.com/zlatko-minev/pyEPR), [scqubits](https://github.com/scqubits/scqubits), [QuTiP](https://github.com/qutip/qutip) — all integrated.
-- **Other design tools**: [KQCircuits](https://github.com/iqm-finland/KQCircuits) (IQM, GDS-centric), [gdsfactory](https://github.com/gdsfactory/gdsfactory) (broader scope).
+- 🔬 **[SQuADDS](https://github.com/LFL-Lab/SQuADDS)** (LFL-Lab @ USC) —
+  validated qubit-design database + parameter interpolation. Published
+  in *Quantum* journal (Sept 2024).
+- 🧲 **[SQDMetal](https://github.com/sqdlab/SQDMetal)** (SQDLab @ UQ) —
+  simulation wrapper for `QDesign` → AWS Palace / COMSOL.
+- 🤖 **[ML_qubit_design](https://github.com/CosmiQuantum/ML_qubit_design)**
+  (Fermilab + Northwestern) — ML-based inverse design predicting Quantum
+  Metal parameters from target qubit properties.
+- 🌐 **[pypalace](https://pypalace.readthedocs.io/)** (Northwestern) —
+  Python toolkit for AWS Palace with Quantum Metal gmsh export.
 
-Community organization & events:
+### Solvers Quantum Metal integrates with
+
+[AWS Palace](https://github.com/awslabs/palace) (roadmap) ·
+[Ansys HFSS/Q3D](https://www.ansys.com/products/electronics/ansys-hfss)
+(via `[ansys]`) · [Elmer FEM](https://www.elmerfem.org/) (via `[mesh]`) ·
+[gmsh](https://gmsh.info/) (via `[mesh]`).
+
+### Quantization & analysis
+
+[pyEPR](https://github.com/zlatko-minev/pyEPR) ·
+[scqubits](https://github.com/scqubits/scqubits) ·
+[QuTiP](https://github.com/qutip/qutip).
+
+### Community organization & events
 
 - **[Quantum Device Workshop (QDW)](https://qdw-ucla.squarespace.com/)** — annual
   workshop at UCLA/USC with invited leaders in the field. Recent speakers:
@@ -186,7 +201,8 @@ Community organization & events:
   community organization stewarding Quantum Metal alongside the tools above.
   [Join the QDC Discord](https://discord.gg/kaZ3UFuq).
 
-Maintain a project we should list? [Open an issue](https://github.com/qiskit-community/qiskit-metal/issues/new/choose) or ping us on Discord.
+**Building something on Quantum Metal?** [Open an issue](https://github.com/qiskit-community/qiskit-metal/issues/new/choose)
+or ping us on Discord — we'd love to add you to the list.
 
 ---
 

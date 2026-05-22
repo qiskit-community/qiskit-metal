@@ -166,22 +166,71 @@ Worth noting in our ecosystem map for completeness, but not actionable for us ri
 
 ## Did we miss any popular repos?
 
-Yes — a few worth knowing about. Not blockers, but should be in any ecosystem doc we publish:
+Yes — several worth knowing about, added to the ecosystem map.
+
+### Now included in `docs/ecosystem.rst`
+
+**Built on Metal (the headline category)**:
+- **[ML_qubit_design](https://github.com/CosmiQuantum/ML_qubit_design)**
+  (Fermilab + Northwestern, Olivia Seidel as primary contact) — ML-based
+  inverse design predicting Quantum Metal parameters from target qubit
+  properties via multi-layer perceptrons. Notebook-driven research
+  project, modest stars (~5), 287 commits. **Important to highlight
+  because it exemplifies the "built on Metal" story** — they explicitly
+  use Quantum Metal simulation data as training material. AI-orchestration
+  adjacent.
 
 **SC-quantum-design adjacent**:
-- **[KQCircuits](https://github.com/iqm-finland/KQCircuits)** (IQM Finland) — the other major open-source SC chip design framework. GDS-centric philosophy vs our QComponent-centric. Worth a sentence in the ecosystem map. Some users straddle.
-- **[CircuitQ](https://github.com/PhilippAumann/CircuitQ)** — small but active quantization tool, alternative to scqubits for arbitrary circuits.
-- **[gdsfactory](https://github.com/gdsfactory/gdsfactory)** — much broader scope (photonic + SC), much larger community. Some SC users use it instead of Metal.
+- **[KQCircuits](https://github.com/iqm-finland/KQCircuits)** (IQM
+  Finland) — the other major open-source SC chip design framework.
+  GDS-centric philosophy vs our QComponent-centric. Some users straddle.
+- **[CircuitQ](https://github.com/PhilippAumann/CircuitQ)** — small but
+  active quantization tool, alternative to scqubits for arbitrary circuits.
 
-**Simulation / visualization adjacent**:
-- **[PyVista](https://github.com/pyvista/pyvista)** — standard Python ParaView wrapper for field visualization. Both SQDMetal and pypalace use it.
-- **[meshio](https://github.com/nschloe/meshio)** — mesh format conversion (gmsh ↔ Palace ↔ Elmer ↔ others). Useful glue.
+**Photonics-adjacent FEM** (noted briefly, not prominent):
+- **[femwell](https://github.com/HelgeGehring/femwell)** (Helge Gehring,
+  ex-gdsfactory team) — photonics-focused FEM library (eigenmode +
+  thermal + RF CPW). 1,549 commits, 170 stars, GPL-3.0. **Listed for
+  completeness because it can do RF CPW eigenmodes**, but the primary
+  use-case is photonic, not SC-quantum. License (GPL-3.0) would also
+  block runtime depending the way it would for meshwell.
 
-**Algorithm-side / not design but cited often by users**:
-- **[QuTiP](https://github.com/qutip/qutip)** (we use it)
-- **[Qiskit](https://github.com/Qiskit/qiskit)** (historical namespace)
+**Visualization / glue**:
+- **[PyVista](https://github.com/pyvista/pyvista)** — standard Python
+  ParaView wrapper. Both SQDMetal and pypalace use it.
+- **[meshio](https://github.com/nschloe/meshio)** — mesh format
+  conversion. Useful glue when formats diverge.
 
-The honest answer: the SC-quantum design ecosystem has **~10–15 distinct tools across the layers**. Our job isn't to know each one in depth — it's to make sure users can find the right one for their need and that we don't accidentally compete with allies.
+### Deliberately downplayed: gdsfactory
+
+`gdsfactory` was prominent in the previous draft. Re-reading honestly:
+they're a much broader project (primarily photonic, growing into SC)
+with a different design philosophy and a much larger user base than us.
+Listing them prominently in our ecosystem could read as either:
+
+- "Look, gdsfactory uses us!" (false — they don't, they have their own
+  stack), or
+- "We're competing for users with gdsfactory" (true-ish — some SC users
+  evaluate both).
+
+The right framing is a brief mention in "Other design tools (different
+scope)" alongside KQCircuits, not in the headline "Built on Metal" or
+"Solvers we integrate with" sections. That's what `docs/ecosystem.rst`
+now does. We acknowledge them without amplifying.
+
+### What we still don't highlight
+
+- **[Qiskit](https://github.com/Qiskit/qiskit)** — historical namespace,
+  not a design tool. Mention only when explaining the rebrand.
+- Commercial-only tools (CST Studio, IE3D, etc.) — outside the
+  open-source ecosystem story.
+
+The honest answer to "did we miss any": **the SC-quantum design
+ecosystem has 10–15 distinct active projects across the layers**. We
+list every one that either (a) builds on Metal directly, (b) is a
+solver / library we integrate with, or (c) is widely-known enough that
+users will encounter it. The ecosystem doc curates this — it isn't
+exhaustive.
 
 ---
 

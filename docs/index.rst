@@ -180,12 +180,18 @@ in a simple, open, community-driven framework.
     Videos & Education<videoseducation>
 
 .. toctree::
+    :maxdepth: 1
+    :caption: Ecosystem
+    :hidden:
+
+    Built on / with Quantum Metal<ecosystem>
+
+.. toctree::
     :maxdepth: 2
     :caption: Concepts
     :hidden:
 
     Quantum Metal Workflow<workflow>
-    Ecosystem<ecosystem>
     Frequently Asked Questions<faq>
 
 .. toctree::
