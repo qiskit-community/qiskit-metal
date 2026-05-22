@@ -121,6 +121,9 @@
         # Registers the "ipython3" Pygments lexer that nbsphinx emits for
         # code cells. Without it, ~1500 warnings on every docs build.
         "ipython>=8.0",
+        # Silences "nbsphinx_widgets_path not given and ipywidgets module
+        # unavailable" — required by any tutorial that uses ipywidgets.
+        "ipywidgets>=8.1",
 ]
     lint = [ "ruff>=0.14.2" ]
     test = [

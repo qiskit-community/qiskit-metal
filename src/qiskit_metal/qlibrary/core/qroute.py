@@ -55,7 +55,7 @@ class QRoutePoint:
 
 
 class QRoute(QComponent):
-    """Super-class implementing routing methods that are valid irrespective of
+    r"""Super-class implementing routing methods that are valid irrespective of
     the number of pins (>=1). The route is stored in a n array of planar points
     (x,y coordinates) and one direction, which is that of the last point in the
     array. Values are stored as np.ndarray of parsed floats or np.array float

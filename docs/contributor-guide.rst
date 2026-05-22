@@ -518,25 +518,27 @@ The module-level docstring
    contents of the module docstring for ``Quantum/analyses/__init__.py`` would
    be
 
-   .. code-block:: python3
-      
-      """
-      Analyses (:mod:`qiskit_metal.analyses`)
-      =======================================
+   The module docstring should follow this shape (here using non-functional
+   placeholders so this example doesn't itself fire the autosummary
+   extension at doc-build time)::
 
-      .. currentmodule:: qiskit_metal.analyses
+      \"\"\"
+      My Module (:mod:`example_pkg.my_module`)
+      =========================================
 
-      Module containing all Qiskit Metal analyses.
+      .. currentmodule:: example_pkg.my_module
+
+      Module containing all the things.
 
       Submodules
       ----------
 
-      .. autosummary::
-         :toctree:
+      .\. autosummary\:\:
+         :toctree: .
 
-         em.cpw_calculations
-         quantization.lumped_capacitive
-      """
+         submodule_a.feature_one
+         submodule_b.feature_two
+      \"\"\"
 
 
 

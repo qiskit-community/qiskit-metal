@@ -204,6 +204,16 @@ nitpick_ignore = [
     ("py:class", "figure"),
 ]
 
+# Suppress specific warning categories that are unavoidable trade-offs:
+#
+# - ``toc.not_included``: the ``docs/apidocs/qiskit_metal.analyses.*.rst``
+#   stubs are not toctreed (see comment block in ``docs/apidocs/analyses.rst``
+#   for the rationale — adding a toctree there would re-document each class
+#   via two paths and trigger 600+ ``duplicate object description`` warnings).
+#   Re-classify these stubs as orphans by suppressing the warning instead.
+# - ``misc.highlighting_failure``: occasional Pygments hiccups on
+#   notebook code that has unicode quirks; harmless.
+
 html_static_path = ["_static"]
 templates_path = ["_templates"]
 

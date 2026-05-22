@@ -175,25 +175,23 @@ def file_size(p):
 
 
 def cells_match(a: Path, b: Path) -> bool:
-    """Return True if two notebook files have identical cell content.
+    """Return True if two notebook files have identical full cell arrays.
 
-    We compare the ``source`` field of every cell (the user-visible code
-    or markdown), not the full JSON — because saving a notebook in
-    different Jupyter sessions perturbs metadata (kernel id, execution
-    counts, timestamps) without changing the actual content. This
-    matches the equality definition used by
-    ``scripts/check_tutorials_sync.py``.
+    Matches the equality definition used by
+    ``scripts/check_tutorials_sync.py`` (the canonical CI gate), which
+    serializes the full ``cells`` array with ``json.dumps(..., sort_keys=True)``
+    and compares. We include cell IDs, metadata, outputs — everything
+    under ``cells`` — because diverging cell IDs between the two folders
+    cause CI drift even when the user-visible source is identical.
     """
     try:
         with open(a) as fa, open(b) as fb:
-            nb_a = json.load(fa)
-            nb_b = json.load(fb)
+            cells_a = json.load(fa).get("cells", [])
+            cells_b = json.load(fb).get("cells", [])
     except (OSError, json.JSONDecodeError):
         return False
 
-    src_a = [c.get("source", "") for c in nb_a.get("cells", [])]
-    src_b = [c.get("source", "") for c in nb_b.get("cells", [])]
-    return src_a == src_b
+    return json.dumps(cells_a, sort_keys=True) == json.dumps(cells_b, sort_keys=True)
 
 
 def main():

@@ -18,7 +18,7 @@ Analyses (:mod:`qiskit_metal.analyses`)
 
 .. currentmodule:: qiskit_metal.analyses
 
-Module containing all Qiskit Metal analyses.
+Module containing all Quantum Metal analyses.
 
 .. _qanalysis:
 
