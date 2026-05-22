@@ -3,6 +3,8 @@ name: Publish Documentation
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main, "stable/*"]
   workflow_dispatch:
 
 jobs:
@@ -34,6 +36,10 @@ jobs:
       - name: Bypass Jekyll Processing # Necessary for setting the correct css path
         run: touch docs/_build/html/.nojekyll
       - name: Deploy
+        # Only publish on push-to-main. On PRs we just want the build
+        # to gate merge; deploying to GitHub Pages from a PR branch
+        # would clobber the live docs with in-progress content.
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: docs/_build/html/
