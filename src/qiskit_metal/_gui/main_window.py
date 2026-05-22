@@ -9,7 +9,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""GUI front-end interface for Qiskit Metal in PySide2."""
+"""GUI front-end interface for Quantum Metal, built on PySide6."""
 
 import logging
 import os
@@ -292,7 +292,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
 
 
 class MetalGUI(QMainWindowBaseHandler):
-    """Main Qt window for interacting with a Qiskit Metal design.
+    """Main Qt window for interacting with a Quantum Metal design.
 
     MetalGUI wraps a `QDesign` and gives you a synchronized visual view of
     components, variables, and geometry. Anything you do in the GUI (add/edit
@@ -300,6 +300,7 @@ class MetalGUI(QMainWindowBaseHandler):
     and Python-side edits show up in the GUI after a rebuild.
 
     Key behaviors and subtleties:
+
     - Starts a Qt event loop if one is not already running.
     - Exposes docks for components, connectors, variables, and logs; you can
       hide/show or undock them without breaking synchronization.

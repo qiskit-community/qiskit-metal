@@ -1,33 +1,57 @@
 #!/bin/bash
+# Pre-commit hook for Quantum Metal.
+#
+# Runs the same ruff checks that CI runs (``check`` + ``format --check``)
+# against staged Python files. Blocks the commit if either fails, with
+# instructions to auto-fix.
+#
+# Install once: run ``./hook_setup.sh`` from the repo root.
+#
+# Pin: matches the ruff version CI uses (astral-sh/ruff-action@v3 reads
+# pyproject.toml's ``ruff>=0.14.2``, which currently resolves to 0.15.14).
+# We invoke via ``uvx`` so contributors don't need a global ruff install.
+#
+# Bypass (emergencies only): ``git commit --no-verify``
 
-echo "Checking dependencies"
-which yapf &> /dev/null
-ret=$?
-if [[ $ret != 0 ]]; then
-    echo "Please install yapf to use pre-commit hook"
-    exit 1
-else
-    echo "All dependencies present"
+RUFF_VERSION="0.15.14"
+
+# Get staged Python files (added/copied/modified — no deletions).
+staged_py=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.py$')
+
+if [[ -z "$staged_py" ]]; then
+    # No Python files staged — nothing to do.
+    exit 0
 fi
 
-echo "Begin linting step using yapf formatting"
-linterrorfound=0
-for stagedfile in $(git diff --name-only --cached | grep ".*\.py")
-do
-    yapf --diff --style .style.yapf $stagedfile
-    ret=$?
-    if [[ $ret != 0 ]]; then
-        linterrorfound=1
-        echo ">>> Errors in file $stagedfile"
-    fi
-done
+n_files=$(echo "$staged_py" | wc -l | tr -d ' ')
+echo "Pre-commit: checking $n_files staged Python file(s) with ruff $RUFF_VERSION"
 
-if [[ $linterrorfound == 1 ]]; then
-    echo "Please fix linting errors before committing"
-    exit 1
-else
-    echo "Linting successful"
+fail=0
+
+# 1. Lint
+echo "  → ruff check"
+if ! uvx ruff@$RUFF_VERSION check $staged_py; then
+    echo
+    echo "  ✗ ruff check failed. Try: uvx ruff@$RUFF_VERSION check --fix $staged_py"
+    fail=1
 fi
 
-echo "Python linting validation completed!"
+# 2. Format-check (does NOT auto-rewrite — we don't silently re-stage
+# files behind the user's back).
+echo "  → ruff format --check"
+if ! uvx ruff@$RUFF_VERSION format --check $staged_py; then
+    echo
+    echo "  ✗ ruff format would reformat the above file(s)."
+    echo "    Run: uvx ruff@$RUFF_VERSION format $staged_py"
+    echo "    Then re-stage and commit."
+    fail=1
+fi
+
+if [[ $fail -ne 0 ]]; then
+    echo
+    echo "Pre-commit checks failed. To bypass (NOT recommended): git commit --no-verify"
+    exit 1
+fi
+
+echo "  ✓ ruff checks pass"
 exit 0

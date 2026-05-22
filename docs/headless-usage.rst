@@ -78,13 +78,16 @@ Only the interactive desktop editor itself:
   ``%matplotlib widget`` + ``ipympl`` for interactive pan/zoom in
   Jupyter)
 
-Installing without Qt (v0.6.x)
-==============================
+Installing without Qt
+=====================
 
-Today the base ``pip install quantum-metal`` install pulls in PySide6
-and the rest of the Qt stack so the desktop GUI works out of the box.
-You can still skip Qt initialisation at runtime by setting
-the ``QISKIT_METAL_HEADLESS`` environment variable:
+As of **v0.7.0**, ``pip install quantum-metal`` no longer pulls in
+PySide6 or the Qt stack. The base install is headless by default —
+no GUI, no Qt surprises.
+
+If you have the ``[gui]`` extra installed and want to suppress Qt
+initialisation at runtime (e.g. in a script that runs headlessly),
+set the ``QISKIT_METAL_HEADLESS`` environment variable:
 
 .. code-block:: bash
 
@@ -94,20 +97,18 @@ the ``QISKIT_METAL_HEADLESS`` environment variable:
 This prevents matplotlib from switching to the ``QtAgg`` backend
 during import. The Qt packages stay installed but are never touched.
 
-Migrating to a lite install (v0.7.0)
-====================================
+Install extras
+==============
 
-A future v0.7.0 release will flip the default install:
+* ``pip install quantum-metal`` — lite default: no Qt, no Ansys, no gmsh
+* ``pip install "quantum-metal[gui]"`` — + PySide6 + qdarkstyle
+* ``pip install "quantum-metal[ansys]"`` — + pyaedt + pyEPR-quantum
+* ``pip install "quantum-metal[mesh]"`` — + gmsh (foundation for Elmer / Palace).
+  ``[fem]`` is a backward-compatible alias.
+* ``pip install "quantum-metal[full]"`` — all extras (v0.6.x behavior)
 
-* ``pip install quantum-metal`` -> no Qt, no Ansys, no gmsh
-* ``pip install quantum-metal[gui]`` -> + PySide6 + qdarkstyle
-* ``pip install quantum-metal[ansys]`` -> + pyaedt + pyEPR
-* ``pip install quantum-metal[fem]`` -> + gmsh
-* ``pip install quantum-metal[full]`` -> all extras (current behavior)
-
-These extras already exist in ``pyproject.toml`` from v0.6.x onwards;
-they're additive today, becoming the canonical opt-in pathway when
-v0.7.0 ships.
+See :doc:`installation` for the full feature matrix and
+:doc:`migration-to-v0.7.0` for per-persona migration recipes.
 
 Roadmap: a richer in-notebook viewer
 ====================================

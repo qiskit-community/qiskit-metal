@@ -2524,7 +2524,7 @@ wheels = [
 
 [[package]]
 name = "quantum-metal"
-version = "0.7.0"
+version = "0.7.1"
 source = { editable = "." }
 dependencies = [
     { name = "addict" },
@@ -2564,9 +2564,15 @@ gui = [
     { name = "pyside6" },
     { name = "qdarkstyle" },
 ]
+mesh = [
+    { name = "gmsh" },
+]
 
 [package.dev-dependencies]
 docs = [
+    { name = "ipython", version = "8.38.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "ipython", version = "9.9.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "ipywidgets" },
     { name = "nbsphinx" },
     { name = "numpydoc" },
     { name = "qiskit-sphinx-theme" },
@@ -2599,6 +2605,7 @@ requires-dist = [
     { name = "geopandas", specifier = ">=1.0" },
     { name = "gmsh", marker = "extra == 'fem'", specifier = ">=4.15.0,<5" },
     { name = "gmsh", marker = "extra == 'full'", specifier = ">=4.15.0,<5" },
+    { name = "gmsh", marker = "extra == 'mesh'", specifier = ">=4.15.0,<5" },
     { name = "matplotlib", specifier = ">=3.7.0" },
     { name = "numpy", specifier = ">=1.24.2,<2" },
     { name = "pandas", specifier = ">=2.1.1" },
@@ -2618,10 +2625,12 @@ requires-dist = [
     { name = "scqubits", specifier = ">=4.1.0" },
     { name = "shapely", specifier = ">=2.0.1" },
 ]
-provides-extras = ["gui", "ansys", "fem", "full"]
+provides-extras = ["gui", "ansys", "mesh", "fem", "full"]
 
 [package.metadata.requires-dev]
 docs = [
+    { name = "ipython", specifier = ">=8.0" },
+    { name = "ipywidgets", specifier = ">=8.1" },
     { name = "nbsphinx", specifier = ">=0.9.8" },
     { name = "numpydoc", specifier = ">=1.5.0" },
     { name = "qiskit-sphinx-theme", specifier = ">=2.0.0" },

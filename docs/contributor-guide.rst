@@ -66,7 +66,7 @@ Contributing Code
 =========================================
 
 
-Development Setup for Quantum Metal v0.5+
+Development Setup
 -----------------------------------------
 
 Quantum Metal uses `uv <https://docs.astral.sh/uv/>`_ for project and dependency management. This guide describes how to set up your local development environment. First, install uv on your system as described by the `instructions here <https://docs.astral.sh/uv/getting-started/installation/>`_.
@@ -122,7 +122,7 @@ Style Guide
 -----------
 
 .. attention::
-   The style guide presented below is being deprecated. Quantum Metal v0.5+ uses ruff for linting and formatting. An updated style guide will be added soon.
+   The style guide below is outdated. Quantum Metal uses ``ruff`` for linting and formatting (see the Linting and Formatting section above). An updated style guide will be added soon.
 
 To enforce a consistent code style in the project, we use customized `Pylint
 <https://www.pylint.org>`__ for linting and `YAPF <https://github.com/google/yapf>`_ with the `Google style
@@ -485,9 +485,9 @@ The ``.rst`` files in the ``docs/apidocs``
    module docstrings from a specified import path. For example, the analyses.rst
    file contains
    
-   .. code-block:: rst
+   For example, the ``analyses.rst`` file contains::
 
-      .. automodule:: qiskit_metal.analyses
+      .\. automodule\:\: qiskit_metal.analyses
          :no-members:
          :no-inherited-members:
          :no-special-members:
@@ -518,25 +518,27 @@ The module-level docstring
    contents of the module docstring for ``Quantum/analyses/__init__.py`` would
    be
 
-   .. code-block:: python3
-      
-      """
-      Analyses (:mod:`qiskit_metal.analyses`)
-      =======================================
+   The module docstring should follow this shape (here using non-functional
+   placeholders so this example doesn't itself fire the autosummary
+   extension at doc-build time)::
 
-      .. currentmodule:: qiskit_metal.analyses
+      \"\"\"
+      My Module (:mod:`example_pkg.my_module`)
+      =========================================
 
-      Module containing all Qiskit Metal analyses.
+      .. currentmodule:: example_pkg.my_module
+
+      Module containing all the things.
 
       Submodules
       ----------
 
-      .. autosummary::
-         :toctree:
+      .\. autosummary\:\:
+         :toctree: .
 
-         em.cpw_calculations
-         quantization.lumped_capacitive
-      """
+         submodule_a.feature_one
+         submodule_b.feature_two
+      \"\"\"
 
 
 
@@ -615,12 +617,12 @@ There are two supported release paths:
 
 Local publish steps:
 
-#. Bump the version in ``pyproject.toml`` (e.g., 0.5.1 → 0.5.2) using uv.
+#. Bump the version in ``pyproject.toml`` (e.g., 0.7.0 → 0.7.1) using uv.
 
    .. code-block:: sh
 
       # Set the version directly
-      uv version 0.5.2
+      uv version 0.7.1
       # Alternatively, bump the version with the --bump flag
       # The --bump flag can be used to bump the version to the next major, minor, or patch version
       uv version --bump patch
@@ -630,8 +632,8 @@ Local publish steps:
 
    .. code-block:: sh
 
-      git commit -am "Bump version to 0.5.2"
-      git tag v0.5.2
+      git commit -am "Bump version to 0.7.1"
+      git tag v0.7.1
       git push origin main --tags
 
 #. Build and publish with ``uv`` (requires a PyPI token, e.g., ``UV_PYPI_TOKEN``):

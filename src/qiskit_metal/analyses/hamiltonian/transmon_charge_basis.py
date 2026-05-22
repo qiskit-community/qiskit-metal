@@ -125,7 +125,7 @@ class Hcpb:
         return self.evals[k]
 
     def evec_k(self, k: int):
-        """Return the eigenvector of the CPB Hamiltonian for level k.
+        r"""Return the eigenvector of the CPB Hamiltonian for level k.
 
         Args:
             k (int): Index of eigenvector
@@ -136,7 +136,7 @@ class Hcpb:
         return self.evecs[:, k]
 
     def psi_k(self, k: int, pts: int = 1001):
-        """Return the wavevector of the CPB Hamiltonian in the flux basis. Made
+        r"""Return the wavevector of the CPB Hamiltonian in the flux basis. Made
         compact over the interval of [-pi, pi].
 
         Args:
@@ -164,7 +164,7 @@ class Hcpb:
         return psi, phi
 
     def fij(self, i: int, j: int):
-        """Compute the transition energy (or frequency) between states.
+        r"""Compute the transition energy (or frequency) between states.
 
         \|i> and \|j>.
 
@@ -186,7 +186,7 @@ class Hcpb:
         return self.fij(1, 2) - self.fij(0, 1)
 
     def n_ij(self, i: int, j: int):
-        """Compute the value of the number operator for coupling elements
+        r"""Compute the value of the number operator for coupling elements
         together in the energy eigen-basis.
 
         Args:

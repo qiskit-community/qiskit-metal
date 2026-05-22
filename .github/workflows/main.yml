@@ -94,6 +94,24 @@ jobs:
       - name: Check environment.yml against pyproject.toml
         run: uv run --quiet scripts/check_env_consistency.py
 
+  tutorials-sync:
+    name: docs/tut/ ↔ tutorials/ sync
+    runs-on: ubuntu-24.04
+    env:
+      FORCE_COLOR: "1"
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.9.24"
+          enable-cache: true
+      - name: Check docs/tut/ and tutorials/ contain identical cell content
+        # The two folders carry every numbered notebook twice — see the
+        # script docstring for why and how to fix drift.
+        run: uv run --quiet scripts/check_tutorials_sync.py
+
   tests-lite:
     # Exercises the "lite" install path — no PySide6, no pyaedt, no
     # gmsh. Catches accidental top-level Qt/Ansys/FEM imports that
@@ -208,10 +226,11 @@ jobs:
 
   tests-extras:
     # Exercises each opt-in extra independently. As of v0.7.0
-    # (lite-by-default), ``[gui]`` / ``[ansys]`` / ``[fem]`` are the
+    # (lite-by-default), ``[gui]`` / ``[ansys]`` / ``[mesh]`` are the
     # three install pathways most users actually take after the lite
-    # path. Without this matrix, a regression on (say) ``[gui]``
-    # would only surface after release.
+    # path. ``[fem]`` is included to validate it still works as the
+    # backward-compatible alias of ``[mesh]``. Without this matrix, a
+    # regression on (say) ``[gui]`` would only surface after release.
     name: tests-extras-${{ matrix.extra }}
     runs-on: ubuntu-24.04
     env:
@@ -220,7 +239,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        extra: [gui, ansys, fem]
+        extra: [gui, ansys, mesh, fem]
     steps:
       - uses: actions/checkout@v6
         with:
@@ -229,8 +248,8 @@ jobs:
         with:
           version: "0.9.24"
           enable-cache: true
-      - name: Install Gmsh OS deps (only needed for fem extra)
-        if: matrix.extra == 'fem'
+      - name: Install Gmsh OS deps (only needed for mesher extras)
+        if: matrix.extra == 'mesh' || matrix.extra == 'fem'
         run: |
           sudo apt-get update
           sudo apt-get install -y libglu1-mesa libglu1-mesa-dev libegl1-mesa-dev

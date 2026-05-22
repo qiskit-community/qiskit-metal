@@ -166,22 +166,24 @@ Net result: `pip install quantum-metal[lite]` (no PySide6, pyaedt,
 gmsh) supports the full headless API. The `tests-lite` CI job
 enforces this.
 
-## v0.7.0 planned lite-by-default flip
+## v0.7.0 lite-by-default install (shipped)
 
-Currently the `[gui]`, `[ansys]`, `[fem]`, `[full]` extras are
-*additive* — the base install still pulls in everything. v0.7.0
-plans to flip this:
+As of v0.7.0 the `[gui]`, `[ansys]`, `[mesh]`, `[fem]` (alias of
+`[mesh]`), and `[full]` extras are opt-in — the base install no
+longer pulls heavy backends:
 
-- `pip install quantum-metal` → no Qt, no Ansys, no gmsh (lite by
-  default)
-- `pip install quantum-metal[full]` → current all-in install
+- `pip install quantum-metal` → no Qt, no Ansys, no gmsh (lite default)
 - `pip install quantum-metal[gui]` → adds PySide6 + qdarkstyle
-- `pip install quantum-metal[ansys]` → adds pyaedt + pyEPR
-- `pip install quantum-metal[fem]` → adds gmsh
+- `pip install quantum-metal[ansys]` → adds pyaedt + pyEPR-quantum
+- `pip install quantum-metal[mesh]` → adds gmsh (foundation for the
+  open FEM toolchain — Elmer today, Palace on the roadmap). `[fem]`
+  is a backward-compatible alias.
+- `pip install quantum-metal[full]` → all of the above (v0.6.x
+  compatibility set)
 
-The infrastructure (lazy imports, graceful renderer skip, CI gate,
-viewer module) is shipped in v0.6.1; the flip itself is a one-line
-`pyproject.toml` change planned for v0.7.0.
+The infrastructure (lazy imports, graceful renderer skip on missing
+deps, CI gate, headless viewer module) shipped in v0.6.1; the deps
+flip itself landed in v0.7.0.
 
 ## Test architecture
 

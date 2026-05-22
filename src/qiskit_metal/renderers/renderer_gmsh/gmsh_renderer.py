@@ -5,11 +5,12 @@ from collections import defaultdict
 import pandas as pd
 import numpy as np
 
-# gmsh is an opt-in dependency (``quantum-metal[fem]``). Keep this
-# module importable on the lite install — ``QGmshRenderer.__init__``
-# raises a clear ``ImportError`` via ``_require_gmsh`` if gmsh isn't
-# available. The "renderer skipped" path in
-# ``QDesign._start_renderers`` catches that and logs.
+# gmsh is an opt-in dependency (``quantum-metal[mesh]``, or its
+# backward-compat alias ``[fem]``). Keep this module importable on
+# the lite install — ``QGmshRenderer.__init__`` raises a clear
+# ``ImportError`` via ``_require_gmsh`` if gmsh isn't available.
+# The "renderer skipped" path in ``QDesign._start_renderers``
+# catches that and logs.
 try:
     import gmsh
 except ImportError:  # pragma: no cover — exercised on lite installs

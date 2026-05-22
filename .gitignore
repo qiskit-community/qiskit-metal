@@ -131,3 +131,10 @@ settings.json
 # others
 Qiskit-Metal.code-workspace
 launch.json
+
+# Sphinx autosummary side-effects (see .claude/context/lessons-learned.md)
+docs/qiskit_metal.*.rst
+
+# Elmer FEM simulation outputs (from running tutorial notebooks)
+*.msh
+**/simdata/

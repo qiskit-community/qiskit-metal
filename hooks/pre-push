@@ -1,0 +1,95 @@
+#!/bin/bash
+# Pre-push hook for Quantum Metal.
+#
+# Runs the *fast* CI gates locally before allowing a push, so you don't
+# have to wait for a cloud round-trip just to discover the
+# tutorials-sync or env-consistency job failed. Total budget ~15s.
+#
+# Install once: ``./hook_setup.sh`` (links both pre-commit and pre-push).
+#
+# Bypass for WIP / draft pushes: ``git push --no-verify``
+#
+# What this hook does NOT run (deliberately):
+#   - Full pytest suite (too slow; ~30s+ — CI runs it)
+#   - Multi-platform test matrix (impossible locally)
+#   - Notebook execution (very slow)
+#   - Docs build (~35s — fast enough for pre-push if you want it,
+#     but most pushes don't touch docs source; uncomment block below
+#     if you want it)
+#
+# These are intentionally cheap checks that surface the most common
+# "passed pre-commit, fails CI anyway" failures.
+
+set -e
+
+# Skip on pushes to feature branches that are explicitly marked WIP.
+# Read the refs being pushed from stdin (git pre-push protocol).
+while read local_ref local_sha remote_ref remote_sha; do
+    # If pushing nothing (e.g. delete), skip.
+    if [[ "$local_sha" == "0000000000000000000000000000000000000000" ]]; then
+        continue
+    fi
+done
+
+echo "Pre-push: running fast CI gates"
+
+fail=0
+
+# 1. Full-repo ruff check + format check. Pre-commit catches issues on
+# *staged* files, but doesn't catch files that got modified locally
+# between commits. CI runs against the full repo — so should we.
+echo "  → ruff check (full repo)"
+if ! uvx ruff@0.15.14 check . > /tmp/.qm-prepush-ruff-check.log 2>&1; then
+    echo "  ✗ ruff check failed. Output:"
+    cat /tmp/.qm-prepush-ruff-check.log | tail -20
+    fail=1
+fi
+
+echo "  → ruff format --check (full repo)"
+if ! uvx ruff@0.15.14 format --check . > /tmp/.qm-prepush-ruff-fmt.log 2>&1; then
+    echo "  ✗ ruff format would reformat:"
+    cat /tmp/.qm-prepush-ruff-fmt.log | tail -10
+    echo "    Fix: uvx ruff@0.15.14 format ."
+    fail=1
+fi
+
+# 2. environment.yml ↔ pyproject.toml drift (the env-consistency CI gate)
+echo "  → env.yml ↔ pyproject.toml drift"
+if ! uv run --quiet scripts/check_env_consistency.py > /tmp/.qm-prepush-env.log 2>&1; then
+    echo "  ✗ environment.yml drifted from pyproject.toml:"
+    cat /tmp/.qm-prepush-env.log | tail -15
+    fail=1
+fi
+
+# 3. tutorials/ ↔ docs/tut/ sync (only run if any notebook touched in this push)
+notebooks_touched=$(git diff --name-only "$remote_sha..$local_sha" 2>/dev/null | grep -E '\.ipynb$' | head -1)
+# If we couldn't determine touched files (e.g. first push of branch), run anyway — it's fast.
+if [[ -n "$notebooks_touched" ]] || [[ -z "$remote_sha" ]] || [[ "$remote_sha" == "0000000000000000000000000000000000000000" ]]; then
+    echo "  → tutorials/ ↔ docs/tut/ sync"
+    if ! uv run --quiet scripts/check_tutorials_sync.py > /tmp/.qm-prepush-sync.log 2>&1; then
+        echo "  ✗ Tutorial sync drift detected:"
+        cat /tmp/.qm-prepush-sync.log | tail -15
+        echo "    Fix: python3 _dev/sync_two_folders.py --write"
+        fail=1
+    fi
+else
+    echo "  → tutorials sync (skipped — no notebooks in this push)"
+fi
+
+# Optional: uncomment to also run the docs build before push.
+# Adds ~35s but catches docs-build regressions.
+# echo "  → docs build (sphinx)"
+# if ! uvx --with tox-uv tox -e docs > /tmp/.qm-prepush-docs.log 2>&1; then
+#     echo "  ✗ docs build failed:"
+#     cat /tmp/.qm-prepush-docs.log | grep -E "ERROR|WARNING" | tail -15
+#     fail=1
+# fi
+
+if [[ $fail -ne 0 ]]; then
+    echo
+    echo "Pre-push checks failed. To bypass for WIP pushes: git push --no-verify"
+    exit 1
+fi
+
+echo "  ✓ all fast CI gates pass"
+exit 0

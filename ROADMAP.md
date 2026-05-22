@@ -194,6 +194,136 @@ but are worth tracking:
 
 ---
 
+## Adoption, DevRel, and onboarding `[planned / research]`
+
+The technical roadmap above gets us a great library. This section is about
+making sure people *find* it, *try* it, and *stick with* it. Ideated May 2026
+after the v0.7.0 lite-by-default flip made one-click trial finally viable.
+
+### Quick wins (each <2 hours)
+
+- **"Open in Colab" button** in the README `[planned]` — single biggest
+  adoption lever. The lite install + `qm.view()` makes Colab a 60-second
+  zero-friction trial path. Link directly to tutorial 1.2 Quick Start.
+- **`CITATION.cff` file** `[planned]` — GitHub renders a "Cite this
+  repository" widget on the repo landing page. Massive academic-credibility
+  signal at near-zero effort. Source from existing `Qiskit_Metal.bib`.
+- **Badge row refresh** `[planned]` — add PyPI downloads/month, GitHub
+  stars, contributors, Python versions supported, CI status, docs.
+- **Repo description + GitHub topics** `[planned]` — punchy one-liner and
+  tags (`quantum-computing`, `superconducting-qubits`, `eda`,
+  `quantum-chip-design`, `hfss`, `gmsh`, `quantum-hardware`) for GitHub
+  search discoverability.
+- **Hero animated GIF** `[planned]` — 6-second screen recording of
+  `qm.view(design)` rendering a transmon inline. Show, don't tell.
+- **Open Graph image** `[research]` — controls how the repo / docs preview
+  when shared on Twitter/Slack/Discord.
+
+### Medium effort (~half-day each)
+
+- **JupyterLite tutorials in the docs** `[planned]` — `jupyterlite-sphinx`
+  extension makes each notebook runnable in-browser, zero install. Major
+  unlock for classroom / academic use.
+- **Gallery page** (`docs/gallery.rst`) `[planned]` — eye-candy rendered
+  images of representative designs (single transmon, two-qubit, surface-code
+  patch, examples from `tutorials/E.Input-output-coupling/`). Showcases
+  capability visually.
+- **`SUPPORT.md` + `GOVERNANCE.md`** `[planned]` — currently support info is
+  scattered across README/FAQ/contributor-guide. A single `SUPPORT.md`
+  consolidates "where to ask, response expectations." `GOVERNANCE.md`
+  matters for institutional adopters (labs, companies) deciding whether to
+  commit time.
+- **`.github/ISSUE_TEMPLATE/` audit + polish** `[planned]` — bug report,
+  feature request, docs-issue templates. Reduces friction for first-time
+  contributors and improves triage signal.
+- **Codespaces / devcontainer config** (`.devcontainer/devcontainer.json`)
+  `[planned]` — one-click cloud dev environment from any GitHub page.
+  Pairs with the lite install for a 90-second "open and run."
+- **Recipes section in docs** `[planned]` — short focused how-tos
+  ("Design a CPW resonator at 5 GHz", "Sweep transmon pad gap and extract
+  frequency", "Export GDS with custom layer mapping"). Each <50 LOC,
+  copy-paste-runnable. Tutorials are deep dives; recipes are the
+  Stack-Overflow-style "I just want to do X" entry point.
+
+### Bigger plays (multi-day)
+
+- **`awesome-quantum-metal` companion repo** `[research]` — curated list:
+  papers using Metal, lab tooling on top of Metal, talks, integrations.
+  Community-curated, standard `awesome-*` pattern.
+- **Comparison page** ("Metal vs. ...") `[research]` — honest comparison
+  vs. Ansys Workbench / commercial EDA / hand-coded GDS. Highly searched
+  by evaluators.
+- **Web-based read-only design viewer** `[research]` — overlaps with the
+  Jupyter widget viewer in the renderer roadmap; a web-hosted version on
+  the docs site would be a flagship demo.
+- **Annual / quarterly community report** `[research]` — "State of Quantum
+  Metal 202X" with downloads, contributors, papers citing, new features.
+  Doubles as institutional fundraising / partnership signal.
+
+---
+
+## Docs build cleanup `[research]`
+
+Items deferred during the May 2026 docs-build pass (see PR #1085).
+The build is now clean (0 warnings) but a few latent fragilities remain:
+
+- **Analyses-module alias-path documentation.** Classes in
+  ``qiskit_metal.analyses`` are reachable through two paths:
+  (1) the alias path via ``__init__.py`` re-export
+  (``qiskit_metal.analyses.EPRanalysis``), and (2) the real submodule
+  path (``qiskit_metal.analyses.quantization.energy_participation_ratio.EPRanalysis``).
+  Autodoc currently registers each class under both, which is
+  benign for users but emits ``duplicate object description``
+  warnings whenever the per-class stubs are reached via *both* an
+  autosummary toctree and an automodule member walk simultaneously.
+  Today this is avoided by careful toctree structuring; ideally we
+  pick one canonical documentation path per class. Options:
+  (a) stop re-exporting from ``__init__.py`` and require users to
+  import from submodules (breaking API change — not desirable);
+  (b) add ``:no-index:`` to all 16 per-class stubs in
+  ``docs/apidocs/qiskit_metal.analyses.*.rst`` so only the
+  ``automodule`` walk wins;
+  (c) regenerate the stubs to use the full submodule path in their
+  ``currentmodule`` directives. (c) is the cleanest if we ever
+  re-run ``sphinx-autogen`` to refresh the stubs.
+
+- **Sphinx-autosummary code-block leak.** Sphinx's autosummary
+  extension scans *every* ``.rst`` file for ``.. autosummary::``
+  and ``.. automodule::`` directives, **including those nested
+  inside ``.. code-block:: rst`` / ``.. code-block:: python``
+  blocks** used for documentation examples. PR #1085 worked around
+  this by escaping directive names (``.\.``) in the contributor
+  guide so the examples don't accidentally fire at build time, but
+  the underlying behavior is a foot-gun: any future docs example
+  that includes a real autosummary directive will silently
+  generate phantom RST files in ``docs/``. Possible fixes:
+  (a) replace the in-text examples with ``literalinclude`` of a
+  fixture file (out of scope of autosummary's scanner);
+  (b) configure autosummary to ignore specific directories.
+
+---
+
+## GUI / UX wishes `[wish-list]`
+
+Small UX improvements collected from real use. Lower priority than the
+roadmap items above, but tracked here so they don't get lost.
+
+- **Thumbnail icons for every qubit / component in the GUI library
+  toolbar** `[wish]` — the left-side component browser currently shows
+  a flat text list of `TransmonPocket`, `TransmonCross`,
+  `TransmonInterdigitated`, etc. A small (~64×64) preview icon next to
+  each name would let users pick a geometry visually instead of having
+  to remember which class is which shape. Applies to both the Qt
+  `MetalGUI` (`src/qiskit_metal/_gui/widgets/qlibrary_display/`) and
+  the future Jupyter `qm.gui()` library panel (planning in
+  `_dev/jupyter_gui/feature-map.md`). Implementation: render each
+  component once headlessly via `qm.view(component)` and cache as PNG
+  in `docs/_static/component_icons/` — same reproducible-asset pattern
+  the hero GIF (`scripts/make_hero_gif.py`) uses. Existing assets in
+  `_imgs/components/` may already cover some.
+
+---
+
 ## How to help
 
 - **Use it and file issues.** Especially: anything that

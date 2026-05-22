@@ -11,7 +11,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""GUI front-end interface for Qiskit Metal in PySide2."""
+"""GUI front-end interface for Quantum Metal, built on PySide6."""
 
 import logging
 import os
@@ -244,12 +244,15 @@ class QMainWindowBaseHandler:
     """Abstract Class to wrap and handle main window (QMainWindow).
 
     Assumes a UI that has:
+
         * log_text: a QText for logging
 
     Assumes we have functions:
+
         * setup_logger
 
     Assumes we have objects:
+
          * config.log.format
          * config.log.datefmt
          * config._ipython
@@ -363,11 +366,13 @@ class QMainWindowBaseHandler:
             QApplication: a setup QApplication
 
         There are three classes:
+
             * QCoreApplication - base class. Used in command line applications.
             * QGuiApplication - base class + GUI capabilities. Used in QML applications.
             * QApplication - base class + GUI + support for widgets. Use it in QtWidgets applications.
 
         See:
+
             * https://forum.qt.io/topic/94834/differences-between-qapplication-qguiappication-qcoreapplication-classes/3
             * https://github.com/matplotlib/matplotlib/blob/9984f9c4db7bfb02ffca53b7823acb8f8e223f6a/lib/matplotlib/backends/backend_qt5.py#L98
         """

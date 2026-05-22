@@ -4,10 +4,11 @@ from dataclasses import dataclass, field
 from typing import Union, List, Tuple
 import numpy as np
 
-# gmsh is an opt-in dependency (``quantum-metal[fem]``). Keep this
-# module importable on the lite install — the free functions below
-# that call into ``gmsh.model`` raise via ``_require_gmsh()`` at use
-# time rather than at ``import qiskit_metal`` time.
+# gmsh is an opt-in dependency (``quantum-metal[mesh]``, or its
+# backward-compat alias ``[fem]``). Keep this module importable on
+# the lite install — the free functions below that call into
+# ``gmsh.model`` raise via ``_require_gmsh()`` at use time rather
+# than at ``import qiskit_metal`` time.
 try:
     import gmsh
 except ImportError:  # pragma: no cover — exercised on lite installs
@@ -19,7 +20,8 @@ def _require_gmsh() -> None:
     if gmsh is None:
         raise ImportError(
             "renderer_gmsh requires gmsh. Install with: "
-            "pip install 'quantum-metal[fem]'"
+            "pip install 'quantum-metal[mesh]' "
+            "(or the legacy alias 'quantum-metal[fem]')"
         )
 
 

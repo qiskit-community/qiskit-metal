@@ -6,6 +6,87 @@ For the offical user-facing changelog for a particular release can be found in t
 
 The changelog for all releases can be found in the release page: [![Releases](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)
 
+## Quantum Metal v0.7.1 (UX + docs polish; no breaking changes)
+
+**Follow-up to v0.7.0** focused on adoption / DevRel polish, build-time
+quality, and a friendlier ElmerFEM error surface. No breaking changes —
+v0.7.0 users can upgrade in place.
+
+### Highlights
+
+- **ElmerFEM UX**: missing-binary errors now print actionable install
+  instructions (platform-specific) instead of a bare ``FileNotFoundError``
+  from ``subprocess.run``. Windows install-path lookup unpinned from
+  Elmer 9.0 (globs ``Elmer *-Release/bin/``, so Elmer 10.x ships
+  cleanly with no code change). Also fixed a pre-existing bug where
+  passing an explicit ``elmersolver=`` path silently skipped the
+  subprocess call.
+- **New ``[mesh]`` extra** for the gmsh dependency (canonical name for
+  the universal mesher — used by Elmer today, will feed Palace and
+  future open FEM backends). ``[fem]`` kept as a backward-compatible
+  alias; both extras install gmsh.
+- **Docs build: zero warnings.** Previously failed with ~50+ warnings
+  + several errors (heading hierarchy, nbformat validation, duplicate
+  substitutions, ambiguous cross-refs). All fixed at source.
+- **README modernization**: 482 → 225 lines, headless-first Quick Start,
+  Colab + Codespaces "try it now" buttons, hero animated GIF showing a
+  4-qubit chip built in 5 frames.
+- **``CITATION.cff``** added for GitHub's "Cite this repository" widget.
+
+### Bug fixes
+
+- ``elmer_runner._resolve_elmer_binary`` — friendly errors when ElmerFEM
+  binaries are missing; auto-detects newer Windows release directories.
+- ``elmer_runner.run_elmersolver`` — explicit-path code path no longer
+  skipped due to indentation bug; ``encoding="utf=8"`` typo fixed.
+- ``analyses/__init__.py`` — added missing autosummary blocks so the
+  rendered Analyses overview page is actually useful.
+- ``_gui/main_window*.py`` — RST docstring lint pass (bullet lists,
+  paragraph spacing); PySide2 → PySide6 in docstrings (we've shipped
+  PySide6 since v0.5).
+- ``contributor-guide.rst`` — example directives no longer accidentally
+  fire at build time and generate phantom RST files.
+
+### Docs
+
+- Sphinx ``conf.py``: added ``intersphinx`` for python/matplotlib/numpy/
+  pandas, ``nitpick_ignore`` for ``logger``/``figure``,
+  ``nbsphinx_codecell_lexer="python3"`` (silenced ~1500 warnings).
+- Tutorial notebook normalisation (nbformat cell IDs across 108
+  notebooks) + heading-hierarchy fixes across 1.1/1.2/4.05.
+- New ``scripts/check_tutorials_sync.py`` CI gate ensures ``tutorials/``
+  and ``docs/tut/`` cell content stays byte-identical.
+- ``README_Gmsh_Elmer.md`` → ``README_Open_FEM_Stack.md`` (broader scope:
+  gmsh + Elmer + future Palace).
+- Stripped v0.5/v0.6 era qualifiers across installation, migration,
+  headless-usage, workflow, contributor-guide, FAQ.
+- Dead links fixed (gohlke wheels site retired in 2022); rebrand pass
+  across all auxiliary READMEs.
+
+### Hygiene
+
+- ``[tool.ruff]`` — added ``extend-exclude`` for ``_dev/``, ``docs/_archive/``,
+  ``docs/_build/`` (scratch / generated dirs).
+- ``ipython>=8.0`` and ``ipywidgets>=8.1`` added to docs deps (silence
+  nbsphinx lexer and ipywidgets-path warnings).
+- ``ROADMAP.md`` — new "Adoption, DevRel, and onboarding" section
+  capturing follow-up ideas (Colab embeds, JupyterLite, gallery page,
+  SUPPORT.md / GOVERNANCE.md, devcontainer, recipes section, etc.).
+- CI matrix: ``tests-extras`` now runs both ``mesh`` and ``fem`` (alias)
+  paths so neither can regress silently.
+
+### Compatibility matrix
+
+| | v0.7.0 | **v0.7.1** |
+|---|---|---|
+| Python | 3.10 / 3.11 / 3.12 | 3.10 / 3.11 / 3.12 |
+| Default install | lite (no Qt / Ansys / gmsh) | same |
+| ``[gui]`` extra | PySide6, qdarkstyle | same |
+| ``[ansys]`` extra | pyaedt, pyEPR-quantum | same |
+| ``[fem]`` extra | gmsh | same (alias for new ``[mesh]``) |
+| ``[mesh]`` extra | — | **new** (canonical name; gmsh) |
+| ``[full]`` extra | all of above | same |
+
 ## Quantum Metal v0.6.2 (deprecation-notice release)
 
 **Pre-flip release.** All v0.6.x install behaviour is unchanged

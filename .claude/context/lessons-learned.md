@@ -299,6 +299,39 @@ templates so users know to expect it.
 
 ## Tutorials / docs
 
+### Tutorials live in TWO folders that must stay in sync
+
+**Symptom**: edits to one of `tutorials/X.YY ...ipynb` or
+`docs/tut/X.YY-...ipynb` silently don't show up in the other; the docs site
+ends up out of date relative to what users open in JupyterLab (or vice versa).
+
+**Cause**: every numbered notebook is mirrored into both folders for
+distinct reasons — `tutorials/` is the conventional GitHub-browse + JupyterLab
+file-tree location (with space-separated names that don't work in nbsphinx
+URLs), and `docs/tut/` is the Sphinx source tree (hyphenated names that do).
+**This is the permanent design, not a stopgap** — the naming constraints are
+mutually exclusive (Sphinx/nbsphinx need hyphenated filenames for clean URL
+resolution; JupyterLab/GitHub-browse/external citations need the human
+space-separated form). No single naming scheme satisfies both, so both
+folders must coexist and be edited together. Do not propose "simplifying"
+by deleting one of them.
+
+**Fix** (after editing one folder): re-sync from a script with per-notebook
+canonical-choice baked in:
+
+```bash
+python3 _dev/sync_two_folders.py --write
+uv run scripts/check_tutorials_sync.py   # must exit 0
+```
+
+CI runs the check on every push/PR (`tutorials-sync` job in
+`.github/workflows/main.yml`). Drift fails the PR loudly with a
+file-by-file list and the re-sync command in the error message.
+
+If you genuinely want a different canonical-folder choice for a notebook
+(e.g. "this one tutorials/ should win"), update the `CANONICAL` dict in
+`_dev/sync_two_folders.py` and re-run with `--write`.
+
 ### Notebook heading-level skips trip nbsphinx
 
 **Symptom**: Sphinx docs build prints `CRITICAL: Title level
@@ -332,6 +365,217 @@ toctree.
 ```
 
 **Reference**: PR #1055.
+
+### `autodoc_mock_imports` is not a pre-mock
+
+**Symptom**: Adding `autodoc_mock_imports = ["PySide6", "gmsh", ...]` to
+`docs/conf.py` isn't enough. Sphinx still crashes at `import qiskit_metal`
+near the top of `conf.py` with `ModuleNotFoundError: No module named 'PySide6'`
+(or `libEGL.so.1: cannot open shared object` if PySide6 is installed but its
+native lib is absent).
+
+**Cause**: `autodoc_mock_imports` only protects autodoc's cross-reference
+walk — not `conf.py`'s own `import qiskit_metal` line, which fires before the
+autodoc extension is fully active.
+
+**Fix**: pre-install mocks into `sys.modules` BEFORE the `import qiskit_metal`
+line in `conf.py`:
+
+```python
+import sys
+from sphinx.ext.autodoc.mock import _MockModule
+
+_MOCKED_MODULES = [
+    "PySide6", "PySide6.QtCore", "PySide6.QtGui", "PySide6.QtWidgets",
+    "qdarkstyle", "gmsh", "pyEPR", "pyaedt", "ansys",
+    "ansys.aedt", "ansys.aedt.core",
+    "IPython", "IPython.core", "IPython.core.magic", "IPython.display",
+    "matplotlib.backends.backend_qt5agg",
+    "matplotlib.backends.backend_qtagg",
+    "matplotlib.backends.qt_compat",
+]
+for _mod in _MOCKED_MODULES:
+    sys.modules.setdefault(_mod, _MockModule(_mod))
+
+import qiskit_metal  # now safe even with heavies absent
+```
+
+`autodoc_mock_imports` still belongs in `conf.py` for the cross-reference
+walk; the pre-mock is additional.
+
+### `unittest.mock.MagicMock` cannot be a class base
+
+**Symptom**: After pre-mocking with `MagicMock`, build fails with
+`TypeError: metaclass conflict: the metaclass of a derived class must be a
+(non-strict) subclass of the metaclasses of all its bases`.
+
+**Cause**: `_gui/widgets/all_components/table_view_all_components.py:41`
+does `class QTableView_AllComponents(QTableView, QWidget_PlaceholderText)`.
+When both bases are `MagicMock` instances, Python can't reconcile their
+metaclasses.
+
+**Fix**: use `sphinx.ext.autodoc.mock._MockModule`, not `unittest.mock.MagicMock`.
+Sphinx's mock is purpose-built to be subclass-safe.
+
+### tox env inheritance silently leaks `extras`
+
+**Symptom**: Setting `[tool.tox.env.docs]` to lite (`dependency_groups = ["docs"]`
+only, no `extras`) still installs PySide6/pyaedt/gmsh. Docs CI crashes on
+`libEGL.so.1`.
+
+**Cause**: `[tool.tox.env_run_base]` sets `extras = ["full"]` so the 9-combo
+test matrix gets all heavies. Other envs **inherit this** unless they
+explicitly override.
+
+**Fix**: explicit empty list in the docs env config:
+
+```toml
+[tool.tox.env.docs]
+    ...
+    extras            = []        # REQUIRED, not optional
+    dependency_groups = [ "docs" ]
+```
+
+Same applies to any other tox env that should NOT inherit base extras.
+
+### Sphinx exit 2 vs "build succeeded"
+
+**Symptom**: `sphinx-build` prints `build succeeded, N warnings.` and then
+exits with code 2. CI marks the job failed. Locally, exit code is 0.
+
+**Cause**: Sphinx exit code 2 means "build was interrupted" — some ERROR-level
+event (typically a docutils ERROR, not a WARNING) caused a non-zero exit even
+when the build technically produced output. Confusingly, the "build succeeded"
+line is from a sub-step that finished before the ERROR-causing event.
+
+**Fix**: look for `ERROR:` lines (not `WARNING:`) in the build log. Two common
+sources:
+1. **Inconsistent title style: skip from level X to Y** — RST/notebook heading
+   hierarchy skipped a level. Fix by normalizing the underline characters or
+   removing the offending subheading.
+2. **PandocMissing** in notebooks — see "pandoc on PATH" entry below.
+
+### RST heading-style hierarchy is positional, not character-based
+
+**Symptom**: After adding a `~~~` subheading inside a `==`/`--` file,
+subsequent `--` sections in the same file are reported as
+"skip from level 2 to 4" ERRORs.
+
+**Cause**: Sphinx assigns RST heading levels by the **order each underline
+character first appears** in the document, not by the character itself.
+Introducing `~~~` between existing `==` and `--` shifts `--`'s level from 2
+to 3 globally, breaking any subsequent section that was already nested at
+level 2.
+
+**Fix**: don't introduce new heading characters mid-document. If you need a
+sub-emphasis, use a `**bold inline marker:**` paragraph instead of a new
+heading underline.
+
+### `nbsphinx` needs pandoc on PATH for parent AND worker subprocesses
+
+**Symptom**:
+- Local docs build fails with `nbsphinx.NotebookError: PandocMissing`
+- Or only fails when running with `--jobs auto` (works with `--jobs 1`)
+
+**Cause**: nbsphinx invokes pandoc via `pypandoc`, which looks for `pandoc`
+binary on PATH. With parallel workers, each subprocess inherits PATH but loses
+custom additions that weren't exported.
+
+**Fix** (sandbox without `apt-get`):
+```bash
+uv pip install --python .tox/docs/bin/python pypandoc_binary
+mkdir -p /tmp/pandoc-bin
+ln -sf "$(realpath .tox/docs/lib/python3.12/site-packages/pypandoc/files/pandoc)" \
+       /tmp/pandoc-bin/pandoc
+export PATH="/tmp/pandoc-bin:$PATH"
+```
+
+**Fix** (real CI): `apt-get install -y pandoc` in `.github/workflows/docs.yml`.
+
+### tox `set_env` doesn't pass through tox-uv reliably
+
+**Symptom**: `[tool.tox.env_run_base]` has `set_env = { LC_ALL = "en_US.utf-8" }`
+but the docs env crashes with `locale.Error: unsupported locale setting` on
+systems that don't have en_US.UTF-8 generated.
+
+**Cause**: The locale is set, but the *generated* locale isn't present on a
+clean Ubuntu or sandboxed Linux. `locale.setlocale(LC_ALL, '')` fails when
+`LC_ALL` points at an ungenerated locale.
+
+**Fix** (local): `sudo locale-gen en_US.UTF-8`, or `LC_ALL=C.UTF-8` (always available).
+**Fix** (CI): real GitHub runners have en_US.UTF-8 by default — local-dev only.
+
+### `grid-item-card` needs a parent `.. grid::`
+
+**Symptom**: sphinx-design WARNING: "The parent of a 'grid-item' should be a 'grid-row'".
+
+**Cause**: A standalone `.. grid-item-card::` without a parent `.. grid::` is invalid.
+
+**Fix**: wrap even single cards in a grid:
+```rst
+.. grid:: 1
+   :gutter: 2
+
+   .. grid-item-card:: My standalone card
+      ...
+```
+
+### Sphinx autosummary side-effects on local builds — do NOT commit
+
+**Symptom**: After running `sphinx-build` locally, `git status` shows
+modifications to `docs/apidocs/qiskit_metal.renderers.PlotCanvas.rst` and
+possibly two new files at `docs/` root
+(`qiskit_metal.analyses.em.cpw_calculations.rst`,
+`qiskit_metal.analyses.quantization.lumped_capacitive.rst`).
+
+**Cause**: `sphinx.ext.autosummary` regenerates `.rst` stubs on each build,
+and the content depends on what modules are actually importable at the time.
+With heavies mocked, fewer methods are discovered (→ 376-line removal in
+PlotCanvas.rst). With autosummary walking different module sets, new stubs
+appear at docs/ root.
+
+**Fix**: don't commit these — they're build artifacts. Either:
+- Run `git checkout HEAD -- docs/apidocs/` before pushing, or
+- Add the new docs/ root stubs to `.gitignore` (currently they aren't), or
+- Configure autosummary to write to a build-only directory
+
+### Pre-existing "MetalGUI docstring indentation" ERROR
+
+**Symptom**: Build log has `_gui/main_window.py:docstring of qiskit_metal._gui.main_window.MetalGUI:11: ERROR: Unexpected indentation. [docutils]`
+
+**Cause**: Docstring uses indentation that docutils interprets as a block
+quote, then sees content that breaks the assumed indentation level.
+
+**Status**: Non-fatal warning, present since at least v0.6.x. Queued for a
+separate `_gui` docstring cleanup pass.
+
+### v0.6.3 docs band-aid → v0.7.0 proper fix recap
+
+**v0.6.3** wrapped the `is_building_docs()` import block in
+`renderers/__init__.py` in `try/except (ImportError, OSError)` and emitted an
+`ImportWarning`. This let docs CI keep working even when the runner lacked
+native libs.
+
+**v0.7.0** replaced this band-aid with the proper architecture:
+1. Docs tox env installs lite only (`extras = []`)
+2. `conf.py` pre-mocks heavies in `sys.modules` before `import qiskit_metal`
+3. `autodoc_mock_imports` catches anything the pre-mock missed
+4. `renderers/__init__.py` returns to plain imports
+
+The `try/except` and the `warnings` import in `renderers/__init__.py` were removed.
+
+### Quick docs-build sanity script
+
+When in doubt, this reproduces the CI environment locally:
+
+```bash
+rm -rf .tox/docs
+uv pip install --python .tox/docs/bin/python pypandoc_binary  # if not in CI
+LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 \
+  PATH="/tmp/pandoc-bin:$PATH" \
+  uvx --with tox-uv tox -e docs
+# Exit code 0 = green; exit code 2 = look for ERROR: lines in the log
+```
 
 ### CONTRIBUTING.md was telling people to use pylint+yapf
 

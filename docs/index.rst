@@ -2,78 +2,23 @@
 Quantum Metal (formerly Qiskit Metal)
 ##############################################################
 
-
 Quantum Device Design & Analysis (Q-EDA)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-
-.. attention::
-
-    **Rebrand in progress: Qiskit Metal → Quantum Metal.** The PyPI
-    package ``quantum-metal`` is the canonical wheel as of v0.5+
-    (``qiskit-metal`` remains archived at its pre-0.5 state).
-
-    A future major release (**target v0.8 or v1.0**) will rename
-    the Python import path from ``qiskit_metal`` to
-    ``quantum_metal`` to match. ``import qiskit_metal`` raises a
-    ``FutureWarning`` advertising this — plan to update your
-    imports ahead of that release. Silence the warning with
-    ``QISKIT_METAL_SUPPRESS_RENAME_WARNING=1``.
-
-    See :doc:`installation` for the install pathway cards and
-    :doc:`migration-to-v0.7.0` for the v0.6 → v0.7 migration
-    recipes.
-
-.. tip::
-
-    **v0.7.0 is lite-by-default.** ``pip install quantum-metal``
-    is now small and fast — no Qt, no Ansys, no gmsh. Add extras
-    (``[gui]`` / ``[ansys]`` / ``[fem]`` / ``[full]``) for the
-    backends you actually need. See :doc:`installation` for the
-    full card grid.
-
-.. hint::
-    **Community support?**
-    Join the Quantum Device Community (QDC) Discord and Quantum Metal channel:
-    `discord.gg/kaZ3UFuq <https://discord.gg/kaZ3UFuq>`_.
-    You can also join the the Slack channel `#metal <https://qiskit.slack.com/archives/C01R8KP5WP7>`_
-    in the `Qiskit workspace <https://qisk.it/join-slack>`_, which we will slowly phase out.
-
-    You can open this documentation using
-
-    .. code-block:: python
-
-        import qiskit_metal
-        qiskit_metal.open_docs()
-
 .. image:: images/logo1.png
-   :alt: Missing Logo Diagram
+   :alt: Quantum Metal logo
 
-**Quantum Metal | Open source • Community maintained & driven quantum EDA • API**
+**Quantum Metal | Open source · Community-maintained quantum EDA**
 
-Design and analyze superconducting quantum chips with a Python API + GUI that plugs into your favorite tools.
-Leverages existing EDA stacks, automates tedious workflows, and keeps best practices baked in.
+Design and analyze superconducting quantum chips with a Python API + optional GUI
+that plugs into your favourite EDA tools.
+No Qt required — works headlessly in any Jupyter notebook or plain Python script.
 
-.. note::
-    **You don't need the Qt GUI to use Quantum Metal.** The full API
-    — designs, components, renderers, analyses — works headlessly in a
-    plain Python interpreter or a Jupyter notebook. Use
-    ``qm.view(design)`` to render a design to a matplotlib figure
-    inline, without spinning up ``MetalGUI``::
+.. grid:: 1 2 3 3
+   :gutter: 2
 
-        import qiskit_metal as qm
-        fig = qm.view(design)
-        fig.savefig("design.png")
-
-    See :doc:`headless-usage` for the full Qt-free workflow, what
-    works without PySide6, and the migration to the lite install.
-
-.. grid:: 1 2 2 2
-   :gutter: 1
-
-   .. grid-item-card:: Get Started
+   .. grid-item-card:: 🚀 Install
       :class-header: sd-bg-primary sd-text-light
-
 
       .. button-ref:: installation
          :ref-type: doc
@@ -81,169 +26,35 @@ Leverages existing EDA stacks, automates tedious workflows, and keeps best pract
          :outline:
          :expand:
 
-         Install
+         Get started in 60 seconds
 
-      .. button-ref:: videoseducation
-         :ref-type: doc
-         :color: primary
-         :outline:
-         :expand:
-
-         Tutorials (videos)
+   .. grid-item-card:: 📚 Tutorials
+      :class-header: sd-bg-secondary sd-text-light
 
       .. button-ref:: tut/index
          :ref-type: doc
-         :color: primary
+         :color: secondary
          :outline:
          :expand:
 
-         Tutorials index
+         Hands-on notebooks
 
-      .. button-ref:: videoseducation
-         :ref-type: doc
-         :color: primary
-         :outline:
-         :expand:
-
-         Videos & Education
-
-   .. grid-item-card:: Quick links
-      :class-header: sd-bg-secondary sd-text-light
-
-      .. grid:: 1 1 1 1
-         :gutter: 1
-
-         .. grid-item::
-            :child-align: start
-
-            .. button-ref:: overview
-               :ref-type: doc
-               :color: primary
-               :outline:
-               :expand:
-
-               API Overview
-
-         .. grid-item::
-            :child-align: start
-
-            .. button-ref:: apidocs/qlibrary
-               :ref-type: doc
-               :color: primary
-               :outline:
-               :expand:
-
-               API Reference
-
-
-         .. grid-item::
-            :child-align: start
-
-            .. button-ref:: contributor-guide
-               :ref-type: doc
-               :color: primary
-               :outline:
-               :expand:
-
-               Contribute
-
-.. dropdown:: Live tutorials and Q&A
-   :icon: calendar
-   :open:
-
-   We host live tutorials and Q&A sessions. Announcements for future tutorials are posted in the #metal channel.
-
-.. grid:: 1 2 2 4
-   :gutter: 1
-
-   .. grid-item-card:: Community Discord
-      :class-header: sd-bg-secondary sd-text-light
-
-      Fastest way to reach maintainers and the broader community.
-      Open community server for Quantum Metal users and collaborators.
+   .. grid-item-card:: 💬 Community
+      :class-header: sd-bg-primary sd-text-light
 
       .. button-link:: https://discord.gg/kaZ3UFuq
          :color: primary
          :outline:
          :expand:
 
-         Join Discord
+         Join the Discord
 
-   .. grid-item-card:: Qiskit Slack #metal
-      :class-header: sd-bg-primary sd-text-light
+.. rubric:: What is Quantum Metal?
 
-      Former main community workspace, being replaced by Discord.
-
-      .. button-link:: https://qiskit.slack.com/archives/C01R8KP5WP7
-         :color: primary
-         :outline:
-         :expand:
-
-         Join #metal on Slack
-
-   .. grid-item-card:: Quantum Device Workshop (QDW) Annual Conference
-      :class-header: sd-bg-secondary sd-text-light
-
-      Annual workshop hosted at UCLA/USC.
-
-      .. button-link:: https://qdw-ucla.squarespace.com/
-         :color: primary
-         :outline:
-         :expand:
-
-         QDW site
-
-      .. button-link:: https://qdw-ucla.squarespace.com/qdw2026
-         :color: secondary
-         :outline:
-         :expand:
-
-         Sign for 2026
-
-   .. grid-item-card:: Quantum Device Consortium (QDC)
-      :class-header: sd-bg-primary sd-text-light
-
-      Community organization stewarding Quantum Metal and companion tools.
-
-      .. button-link:: https://qdc-qcsa.vercel.app
-         :color: primary
-         :outline:
-         :expand:
-
-         QDC website & governance
-
-      .. button-link:: https://discord.gg/kaZ3UFuq
-         :color: secondary
-         :outline:
-         :expand:
-
-         QDC Discord
-
-
-.. rubric:: **Qiskit Metal Vision**:
-
-Designing quantum devices is the bedrock of the quantum ecosystem,
-but it is a difficult, multi-step process that connects traditionally disparate worlds.
-Metal is automating and streamlining this process.
-Our vision is to develop a community-driven universal platform capable
-of orchestrating quantum chip development from concept to fabrication in
-a simple and open framework.
-
-We want to accelerate, and to lower the barrier to, innovation of  quantum devices.
-Today at the IEEE Quantum Week Conference, the team discussed their vision for this first-of-its-kind project. Led by quantum physicist Zlatko Minev and
-developed with other IBM Quantum team members, this project is meant for those interested in quantum hardware design: a suite of design automation
-tools that can be used to devise and analyze superconducting devices, with a focus on being able to integrate the best tools into a quantum hardware
-designer’s workflow. We’ve code-named the project Qiskit Metal.
-
-We hope that as a community, we might make the process of quantization — bridging the gap between pieces of a superconducting metal on a quantum chip
-with the computational mathematics of Hamiltonians and Hilbert spaces — available to anyone with a curious mind and a laptop. We want to make quantum
-device design a streamlined process that automates the laborious tasks as it does with conventional electronic device design. We are writing software
-with built-in best practices and cutting-edge quantum analysis techniques, all this while seamlessly leveraging the power of conventional EDA tools.
-The goal of Qiskit Metal is to allow for easy quantum hardware modeling with reduction of design-related errors plus increased speed.
-
-(read the full `Medium blog <https://medium.com/qiskit/what-if-we-had-a-computer-aided-design-program-for-quantum-computers-4cb88bd1ddea>`_)
-
-**Quantum Metal consists of four foundational elements:**
+Designing quantum devices is the bedrock of the quantum ecosystem, but it is a
+difficult, multi-step process that connects traditionally disparate worlds.
+Quantum Metal automates and streamlines this process — from layout to Hamiltonian —
+in a simple, open, community-driven framework.
 
 .. grid:: 2 2 2 4
    :gutter: 1
@@ -276,44 +87,109 @@ The goal of Qiskit Metal is to allow for easy quantum hardware modeling with red
 
       :ref:`qanalysis`
 
+.. rubric:: Community
+
+.. grid:: 1 2 2 4
+   :gutter: 1
+
+   .. grid-item-card:: Community Discord
+      :class-header: sd-bg-secondary sd-text-light
+
+      Fastest way to reach maintainers and the broader community.
+
+      .. button-link:: https://discord.gg/kaZ3UFuq
+         :color: primary
+         :outline:
+         :expand:
+
+         Join Discord
+
+   .. grid-item-card:: Qiskit Slack #metal
+      :class-header: sd-bg-primary sd-text-light
+
+      Former main community workspace, being replaced by Discord.
+
+      .. button-link:: https://qiskit.slack.com/archives/C01R8KP5WP7
+         :color: primary
+         :outline:
+         :expand:
+
+         Join #metal on Slack
+
+   .. grid-item-card:: Quantum Device Workshop (QDW)
+      :class-header: sd-bg-secondary sd-text-light
+
+      Annual workshop hosted at UCLA/USC.
+
+      .. button-link:: https://qdw-ucla.squarespace.com/
+         :color: primary
+         :outline:
+         :expand:
+
+         QDW site
+
+      .. button-link:: https://qdw-ucla.squarespace.com/qdw2026
+         :color: secondary
+         :outline:
+         :expand:
+
+         Sign for 2026
+
+   .. grid-item-card:: Quantum Device Consortium (QDC)
+      :class-header: sd-bg-primary sd-text-light
+
+      Community organization stewarding Quantum Metal.
+
+      .. button-link:: https://qdc-qcsa.vercel.app
+         :color: primary
+         :outline:
+         :expand:
+
+         QDC website
+
+      .. button-link:: https://discord.gg/kaZ3UFuq
+         :color: secondary
+         :outline:
+         :expand:
+
+         QDC Discord
+
+.. note::
+    **Rebrand in progress: Qiskit Metal → Quantum Metal.**
+    The PyPI package is ``quantum-metal`` (v0.5+; current: v0.7.0).
+    A future release (target v0.8–v1.0) will rename the import path from
+    ``qiskit_metal`` to ``quantum_metal``. ``import qiskit_metal`` raises a
+    ``FutureWarning`` — silence it with ``QISKIT_METAL_SUPPRESS_RENAME_WARNING=1``.
+    See :doc:`installation` and :doc:`migration-to-v0.7.0`.
+
 .. toctree::
     :maxdepth: 2
+    :caption: Get Started
     :hidden:
 
-    About<self>
-    Installing Qiskit Metal<installation>
-    Using Quantum Metal without the Qt GUI<headless-usage>
-    Migrating to v0.7.0 (lite install)<migration-to-v0.7.0>
-
-.. toctree::
-    :maxdepth: 2
-    :caption: Overview
-    :hidden:
-
-    Metal Workflow<workflow>
-    Contributor Guide<contributor-guide>
-    Frequently Asked Questions<faq>
-
+    Installing Quantum Metal<installation>
+    Quick Start<tut/1-Overview/1.2-Quick-start>
 
 .. toctree::
     :maxdepth: 1
     :caption: Tutorials
     :hidden:
 
-    Videos & Education<videoseducation>
     Tutorials<tut/index>
     Example Designs<circuit-examples/index>
-
-.. toctree::
-    :maxdepth: 1
-    :caption: Libraries
-    :hidden:
-
-    All Quantum Devices<apidocs/qlibrary>
+    Videos & Education<videoseducation>
 
 .. toctree::
     :maxdepth: 2
-    :caption: API References
+    :caption: Concepts
+    :hidden:
+
+    Quantum Metal Workflow<workflow>
+    Frequently Asked Questions<faq>
+
+.. toctree::
+    :maxdepth: 2
+    :caption: API Reference
     :hidden:
 
     Overview<overview>
@@ -326,24 +202,18 @@ The goal of Qiskit Metal is to allow for easy quantum hardware modeling with red
     GUI<apidocs/gui>
 
 .. toctree::
-    :titlesonly:
+    :maxdepth: 2
+    :caption: Community & Contributing
     :hidden:
 
+    Contributor Guide<contributor-guide>
+    Using Quantum Metal without Qt<headless-usage>
+    Migrating to v0.7.0<migration-to-v0.7.0>
     Code of Conduct<https://github.com/Qiskit/qiskit/blob/master/CODE_OF_CONDUCT.md>
 
-.. Hidden glob toctree so every auto-generated per-class stub in
-   ``apidocs/`` is reachable from the document tree. Without this,
-   Sphinx emits one "document isn't included in any toctree" warning
-   per stub (currently ~100). The stubs are linked from the module
-   pages listed in the API References toctree above; this hidden
-   entry just satisfies Sphinx's reachability check.
-.. toctree::
-    :hidden:
-    :glob:
-
-    apidocs/*
-
-.. Hiding - Indices and tables
-   :ref:`genindex`
-   :ref:`modindex`
-   :ref:`search`
+.. Per-class autodoc stubs in ``apidocs/`` are reached via the
+   autosummary ``:toctree: .`` directives in each module's
+   ``__init__.py`` (e.g. ``qiskit_metal._gui/__init__.py`` lists
+   ``MetalGUI`` under autosummary, which registers
+   ``apidocs/qiskit_metal._gui.MetalGUI`` in a toctree). No hidden
+   glob is needed.

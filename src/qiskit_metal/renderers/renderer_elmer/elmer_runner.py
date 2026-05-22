@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from typing import Union, Any
+import glob
 import os
 import subprocess
 import shutil
@@ -13,6 +14,76 @@ from qiskit_metal.renderers.renderer_elmer.elmer_configs import (
     simulations,
     solvers,
 )
+
+
+def _resolve_elmer_binary(name: str, explicit_path: str | None = None) -> str:
+    """Resolve the path to an Elmer binary (``ElmerGrid`` / ``ElmerSolver``).
+
+    Strategy:
+      1. If the caller passed an explicit path, validate and use it.
+      2. Check the standard Windows install location.
+      3. Look up the binary on ``PATH`` via ``shutil.which``.
+      4. If none of the above, raise a ``FileNotFoundError`` with actionable
+         install instructions — much friendlier than the raw ``[Errno 2]``
+         from ``subprocess.run``.
+
+    Args:
+        name: Binary name (``"ElmerGrid"`` or ``"ElmerSolver"``).
+        explicit_path: User-provided absolute path, if any.
+
+    Returns:
+        Resolved binary path or name suitable for ``subprocess.run``.
+
+    Raises:
+        FileNotFoundError: If the binary cannot be located.
+    """
+    if explicit_path is not None:
+        if not (os.path.isabs(explicit_path) and os.path.exists(explicit_path)):
+            # Still allow non-absolute paths if they resolve on PATH
+            if shutil.which(explicit_path) is None:
+                raise FileNotFoundError(
+                    f"ElmerFEM binary not found at the provided path: {explicit_path!r}. "
+                    "Pass an absolute path that exists on this system, or leave the "
+                    "argument as None to let the renderer look on PATH."
+                )
+        return explicit_path
+
+    # Standard Windows install location. ElmerFEM installers create
+    # ``C:\Program Files\Elmer <version>-Release\bin\``. We glob the
+    # version segment so a newer release (e.g. Elmer 10.x when it ships)
+    # is picked up without code changes. Sort descending so the highest
+    # version wins if multiple are installed side by side.
+    if platform.system() == "Windows":
+        candidates = sorted(
+            glob.glob(f"C:/Program Files/Elmer *-Release/bin/{name}.exe"),
+            reverse=True,
+        )
+        if candidates:
+            return candidates[0]
+
+    # Look on PATH.
+    resolved = shutil.which(name)
+    if resolved is not None:
+        return resolved
+
+    # Not found — give the user an actionable message.
+    raise FileNotFoundError(
+        f"ElmerFEM binary {name!r} was not found on PATH or at its standard install "
+        "location. ElmerFEM is an external solver and must be installed separately — "
+        'it does not ship with `pip install "quantum-metal[mesh]"` '
+        "(or its alias `quantum-metal[fem]`).\n\n"
+        "Quantum Metal is tested against Elmer 9.0+; newer releases are expected to "
+        "work since we use only the stable ElmerGrid / ElmerSolver CLI surface.\n\n"
+        "Install instructions:\n"
+        "  - All platforms: https://www.elmerfem.org/blog/binaries/\n"
+        "  - macOS (recommended: build from source for reliability):\n"
+        "      https://github.com/ElmerCSC/elmerfem#elmer-fem\n"
+        "  - Linux: `sudo apt install elmerfem-csc` (Ubuntu) or build from source.\n"
+        "  - Windows: install the official `ElmerFEM-gui-mpi-Windows-AMD64` build.\n\n"
+        "See `README_Open_FEM_Stack.md` in the repository root for the full setup guide.\n"
+        f"If {name} is installed but not on PATH, pass an explicit path via the "
+        f"`{name.lower()}=` argument."
+    )
 
 
 @dataclass
@@ -569,16 +640,10 @@ class ElmerRunner:
                                 using the default procedure). Defaults to None.
             options (list): ElmerGrid additional options.
         """
-        os_platform = platform.system()
-        if elmergrid is None:
-            # On Windows ElmerGrid.exe is not found once gmsh.initialize() was executed.
-            # Try to use abs-path instead.
-            if os_platform == "Windows" and os.path.exists(
-                "C:/Program Files/Elmer 9.0-Release/bin/ElmerGrid.exe"
-            ):
-                elmergrid = "C:/Program Files/Elmer 9.0-Release/bin/ElmerGrid.exe"
-            else:
-                elmergrid = "ElmerGrid"
+        # Resolve the ElmerGrid binary up front so we can give a friendly,
+        # actionable error if it isn't installed — instead of the raw
+        # FileNotFoundError from subprocess.run.
+        elmergrid = _resolve_elmer_binary("ElmerGrid", elmergrid)
 
         args = [elmergrid, "14", "2", os.path.join("..", meshfile)] + options
         with open(os.path.join(sim_dir, "elmergrid.log"), "w+", encoding="utf-8") as f:
@@ -614,22 +679,16 @@ class ElmerRunner:
                                 using the default procedure). Defaults to None.
             options (list): ElmerSolver additional options.
         """
-        os_platform = platform.system()
-        if elmersolver is None:
-            # On Windows ElmerSolver.exe is not found once gmsh.initialize() was executed.
-            # Try to use abs-path instead.
-            if os_platform == "Windows" and os.path.exists(
-                "C:/Program Files/Elmer 9.0-Release/bin/ElmerSolver.exe"
-            ):
-                elmersolver = "C:/Program Files/Elmer 9.0-Release/bin/ElmerSolver.exe"
-            else:
-                elmersolver = "ElmerSolver"
+        # Resolve the ElmerSolver binary up front for the same reason as
+        # run_elmergrid above: friendly install instructions instead of
+        # a bare FileNotFoundError if Elmer isn't installed.
+        elmersolver = _resolve_elmer_binary("ElmerSolver", elmersolver)
 
-            args = [elmersolver, sif_file] + options
-            with open(
-                os.path.join(sim_dir, "elmersolver.log"), "w+", encoding="utf=8"
-            ) as f:
-                subprocess.run(args, cwd=sim_dir, stdout=f, stderr=f)
+        args = [elmersolver, sif_file] + options
+        with open(
+            os.path.join(sim_dir, "elmersolver.log"), "w+", encoding="utf-8"
+        ) as f:
+            subprocess.run(args, cwd=sim_dir, stdout=f, stderr=f)
 
             # for f in out_files:
             #     out_file = os.path.join(sim_dir, f)
