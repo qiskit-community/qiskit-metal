@@ -15,7 +15,7 @@ Outline of Installation
    :margin: 1 0 2 0
 
    .. grid-item-card::
-      :class-card: sd-bg-light sd-border
+      :class-card: sd-border
       :class-header: sd-bg-secondary sd-text-white
       :text-align: left
 
@@ -27,7 +27,7 @@ Outline of Installation
       - For most users; matches CI-tested wheels
 
    .. grid-item-card::
-      :class-card: sd-bg-light sd-border
+      :class-card: sd-border
       :class-header: sd-bg-primary sd-text-white
       :text-align: left
 
@@ -42,7 +42,7 @@ Outline of Installation
       - **Without conda** (standard Python ``venv``)
 
    .. grid-item-card::
-      :class-card: sd-bg-light sd-border
+      :class-card: sd-border
       :class-header: sd-bg-success sd-text-white
       :text-align: left
 
@@ -107,7 +107,7 @@ mesher — are opt-in **extras**.
    :margin: 1 0 2 0
 
    .. grid-item-card:: 🪶 Lite (default)
-      :class-card: sd-bg-light sd-border
+      :class-card: sd-border
       :class-header: sd-bg-info sd-text-white
       :text-align: left
 
@@ -124,7 +124,7 @@ mesher — are opt-in **extras**.
       *No Qt, no Ansys, no gmsh — small, fast, no GUI surprises.*
 
    .. grid-item-card:: 🖥️ GUI
-      :class-card: sd-bg-light sd-border
+      :class-card: sd-border
       :class-header: sd-bg-primary sd-text-white
       :text-align: left
 
@@ -138,7 +138,7 @@ mesher — are opt-in **extras**.
       **Best for:** interactive design work, GUI-driven editing.
 
    .. grid-item-card:: 🧲 Ansys / HFSS / Q3D
-      :class-card: sd-bg-light sd-border
+      :class-card: sd-border
       :class-header: sd-bg-secondary sd-text-white
       :text-align: left
 
@@ -153,7 +153,7 @@ mesher — are opt-in **extras**.
       AEDT license (typically Windows).
 
    .. grid-item-card:: 🔺 Open FEM (gmsh + Elmer)
-      :class-card: sd-bg-light sd-border
+      :class-card: sd-border
       :class-header: sd-bg-success sd-text-white
       :text-align: left
 
@@ -167,7 +167,7 @@ mesher — are opt-in **extras**.
       license.
 
 .. grid-item-card:: 📦 Everything (v0.6.x compatibility set)
-   :class-card: sd-bg-light sd-border
+   :class-card: sd-border
    :class-header: sd-bg-warning sd-text-dark
    :text-align: left
    :margin: 2 0 2 0
