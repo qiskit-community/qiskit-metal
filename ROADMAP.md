@@ -21,13 +21,23 @@ based on user demand and contributor availability.
 
 ## Vision
 
-Quantum Metal is the open-source design plane for
-superconducting quantum chips: a Python library where you
-build a chip from `QComponent`s, attach analyses, and hand
-the result to whichever solver / fab / orchestrator you
-want. The library itself is solver-agnostic; the renderers
-are the integration layer with the outside world (GDS,
-HFSS, Q3D, gmsh, Elmer, AWS Palace, ...).
+Quantum Metal is the open-source **chip-design layer** for
+superconducting quantum hardware: a Python library where
+you build a chip from `QComponent`s, attach analyses, and
+hand the result to whichever solver / fab / orchestrator
+you want. The library itself is solver-agnostic; the
+renderers are the integration layer with the outside world
+(GDS, HFSS, Q3D, gmsh, Elmer, AWS Palace, ...).
+
+We sit inside a broader open-source ecosystem — design
+discovery ([SQuADDS](https://github.com/LFL-Lab/SQuADDS)),
+Palace simulation wrappers ([SQDMetal](https://github.com/sqdlab/SQDMetal),
+[pypalace](https://pypalace.readthedocs.io/)),
+mesh utilities, quantization tools. Full map:
+[`docs/ecosystem.rst`](./docs/ecosystem.rst) (rendered at
+the docs site). Items below are about Metal's own
+direction; ecosystem-level coordination is tracked
+alongside.
 
 Two things shape the next year:
 
@@ -70,6 +80,65 @@ Items shipped under this initiative (across v0.6.1 → v0.7.1):
 - ✅ `v0.7.1` cleanup — added `[mesh]` as the canonical name for the
   gmsh extra (`[fem]` kept as a backward-compatible alias); the
   `README_Open_FEM_Stack.md` rename; ElmerFEM error-message UX fix.
+
+---
+
+## Downstream ecosystem rollout `[in-progress]`
+
+The v0.7.0 / 0.7.1 lite flip changed the install surface
+downstream packages depend on (extras-by-default, lazified
+Qt / pyaedt / gmsh, friendlier `ImportError` UX, the
+`MetalGUI` → `qm.view()` headless path). To finish the
+rollout, each downstream package needs install instructions,
+lockfiles, and pins updated against `quantum-metal>=0.7.1`.
+
+Coordination plan: file an issue on each downstream repo
+with a recipe for the upgrade, link to
+`docs/migration-to-v0.7.0.rst`, and point at a worked
+example.
+
+Worked example to point at:
+[qdw26-workshop PR #1](https://github.com/quantum-device-consortium/qdw26-workshop-materials/pull/1)
+swapped a forked-Metal pin for mainline
+`quantum-metal[full]>=0.7.1` and includes the Apple-Silicon
+Docker pin, `schemdraw` addition, and palace auto-discovery
+fixes — a full migration in one diff.
+
+Per-issue contents:
+
+1. New install command (`pip install quantum-metal[ansys]`,
+   `[mesh]`, `[full]`, etc. — whichever extras that
+   downstream actually uses).
+2. Any lazy-import / `ImportError` UX changes that affect
+   their code paths.
+3. Link to `docs/migration-to-v0.7.0.rst`.
+4. Reminder about the `qiskit_metal` → `quantum_metal`
+   import-path rename targeted for v0.8 / v1.0, so they can
+   plan import updates ahead of that release.
+
+Known downstream packages:
+
+- **[SQuADDS](https://github.com/LFL-Lab/SQuADDS)**
+  (LFL-Lab @ USC) — design-discovery database, consumes
+  Metal `QDesign` objects. **`[planned]`** — issue to file.
+- **[SQDMetal](https://github.com/sqdlab/SQDMetal)**
+  (SQDLab @ UQ) — Palace simulation wrapper. **`[planned]`**
+  — issue to file; same migration plus the
+  `MetalGUI` → `qm.view()` story for headless Docker /
+  Brev contexts.
+- **[pypalace](https://pypalace.readthedocs.io/)**
+  (Northwestern) — Palace wrapper. **`[planned]`** —
+  issue to file.
+- **[pyEPR](https://github.com/zlatko-minev/pyEPR)** —
+  **`[shipped]`** — co-maintained, compatibility through
+  v0.7.1 verified.
+- **[QDW 2026 workshop materials](https://github.com/quantum-device-consortium/qdw26-workshop-materials)**
+  — **`[shipped]`**, PR #1 merged; the canonical worked
+  example referenced above.
+
+If you maintain a package that depends on Metal and we
+haven't listed it, please open an issue here so we can
+add it (and help with the upgrade).
 
 ---
 
@@ -168,17 +237,160 @@ but are worth tracking:
   full hints unlock static analysis for orchestrators
   and make the LLM-driven code-generation path more
   reliable.
-- **Plugin discovery via entry points.** External
-  renderers and component libraries currently require
-  monkey-patching or vendoring. A
-  `qiskit_metal.renderers` and
-  `qiskit_metal.qlibrary` entry-point namespace lets the
-  community ship third-party packages.
+- **Plugin discovery via entry points** `[planned, v0.8.x]`
+  External renderers and component libraries currently
+  require monkey-patching or vendoring. A
+  `qiskit_metal.renderers` and `qiskit_metal.qlibrary`
+  entry-point namespace lets the community ship third-party
+  packages — and gives lab and community PDKs a clean
+  `pip install <pdk>` distribution channel without
+  requiring any change to Metal itself.
+- **Functional component API alongside class hierarchy** `[research]`
+  Add a `@qm.cell`-decorator path so a component can be a
+  Python function returning a `QComponent`, in parallel to
+  the existing class-based subclassing. Doesn't replace
+  the class API. Motivation: LLM / agent codegen is
+  measurably more reliable against pure functions returning
+  values than against class hierarchies with stateful
+  side-effects, so a functional surface is a useful
+  on-ramp for the AI-orchestration profile above.
+- **JAX-differentiable parametric components** `[research]`
+  Inverse-design / qubit-frequency tuning via `grad()` is
+  unlocked once a small set of geometric primitives are
+  JAX-traceable. Start with `TransmonPocket` as a pilot
+  (pad width / gap → frequency gradient via an analytical
+  capacitance model, no FEM in the loop). Big win for the
+  research audience that currently hand-rolls finite-difference
+  sweeps; pairs naturally with EPR analysis for
+  Hamiltonian-aware optimisation.
 - **Docs hosting reassessment.** GH Pages is current
   (years of SEO). Read the Docs config archived at
   `docs/_archive/readthedocs/` — revivable in minutes
   if/when per-PR previews, versioned docs, or the
   rebrand cutover make the switch worth it.
+
+---
+
+## Group and lab adoption pathway
+
+The next-tier adopters for Metal — research groups, university
+labs, multi-PI consortia — evaluate against a recurring set of
+questions: *Is it maintained? Can we plug our own PDK in?
+Does the GDS round-trip cleanly through downstream tooling?
+Will it scale to Python-agent-driven design loops?* This
+section groups items aimed at those questions. Several
+overlap with the Adoption / DevRel section below; the cut is
+by *audience* — DevRel is about attracting individual users,
+this section is about clearing the path for groups and labs.
+
+*Items in this section reflect open-source community
+direction discussed within the Quantum Device Consortium
+(QDC) and the broader contributor base. They are
+aspirations, not commitments by any individual contributor
+or their employer.*
+
+### High impact, low effort
+
+- **Ship a Metal `.lyp` layer-property file** `[planned, v0.7.x]`
+  Users who open a Metal-exported GDS in KLayout currently
+  see grey-on-grey because no layer colours / names ship
+  with our GDS files. A one-page `.lyp` under
+  `docs/_static/` (linked from the GDS export docs) gives
+  them a named, coloured view out of the box. KLayout is
+  the de-facto open-source viewer in the GDS-handoff path;
+  making this handoff frictionless removes a real papercut.
+  ~2 hours.
+- **"Metal → KLayout" how-to page** `[planned, v0.7.x]`
+  Document the GDS-export → KLayout-DRC / visual inspection
+  flow, paired with the `.lyp` and a starter DRC deck
+  (below). Most superconducting-design flows in the
+  community already do both — making the combination
+  first-class instead of folklore reduces onboarding
+  friction. ~3 hours.
+- **"Built for AI agents" docs page** `[planned, v0.7.x]`
+  Companion to `docs/orchestration.rst` already on the
+  roadmap. The lite-by-default flip and `qm.view()`
+  removed the dependency surface that made agent-driven
+  workflows painful; this page makes the workflow
+  visible. Importantly, position Metal *with* the
+  ecosystem here — design discovery via
+  [SQuADDS](https://github.com/LFL-Lab/SQuADDS), solver
+  dispatch via [SQDMetal](https://github.com/sqdlab/SQDMetal)
+  / [pypalace](https://pypalace.readthedocs.io/),
+  quantisation via [pyEPR](https://github.com/zlatko-minev/pyEPR)
+  and [scqubits](https://github.com/scqubits/scqubits) —
+  rather than implying Metal does it all. The story is the
+  composable open-source stack, not Metal in isolation.
+  ~3 hours.
+
+### High impact, medium effort
+
+- **Tighten release cadence to monthly minimum** `[planned]`
+  Even pure-docs / test-only point releases. Prospective
+  adopters check commit + release pulse before committing
+  engineering time, and read steady cadence as a
+  maintenance signal more strongly than raw feature
+  surface. Quarterly is fine for features; monthly is
+  cheap and changes the perception.
+- **Starter DRC deck for superconducting basics** `[planned]`
+  A `qm.drc(design, deck="sc_basics")` helper that shells
+  out to KLayout with a minimal rule set: min line width,
+  min gap, JJ overlap minimums, ground-plane keep-outs.
+  Doesn't need to be comprehensive — needs to *exist*, so
+  PDK authors and labs have a template to extend instead
+  of starting from blank.
+- **"When to use Quantum Metal" docs page** `[planned]`
+  Use-case-driven framing (not framework-comparison):
+  which problems Metal is shaped for (qubit-first design
+  with energy-participation analysis, Hamiltonian
+  extraction, integration with the open-source SC qubit
+  toolchain), which adjacent workflows hand off elsewhere
+  (mask-level DRC, process-specific PDK rules, photonics).
+  Highly searched by evaluators; framing the fit ourselves
+  is more useful to readers than leaving them to
+  assemble it.
+- **Gallery + thumbnail component icons**
+  `[promoted from research]`
+  Already on the Adoption list and the Wish-list. Promote
+  to planned: visual component catalogue is a natural
+  strength of the class-based qlibrary and is currently
+  under-used. Pairs with the "When to use Metal" page
+  above as the visual half of the answer.
+
+### High impact, high effort
+
+- **Reference PDK** (`metal-pdk-academic` or similar)
+  `[research]`
+  Demonstrates the entry-points pattern from a realistic
+  angle, so subsequent community PDKs have a worked example
+  to follow. Without one, the entry-points hook is
+  abstract.
+- **Hosted web design viewer** `[research]`
+  Already on the Adoption / Bigger plays list. Flagship
+  demo plus a real adoption unlock — closes the "I want
+  to look at a Metal design without installing anything"
+  gap that today forces evaluators to clone the repo
+  before they see a chip.
+
+### Wish-list
+
+- **Salt-style extension marketplace / index page** `[wish]`
+  The simpler `awesome-quantum-metal` (already on the
+  adoption list) covers most of the need; a richer
+  in-app discovery surface is a stretch goal.
+- **Format converters to / from adjacent Python design
+  libraries** `[wish]`
+  Quantum and RF design teams increasingly use multiple
+  Python frameworks side by side. Clean component-level
+  converters would make Metal a friendly neighbour in
+  mixed pipelines. Best owned jointly with the relevant
+  project teams if there's interest.
+- **Annual "State of Quantum Metal" report** `[wish]`
+  Already on the Adoption list as research. Doubles as
+  community visibility for grant proposals and external
+  reporting.
+
+---
 
 ---
 
@@ -240,15 +452,18 @@ trial viable).
 - **`awesome-quantum-metal` companion repo** `[research]` — curated list:
   papers using Metal, lab tooling on top of Metal, talks, integrations.
   Community-curated, standard `awesome-*` pattern.
-- **Comparison page** ("Metal vs. ...") `[research]` — honest comparison
-  vs. Ansys Workbench / commercial EDA / hand-coded GDS. Highly searched
-  by evaluators.
+- **"When to use Metal" page** `[research]` — use-case-driven
+  framing of which problems Metal is shaped for and which
+  workflows hand off elsewhere. Highly searched by evaluators.
+  (Superseded direction for the older "comparison page" idea —
+  see the parallel item under "Group and lab adoption pathway".)
 - **Web-based read-only design viewer** `[research]` — overlaps with the
   Jupyter widget viewer in the renderer roadmap; a web-hosted version on
   the docs site would be a flagship demo.
 - **Annual / quarterly community report** `[research]` — "State of Quantum
   Metal 202X" with downloads, contributors, papers citing, new features.
-  Doubles as institutional fundraising / partnership signal.
+  Community visibility artefact, useful for grant proposals and
+  external reporting.
 
 ---
 
