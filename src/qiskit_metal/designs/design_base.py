@@ -1187,6 +1187,9 @@ gui.autoscale()
 {i}
 """
 
+        if "array(" in body:
+            str_import += "\nfrom numpy import array\n"
+
         python_script = str_import + header + body + footer
         if printout:
             print(python_script)
