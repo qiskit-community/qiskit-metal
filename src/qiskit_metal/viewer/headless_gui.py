@@ -281,6 +281,70 @@ class MetalGUIHeadless:
 
         return fig
 
+    # ── Qt-only methods: no-op stubs so tutorial code doesn't AttributeError
+    # in headless mode. Each method mirrors a feature of the desktop
+    # ``MetalGUI`` that doesn't have a matplotlib equivalent — instead of
+    # blowing up, we either log + return None, or return a sensible
+    # surrogate object so attribute chains keep working.
+
+    def toggle_docks(self, *args, **kwargs) -> None:
+        """No-op in headless mode.
+
+        Desktop ``MetalGUI`` uses this to show/hide its dockable side
+        panels. There are no docks in the headless inline view, so this
+        silently does nothing.
+        """
+        return None
+
+    def change_design(self, design: "QDesign") -> None:
+        """Alias of :meth:`set_design` to match older ``MetalGUI`` API."""
+        self.set_design(design)
+
+    def edit_source(self, name: str = None) -> None:
+        """No-op in headless mode.
+
+        Desktop ``MetalGUI`` opens a Qt source editor. Falls back to
+        printing the component options table (same as
+        :meth:`edit_component`) so the user can still inspect.
+        """
+        if name is not None:
+            self.edit_component(name)
+
+    @property
+    def figure(self):
+        """The last rendered :class:`matplotlib.figure.Figure`, or None.
+
+        Mirrors ``MetalGUI.figure`` (which exposes the canvas figure)
+        so tutorial cells like ``fig = gui.figure`` keep working.
+        """
+        return self._last_figure
+
+    # The desktop GUI exposes child widgets here (Qt dock instances). In
+    # headless mode we expose ``_NoOpMainWindow`` so attribute access
+    # (``gui.variables_window.close()``) is silently a no-op rather than
+    # an AttributeError.
+    @property
+    def variables_window(self):
+        """No-op stub for the desktop variables editor dock."""
+        return self.main_window
+
+    @property
+    def component_window(self):
+        """No-op stub for the desktop component editor dock."""
+        return self.main_window
+
+    @property
+    def ui(self):
+        """No-op stub for the Qt-generated ``self.ui`` namespace."""
+        return self.main_window
+
+    @property
+    def config(self):
+        """Expose ``qiskit_metal.config`` for ``gui.config.*`` access."""
+        from qiskit_metal import config as _config
+
+        return _config
+
     # ── Internal helpers ─────────────────────────────────────────────────
 
     def _render(self, display_inline: bool = True) -> Optional["Figure"]:
@@ -302,30 +366,58 @@ class MetalGUIHeadless:
                 ax.set_xlim(xmin, xmax)
                 ax.set_ylim(ymin, ymax)
 
-            # Best-effort highlight: redraw highlighted components as
-            # an overlay rectangle behind the existing geometry.
+            # Best-effort highlight: redraw highlighted components as a
+            # red dashed bounding box + label. Color spec mirrors the
+            # desktop ``MetalGUI`` (mpl_canvas.py:690-757) so the headless
+            # view looks visually consistent with the Qt path.
             if self._highlighted:
+                from matplotlib.patches import Rectangle
+
                 for name in self._highlighted:
-                    comp = self._design.components.get(name)
-                    if comp is None:
+                    if name not in self._design.components:
                         continue
+                    comp = self._design.components[name]
                     try:
                         xmin, ymin, xmax, ymax = comp.qgeometry_bounds()
-                        from matplotlib.patches import Rectangle
-
                         rect = Rectangle(
                             (xmin, ymin),
                             xmax - xmin,
                             ymax - ymin,
-                            linewidth=2.0,
-                            edgecolor="#FF8C00",  # vivid orange — visible against the chip
-                            facecolor="#FF8C00",
-                            alpha=0.18,
-                            zorder=10,
+                            linewidth=1.0,
+                            edgecolor="r",
+                            facecolor=(1, 0, 0, 0.05),
+                            linestyle="--",
+                            zorder=100,
                         )
                         ax.add_patch(rect)
+                        ax.text(
+                            xmin,
+                            ymax,
+                            name,
+                            color="r",
+                            fontweight="bold",
+                            fontsize=11,
+                            alpha=0.85,
+                            zorder=101,
+                            verticalalignment="bottom",
+                            bbox=dict(
+                                facecolor="#FFFFFF",
+                                edgecolor="#F0F0F0",
+                                alpha=0.85,
+                                boxstyle="round,pad=0.2",
+                            ),
+                        )
                     except Exception:  # pragma: no cover
                         continue
+
+            # MetalGUI canvas style: light grey background + faint grid.
+            # Mirrors src/qiskit_metal/_gui/.../mpl_canvas.py so the
+            # headless figure feels visually consistent with the desktop.
+            ax.set_facecolor("#F4F4F4")
+            fig.patch.set_facecolor("#F4F4F4")
+            ax.grid(True, which="major", color="#b0b0b0", linestyle="--", alpha=0.5)
+            ax.grid(True, which="minor", color="#b0b0b0", linestyle=":", alpha=0.3)
+            ax.set_aspect(1)
 
             _apply_brand_decoration(fig, ax)
         except Exception as exc:  # pragma: no cover
