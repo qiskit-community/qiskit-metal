@@ -471,6 +471,40 @@ def _apply_brand_decoration(fig, ax) -> None:
     except Exception as exc:  # pragma: no cover — branding is best-effort
         _logger.debug("MetalGUIHeadless: logo overlay skipped: %s", exc)
 
+    # Bottom-right faint watermark: mirrors the desktop ``MetalGUI`` canvas
+    # (see ``_watermark_axis`` in renderer_mpl/mpl_canvas.py). Visible in
+    # shared screenshots so the design is attributed to Quantum Metal
+    # without being intrusive in the live render.
+    try:
+        ax.annotate(
+            "Quantum Metal",
+            xy=(0.98, 0.02),
+            xycoords="axes fraction",
+            fontsize=14,
+            color="gray",
+            ha="right",
+            va="bottom",
+            alpha=0.18,
+            zorder=-100,
+        )
+        if _BRAND_LOGO.exists():
+            from qiskit_metal.renderers.renderer_mpl.mpl_toolbox import (
+                _axis_set_watermark_img,
+            )
+
+            # ``_axis_set_watermark_img`` uses ``ax.imshow`` with
+            # ``transform=ax.transAxes``; matplotlib still autoscales the
+            # data limits to include the image extent, which would zoom
+            # in on the top-right corner. Snapshot + restore the limits.
+            saved_xlim = ax.get_xlim()
+            saved_ylim = ax.get_ylim()
+            ax.set_autoscale_on(False)
+            _axis_set_watermark_img(ax, str(_BRAND_LOGO), size=0.15)
+            ax.set_xlim(saved_xlim)
+            ax.set_ylim(saved_ylim)
+    except Exception as exc:  # pragma: no cover — branding is best-effort
+        _logger.debug("MetalGUIHeadless: watermark skipped: %s", exc)
+
 
 def _show_headless_banner_once() -> None:
     """Emit a one-time onboarding banner in the active notebook.
