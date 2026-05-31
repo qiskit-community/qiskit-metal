@@ -17,7 +17,10 @@ from qiskit_metal.qlibrary.core import QComponent
 
 
 class MyQComponent(QComponent):
-    """Use this class as a template for your components."""
+    """.. image::
+        user_template.png
+
+    Use this class as a template for your components."""
 
     # Edit these to define your own tempate options for creation
     # Default drawing options

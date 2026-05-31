@@ -5,9 +5,12 @@ import pandas as pd
 
 
 class QDesignCheck:
-    """QDesign_Check contains various design checks, such as
-    testing designs in qiskit metal for unintended overlap
-    between components and/or connections between components.
+    """.. image::
+        base_design_check.png
+
+    QDesign_Check contains various design checks, such as
+        testing designs in qiskit metal for unintended overlap
+        between components and/or connections between components.
     """
 
     def __init__(self, design: "QDesign"):
