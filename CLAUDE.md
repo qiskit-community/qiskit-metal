@@ -95,7 +95,32 @@ test's `KNOWN_*` skip list, see `tests/test_qlibrary_pin_sanity.py`)
 rather than silently fixing.** A drive-by "fix" without HFSS / Qt
 validation is how silent S-parameter errors ship.
 
-## Read these next — context files
+## Public commits, PRs, and files — keep them terse and factual
+
+Anything that lands in git is public, searchable, and permanent. Keep
+commit messages, PR descriptions, and any files under `_dev/` (yes,
+even there — `_dev/` is committed scratch, not local-only) to the
+**factual, attributable minimum**:
+
+- Describe **what changed and why technically**. Skip strategic
+  reasoning, competitive framing, and adoption / DevRel commentary —
+  those belong in chat with the maintainer, not in the repo.
+- **Don't characterise people** beyond standard public attribution
+  (name + repo + license). Backgrounds, productivity adjectives,
+  affiliations beyond what they list on their own profile, "solo but
+  prolific" — out.
+- **Don't draft outreach in committed files.** Outreach messages,
+  "if they say X we do Y" matrices, talking points, negotiation
+  strategy — chat only. The maintainer copies, edits, and sends.
+- **Don't editorialise about other projects** ("don't absorb their
+  repo", "their packaging is broken", "they're more active than us") —
+  describe technical facts (license, integration shape, API surface)
+  and stop.
+- When in doubt, default to a one-line attribution + link. The reader
+  can click through.
+
+If the maintainer asks for strategic analysis, give it in chat.
+Don't reach for `_dev/` as a halfway house — it's still public.
 
 | File | Read when |
 |------|-----------|
