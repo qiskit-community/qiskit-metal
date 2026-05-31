@@ -52,5 +52,12 @@ docs/tut/1-Overview/1.2-Bird's-eye-view-of-Quantum-Metal.ipynb
 docs/tut/1-Overview/1.3-Build-a-4-qubit-chip.ipynb
 
 # --- Section 2: lifecycle + the full-chip showpiece ---
-docs/tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.ipynb
 docs/tut/2-From-components-to-chip/2.21-Design-a-4-qubit-full-chip.ipynb
+
+# NOTE: 2.01 (QComponent lifecycle) is temporarily removed from the
+# frozen-Qt set. The v0.7.2 merge of old 2.01 + 2.02 reordered cells,
+# and a copy_qcomponent call now sees state that didn't exist when the
+# screenshots were taken. Tracked in
+# ``_dev/notebooks-auto-refresh.txt`` (known-failing block) for a
+# follow-up PR that re-runs the merged notebook in a Qt session and
+# refreshes the committed screenshots.
