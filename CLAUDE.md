@@ -154,6 +154,36 @@ top of that script — recipes are callables that return
 The same images are referenced by the Sphinx API docs, so the docstring
 augmentation is "do once, render everywhere."
 
+## Auto-generated docs assets
+
+To avoid duplicating ~100 PNGs across `src/qiskit_metal/_gui/_imgs/components/`
+(runtime source of truth for the Qt `MetalGUI`), `docs/apidocs/`
+(referenced by autodoc class docstrings), and `docs/images/qlibrary/`
+(referenced by the visual gallery), the latter two — plus
+`docs/qcomponents-gallery.rst` — are **generated at every docs build**.
+
+The Sphinx `builder-inited` hook in `docs/conf.py` runs
+`_dev/generate_qcomponent_gallery.py --write` and a small scaffold-icon
+copy step before any reading happens. Source of truth is the
+`_gui/_imgs/` directory + each class' `.. image::` docstring directive.
+
+Gitignored (regenerated):
+- `docs/qcomponents-gallery.rst`
+- `docs/images/qlibrary/`
+- `docs/apidocs/*.png`
+
+Still tracked:
+- `src/qiskit_metal/_gui/_imgs/components/*.png` (runtime source)
+- `docs/apidocs/*.rst` (autosummary-generated, but historically committed)
+
+If a fresh checkout's docs build can't find a thumbnail, the source
+PNG is missing under `_gui/_imgs/components/` — re-run
+`uv run python _dev/generate_qlibrary_thumbnails.py --write
+--inject-docstrings` to regenerate it from each component's
+`make()` output. The build hook only *copies* existing source PNGs;
+it doesn't generate missing ones (that requires importing each
+component, which is too slow for a hot docs-build path).
+
 ## Recurring tasks — slash commands
 
 | Command | What it does |

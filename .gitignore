@@ -78,6 +78,16 @@ target/
 # Jupyter Notebook
 .ipynb_checkpoints
 
+# Sphinx auto-generated assets — regenerated at every docs build via
+# the ``builder-inited`` hook in ``docs/conf.py``. Source of truth for
+# QComponent thumbnails lives at
+# ``src/qiskit_metal/_gui/_imgs/components/`` (used by the Qt MetalGUI
+# at runtime); duplicating into git would mean ~100 extra blobs on every
+# thumbnail refresh.
+docs/qcomponents-gallery.rst
+docs/images/qlibrary/
+docs/apidocs/*.png
+
 # pyenv
 .python-version
 
