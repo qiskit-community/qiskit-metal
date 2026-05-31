@@ -179,7 +179,16 @@ extensions = [
     # See the ``jupyterlite_*`` config block further down for content
     # selection and kernel choice.
     "jupyterlite_sphinx",
+    # Renders ``.. mermaid::`` directives in RST + mermaid code fences
+    # in nbsphinx-rendered notebooks. Used for the architecture and
+    # design-flow diagrams in contributor-guide.rst and tutorial 1.1.
+    "sphinxcontrib.mermaid",
 ]
+
+# --- Mermaid --------------------------------------------------------------
+# Render mermaid as inline SVG; light theme matches the rest of the docs.
+mermaid_output_format = "raw"
+mermaid_init_js = "mermaid.initialize({startOnLoad:true, theme:'default'});"
 
 # --- JupyterLite ----------------------------------------------------------
 # Ship a JupyterLite instance under ``/lite/`` on the docs site with the
