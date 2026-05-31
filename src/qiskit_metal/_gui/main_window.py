@@ -499,7 +499,12 @@ class MetalGUI(QMainWindowBaseHandler):
         self.main_window.tabifyDockWidget(self.ui.dockDesign, self.ui.dockLibrary)
         self.main_window.tabifyDockWidget(self.ui.dockLibrary, self.ui.dockConnectors)
         self.main_window.tabifyDockWidget(self.ui.dockConnectors, self.ui.dockVariables)
-        self.ui.dockDesign.raise_()
+        # Default to the QComponent Library tab on launch — that's the
+        # natural starting point for a new design (browse the catalog and
+        # drop a component). The QComponents/edit-component tab
+        # (``dockDesign``) is only useful once components exist; raising
+        # it first showed a near-empty pane on first open.
+        self.ui.dockLibrary.raise_()
         self.main_window.resizeDocks([self.ui.dockDesign], [350], Qt.Horizontal)
 
         # Log
