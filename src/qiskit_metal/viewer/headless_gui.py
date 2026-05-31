@@ -34,6 +34,22 @@ if TYPE_CHECKING:
 
 _logger = logging.getLogger(__name__)
 
+# Bundled brand assets for the headless figure decoration.  The same logo
+# that the Qt ``MetalGUI`` shows in its title bar (``_gui/_imgs/metal_logo.png``)
+# is overlaid on every render so the headless path stays visually tied to
+# the Quantum / Qiskit Metal brand.
+_BRAND_LOGO = (
+    Path(__file__).resolve().parent.parent / "_gui" / "_imgs" / "metal_logo.png"
+)
+_BRAND_TITLE = "Quantum Metal"  # umbrella brand (formerly Qiskit Metal)
+_BRAND_SUBTITLE = "headless viewer"  # subtitle hints which path is active
+
+# One-time onboarding message: emitted on the first MetalGUIHeadless
+# instantiation per process so Colab/Binder users know which mode they're
+# in and how to get the desktop GUI if they want it. Suppress with
+# ``QISKIT_METAL_HEADLESS_QUIET=1``.
+_HEADLESS_BANNER_SHOWN = False
+
 
 class _NoOpMainWindow:
     """Stub for ``gui.main_window`` so tutorial calls like
@@ -101,6 +117,7 @@ class MetalGUIHeadless:
         self._zoom_bounds: Optional[tuple] = None  # (xmin, ymin, xmax, ymax)
         self._last_figure: Optional["Figure"] = None
         self.main_window = _NoOpMainWindow()
+        _show_headless_banner_once()
 
     # ── Tutorial-facing surface (mirrors MetalGUI) ───────────────────────
 
@@ -233,7 +250,11 @@ class MetalGUIHeadless:
                 figure width in pixels.
 
         Returns:
-            matplotlib.figure.Figure: The rendered figure.
+            ``None`` when ``display=True`` (the figure is shown inline
+            via :class:`IPython.display.Image`; returning the figure
+            would make Jupyter render it a second time). When
+            ``display=False``, returns the :class:`matplotlib.figure.Figure`
+            so the caller can post-process it.
         """
         fig = self._render(display_inline=False)
         if fig is None:
@@ -254,6 +275,9 @@ class MetalGUIHeadless:
                 ipy_display(Image(filename=str(path)))
             except Exception:  # pragma: no cover
                 pass
+            # Returning the Figure would trigger Jupyter's auto-display of
+            # the cell's last expression, rendering the plot a second time.
+            return None
 
         return fig
 
@@ -302,10 +326,101 @@ class MetalGUIHeadless:
                         ax.add_patch(rect)
                     except Exception:  # pragma: no cover
                         continue
+
+            _apply_brand_decoration(fig, ax)
         except Exception as exc:  # pragma: no cover
             _logger.debug("MetalGUIHeadless: post-render decoration skipped: %s", exc)
 
         return fig
+
+
+def _apply_brand_decoration(fig, ax) -> None:
+    """Overlay the Quantum / Qiskit Metal logo + title on the figure.
+
+    Mirrors the desktop ``MetalGUI`` branding so users running the
+    headless path still see they're inside the Quantum Metal stack
+    (the original "Qiskit Metal" name is preserved through the logo —
+    it's the long-running brand the community recognises).
+    """
+    # Title strip at the top of the figure (above the axes).
+    fig.suptitle(
+        _BRAND_TITLE,
+        fontsize=13,
+        fontweight="bold",
+        color="#1a1a1a",
+        y=0.985,
+    )
+    # Subtitle in the axes title slot — kept small + grey so it doesn't
+    # compete with the design geometry.
+    existing_ax_title = ax.get_title()
+    sub = (
+        _BRAND_SUBTITLE
+        if not existing_ax_title
+        else f"{existing_ax_title} · {_BRAND_SUBTITLE}"
+    )
+    ax.set_title(sub, fontsize=9, color="#666666", loc="right", pad=4)
+
+    # Logo: bundled Qiskit Metal mark in the top-left of the figure.
+    # Placed via ``add_axes`` (not ``figimage``) so the logo participates
+    # in the ``bbox_inches="tight"`` calculation used by ``savefig`` and
+    # doesn't get cropped out of screenshots.
+    try:
+        if _BRAND_LOGO.exists() and not getattr(fig, "_qm_logo_axes", None):
+            import matplotlib.image as mpimg
+
+            img = mpimg.imread(str(_BRAND_LOGO))
+            # Small inset axes in figure-relative coords: [left, bottom, w, h].
+            logo_ax = fig.add_axes([0.01, 0.93, 0.07, 0.07], zorder=20, frameon=False)
+            logo_ax.imshow(img)
+            logo_ax.set_xticks([])
+            logo_ax.set_yticks([])
+            logo_ax.set_facecolor("none")
+            fig._qm_logo_axes = logo_ax  # marker so we don't re-add on re-render
+    except Exception as exc:  # pragma: no cover — branding is best-effort
+        _logger.debug("MetalGUIHeadless: logo overlay skipped: %s", exc)
+
+
+def _show_headless_banner_once() -> None:
+    """Emit a one-time onboarding banner in the active notebook.
+
+    Tells the user they're in the no-Qt path and how to install the
+    desktop ``MetalGUI`` extras if they want the full Qt experience.
+    Suppress with ``QISKIT_METAL_HEADLESS_QUIET=1``.
+    """
+    global _HEADLESS_BANNER_SHOWN
+    if _HEADLESS_BANNER_SHOWN:
+        return
+    import os
+
+    if os.environ.get("QISKIT_METAL_HEADLESS_QUIET") == "1":
+        _HEADLESS_BANNER_SHOWN = True
+        return
+    _HEADLESS_BANNER_SHOWN = True
+
+    msg_html = (
+        "<div style='border-left:4px solid #6929C4;padding:8px 12px;"
+        "background:#f4f1fb;color:#222;font-family:sans-serif;"
+        "font-size:13px;line-height:1.4;margin:4px 0;'>"
+        "<b>Quantum Metal — headless viewer active.</b> "
+        "Rendering inline via <code>qm.view(design)</code>; "
+        "<code>gui.rebuild()</code>, <code>gui.screenshot()</code>, "
+        "<code>gui.edit_component(...)</code> work as in the desktop GUI."
+        "<br>For the full desktop experience (Qt window, dockable panels): "
+        "<code>pip install 'quantum-metal[gui]'</code> and re-import."
+        "</div>"
+    )
+    msg_text = (
+        "[Quantum Metal] Headless viewer active — rendering inline via "
+        "qm.view(design). For the desktop GUI, install: "
+        "pip install 'quantum-metal[gui]'"
+    )
+    try:
+        from IPython.display import HTML, display as ipy_display
+
+        ipy_display(HTML(msg_html))
+    except Exception:
+        # Plain-Python / non-IPython sessions: fall back to logger.
+        _logger.info(msg_text)
 
 
 def _is_headless_environment() -> bool:
