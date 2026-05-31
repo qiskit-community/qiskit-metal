@@ -102,20 +102,20 @@ PAIRS = [
         "tutorials/1 Overview/1.1 Quick start.ipynb",
     ),
     (
-        "docs/tut/1-Overview/1.3-Saving-Your-Chip-Design.ipynb",
-        "tutorials/1 Overview/1.3 Saving Your Chip Design.ipynb",
+        "docs/tut/1-Overview/1.4-Saving-Your-Chip-Design.ipynb",
+        "tutorials/1 Overview/1.4 Saving Your Chip Design.ipynb",
     ),
     (
-        "docs/tut/1-Overview/1.4-Headless-quick-view-(no-Qt-GUI).ipynb",
-        "tutorials/1 Overview/1.4 Headless quick view (no Qt GUI).ipynb",
+        "docs/tut/1-Overview/1.1-Quick-start.ipynb",
+        "tutorials/1 Overview/1.1 Quick start (qm.gui auto-picks headless).ipynb",
     ),
     (
         "docs/tut/1-Overview/1.5-Parametric-design---iterate-and-compare.ipynb",
         "tutorials/1 Overview/1.5 Parametric design - iterate and compare.ipynb",
     ),
     (
-        "docs/tut/1-Overview/1.6-QComponent-shape-library.ipynb",
-        "tutorials/1 Overview/1.6 QComponent shape library.ipynb",
+        "docs/tut/1-Overview/qcomponents-gallery.ipynb",
+        "tutorials/1 Overview/QComponent Gallery.ipynb",
     ),
     # Section 2
     (

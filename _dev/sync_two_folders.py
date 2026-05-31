@@ -29,29 +29,21 @@ PAIRS = {
         "tutorials/1 Overview/1.2 Bird's eye view of Quantum Metal.ipynb",
     ),
     "1.3": (
-        "docs/tut/1-Overview/1.3-Saving-Your-Chip-Design.ipynb",
-        "tutorials/1 Overview/1.3 Saving Your Chip Design.ipynb",
+        "docs/tut/1-Overview/1.3-Build-a-4-qubit-chip.ipynb",
+        "tutorials/1 Overview/1.3 Build a 4-qubit chip.ipynb",
     ),
     "1.4": (
-        "docs/tut/1-Overview/1.4-Headless-quick-view-(no-Qt-GUI).ipynb",
-        "tutorials/1 Overview/1.4 Headless quick view (no Qt GUI).ipynb",
+        "docs/tut/1-Overview/1.4-Saving-Your-Chip-Design.ipynb",
+        "tutorials/1 Overview/1.4 Saving Your Chip Design.ipynb",
     ),
     "1.5": (
         "docs/tut/1-Overview/1.5-Parametric-design---iterate-and-compare.ipynb",
         "tutorials/1 Overview/1.5 Parametric design - iterate and compare.ipynb",
     ),
-    "1.6": (
-        "docs/tut/1-Overview/1.6-QComponent-shape-library.ipynb",
-        "tutorials/1 Overview/1.6 QComponent shape library.ipynb",
-    ),
     # --- Section 2 ---
     "2.01": (
         "docs/tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.ipynb",
         "tutorials/2 From components to chip/A. Using QComponents/2.01 How to use a QComponent.ipynb",
-    ),
-    "2.02": (
-        "docs/tut/2-From-components-to-chip/2.02-How-to-copy-a-QComponent.ipynb",
-        "tutorials/2 From components to chip/A. Using QComponents/2.02 How to copy a QComponent.ipynb",
     ),
     "2.11": (
         "docs/tut/2-From-components-to-chip/2.11-Routing-101.ipynb",
@@ -252,12 +244,10 @@ CANONICAL = {
     "1.3": "docs",
     "1.4": "docs",
     "1.5": "docs",
-    "1.6": "docs",
     # Section 2 — flip to 'tut' where tutorials/ is significantly larger
     # (rich outputs/images that source-match merge couldn't recover);
     # keep 'docs' where sizes are similar and merge worked
     "2.01": "tut",  # 74kB → 341kB
-    "2.02": "docs",  # 72kB → 228kB (3x but small absolute)
     "2.11": "tut",
     "2.12": "tut",  # 179→764, 197→703
     "2.13": "tut",

@@ -208,9 +208,11 @@ jobs:
             tests/test_solution_types.py \
             -v
       - name: Execute headless tutorial notebook
-        # Gate the canonical no-Qt tutorial (1.4 Headless quick view).
-        # If a future change breaks the headless path, this step
-        # catches it before users hit it.
+        # Gate the canonical onboarding tutorial against the lite
+        # install. Tutorial 1.1 uses ``qm.gui(design)``, which
+        # auto-picks ``MetalGUIHeadless`` when PySide6 is absent.
+        # If a future change breaks the no-Qt path, this step catches
+        # it before users hit it.
         #
         # ``uv pip install`` is used (not ``python -m pip``) because
         # the lite venv was created by ``uv venv``, which does not
@@ -227,8 +229,8 @@ jobs:
             --ExecutePreprocessor.kernel_name=qm_lite \
             --ExecutePreprocessor.timeout=180 \
             --output-dir /tmp/exec_check \
-            'tutorials/1 Overview/1.4 Headless quick view (no Qt GUI).ipynb'
-          echo "OK: 1.4 Headless quick view executed cleanly"
+            'tutorials/1 Overview/1.1 Quick start.ipynb'
+          echo "OK: 1.1 Quick start executed cleanly on lite install"
 
   tests-extras:
     # Exercises each opt-in extra independently. As of v0.7.0

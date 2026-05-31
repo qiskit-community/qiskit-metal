@@ -14,8 +14,8 @@ commit the fresh outputs.
 | Notebook | Output gap | Image gap |
 |---|---|---|
 | `docs/tut/1-Overview/1.2-Bird's-eye-view-of-Quantum-Metal.ipynb` | +1 | +1 |
-| `docs/tut/1-Overview/1.4-Headless-quick-view-(no-Qt-GUI).ipynb` | +6 | +3 |
-| `docs/tut/1-Overview/1.6-QComponent-shape-library.ipynb` | +1 | 0 |
+| `docs/tut/1-Overview/1.1-Quick-start.ipynb` | +6 | +3 |
+| `docs/tut/1-Overview/qcomponents-gallery.ipynb` | +1 | 0 |
 | `docs/tut/2-From-components-to-chip/2.11-Routing-101.ipynb` | +4 | +4 |
 | `docs/tut/2-From-components-to-chip/2.21-Design-a-4-qubit-full-chip.ipynb` | +2 | +2 |
 | `docs/tut/2-From-components-to-chip/2.23-Modify-chip-options.ipynb` | +3 | -1 |
@@ -36,7 +36,7 @@ uv run --group jupyter jupyter lab docs/tut/
 ```bash
 # Per-notebook (replace path):
 uv run --group jupyter jupyter nbconvert --to notebook --inplace --execute \
-    "docs/tut/1-Overview/1.4-Headless-quick-view-(no-Qt-GUI).ipynb"
+    "docs/tut/1-Overview/1.1-Quick-start.ipynb"
 ```
 
 `1.1`, `1.4`, `1.6`, `2.11`, `2.21`, `2.23` should all run cleanly headless

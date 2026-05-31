@@ -144,7 +144,7 @@ QISKIT_METAL_HEADLESS=1 .venv/bin/jupyter nbconvert \
     --ExecutePreprocessor.kernel_name=qm_lite_check \
     --ExecutePreprocessor.timeout=180 \
     --output-dir /tmp/qm_lite_check/out \
-    '/path/to/qiskit-metal/tutorials/1 Overview/1.4 Headless quick view (no Qt GUI).ipynb'
+    '/path/to/qiskit-metal/tutorials/1 Overview/1.1 Quick start (qm.gui auto-picks headless).ipynb'
 ```
 
 The notebook should execute cleanly (~30s).

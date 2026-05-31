@@ -33,13 +33,13 @@ tutorial lives in. For `2 From components to chip/A/.../*.ipynb`
 the path is:
 
 ```
-../../1%20Overview/1.4%20Headless%20quick%20view%20%28no%20Qt%20GUI%29.ipynb
+../../1%20Overview/1.1%20Quick%20start.ipynb
 ```
 
 For a tutorial directly under `tutorials/3 Renderers/*.ipynb`:
 
 ```
-../1%20Overview/1.4%20Headless%20quick%20view%20%28no%20Qt%20GUI%29.ipynb
+../1%20Overview/1.1%20Quick%20start.ipynb
 ```
 
 ## Procedure
@@ -70,7 +70,7 @@ from pathlib import Path
 
 # Adjust the relative path based on folder depth!
 RELATIVE_LINK = ("../../1%20Overview/"
-                 "1.4%20Headless%20quick%20view%20%28no%20Qt%20GUI%29.ipynb")
+                 "1.1%20Quick%20start.ipynb")
 
 CALLOUT = {
     "cell_type": "markdown",
