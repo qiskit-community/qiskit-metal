@@ -21,36 +21,76 @@ Built on Quantum Metal
 ======================
 
 These projects use Quantum Metal directly — they consume ``QDesign``
-objects, extend the ``QComponent`` library, or treat Metal as their
-foundation:
+objects, extend the ``QComponent`` library, or build workflows on top
+of Metal as their foundation:
 
-.. list-table::
-   :header-rows: 1
-   :widths: 26 56 18
+.. grid:: 1 2 2 2
+   :gutter: 2
+   :margin: 1 0 2 0
 
-   * - Project
-     - What it does
-     - License
-   * - `SQuADDS <https://github.com/LFL-Lab/SQuADDS>`_
-       (LFL-Lab @ USC)
-     - Validated qubit-design database + physics-based parameter interpolation. Search the DB, interpolate to your target Hamiltonian, generate the design in Quantum Metal. Published in *Quantum* journal (Sept 2024). Includes an MCP server for AI agents.
-     - MIT
-   * - `SQDMetal <https://github.com/sqdlab/SQDMetal>`_
-       (SQDLab @ UQ)
-     - Simulation wrapper for ``QDesign`` → AWS Palace / COMSOL workflows. Covers eigenmode, capacitance, driven, inductance simulations end-to-end. Accepts Quantum Metal ``QDesign`` objects directly.
-     - Apache 2.0
-   * - `ML_qubit_design <https://github.com/CosmiQuantum/ML_qubit_design>`_
-       (Fermilab + Northwestern)
-     - ML-based inverse design — predicts Quantum Metal design parameters from target qubit, resonator, coupler, and Hamiltonian properties using multi-layer perceptrons. Notebook-driven research project.
-     - see repo
-   * - `pypalace <https://pypalace.readthedocs.io/>`_
-       (Northwestern)
-     - Python toolkit for AWS Palace with Quantum Metal gmsh export, JSON config builders, LOM analysis utilities.
-     - see repo
+   .. grid-item-card:: 🔬 SQuADDS
+      :class-header: sd-bg-primary sd-text-light
+      :link: https://github.com/LFL-Lab/SQuADDS
+      :link-type: url
+
+      **LFL-Lab @ USC · MIT**
+
+      Validated qubit-design database + physics-based parameter
+      interpolation. Search the DB, interpolate to your target
+      Hamiltonian, generate the design in Quantum Metal.
+
+      *Published in Quantum journal (Sept 2024). Includes an MCP server
+      for AI agents.*
+
+   .. grid-item-card:: 🧲 SQDMetal
+      :class-header: sd-bg-secondary sd-text-light
+      :link: https://github.com/sqdlab/SQDMetal
+      :link-type: url
+
+      **SQDLab @ UQ · Apache 2.0**
+
+      Simulation wrapper for ``QDesign`` → AWS Palace / COMSOL
+      workflows. Eigenmode, capacitance, driven, inductance. Accepts
+      Quantum Metal ``QDesign`` objects directly.
+
+   .. grid-item-card:: 🤖 ML_qubit_design
+      :class-header: sd-bg-primary sd-text-light
+      :link: https://github.com/CosmiQuantum/ML_qubit_design
+      :link-type: url
+
+      **Fermilab + Northwestern**
+
+      ML-based inverse design — predicts Quantum Metal design parameters
+      from target qubit, resonator, coupler, and Hamiltonian properties
+      using multi-layer perceptrons.
+
+   .. grid-item-card:: ⚗️ Qiskit-Metal-to-Litho
+      :class-header: sd-bg-secondary sd-text-light
+      :link: https://github.com/OJB-Quantum/Qiskit-Metal-to-Litho
+      :link-type: url
+
+      **Onri Jay Benally · CC-BY-4.0**
+
+      End-to-end workflow from Quantum Metal design through electron-beam
+      lithography. Quantum Metal + PHIDL + GDSTK + CuPy + KLayout +
+      Blender. Headless Colab install scripts. Fab-facing process docs
+      (EBPG / BEAMER). Real fabricated chip examples.
+
+   .. grid-item-card:: 🌐 pypalace
+      :class-header: sd-bg-secondary sd-text-light
+      :link: https://pypalace.readthedocs.io/
+      :link-type: url
+
+      **Northwestern**
+
+      Python toolkit for AWS Palace — Quantum Metal gmsh export, JSON
+      config builders, mesh utilities, LOM analysis.
 
 **This list grows with the community.** If you're building on Quantum
-Metal in a research project, an internal tool, or a startup, we'd
-genuinely love to know — open an issue and we'll add you.
+Metal in a research project, an internal tool, an educational notebook,
+or a startup, we'd genuinely love to know —
+`open an issue <https://github.com/qiskit-community/qiskit-metal/issues/new/choose>`_
+and we'll add you.
 
 
 Solvers Quantum Metal integrates with
@@ -137,7 +177,10 @@ A typical workflow walks through several of these projects:
 4. **Analyse** — EPR (``pyEPR``), LOM (``LOManalysis``), spectra
    (``scqubits``), dynamics (``QuTiP``).
 5. **Export** to GDS via the built-in ``QGDSRenderer``; view in KLayout
-   or hand off to fab.
+   or hand off to fab. For end-to-end pipelines all the way through
+   electron-beam lithography (PHIDL post-processing, EBPG / BEAMER
+   prep, fabricated examples), see
+   `Qiskit-Metal-to-Litho <https://github.com/OJB-Quantum/Qiskit-Metal-to-Litho>`_.
 
 Some users also close the loop with **ML inverse design** —
 ``ML_qubit_design`` trains on Quantum Metal simulation data to predict

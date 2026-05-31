@@ -212,6 +212,13 @@ The open FEM stack is the long-term answer. Three pieces:
   HFSS-free CI validation of the entire qlibrary, plus
   give academic users a free path to full-field
   analysis.
+- **OpenEMS as a third open-FEM option** `[research]` —
+  [openEMS](https://www.openems.de/) is easier to build than Palace
+  (no MFEM / libCEED) but more limited in capabilities. Could be a
+  quick-start FEM path for users who can't justify the Palace build
+  cost. A community
+  [Colab installation script for OpenEMS](https://github.com/OJB-Quantum/Notebooks-for-Ideas/blob/main/OpenEMS_Installation_Script_in_Colab.ipynb)
+  exists. Worth evaluating after Palace lands.
 
 Initial proof-of-concept order:
 1. Validate `renderer_gmsh/` outputs against current gmsh
@@ -424,6 +431,12 @@ trial viable).
 - **Open Graph image** `[research]` — controls how the repo / docs preview
   when shared on Twitter / Slack / Discord. Currently uses the GitHub
   default which is much weaker than a designed image would be.
+- **Better Colab onboarding** `[planned]` — our "Open in Colab" badge
+  links to tutorial 1.2 but Qt / PySide6 friction can break the Colab
+  install. The community
+  [Qiskit-Metal-to-Litho](https://github.com/OJB-Quantum/Qiskit-Metal-to-Litho)
+  repo has headless Colab install scripts worth referencing or
+  adapting.
 
 ### Medium effort (~half-day each)
 
