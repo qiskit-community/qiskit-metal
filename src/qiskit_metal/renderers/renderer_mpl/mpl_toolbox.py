@@ -372,59 +372,79 @@ def figure_spawn(fig_kw=None):
 def _axis_set_watermark_img(
     ax: plt.Axes, file: str, size: float = 0.25, autoscale: bool = False
 ):
-    """Burn the axis watermark into the image.
+    """Paint a corner watermark image on the given axis.
+
+    Drawn as an **inset axes** anchored to the top-right of ``ax``,
+    not as an ``ax.imshow`` call. Inset axes have their own data
+    limits — they don't contribute to the parent axis' ``dataLim``,
+    so the watermark stays put across every subsequent
+    ``ax.autoscale_view()`` / ``gui.autoscale()`` call. This fixes
+    the long-standing side-effect where the watermark would expand
+    the parent axis' x-range and push the chip off-center to the
+    left after autoscale.
 
     Args:
-        ax (plt.Axes): Matplotlib axis to render to.  Defaults to None.
-        file (str): The file.
-        size (float): The size.  Defaults to None.
-        autoscale (bool): Allow ``imshow`` to autoscale the axis data
-            limits to include the watermark extent. Defaults to ``False``
-            so the watermark never causes the view to zoom onto the
-            corner image — matplotlib's autoscaler treats the
-            ``transAxes`` extent as data even though the image is
-            positioned in figure-fraction coordinates, so we snapshot
-            and restore the limits unless the caller opts in.
+        ax (plt.Axes): Matplotlib axis to render to.
+        file (str): Path to the image file.
+        size (float): Inset size as fraction of the parent axis width
+            (defaults to 0.25; the desktop and headless viewers pass
+            0.15).
+        autoscale (bool): Kept for API compatibility — the inset-axes
+            implementation never autoscales the parent axis, so this
+            flag is now a no-op. Previously toggled an ``ax.imshow``
+            fallback that had the autoscale bug.
     """
-    # Load image
+    del autoscale  # no longer needed; inset axes don't pollute dataLim
+
     datafile = cbook.get_sample_data(str(file), asfileobj=False)
     img = image.imread(datafile)
-    # im[:, :, -1] = 0.5  # set the alpha channel
 
-    # window aspect
-    b = ax.get_window_extent()
-    b = abs(b.height / b.width)
-    # b = ax.get_tightbbox(ax.get_figure().canvas.get_renderer())
-    # b = abs(b.height/b.width)
-
-    # ALternative: fig.figimage
-    # scale image: yscale = float(img.shape[1])/img.shape[0]
-    # extent: (left, right, bottom, top)
-    kw = dict(interpolation="gaussian", alpha=0.05, resample=True, zorder=-200)
-
-    if autoscale:
-        ax.imshow(
-            img, extent=(1 - size * b, 1, 1 - size, 1), transform=ax.transAxes, **kw
-        )
+    fig = ax.figure
+    if fig is None:  # pragma: no cover — defensive
         return
 
-    # Snapshot data limits + autoscale flag, draw the watermark, restore.
-    # This makes the watermark a purely visual overlay with no effect on
-    # the displayed data range. Fixes the long-standing side-effect where
-    # adding the watermark would zoom the desktop ``MetalGUI`` canvas
-    # onto the top-right corner of the chip.
-    saved_xlim = ax.get_xlim()
-    saved_ylim = ax.get_ylim()
-    saved_autoscale = ax.get_autoscale_on()
-    ax.set_autoscale_on(False)
+    # Window aspect: keep the inset square in display units, mirroring
+    # the legacy ``ax.imshow(extent=(1-size*b, 1, 1-size, 1))`` geometry.
+    bbox = ax.get_window_extent()
+    aspect = abs(bbox.height / bbox.width) if bbox.width else 1.0
+
+    # Inset axes in axes-relative coords [left, bottom, width, height].
+    inset_w = size * aspect
+    inset_h = size
+    inset_left = 1.0 - inset_w
+    inset_bottom = 1.0 - inset_h
+
     try:
-        ax.imshow(
-            img, extent=(1 - size * b, 1, 1 - size, 1), transform=ax.transAxes, **kw
-        )
-    finally:
-        ax.set_xlim(saved_xlim)
-        ax.set_ylim(saved_ylim)
-        ax.set_autoscale_on(saved_autoscale)
+        inset = ax.inset_axes([inset_left, inset_bottom, inset_w, inset_h], zorder=-200)
+    except Exception:  # pragma: no cover
+        # Older matplotlib falls back to ax.imshow w/ save+restore.
+        saved_xlim, saved_ylim = ax.get_xlim(), ax.get_ylim()
+        saved_auto = ax.get_autoscale_on()
+        ax.set_autoscale_on(False)
+        try:
+            ax.imshow(
+                img,
+                extent=(1 - size * aspect, 1, 1 - size, 1),
+                transform=ax.transAxes,
+                interpolation="gaussian",
+                alpha=0.05,
+                resample=True,
+                zorder=-200,
+            )
+        finally:
+            ax.set_xlim(saved_xlim)
+            ax.set_ylim(saved_ylim)
+            ax.set_autoscale_on(saved_auto)
+        return
+
+    inset.imshow(img, interpolation="gaussian", alpha=0.05, resample=True)
+    inset.set_xticks([])
+    inset.set_yticks([])
+    inset.set_facecolor("none")
+    for spine in inset.spines.values():
+        spine.set_visible(False)
+    # Don't let the inset participate in any layout / autoscale of ax.
+    inset.set_in_layout(False)
 
 
 #######################################################################
