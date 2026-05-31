@@ -174,6 +174,10 @@ discovery. **Full map: [docs.../ecosystem](https://qiskit-community.github.io/qi
 - 🤖 **[ML_qubit_design](https://github.com/CosmiQuantum/ML_qubit_design)**
   (Fermilab + Northwestern) — ML-based inverse design predicting Quantum
   Metal parameters from target qubit properties.
+- ⚗️ **[Qiskit-Metal-to-Litho](https://github.com/OJB-Quantum/Qiskit-Metal-to-Litho)**
+  (Onri Jay Benally) — end-to-end design → lithography workflow with
+  headless Colab install scripts, GDS post-processing (PHIDL / GDSTK),
+  EBPG / BEAMER fab prep, and 3D Blender viz. Real fabricated chip examples.
 - 🌐 **[pypalace](https://pypalace.readthedocs.io/)** (Northwestern) —
   Python toolkit for AWS Palace with Quantum Metal gmsh export.
 
