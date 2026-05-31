@@ -1,61 +1,64 @@
-# Manual notebook re-exec needed (skipped from automated merge)
+# Notebook output refresh — automated + manual lanes
 
-After the v0.7.0 `docs/tut/` rename + headless rewrite, 7 notebooks have output
-gaps that **could not be recovered** by the automated cell-source-match merge
-(commit `22cf0460a`). These cells were structurally rewritten — their source no
-longer matches the original `tutorials/` version, so no output transplant is
-possible.
+The published docs site shows the cached `outputs` of each `.ipynb` file
+(stored figures, printed values, error traces). They go stale whenever the
+API surface, renderer, or visual brand changes. Two lanes for refreshing
+them:
 
-The only fix is to **re-execute** these notebooks in a live Jupyter kernel and
-commit the fresh outputs.
+## 🟢 Auto-runnable — `_dev/rerun_auto.py`
 
-## Notebooks needing re-exec
+Everything listed in `_dev/auto-runnable-notebooks.txt` (a comment-friendly
+whitelist) re-executes against the **lite install** (`pip install
+quantum-metal[gui]`, no Ansys / gmsh) on every PR via the
+`tests-lite → Execute whitelisted tutorial notebooks` CI job.
 
-| Notebook | Output gap | Image gap |
-|---|---|---|
-| `docs/tut/1-Overview/1.2-Bird's-eye-view-of-Quantum-Metal.ipynb` | +1 | +1 |
-| `docs/tut/1-Overview/1.1-Quick-start.ipynb` | +6 | +3 |
-| `docs/tut/1-Overview/qcomponents-gallery.ipynb` | +1 | 0 |
-| `docs/tut/2-From-components-to-chip/2.11-Routing-101.ipynb` | +4 | +4 |
-| `docs/tut/2-From-components-to-chip/2.21-Design-a-4-qubit-full-chip.ipynb` | +2 | +2 |
-| `docs/tut/2-From-components-to-chip/2.23-Modify-chip-options.ipynb` | +3 | -1 |
-| `docs/tut/3-Renderers/3.5-Render-your-design-to-Gmsh.ipynb` | +2 | +1 |
-
-(Gaps are vs. `tutorials/` reference. `2.23` has 1 MORE image in `docs/tut/`
-already — re-exec should reconcile in favor of whichever is correct.)
-
-## How to re-run
-
-**Option A — interactive (recommended for the GUI-touching ones):**
-```bash
-uv run --group jupyter jupyter lab docs/tut/
-# Open each notebook in the table, Cell → Run All, save, commit
-```
-
-**Option B — batch headless (faster, but won't run cells needing MetalGUI):**
-```bash
-# Per-notebook (replace path):
-uv run --group jupyter jupyter nbconvert --to notebook --inplace --execute \
-    "docs/tut/1-Overview/1.1-Quick-start.ipynb"
-```
-
-`1.1`, `1.4`, `1.6`, `2.11`, `2.21`, `2.23` should all run cleanly headless
-(they were rewritten to use `qm.view()` instead of `MetalGUI`). `3.5 Gmsh`
-needs `gmsh` installed (`pip install gmsh` or `uv pip install gmsh`).
-
-## Why this can't be automated further
-
-The merge tool (`_dev/merge_outputs.py`) matches cells by exact source code.
-For these 7 notebooks, the headless rewrite changed enough of each cell that
-no source match exists for the "rich-output" cells in `tutorials/`. A fuzzy
-match would risk pasting wrong outputs onto altered code — silently
-introducing misleading docs.
-
-## After re-running
+Local refresh:
 
 ```bash
-git add docs/tut/...   # the re-executed notebooks
-git commit -m "docs(tut): re-execute 7 notebooks to populate outputs after restructure"
+# Dry-run — show what would execute
+uv run python _dev/rerun_auto.py
+
+# Actually run, 4 in parallel
+uv run python _dev/rerun_auto.py --run
+
+# Filter to a section
+uv run python _dev/rerun_auto.py --run --filter 1-Overview
+
+# After execution, sync the tutorials/ mirror so both folders match
+uv run python _dev/sync_two_folders.py --write
 ```
 
-Then close this file as done.
+When a notebook fails on CI, the first instinct should be **"is the
+notebook broken or did the test surface a real regression?"** The former
+is rare; the latter is what this gate exists for.
+
+## 🟡 External-gated — manual re-run only
+
+Notebooks needing Ansys HFSS/Q3D, gmsh, KLayout, or a real fab GDS file
+are **not** in the whitelist. They keep their committed outputs from the
+maintainer's last manual run. The reference list lives at the bottom of
+`_dev/auto-runnable-notebooks.txt` in the "External-gated" comment block.
+
+When one of those tools changes (Ansys version bump, gmsh upgrade, etc.):
+
+1. Install the relevant extras: `pip install "quantum-metal[ansys]"` or
+   `pip install "quantum-metal[mesh]"`.
+2. Open the notebook in JupyterLab and re-run cells manually.
+3. Sync: `python3 _dev/sync_two_folders.py --write`.
+4. Commit.
+
+## 🟠 Interactive-only
+
+Anything that requires a Qt event loop (mouse clicks, modal dialogs) can't
+be programmatically re-run. These are rare; currently none in the numbered
+tutorials.
+
+## Why bother?
+
+Stale outputs are the silent killer of a docs site's trust. A reader
+seeing `<Figure size 2400x1000 with 2 Axes>` instead of an actual figure,
+or an old "Qiskit Metal" watermark instead of "Qiskit / Quantum Metal,"
+looks unmaintained. The automation closes the loop: every PR that touches
+the rendering path or a tutorial's logic re-runs the relevant notebooks
+and we either commit the new outputs or fix the regression that broke
+them.

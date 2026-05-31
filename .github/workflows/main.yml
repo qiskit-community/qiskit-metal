@@ -207,12 +207,20 @@ jobs:
             tests/test_qlibrary_pin_sanity.py \
             tests/test_solution_types.py \
             -v
-      - name: Execute headless tutorial notebook
-        # Gate the canonical onboarding tutorial against the lite
-        # install. Tutorial 1.1 uses ``qm.gui(design)``, which
-        # auto-picks ``MetalGUIHeadless`` when PySide6 is absent.
-        # If a future change breaks the no-Qt path, this step catches
-        # it before users hit it.
+      - name: Execute whitelisted tutorial notebooks
+        # Run every notebook in ``_dev/auto-runnable-notebooks.txt``
+        # under the lite install. The whitelist explicitly excludes
+        # notebooks that need Ansys / gmsh / KLayout. Each runs with
+        # a per-notebook 240s timeout; the whole job typically
+        # finishes in 3-5 minutes.
+        #
+        # If this step starts failing on a notebook, two options:
+        #   1. Fix the notebook (most likely — qm.gui is the
+        #      headless-friendly entry point everywhere now).
+        #   2. If the notebook actually requires an external tool the
+        #      whitelist already excludes, move its path into the
+        #      "External-gated" comment block at the bottom of the
+        #      whitelist file.
         #
         # ``uv pip install`` is used (not ``python -m pip``) because
         # the lite venv was created by ``uv venv``, which does not
@@ -223,14 +231,12 @@ jobs:
           uv pip install --quiet \
             'jupyter>=1.0' 'nbconvert>=7.0' 'ipykernel>=6.0'
           .venv/bin/python -m ipykernel install --user --name qm_lite
-          .venv/bin/jupyter nbconvert \
-            --to notebook \
-            --execute \
-            --ExecutePreprocessor.kernel_name=qm_lite \
-            --ExecutePreprocessor.timeout=180 \
-            --output-dir /tmp/exec_check \
-            'tutorials/1 Overview/1.1 Quick start.ipynb'
-          echo "OK: 1.1 Quick start executed cleanly on lite install"
+          # Patch the executor to use our registered kernel by name.
+          # ``_dev/rerun_auto.py`` invokes ``jupyter nbconvert`` directly;
+          # we shadow it with a wrapper that injects the kernel flag.
+          export JUPYTER_KERNEL_NAME=qm_lite
+          export PATH=".venv/bin:$PATH"
+          .venv/bin/python _dev/rerun_auto.py --run --jobs 2
 
   tests-extras:
     # Exercises each opt-in extra independently. As of v0.7.0

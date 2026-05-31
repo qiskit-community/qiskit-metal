@@ -1,0 +1,85 @@
+# Notebooks safe to re-execute under the lite install (no Ansys, no
+# gmsh, no real fab GDS), one path per line. Used by:
+#
+#   - ``_dev/rerun_auto.py`` (manual local refresh)
+#   - ``.github/workflows/main.yml`` ``tutorials-execute`` CI job
+#     (runs on every PR — keeps the published outputs honest)
+#
+# Categorization rules:
+#
+#   🟢  Auto-runnable  — needs only ``pip install quantum-metal[gui]``.
+#                       Listed below. Re-executed on every PR.
+#   🟡  External-gated — needs Ansys HFSS/Q3D, gmsh + Linux X libs, a
+#                       real GDS file from a fab, etc. NEVER auto-run;
+#                       cached outputs are sacred. Maintainer refreshes
+#                       locally when the relevant tool changes.
+#   🟠  Interactive    — depends on the Qt event loop (mouse clicks
+#                       etc.). Programmatically un-runnable. Skip.
+#
+# To add a notebook to the auto-runnable set:
+#
+#   1. Confirm it imports nothing outside ``quantum-metal[gui]`` deps
+#      (no ``pyaedt``, no ``gmsh``, no ``pyEPR``, no
+#      ``ansys.aedt.core``).
+#   2. Confirm ``QISKIT_METAL_HEADLESS=1 jupyter nbconvert --execute
+#      <path> --to notebook`` completes in under 3 minutes.
+#   3. Append the canonical ``docs/tut/`` path below. The CI executor
+#      uses the docs/tut/ side; ``_dev/sync_two_folders.py`` will then
+#      copy the refreshed outputs to ``tutorials/``.
+#
+# Lines starting with ``#`` are comments. Blank lines ignored.
+
+# --- Section 1: Overview ---
+docs/tut/1-Overview/1.1-Quick-start.ipynb
+docs/tut/1-Overview/1.2-Bird's-eye-view-of-Quantum-Metal.ipynb
+docs/tut/1-Overview/1.3-Build-a-4-qubit-chip.ipynb
+docs/tut/1-Overview/1.4-Saving-Your-Chip-Design.ipynb
+docs/tut/1-Overview/1.5-Parametric-design---iterate-and-compare.ipynb
+
+# --- Section 2: From components to chip ---
+docs/tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.ipynb
+docs/tut/2-From-components-to-chip/2.11-Routing-101.ipynb
+docs/tut/2-From-components-to-chip/2.12-Simple-Meander.ipynb
+docs/tut/2-From-components-to-chip/2.13-Hybrid-Auto-and-AStar.ipynb
+docs/tut/2-From-components-to-chip/2.14-Get-them-all-with-MixedRoute.ipynb
+docs/tut/2-From-components-to-chip/2.21-Design-a-4-qubit-full-chip.ipynb
+docs/tut/2-From-components-to-chip/2.22-Design-100-qubits-programmatically.ipynb
+docs/tut/2-From-components-to-chip/2.23-Modify-chip-options.ipynb
+docs/tut/2-From-components-to-chip/2.31-Create-a-QComponent-Basic.ipynb
+docs/tut/2-From-components-to-chip/2.32-Create-a-QComponent-Advanced.ipynb
+docs/tut/2-From-components-to-chip/2.33-Add-my-QComponent-to-a-reusable-python-file.ipynb
+
+# --- Section 3: Renderers (GDS export only — Ansys & gmsh excluded) ---
+docs/tut/3-Renderers/3.1-Introduction-to-QRenderers.ipynb
+docs/tut/3-Renderers/3.2-Export-your-design-to-GDS.ipynb
+
+# --- Section 4: Analyses (pure-Python only — HFSS/Q3D excluded) ---
+docs/tut/4-Analysis/4.31-Plot-quantum-oscillator-wavefunction.ipynb
+docs/tut/4-Analysis/4.32-Transmon-analytics-HCPB.ipynb
+docs/tut/4-Analysis/4.33-Transmon-analytics.ipynb
+docs/tut/4-Analysis/4.34-Transmon-qubit-CPB-hamiltonian-charge-basis.ipynb
+
+# ============================================================================
+# External-gated (🟡) — NEVER auto-run.  Reference list, not part of the
+# executable set.  Maintainer re-runs locally when Ansys/gmsh/GDS changes.
+# ============================================================================
+#
+# Ansys (HFSS / Q3D) — requires pyaedt + an Ansys AEDT license, Windows:
+#   docs/tut/3-Renderers/3.3-Render-your-design-to-Ansys.ipynb
+#   docs/tut/4-Analysis/4.01-Capacitance-and-LOM.ipynb
+#   docs/tut/4-Analysis/4.02-Eigenmode-and-EPR.ipynb
+#   docs/tut/4-Analysis/4.03-Impedance.ipynb
+#   docs/tut/4-Analysis/4.04-New-LOM-and-Fluxonium-Example.ipynb
+#   docs/tut/4-Analysis/4.05-New-LOM-and-Two-Coupled-Transmon-Example.ipynb
+#   docs/tut/4-Analysis/4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence.ipynb
+#   docs/tut/4-Analysis/4.11..4.18 (all Analyze-* notebooks)
+#   docs/tut/4-Analysis/4.21..4.23 (all matrix sweeps)
+#
+# gmsh + Linux X libs:
+#   docs/tut/3-Renderers/3.4-How-do-I-make-my-custom-QRenderer.ipynb
+#   docs/tut/3-Renderers/3.5-Render-your-design-to-Gmsh.ipynb
+#   docs/tut/4-Analysis/4.19-Analyze-a-transmon-using-ElmerFEM.ipynb
+#
+# Cross-Resonance + cQED — use Ansys exports:
+#   docs/tut/4-Analysis/cQED-with-the-Jaynes-Cummings-Interaction-Model.ipynb
+#   docs/tut/4-Analysis/Design-and-Simulation-of-a-Cross-Resonance-Gate.ipynb

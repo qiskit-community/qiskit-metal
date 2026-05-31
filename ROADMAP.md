@@ -431,19 +431,27 @@ trial viable).
 - **Open Graph image** `[research]` — controls how the repo / docs preview
   when shared on Twitter / Slack / Discord. Currently uses the GitHub
   default which is much weaker than a designed image would be.
-- **Better Colab onboarding** `[planned]` — our "Open in Colab" badge
-  links to tutorial 1.2 but Qt / PySide6 friction can break the Colab
-  install. The community
-  [Qiskit-Metal-to-Litho](https://github.com/OJB-Quantum/Qiskit-Metal-to-Litho)
-  repo has headless Colab install scripts worth referencing or
-  adapting.
+- **Better Colab onboarding** `[shipped, v0.7.2]` — every numbered
+  tutorial plus every circuit-example carries Colab + Binder badges
+  and a commented ``!pip install -q quantum-metal`` cell at the top.
+  The new ``qm.gui(design)`` factory + ``MetalGUIHeadless`` mean Qt /
+  PySide6 friction is gone: the same tutorial code paths render as a
+  Qt window locally and as inline matplotlib in Colab/Binder. Headless
+  detection covers ``QISKIT_METAL_HEADLESS=1``, Google Colab, Binder
+  env vars, Linux without ``DISPLAY``, and missing PySide6.
 
 ### Medium effort (~half-day each)
 
-- **Gallery page** (`docs/gallery.rst`) `[planned]` — eye-candy rendered
-  images of representative designs (single transmon, two-qubit, surface-code
-  patch, examples from `tutorials/E.Input-output-coupling/`). Showcases
-  capability visually.
+- **QComponent gallery page** (`docs/qcomponents-gallery.rst`)
+  `[shipped, v0.7.2]` — sphinx-design grid of every ``QComponent``
+  shipped with Quantum Metal, grouped by category (qubits, couplers,
+  routes, resonators, terminations, lumped, sample shapes). Each card
+  has the thumbnail + a short description + a click-through to the
+  autodoc page. Regenerated at every docs build by
+  ``_dev/generate_qcomponent_gallery.py``; the same thumbnails feed
+  the MetalGUI Library pane at runtime. A future broader "design
+  examples" gallery (single transmon, two-qubit, surface-code patch,
+  etc.) is still `[planned]`.
 - **`SUPPORT.md` + `GOVERNANCE.md`** `[planned]` — currently support info is
   scattered across README / FAQ / contributor-guide. A single `SUPPORT.md`
   consolidates "where to ask, response expectations." `GOVERNANCE.md`
