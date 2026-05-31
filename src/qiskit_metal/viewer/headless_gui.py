@@ -410,7 +410,15 @@ class MetalGUIHeadless:
             fig.patch.set_facecolor("#F4F4F4")
             ax.grid(True, which="major", color="#b0b0b0", linestyle="--", alpha=0.5)
             ax.grid(True, which="minor", color="#b0b0b0", linestyle=":", alpha=0.3)
-            ax.set_aspect(1)
+            # ``adjustable="datalim"`` keeps the axes box filling the
+            # available figure area for wide-but-short chip layouts
+            # instead of letterboxing them in the bottom/top half. The
+            # data still renders 1:1 (square pixels per micron); we just
+            # show extra background to fill the box. Default ``"box"``
+            # mode shrinks the axes itself and leaves whitespace in the
+            # figure when the geometry aspect doesn't match the figure
+            # aspect — the symptom the user saw in 4-qubit chip layouts.
+            ax.set_aspect("equal", adjustable="datalim")
 
             _apply_brand_decoration(fig, ax)
         except Exception as exc:  # pragma: no cover
