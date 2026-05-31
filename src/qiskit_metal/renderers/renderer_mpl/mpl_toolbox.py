@@ -369,13 +369,22 @@ def figure_spawn(fig_kw=None):
 #######################################################################
 
 
-def _axis_set_watermark_img(ax: plt.Axes, file: str, size: float = 0.25):
+def _axis_set_watermark_img(
+    ax: plt.Axes, file: str, size: float = 0.25, autoscale: bool = False
+):
     """Burn the axis watermark into the image.
 
     Args:
         ax (plt.Axes): Matplotlib axis to render to.  Defaults to None.
         file (str): The file.
         size (float): The size.  Defaults to None.
+        autoscale (bool): Allow ``imshow`` to autoscale the axis data
+            limits to include the watermark extent. Defaults to ``False``
+            so the watermark never causes the view to zoom onto the
+            corner image — matplotlib's autoscaler treats the
+            ``transAxes`` extent as data even though the image is
+            positioned in figure-fraction coordinates, so we snapshot
+            and restore the limits unless the caller opts in.
     """
     # Load image
     datafile = cbook.get_sample_data(str(file), asfileobj=False)
@@ -392,7 +401,30 @@ def _axis_set_watermark_img(ax: plt.Axes, file: str, size: float = 0.25):
     # scale image: yscale = float(img.shape[1])/img.shape[0]
     # extent: (left, right, bottom, top)
     kw = dict(interpolation="gaussian", alpha=0.05, resample=True, zorder=-200)
-    ax.imshow(img, extent=(1 - size * b, 1, 1 - size, 1), transform=ax.transAxes, **kw)
+
+    if autoscale:
+        ax.imshow(
+            img, extent=(1 - size * b, 1, 1 - size, 1), transform=ax.transAxes, **kw
+        )
+        return
+
+    # Snapshot data limits + autoscale flag, draw the watermark, restore.
+    # This makes the watermark a purely visual overlay with no effect on
+    # the displayed data range. Fixes the long-standing side-effect where
+    # adding the watermark would zoom the desktop ``MetalGUI`` canvas
+    # onto the top-right corner of the chip.
+    saved_xlim = ax.get_xlim()
+    saved_ylim = ax.get_ylim()
+    saved_autoscale = ax.get_autoscale_on()
+    ax.set_autoscale_on(False)
+    try:
+        ax.imshow(
+            img, extent=(1 - size * b, 1, 1 - size, 1), transform=ax.transAxes, **kw
+        )
+    finally:
+        ax.set_xlim(saved_xlim)
+        ax.set_ylim(saved_ylim)
+        ax.set_autoscale_on(saved_autoscale)
 
 
 #######################################################################

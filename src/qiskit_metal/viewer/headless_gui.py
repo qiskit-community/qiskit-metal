@@ -162,23 +162,16 @@ class MetalGUIHeadless:
         return self._render()
 
     def edit_component(self, name: str) -> None:
-        """Print the component's options table (Qt edit panel substitute).
+        """No-op in headless mode.
 
-        In Qt ``MetalGUI`` this opens the component editor dock. In
-        headless mode we print the component's options so the user
-        can still inspect and (manually) edit them.
+        The desktop ``MetalGUI`` opens an interactive Qt editor for the
+        component; that panel doesn't exist here. To inspect or modify
+        the component, use the Python API directly:
+        ``design.components['Q1'].options`` (read) or
+        ``design.components['Q1'].options.<field> = ...`` followed by
+        ``gui.rebuild()`` (edit).
         """
-        if name not in self._design.components:
-            print(f"[MetalGUIHeadless] No component named '{name}' in design.")
-            return
-        comp = self._design.components[name]
-        print(f"=== Component: {name} ({type(comp).__name__}) ===")
-        try:
-            from pprint import pprint
-
-            pprint(dict(comp.options))
-        except Exception:
-            print(comp.options)
+        return None
 
     def highlight_components(self, component_names: List[str]) -> Optional["Figure"]:
         """Mark components for highlighting on the next render.
@@ -492,16 +485,10 @@ def _apply_brand_decoration(fig, ax) -> None:
                 _axis_set_watermark_img,
             )
 
-            # ``_axis_set_watermark_img`` uses ``ax.imshow`` with
-            # ``transform=ax.transAxes``; matplotlib still autoscales the
-            # data limits to include the image extent, which would zoom
-            # in on the top-right corner. Snapshot + restore the limits.
-            saved_xlim = ax.get_xlim()
-            saved_ylim = ax.get_ylim()
-            ax.set_autoscale_on(False)
+            # ``autoscale=False`` (now the default in the toolbox helper)
+            # makes the watermark a purely visual overlay — it doesn't
+            # affect the displayed data range.
             _axis_set_watermark_img(ax, str(_BRAND_LOGO), size=0.15)
-            ax.set_xlim(saved_xlim)
-            ax.set_ylim(saved_ylim)
     except Exception as exc:  # pragma: no cover — branding is best-effort
         _logger.debug("MetalGUIHeadless: watermark skipped: %s", exc)
 
