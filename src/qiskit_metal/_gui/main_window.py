@@ -746,6 +746,15 @@ class MetalGUI(QMainWindowBaseHandler):
         dock.library_model = QFileSystemLibraryModel(self.path_imgs)
 
         dock.library_model.setRootPath(self.QLIBRARY_ROOT)
+        # Only show Python source files in the Library pane. Stray
+        # demo notebooks, ``__pycache__`` entries, and other artefacts
+        # that may live under ``qlibrary/`` (e.g. a user dropping a
+        # ``.ipynb`` next to a ``.py``) would otherwise appear in the
+        # tree as un-clickable "components". ``setNameFilters`` + the
+        # default ``setNameFilterDisables(False)`` hides non-matches
+        # entirely rather than greying them out.
+        dock.library_model.setNameFilters(["*.py"])
+        dock.library_model.setNameFilterDisables(False)
 
         # QSortFilterProxyModel
         # QSortFilterProxyModel: sorting items, filtering out items, or both.
