@@ -25,7 +25,7 @@
     readme = { file = "README.md", content-type = "text/markdown" }
     requires-python = ">=3.10,<3.13"
     urls = { bugtracker = "https://github.com/qiskit-community/qiskit-metal/issues", documentation = "https://qiskit-community.github.io/qiskit-metal/", source = "https://github.com/qiskit-community/qiskit-metal" }
-    version = "0.7.1"
+    version = "0.7.2"
     # ────────────────────────────────────────────────────────────────
     # v0.7.0: LITE-BY-DEFAULT. Core deps only — what's needed to
     # ``import qiskit_metal``, build designs, run ``qm.view()``,
