@@ -25,37 +25,39 @@ from qiskit_metal.toolbox_metal.exceptions import QiskitMetalDesignError
 
 
 class RouteMeander(QRoute):
-    """Implements a simple CPW, with a single meander.  The base `CPW
-    meandered` class.
+    """.. image:: RouteMeander.png
 
-    Inherits `QRoute` class
+    Implements a simple CPW, with a single meander.  The base `CPW
+        meandered` class.
 
-    .. meta::
-        :description: Route Meander
+        Inherits `QRoute` class
 
-    QRoute Default Options:
-        * pin_inputs: Dict
-            * start_pin: Dict -- Component and pin string pair. Define which pin to start from
-                * component: '' -- Name of component to start from, which has a pin
-                * pin: '' -- Name of pin used for pin_start
-            * end_pin=Dict -- Component and pin string pair. Define which pin to start from
-                * component: '' -- Name of component to end on, which has a pin
-                * pin: '' -- Name of pin used for pin_end
-        * fillet: '0'
-        * lead: Dict
-            * start_straight: '0mm' -- Lead-in, defined as the straight segment extension from start_pin.  Defaults to 0.1um.
-            * end_straight: '0mm' -- Lead-out, defined as the straight segment extension from end_pin.  Defaults to 0.1um.
-            * start_jogged_extension: '' -- Lead-in, jogged extension of lead-in. Described as list of tuples
-            * end_jogged_extension: '' -- Lead-out, jogged extension of lead-out. Described as list of tuples
-        * total_length: '7mm'
-        * trace_width: 'cpw_width' -- Defines the width of the line.  Defaults to 'cpw_width'.
+        .. meta::
+            :description: Route Meander
 
-    Default Options:
-        * meander: Dict
-            * spacing: '200um' -- Minimum spacing between adjacent meander curves.  Defaults to 200um.
-            * asymmetry='0um' -- offset between the center-line of the meander and the center-line that stretches from the tip of lead-in to the x (or y) coordinate of the tip of the lead-out.  Defaults to '0um'.
-        * snap: 'true'
-        * prevent_short_edges: 'true'
+        QRoute Default Options:
+            * pin_inputs: Dict
+                * start_pin: Dict -- Component and pin string pair. Define which pin to start from
+                    * component: '' -- Name of component to start from, which has a pin
+                    * pin: '' -- Name of pin used for pin_start
+                * end_pin=Dict -- Component and pin string pair. Define which pin to start from
+                    * component: '' -- Name of component to end on, which has a pin
+                    * pin: '' -- Name of pin used for pin_end
+            * fillet: '0'
+            * lead: Dict
+                * start_straight: '0mm' -- Lead-in, defined as the straight segment extension from start_pin.  Defaults to 0.1um.
+                * end_straight: '0mm' -- Lead-out, defined as the straight segment extension from end_pin.  Defaults to 0.1um.
+                * start_jogged_extension: '' -- Lead-in, jogged extension of lead-in. Described as list of tuples
+                * end_jogged_extension: '' -- Lead-out, jogged extension of lead-out. Described as list of tuples
+            * total_length: '7mm'
+            * trace_width: 'cpw_width' -- Defines the width of the line.  Defaults to 'cpw_width'.
+
+        Default Options:
+            * meander: Dict
+                * spacing: '200um' -- Minimum spacing between adjacent meander curves.  Defaults to 200um.
+                * asymmetry='0um' -- offset between the center-line of the meander and the center-line that stretches from the tip of lead-in to the x (or y) coordinate of the tip of the lead-out.  Defaults to '0um'.
+            * snap: 'true'
+            * prevent_short_edges: 'true'
     """
 
     component_metadata = Dict(short_name="cpw")

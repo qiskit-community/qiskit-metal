@@ -23,7 +23,9 @@ from qiskit_metal.toolbox_metal.exceptions import QiskitMetalDesignError
 
 
 class RoutePathfinder(RouteAnchors):
-    """
+    """.. image:: RoutePathfinder.png
+
+
     Non-meandered CPW class that combines A* pathfinding algorithm with
     simple 1-, 2-, or S-shaped segment checks and user-specified anchor points.
     1. A* heap modified to prioritize paths with shortest length_travelled + Manhattan distance to destination.

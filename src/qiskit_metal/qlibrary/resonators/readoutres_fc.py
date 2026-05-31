@@ -5,27 +5,29 @@ from qiskit_metal.qlibrary.core import QComponent
 
 
 class ReadoutResFC(QComponent):
-    """Flip-chip readout resonator used in the flipchip tutorial.
+    """.. image:: ReadoutResFC.png
 
-    Geometry overview:
-    - Circle centered at (``pos_x``, ``pos_y``) with radius ``readout_radius``.
-    - Straight line (length ``readout_l1``) at 45 degrees.
-    - 45 degree arc.
-    - Vertical line (length ``readout_l2``).
-    - 90 degree arc.
-    - Horizontal line (length ``readout_l3``).
-    - 180 degree arc.
-    - Horizontal line (length ``readout_l4``).
-    - Five meandering horizontal lines (length ``readout_l5``) separated by 180 degree arcs.
+    Flip-chip readout resonator used in the flipchip tutorial.
 
-    The arc bend radius is ``readout_cpw_turnradius``, measured from the CPW center to the
-    center of rotation. Lines and arcs form a CPW with width ``readout_cpw_width`` and
-    gap ``readout_cpw_gap``.
+        Geometry overview:
+        - Circle centered at (``pos_x``, ``pos_y``) with radius ``readout_radius``.
+        - Straight line (length ``readout_l1``) at 45 degrees.
+        - 45 degree arc.
+        - Vertical line (length ``readout_l2``).
+        - 90 degree arc.
+        - Horizontal line (length ``readout_l3``).
+        - 180 degree arc.
+        - Horizontal line (length ``readout_l4``).
+        - Five meandering horizontal lines (length ``readout_l5``) separated by 180 degree arcs.
 
-    Tuning tips:
-    - Change coupling to the qubit by varying ``readout_radius``.
-    - Couple to the feedthrough line via the horizontal section of length ``readout_l3``.
-    - Adjust resonator frequency by varying ``readout_l5``.
+        The arc bend radius is ``readout_cpw_turnradius``, measured from the CPW center to the
+        center of rotation. Lines and arcs form a CPW with width ``readout_cpw_width`` and
+        gap ``readout_cpw_gap``.
+
+        Tuning tips:
+        - Change coupling to the qubit by varying ``readout_radius``.
+        - Couple to the feedthrough line via the horizontal section of length ``readout_l3``.
+        - Adjust resonator frequency by varying ``readout_l5``.
     """
 
     default_options = Dict(

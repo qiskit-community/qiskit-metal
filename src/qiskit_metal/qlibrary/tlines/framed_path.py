@@ -20,24 +20,26 @@ from qiskit_metal.toolbox_metal import math_and_overrides as mao
 
 
 class RouteFramed(QRoute):
-    """A non-meandered sample_shapes CPW that is auto-generated between 2 components.
-    Designed to avoid self-collisions and collisions with components it is
-    attached to.
+    """.. image:: RouteFramed.png
 
-    This class extends the `QComponent` class.
+    A non-meandered sample_shapes CPW that is auto-generated between 2 components.
+        Designed to avoid self-collisions and collisions with components it is
+        attached to.
 
-    .. meta::
-        :description: Routed Frame
+        This class extends the `QComponent` class.
 
-    Assumptions:
-        1. Components are situated along xy axes in 2 dimensions. No rotation is allowed (yet). Their bounding boxes may
-           not overlap, though they may be situated at arbitrary x and y provided these conditions are met.
-        2. Pins point normal to qubits ("directly outward") and either in the x or y directions. They must not protrude
-           from the exact corner of a component. [This last assumption has implications for 2-segment connections.]
-        3. Intersection of CPWs with themselves or the qubits they stem from is prohibited. Intersection with other
-           components/CPWs has not yet been considered.
-        4. Components may not share an edge; a nonzero gap must be present between 2 adjacent qubits.
-        5. CPWs must be attached to protruding leads via terminations head-on, not from the sides.
+        .. meta::
+            :description: Routed Frame
+
+        Assumptions:
+            1. Components are situated along xy axes in 2 dimensions. No rotation is allowed (yet). Their bounding boxes may
+               not overlap, though they may be situated at arbitrary x and y provided these conditions are met.
+            2. Pins point normal to qubits ("directly outward") and either in the x or y directions. They must not protrude
+               from the exact corner of a component. [This last assumption has implications for 2-segment connections.]
+            3. Intersection of CPWs with themselves or the qubits they stem from is prohibited. Intersection with other
+               components/CPWs has not yet been considered.
+            4. Components may not share an edge; a nonzero gap must be present between 2 adjacent qubits.
+            5. CPWs must be attached to protruding leads via terminations head-on, not from the sides.
     """
 
     component_metadata = Dict(short_name="cpw")

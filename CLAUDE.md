@@ -130,6 +130,30 @@ Don't reach for `_dev/` as a halfway house — it's still public.
 | `docs/architecture/renderer_protocol.md` | When adding or modifying a renderer. The full inheritance map and override matrix. |
 | `docs/headless-usage.rst` | When working on the Qt-free path or onboarding flow. |
 
+## Adding a new QComponent
+
+When you add a class in `qlibrary/`, run the thumbnail generator so the
+Library pane in `MetalGUI` shows a real preview instead of the
+placeholder logo:
+
+```bash
+QISKIT_METAL_HEADLESS=1 uv run python _dev/generate_qlibrary_thumbnails.py \
+    --write --inject-docstrings
+```
+
+Outputs PNGs to `src/qiskit_metal/_gui/_imgs/components/<ClassName>.png`
+and inserts a `.. image:: <ClassName>.png` directive at the top of the
+class docstring if missing. Both are checked in.
+
+If your component needs pins / anchors / non-default options to render
+meaningfully (e.g. a Route), add a recipe to `SPECIAL_RECIPES` near the
+top of that script — recipes are callables that return
+`(design, component)`. The script already has examples for the
+`Route*` classes.
+
+The same images are referenced by the Sphinx API docs, so the docstring
+augmentation is "do once, render everywhere."
+
 ## Recurring tasks — slash commands
 
 | Command | What it does |
