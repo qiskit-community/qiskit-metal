@@ -41,7 +41,7 @@ _logger = logging.getLogger(__name__)
 _BRAND_LOGO = (
     Path(__file__).resolve().parent.parent / "_gui" / "_imgs" / "metal_logo.png"
 )
-_BRAND_TITLE = "Quantum Metal"  # umbrella brand (formerly Qiskit Metal)
+_BRAND_TITLE = "Qiskit / Quantum Metal"  # legacy + new brand together
 _BRAND_SUBTITLE = "headless viewer"  # subtitle hints which path is active
 
 # One-time onboarding message: emitted on the first MetalGUIHeadless
@@ -478,7 +478,7 @@ def _apply_brand_decoration(fig, ax) -> None:
     # without being intrusive in the live render.
     try:
         ax.annotate(
-            "Quantum Metal",
+            "Qiskit / Quantum Metal",
             xy=(0.98, 0.02),
             xycoords="axes fraction",
             fontsize=14,
