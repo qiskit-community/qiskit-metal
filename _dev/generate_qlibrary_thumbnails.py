@@ -297,10 +297,44 @@ def _inject_image_directive(source_file, class_name, img_filename):
     return True
 
 
+def verify_image_references():
+    """Walk every ``.. image:: <file>`` directive in ``qlibrary/`` and
+    assert the file exists, case-sensitively, under ``_imgs/components/``.
+
+    macOS's HFS+/APFS is case-insensitive by default, so a docstring
+    pointing at ``SQUID_LOOP.png`` resolves to ``squid_loop.png`` on the
+    developer's laptop but breaks the GUI on a case-sensitive Linux CI
+    machine. Returns a list of ``(file, ref, suggestion)`` tuples;
+    empty list means everything resolves.
+    """
+    import re
+
+    actual = {p.name for p in IMG_DIR.iterdir() if p.suffix.lower() in (".png", ".jpg")}
+    actual_lower = {p.lower(): p for p in actual}
+    problems = []
+    for py in QLIB.rglob("*.py"):
+        for m in re.finditer(r"\.\. image::\s*\n\s*(\S+)", py.read_text()):
+            ref = m.group(1).strip()
+            if ref in actual:
+                continue
+            suggestion = actual_lower.get(ref.lower(), "(not found)")
+            problems.append((py.relative_to(REPO), ref, suggestion))
+    return problems
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--write", action="store_true", help="actually write the PNG files"
+    )
+    parser.add_argument(
+        "--verify",
+        action="store_true",
+        help=(
+            "only check that every docstring ``.. image::`` reference "
+            "resolves to an existing file under _imgs/components/ "
+            "(case-sensitive — catches Linux-CI breakage)"
+        ),
     )
     parser.add_argument(
         "--force",
@@ -313,6 +347,16 @@ def main():
         help="insert ``.. image::`` into docstrings missing one",
     )
     args = parser.parse_args()
+
+    if args.verify:
+        problems = verify_image_references()
+        if problems:
+            print("Broken ``.. image::`` references:")
+            for py, ref, suggestion in problems:
+                print(f"  {py}:  docstring={ref!r}  did you mean {suggestion!r}?")
+            sys.exit(1)
+        print("All docstring image references resolve.")
+        return
 
     _populate_special_recipes()
 
