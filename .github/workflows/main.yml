@@ -208,19 +208,31 @@ jobs:
             tests/test_solution_types.py \
             -v
       - name: Execute whitelisted tutorial notebooks
-        # Run every notebook in ``_dev/auto-runnable-notebooks.txt``
-        # under the lite install. The whitelist explicitly excludes
-        # notebooks that need Ansys / gmsh / KLayout. Each runs with
-        # a per-notebook 240s timeout; the whole job typically
-        # finishes in 3-5 minutes.
+        # Run two lists under the lite install:
+        #
+        #   ↻ ``_dev/notebooks-auto-refresh.txt`` (--inplace) — pure-Python
+        #     / matplotlib tutorials. Outputs written back to source.
+        #
+        #   ✱ ``_dev/notebooks-frozen-qt.txt`` (check-only) — tutorials
+        #     whose committed outputs are hand-curated full Qt-window
+        #     screenshots of MetalGUI. The published docs rely on those
+        #     to show the desktop IDE experience. CI verifies pass/fail
+        #     to ``/tmp`` but NEVER clobbers the committed outputs with
+        #     headless matplotlib renders.
+        #
+        # Both lists explicitly exclude notebooks that need Ansys /
+        # gmsh / KLayout (see the comment block at the bottom of the
+        # auto-refresh whitelist).
+        #
+        # Typical wall time 3-5 minutes; per-notebook 240s timeout.
         #
         # If this step starts failing on a notebook, two options:
         #   1. Fix the notebook (most likely — qm.gui is the
         #      headless-friendly entry point everywhere now).
         #   2. If the notebook actually requires an external tool the
-        #      whitelist already excludes, move its path into the
+        #      whitelists already exclude, move its path into the
         #      "External-gated" comment block at the bottom of the
-        #      whitelist file.
+        #      auto-refresh whitelist.
         #
         # ``uv pip install`` is used (not ``python -m pip``) because
         # the lite venv was created by ``uv venv``, which does not

@@ -1,10 +1,23 @@
-"""Re-execute the whitelisted "auto-runnable" tutorial notebooks.
+"""Re-execute whitelisted tutorial notebooks under the lite install.
 
-Reads the whitelist from ``_dev/auto-runnable-notebooks.txt``, runs each
-notebook end-to-end under ``QISKIT_METAL_HEADLESS=1`` via
-``jupyter nbconvert --execute``, and writes the refreshed outputs in
-place. After running, sync both folders with
-``_dev/sync_two_folders.py --write``.
+Two whitelists, two policies:
+
+  ↻  ``_dev/notebooks-auto-refresh.txt``  → run with ``--inplace``.
+     Outputs are written back into the source ``.ipynb``. Used for
+     pure-matplotlib / pure-Python tutorials where the headless render
+     is the canonical published artefact.
+
+  ✱  ``_dev/notebooks-frozen-qt.txt``     → run with outputs to /tmp.
+     Source ``.ipynb`` is NOT touched. Used for tutorials whose
+     committed outputs are hand-curated full Qt-window screenshots
+     of the desktop ``MetalGUI``; the published docs rely on those
+     for the "look at the full IDE" effect. CI still runs them so a
+     pass/fail signal catches regressions, but never clobbers the
+     curated screenshots with headless matplotlib renders.
+
+Both lists feed the same CI job (``tests-lite → Execute whitelisted
+tutorial notebooks`` in ``.github/workflows/main.yml``), keeping the
+local "did my change break a tutorial?" check bit-identical to CI.
 
 USAGE
 -----
@@ -45,13 +58,16 @@ import time
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-WHITELIST = REPO / "_dev" / "auto-runnable-notebooks.txt"
+AUTO_REFRESH_LIST = REPO / "_dev" / "notebooks-auto-refresh.txt"
+FROZEN_QT_LIST = REPO / "_dev" / "notebooks-frozen-qt.txt"
 TIMEOUT_SEC = 240  # per-notebook hard cap
 
 
-def load_whitelist() -> list[Path]:
+def _load_list(path: Path) -> list[Path]:
+    if not path.exists():
+        return []
     paths: list[Path] = []
-    for line in WHITELIST.read_text().splitlines():
+    for line in path.read_text().splitlines():
         line = line.strip()
         if not line or line.startswith("#"):
             continue
@@ -63,8 +79,14 @@ def load_whitelist() -> list[Path]:
     return paths
 
 
-def run_one(nb_path: Path) -> tuple[Path, bool, str, float]:
-    """Execute a single notebook. Returns (path, ok, log_excerpt, seconds)."""
+def run_one(nb_path: Path, inplace: bool = True) -> tuple[Path, bool, str, float]:
+    """Execute a single notebook. Returns (path, ok, log_excerpt, seconds).
+
+    When ``inplace`` is False, outputs land in ``/tmp/<basename>.executed.ipynb``
+    instead of being written back into the source — used for the
+    frozen-Qt set, where committed outputs are hand-curated and must
+    not be clobbered by headless re-runs.
+    """
     t0 = time.monotonic()
     env = {
         **os.environ,
@@ -81,9 +103,20 @@ def run_one(nb_path: Path) -> tuple[Path, bool, str, float]:
         "--to",
         "notebook",
         "--execute",
-        "--inplace",
         f"--ExecutePreprocessor.timeout={TIMEOUT_SEC}",
     ]
+    if inplace:
+        cmd.append("--inplace")
+    else:
+        # Pipe outputs into /tmp so the source notebook stays untouched.
+        cmd.extend(
+            [
+                "--output-dir",
+                "/tmp",
+                "--output",
+                f"{nb_path.stem}.executed.ipynb",
+            ]
+        )
     kernel = os.environ.get("JUPYTER_KERNEL_NAME")
     if kernel:
         cmd.append(f"--ExecutePreprocessor.kernel_name={kernel}")
@@ -124,25 +157,35 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    notebooks = load_whitelist()
+    auto_refresh = _load_list(AUTO_REFRESH_LIST)
+    frozen_qt = _load_list(FROZEN_QT_LIST)
     if args.filter:
-        notebooks = [p for p in notebooks if args.filter in str(p)]
+        auto_refresh = [p for p in auto_refresh if args.filter in str(p)]
+        frozen_qt = [p for p in frozen_qt if args.filter in str(p)]
 
-    print(f"Whitelisted notebooks: {len(notebooks)}")
-    for p in notebooks:
-        print(f"  - {p.relative_to(REPO)}")
+    print(f"Auto-refresh (--inplace): {len(auto_refresh)}")
+    for p in auto_refresh:
+        print(f"  ↻ {p.relative_to(REPO)}")
+    print(f"\nFrozen Qt (check-only):   {len(frozen_qt)}")
+    for p in frozen_qt:
+        print(f"  ✱ {p.relative_to(REPO)}")
 
     if not args.run:
         print("\nDry-run. Pass --run to execute.")
         return 0
 
     print(f"\nExecuting with {args.jobs} parallel worker(s)...\n")
-    results = []
+    work = [(p, True) for p in auto_refresh] + [(p, False) for p in frozen_qt]
+
+    def _exec(item):
+        nb, inplace = item
+        return run_one(nb, inplace=inplace)
+
     if args.jobs == 1:
-        results = [run_one(p) for p in notebooks]
+        results = [_exec(it) for it in work]
     else:
         with concurrent.futures.ThreadPoolExecutor(max_workers=args.jobs) as pool:
-            results = list(pool.map(run_one, notebooks))
+            results = list(pool.map(_exec, work))
 
     print("\n=== Summary ===")
     passed = failed = 0

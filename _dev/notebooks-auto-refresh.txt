@@ -1,67 +1,62 @@
-# Notebooks safe to re-execute under the lite install (no Ansys, no
-# gmsh, no real fab GDS), one path per line. Used by:
+# Auto-refresh notebooks — outputs ARE overwritten in place by CI.
 #
-#   - ``_dev/rerun_auto.py`` (manual local refresh)
-#   - ``.github/workflows/main.yml`` ``tutorials-execute`` CI job
-#     (runs on every PR — keeps the published outputs honest)
+# Pure-Python / matplotlib-only notebooks that don't benefit from a
+# full Qt window grab. ``_dev/rerun_auto.py`` runs these with
+# ``--inplace``; the refreshed outputs land back in the source file
+# and get committed by whoever's running the local refresh, OR end up
+# in the diff CI produces.
 #
-# Categorization rules:
+# Categorization rules
+# --------------------
 #
-#   🟢  Auto-runnable  — needs only ``pip install quantum-metal[gui]``.
-#                       Listed below. Re-executed on every PR.
-#   🟡  External-gated — needs Ansys HFSS/Q3D, gmsh + Linux X libs, a
-#                       real GDS file from a fab, etc. NEVER auto-run;
-#                       cached outputs are sacred. Maintainer refreshes
-#                       locally when the relevant tool changes.
-#   🟠  Interactive    — depends on the Qt event loop (mouse clicks
-#                       etc.). Programmatically un-runnable. Skip.
+# Add a notebook here when ALL of the following hold:
 #
-# To add a notebook to the auto-runnable set:
+#   1. It needs only ``quantum-metal[gui]`` deps (no Ansys, no gmsh).
+#   2. It doesn't ``gui.screenshot()`` the Qt window — its visuals come
+#      from ``qm.view``, ``plt.subplots``, ``matplotlib.pyplot``, or
+#      ``MetalGUIHeadless.screenshot()``. The published render is
+#      semantically equivalent under headless and Qt execution.
+#   3. It completes in under 3 min on a clean CI runner.
 #
-#   1. Confirm it imports nothing outside ``quantum-metal[gui]`` deps
-#      (no ``pyaedt``, no ``gmsh``, no ``pyEPR``, no
-#      ``ansys.aedt.core``).
-#   2. Confirm ``QISKIT_METAL_HEADLESS=1 jupyter nbconvert --execute
-#      <path> --to notebook`` completes in under 3 minutes.
-#   3. Append the canonical ``docs/tut/`` path below. The CI executor
-#      uses the docs/tut/ side; ``_dev/sync_two_folders.py`` will then
-#      copy the refreshed outputs to ``tutorials/``.
+# If a notebook starts carrying Qt-specific screenshots (rare), move it
+# to ``_dev/notebooks-frozen-qt.txt``.
 #
-# Lines starting with ``#`` are comments. Blank lines ignored.
+# Also referenced
+# ---------------
+#
+# At the bottom of this file is a commented "External-gated" reference
+# list: Ansys / gmsh / KLayout / Cross-Resonance notebooks that need a
+# real toolchain installed and are NEVER auto-run. Outputs there are
+# refreshed manually by the maintainer.
 
-# --- Section 1: Overview ---
-docs/tut/1-Overview/1.1-Quick-start.ipynb
-docs/tut/1-Overview/1.2-Bird's-eye-view-of-Quantum-Metal.ipynb
-docs/tut/1-Overview/1.3-Build-a-4-qubit-chip.ipynb
+# --- Section 1: Saving + Parametric (pure-mpl plots) ---
 docs/tut/1-Overview/1.4-Saving-Your-Chip-Design.ipynb
 docs/tut/1-Overview/1.5-Parametric-design---iterate-and-compare.ipynb
 
-# --- Section 2: From components to chip ---
-docs/tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.ipynb
+# --- Section 2: routing + custom components (algorithmic demos) ---
 docs/tut/2-From-components-to-chip/2.11-Routing-101.ipynb
 docs/tut/2-From-components-to-chip/2.12-Simple-Meander.ipynb
 docs/tut/2-From-components-to-chip/2.13-Hybrid-Auto-and-AStar.ipynb
 docs/tut/2-From-components-to-chip/2.14-Get-them-all-with-MixedRoute.ipynb
-docs/tut/2-From-components-to-chip/2.21-Design-a-4-qubit-full-chip.ipynb
 docs/tut/2-From-components-to-chip/2.22-Design-100-qubits-programmatically.ipynb
 docs/tut/2-From-components-to-chip/2.23-Modify-chip-options.ipynb
 docs/tut/2-From-components-to-chip/2.31-Create-a-QComponent-Basic.ipynb
 docs/tut/2-From-components-to-chip/2.32-Create-a-QComponent-Advanced.ipynb
 docs/tut/2-From-components-to-chip/2.33-Add-my-QComponent-to-a-reusable-python-file.ipynb
 
-# --- Section 3: Renderers (GDS export only — Ansys & gmsh excluded) ---
+# --- Section 3: GDS-only (gdstk, no Qt or Ansys) ---
 docs/tut/3-Renderers/3.1-Introduction-to-QRenderers.ipynb
 docs/tut/3-Renderers/3.2-Export-your-design-to-GDS.ipynb
 
-# --- Section 4: Analyses (pure-Python only — HFSS/Q3D excluded) ---
+# --- Section 4: pure-Python analyses (no Ansys / Q3D / gmsh) ---
 docs/tut/4-Analysis/4.31-Plot-quantum-oscillator-wavefunction.ipynb
 docs/tut/4-Analysis/4.32-Transmon-analytics-HCPB.ipynb
 docs/tut/4-Analysis/4.33-Transmon-analytics.ipynb
 docs/tut/4-Analysis/4.34-Transmon-qubit-CPB-hamiltonian-charge-basis.ipynb
 
 # ============================================================================
-# External-gated (🟡) — NEVER auto-run.  Reference list, not part of the
-# executable set.  Maintainer re-runs locally when Ansys/gmsh/GDS changes.
+# External-gated (🟡) — NEVER auto-run. Reference list only. Maintainer
+# re-runs locally when Ansys / gmsh / GDS toolchain changes.
 # ============================================================================
 #
 # Ansys (HFSS / Q3D) — requires pyaedt + an Ansys AEDT license, Windows:
@@ -80,6 +75,6 @@ docs/tut/4-Analysis/4.34-Transmon-qubit-CPB-hamiltonian-charge-basis.ipynb
 #   docs/tut/3-Renderers/3.5-Render-your-design-to-Gmsh.ipynb
 #   docs/tut/4-Analysis/4.19-Analyze-a-transmon-using-ElmerFEM.ipynb
 #
-# Cross-Resonance + cQED — use Ansys exports:
+# Cross-Resonance + cQED — depend on Ansys exports:
 #   docs/tut/4-Analysis/cQED-with-the-Jaynes-Cummings-Interaction-Model.ipynb
 #   docs/tut/4-Analysis/Design-and-Simulation-of-a-Cross-Resonance-Gate.ipynb

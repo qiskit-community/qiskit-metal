@@ -53,6 +53,30 @@ Anything that requires a Qt event loop (mouse clicks, modal dialogs) can't
 be programmatically re-run. These are rare; currently none in the numbered
 tutorials.
 
+## Deferred follow-ups
+
+These came up during the PR-#1095 design discussion and are worth doing
+later, but aren't blockers for the v0.7.2 release:
+
+1. **Post-merge manual Qt-screenshot refresh.** Once this PR lands, the
+   new branding (Qiskit / Quantum Metal title bar, watermark fix, factory
+   import, etc.) won't be reflected in the frozen Qt-screenshot tutorials
+   until someone opens each in a local Qt session and re-runs cells.
+   Suggested sweep: 1.1, 1.2, 1.3, 2.01, 2.21 — one focused commit on
+   `main` after merge.
+
+2. **Option E — on-demand Xvfb + `[gui]` CI job.** A `workflow_dispatch`
+   job that spins up Xvfb on ubuntu-24.04, installs `quantum-metal[gui]`,
+   and runs the frozen-Qt set with real Qt windows. Outputs ship as a
+   downloadable workflow artifact (zip) for the maintainer to diff
+   against committed screenshots and selectively replace. Caveats: Qt
+   session dock geometry defaults to a less-polished layout than a
+   hand-arranged maintainer session, so auto-refreshed screenshots tend
+   to look visually inferior. The job is useful mostly as a safety net
+   (a) when nobody with a Qt setup is available to refresh manually, or
+   (b) to demonstrate the Xvfb + lite-Colab path works for users
+   following Onri-style headless install scripts.
+
 ## Why bother?
 
 Stale outputs are the silent killer of a docs site's trust. A reader
