@@ -13,11 +13,11 @@ server). The Qt GUI is one *interface* to the API, not a requirement.
 .. rubric:: Run the tutorials in your browser
 
 .. image:: https://colab.research.google.com/assets/colab-badge.svg
-   :target: https://colab.research.google.com/github/qiskit-community/qiskit-metal/blob/main/tutorials/1%20Overview/1.2%20Quick%20start.ipynb
+   :target: https://colab.research.google.com/github/qiskit-community/qiskit-metal/blob/main/tutorials/1%20Overview/1.1%20Quick%20start.ipynb
    :alt: Open Quick Start in Colab
 
 .. image:: https://mybinder.org/badge_logo.svg
-   :target: https://mybinder.org/v2/gh/qiskit-community/qiskit-metal/main?labpath=tutorials%2F1%20Overview%2F1.2%20Quick%20start.ipynb
+   :target: https://mybinder.org/v2/gh/qiskit-community/qiskit-metal/main?labpath=tutorials%2F1%20Overview%2F1.1%20Quick%20start.ipynb
    :alt: Open Quick Start in Binder
 
 In Colab / Binder the first cell installs the lite wheel

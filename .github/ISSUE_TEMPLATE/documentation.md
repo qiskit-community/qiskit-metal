@@ -11,7 +11,7 @@ assignees: ''
 
 <!--
 Paste the URL of the docs page, or the file path in the repo
-(e.g. `docs/installation.rst`, `tutorials/1 Overview/1.2 Quick start.ipynb`).
+(e.g. `docs/installation.rst`, `tutorials/1 Overview/1.1 Quick start.ipynb`).
 -->
 
 ## What's wrong, missing, or confusing?

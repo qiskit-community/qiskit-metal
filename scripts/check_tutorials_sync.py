@@ -34,12 +34,12 @@ from pathlib import Path
 PAIRS = [
     # Section 1
     (
-        "docs/tut/1-Overview/1.1-Bird's-eye-view-of-Qiskit-Metal.ipynb",
-        "tutorials/1 Overview/1.1 Bird's eye view of Qiskit Metal.ipynb",
+        "docs/tut/1-Overview/1.2-Bird's-eye-view-of-Quantum-Metal.ipynb",
+        "tutorials/1 Overview/1.2 Bird's eye view of Quantum Metal.ipynb",
     ),
     (
-        "docs/tut/1-Overview/1.2-Quick-start.ipynb",
-        "tutorials/1 Overview/1.2 Quick start.ipynb",
+        "docs/tut/1-Overview/1.1-Quick-start.ipynb",
+        "tutorials/1 Overview/1.1 Quick start.ipynb",
     ),
     (
         "docs/tut/1-Overview/1.3-Saving-Your-Chip-Design.ipynb",

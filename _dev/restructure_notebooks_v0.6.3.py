@@ -1,25 +1,48 @@
 """
 Notebook restructuring script — run ONCE on original files.
 """
-import json, copy, uuid, shutil, os
+
+import json
+import copy
+import uuid
+import shutil
+import os
+
 
 def code_cell(source, cell_id=None):
-    return {"cell_type":"code","execution_count":None,"id":cell_id or str(uuid.uuid4())[:8],"metadata":{},"outputs":[],"source":[source]}
+    return {
+        "cell_type": "code",
+        "execution_count": None,
+        "id": cell_id or str(uuid.uuid4())[:8],
+        "metadata": {},
+        "outputs": [],
+        "source": [source],
+    }
+
 
 def md_cell(source, cell_id=None):
-    return {"cell_type":"markdown","id":cell_id or str(uuid.uuid4())[:8],"metadata":{},"source":[source]}
+    return {
+        "cell_type": "markdown",
+        "id": cell_id or str(uuid.uuid4())[:8],
+        "metadata": {},
+        "source": [source],
+    }
+
 
 def load_nb(path):
     with open(path) as f:
         return json.load(f)
 
+
 def save_nb(nb, path):
     with open(path, "w") as f:
         json.dump(nb, f, indent=1, ensure_ascii=False)
 
+
 def cell_src(c):
     s = c.get("source", "")
     return "".join(s) if isinstance(s, list) else s
+
 
 BASE = "/Users/zlatkominev/CODE_REPOS/quantum_hardware/qiskit-metal"
 issues = []
@@ -30,7 +53,7 @@ issues = []
 print("=" * 60)
 print("TASK 1 — Restructure 1.1")
 
-path_11 = f"{BASE}/tutorials/1 Overview/1.1 Bird's eye view of Qiskit Metal.ipynb"
+path_11 = f"{BASE}/tutorials/1 Overview/1.2 Bird's eye view of Quantum Metal.ipynb"
 nb11 = load_nb(path_11)
 cells_11 = nb11["cells"]
 before_11 = len(cells_11)
@@ -57,15 +80,15 @@ teaser_md = """> **What just happened?**
 > 3. Rendered it to a **matplotlib figure** — no Qt, no GUI, no extra setup
 >
 > The rest of this tutorial unpacks what each step means and how to control every detail.
-> Skip ahead to [1.2 Your First Chip](./1.2%20Quick%20start.ipynb) if you want to keep building immediately."""
+> Skip ahead to [1.2 Your First Chip](./1.1%20Quick%20start.ipynb) if you want to keep building immediately."""
 
 new_cells_11 = (
-    [cells_11[0]]               # 0: title
-    + [cells_11[1]]             # 1: no-Qt callout
+    [cells_11[0]]  # 0: title
+    + [cells_11[1]]  # 1: no-Qt callout
     + [code_cell(teaser_code)]  # NEW: teaser code
-    + [md_cell(teaser_md)]      # NEW: "What just happened?"
-    + cells_11[2:7]             # 2-6: architecture / 4-step flow
-    + cells_11[7:]              # 7-43: rest
+    + [md_cell(teaser_md)]  # NEW: "What just happened?"
+    + cells_11[2:7]  # 2-6: architecture / 4-step flow
+    + cells_11[7:]  # 7-43: rest
 )
 
 nb11["cells"] = new_cells_11
@@ -81,20 +104,20 @@ print(f"  Saved: {path_11}")
 print("=" * 60)
 print("TASK 2 — Restructure 1.2")
 
-path_12 = f"{BASE}/tutorials/1 Overview/1.2 Quick start.ipynb"
+path_12 = f"{BASE}/tutorials/1 Overview/1.1 Quick start.ipynb"
 nb12 = load_nb(path_12)
 cells_12 = nb12["cells"]
 before_12 = len(cells_12)
 print(f"  Before: {before_12} cells")
 
 # Extract cells for later tasks (before modifying the list)
-gds_cells = copy.deepcopy(cells_12[75:92])      # 17 cells
+gds_cells = copy.deepcopy(cells_12[75:92])  # 17 cells
 shapes_cells = copy.deepcopy(cells_12[92:106])  # 14 cells
-cheese_cell = copy.deepcopy(cells_12[121])       # 1 cell
+cheese_cell = copy.deepcopy(cells_12[121])  # 1 cell
 
 print(f"  Extracted gds_cells:    {len(gds_cells)} cells (indices 75-91)")
 print(f"  Extracted shapes_cells: {len(shapes_cells)} cells (indices 92-105)")
-print(f"  Extracted cheese_cell:  1 cell (index 121)")
+print("  Extracted cheese_cell:  1 cell (index 121)")
 
 # cells[125] is an empty code cell — include in tail
 tail_cells = cells_12[122:126] if len(cells_12) >= 126 else cells_12[122:]
@@ -194,7 +217,7 @@ By the end of this tutorial you will know how to:
 1. **Export a design to a Python script** (`to_python_script`) — the reproducibility superpower
 2. **Export to GDS** for fabrication, and visually inspect the result
 
-We start from the full 2-qubit chip built in [tutorial 1.2](./1.2%20Quick%20start.ipynb).
+We start from the full 2-qubit chip built in [tutorial 1.2](./1.1%20Quick%20start.ipynb).
 The block below is exactly what `design.to_python_script()` produces — a self-contained
 Python definition you can version-control, share, and replay.""")
 
@@ -329,7 +352,7 @@ print(f"  Found to_python_script at index {tps_idx}")
 new_cells_13 = (
     [cell_A_13, cell_B_13, cell_C_13]
     + ([cells_13[tps_idx]] if tps_idx < len(cells_13) else [])
-    + (cells_13[tps_idx+1:] if tps_idx < len(cells_13) else [])
+    + (cells_13[tps_idx + 1 :] if tps_idx < len(cells_13) else [])
 )
 
 nb13["cells"] = new_cells_13
@@ -356,7 +379,9 @@ if before_14 > 28:
     c28_src = cell_src(cells_14[28])
     print(f"  Cell 28 preview: {c28_src[:80]!r}")
     if "Save" not in c28_src and "save" not in c28_src:
-        issues.append(f"1.4: Cell 28 doesn't look like 'Save figure' cell: {c28_src[:60]!r}")
+        issues.append(
+            f"1.4: Cell 28 doesn't look like 'Save figure' cell: {c28_src[:60]!r}"
+        )
     insert_idx = 28
 else:
     issues.append(f"1.4: Only {before_14} cells, inserting at end instead of 28")
@@ -392,9 +417,7 @@ batch_tip = md_cell("""> **Tip:** Wrap this pattern in a function and loop over 
 > CPW lengths, pad gaps. The PNG filenames become your experiment log.""")
 
 new_cells_14 = (
-    cells_14[:insert_idx]
-    + [batch_md, batch_code, batch_tip]
-    + cells_14[insert_idx:]
+    cells_14[:insert_idx] + [batch_md, batch_code, batch_tip] + cells_14[insert_idx:]
 )
 
 nb14["cells"] = new_cells_14
@@ -414,7 +437,9 @@ print("TASK 5 — Create 1.5")
 nb14_for_meta = load_nb(path_14)
 meta_template = nb14_for_meta.get("metadata", {})
 
-path_15 = f"{BASE}/tutorials/1 Overview/1.5 Parametric design - iterate and compare.ipynb"
+path_15 = (
+    f"{BASE}/tutorials/1 Overview/1.5 Parametric design - iterate and compare.ipynb"
+)
 
 cells_15 = [
     md_cell("""# 1.5 Parametric Design: Iterate and Compare
@@ -428,8 +453,7 @@ By the end of this notebook you will:
 - Vary a CPW length and see how the route adapts
 - Export all variants as PNG for a presentation or paper
 
-**Prerequisite:** [1.2 Your First Chip](./1.2%20Quick%20start.ipynb) — we'll reuse the 4-qubit ring design."""),
-
+**Prerequisite:** [1.2 Your First Chip](./1.1%20Quick%20start.ipynb) — we'll reuse the 4-qubit ring design."""),
     code_cell("""# Rebuild the 4-qubit chip from tutorial 1.2
 from qiskit_metal import designs
 from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
@@ -478,12 +502,10 @@ cpw4 = connect("cpw4", "Q1", "b", "Q4", "d", "6.1 mm", "-150um")
 print(f"Design ready — {len(design.components)} components")
 fig = qm.view(design, figsize=(8, 8), title="Baseline design")
 fig"""),
-
     md_cell("""## Sweep 1: qubit pad width
 
 `pad_width` controls the size of the transmon capacitor pads. Larger pads → larger capacitance → lower qubit frequency.
 Here we sweep three values and compare the geometry."""),
-
     code_cell("""pad_widths = ["300 um", "425 um", "550 um"]
 
 fig, axes = plt.subplots(1, 3, figsize=(18, 6))
@@ -501,12 +523,10 @@ design.rebuild()
 plt.tight_layout()
 plt.close(fig)
 display(fig)"""),
-
     md_cell("""## Sweep 2: CPW coupling length
 
 `total_length` controls the electrical length of a CPW resonator, which sets its resonant frequency.
 Longer CPW → lower frequency. The route geometry adapts automatically."""),
-
     code_cell("""cpw_lengths = ["5.0 mm", "6.0 mm", "7.5 mm"]
 
 fig, axes = plt.subplots(1, 3, figsize=(18, 6))
@@ -524,12 +544,10 @@ design.rebuild()
 plt.tight_layout()
 plt.close(fig)
 display(fig)"""),
-
     md_cell("""## Exporting a design family to PNG
 
 Combine a parameter sweep with `fig.savefig()` to produce a labelled image
 set for a paper, slide deck, or design review."""),
-
     code_cell("""import os
 
 output_dir = "sweep_output"
@@ -547,7 +565,6 @@ for pw in ["300 um", "425 um", "550 um"]:
 q1.options.pad_width = "425 um"
 design.rebuild()
 print(f"\\nAll PNGs saved to ./{output_dir}/")"""),
-
     md_cell("""## Next steps
 
 - **[1.3 Saving Your Design](./1.3%20Saving%20Your%20Chip%20Design.ipynb)** — export to GDS for fabrication
@@ -638,7 +655,9 @@ if "%metal_heading" in gds_src_0:
     print(f"  Skipping gds_cells[0] (contains %metal_heading): {gds_src_0[:60]!r}")
     gds_cells_to_append = gds_cells[1:]
 else:
-    print(f"  gds_cells[0] does not contain %metal_heading, keeping it: {gds_src_0[:60]!r}")
+    print(
+        f"  gds_cells[0] does not contain %metal_heading, keeping it: {gds_src_0[:60]!r}"
+    )
     gds_cells_to_append = gds_cells
 
 print(f"  gds_cells_to_append: {len(gds_cells_to_append)} cells")
@@ -665,20 +684,34 @@ print("=" * 60)
 print("TASK 8 — Sync to docs/tut")
 
 sync_pairs = [
-    (f"{BASE}/tutorials/1 Overview/1.1 Bird's eye view of Qiskit Metal.ipynb",
-     f"{BASE}/docs/tut/1-Overview/1.1-Bird's-eye-view-of-Qiskit-Metal.ipynb"),
-    (f"{BASE}/tutorials/1 Overview/1.2 Quick start.ipynb",
-     f"{BASE}/docs/tut/1-Overview/1.2-Quick-start.ipynb"),
-    (f"{BASE}/tutorials/1 Overview/1.3 Saving Your Chip Design.ipynb",
-     f"{BASE}/docs/tut/1-Overview/1.3-Saving-Your-Chip-Design.ipynb"),
-    (f"{BASE}/tutorials/1 Overview/1.4 Headless quick view (no Qt GUI).ipynb",
-     f"{BASE}/docs/tut/1-Overview/1.4-Headless-quick-view-(no-Qt-GUI).ipynb"),
-    (f"{BASE}/tutorials/1 Overview/1.5 Parametric design - iterate and compare.ipynb",
-     f"{BASE}/docs/tut/1-Overview/1.5-Parametric-design---iterate-and-compare.ipynb"),
-    (f"{BASE}/tutorials/1 Overview/1.6 QComponent shape library.ipynb",
-     f"{BASE}/docs/tut/1-Overview/1.6-QComponent-shape-library.ipynb"),
-    (f"{BASE}/tutorials/3 Renderers/3.2 Export your design to GDS.ipynb",
-     f"{BASE}/docs/tut/3-Renderers/3.2-Export-your-design-to-GDS.ipynb"),
+    (
+        f"{BASE}/tutorials/1 Overview/1.2 Bird's eye view of Quantum Metal.ipynb",
+        f"{BASE}/docs/tut/1-Overview/1.2-Bird's-eye-view-of-Quantum-Metal.ipynb",
+    ),
+    (
+        f"{BASE}/tutorials/1 Overview/1.1 Quick start.ipynb",
+        f"{BASE}/docs/tut/1-Overview/1.1-Quick-start.ipynb",
+    ),
+    (
+        f"{BASE}/tutorials/1 Overview/1.3 Saving Your Chip Design.ipynb",
+        f"{BASE}/docs/tut/1-Overview/1.3-Saving-Your-Chip-Design.ipynb",
+    ),
+    (
+        f"{BASE}/tutorials/1 Overview/1.4 Headless quick view (no Qt GUI).ipynb",
+        f"{BASE}/docs/tut/1-Overview/1.4-Headless-quick-view-(no-Qt-GUI).ipynb",
+    ),
+    (
+        f"{BASE}/tutorials/1 Overview/1.5 Parametric design - iterate and compare.ipynb",
+        f"{BASE}/docs/tut/1-Overview/1.5-Parametric-design---iterate-and-compare.ipynb",
+    ),
+    (
+        f"{BASE}/tutorials/1 Overview/1.6 QComponent shape library.ipynb",
+        f"{BASE}/docs/tut/1-Overview/1.6-QComponent-shape-library.ipynb",
+    ),
+    (
+        f"{BASE}/tutorials/3 Renderers/3.2 Export your design to GDS.ipynb",
+        f"{BASE}/docs/tut/3-Renderers/3.2-Export-your-design-to-GDS.ipynb",
+    ),
 ]
 
 for src, dst in sync_pairs:
@@ -696,13 +729,13 @@ print("VERIFICATION SUMMARY")
 print("=" * 60)
 
 summary = [
-    ("1.1 Bird's eye view",         before_11, after_11),
-    ("1.2 Quick start",             before_12, after_12),
+    ("1.1 Bird's eye view", before_11, after_11),
+    ("1.1 Quick start", before_12, after_12),
     ("1.3 Saving Your Chip Design", before_13, after_13),
-    ("1.4 Headless quick view",     before_14, after_14),
-    ("1.5 Parametric design",       0,         len(cells_15)),
-    ("1.6 Shape library",           0,         len(nb16_cells)),
-    ("3.2 Export to GDS",           before_32, after_32),
+    ("1.4 Headless quick view", before_14, after_14),
+    ("1.5 Parametric design", 0, len(cells_15)),
+    ("1.6 Shape library", 0, len(nb16_cells)),
+    ("3.2 Export to GDS", before_32, after_32),
 ]
 
 for name, b, a in summary:
@@ -715,7 +748,7 @@ print()
 print("Extractions from 1.2:")
 print(f"  gds_cells:    {len(gds_cells)} cells (orig indices 75-91)")
 print(f"  shapes_cells: {len(shapes_cells)} cells (orig indices 92-105)")
-print(f"  cheese_cell:  1 cell  (orig index 121)")
+print("  cheese_cell:  1 cell  (orig index 121)")
 
 print()
 print("Sync to docs/tut:")

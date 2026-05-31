@@ -167,7 +167,7 @@ in a simple, open, community-driven framework.
     :hidden:
 
     Installing Quantum Metal<installation>
-    Quick Start<tut/1-Overview/1.2-Quick-start>
+    Quick Start<tut/1-Overview/1.1-Quick-start>
 
 .. toctree::
     :maxdepth: 1

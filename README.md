@@ -23,8 +23,8 @@
 
 ### 🚀 Try it now — zero install
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/qiskit-community/qiskit-metal/blob/main/tutorials/1%20Overview/1.2%20Quick%20start.ipynb)
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/qiskit-community/qiskit-metal/main?labpath=tutorials%2F1%20Overview%2F1.2%20Quick%20start.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/qiskit-community/qiskit-metal/blob/main/tutorials/1%20Overview/1.1%20Quick%20start.ipynb)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/qiskit-community/qiskit-metal/main?labpath=tutorials%2F1%20Overview%2F1.1%20Quick%20start.ipynb)
 [![Open in GitHub Codespaces](https://img.shields.io/badge/Open_in-Codespaces-181717?logo=github&logoColor=white&style=flat-square)](https://codespaces.new/qiskit-community/qiskit-metal)
 
 One click → working Quantum Metal in your browser in 60 seconds (lite install, no Qt required).

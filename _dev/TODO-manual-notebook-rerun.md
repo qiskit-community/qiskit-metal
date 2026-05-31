@@ -13,7 +13,7 @@ commit the fresh outputs.
 
 | Notebook | Output gap | Image gap |
 |---|---|---|
-| `docs/tut/1-Overview/1.1-Bird's-eye-view-of-Qiskit-Metal.ipynb` | +1 | +1 |
+| `docs/tut/1-Overview/1.2-Bird's-eye-view-of-Quantum-Metal.ipynb` | +1 | +1 |
 | `docs/tut/1-Overview/1.4-Headless-quick-view-(no-Qt-GUI).ipynb` | +6 | +3 |
 | `docs/tut/1-Overview/1.6-QComponent-shape-library.ipynb` | +1 | 0 |
 | `docs/tut/2-From-components-to-chip/2.11-Routing-101.ipynb` | +4 | +4 |
