@@ -48,6 +48,13 @@ IMG_SRC = SRC / "qiskit_metal" / "_gui" / "_imgs" / "components"
 DOCS = REPO / "docs"
 GALLERY_IMG = DOCS / "images" / "qlibrary"
 GALLERY_RST = DOCS / "qcomponents-gallery.rst"
+# Autodoc renders class docstrings into ``docs/_build/.doctrees/apidocs/``
+# and resolves ``.. image:: foo.png`` relative to that path, which means
+# the PNG must live at ``docs/apidocs/foo.png`` (it's added to source
+# tree; Sphinx copies it to ``_images/`` at build time). Mirror every
+# thumbnail there so autodoc's class pages don't trip "image file not
+# readable" warnings.
+APIDOCS_IMG = DOCS / "apidocs"
 
 SKIP_DIRS = {"core", "user_components"}
 SKIP_NAMES = {"MyQComponent", "BridgeFreeJunction"}
@@ -238,9 +245,19 @@ def _emit_gallery_rst(groups, copied_lookup):
 
 
 def _copy_thumbnails(groups, write: bool) -> dict[str, str]:
-    """Copy each component's thumbnail PNG into docs/images/qlibrary/.
-    Returns ``{class_name: copied_filename}``."""
+    """Copy each component's thumbnail PNG into docs/images/qlibrary/
+    and docs/apidocs/. Returns ``{class_name: copied_filename}``.
+
+    Two destinations:
+      - ``docs/images/qlibrary/`` — the visual gallery on the docs site
+        (referenced by ``docs/qcomponents-gallery.rst``).
+      - ``docs/apidocs/`` — the autodoc class pages (Sphinx resolves
+        ``.. image:: foo.png`` from each class docstring relative to
+        the .rst file's directory, which sits under ``docs/apidocs/``).
+        The filename here must match the docstring directive verbatim.
+    """
     GALLERY_IMG.mkdir(parents=True, exist_ok=True)
+    APIDOCS_IMG.mkdir(parents=True, exist_ok=True)
     out = {}
     for _, members in groups.items():
         for _, cls in members:
@@ -255,11 +272,17 @@ def _copy_thumbnails(groups, write: bool) -> dict[str, str]:
             src = next((p for p in candidates if p.exists()), None)
             if src is None:
                 continue
-            dst_name = f"{cls.__name__}.png"
-            dst = GALLERY_IMG / dst_name
+            gallery_name = f"{cls.__name__}.png"
             if write:
-                shutil.copyfile(src, dst)
-            out[cls.__name__] = dst_name
+                shutil.copyfile(src, GALLERY_IMG / gallery_name)
+                # docs/apidocs/ — name must match the docstring directive
+                # verbatim (the renderer resolves whatever filename the
+                # docstring references, not the class name).
+                if ref:
+                    shutil.copyfile(src, APIDOCS_IMG / ref)
+                else:
+                    shutil.copyfile(src, APIDOCS_IMG / gallery_name)
+            out[cls.__name__] = gallery_name
     return out
 
 

@@ -214,6 +214,7 @@ in a simple, open, community-driven framework.
     :hidden:
 
     Contributor Guide<contributor-guide>
+    Architecture<architecture>
     Using Quantum Metal without Qt<headless-usage>
     Migrating to v0.7.0<migration-to-v0.7.0>
     Code of Conduct<https://github.com/Qiskit/qiskit/blob/master/CODE_OF_CONDUCT.md>

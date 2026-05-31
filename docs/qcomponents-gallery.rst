@@ -359,7 +359,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
          :width: 180px
          :align: center
 
-      Implements a simple CPW, with a single meander.  The base \`CPW
+      Implements a simple CPW, with a single meander.  The base
 
       .. rubric:: ``RouteMeander``
 

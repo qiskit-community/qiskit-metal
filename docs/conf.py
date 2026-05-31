@@ -276,7 +276,16 @@ nbsphinx_execute = os.getenv("QISKIT_DOCS_BUILD_TUTORIALS", "never")
 # source_suffix = ['.rst', '.ipynb']
 source_suffix = {".rst": "restructuredtext"}
 
-suppress_warnings = ["ref.ref"]
+suppress_warnings = [
+    "ref.ref",
+    # sphinxcontrib-mermaid renders ``mermaid`` code fences in
+    # nbsphinx-rendered notebooks as inline SVG via JS at page-load,
+    # but nbsphinx still hands the block to Pygments for syntax
+    # highlighting first. Pygments has no ``mermaid`` lexer; the block
+    # falls back to plaintext and emits this warning. The diagram
+    # itself renders correctly — only the (unused) highlighter chokes.
+    "misc.highlighting_failure",
+]
 
 nbsphinx_thumbnails = {
     "tut/quick-topics/Opening-documentation": "_static/qt-open-docs.png",

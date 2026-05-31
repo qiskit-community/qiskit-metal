@@ -28,8 +28,8 @@ class RouteMeander(QRoute):
     """.. image::
         RouteMeander.png
 
-    Implements a simple CPW, with a single meander.  The base `CPW
-        meandered` class.
+    Implements a simple CPW, with a single meander.  The base
+    ``CPW meandered`` class.
 
         Inherits `QRoute` class
 
