@@ -276,11 +276,12 @@ def _inject_image_directive(source_file, class_name, img_filename):
     docstring = first.value.value
     if _IMG_DIRECTIVE_RE in docstring:
         return False
-    # Prepend the directive on its own block right at the top of the
-    # docstring. Two leading newlines + indented (the docstring is
-    # at indent level 4, but the literal string content doesn't carry
-    # the indent — Sphinx will render OK).
-    new_doc = f".. image:: {img_filename}\n\n" + docstring
+    # IMPORTANT: the MetalGUI library-pane scanner uses the regex
+    # ``\.\. image::[\r\n]+([^\r\n]+)`` (see file_model_qlibrary.py),
+    # which requires the filename on a separate line from the directive
+    # marker. ``.. image:: foo.png`` on one line *parses* in Sphinx but
+    # is invisible to the GUI scanner. Always emit two lines.
+    new_doc = f".. image::\n    {img_filename}\n\n" + docstring
     # Find the actual source span of the docstring literal and replace
     # in-place to preserve everything else (quoting, indentation).
     lineno = first.value.lineno - 1
@@ -298,28 +299,70 @@ def _inject_image_directive(source_file, class_name, img_filename):
 
 
 def verify_image_references():
-    """Walk every ``.. image:: <file>`` directive in ``qlibrary/`` and
-    assert the file exists, case-sensitively, under ``_imgs/components/``.
+    """Walk every ``.. image::`` directive in ``qlibrary/`` and report:
 
-    macOS's HFS+/APFS is case-insensitive by default, so a docstring
-    pointing at ``SQUID_LOOP.png`` resolves to ``squid_loop.png`` on the
-    developer's laptop but breaks the GUI on a case-sensitive Linux CI
-    machine. Returns a list of ``(file, ref, suggestion)`` tuples;
-    empty list means everything resolves.
+    1. Broken refs — file doesn't exist (case-sensitive; macOS's
+       case-insensitive FS masks these locally).
+    2. One-line directives — ``.. image:: foo.png`` parses in Sphinx
+       but is *invisible* to the MetalGUI scanner regex
+       ``\\.\\. image::[\\r\\n]+([^\\r\\n]+)``. Must be two lines.
+    3. Components with a matching PNG on disk but no directive at all
+       (the GUI then falls back to the globe placeholder).
+
+    Returns a dict of issue lists. Empty lists everywhere = healthy.
     """
     import re
 
     actual = {p.name for p in IMG_DIR.iterdir() if p.suffix.lower() in (".png", ".jpg")}
     actual_lower = {p.lower(): p for p in actual}
-    problems = []
+    issues = {"broken_refs": [], "one_line_directives": [], "orphan_pngs": []}
+
+    # Two-line directive (what the GUI actually accepts)
+    two_line = re.compile(r"\.\. image::[\r\n]+\s*(\S+)")
+    # One-line directive (what Sphinx accepts but the GUI doesn't)
+    one_line = re.compile(r"\.\. image::[ \t]+(\S+)")
+
+    # Walk everything as text, plus AST-walk for "PNG exists but no directive"
+    import ast
+
     for py in QLIB.rglob("*.py"):
-        for m in re.finditer(r"\.\. image::\s*\n\s*(\S+)", py.read_text()):
-            ref = m.group(1).strip()
-            if ref in actual:
+        if any(part in SKIP_DIRS for part in py.parts):
+            continue
+        text = py.read_text()
+        rel = py.relative_to(REPO)
+        # Broken refs (either format)
+        for ref in two_line.findall(text) + [
+            m for m in one_line.findall(text) if m.endswith((".png", ".jpg"))
+        ]:
+            if ref not in actual:
+                suggestion = actual_lower.get(ref.lower(), "(not found)")
+                issues["broken_refs"].append((rel, ref, suggestion))
+        # One-line directives that point at real PNGs (GUI can't see them)
+        for ref in one_line.findall(text):
+            if not ref.endswith((".png", ".jpg")):
                 continue
-            suggestion = actual_lower.get(ref.lower(), "(not found)")
-            problems.append((py.relative_to(REPO), ref, suggestion))
-    return problems
+            # If a two-line directive at the same position also matched, skip
+            if ref in two_line.findall(text):
+                continue
+            issues["one_line_directives"].append((rel, ref))
+        # Orphan PNGs: class has matching PNG on disk but no directive
+        try:
+            tree = ast.parse(text)
+        except SyntaxError:
+            continue
+        for node in tree.body:
+            if not isinstance(node, ast.ClassDef):
+                continue
+            if node.name in SKIP_NAMES:
+                continue
+            ds = ast.get_docstring(node) or ""
+            if "image::" in ds:
+                continue
+            png = f"{node.name}.png"
+            if png in actual:
+                issues["orphan_pngs"].append((rel, node.name, png))
+
+    return issues
 
 
 def main():
@@ -349,14 +392,30 @@ def main():
     args = parser.parse_args()
 
     if args.verify:
-        problems = verify_image_references()
-        if problems:
-            print("Broken ``.. image::`` references:")
-            for py, ref, suggestion in problems:
-                print(f"  {py}:  docstring={ref!r}  did you mean {suggestion!r}?")
-            sys.exit(1)
-        print("All docstring image references resolve.")
-        return
+        issues = verify_image_references()
+        total = sum(len(v) for v in issues.values())
+        if not total:
+            print("All ``.. image::`` directives in qlibrary/ resolve cleanly.")
+            return
+        if issues["broken_refs"]:
+            print("Broken image references (file not found, case-sensitive):")
+            for py, ref, sug in issues["broken_refs"]:
+                print(f"  {py}: {ref!r}  → did you mean {sug!r}?")
+        if issues["one_line_directives"]:
+            print(
+                "\nOne-line ``.. image:: foo.png`` — invisible to MetalGUI "
+                "scanner. Must split across two lines:"
+            )
+            for py, ref in issues["one_line_directives"]:
+                print(f"  {py}: {ref!r}")
+        if issues["orphan_pngs"]:
+            print(
+                "\nPNG exists but class has no ``.. image::`` directive "
+                "(GUI shows placeholder):"
+            )
+            for py, cls, png in issues["orphan_pngs"]:
+                print(f"  {py}: class {cls} -> {png}")
+        sys.exit(1)
 
     _populate_special_recipes()
 

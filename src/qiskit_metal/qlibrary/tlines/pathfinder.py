@@ -23,7 +23,8 @@ from qiskit_metal.toolbox_metal.exceptions import QiskitMetalDesignError
 
 
 class RoutePathfinder(RouteAnchors):
-    """.. image:: RoutePathfinder.png
+    """.. image::
+        RoutePathfinder.png
 
 
     Non-meandered CPW class that combines A* pathfinding algorithm with

@@ -5,7 +5,8 @@ from qiskit_metal.qlibrary.core import QComponent
 
 
 class ReadoutResFC(QComponent):
-    """.. image:: ReadoutResFC.png
+    """.. image::
+        ReadoutResFC.png
 
     Flip-chip readout resonator used in the flipchip tutorial.
 

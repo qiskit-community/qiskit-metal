@@ -18,7 +18,8 @@ import numpy as np
 
 
 class ShortToGround(QComponent):
-    """.. image:: ShortToGround.png
+    """.. image::
+        ShortToGround.png
 
     A sample_shapes short to ground termination. Functions as a pin for auto CPW
         drawing.

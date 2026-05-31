@@ -111,6 +111,12 @@ jobs:
         # The two folders carry every numbered notebook twice — see the
         # script docstring for why and how to fix drift.
         run: uv run --quiet scripts/check_tutorials_sync.py
+      - name: Check qlibrary thumbnails resolve (case-sensitive)
+        # Every QComponent docstring ``.. image::`` directive must point
+        # at a file that actually exists under ``_gui/_imgs/components/``
+        # (case-sensitive — macOS's HFS+ masks broken refs locally) and
+        # must use the two-line form the MetalGUI scanner accepts.
+        run: uv run --quiet scripts/check_qlibrary_images.py
 
   tests-lite:
     # Exercises the "lite" install path — no PySide6, no pyaedt, no

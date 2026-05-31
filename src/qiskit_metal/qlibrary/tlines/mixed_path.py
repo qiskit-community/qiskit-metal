@@ -23,7 +23,8 @@ from qiskit_metal.qlibrary.tlines.pathfinder import RoutePathfinder
 
 # class RouteMixed(RouteFramed, RoutePathfinder, RouteMeander):
 class RouteMixed(RoutePathfinder, RouteMeander):
-    """.. image:: RouteMixed.png
+    """.. image::
+        RouteMixed.png
 
     Implements fully featured Routing, allowing different type of
         connections between anchors. The comprehensive Routing class. Inherits

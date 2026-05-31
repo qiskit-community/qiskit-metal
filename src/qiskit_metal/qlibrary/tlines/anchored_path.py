@@ -102,7 +102,8 @@ def intersecting(a: np.array, b: np.array, c: np.array, d: np.array) -> bool:
 
 
 class RouteAnchors(QRoute):
-    """.. image:: RouteAnchors.png
+    """.. image::
+        RouteAnchors.png
 
     Creates and connects a series of anchors through which the Route passes.
 

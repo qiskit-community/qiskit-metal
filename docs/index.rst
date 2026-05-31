@@ -201,6 +201,7 @@ in a simple, open, community-driven framework.
     Overview<overview>
     QDesigns<apidocs/designs>
     QComponents<apidocs/qlibrary>
+    QComponent Gallery<qcomponents-gallery>
     Analyses<apidocs/analyses>
     QRenderers<apidocs/renderers>
     Toolbox<apidocs/toolbox_metal>

@@ -20,7 +20,8 @@ from qiskit_metal.qlibrary.core import BaseQubit
 
 
 class TransmonConcentricType2(BaseQubit):
-    """.. image:: TransmonConcentricType2.png
+    """.. image::
+        TransmonConcentricType2.png
 
     The base `TrasmonConcentric` class
         Inherits `BaseQubit` class.

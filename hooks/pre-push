@@ -76,6 +76,17 @@ else
     echo "  → tutorials sync (skipped — no notebooks in this push)"
 fi
 
+# 4. QComponent ``.. image::`` directives resolve (cheap; <1s).
+# Catches Linux-case-sensitive thumbnail breakage + one-line directives
+# that the MetalGUI scanner can't see + orphan PNGs.
+echo "  → qlibrary image references"
+if ! uv run --quiet scripts/check_qlibrary_images.py > /tmp/.qm-prepush-qlimg.log 2>&1; then
+    echo "  ✗ qlibrary image-reference check failed:"
+    cat /tmp/.qm-prepush-qlimg.log | tail -25
+    echo "    Fix: uv run python _dev/generate_qlibrary_thumbnails.py --write --inject-docstrings"
+    fail=1
+fi
+
 # Optional: uncomment to also run the docs build before push.
 # Adds ~35s but catches docs-build regressions.
 # echo "  → docs build (sphinx)"

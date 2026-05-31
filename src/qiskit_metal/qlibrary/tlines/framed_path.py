@@ -20,7 +20,8 @@ from qiskit_metal.toolbox_metal import math_and_overrides as mao
 
 
 class RouteFramed(QRoute):
-    """.. image:: RouteFramed.png
+    """.. image::
+        RouteFramed.png
 
     A non-meandered sample_shapes CPW that is auto-generated between 2 components.
         Designed to avoid self-collisions and collisions with components it is

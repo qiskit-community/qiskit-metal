@@ -25,7 +25,8 @@ from qiskit_metal.toolbox_metal.exceptions import QiskitMetalDesignError
 
 
 class RouteMeander(QRoute):
-    """.. image:: RouteMeander.png
+    """.. image::
+        RouteMeander.png
 
     Implements a simple CPW, with a single meander.  The base `CPW
         meandered` class.
