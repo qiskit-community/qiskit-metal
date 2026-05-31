@@ -476,48 +476,79 @@ or ping us on <a class="reference external" href="https://discord.gg/kaZ3UFuq">D
 <section id="built-on-quantum-metal">
 <h2>Built on Quantum Metal<a class="headerlink" href="#built-on-quantum-metal" title="Link to this heading">¶</a></h2>
 <p>These projects use Quantum Metal directly — they consume <code class="docutils literal notranslate"><span class="pre">QDesign</span></code>
-objects, extend the <code class="docutils literal notranslate"><span class="pre">QComponent</span></code> library, or treat Metal as their
-foundation:</p>
-<div class="table-wrapper colwidths-given docutils container">
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 26.0%" />
-<col style="width: 56.0%" />
-<col style="width: 18.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Project</p></th>
-<th class="head"><p>What it does</p></th>
-<th class="head"><p>License</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><a class="reference external" href="https://github.com/LFL-Lab/SQuADDS">SQuADDS</a>
-(LFL-Lab &#64; USC)</p></td>
-<td><p>Validated qubit-design database + physics-based parameter interpolation. Search the DB, interpolate to your target Hamiltonian, generate the design in Quantum Metal. Published in <em>Quantum</em> journal (Sept 2024). Includes an MCP server for AI agents.</p></td>
-<td><p>MIT</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference external" href="https://github.com/sqdlab/SQDMetal">SQDMetal</a>
-(SQDLab &#64; UQ)</p></td>
-<td><p>Simulation wrapper for <code class="docutils literal notranslate"><span class="pre">QDesign</span></code> → AWS Palace / COMSOL workflows. Covers eigenmode, capacitance, driven, inductance simulations end-to-end. Accepts Quantum Metal <code class="docutils literal notranslate"><span class="pre">QDesign</span></code> objects directly.</p></td>
-<td><p>Apache 2.0</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference external" href="https://github.com/CosmiQuantum/ML_qubit_design">ML_qubit_design</a>
-(Fermilab + Northwestern)</p></td>
-<td><p>ML-based inverse design — predicts Quantum Metal design parameters from target qubit, resonator, coupler, and Hamiltonian properties using multi-layer perceptrons. Notebook-driven research project.</p></td>
-<td><p>see repo</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference external" href="https://pypalace.readthedocs.io/">pypalace</a>
-(Northwestern)</p></td>
-<td><p>Python toolkit for AWS Palace with Quantum Metal gmsh export, JSON config builders, LOM analysis utilities.</p></td>
-<td><p>see repo</p></td>
-</tr>
-</tbody>
-</table>
+objects, extend the <code class="docutils literal notranslate"><span class="pre">QComponent</span></code> library, or build workflows on top
+of Metal as their foundation:</p>
+<div class="sd-container-fluid sd-sphinx-override sd-mt-1 sd-mb-0 sd-ml-2 sd-mr-0 docutils">
+<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-2 sd-row-cols-lg-2 sd-g-2 sd-g-xs-2 sd-g-sm-2 sd-g-md-2 sd-g-lg-2 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+🔬 SQuADDS</div>
+<p class="sd-card-text"><strong>LFL-Lab &#64; USC · MIT</strong></p>
+<p class="sd-card-text">Validated qubit-design database + physics-based parameter
+interpolation. Search the DB, interpolate to your target
+Hamiltonian, generate the design in Quantum Metal.</p>
+<p class="sd-card-text"><em>Published in Quantum journal (Sept 2024). Includes an MCP server
+for AI agents.</em></p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference external" href="https://github.com/LFL-Lab/SQuADDS"><span>https://github.com/LFL-Lab/SQuADDS</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+🧲 SQDMetal</div>
+<p class="sd-card-text"><strong>SQDLab &#64; UQ · Apache 2.0</strong></p>
+<p class="sd-card-text">Simulation wrapper for <code class="docutils literal notranslate"><span class="pre">QDesign</span></code> → AWS Palace / COMSOL
+workflows. Eigenmode, capacitance, driven, inductance. Accepts
+Quantum Metal <code class="docutils literal notranslate"><span class="pre">QDesign</span></code> objects directly.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference external" href="https://github.com/sqdlab/SQDMetal"><span>https://github.com/sqdlab/SQDMetal</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+🤖 ML_qubit_design</div>
+<p class="sd-card-text"><strong>Fermilab + Northwestern</strong></p>
+<p class="sd-card-text">ML-based inverse design — predicts Quantum Metal design parameters
+from target qubit, resonator, coupler, and Hamiltonian properties
+using multi-layer perceptrons.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference external" href="https://github.com/CosmiQuantum/ML_qubit_design"><span>https://github.com/CosmiQuantum/ML_qubit_design</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+⚗️ Qiskit-Metal-to-Litho</div>
+<p class="sd-card-text"><strong>Onri Jay Benally · CC-BY-4.0</strong></p>
+<p class="sd-card-text">End-to-end workflow from Quantum Metal design through electron-beam
+lithography. Quantum Metal + PHIDL + GDSTK + CuPy + KLayout +
+Blender. Headless Colab install scripts. Fab-facing process docs
+(EBPG / BEAMER). Real fabricated chip examples.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference external" href="https://github.com/OJB-Quantum/Qiskit-Metal-to-Litho"><span>https://github.com/OJB-Quantum/Qiskit-Metal-to-Litho</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+🌐 pypalace</div>
+<p class="sd-card-text"><strong>Northwestern</strong></p>
+<p class="sd-card-text">Python toolkit for AWS Palace — Quantum Metal gmsh export, JSON
+config builders, mesh utilities, LOM analysis.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference external" href="https://pypalace.readthedocs.io/"><span>https://pypalace.readthedocs.io/</span></a></div>
+</div>
+</div>
 </div>
 <p><strong>This list grows with the community.</strong> If you’re building on Quantum
-Metal in a research project, an internal tool, or a startup, we’d
-genuinely love to know — open an issue and we’ll add you.</p>
+Metal in a research project, an internal tool, an educational notebook,
+or a startup, we’d genuinely love to know —
+<a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/issues/new/choose">open an issue</a>
+and we’ll add you.</p>
 </section>
 <section id="solvers-quantum-metal-integrates-with">
 <h2>Solvers Quantum Metal integrates with<a class="headerlink" href="#solvers-quantum-metal-integrates-with" title="Link to this heading">¶</a></h2>
@@ -621,7 +652,10 @@ pypalace (coordination underway — see <a class="reference external" href="http
 <li><p><strong>Analyse</strong> — EPR (<code class="docutils literal notranslate"><span class="pre">pyEPR</span></code>), LOM (<code class="docutils literal notranslate"><span class="pre">LOManalysis</span></code>), spectra
 (<code class="docutils literal notranslate"><span class="pre">scqubits</span></code>), dynamics (<code class="docutils literal notranslate"><span class="pre">QuTiP</span></code>).</p></li>
 <li><p><strong>Export</strong> to GDS via the built-in <code class="docutils literal notranslate"><span class="pre">QGDSRenderer</span></code>; view in KLayout
-or hand off to fab.</p></li>
+or hand off to fab. For end-to-end pipelines all the way through
+electron-beam lithography (PHIDL post-processing, EBPG / BEAMER
+prep, fabricated examples), see
+<a class="reference external" href="https://github.com/OJB-Quantum/Qiskit-Metal-to-Litho">Qiskit-Metal-to-Litho</a>.</p></li>
 </ol>
 <p>Some users also close the loop with <strong>ML inverse design</strong> —
 <code class="docutils literal notranslate"><span class="pre">ML_qubit_design</span></code> trains on Quantum Metal simulation data to predict
