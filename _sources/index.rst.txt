@@ -158,8 +158,7 @@ in a simple, open, community-driven framework.
     **Rebrand in progress: Qiskit Metal → Quantum Metal.**
     The PyPI package is ``quantum-metal`` (v0.5+; current: v0.7.0).
     A future release (target v0.8–v1.0) will rename the import path from
-    ``qiskit_metal`` to ``quantum_metal``. ``import qiskit_metal`` raises a
-    ``FutureWarning`` — silence it with ``QISKIT_METAL_SUPPRESS_RENAME_WARNING=1``.
+    ``qiskit_metal`` to ``quantum_metal``.
     See :doc:`installation` and :doc:`migration-to-v0.7.0`.
 
 .. toctree::
