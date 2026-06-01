@@ -130,6 +130,60 @@ Don't reach for `_dev/` as a halfway house — it's still public.
 | `docs/architecture/renderer_protocol.md` | When adding or modifying a renderer. The full inheritance map and override matrix. |
 | `docs/headless-usage.rst` | When working on the Qt-free path or onboarding flow. |
 
+## Adding a new QComponent
+
+When you add a class in `qlibrary/`, run the thumbnail generator so the
+Library pane in `MetalGUI` shows a real preview instead of the
+placeholder logo:
+
+```bash
+QISKIT_METAL_HEADLESS=1 uv run python _dev/generate_qlibrary_thumbnails.py \
+    --write --inject-docstrings
+```
+
+Outputs PNGs to `src/qiskit_metal/_gui/_imgs/components/<ClassName>.png`
+and inserts a `.. image:: <ClassName>.png` directive at the top of the
+class docstring if missing. Both are checked in.
+
+If your component needs pins / anchors / non-default options to render
+meaningfully (e.g. a Route), add a recipe to `SPECIAL_RECIPES` near the
+top of that script — recipes are callables that return
+`(design, component)`. The script already has examples for the
+`Route*` classes.
+
+The same images are referenced by the Sphinx API docs, so the docstring
+augmentation is "do once, render everywhere."
+
+## Auto-generated docs assets
+
+To avoid duplicating ~100 PNGs across `src/qiskit_metal/_gui/_imgs/components/`
+(runtime source of truth for the Qt `MetalGUI`), `docs/apidocs/`
+(referenced by autodoc class docstrings), and `docs/images/qlibrary/`
+(referenced by the visual gallery), the latter two — plus
+`docs/qcomponents-gallery.rst` — are **generated at every docs build**.
+
+The Sphinx `builder-inited` hook in `docs/conf.py` runs
+`_dev/generate_qcomponent_gallery.py --write` and a small scaffold-icon
+copy step before any reading happens. Source of truth is the
+`_gui/_imgs/` directory + each class' `.. image::` docstring directive.
+
+Gitignored (regenerated):
+- `docs/qcomponents-gallery.rst`
+- `docs/images/qlibrary/`
+- `docs/apidocs/*.png`
+
+Still tracked:
+- `src/qiskit_metal/_gui/_imgs/components/*.png` (runtime source)
+- `docs/apidocs/*.rst` (autosummary-generated, but historically committed)
+
+If a fresh checkout's docs build can't find a thumbnail, the source
+PNG is missing under `_gui/_imgs/components/` — re-run
+`uv run python _dev/generate_qlibrary_thumbnails.py --write
+--inject-docstrings` to regenerate it from each component's
+`make()` output. The build hook only *copies* existing source PNGs;
+it doesn't generate missing ones (that requires importing each
+component, which is too slow for a hot docs-build path).
+
 ## Recurring tasks — slash commands
 
 | Command | What it does |

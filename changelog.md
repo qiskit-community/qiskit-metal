@@ -6,6 +6,149 @@ For the offical user-facing changelog for a particular release can be found in t
 
 The changelog for all releases can be found in the release page: [![Releases](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)
 
+## Quantum Metal v0.7.2 (transparent headless + tutorial restructure; no breaking changes)
+
+**Follow-up to v0.7.1** centered on making "lite Colab/Binder users" and
+"desktop GUI users" walk the same tutorial path. v0.7.0 + v0.7.1 split
+the install into lite vs full extras; v0.7.2 makes that split invisible
+to the user. No breaking changes.
+
+### Highlights
+
+- **New `qm.gui(design)` factory** auto-picks the desktop `MetalGUI`
+  (Qt) when PySide6 + a display are available, and a new
+  `MetalGUIHeadless` (inline matplotlib) otherwise. The
+  `MetalGUIHeadless` class mirrors `MetalGUI`'s tutorial-facing surface
+  (`gui.rebuild()`, `gui.screenshot()`, `gui.edit_component(...)`,
+  `gui.highlight_components(...)`, `gui.zoom_on_components(...)`,
+  `gui.main_window`), so tutorial code is identical on Colab, Binder,
+  headless servers, and the desktop. Detection covers
+  `QISKIT_METAL_HEADLESS=1`, Google Colab, Binder env vars, Linux
+  without `DISPLAY`, and missing PySide6.
+- **Colab + Binder badges on every numbered tutorial and circuit
+  example** — 90+ notebooks across `tutorials/` and
+  `docs/circuit-examples/`. One click in the docs site → a running
+  notebook in the browser via the lite install.
+- **Section 1 tutorials restructured for hands-on flow**:
+  1.1 Quick start (was: Bird's eye view), 1.2 Bird's eye view (was: 1.1),
+  1.3 Build a 4-qubit chip (new — promoted from end of old 1.1),
+  1.4 Saving & exporting (was: 1.3), 1.5 Parametric (unchanged).
+  Old 1.4 Headless + 1.6 Shape library dropped (subsumed by `qm.gui`
+  + the new gallery).
+- **QComponent Gallery** (`docs/qcomponents-gallery.rst`) — visual
+  catalog of every component shipped, grouped by category, each card
+  linking through to autodoc. Auto-generated at every docs build from
+  a single source of truth in `src/qiskit_metal/_gui/_imgs/components/`.
+- **Tutorial CI gate**: 22 lite-runnable notebooks now execute on
+  every PR via `_dev/rerun_auto.py`. Split into auto-refresh (17
+  matplotlib-only) and frozen-Qt (5 with hand-curated Qt screenshots
+  — CI verifies pass/fail without clobbering committed outputs).
+
+### Added
+
+- `src/qiskit_metal/viewer/headless_gui.py` — `MetalGUIHeadless` class,
+  `_is_headless_environment()` detector, and the `gui()` factory.
+  Exposed at the top level as `qm.gui` and `qm.MetalGUIHeadless`.
+- One-time onboarding banner in `MetalGUIHeadless` explaining the
+  active mode and how to install desktop GUI extras. Suppress with
+  `QISKIT_METAL_HEADLESS_QUIET=1`.
+- `qm.MetalGUI` is now a lazy attribute via `__getattr__`. `import
+  qiskit_metal` no longer pulls in PySide6; the import only fires when
+  Qt is actually requested. Clean `ImportError` on lite installs
+  pointing at `pip install 'quantum-metal[gui]'` + the factory.
+- Bottom-right corner watermark on headless figures: faint logo +
+  "Qiskit / Quantum Metal" text (same spec as the desktop `MetalGUI`
+  canvas), painted via an inset axes so it never offsets the parent
+  `dataLim`.
+- `open_docs(force=False)` — suppresses the browser pop in headless /
+  CI / Linux-without-DISPLAY contexts; displays the URL as a clickable
+  HTML link instead.
+- `docs/qcomponents-gallery.rst` + `_dev/generate_qcomponent_gallery.py`
+  — auto-generated visual gallery with grid-card layout per category.
+- `docs/architecture.rst` + mermaid architecture diagram (also
+  rendered natively on GitHub from `.claude/context/architecture.md`).
+- Sphinx `builder-inited` hook in `docs/conf.py` regenerates gallery
+  RST + thumbnail PNGs at every docs build. Adds `sphinxcontrib-mermaid`
+  to docs deps.
+- 7 scaffold icons (`base_qcomponent.png`, `base_qubit.png`,
+  `user_template.png`, ...) so the MetalGUI Library pane no longer
+  shows the globe placeholder for `core/` and `user_components/`
+  classes.
+- 22 auto-generated QComponent thumbnails for `Route*`, `Tunable*`,
+  `Resonator*`, `ShortToGround`, `OpenToGround`, `ReadoutResFC` etc.
+  `_dev/generate_qlibrary_thumbnails.py` renders default instantiations;
+  `SPECIAL_RECIPES` covers components needing pins or anchors.
+- `scripts/check_qlibrary_images.py` — CI gate that fails on broken or
+  one-line `.. image::` directives in any component class.
+- `_dev/rerun_auto.py` + two whitelist files
+  (`notebooks-auto-refresh.txt` / `notebooks-frozen-qt.txt`) drive
+  the new tutorial-execute CI step.
+
+### Fixed
+
+- **Watermark autoscale bug** in `_axis_set_watermark_img` (shared by
+  desktop `MetalGUI` + new headless renderer): the watermark image
+  previously expanded the parent axes' `dataLim` on every redraw,
+  pushing the chip off-center after `gui.autoscale()` or `gui.rebuild()`.
+  Now rendered into an inset axes that doesn't contribute to the
+  parent `dataLim`.
+- **Wide-chip letterboxing** in headless renders: switched
+  `ax.set_aspect("equal")` to `adjustable="datalim"` so a 6 mm × 2 mm
+  layout no longer collapses into a thin band with whitespace.
+- `edit_component` no longer noisy in headless mode — true no-op now;
+  the docstring points users at `design.components['<name>'].options`.
+- `screenshot(display=True)` no longer double-displays in Jupyter
+  (returning the figure after `display(Image(...))` triggered the
+  cell's auto-display of the last expression).
+- `find_id` warning silenced — replaced `design.components.get(name)`
+  with `name in design.components` checks (`Components` isn't a dict;
+  `.get` was being interpreted as a component lookup).
+- `WARNING [_maybe_warn_lite_flip]` from v0.7.0 removed at source +
+  scrubbed from 9 notebooks where it had been cached in output cells.
+- `RouteMeander` docstring inline literal across a line break rewritten
+  to a valid double-backtick literal.
+- `JJ_Dolan.png`, `JJ_Manhattan.png`, `squid_loop.png` —
+  case-sensitive filename mismatches in the corresponding docstrings
+  fixed. Invisible on macOS HFS+ but broke the Library pane on Linux.
+- 11 one-line `.. image:: foo.png` directives split to the two-line
+  form the MetalGUI scanner regex requires.
+- Tutorial 1.2 cell that printed `<Figure size 2400x1000 with 2 Axes>`
+  instead of rendering inline now displays a PNG buffer via
+  `IPython.display.Image` — backend-agnostic.
+
+### Changed
+
+- MetalGUI Library pane defaults to the **Library** tab on launch
+  instead of QComponents (the latter is empty before any components
+  exist).
+- `MetalGUI` Library pane filters the `qlibrary/` tree to `*.py` only.
+- `Quantum Metal` → `Qiskit / Quantum Metal` in both viewers' title
+  strip and corner watermark.
+- README hero strip: 3 cards → 4. New "🧩 Component Gallery" card.
+- Tutorial 1.1 ↔ 1.2 swap. 1.4 Headless + 1.6 Shape library dropped.
+- 2.01 + 2.02 merged into a single "QComponent lifecycle" notebook.
+- `docs/qcomponents-gallery.rst`, `docs/images/qlibrary/`, and
+  `docs/apidocs/*.png` are now generated at every docs build via the
+  `builder-inited` hook and **gitignored**. Was: 100+ duplicate PNG
+  blobs committed across two directories.
+- `Opening documentation` quick-topic notebook no longer calls
+  `open_docs()` automatically — line is commented; user opts in.
+- 75+ stale `:doc:` references to the dropped 1.4 Headless tutorial
+  swept to point at 1.1 Quick start.
+- 41 numbered tutorials had `%load_ext autoreload` / `%autoreload 2`
+  stripped (104 cells total) — these break in Colab.
+
+### Deprecated
+
+- Nothing. `MetalGUI(design)` direct construction remains fully
+  supported; `qm.gui(design)` is an additive convenience.
+
+### Migration
+
+See `docs/migration-to-v0.7.0.rst` for the v0.7.2 "prefer
+`qm.gui(design)` over `MetalGUI(design)`" section.
+
+
 ## Quantum Metal v0.7.1 (UX + docs polish; no breaking changes)
 
 **Follow-up to v0.7.0** focused on adoption / DevRel polish, build-time

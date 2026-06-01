@@ -1,0 +1,63 @@
+# Frozen Qt-curated notebooks — the "GUI marketing path."
+#
+# These notebooks carry hand-curated screenshots of the desktop
+# ``MetalGUI`` Qt window (full window grabs: title bar, toolbar, dock
+# panels, log dock, matplotlib canvas). The published docs site relies
+# on them to show what the desktop experience looks like.
+#
+# CI policy
+# ---------
+#
+# These notebooks are still executed on every PR by ``_dev/rerun_auto.py``
+# (and the ``tests-lite`` CI job), BUT with ``--check-only`` semantics:
+#
+#   - Execution writes outputs to ``/tmp/<basename>.executed.ipynb``,
+#     NOT back into the source file.
+#   - Pass/fail is gated. The hand-curated outputs in git remain
+#     untouched.
+#
+# That gives us the safety net (CI tells us if a notebook stopped
+# running cleanly) without clobbering the rich Qt screenshots with the
+# headless ``MetalGUIHeadless`` matplotlib renders that CI produces.
+#
+# Maintainer workflow
+# -------------------
+#
+# When ``MetalGUI`` changes meaningfully (toolbar layout, theme,
+# canvas styling) and the committed screenshots no longer reflect
+# current behaviour:
+#
+#   1. Open the affected notebook locally in JupyterLab with
+#      ``pip install "quantum-metal[gui]"`` active.
+#   2. ``Restart Kernel and Run All`` — the real desktop ``MetalGUI``
+#      paints into a real Qt window; ``gui.screenshot()`` grabs it.
+#   3. Visually inspect; the maintainer-arranged dock layout produces
+#      noticeably nicer screenshots than a default Qt session.
+#   4. Sync: ``uv run python _dev/sync_two_folders.py --write``.
+#   5. Commit.
+#
+# Future option (Option E in the PR thread)
+# -----------------------------------------
+#
+# A manually-triggered ``workflow_dispatch`` CI job using ``Xvfb`` +
+# ``quantum-metal[gui]`` can auto-refresh these notebooks in CI. The
+# trade-off is that Qt session dock geometry defaults to an uglier
+# layout than a hand-arranged maintainer session — auto-refreshed
+# screenshots are functional but visually inferior. Deferred to a
+# follow-up.
+
+# --- Section 1: the user-facing onboarding path ---
+docs/tut/1-Overview/1.1-Quick-start.ipynb
+docs/tut/1-Overview/1.2-Bird's-eye-view-of-Quantum-Metal.ipynb
+docs/tut/1-Overview/1.3-Build-a-4-qubit-chip.ipynb
+
+# --- Section 2: lifecycle + the full-chip showpiece ---
+docs/tut/2-From-components-to-chip/2.21-Design-a-4-qubit-full-chip.ipynb
+
+# NOTE: 2.01 (QComponent lifecycle) is temporarily removed from the
+# frozen-Qt set. The v0.7.2 merge of old 2.01 + 2.02 reordered cells,
+# and a copy_qcomponent call now sees state that didn't exist when the
+# screenshots were taken. Tracked in
+# ``_dev/notebooks-auto-refresh.txt`` (known-failing block) for a
+# follow-up PR that re-runs the merged notebook in a Qt session and
+# refreshes the committed screenshots.

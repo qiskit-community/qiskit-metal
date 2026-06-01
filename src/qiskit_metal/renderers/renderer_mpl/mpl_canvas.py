@@ -495,7 +495,9 @@ class PlotCanvas(FigureCanvas):
         kw = dict(
             fontsize=15, color="gray", ha="right", va="bottom", alpha=0.18, zorder=-100
         )
-        ax.annotate("Quantum Metal", xy=(0.98, 0.02), xycoords="axes fraction", **kw)
+        ax.annotate(
+            "Qiskit / Quantum Metal", xy=(0.98, 0.02), xycoords="axes fraction", **kw
+        )
 
         file = self.gui.path_imgs / "metal_logo.png"
         if file.is_file():

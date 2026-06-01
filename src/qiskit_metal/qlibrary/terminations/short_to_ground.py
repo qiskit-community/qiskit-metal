@@ -18,19 +18,22 @@ import numpy as np
 
 
 class ShortToGround(QComponent):
-    """A sample_shapes short to ground termination. Functions as a pin for auto CPW
-    drawing.
+    """.. image::
+        ShortToGround.png
 
-    Inherits `QComponent` class.
+    A sample_shapes short to ground termination. Functions as a pin for auto CPW
+        drawing.
 
-    .. meta::
-        :description: Short to Ground
+        Inherits `QComponent` class.
 
-    Default Options:
-        * width: '10um' -- The width of the 'cpw' terminating to ground (this is merely for the purpose of
-          generating a value to pass to the pin)
+        .. meta::
+            :description: Short to Ground
 
-    Values (unless noted) are strings with units included, (e.g., '30um')
+        Default Options:
+            * width: '10um' -- The width of the 'cpw' terminating to ground (this is merely for the purpose of
+              generating a value to pass to the pin)
+
+        Values (unless noted) are strings with units included, (e.g., '30um')
     """
 
     component_metadata = Dict(short_name="term")

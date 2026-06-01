@@ -179,7 +179,16 @@ extensions = [
     # See the ``jupyterlite_*`` config block further down for content
     # selection and kernel choice.
     "jupyterlite_sphinx",
+    # Renders ``.. mermaid::`` directives in RST + mermaid code fences
+    # in nbsphinx-rendered notebooks. Used for the architecture and
+    # design-flow diagrams in contributor-guide.rst and tutorial 1.1.
+    "sphinxcontrib.mermaid",
 ]
+
+# --- Mermaid --------------------------------------------------------------
+# Render mermaid as inline SVG; light theme matches the rest of the docs.
+mermaid_output_format = "raw"
+mermaid_init_js = "mermaid.initialize({startOnLoad:true, theme:'default'});"
 
 # --- JupyterLite ----------------------------------------------------------
 # Ship a JupyterLite instance under ``/lite/`` on the docs site with the
@@ -267,7 +276,98 @@ nbsphinx_execute = os.getenv("QISKIT_DOCS_BUILD_TUTORIALS", "never")
 # source_suffix = ['.rst', '.ipynb']
 source_suffix = {".rst": "restructuredtext"}
 
-suppress_warnings = ["ref.ref"]
+suppress_warnings = [
+    "ref.ref",
+    # sphinxcontrib-mermaid renders ``mermaid`` code fences in
+    # nbsphinx-rendered notebooks as inline SVG via JS at page-load,
+    # but nbsphinx still hands the block to Pygments for syntax
+    # highlighting first. Pygments has no ``mermaid`` lexer; the block
+    # falls back to plaintext and emits this warning. The diagram
+    # itself renders correctly — only the (unused) highlighter chokes.
+    "misc.highlighting_failure",
+    # nbsphinx prints a one-off "nbsphinx_widgets_path not given and
+    # ipywidgets module unavailable" notice when the docs env doesn't
+    # have ipywidgets pinned. None of the rendered notebooks use widget
+    # output, so this is informational noise.
+    "nbsphinx.ipywidgets",
+]
+
+
+# --- Auto-generate qlibrary thumbnails + gallery RST at build start ------
+# Single source of truth for QComponent thumbnails lives at
+# ``src/qiskit_metal/_gui/_imgs/components/`` (referenced by the desktop
+# Qt MetalGUI at runtime). Two destinations need their own copy:
+#   1. ``docs/apidocs/*.png`` — autodoc resolves ``.. image::`` directives
+#      in class docstrings relative to the per-class .rst file's dir.
+#   2. ``docs/images/qlibrary/*.png`` — the visual QComponent gallery on
+#      the docs site references thumbnails from this folder.
+#
+# Both destinations + ``docs/qcomponents-gallery.rst`` are regenerated
+# at build start (Sphinx ``builder-inited`` event) and are gitignored —
+# this keeps the repo free of 100 duplicate PNGs that would otherwise
+# double-commit on every thumbnail refresh.
+def _regenerate_qlibrary_assets(app):
+    """Run the gallery generator + sync scaffold PNGs into docs/apidocs/."""
+    import shutil
+    import subprocess
+    import sys
+    from pathlib import Path
+
+    import os
+
+    repo_root = Path(app.srcdir).parent
+    gallery_script = repo_root / "_dev" / "generate_qcomponent_gallery.py"
+    if gallery_script.is_file():
+        # Force the headless flag + quiet onboarding banner in the
+        # subprocess. tox + Sphinx may not pass arbitrary env vars
+        # through; setting them explicitly here keeps the gallery
+        # generator off the desktop-GUI / Qt import path.
+        # IMPORTANT: drop ``QISKIT_METAL_DOCS_BUILD`` from the
+        # subprocess env. With that flag set, ``qiskit_metal``'s
+        # ``renderers/__init__.py`` eagerly imports Qt-tainted modules
+        # (matplotlib's qt5agg backend, PySide6) so Sphinx autodoc can
+        # walk them via ``autodoc_mock_imports``. The gallery script
+        # doesn't need autodoc; it walks ``qlibrary/`` via
+        # ``importlib``, and without the flag the import path stays
+        # lazy and PySide6-free.
+        env = {k: v for k, v in os.environ.items() if k != "QISKIT_METAL_DOCS_BUILD"}
+        env["QISKIT_METAL_HEADLESS"] = "1"
+        env["QISKIT_METAL_HEADLESS_QUIET"] = "1"
+        try:
+            subprocess.run(
+                [sys.executable, str(gallery_script), "--write"],
+                cwd=str(repo_root),
+                check=True,
+                capture_output=True,
+                text=True,
+                env=env,
+            )
+        except subprocess.CalledProcessError as exc:
+            from sphinx.util import logging as _sphinx_logging
+
+            _sphinx_logging.getLogger(__name__).warning(
+                "generate_qcomponent_gallery.py failed (returncode %d)\n"
+                "stdout:\n%s\nstderr:\n%s",
+                exc.returncode,
+                exc.stdout or "",
+                exc.stderr or "",
+            )
+
+    # Sync scaffold icons (core/, user_components/) that the gallery
+    # generator skips — they're not catalog components but their class
+    # docstrings still reference an ``.. image::`` filename.
+    src_imgs = repo_root / "src" / "qiskit_metal" / "_gui" / "_imgs" / "components"
+    dst_apidocs = repo_root / "docs" / "apidocs"
+    if src_imgs.is_dir() and dst_apidocs.is_dir():
+        for png in src_imgs.glob("*.png"):
+            target = dst_apidocs / png.name
+            if not target.exists() or target.stat().st_mtime < png.stat().st_mtime:
+                shutil.copyfile(png, target)
+
+
+def setup(app):
+    app.connect("builder-inited", _regenerate_qlibrary_assets)
+
 
 nbsphinx_thumbnails = {
     "tut/quick-topics/Opening-documentation": "_static/qt-open-docs.png",

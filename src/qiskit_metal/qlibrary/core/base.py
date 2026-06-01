@@ -64,66 +64,69 @@ if TYPE_CHECKING:
 
 
 class QComponent:
-    """`QComponent` is the core class for all Metal components and is the
-    central construct from which all components in Metal are derived.
+    """.. image::
+        base_qcomponent.png
 
-    The class defines the user interface for working with components.
+    `QComponent` is the core class for all Metal components and is the
+        central construct from which all components in Metal are derived.
 
-    For front-end user:
-        * Manipulates the dictionary of options (stored as string-string key-value
-          pairs) to change the geometry and properties of the component.
-        * The options of the class are stored in an options dictionary. These
-          include the geometric sizes, such as width='10um' or height='5mm', etc.
-        * The `make` function parses these strings and implements the logic required
-          to transform the dictionary of options (stored as strings) into shapes
-          with associated properties.
+        The class defines the user interface for working with components.
 
-    For creator user:
-        * The creator user implements the `make` function (see above)
-        * The class define the internal representation of a components
-        * The class provides the interfaces for the component (creator user)
+        For front-end user:
+            * Manipulates the dictionary of options (stored as string-string key-value
+              pairs) to change the geometry and properties of the component.
+            * The options of the class are stored in an options dictionary. These
+              include the geometric sizes, such as width='10um' or height='5mm', etc.
+            * The `make` function parses these strings and implements the logic required
+              to transform the dictionary of options (stored as strings) into shapes
+              with associated properties.
 
-    Default Options:
-        * pos_x/_y: '0.0um' -- The x/y position of the center of the QComponent.
-        * orientation: '0.0' -- The primary direction in degrees of the QComponent.
-          Expressed counter-clockwise orientation.
-        * chip: 'main' -- Chip holding the QComponent.
-        * layer: '1' -- Manufacturing layer used for the QComponent.
+        For creator user:
+            * The creator user implements the `make` function (see above)
+            * The class define the internal representation of a components
+            * The class provides the interfaces for the component (creator user)
 
-        Nested default options can be overwritten with the update function.
-        The following code demonstrates how the update works.
+        Default Options:
+            * pos_x/_y: '0.0um' -- The x/y position of the center of the QComponent.
+            * orientation: '0.0' -- The primary direction in degrees of the QComponent.
+              Expressed counter-clockwise orientation.
+            * chip: 'main' -- Chip holding the QComponent.
+            * layer: '1' -- Manufacturing layer used for the QComponent.
 
-        .. code-block:: python
-            :linenos:
+            Nested default options can be overwritten with the update function.
+            The following code demonstrates how the update works.
 
-            from qiskit_metal import Dict
-            default = Dict(
-                a=1,
-                b=2,
-                c=Dict(
-                    d=3,
-                    e=4,
-                    f=Dict(
-                        g=6,
-                        h=7
+            .. code-block:: python
+                :linenos:
+
+                from qiskit_metal import Dict
+                default = Dict(
+                    a=1,
+                    b=2,
+                    c=Dict(
+                        d=3,
+                        e=4,
+                        f=Dict(
+                            g=6,
+                            h=7
+                        )
                     )
                 )
-            )
-            overwrite = Dict(
-                a=10,
-                b=20,
-                c=Dict(
-                    d=30,
-                    f=Dict(
-                        h=70
-                    )
-                ),
-                z=33
-            )
-            default.update(overwrite)
-            default
+                overwrite = Dict(
+                    a=10,
+                    b=20,
+                    c=Dict(
+                        d=30,
+                        f=Dict(
+                            h=70
+                        )
+                    ),
+                    z=33
+                )
+                default.update(overwrite)
+                default
 
-        >> {'a': 10, 'b': 20, 'c': {'d': 30, 'e': 4, 'f': {'g': 6, 'h': 70}}, 'z': 33}
+            >> {'a': 10, 'b': 20, 'c': {'d': 30, 'e': 4, 'f': {'g': 6, 'h': 70}}, 'z': 33}
     """
 
     default_options = Dict(

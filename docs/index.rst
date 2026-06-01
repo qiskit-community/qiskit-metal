@@ -14,7 +14,7 @@ Design and analyze superconducting quantum chips with a Python API + optional GU
 that plugs into your favourite EDA tools.
 No Qt required — works headlessly in any Jupyter notebook or plain Python script.
 
-.. grid:: 1 2 3 3
+.. grid:: 1 2 2 4
    :gutter: 2
 
    .. grid-item-card:: 🚀 Install
@@ -39,11 +39,22 @@ No Qt required — works headlessly in any Jupyter notebook or plain Python scri
 
          Hands-on notebooks
 
-   .. grid-item-card:: 💬 Community
+   .. grid-item-card:: 🧩 Component Gallery
       :class-header: sd-bg-primary sd-text-light
 
-      .. button-link:: https://discord.gg/kaZ3UFuq
+      .. button-ref:: qcomponents-gallery
+         :ref-type: doc
          :color: primary
+         :outline:
+         :expand:
+
+         Browse every QComponent visually
+
+   .. grid-item-card:: 💬 Community
+      :class-header: sd-bg-secondary sd-text-light
+
+      .. button-link:: https://discord.gg/kaZ3UFuq
+         :color: secondary
          :outline:
          :expand:
 
@@ -68,10 +79,11 @@ in a simple, open, community-driven framework.
 
    .. grid-item-card:: Quantum Device Components
       :class-header: sd-bg-secondary sd-text-light
-      :link: qlibrary
-      :link-type: ref
+      :link: qcomponents-gallery
+      :link-type: doc
 
-      :ref:`qlibrary`
+      Visual catalog: every transmon, coupler, route, resonator,
+      termination, and lumped element shipped with Quantum Metal.
 
    .. grid-item-card:: Quantum Renderer
       :class-header: sd-bg-primary sd-text-light
@@ -167,7 +179,7 @@ in a simple, open, community-driven framework.
     :hidden:
 
     Installing Quantum Metal<installation>
-    Quick Start<tut/1-Overview/1.2-Quick-start>
+    Quick Start<tut/1-Overview/1.1-Quick-start>
 
 .. toctree::
     :maxdepth: 1
@@ -175,6 +187,7 @@ in a simple, open, community-driven framework.
     :hidden:
 
     Tutorials<tut/index>
+    QComponent Gallery<qcomponents-gallery>
     Example Designs<circuit-examples/index>
     Videos & Education<videoseducation>
 
@@ -213,6 +226,7 @@ in a simple, open, community-driven framework.
     :hidden:
 
     Contributor Guide<contributor-guide>
+    Architecture<architecture>
     Using Quantum Metal without Qt<headless-usage>
     Migrating to v0.7.0<migration-to-v0.7.0>
     Code of Conduct<https://github.com/Qiskit/qiskit/blob/master/CODE_OF_CONDUCT.md>

@@ -19,7 +19,10 @@ from qiskit_metal.qlibrary.core import QComponent
 
 
 class ResonatorLumped(QComponent):
-    """
+    """.. image::
+        ResonatorLumped.png
+
+
     The base ResonatorLumped class
     Inherits the QComponent class
 

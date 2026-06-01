@@ -98,11 +98,41 @@ def get_module_doc_page(module, folder=r"../docs/build/html", page="index.html")
     return Path(os.path.dirname(module.__file__)) / folder / page
 
 
-def open_docs(page="https://qiskit-community.github.io/qiskit-metal/"):
-    """Open the qiskit_metal documentation in HTML.
+def open_docs(page="https://qiskit-community.github.io/qiskit-metal/", force=False):
+    """Open the Quantum / Qiskit Metal documentation in a web browser.
 
-    Open the URL in new window, raising the window if possible.
+    Args:
+        page: URL to open. Defaults to the published docs site.
+        force: If True, always pop the browser, even in headless / CI /
+            notebook-execute contexts. Defaults to False so that
+            running this cell during ``tox -e docs``, nbsphinx
+            notebook execution, "Restart & Run All", or on a headless
+            Linux server / Colab kernel won't repeatedly launch the
+            user's browser. In those cases the URL is printed instead.
     """
+    headless = (
+        os.environ.get("QISKIT_METAL_HEADLESS") == "1"
+        or os.environ.get("CI") == "true"
+        or os.environ.get("BINDER_REQUEST")
+        or os.environ.get("BINDER_SERVICE_HOST")
+        or "DISPLAY" not in os.environ
+        and sys.platform.startswith("linux")
+    )
+    if headless and not force:
+        try:
+            from IPython.display import HTML, display
+
+            display(
+                HTML(
+                    f"Quantum Metal docs: "
+                    f'<a href="{page}" target="_blank">{page}</a> '
+                    f"(headless / CI session — browser pop suppressed; "
+                    f"call <code>open_docs(force=True)</code> to override)"
+                )
+            )
+        except Exception:
+            print(f"Quantum Metal docs: {page}")
+        return
     webbrowser.open(page, new=1)
 
     ######################################################################################

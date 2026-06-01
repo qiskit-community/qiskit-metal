@@ -20,17 +20,20 @@ from qiskit_metal.toolbox_python.attr_dict import Dict
 
 
 class BaseQubit(QComponent):
-    """Qubit base class. Use to subscript, not to generate directly.
+    """.. image::
+        base_qubit.png
 
-    Has connection lines that can be added
+    Qubit base class. Use to subscript, not to generate directly.
 
-    Inherits components.QComponent class
+        Has connection lines that can be added
 
-    Default Options:
-        * pos_x: '0um'
-        * pos_y: '0um'
-        * connection_pads: empty Dict -- The dictionary which contains all active connection lines for the qubit.
-        * _default_connection_pads: empty Dict -- The default values for the (if any) connection lines of the qubit.
+        Inherits components.QComponent class
+
+        Default Options:
+            * pos_x: '0um'
+            * pos_y: '0um'
+            * connection_pads: empty Dict -- The dictionary which contains all active connection lines for the qubit.
+            * _default_connection_pads: empty Dict -- The default values for the (if any) connection lines of the qubit.
     """
 
     default_options = Dict(connection_pads=Dict(), _default_connection_pads=Dict())

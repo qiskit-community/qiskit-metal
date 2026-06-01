@@ -162,8 +162,19 @@ from qiskit_metal import (
 
 def __getattr__(name):
     if name == "MetalGUI":
-        from qiskit_metal._gui.main_window import MetalGUI
-
+        try:
+            from qiskit_metal._gui.main_window import MetalGUI
+        except ImportError as exc:
+            raise ImportError(
+                "MetalGUI requires the optional GUI extras (PySide6, qdarkstyle, "
+                "pyqtgraph). Install them with:\n"
+                "    pip install 'quantum-metal[gui]'\n"
+                "If you're in Colab / Binder / a remote kernel without a display, "
+                "use the headless factory instead:\n"
+                "    gui = qm.gui(design)        # auto-picks Qt or headless\n"
+                "    fig = qm.view(design)       # one-shot matplotlib render\n"
+                f"(Underlying import error: {exc})"
+            ) from exc
         return MetalGUI
     if name == "plt":
         from qiskit_metal.renderers.renderer_mpl import mpl_toolbox
@@ -183,4 +194,8 @@ from qiskit_metal.renderers import setup_renderers
 from qiskit_metal.toolbox_metal.about import about, open_docs
 
 # Headless matplotlib viewer (``qm.view(design)``) — no Qt required.
-from qiskit_metal.viewer import view
+# ``qm.gui(design)`` is a factory that returns either the Qt ``MetalGUI``
+# or ``MetalGUIHeadless`` (Colab/Binder/no-display) so tutorial code
+# (``gui.rebuild()``, ``gui.edit_component(...)``, ``gui.screenshot(...)``)
+# runs unchanged in both environments.
+from qiskit_metal.viewer import MetalGUIHeadless, gui, view

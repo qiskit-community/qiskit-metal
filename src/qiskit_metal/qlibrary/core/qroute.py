@@ -24,10 +24,13 @@ import re
 
 
 class QRoutePoint:
-    """A convenience wrapper class to define an point with orientation, with a
-    2D position and a 2D direction (XY plane).
+    """.. image::
+        base_qroute.png
 
-    All values stored as np.ndarray of parsed floats.
+    A convenience wrapper class to define an point with orientation, with a
+        2D position and a 2D direction (XY plane).
+
+        All values stored as np.ndarray of parsed floats.
     """
 
     def __init__(self, position: np.array, direction: np.array = None):
@@ -55,63 +58,66 @@ class QRoutePoint:
 
 
 class QRoute(QComponent):
-    r"""Super-class implementing routing methods that are valid irrespective of
-    the number of pins (>=1). The route is stored in a n array of planar points
-    (x,y coordinates) and one direction, which is that of the last point in the
-    array. Values are stored as np.ndarray of parsed floats or np.array float
-    pair.
+    r""".. image::
+        base_qroute.png
 
-    Inherits `QComponent` class
+    Super-class implementing routing methods that are valid irrespective of
+        the number of pins (>=1). The route is stored in a n array of planar points
+        (x,y coordinates) and one direction, which is that of the last point in the
+        array. Values are stored as np.ndarray of parsed floats or np.array float
+        pair.
 
-    Default Options:
-        * pin_inputs: Dict
-            * start_pin: Dict -- Component and pin string pair. Define which pin to start from
-                * component: '' -- Name of component to start from, which has a pin
-                * pin: '' -- Name of pin used for pin_start
-            * end_pin=Dict -- Component and pin string pair. Define which pin to start from
-                * component: '' -- Name of component to end on, which has a pin
-                * pin: '' -- Name of pin used for pin_end
-        * lead: Dict
-            * start_straight: '0mm' -- Lead-in, defined as the straight segment extension from start_pin.  Defaults to 0.1um.
-            * end_straight: '0mm' -- Lead-out, defined as the straight segment extension from end_pin.  Defaults to 0.1um.
-            * start_jogged_extension: '' -- Lead-in, jogged extension of lead-in. Described as list of tuples
-            * end_jogged_extension: '' -- Lead-out, jogged extension of lead-out. Described as list of tuples
-        * fillet: '0'
-        * total_length: '7mm'
-        * trace_width: 'cpw_width' -- Defines the width of the line.  Defaults to 'cpw_width'.
+        Inherits `QComponent` class
 
-    How to specify \*_jogged_extensions for the QRouteLeads:
-        \*_jogged_extensions have to be specified in an OrderedDict with incremental keys.
-        the value of each key specifies the direction of the jog and the extension past the jog.
-        For example:
+        Default Options:
+            * pin_inputs: Dict
+                * start_pin: Dict -- Component and pin string pair. Define which pin to start from
+                    * component: '' -- Name of component to start from, which has a pin
+                    * pin: '' -- Name of pin used for pin_start
+                * end_pin=Dict -- Component and pin string pair. Define which pin to start from
+                    * component: '' -- Name of component to end on, which has a pin
+                    * pin: '' -- Name of pin used for pin_end
+            * lead: Dict
+                * start_straight: '0mm' -- Lead-in, defined as the straight segment extension from start_pin.  Defaults to 0.1um.
+                * end_straight: '0mm' -- Lead-out, defined as the straight segment extension from end_pin.  Defaults to 0.1um.
+                * start_jogged_extension: '' -- Lead-in, jogged extension of lead-in. Described as list of tuples
+                * end_jogged_extension: '' -- Lead-out, jogged extension of lead-out. Described as list of tuples
+            * fillet: '0'
+            * total_length: '7mm'
+            * trace_width: 'cpw_width' -- Defines the width of the line.  Defaults to 'cpw_width'.
 
-        .. code-block:: python
-            :linenos:
+        How to specify \*_jogged_extensions for the QRouteLeads:
+            \*_jogged_extensions have to be specified in an OrderedDict with incremental keys.
+            the value of each key specifies the direction of the jog and the extension past the jog.
+            For example:
 
-            jogs = OrderedDict()
-            jogs[0] = ["R", '200um']
-            jogs[1] = ["R", '200um']
-            jogs[2] = ["L", '200um']
-            jogs[3] = ["L", '500um']
-            jogs[4] = ["R", '200um']
-            jogs_other = ....
+            .. code-block:: python
+                :linenos:
 
-            options = {'lead': {
-                'start_straight': '0.3mm',
-                'end_straight': '0.3mm',
-                'start_jogged_extension': jogs,
-                'end_jogged_extension': jogs_other
-            }}
+                jogs = OrderedDict()
+                jogs[0] = ["R", '200um']
+                jogs[1] = ["R", '200um']
+                jogs[2] = ["L", '200um']
+                jogs[3] = ["L", '500um']
+                jogs[4] = ["R", '200um']
+                jogs_other = ....
 
-        The jog direction can be specified in several ways. Feel free to pick the one more
-        convenient for your coding style:
+                options = {'lead': {
+                    'start_straight': '0.3mm',
+                    'end_straight': '0.3mm',
+                    'start_jogged_extension': jogs,
+                    'end_jogged_extension': jogs_other
+                }}
 
-        >> "L", "L#", "R", "R#", #, "#", "A,#", "left", "left#", "right", "right#"
+            The jog direction can be specified in several ways. Feel free to pick the one more
+            convenient for your coding style:
 
-        where # is any signed or unsigned integer or floating point value.
-        For example the following will all lead to the same turn:
+            >> "L", "L#", "R", "R#", #, "#", "A,#", "left", "left#", "right", "right#"
 
-        >> "L", "L90", "R-90", 90, "90", "A,90", "left", "left90", "right-90"
+            where # is any signed or unsigned integer or floating point value.
+            For example the following will all lead to the same turn:
+
+            >> "L", "L90", "R-90", 90, "90", "A,90", "left", "left90", "right-90"
     """
 
     component_metadata = Dict(short_name="route", _qgeometry_table_path="True")
@@ -645,10 +651,13 @@ class QRoute(QComponent):
 
 
 class QRouteLead:
-    """A simple class to define a an array of points with some properties,
-    defines 2D positions and some of the 2D directions (XY plane).
+    """.. image::
+        base_qroute.png
 
-    All values stored as np.ndarray of parsed floats.
+    A simple class to define a an array of points with some properties,
+        defines 2D positions and some of the 2D directions (XY plane).
+
+        All values stored as np.ndarray of parsed floats.
     """
 
     def __init__(self, *args, **kwargs):

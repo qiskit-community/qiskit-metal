@@ -34,37 +34,29 @@ from pathlib import Path
 PAIRS = [
     # Section 1
     (
-        "docs/tut/1-Overview/1.1-Bird's-eye-view-of-Qiskit-Metal.ipynb",
-        "tutorials/1 Overview/1.1 Bird's eye view of Qiskit Metal.ipynb",
+        "docs/tut/1-Overview/1.2-Bird's-eye-view-of-Quantum-Metal.ipynb",
+        "tutorials/1 Overview/1.2 Bird's eye view of Quantum Metal.ipynb",
     ),
     (
-        "docs/tut/1-Overview/1.2-Quick-start.ipynb",
-        "tutorials/1 Overview/1.2 Quick start.ipynb",
+        "docs/tut/1-Overview/1.1-Quick-start.ipynb",
+        "tutorials/1 Overview/1.1 Quick start.ipynb",
     ),
     (
-        "docs/tut/1-Overview/1.3-Saving-Your-Chip-Design.ipynb",
-        "tutorials/1 Overview/1.3 Saving Your Chip Design.ipynb",
+        "docs/tut/1-Overview/1.3-Build-a-4-qubit-chip.ipynb",
+        "tutorials/1 Overview/1.3 Build a 4-qubit chip.ipynb",
     ),
     (
-        "docs/tut/1-Overview/1.4-Headless-quick-view-(no-Qt-GUI).ipynb",
-        "tutorials/1 Overview/1.4 Headless quick view (no Qt GUI).ipynb",
+        "docs/tut/1-Overview/1.4-Saving-Your-Chip-Design.ipynb",
+        "tutorials/1 Overview/1.4 Saving Your Chip Design.ipynb",
     ),
     (
         "docs/tut/1-Overview/1.5-Parametric-design---iterate-and-compare.ipynb",
         "tutorials/1 Overview/1.5 Parametric design - iterate and compare.ipynb",
     ),
-    (
-        "docs/tut/1-Overview/1.6-QComponent-shape-library.ipynb",
-        "tutorials/1 Overview/1.6 QComponent shape library.ipynb",
-    ),
     # Section 2
     (
         "docs/tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.ipynb",
         "tutorials/2 From components to chip/A. Using QComponents/2.01 How to use a QComponent.ipynb",
-    ),
-    (
-        "docs/tut/2-From-components-to-chip/2.02-How-to-copy-a-QComponent.ipynb",
-        "tutorials/2 From components to chip/A. Using QComponents/2.02 How to copy a QComponent.ipynb",
     ),
     (
         "docs/tut/2-From-components-to-chip/2.11-Routing-101.ipynb",

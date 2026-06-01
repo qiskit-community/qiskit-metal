@@ -20,41 +20,44 @@ from qiskit_metal.qlibrary.core import BaseQubit
 
 
 class TransmonConcentricType2(BaseQubit):
-    """The base `TrasmonConcentric` class
-    Inherits `BaseQubit` class.
-    Metal transmon object consisting of a circle surrounding by a concentric
-    ring. There are two Josephson Junction connecting the circle to the ring;
-    one at the south end and one at the north end. There is a readout resonator.
+    """.. image::
+        TransmonConcentricType2.png
 
-    .. TODO: add TransmonConcentricType2.png when available
+    The base `TrasmonConcentric` class
+        Inherits `BaseQubit` class.
+        Metal transmon object consisting of a circle surrounding by a concentric
+        ring. There are two Josephson Junction connecting the circle to the ring;
+        one at the south end and one at the north end. There is a readout resonator.
 
-    .. meta::
-        :description: Transmon Concentric Type 2
+        .. TODO: add TransmonConcentricType2.png when available
 
-    BaseQubit Default Options:
-        * connection_pads: empty Dict -- the dictionary which contains all active
-          connection lines for the qubit.
-        * _default_connection_pads: empty Dict -- the default values for the
-          (if any) connection lines of the qubit.
-    Default Options:
-        * width: '1000um' -- Width of transmon pocket
-        * height: '1000um' -- Height of transmon pocket
-        * rad_o: '170um' -- Outer radius
-        * rad_i: '115um' -- Inner radius
-        * gap: '35um' -- Radius of gap between two pads
-        * jj_w: '10um' -- Josephson Junction width
-        * res_s: '100um' -- Space between top electrode and readout resonator
-        * res_ext: '100um' -- Extension of readout resonator in x-direction
-          beyond midpoint of transmon
-        * fbl_rad: '100um' -- Radius of the flux bias line loop
-        * fbl_sp: '100um' -- Spacing between metal pad and flux bias loop
-        * fbl_gap: '80um' -- Space between parallel lines of the flux bias loop
-        * fbl_ext: '300um' -- Run length of flux bias line between circular
-          loop and edge of pocket
-        * pocket_w: '1500um' -- Transmon pocket width
-        * pocket_h: '1000um' -- Transmon pocket height
-        * cpw_width: '10.0um' -- Width of the readout resonator and flux bias line
-        * layer: '1' -- default layer
+        .. meta::
+            :description: Transmon Concentric Type 2
+
+        BaseQubit Default Options:
+            * connection_pads: empty Dict -- the dictionary which contains all active
+              connection lines for the qubit.
+            * _default_connection_pads: empty Dict -- the default values for the
+              (if any) connection lines of the qubit.
+        Default Options:
+            * width: '1000um' -- Width of transmon pocket
+            * height: '1000um' -- Height of transmon pocket
+            * rad_o: '170um' -- Outer radius
+            * rad_i: '115um' -- Inner radius
+            * gap: '35um' -- Radius of gap between two pads
+            * jj_w: '10um' -- Josephson Junction width
+            * res_s: '100um' -- Space between top electrode and readout resonator
+            * res_ext: '100um' -- Extension of readout resonator in x-direction
+              beyond midpoint of transmon
+            * fbl_rad: '100um' -- Radius of the flux bias line loop
+            * fbl_sp: '100um' -- Spacing between metal pad and flux bias loop
+            * fbl_gap: '80um' -- Space between parallel lines of the flux bias loop
+            * fbl_ext: '300um' -- Run length of flux bias line between circular
+              loop and edge of pocket
+            * pocket_w: '1500um' -- Transmon pocket width
+            * pocket_h: '1000um' -- Transmon pocket height
+            * cpw_width: '10.0um' -- Width of the readout resonator and flux bias line
+            * layer: '1' -- default layer
     """
 
     # default drawing options

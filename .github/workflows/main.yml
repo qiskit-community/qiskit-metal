@@ -111,6 +111,12 @@ jobs:
         # The two folders carry every numbered notebook twice — see the
         # script docstring for why and how to fix drift.
         run: uv run --quiet scripts/check_tutorials_sync.py
+      - name: Check qlibrary thumbnails resolve (case-sensitive)
+        # Every QComponent docstring ``.. image::`` directive must point
+        # at a file that actually exists under ``_gui/_imgs/components/``
+        # (case-sensitive — macOS's HFS+ masks broken refs locally) and
+        # must use the two-line form the MetalGUI scanner accepts.
+        run: uv run --quiet scripts/check_qlibrary_images.py
 
   tests-lite:
     # Exercises the "lite" install path — no PySide6, no pyaedt, no
@@ -201,10 +207,32 @@ jobs:
             tests/test_qlibrary_pin_sanity.py \
             tests/test_solution_types.py \
             -v
-      - name: Execute headless tutorial notebook
-        # Gate the canonical no-Qt tutorial (1.4 Headless quick view).
-        # If a future change breaks the headless path, this step
-        # catches it before users hit it.
+      - name: Execute whitelisted tutorial notebooks
+        # Run two lists under the lite install:
+        #
+        #   ↻ ``_dev/notebooks-auto-refresh.txt`` (--inplace) — pure-Python
+        #     / matplotlib tutorials. Outputs written back to source.
+        #
+        #   ✱ ``_dev/notebooks-frozen-qt.txt`` (check-only) — tutorials
+        #     whose committed outputs are hand-curated full Qt-window
+        #     screenshots of MetalGUI. The published docs rely on those
+        #     to show the desktop IDE experience. CI verifies pass/fail
+        #     to ``/tmp`` but NEVER clobbers the committed outputs with
+        #     headless matplotlib renders.
+        #
+        # Both lists explicitly exclude notebooks that need Ansys /
+        # gmsh / KLayout (see the comment block at the bottom of the
+        # auto-refresh whitelist).
+        #
+        # Typical wall time 3-5 minutes; per-notebook 240s timeout.
+        #
+        # If this step starts failing on a notebook, two options:
+        #   1. Fix the notebook (most likely — qm.gui is the
+        #      headless-friendly entry point everywhere now).
+        #   2. If the notebook actually requires an external tool the
+        #      whitelists already exclude, move its path into the
+        #      "External-gated" comment block at the bottom of the
+        #      auto-refresh whitelist.
         #
         # ``uv pip install`` is used (not ``python -m pip``) because
         # the lite venv was created by ``uv venv``, which does not
@@ -215,14 +243,12 @@ jobs:
           uv pip install --quiet \
             'jupyter>=1.0' 'nbconvert>=7.0' 'ipykernel>=6.0'
           .venv/bin/python -m ipykernel install --user --name qm_lite
-          .venv/bin/jupyter nbconvert \
-            --to notebook \
-            --execute \
-            --ExecutePreprocessor.kernel_name=qm_lite \
-            --ExecutePreprocessor.timeout=180 \
-            --output-dir /tmp/exec_check \
-            'tutorials/1 Overview/1.4 Headless quick view (no Qt GUI).ipynb'
-          echo "OK: 1.4 Headless quick view executed cleanly"
+          # Patch the executor to use our registered kernel by name.
+          # ``_dev/rerun_auto.py`` invokes ``jupyter nbconvert`` directly;
+          # we shadow it with a wrapper that injects the kernel flag.
+          export JUPYTER_KERNEL_NAME=qm_lite
+          export PATH=".venv/bin:$PATH"
+          .venv/bin/python _dev/rerun_auto.py --run --jobs 2
 
   tests-extras:
     # Exercises each opt-in extra independently. As of v0.7.0

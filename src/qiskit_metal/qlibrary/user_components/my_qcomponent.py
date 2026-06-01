@@ -20,7 +20,10 @@ if not config.is_building_docs():
 
 
 class MyQComponent(QComponent):
-    """
+    """.. image::
+    user_template.png
+
+
     This class is a template
         Use this class as a blueprint to put together for your components - have fun
 

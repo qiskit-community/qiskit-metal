@@ -20,32 +20,35 @@ from qiskit_metal.qlibrary.core import BaseQubit
 
 
 class TunableCoupler02(BaseQubit):
-    """One of the tunable couplers
+    """.. image::
+        TunableCoupler02.png
 
-    .. TODO: add apidocs/TunableCoupler02.png once available
+    One of the tunable couplers
 
-    .. meta::
-        :description: Tunable Coupler 2
+        .. TODO: add apidocs/TunableCoupler02.png once available
 
-    BaseQubit Default Options:
-        * connection_pads: empty Dict -- Currently not used, connection count is static. (WIP)
-    Default Options:
-        * pocket_width: '3mm' -- The width (x-axis) of the transmon pocket
-        * pocket_height: '2m' -- The height (y-axis) of the transmon pocket
-        * pos_x: '0mm' -- the x-coordinate location of the JJ in the middle of the qubit
-        * pos_y: '0mm' -- the y-coordinate location of the JJ in the middle of the qubit
-        * orientation: '0' -- the angle of rotation
-        * pad_radius: '0.3mm' -- the radius of the two circular pads on either side of the JJ
-        * bus_width: '0.1mm' -- the width of the CPW resonator in the coupler
-        * bus_inner_length: '0.5mm' -- length of the CPW between the JJ and the circular pad
-        * bus_outer_length: '0.5mm' -- length of the CPW between the circular pad and the in/out pin
-        * bus_JJ_height: '0.5mm' -- vertical distance between the main cpw line and the offset JJ
-        * JJ_width: '0.1mm' -- the width of the JJ
-        * JJ_length: '0.4mm' -- the length of the JJ
-        * fbl_width: '0.1mm' -- the width of the flux bias line drawn near the JJ
-        * fbl_length: '0.5mm' -- the length of the flux bias line drawn near the JJ
-        * fbl_offset: '0.1mm' -- the lateral offset between the flux bias line and the JJ
-        * layer: '1' -- the default design layer
+        .. meta::
+            :description: Tunable Coupler 2
+
+        BaseQubit Default Options:
+            * connection_pads: empty Dict -- Currently not used, connection count is static. (WIP)
+        Default Options:
+            * pocket_width: '3mm' -- The width (x-axis) of the transmon pocket
+            * pocket_height: '2m' -- The height (y-axis) of the transmon pocket
+            * pos_x: '0mm' -- the x-coordinate location of the JJ in the middle of the qubit
+            * pos_y: '0mm' -- the y-coordinate location of the JJ in the middle of the qubit
+            * orientation: '0' -- the angle of rotation
+            * pad_radius: '0.3mm' -- the radius of the two circular pads on either side of the JJ
+            * bus_width: '0.1mm' -- the width of the CPW resonator in the coupler
+            * bus_inner_length: '0.5mm' -- length of the CPW between the JJ and the circular pad
+            * bus_outer_length: '0.5mm' -- length of the CPW between the circular pad and the in/out pin
+            * bus_JJ_height: '0.5mm' -- vertical distance between the main cpw line and the offset JJ
+            * JJ_width: '0.1mm' -- the width of the JJ
+            * JJ_length: '0.4mm' -- the length of the JJ
+            * fbl_width: '0.1mm' -- the width of the flux bias line drawn near the JJ
+            * fbl_length: '0.5mm' -- the length of the flux bias line drawn near the JJ
+            * fbl_offset: '0.1mm' -- the lateral offset between the flux bias line and the JJ
+            * layer: '1' -- the default design layer
     """
 
     default_options = Dict(

@@ -8,7 +8,24 @@ Installation
 Outline of Installation
 ==================================================
 
+.. rubric:: Try it now — zero install
 
+.. image:: https://colab.research.google.com/assets/colab-badge.svg
+   :target: https://colab.research.google.com/github/qiskit-community/qiskit-metal/blob/main/tutorials/1%20Overview/1.1%20Quick%20start.ipynb
+   :alt: Open in Colab
+
+.. image:: https://mybinder.org/badge_logo.svg
+   :target: https://mybinder.org/v2/gh/qiskit-community/qiskit-metal/main?labpath=tutorials%2F1%20Overview%2F1.1%20Quick%20start.ipynb
+   :alt: Open in Binder
+
+.. image:: https://img.shields.io/badge/Open_in-Codespaces-181717?logo=github&logoColor=white&style=flat-square
+   :target: https://codespaces.new/qiskit-community/qiskit-metal
+   :alt: Open in GitHub Codespaces
+
+One click → working Quantum Metal in your browser. The Colab and Binder
+buttons launch the Quick Start tutorial with the lite (no-Qt) install
+auto-installed in the first cell; ``qm.gui(design)`` returns an inline
+matplotlib viewer with the same API as the desktop ``MetalGUI``.
 
 .. grid:: 1 1 2 3
    :gutter: 2

@@ -44,18 +44,21 @@ def is_ipython_magic(check_attribute: str) -> bool:
 
 
 class ParsedDynamicAttributes_Component:
-    """Provides a parsing view of the component options.
+    """.. image::
+        internal_parsed_attrs.png
 
-    When accessed, returns parse versions of the user options.
-    Works with nested options too.
+    Provides a parsing view of the component options.
 
-    Example:
-        .. code-block:: python
+        When accessed, returns parse versions of the user options.
+        Works with nested options too.
 
-            component.options = {'x':'1nm'}
-            print(component.p.x)
+        Example:
+            .. code-block:: python
 
-        >> `float(1e7)`
+                component.options = {'x':'1nm'}
+                print(component.p.x)
+
+            >> `float(1e7)`
     """
 
     """

@@ -39,5 +39,6 @@ from __future__ import annotations
 from typing import Iterable, Optional, Tuple
 
 from .view import view
+from .headless_gui import MetalGUIHeadless, gui
 
-__all__ = ["view"]
+__all__ = ["view", "gui", "MetalGUIHeadless"]

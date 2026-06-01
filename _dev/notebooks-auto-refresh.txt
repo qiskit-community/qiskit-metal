@@ -1,0 +1,96 @@
+# Auto-refresh notebooks — outputs ARE overwritten in place by CI.
+#
+# Pure-Python / matplotlib-only notebooks that don't benefit from a
+# full Qt window grab. ``_dev/rerun_auto.py`` runs these with
+# ``--inplace``; the refreshed outputs land back in the source file
+# and get committed by whoever's running the local refresh, OR end up
+# in the diff CI produces.
+#
+# Categorization rules
+# --------------------
+#
+# Add a notebook here when ALL of the following hold:
+#
+#   1. It needs only ``quantum-metal[gui]`` deps (no Ansys, no gmsh).
+#   2. It doesn't ``gui.screenshot()`` the Qt window — its visuals come
+#      from ``qm.view``, ``plt.subplots``, ``matplotlib.pyplot``, or
+#      ``MetalGUIHeadless.screenshot()``. The published render is
+#      semantically equivalent under headless and Qt execution.
+#   3. It completes in under 3 min on a clean CI runner.
+#
+# If a notebook starts carrying Qt-specific screenshots (rare), move it
+# to ``_dev/notebooks-frozen-qt.txt``.
+#
+# Also referenced
+# ---------------
+#
+# At the bottom of this file is a commented "External-gated" reference
+# list: Ansys / gmsh / KLayout / Cross-Resonance notebooks that need a
+# real toolchain installed and are NEVER auto-run. Outputs there are
+# refreshed manually by the maintainer.
+
+# --- Section 1: Saving + Parametric (pure-mpl plots) ---
+docs/tut/1-Overview/1.4-Saving-Your-Chip-Design.ipynb
+docs/tut/1-Overview/1.5-Parametric-design---iterate-and-compare.ipynb
+
+# --- Section 2: routing + custom components (algorithmic demos) ---
+docs/tut/2-From-components-to-chip/2.23-Modify-chip-options.ipynb
+
+# --- Section 3: GDS-only (gdstk, no Qt or Ansys) ---
+docs/tut/3-Renderers/3.1-Introduction-to-QRenderers.ipynb
+
+# --- Section 4: pure-Python analyses (no Ansys / Q3D / gmsh) ---
+docs/tut/4-Analysis/4.32-Transmon-analytics-HCPB.ipynb
+docs/tut/4-Analysis/4.33-Transmon-analytics.ipynb
+
+# ============================================================================
+# Known-failing on lite re-execution — DEFERRED to follow-up PR.
+# ============================================================================
+#
+# The first run of the CI gate surfaced 11 notebooks that don't execute
+# cleanly under the lite install. These are pre-existing bugs in the
+# notebook sources (NameErrors, undefined variables, cell timeouts at
+# 240s), not regressions from the v0.7.2 work that introduced this
+# gate. Tracked as a follow-up; keep their committed outputs as the
+# canonical published artefact until each is fixed and moved back into
+# the auto-refresh section above.
+#
+#   docs/tut/2-From-components-to-chip/2.11-Routing-101.ipynb
+#   docs/tut/2-From-components-to-chip/2.12-Simple-Meander.ipynb
+#   docs/tut/2-From-components-to-chip/2.13-Hybrid-Auto-and-AStar.ipynb
+#   docs/tut/2-From-components-to-chip/2.14-Get-them-all-with-MixedRoute.ipynb
+#   docs/tut/2-From-components-to-chip/2.22-Design-100-qubits-programmatically.ipynb
+#   docs/tut/2-From-components-to-chip/2.31-Create-a-QComponent-Basic.ipynb    # 240s timeout — also needs a longer cap
+#   docs/tut/2-From-components-to-chip/2.32-Create-a-QComponent-Advanced.ipynb # 240s timeout
+#   docs/tut/2-From-components-to-chip/2.33-Add-my-QComponent-to-a-reusable-python-file.ipynb
+#   docs/tut/3-Renderers/3.2-Export-your-design-to-GDS.ipynb                   # NameError: gds undefined
+#   docs/tut/4-Analysis/4.31-Plot-quantum-oscillator-wavefunction.ipynb        # TypeError float→int
+#   docs/tut/4-Analysis/4.34-Transmon-qubit-CPB-hamiltonian-charge-basis.ipynb # NameError: np
+#
+# Also 2.01 in the frozen-Qt list fails (copy_qcomponent returns None — likely
+# a merge artefact from folding 2.02 into 2.01). Tracked alongside the above.
+
+# ============================================================================
+# External-gated (🟡) — NEVER auto-run. Reference list only. Maintainer
+# re-runs locally when Ansys / gmsh / GDS toolchain changes.
+# ============================================================================
+#
+# Ansys (HFSS / Q3D) — requires pyaedt + an Ansys AEDT license, Windows:
+#   docs/tut/3-Renderers/3.3-Render-your-design-to-Ansys.ipynb
+#   docs/tut/4-Analysis/4.01-Capacitance-and-LOM.ipynb
+#   docs/tut/4-Analysis/4.02-Eigenmode-and-EPR.ipynb
+#   docs/tut/4-Analysis/4.03-Impedance.ipynb
+#   docs/tut/4-Analysis/4.04-New-LOM-and-Fluxonium-Example.ipynb
+#   docs/tut/4-Analysis/4.05-New-LOM-and-Two-Coupled-Transmon-Example.ipynb
+#   docs/tut/4-Analysis/4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence.ipynb
+#   docs/tut/4-Analysis/4.11..4.18 (all Analyze-* notebooks)
+#   docs/tut/4-Analysis/4.21..4.23 (all matrix sweeps)
+#
+# gmsh + Linux X libs:
+#   docs/tut/3-Renderers/3.4-How-do-I-make-my-custom-QRenderer.ipynb
+#   docs/tut/3-Renderers/3.5-Render-your-design-to-Gmsh.ipynb
+#   docs/tut/4-Analysis/4.19-Analyze-a-transmon-using-ElmerFEM.ipynb
+#
+# Cross-Resonance + cQED — depend on Ansys exports:
+#   docs/tut/4-Analysis/cQED-with-the-Jaynes-Cummings-Interaction-Model.ipynb
+#   docs/tut/4-Analysis/Design-and-Simulation-of-a-Cross-Resonance-Gate.ipynb
