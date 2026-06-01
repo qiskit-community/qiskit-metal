@@ -258,6 +258,64 @@ you today, and `ROADMAP.md
 for what's coming next.
 
 
+v0.7.2 follow-on: prefer ``qm.gui(design)`` over ``MetalGUI(design)``
+=====================================================================
+
+v0.7.2 introduces a factory, :func:`qiskit_metal.gui`, that returns
+the right viewer for the current environment. Tutorial code written
+against the factory works unchanged in three places:
+
+- **Local desktop** with ``quantum-metal[gui]`` installed → returns
+  the Qt-based :class:`MetalGUI`.
+- **Colab / Binder / headless servers / Linux without DISPLAY** →
+  returns the new :class:`MetalGUIHeadless`, which mirrors the
+  tutorial-facing surface of ``MetalGUI`` (``gui.rebuild()``,
+  ``gui.screenshot()``, ``gui.edit_component(...)``,
+  ``gui.highlight_components(...)``, ``gui.zoom_on_components(...)``,
+  ``gui.main_window``) and renders inline via matplotlib.
+- **Plain Python scripts** → ``MetalGUIHeadless`` by default; pass
+  ``force_headless=True`` to skip the Qt detection entirely.
+
+What to change in your notebooks:
+
+.. code-block:: python
+
+    # Before
+    from qiskit_metal import MetalGUI
+    gui = MetalGUI(design)
+
+    # After
+    import qiskit_metal as qm
+    gui = qm.gui(design)   # Qt locally; inline matplotlib in Colab/Binder
+
+The direct ``MetalGUI(design)`` construction still works when the
+``[gui]`` extras are installed — nothing is deprecated. The factory
+is purely additive; it just removes the need for every notebook to
+hand-roll Qt-vs-headless detection.
+
+Why switch:
+
+- One tutorial cell works in every environment. No more "set
+  ``QISKIT_METAL_HEADLESS=1`` first" instructions, no more
+  separate-but-equal Colab vs desktop walkthroughs.
+- ``qm.MetalGUI`` is now a lazy attribute: ``import qiskit_metal``
+  no longer pulls in PySide6. The factory triggers the Qt import
+  only when it decides to return ``MetalGUI``.
+- If your Colab / Binder users hit
+  ``ModuleNotFoundError: PySide6`` on ``MetalGUI``, the factory
+  gives them an inline renderer with the same API instead of an
+  error.
+
+Environment-variable overrides
+------------------------------
+
+- ``QISKIT_METAL_HEADLESS=1`` — force the headless path even when
+  PySide6 is installed. Useful on CI runners that have Qt but no
+  display server.
+- ``QISKIT_METAL_HEADLESS_QUIET=1`` — suppress the one-time
+  "headless viewer active" notice on first ``qm.gui(design)`` call.
+
+
 Reporting issues
 ----------------
 

@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="The Cross Resonance (CR) Gate" href="Design-and-Simulation-of-a-Cross-Resonance-Gate.html"><link rel="prev" title="4.33 Transmon Analytics" href="4.33-Transmon-analytics.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>4.34 Modeling transmon qubit Cooper-pair box Hamiltonian in the charge basis - Quantum Metal 0.7.1</title>
+        <title>4.34 Modeling transmon qubit Cooper-pair box Hamiltonian in the charge basis - Quantum Metal 0.7.2</title>
       <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
@@ -158,7 +158,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">Quantum Metal 0.7.1</div></a>
+      <a href="../../index.html"><div class="brand">Quantum Metal 0.7.2</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -180,7 +180,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
   
-  <span class="sidebar-brand-text">Quantum Metal 0.7.1</span>
+  <span class="sidebar-brand-text">Quantum Metal 0.7.2</span>
   
 </a>
 <form class="sidebar-search-container" method="get" action="../../search.html" role="search">
@@ -192,19 +192,17 @@
   <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installing Quantum Metal</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1-Overview/1.2-Quick-start.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1-Overview/1.1-Quick-start.html">Quick Start</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul class="current">
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">Tutorials</a><input aria-label="Toggle navigation of Tutorials" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../1-Overview/1.1-Bird%27s-eye-view-of-Qiskit-Metal.html">1.1 Bird’s eye view of Quantum Metal (Formerly: Qiskit Metal)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../1-Overview/1.2-Quick-start.html">1.2 Quick start</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../1-Overview/1.3-Saving-Your-Chip-Design.html">1.3 Saving Your Chip Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../1-Overview/1.4-Headless-quick-view-%28no-Qt-GUI%29.html">1.4 Headless Quick View — using Quantum Metal without the Qt GUI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1-Overview/1.1-Quick-start.html">1.1 Quick start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1-Overview/1.2-Bird%27s-eye-view-of-Quantum-Metal.html">1.2 Bird’s eye view of Quantum Metal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1-Overview/1.3-Build-a-4-qubit-chip.html">1.3 Build a 4-qubit chip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1-Overview/1.4-Saving-Your-Chip-Design.html">1.4 Saving Your Chip Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../1-Overview/1.5-Parametric-design---iterate-and-compare.html">1.5 Parametric Design: Iterate and Compare</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../1-Overview/1.6-QComponent-shape-library.html">1.6 QComponent Shape Library</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.01-How-to-use-a-QComponent.html">2.01 How to use a QComponent</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.02-How-to-copy-a-QComponent.html">2.02 How to copy a QComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.01-How-to-use-a-QComponent.html">2.01 QComponent lifecycle — use, copy, delete, rename</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.11-Routing-101.html">2.11 Routing 101</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.12-Simple-Meander.html">2.12 Simple Meander</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.13-Hybrid-Auto-and-AStar.html">2.13 Hybrid Auto and AStar</a></li>
@@ -253,6 +251,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../quick-topics/Testing-QComponents-for-overlap-and-collisions.html">Demo Notebook Demonstrating How to Test for Component/CPW Overlap</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../qcomponents-gallery.html">QComponent Gallery</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../circuit-examples/index.html">Example Designs</a><input aria-label="Toggle navigation of Example Designs" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/01-Transmon_cross.html">Single Transmon - Grounded (xmon)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/02-Transmon_floating.html">Single Transmon - Floating</a></li>
@@ -423,8 +422,10 @@
 <p class="caption" role="heading"><span class="caption-text">Community &amp; Contributing</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../contributor-guide.html">Contributor Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../headless-usage.html">Using Quantum Metal without Qt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../migration-to-v0.7.0.html">Migrating to v0.7.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migration-to-v0.7.0.html">Migrating to v0.7.0 (lite-by-default install)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migration-to-v0.7.0.html#v0-7-2-follow-on-prefer-qm-gui-design-over-metalgui-design">v0.7.2 follow-on: prefer <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> over <code class="docutils literal notranslate"><span class="pre">MetalGUI(design)</span></code></a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/Qiskit/qiskit/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 </ul>
 
@@ -508,34 +509,6 @@
 </pre></div>
 </div>
 <p>Let’s start by importing the key modules for this demo:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
-<span class="o">%</span><span class="k">autoreload</span> 2
-<span class="o">%</span><span class="k">config</span> IPCompleter.greedy = True
-<span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="o">%</span><span class="k">config</span> Completer.use_jedi = False
-<span class="o">%</span><span class="k">config</span> InlineBackend.figure_format = &#39;svg&#39;
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.hamiltonian.transmon_charge_basis</span><span class="w"> </span><span class="kn">import</span> <span class="n">Hcpb</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.hamiltonian.transmon_CPB_analytic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Hcpb_analytic</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-The autoreload extension is already loaded. To reload it, use:
-  %reload_ext autoreload
-</pre></div></div>
-</div>
 </section>
 <section id="Let's-model-a-transmon">
 <h2>Let’s model a transmon<a class="headerlink" href="#Let's-model-a-transmon" title="Link to this heading">¶</a></h2>
@@ -591,7 +564,7 @@ energy:</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_10_1.svg" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_10_1.svg" />
+<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_9_1.svg" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_9_1.svg" />
 </div>
 </div>
 </section>
@@ -692,7 +665,7 @@ Transmon frequencies
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_20_1.svg" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_20_1.svg" />
+<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_19_1.svg" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_19_1.svg" />
 </div>
 </div>
 </section>
@@ -808,7 +781,7 @@ Transmon frequencies
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_34_1.svg" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_34_1.svg" />
+<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_33_1.svg" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_33_1.svg" />
 </div>
 </div>
 </section>
@@ -869,7 +842,7 @@ Transmon frequencies
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_41_1.svg" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_41_1.svg" />
+<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_40_1.svg" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_40_1.svg" />
 </div>
 </div>
 </section>
@@ -940,7 +913,7 @@ Text(0, 0.5, &#39;alpha_r&#39;)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_48_1.svg" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_48_1.svg" />
+<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_47_1.svg" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_47_1.svg" />
 </div>
 </div>
 <p>Indeed we see that the anharmonicity decays with the inverse of <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span> for small values of <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span> before reaching a minimum just before <span class="math notranslate nohighlight">\(E_{J}/E_{C} \approx 20.0\)</span>, then changing sign and approaching zero as <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span> approaches infinity. This matches very closely to the results found in Figure 5 of Phys. Rev. A 76, 042319 (2007).</p>
@@ -988,7 +961,7 @@ Text(0, 0.5, &#39;T2 (sec)&#39;)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_54_1.svg" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_54_1.svg" />
+<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_53_1.svg" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_53_1.svg" />
 </div>
 </div>
 <p>Indeed, we see that the dephasing time increases exponentially with increasing <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span>, which is one of the critical features of the transmon qubit. By increasing the <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span> ratio, we reduce sensitivity to charge noise without sacrificing too much anharmonicity, resulting in greatly improved dephasing time. This plot matches very closely to Fig. 5(c) in Phys. Rev. A 76, 042319 (2007).</p>
@@ -1098,7 +1071,7 @@ Quantum object: dims = [[6], [6]], shape = (6, 6), type = oper, isherm = True\be
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_66_1.svg" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_66_1.svg" />
+<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_65_1.svg" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_65_1.svg" />
 </div>
 </div>
 <p>Physically, the above plot demonstrates that the variations in the number of Cooper pairs is on the order of 1-2 for gorund and first excited states of the CPB operated in the transmon regime.</p>
@@ -1150,7 +1123,7 @@ Quantum object: dims = [[6], [6]], shape = (6, 6), type = oper, isherm = True\be
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_71_1.svg" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_71_1.svg" />
+<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_70_1.svg" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_70_1.svg" />
 </div>
 </div>
 <p>We see that the above plot closely matches Fig. 7 of Koch et al. (2007) PRA. Physically, we see that the coupling between adjacent transmon states (<span class="math notranslate nohighlight">\(&lt;1|n|0&gt;\)</span> and <span class="math notranslate nohighlight">\(&lt;2|n|1&gt;\)</span>) is the only significant coupling in the <span class="math notranslate nohighlight">\(E_{J} &gt;&gt; E_{C}\)</span> regime. The coupling between non-adjacent states (like m=0 and m=2) is essentially zero at all values of <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span>.</p>
@@ -1319,7 +1292,7 @@ Ej: 14424.680512350775
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/05/31</div>
+              Last updated on 2026/06/01</div>
           </div>
           <div class="right-details">
             
@@ -1375,7 +1348,7 @@ Ej: 14424.680512350775
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=5a057da9"></script>
+</div><script src="../../_static/documentation_options.js?v=6dfdf7c3"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>

@@ -1,0 +1,710 @@
+.. _qcomponents-gallery:
+
+##############################
+QComponent Gallery
+##############################
+
+Every component shipped with Quantum Metal at a glance — click a card to jump to its API reference. The same thumbnails ship inside the desktop ``MetalGUI`` Library pane and the headless preview, regenerated from source by ``_dev/generate_qlibrary_thumbnails.py``.
+
+.. note::
+
+   Adding a new ``QComponent``? Run    ``uv run python _dev/generate_qlibrary_thumbnails.py    --write --inject-docstrings`` and then    ``uv run python _dev/generate_qcomponent_gallery.py --write``    to refresh this page.
+
+🧬 Qubits
+============
+
+.. grid:: 1 2 3 4
+   :gutter: 3
+
+   .. grid-item-card:: Josephson Junction Dolan
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/jj_dolan.png
+         :alt: Josephson Junction Dolan
+         :width: 180px
+         :align: center
+
+      The base "JJ_Dolan" inherits the "QComponent" class.
+
+      .. rubric:: ``jj_dolan``
+
+
+   .. grid-item-card:: Josephson Junction Manhattan
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/jj_manhattan.png
+         :alt: Josephson Junction Manhattan
+         :width: 180px
+         :align: center
+
+      The base "JJ_Manhattan" inherits the "QComponent" class.
+
+      .. rubric:: ``jj_manhattan``
+
+
+   .. grid-item-card:: Squid Loop
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/SQUID_LOOP.png
+         :alt: Squid Loop
+         :width: 180px
+         :align: center
+
+      The base "SQUID_LOOP" inherits the "QComponent" class.
+
+      .. rubric:: ``SQUID_LOOP``
+
+
+   .. grid-item-card:: Star Qubit
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/StarQubit.png
+         :alt: Star Qubit
+         :width: 180px
+         :align: center
+
+      A single configurable circle with multiple pads.
+
+      .. rubric:: ``StarQubit``
+
+
+   .. grid-item-card:: Transmon Concentric
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/TransmonConcentric.png
+         :alt: Transmon Concentric
+         :width: 180px
+         :align: center
+
+      The base `TrasmonConcentric` class .
+
+      .. rubric:: ``TransmonConcentric``
+
+
+   .. grid-item-card:: Transmon Concentric Type 2
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/TransmonConcentricType2.png
+         :alt: Transmon Concentric Type 2
+         :width: 180px
+         :align: center
+
+      The base `TrasmonConcentric` class
+
+      .. rubric:: ``TransmonConcentricType2``
+
+
+   .. grid-item-card:: Transmon Cross
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/TransmonCross.png
+         :alt: Transmon Cross
+         :width: 180px
+         :align: center
+
+      The base `TransmonCross` class.
+
+      .. rubric:: ``TransmonCross``
+
+
+   .. grid-item-card:: Transmon Cross Flux Line
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/TransmonCrossFL.png
+         :alt: Transmon Cross Flux Line
+         :width: 180px
+         :align: center
+
+      The base `TransmonCrossFL` class.
+
+      .. rubric:: ``TransmonCrossFL``
+
+
+   .. grid-item-card:: Transmon Interdigitated
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/TransmonInterdigitated.png
+         :alt: Transmon Interdigitated
+         :width: 180px
+         :align: center
+
+      The base "TransmonInterdigitated" inherits the "QComponent" class.
+
+      .. rubric:: ``TransmonInterdigitated``
+
+
+   .. grid-item-card:: Transmon Pocket
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/TransmonPocket.png
+         :alt: Transmon Pocket
+         :width: 180px
+         :align: center
+
+      The base `TransmonPocket` class.
+
+      .. rubric:: ``TransmonPocket``
+
+
+   .. grid-item-card:: Transmon Pocket 6
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/TransmonPocket6.png
+         :alt: Transmon Pocket 6
+         :width: 180px
+         :align: center
+
+      Transmon pocket with 6 connection pads.
+
+      .. rubric:: ``TransmonPocket6``
+
+
+   .. grid-item-card:: Transmon Pocket Charge Line
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/TransmonPocketCL.png
+         :alt: Transmon Pocket Charge Line
+         :width: 180px
+         :align: center
+
+      The base `TransmonPocketCL` class.
+
+      .. rubric:: ``TransmonPocketCL``
+
+
+   .. grid-item-card:: Transmon Pocket Teeth
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/TransmonPocketTeeth.png
+         :alt: Transmon Pocket Teeth
+         :width: 180px
+         :align: center
+
+      Transmon pocket with 'Teeth' connection pads.
+
+      .. rubric:: ``TransmonPocketTeeth``
+
+
+🔗 Couplers
+==============
+
+.. grid:: 1 2 3 4
+   :gutter: 3
+
+   .. grid-item-card:: Cap N Interdigital Tee
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/CapNInterdigitalTee.png
+         :alt: Cap N Interdigital Tee
+         :width: 180px
+         :align: center
+
+      Generates a three pin (+) structure comprised of a primary two pin CPW
+
+      .. rubric:: ``CapNInterdigitalTee``
+
+
+   .. grid-item-card:: Coupled Line Tee
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/CoupledLineTee.png
+         :alt: Coupled Line Tee
+         :width: 180px
+         :align: center
+
+      Generates a three pin (+) structure comprised of a primary two pin CPW
+
+      .. rubric:: ``CoupledLineTee``
+
+
+   .. grid-item-card:: Line Tee
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/LineTee.png
+         :alt: Line Tee
+         :width: 180px
+         :align: center
+
+      Generates a three pin (+) structure comprised of a primary two pin CPW
+
+      .. rubric:: ``LineTee``
+
+
+   .. grid-item-card:: Tunable Coupler 01
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/TunableCoupler01.png
+         :alt: Tunable Coupler 01
+         :width: 180px
+         :align: center
+
+      One of the tunable couplers Based off the implementation in
+
+      .. rubric:: ``TunableCoupler01``
+
+
+   .. grid-item-card:: Tunable Coupler 2
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/TunableCoupler02.png
+         :alt: Tunable Coupler 2
+         :width: 180px
+         :align: center
+
+      One of the tunable couplers
+
+      .. rubric:: ``TunableCoupler02``
+
+
+🌊 Transmission lines & routes
+=================================
+
+.. grid:: 1 2 3 4
+   :gutter: 3
+
+   .. grid-item-card:: RouteAnchors
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/RouteAnchors.png
+         :alt: RouteAnchors
+         :width: 180px
+         :align: center
+
+      Creates and connects a series of anchors through which the Route passes.
+
+      .. rubric:: ``RouteAnchors``
+
+
+   .. grid-item-card:: Routed Frame
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/RouteFramed.png
+         :alt: Routed Frame
+         :width: 180px
+         :align: center
+
+      A non-meandered sample_shapes CPW that is auto-generated between 2 components.
+
+      .. rubric:: ``RouteFramed``
+
+
+   .. grid-item-card:: Route Meander
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/RouteMeander.png
+         :alt: Route Meander
+         :width: 180px
+         :align: center
+
+      Implements a simple CPW, with a single meander.  The base
+
+      .. rubric:: ``RouteMeander``
+
+
+   .. grid-item-card:: Route Mixed
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/RouteMixed.png
+         :alt: Route Mixed
+         :width: 180px
+         :align: center
+
+      Implements fully featured Routing, allowing different type of
+
+      .. rubric:: ``RouteMixed``
+
+
+   .. grid-item-card:: Route Pathfinder
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/RoutePathfinder.png
+         :alt: Route Pathfinder
+         :width: 180px
+         :align: center
+
+      Non-meandered CPW class that combines A* pathfinding algorithm with
+
+      .. rubric:: ``RoutePathfinder``
+
+
+   .. grid-item-card:: Route Straight
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/RouteStraight.png
+         :alt: Route Straight
+         :width: 180px
+         :align: center
+
+      Draw a straight Route connecting two pins.
+
+      .. rubric:: ``RouteStraight``
+
+
+📡 Resonators
+================
+
+.. grid:: 1 2 3 4
+   :gutter: 3
+
+   .. grid-item-card:: ReadoutResFC
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/ReadoutResFC.png
+         :alt: ReadoutResFC
+         :width: 180px
+         :align: center
+
+      Flip-chip readout resonator used in the flipchip tutorial.
+
+      .. rubric:: ``ReadoutResFC``
+
+
+   .. grid-item-card:: Lumped Resonator
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/ResonatorLumped.png
+         :alt: Lumped Resonator
+         :width: 180px
+         :align: center
+
+      The base ResonatorLumped class
+
+      .. rubric:: ``ResonatorLumped``
+
+
+🔌 Terminations
+==================
+
+.. grid:: 1 2 3 4
+   :gutter: 3
+
+   .. grid-item-card:: Launchpad Wirebond
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/LaunchpadWirebond.png
+         :alt: Launchpad Wirebond
+         :width: 180px
+         :align: center
+
+      Launch pad to feed/read signals to/from the chip.
+
+      .. rubric:: ``LaunchpadWirebond``
+
+
+   .. grid-item-card:: Launchpad Wirebond Coupled
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/LaunchpadWirebondCoupled.png
+         :alt: Launchpad Wirebond Coupled
+         :width: 180px
+         :align: center
+
+      Launch pad to feed/read signals to/from the chip.
+
+      .. rubric:: ``LaunchpadWirebondCoupled``
+
+
+   .. grid-item-card:: Launchpad Wirebond Driven
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/LaunchpadWirebondDriven.png
+         :alt: Launchpad Wirebond Driven
+         :width: 180px
+         :align: center
+
+      Launch pad to feed/read signals to/from the chip.
+
+      .. rubric:: ``LaunchpadWirebondDriven``
+
+
+   .. grid-item-card:: Open to Ground
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/OpenToGround.png
+         :alt: Open to Ground
+         :width: 180px
+         :align: center
+
+      A sample_shapes open to ground termination. Functions as a pin for auto drawing.
+
+      .. rubric:: ``OpenToGround``
+
+
+   .. grid-item-card:: Short to Ground
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/ShortToGround.png
+         :alt: Short to Ground
+         :width: 180px
+         :align: center
+
+      A sample_shapes short to ground termination. Functions as a pin for auto CPW
+
+      .. rubric:: ``ShortToGround``
+
+
+⚡ Lumped elements
+=====================
+
+.. grid:: 1 2 3 4
+   :gutter: 3
+
+   .. grid-item-card:: Cap 3 Interdigital
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/Cap3Interdigital.png
+         :alt: Cap 3 Interdigital
+         :width: 180px
+         :align: center
+
+      Create a three finger planar capacitor with a ground pocket cuttout.
+
+      .. rubric:: ``Cap3Interdigital``
+
+
+   .. grid-item-card:: Cap N Interdigital
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/CapNInterdigital.png
+         :alt: Cap N Interdigital
+         :width: 180px
+         :align: center
+
+      Generates a two pin (+) structure comprised of a north CPW transmission
+
+      .. rubric:: ``CapNInterdigital``
+
+
+   .. grid-item-card:: Resonator Coil Rectangle
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/ResonatorCoilRect.png
+         :alt: Resonator Coil Rectangle
+         :width: 180px
+         :align: center
+
+      A rectangle spiral resonator based on length input. The X dimension is
+
+      .. rubric:: ``ResonatorCoilRect``
+
+
+🔺 Sample shapes
+===================
+
+.. grid:: 1 2 3 4
+   :gutter: 3
+
+   .. grid-item-card:: Circle Caterpillar
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/CircleCaterpillar.png
+         :alt: Circle Caterpillar
+         :width: 180px
+         :align: center
+
+      A single configurable circle.
+
+      .. rubric:: ``CircleCaterpillar``
+
+
+   .. grid-item-card:: Circle Raster
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/CircleRaster.png
+         :alt: Circle Raster
+         :width: 180px
+         :align: center
+
+      A single configurable circle.
+
+      .. rubric:: ``CircleRaster``
+
+
+   .. grid-item-card:: N-Gon Polygon
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/NGon.png
+         :alt: N-Gon Polygon
+         :width: 180px
+         :align: center
+
+      A n-gon polygon. Eg. n = 3 : triangle, n = infinity : circle
+
+      .. rubric:: ``NGon``
+
+
+   .. grid-item-card:: N Square Spiral
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/NSquareSpiral.png
+         :alt: N Square Spiral
+         :width: 180px
+         :align: center
+
+      A n count square spiral.
+
+      .. rubric:: ``NSquareSpiral``
+
+
+   .. grid-item-card:: Rectangle
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/Rectangle.png
+         :alt: Rectangle
+         :width: 180px
+         :align: center
+
+      A single configurable square.
+
+      .. rubric:: ``Rectangle``
+
+
+   .. grid-item-card:: Rectangle Hollow
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/RectangleHollow.png
+         :alt: Rectangle Hollow
+         :width: 180px
+         :align: center
+
+      A single configurable square.
+
+      .. rubric:: ``RectangleHollow``
+
+
+   .. grid-item-card:: Smiley Face :)
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/SmileyFace.png
+         :alt: Smiley Face :)
+         :width: 180px
+         :align: center
+
+      TEST COMPONENT It is for fun only.  Can view a smiley face. Can make it
+
+      .. rubric:: ``SmileyFace``
+
+

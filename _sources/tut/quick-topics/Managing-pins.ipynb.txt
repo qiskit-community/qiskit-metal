@@ -10,17 +10,6 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 1,
-   "id": "890be232",
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "%load_ext autoreload\n",
-    "%autoreload 2"
-   ]
-  },
-  {
-   "cell_type": "code",
    "execution_count": 2,
    "id": "d19b2d5b",
    "metadata": {},

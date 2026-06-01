@@ -3,10 +3,10 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Using Quantum Metal without the Qt GUI" href="headless-usage.html"><link rel="prev" title="MetalGUI" href="apidocs/qiskit_metal._gui.MetalGUI.html">
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Architecture" href="architecture.html"><link rel="prev" title="MetalGUI" href="apidocs/qiskit_metal._gui.MetalGUI.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>Contributing to Quantum Metal - Quantum Metal 0.7.1</title>
+        <title>Contributing to Quantum Metal - Quantum Metal 0.7.2</title>
       <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
@@ -157,7 +157,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">Quantum Metal 0.7.1</div></a>
+      <a href="index.html"><div class="brand">Quantum Metal 0.7.2</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -179,7 +179,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">Quantum Metal 0.7.1</span>
+  <span class="sidebar-brand-text">Quantum Metal 0.7.2</span>
   
 </a>
 <form class="sidebar-search-container" method="get" action="search.html" role="search">
@@ -191,19 +191,17 @@
   <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installing Quantum Metal</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tut/1-Overview/1.2-Quick-start.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tut/1-Overview/1.1-Quick-start.html">Quick Start</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="tut/index.html">Tutorials</a><input aria-label="Toggle navigation of Tutorials" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="tut/1-Overview/1.1-Bird%27s-eye-view-of-Qiskit-Metal.html">1.1 Bird’s eye view of Quantum Metal (Formerly: Qiskit Metal)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tut/1-Overview/1.2-Quick-start.html">1.2 Quick start</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tut/1-Overview/1.3-Saving-Your-Chip-Design.html">1.3 Saving Your Chip Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tut/1-Overview/1.4-Headless-quick-view-%28no-Qt-GUI%29.html">1.4 Headless Quick View — using Quantum Metal without the Qt GUI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/1-Overview/1.1-Quick-start.html">1.1 Quick start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/1-Overview/1.2-Bird%27s-eye-view-of-Quantum-Metal.html">1.2 Bird’s eye view of Quantum Metal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/1-Overview/1.3-Build-a-4-qubit-chip.html">1.3 Build a 4-qubit chip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/1-Overview/1.4-Saving-Your-Chip-Design.html">1.4 Saving Your Chip Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/1-Overview/1.5-Parametric-design---iterate-and-compare.html">1.5 Parametric Design: Iterate and Compare</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tut/1-Overview/1.6-QComponent-shape-library.html">1.6 QComponent Shape Library</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html">2.01 How to use a QComponent</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.02-How-to-copy-a-QComponent.html">2.02 How to copy a QComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html">2.01 QComponent lifecycle — use, copy, delete, rename</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.11-Routing-101.html">2.11 Routing 101</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.12-Simple-Meander.html">2.12 Simple Meander</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.13-Hybrid-Auto-and-AStar.html">2.13 Hybrid Auto and AStar</a></li>
@@ -252,6 +250,7 @@
 <li class="toctree-l2"><a class="reference internal" href="tut/quick-topics/Testing-QComponents-for-overlap-and-collisions.html">Demo Notebook Demonstrating How to Test for Component/CPW Overlap</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="qcomponents-gallery.html">QComponent Gallery</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="circuit-examples/index.html">Example Designs</a><input aria-label="Toggle navigation of Example Designs" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/01-Transmon_cross.html">Single Transmon - Grounded (xmon)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/02-Transmon_floating.html">Single Transmon - Floating</a></li>
@@ -422,8 +421,10 @@
 <p class="caption" role="heading"><span class="caption-text">Community &amp; Contributing</span></p>
 <ul class="current">
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Contributor Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="headless-usage.html">Using Quantum Metal without Qt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="migration-to-v0.7.0.html">Migrating to v0.7.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migration-to-v0.7.0.html">Migrating to v0.7.0 (lite-by-default install)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migration-to-v0.7.0.html#v0-7-2-follow-on-prefer-qm-gui-design-over-metalgui-design">v0.7.2 follow-on: prefer <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> over <code class="docutils literal notranslate"><span class="pre">MetalGUI(design)</span></code></a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/Qiskit/qiskit/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 </ul>
 
@@ -470,13 +471,15 @@
 <p>Quantum Metal is an open-source project committed to bringing quantum hardware design to
 people of all backgrounds. This page describes how you can join the Quantum Metal
 community in this goal.</p>
+<p>For the system architecture (load-bearing abstractions + a mermaid
+diagram of how the layers fit together), see the dedicated
+<a class="reference internal" href="architecture.html"><span class="doc">Architecture</span></a> page.</p>
 <section id="where-things-are">
 <span id="id1"></span><h2>Where Things Are<a class="headerlink" href="#where-things-are" title="Link to this heading">¶</a></h2>
 <p>The source code for Quantum Metal is currently located in the <a class="reference external" href="https://github.com/Quantum-community">Quantum Community GitHub organization</a>,
 as part of the larger umbrella of community-driven Quantum projects. This repository will change ownership in the future.</p>
-</section>
 <section id="reporting-bugs-and-requesting-enhancements">
-<h2>Reporting Bugs and Requesting Enhancements<a class="headerlink" href="#reporting-bugs-and-requesting-enhancements" title="Link to this heading">¶</a></h2>
+<h3>Reporting Bugs and Requesting Enhancements<a class="headerlink" href="#reporting-bugs-and-requesting-enhancements" title="Link to this heading">¶</a></h3>
 <p>When you encounter a problem, please open an issue in the
 <a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/issues">issue tracker</a>.</p>
 <p>When reporting an issue, please follow this template:</p>
@@ -510,12 +513,12 @@ the repository issue tracker. Opening an issue starts a discussion with the team
 fits in with the project, how it can be implemented, etc.</p>
 </section>
 <section id="contributing-code">
-<h2>Contributing Code<a class="headerlink" href="#contributing-code" title="Link to this heading">¶</a></h2>
+<h3>Contributing Code<a class="headerlink" href="#contributing-code" title="Link to this heading">¶</a></h3>
 <section id="development-setup">
-<h3>Development Setup<a class="headerlink" href="#development-setup" title="Link to this heading">¶</a></h3>
+<h4>Development Setup<a class="headerlink" href="#development-setup" title="Link to this heading">¶</a></h4>
 <p>Quantum Metal uses <a class="reference external" href="https://docs.astral.sh/uv/">uv</a> for project and dependency management. This guide describes how to set up your local development environment. First, install uv on your system as described by the <a class="reference external" href="https://docs.astral.sh/uv/getting-started/installation/">instructions here</a>.</p>
 <section id="development-virtual-environments">
-<h4>Development (virtual) environments<a class="headerlink" href="#development-virtual-environments" title="Link to this heading">¶</a></h4>
+<h5>Development (virtual) environments<a class="headerlink" href="#development-virtual-environments" title="Link to this heading">¶</a></h5>
 <p>The next few paragraphs describe the setup. We recommend reading through it at least once before you start making contributions. Skip to the next section for instructions on how to activate venvs, run tasks, etc.</p>
 <p>All development activities should be carried out inside Python virtual environments (venvs). Thankfully, uv can manage all our venvs for us. In addition to this, we can use tox to orchestrate venvs to fit the needs of different development tasks: testing, linting, building docs, etc.</p>
 <p>All information about project dependencies can be found in the <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file located in the root directory of this repository. The direct project dependencies are listed in the <code class="docutils literal notranslate"><span class="pre">requirements</span></code> section of the <code class="docutils literal notranslate"><span class="pre">[project]</span></code> table. These are required to run user code.</p>
@@ -524,7 +527,7 @@ See <a class="reference external" href="https://peps.python.org/pep-0735/">PEP 7
 <p>The file <code class="docutils literal notranslate"><span class="pre">uv.lock</span></code> lists “locked” versions for all dependencies listed in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> across different platforms. This allows uv to create reproducible environments. At present, tox does not create virtual environments using the lockfile, but the <a class="reference external" href="https://github.com/tox-dev/tox-uv">tox-uv</a> plugin allows for this functionality to be enabled by setting the <code class="docutils literal notranslate"><span class="pre">runner</span></code> configuration variable in each tox task, as described <a class="reference external" href="https://github.com/tox-dev/tox-uv?tab=readme-ov-file#uvlock-support">here</a>.</p>
 </section>
 <section id="running-tests">
-<h4>Running tests<a class="headerlink" href="#running-tests" title="Link to this heading">¶</a></h4>
+<h5>Running tests<a class="headerlink" href="#running-tests" title="Link to this heading">¶</a></h5>
 <p>Tox is configured to run tests (using pytest) for Python 3.10–3.12. Use the following command to run tests for all three versions:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tox</span> <span class="o">-</span><span class="n">m</span> <span class="n">test</span>
 </pre></div>
@@ -535,7 +538,7 @@ See <a class="reference external" href="https://peps.python.org/pep-0735/">PEP 7
 </div>
 </section>
 <section id="linting-and-formatting">
-<h4>Linting and Formatting<a class="headerlink" href="#linting-and-formatting" title="Link to this heading">¶</a></h4>
+<h5>Linting and Formatting<a class="headerlink" href="#linting-and-formatting" title="Link to this heading">¶</a></h5>
 <p>We use <a class="reference external" href="https://docs.astral.sh/ruff/">ruff</a> for linting and formatting. Our linting configuration is described in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> under the <code class="docutils literal notranslate"><span class="pre">[tool.ruff.lint]</span></code> table. Note that this configuration is a work in progress and likely to change until further notice. The linter can be run using the following command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tox</span> <span class="o">-</span><span class="n">e</span> <span class="n">lint</span>
 </pre></div>
@@ -552,7 +555,7 @@ See <a class="reference external" href="https://peps.python.org/pep-0735/">PEP 7
 </section>
 </section>
 <section id="style-guide">
-<h3>Style Guide<a class="headerlink" href="#style-guide" title="Link to this heading">¶</a></h3>
+<h4>Style Guide<a class="headerlink" href="#style-guide" title="Link to this heading">¶</a></h4>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
 <p>The style guide below is outdated. Quantum Metal uses <code class="docutils literal notranslate"><span class="pre">ruff</span></code> for linting and formatting (see the Linting and Formatting section above). An updated style guide will be added soon.</p>
@@ -562,7 +565,7 @@ See <a class="reference external" href="https://peps.python.org/pep-0735/">PEP 7
 Our CI pipeline will enforce these styles when you make the pull request.</p>
 </section>
 <section id="contributor-license-agreement">
-<h3>Contributor License Agreement<a class="headerlink" href="#contributor-license-agreement" title="Link to this heading">¶</a></h3>
+<h4>Contributor License Agreement<a class="headerlink" href="#contributor-license-agreement" title="Link to this heading">¶</a></h4>
 <p>Before you can submit any code, all contributors must sign a
 contributor license agreement (CLA). By signing a CLA, you’re attesting
 that you are the author of the contribution, and that you’re freely
@@ -581,7 +584,7 @@ email it to us at &lt;<a class="reference external" href="mailto:Qiskit&#37;&#52
 </div>
 </section>
 <section id="pull-requests">
-<h3>Pull Requests<a class="headerlink" href="#pull-requests" title="Link to this heading">¶</a></h3>
+<h4>Pull Requests<a class="headerlink" href="#pull-requests" title="Link to this heading">¶</a></h4>
 <p>We use <a class="reference external" href="https://help.github.com/articles/about-pull-requests">GitHub pull requests</a> to accept
 contributions.</p>
 <p>While not required, opening a new issue about the bug you’re fixing or the
@@ -600,14 +603,14 @@ not merge the commit until it is finished. You or a reviewer can remove the
 WIP status when the code is ready to be fully reviewed for merging.</p>
 </section>
 <section id="code-review">
-<h3>Code Review<a class="headerlink" href="#code-review" title="Link to this heading">¶</a></h3>
+<h4>Code Review<a class="headerlink" href="#code-review" title="Link to this heading">¶</a></h4>
 <p>Code review is done in the open and is open to anyone. While only maintainers have
 access to merge commits, community feedback on pull requests is extremely valuable.
 It is also a good mechanism to learn about the code base. You can
 view a list of all open pull requests at <a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/pulls">https://github.com/qiskit-community/qiskit-metal/pulls</a></p>
 </section>
 <section id="commit-messages">
-<h3>Commit Messages<a class="headerlink" href="#commit-messages" title="Link to this heading">¶</a></h3>
+<h4>Commit Messages<a class="headerlink" href="#commit-messages" title="Link to this heading">¶</a></h4>
 <p>The content of the commit message describing a change is just as important as the
 change itself. The commit message provides the context for
 not only code review but also the change history in the git log. A detailed
@@ -668,7 +671,7 @@ the commit message. Use the syntax:</p>
 understand and review the patch for correctness. Less is not more.</p>
 </section>
 <section id="documenting-your-code">
-<h3>Documenting Your Code<a class="headerlink" href="#documenting-your-code" title="Link to this heading">¶</a></h3>
+<h4>Documenting Your Code<a class="headerlink" href="#documenting-your-code" title="Link to this heading">¶</a></h4>
 <p>If you make a change to an element, make sure you update the associated
 <em>docstrings</em> and parts of the documentation under <code class="docutils literal notranslate"><span class="pre">docs/apidocs</span></code> in the
 corresponding repo. To locally build the element-specific
@@ -680,7 +683,7 @@ if you see doc bugs, have a new feature that needs to be documented, or think
 that material could be added to the existing docs.</p>
 </section>
 <section id="good-first-contributions">
-<h3>Good First Contributions<a class="headerlink" href="#good-first-contributions" title="Link to this heading">¶</a></h3>
+<h4>Good First Contributions<a class="headerlink" href="#good-first-contributions" title="Link to this heading">¶</a></h4>
 <p>If you would like to contribute to Quantum Metal, but aren’t sure
 where to get started, the <code class="docutils literal notranslate"><span class="pre">good</span> <span class="pre">first</span> <span class="pre">issue</span></code> label on issues for a project
 highlights items appropriate for people new to the project.
@@ -690,7 +693,7 @@ words, intimate familiarity with Quantum Metal is not a requirement to develop a
 for the issue.</p>
 </section>
 <section id="deprecation-policy">
-<h3>Deprecation Policy<a class="headerlink" href="#deprecation-policy" title="Link to this heading">¶</a></h3>
+<h4>Deprecation Policy<a class="headerlink" href="#deprecation-policy" title="Link to this heading">¶</a></h4>
 <p>Quantum Metal users need to know if a feature or an API they rely
 upon will continue to be supported by the software tomorrow. Knowing under which conditions
 the project can remove (or change in a backwards-incompatible manner) a feature or
@@ -719,7 +722,7 @@ the stable branch policy, deprecation removals can only occur during minor
 version releases; they are not appropriate for backporting.</p>
 </section>
 <section id="deprecation-warnings">
-<h3>Deprecation Warnings<a class="headerlink" href="#deprecation-warnings" title="Link to this heading">¶</a></h3>
+<h4>Deprecation Warnings<a class="headerlink" href="#deprecation-warnings" title="Link to this heading">¶</a></h4>
 <p>The proper way to raise a deprecation warning is to use the <code class="docutils literal notranslate"><span class="pre">warn</span></code> function
 from the <a class="reference external" href="https://docs.python.org/3/library/warnings.html">warnings module</a>
 in the Python standard library. The warning category class
@@ -746,7 +749,7 @@ raised by a private method that only has one caller, <code class="docutils liter
 appropriate.</p>
 </section>
 <section id="stable-branch-policy">
-<h3>Stable Branch Policy<a class="headerlink" href="#stable-branch-policy" title="Link to this heading">¶</a></h3>
+<h4>Stable Branch Policy<a class="headerlink" href="#stable-branch-policy" title="Link to this heading">¶</a></h4>
 <p>The stable branch is intended to be a safe source of fixes for high-impact
 bugs and security issues that have been fixed on master since a
 release. When reviewing a stable branch PR, we must balance the risk
@@ -771,7 +774,7 @@ not make sense on master.</p></li>
 </ul>
 </section>
 <section id="backporting-procedure">
-<h3>Backporting procedure:<a class="headerlink" href="#backporting-procedure" title="Link to this heading">¶</a></h3>
+<h4>Backporting procedure:<a class="headerlink" href="#backporting-procedure" title="Link to this heading">¶</a></h4>
 <p>When backporting a patch from master to stable, we want to keep a
 reference to the change on main. When you create the branch for the
 stable PR, use:</p>
@@ -791,7 +794,7 @@ by resolving the conflicts yourself and proposing the resulting patch.
 Please keep Conflicts lines in the commit message to help review of the
 stable patch.</p>
 <section id="backport-labels">
-<h4>Backport labels<a class="headerlink" href="#backport-labels" title="Link to this heading">¶</a></h4>
+<h5>Backport labels<a class="headerlink" href="#backport-labels" title="Link to this heading">¶</a></h5>
 <p>Bugs or PRs tagged with <code class="docutils literal notranslate"><span class="pre">stable</span> <span class="pre">backport</span> <span class="pre">potential</span></code> are bugs
 that apply to the stable release too and may be suitable for
 backporting once a fix lands in main. Once the backport has been
@@ -803,7 +806,7 @@ porting.</p>
 </section>
 </section>
 <section id="custom-names-and-images-for-qcomponents">
-<h3>Custom Names and Images for QComponents<a class="headerlink" href="#custom-names-and-images-for-qcomponents" title="Link to this heading">¶</a></h3>
+<h4>Custom Names and Images for QComponents<a class="headerlink" href="#custom-names-and-images-for-qcomponents" title="Link to this heading">¶</a></h4>
 <p>When adding new qcomponents, new images for these components go
 in the following directory:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qiskit</span><span class="o">-</span><span class="n">metal</span><span class="o">/</span><span class="n">qiskit_metal</span><span class="o">/</span><span class="n">_gui</span><span class="o">/</span><span class="n">_imgs</span><span class="o">/</span><span class="n">components</span>
@@ -831,14 +834,14 @@ the Quantum metal application that the image for the qcomponent is named
 </section>
 </section>
 <section id="contributing-to-documentation">
-<h2>Contributing to Documentation<a class="headerlink" href="#contributing-to-documentation" title="Link to this heading">¶</a></h2>
+<h3>Contributing to Documentation<a class="headerlink" href="#contributing-to-documentation" title="Link to this heading">¶</a></h3>
 <p>Quantum Metal documentation is shaped by the <a class="reference external" href="https://www.writethedocs.org/guide/docs-as-code/">docs as code</a> philosophy, primarily
 drawn from Quantum Metal code comments in the <a class="reference external" href="https://alistapart.com/article/the-ten-essentials-for-good-api-documentation/">style of API documentation</a>.</p>
 <p>The documentation is built using <a class="reference external" href="http://www.sphinx-doc.org/en/master/">Sphinx</a>. The majority of documentation, under
 <a class="reference external" href="https://Quantum-community.github.io/Quantum-metal/overview.html">API Reference</a>, is
 drawn from code comments in the repositories listed in <a class="reference internal" href="#where-things-are"><span class="std std-ref">Where Things Are</span></a>.</p>
 <section id="documentation-structure">
-<h3>Documentation Structure<a class="headerlink" href="#documentation-structure" title="Link to this heading">¶</a></h3>
+<h4>Documentation Structure<a class="headerlink" href="#documentation-structure" title="Link to this heading">¶</a></h4>
 <p>The way documentation is structured in Quantum Metal is to push as much of the actual
 documentation into the docstrings as possible. This makes it easier for
 additions and corrections to be made during development, because the majority
@@ -923,7 +926,7 @@ contains a good example of how docstrings should be formatted.</p>
 </dl>
 </section>
 <section id="rebuilding-documentation">
-<h3>Rebuilding Documentation<a class="headerlink" href="#rebuilding-documentation" title="Link to this heading">¶</a></h3>
+<h4>Rebuilding Documentation<a class="headerlink" href="#rebuilding-documentation" title="Link to this heading">¶</a></h4>
 <p>As you make changes to your local RST files, you can update your
 HTML files by navigating to <cite>/docs/</cite> and running:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>--group<span class="w"> </span>docs<span class="w"> </span>make<span class="w"> </span>html
@@ -948,7 +951,7 @@ uv<span class="w"> </span>run<span class="w"> </span>--group<span class="w"> </s
 </div>
 </section>
 <section id="live-preview-with-autobuild">
-<h3>Live Preview with autobuild<a class="headerlink" href="#live-preview-with-autobuild" title="Link to this heading">¶</a></h3>
+<h4>Live Preview with autobuild<a class="headerlink" href="#live-preview-with-autobuild" title="Link to this heading">¶</a></h4>
 <p>To get fast, automatic rebuilding of the documentation while you edit it, use the <cite>docs-autobuild</cite> tox environment.</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>tox<span class="w"> </span>-e<span class="w"> </span>docs-autobuild
 </pre></div>
@@ -961,7 +964,7 @@ uv<span class="w"> </span>run<span class="w"> </span>--group<span class="w"> </s
 </section>
 </section>
 <section id="local-release-vs-github-release">
-<h2>Local release vs. GitHub release<a class="headerlink" href="#local-release-vs-github-release" title="Link to this heading">¶</a></h2>
+<h3>Local release vs. GitHub release<a class="headerlink" href="#local-release-vs-github-release" title="Link to this heading">¶</a></h3>
 <p>There are two supported release paths:</p>
 <ul class="simple">
 <li><p><strong>GitHub Actions (automated):</strong> pushing a tag triggers the release workflow to build artifacts and upload to PyPI using the repository’s PyPI token.</p></li>
@@ -995,9 +998,10 @@ uv<span class="w"> </span>publish<span class="w"> </span>--token<span class="w">
 <p>If you prefer the automated path, just push the tag and let GitHub Actions publish using the configured PyPI secret.</p>
 </section>
 <section id="tutorials">
-<h2>Tutorials<a class="headerlink" href="#tutorials" title="Link to this heading">¶</a></h2>
+<h3>Tutorials<a class="headerlink" href="#tutorials" title="Link to this heading">¶</a></h3>
 <p>Jupyter notebook tutorials showing off features of Quantum Metal are located in the <cite>tutorials</cite>
 folder. If you add a new feature, please add a demonstration of its use to a notebook or start a new notebook.</p>
+</section>
 </section>
 </section>
 
@@ -1006,12 +1010,12 @@ folder. If you add a new feature, please add a demonstration of its use to a not
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="headless-usage.html">
+          <a class="next-page" href="architecture.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Using Quantum Metal without the Qt GUI</div>
+                <div class="title">Architecture</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -1036,7 +1040,7 @@ folder. If you add a new feature, please add a demonstration of its use to a not
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/05/31</div>
+              Last updated on 2026/06/01</div>
           </div>
           <div class="right-details">
             
@@ -1058,7 +1062,7 @@ folder. If you add a new feature, please add a demonstration of its use to a not
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Contributing to Quantum Metal</a><ul>
-<li><a class="reference internal" href="#where-things-are">Where Things Are</a></li>
+<li><a class="reference internal" href="#where-things-are">Where Things Are</a><ul>
 <li><a class="reference internal" href="#reporting-bugs-and-requesting-enhancements">Reporting Bugs and Requesting Enhancements</a></li>
 <li><a class="reference internal" href="#contributing-code">Contributing Code</a><ul>
 <li><a class="reference internal" href="#development-setup">Development Setup</a><ul>
@@ -1095,6 +1099,8 @@ folder. If you add a new feature, please add a demonstration of its use to a not
 </ul>
 </li>
 </ul>
+</li>
+</ul>
 
           </div>
         </div>
@@ -1103,7 +1109,7 @@ folder. If you add a new feature, please add a demonstration of its use to a not
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=5a057da9"></script>
+</div><script src="_static/documentation_options.js?v=6dfdf7c3"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>

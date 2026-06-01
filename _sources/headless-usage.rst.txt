@@ -10,6 +10,25 @@ headlessly in a plain Python interpreter, a Jupyter notebook, or a
 cloud notebook environment (Colab, Binder, JupyterLab on a shared
 server). The Qt GUI is one *interface* to the API, not a requirement.
 
+.. rubric:: Run the tutorials in your browser
+
+.. image:: https://colab.research.google.com/assets/colab-badge.svg
+   :target: https://colab.research.google.com/github/qiskit-community/qiskit-metal/blob/main/tutorials/1%20Overview/1.1%20Quick%20start.ipynb
+   :alt: Open Quick Start in Colab
+
+.. image:: https://mybinder.org/badge_logo.svg
+   :target: https://mybinder.org/v2/gh/qiskit-community/qiskit-metal/main?labpath=tutorials%2F1%20Overview%2F1.1%20Quick%20start.ipynb
+   :alt: Open Quick Start in Binder
+
+In Colab / Binder the first cell installs the lite wheel
+(``pip install -q quantum-metal``). The tutorial then calls
+``gui = qm.gui(design)`` — a factory that returns the desktop
+``MetalGUI`` when a display is available and a Qt-free
+``MetalGUIHeadless`` (inline matplotlib renderer with the same
+``gui.rebuild()`` / ``gui.screenshot()`` / ``gui.edit_component(...)``
+surface) when it isn't. The same notebook runs in both environments
+unchanged.
+
 Quick start
 ===========
 

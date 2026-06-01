@@ -10,22 +10,6 @@
    ]
   },
   {
-   "cell_type": "code",
-   "execution_count": 1,
-   "id": "d9f93520",
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "%reload_ext autoreload\n",
-    "%autoreload 2\n",
-    "%config IPCompleter.greedy=True\n",
-    "\n",
-    "# Qiskit Metal\n",
-    "from qiskit_metal import designs\n",
-    "from qiskit_metal import MetalGUI, Dict"
-   ]
-  },
-  {
    "cell_type": "markdown",
    "id": "69f2dcba",
    "metadata": {},

@@ -22,24 +22,11 @@
    "id": "ffd6a208",
    "metadata": {},
    "source": [
-    "> 💡 **Using this tutorial without the Qt GUI**\n",
+    "> \ud83d\udca1 **Using this tutorial without the Qt GUI**\n",
     "> \n",
-    "> This tutorial uses the desktop `MetalGUI`. To follow along on Colab, Binder, JupyterHub, or any environment where Qt isn't available, **replace any `gui.rebuild()` / `gui.screenshot()` call with `qm.view(design)`** — it renders the design to a matplotlib `Figure` you can display inline or save with `fig.savefig(...)`.\n",
+    "> This tutorial uses the desktop `MetalGUI`. To follow along on Colab, Binder, JupyterHub, or any environment where Qt isn't available, **replace any `gui.rebuild()` / `gui.screenshot()` call with `qm.view(design)`** \u2014 it renders the design to a matplotlib `Figure` you can display inline or save with `fig.savefig(...)`.\n",
     "> \n",
-    "> See [1.4 Headless quick view](../1-Overview/1.4-Headless-quick-view-%28no-Qt-GUI%29.ipynb) for a complete runnable walkthrough and [`docs/headless-usage.rst`](../../docs/headless-usage.rst) for the full reference."
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 1,
-   "id": "55e32db2",
-   "metadata": {
-    "tags": []
-   },
-   "outputs": [],
-   "source": [
-    "%load_ext autoreload\n",
-    "%autoreload 2"
+    "> See [1.1 Quick start](../1-Overview/1.1-Quick-start.ipynb) for a complete runnable walkthrough and [`docs/headless-usage.rst`](../../docs/headless-usage.rst) for the full reference."
    ]
   },
   {
@@ -55,19 +42,12 @@
    "execution_count": 2,
    "id": "d3826fae",
    "metadata": {},
-   "outputs": [
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "10:56PM 20s WARNING [_maybe_warn_lite_flip]: [FutureWarning] quantum-metal v0.7.0 will move PySide6, qdarkstyle, pyaedt, pyEPR-quantum, and gmsh out of base dependencies into opt-in extras. To preserve the current v0.6.x install behaviour, run `pip install 'quantum-metal[full]'` before upgrading. See ROADMAP.md and docs/migration-to-v0.7.0.rst for details. Set QISKIT_METAL_SUPPRESS_LITE_FLIP_WARNING=1 to silence.\n"
-     ]
-    }
-   ],
+   "outputs": [],
    "source": [
     "import qiskit_metal as metal\n",
+    "import qiskit_metal as qm  # alias for qm.gui / qm.view\n",
     "from qiskit_metal import designs, draw\n",
-    "from qiskit_metal import MetalGUI, Dict, Headings\n",
+    "from qiskit_metal import Dict, Headings\n",
     "\n",
     "from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket\n",
     "from qiskit_metal.qlibrary.qubits.transmon_cross import TransmonCross\n",
@@ -213,8 +193,8 @@
     "\n",
     "The two customisation paths are:\n",
     "\n",
-    "1. Update `renderer.options` directly — affects all future exports from that renderer.\n",
-    "2. Pass per-component options when creating a `QComponent` — stored in the `QGeometry`\n",
+    "1. Update `renderer.options` directly \u2014 affects all future exports from that renderer.\n",
+    "2. Pass per-component options when creating a `QComponent` \u2014 stored in the `QGeometry`\n",
     "   table and used by the renderer on export."
    ]
   },
@@ -314,7 +294,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "gui = MetalGUI(design)\n",
+    "gui = qm.gui(design)\n",
     "design.overwrite_enabled = True"
    ]
   },
@@ -375,7 +355,7 @@
    "id": "97d79749",
    "metadata": {},
    "source": [
-    "> **`gds_cell_name`** — each qubit carries a `gds_cell_name` option that tells the\n",
+    "> **`gds_cell_name`** \u2014 each qubit carries a `gds_cell_name` option that tells the\n",
     "> GDS renderer which cell to pull from `gds.options.path_filename` and place at\n",
     "> the junction slot. The four qubits here use three different cells\n",
     "> (`FakeJunction_01`, `FakeJunction_02`, `my_other_junction`) so you can see all\n",
@@ -628,11 +608,11 @@
    "source": [
     "### Short-segment fillet handling\n",
     "\n",
-    "When a CPW segment is shorter than `2 × fillet_value`, applying the fillet would\n",
+    "When a CPW segment is shorter than `2 \u00d7 fillet_value`, applying the fillet would\n",
     "produce overlapping arcs. Set `short_segments_to_not_fillet = True` to skip\n",
     "filleting on those segments rather than producing invalid geometry.\n",
     "`check_short_segments_by_scaling_fillet` controls the threshold multiplier\n",
-    "(default `2.0` — i.e. segments shorter than `2 × fillet` are skipped)."
+    "(default `2.0` \u2014 i.e. segments shorter than `2 \u00d7 fillet` are skipped)."
    ]
   },
   {
@@ -732,7 +712,7 @@
     "\n",
     "`debug_summarize_gds_library` gives a chip-level overview rendered as an embedded SVG.\n",
     "After that, `plot_gds_zoom` clips a small window around each qubit so you can inspect\n",
-    "junction placement and pad geometry at fabrication scale — no KLayout required.\n",
+    "junction placement and pad geometry at fabrication scale \u2014 no KLayout required.\n",
     "\n",
     "> **Note:** if `MetalGUI` above switched matplotlib to the Qt6Agg backend,\n",
     "> run `%matplotlib inline` before the plotting cells (already done below)."
@@ -8446,20 +8426,20 @@
     "\n",
     "| Layer | DType | Content |\n",
     "|-------|-------|---------|\n",
-    "| 1 | 0 | **Final metal pattern** — ground plane, qubit pockets, and all pad polygons after boolean merge |\n",
-    "| 1 | 10 | **Component polygon inputs** — individual pad / pocket outlines *before* the boolean merge (useful for debugging geometry) |\n",
-    "| 1 | 11 | **CPW traces** — `FlexPath` geometry for routes, transmission lines, and connectors |\n",
-    "| 1 | 99 | **No-cheese keepout** — buffer region around component pads where cheesing is suppressed; set by `gds.options.no_cheese.datatype` (default `99`) |\n",
-    "| 1 | 100 | **Cheese hole grid (full)** — the complete rectangular array of holes *before* the keepout is subtracted; debug intermediate, set by `gds.options.cheese.datatype` (default `100`) |\n",
-    "| 1 | 101 | **Cheese holes (final)** — grid minus keepout region; these are the holes that will be etched out of the ground plane (`cheese.datatype + 1`) |\n",
-    "| 1 | 102 | **Template hole** — single unit hole at the origin used to stamp the grid via cell references; removed when `fabricate=True` (`cheese.datatype + 2`) |\n",
-    "| 53 | 0 | **Junction primary layer** — polygons imported from the junction GDS file (`FakeJunction_01/02`) |\n",
-    "| 54 | 0 | **Junction secondary layer** — second contact layer from the same junction GDS file |\n",
+    "| 1 | 0 | **Final metal pattern** \u2014 ground plane, qubit pockets, and all pad polygons after boolean merge |\n",
+    "| 1 | 10 | **Component polygon inputs** \u2014 individual pad / pocket outlines *before* the boolean merge (useful for debugging geometry) |\n",
+    "| 1 | 11 | **CPW traces** \u2014 `FlexPath` geometry for routes, transmission lines, and connectors |\n",
+    "| 1 | 99 | **No-cheese keepout** \u2014 buffer region around component pads where cheesing is suppressed; set by `gds.options.no_cheese.datatype` (default `99`) |\n",
+    "| 1 | 100 | **Cheese hole grid (full)** \u2014 the complete rectangular array of holes *before* the keepout is subtracted; debug intermediate, set by `gds.options.cheese.datatype` (default `100`) |\n",
+    "| 1 | 101 | **Cheese holes (final)** \u2014 grid minus keepout region; these are the holes that will be etched out of the ground plane (`cheese.datatype + 1`) |\n",
+    "| 1 | 102 | **Template hole** \u2014 single unit hole at the origin used to stamp the grid via cell references; removed when `fabricate=True` (`cheese.datatype + 2`) |\n",
+    "| 53 | 0 | **Junction primary layer** \u2014 polygons imported from the junction GDS file (`FakeJunction_01/02`) |\n",
+    "| 54 | 0 | **Junction secondary layer** \u2014 second contact layer from the same junction GDS file |\n",
     "\n",
-    "> **Layer numbers 53 and 54** come from whatever layers your junction cell GDS uses —\n",
+    "> **Layer numbers 53 and 54** come from whatever layers your junction cell GDS uses \u2014\n",
     "> if you supply your own junction file, its layer numbers will appear here instead.\n",
     ">\n",
-    "> **Datatypes 99–102** only appear when cheesing is enabled\n",
+    "> **Datatypes 99\u2013102** only appear when cheesing is enabled\n",
     "> (`gds.options.cheese.view_in_file` lists the layers to cheese).\n",
     "> Set `fabricate=True` to strip the debug intermediates (100 and 102) from the final file,\n",
     "> leaving only the keepout (99) and the final hole set (101)."
@@ -8472,15 +8452,15 @@
    "source": [
     "### Zooming into each qubit\n",
     "\n",
-    "A 200 µm window centred on each transmon pocket lets you verify that the junction cell\n",
+    "A 200 \u00b5m window centred on each transmon pocket lets you verify that the junction cell\n",
     "was placed correctly and oriented to match the qubit's `orientation` option.\n",
     "\n",
     "| Qubit | Position | orientation | Junction cell |\n",
     "|-------|----------|-------------|---------------|\n",
-    "| Q1 | (2.55, 0) mm | 0° | FakeJunction_02 |\n",
-    "| Q2 | (0, −0.9) mm | 90° | FakeJunction_02 |\n",
-    "| Q3 | (−2.55, 0) mm | 0° | FakeJunction_01 |\n",
-    "| Q4 | (0, +0.9) mm | 90° | my_other_junction |"
+    "| Q1 | (2.55, 0) mm | 0\u00b0 | FakeJunction_02 |\n",
+    "| Q2 | (0, \u22120.9) mm | 90\u00b0 | FakeJunction_02 |\n",
+    "| Q3 | (\u22122.55, 0) mm | 0\u00b0 | FakeJunction_01 |\n",
+    "| Q4 | (0, +0.9) mm | 90\u00b0 | my_other_junction |"
    ]
   },
   {
@@ -8506,34 +8486,34 @@
     "import matplotlib.pyplot as plt\n",
     "\n",
     "fig, axes = plt.subplots(2, 2, figsize=(13, 11))\n",
-    "fig.suptitle(\"GDS QRenderer Notebook — qubit junctions (200 µm window)\", fontsize=13)\n",
+    "fig.suptitle(\"GDS QRenderer Notebook \u2014 qubit junctions (200 \u00b5m window)\", fontsize=13)\n",
     "\n",
     "a_gds.plot_gds_zoom(\n",
     "    lib,\n",
     "    center_mm=(2.55, 0.0),\n",
     "    span_mm=0.2,\n",
-    "    title=\"Q1 at (2.55, 0) mm — orientation 0°\",\n",
+    "    title=\"Q1 at (2.55, 0) mm \u2014 orientation 0\u00b0\",\n",
     "    ax=axes[0, 0],\n",
     ")\n",
     "a_gds.plot_gds_zoom(\n",
     "    lib,\n",
     "    center_mm=(0.0, -0.9),\n",
     "    span_mm=0.2,\n",
-    "    title=\"Q2 at (0, −0.9) mm — orientation 90°\",\n",
+    "    title=\"Q2 at (0, \u22120.9) mm \u2014 orientation 90\u00b0\",\n",
     "    ax=axes[0, 1],\n",
     ")\n",
     "a_gds.plot_gds_zoom(\n",
     "    lib,\n",
     "    center_mm=(-2.55, 0.0),\n",
     "    span_mm=0.2,\n",
-    "    title=\"Q3 at (−2.55, 0) mm — orientation 0°\",\n",
+    "    title=\"Q3 at (\u22122.55, 0) mm \u2014 orientation 0\u00b0\",\n",
     "    ax=axes[1, 0],\n",
     ")\n",
     "a_gds.plot_gds_zoom(\n",
     "    lib,\n",
     "    center_mm=(0.0, +0.9),\n",
     "    span_mm=0.2,\n",
-    "    title=\"Q4 at (0, +0.9) mm — orientation 90°\",\n",
+    "    title=\"Q4 at (0, +0.9) mm \u2014 orientation 90\u00b0\",\n",
     "    ax=axes[1, 1],\n",
     ")\n",
     "\n",
@@ -8550,12 +8530,12 @@
     "\n",
     "Within the GUI, the GDS, HFSS, and Q3D toolbar icons trigger the same export\n",
     "pipeline as `export_to_gds()`. Select the components you want, set the output\n",
-    "path, and click the icon — the renderer reads from the same `QGeometry` tables\n",
+    "path, and click the icon \u2014 the renderer reads from the same `QGeometry` tables\n",
     "that the notebook cells use.\n",
     "\n",
     "---\n",
     "\n",
-    "The next section looks under the hood at those `QGeometry` tables — understanding\n",
+    "The next section looks under the hood at those `QGeometry` tables \u2014 understanding\n",
     "them is useful for debugging unexpected geometry in the exported GDS."
    ]
   },
@@ -8770,7 +8750,7 @@
        "    </tr>\n",
        "  </tbody>\n",
        "</table>\n",
-       "<p>4 rows × 21 columns</p>\n",
+       "<p>4 rows \u00d7 21 columns</p>\n",
        "</div>"
       ],
       "text/plain": [
@@ -9223,7 +9203,7 @@
     "The GDS renderer reads `gds_cell_name` from each junction row, imports that cell\n",
     "from `gds.options.path_filename`, and places it at the location and orientation\n",
     "encoded in the junction geometry. The full walkthrough is in\n",
-    "[3.2 — Export your design to GDS](3.2-Export-your-design-to-GDS.ipynb)."
+    "[3.2 \u2014 Export your design to GDS](3.2-Export-your-design-to-GDS.ipynb)."
    ]
   },
   {
@@ -9303,7 +9283,7 @@
        "    </tr>\n",
        "  </tbody>\n",
        "</table>\n",
-       "<p>1 rows × 21 columns</p>\n",
+       "<p>1 rows \u00d7 21 columns</p>\n",
        "</div>"
       ],
       "text/plain": [

@@ -13,14 +13,17 @@ people of all backgrounds. This page describes how you can join the Quantum Meta
 community in this goal.
 
 
+For the system architecture (load-bearing abstractions + a mermaid
+diagram of how the layers fit together), see the dedicated
+:doc:`architecture` page.
+
 .. _where_things_are:
 
-=================
 Where Things Are
 =================
 
 The source code for Quantum Metal is currently located in the `Quantum Community GitHub organization <https://github.com/Quantum-community>`__,
-as part of the larger umbrella of community-driven Quantum projects. This repository will change ownership in the future. 
+as part of the larger umbrella of community-driven Quantum projects. This repository will change ownership in the future.
 
 
 ==========================================
