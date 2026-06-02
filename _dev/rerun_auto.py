@@ -60,7 +60,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 AUTO_REFRESH_LIST = REPO / "_dev" / "notebooks-auto-refresh.txt"
 FROZEN_QT_LIST = REPO / "_dev" / "notebooks-frozen-qt.txt"
-TIMEOUT_SEC = 240  # per-notebook hard cap
+TIMEOUT_SEC = 600  # per-notebook hard cap (raised from 240s — 2.31 / 2.32 need ~5min)
 
 
 def _load_list(path: Path) -> list[Path]:

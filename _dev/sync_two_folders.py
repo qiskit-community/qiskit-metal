@@ -244,23 +244,25 @@ CANONICAL = {
     "1.3": "docs",
     "1.4": "docs",
     "1.5": "docs",
-    # Section 2 — flip to 'tut' where tutorials/ is significantly larger
-    # (rich outputs/images that source-match merge couldn't recover);
-    # keep 'docs' where sizes are similar and merge worked
-    "2.01": "tut",  # 74kB → 341kB
-    "2.11": "tut",
-    "2.12": "tut",  # 179→764, 197→703
-    "2.13": "tut",
-    "2.14": "tut",  # 90→385, 108→305
+    # Section 2 — flipped from 'tut' to 'docs' for 2.01/2.11..2.14/2.22/2.33
+    # in the v0.7.3 follow-up: those notebooks were patched in docs/tut/
+    # to repair lite-runnable bugs (qm import, MetalGUI→qm.gui, copy_qcomponent
+    # name reuse, Ansys cell tagging, resources path). docs/tut/ is now the
+    # canonical with the working code; tutorials/ tracks the docs/ side.
+    "2.01": "docs",
+    "2.11": "docs",
+    "2.12": "docs",
+    "2.13": "docs",
+    "2.14": "docs",
     "2.21": "tut",
-    "2.22": "tut",  # 185→427, 142→408
-    "2.23": "docs",  # 69→17, docs LARGER
+    "2.22": "docs",
+    "2.23": "docs",
     "2.31": "docs",
-    "2.32": "docs",  # 89→138, 95→139 (close)
-    "2.33": "tut",  # 94→757 (8x)
+    "2.32": "docs",
+    "2.33": "docs",
     # Section 3 — user explicit
     "3.1": "tut",
-    "3.2": "tut",
+    "3.2": "docs",  # flipped: docs/tut/ patched (gds→a_gds NameError fix)
     "3.3": "docs",
     "3.4": "tut",
     "3.5": "tut",
