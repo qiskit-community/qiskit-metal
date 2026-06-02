@@ -40,5 +40,6 @@ from typing import Iterable, Optional, Tuple
 
 from .view import view
 from .headless_gui import MetalGUIHeadless, gui
+from .show_inline import show_inline
 
-__all__ = ["view", "gui", "MetalGUIHeadless"]
+__all__ = ["view", "gui", "MetalGUIHeadless", "show_inline"]

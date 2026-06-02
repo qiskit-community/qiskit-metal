@@ -6,7 +6,23 @@ For the offical user-facing changelog for a particular release can be found in t
 
 The changelog for all releases can be found in the release page: [![Releases](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)
 
-## Quantum Metal v0.7.2 (transparent headless + tutorial restructure; no breaking changes)
+## Quantum Metal v0.7.3 (Qt-mode polish + `qm.show_inline`; no breaking changes)
+
+Patch release rolling up the v0.7.2 line. v0.7.2 was never tagged to PyPI; everything below shipped together as **v0.7.3**.
+
+### Added (v0.7.3-only)
+
+- **`qm.show_inline(fig)`** — backend-agnostic figure display. When the active matplotlib backend is interactive (`Qt6Agg` while the desktop `MetalGUI` is open, or `TkAgg` on some local installs), `plt.show()` opens a separate OS window rather than rendering inline in Jupyter. `qm.show_inline(fig)` saves to a PNG buffer and displays via `IPython.display.Image` — identical cell output in Qt mode and headless (Agg / inline) mode. Falls back to `plt.show()` when IPython is unavailable. Lives at `src/qiskit_metal/viewer/show_inline.py`; exported at top level.
+- **`PlotCanvas.zoom_on_components(component_names)`** — the Qt canvas now mirrors `MetalGUIHeadless.zoom_on_components`: computes the bounding box of the named components with 10 % padding, sets the axis limits, refreshes the canvas.
+
+### Fixed (v0.7.3-only)
+
+- **`gui.highlight_components(...)` silently inert in Qt mode** — the canvas method at `mpl_canvas.py:692` appended rectangles + text to the axes correctly, but the resulting redraw was missing some Qt event-loop flushes. The visual highlight only appeared after a second manual `gui.refresh_plot()`. Fix: `canvas.refresh()` now follows `self.draw()` with `self.draw_idle()`, scheduling a redraw on the next event-loop tick so the annotations actually render on the first call. (Headless `MetalGUIHeadless.highlight_components` was unaffected — it draws synchronously.)
+- **Double-click on a QComponents-table row crashed with `AttributeError: 'PlotCanvas' object has no attribute 'zoom_on_components'`.** The desktop GUI calls `gui.canvas.zoom_on_components([name])` on double-click; that method existed on `MetalGUIHeadless` but not on the Qt canvas. Added — see above.
+
+### Highlights (carried from v0.7.2)
+
+
 
 **Follow-up to v0.7.1** centered on making "lite Colab/Binder users" and
 "desktop GUI users" walk the same tutorial path. v0.7.0 + v0.7.1 split

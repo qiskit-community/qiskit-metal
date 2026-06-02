@@ -198,4 +198,4 @@ from qiskit_metal.toolbox_metal.about import about, open_docs
 # or ``MetalGUIHeadless`` (Colab/Binder/no-display) so tutorial code
 # (``gui.rebuild()``, ``gui.edit_component(...)``, ``gui.screenshot(...)``)
 # runs unchanged in both environments.
-from qiskit_metal.viewer import MetalGUIHeadless, gui, view
+from qiskit_metal.viewer import MetalGUIHeadless, gui, show_inline, view

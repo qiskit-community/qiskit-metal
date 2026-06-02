@@ -525,10 +525,20 @@ class PlotCanvas(FigureCanvas):
         """Force refresh.
 
         Does not replot renderer. Just mpl refresh.
+
+        Combines a synchronous ``self.draw()`` with ``draw_idle()``: the
+        latter schedules a redraw on the next Qt event-loop iteration,
+        which catches the case where ``self.draw()`` runs before the
+        underlying axes have been laid out (a real bug observed when
+        :meth:`highlight_components` is called immediately after
+        component instantiation — the rectangles + labels were appended
+        to the axes but not visible until the user manually called
+        ``refresh_plot()`` again).
         """
         self.update()  # not sure if needed
         self.flush_events()
         self.draw()
+        self.draw_idle()
 
     def style_axis(self, ax, num: int):
         """Style the axis.
@@ -587,6 +597,42 @@ class PlotCanvas(FigureCanvas):
         """Automaticlaly scale."""
         for ax in self.figure.axes:
             ax.autoscale()
+        self.refresh()
+
+    def zoom_on_components(self, component_names):
+        """Zoom the canvas to fit the bounding box of the given components.
+
+        Args:
+            component_names (List[str]): Component names to frame.
+
+        Notes:
+            Double-clicking a row in the ``QComponents`` table calls
+            ``gui.canvas.zoom_on_components([name])``. Before this method
+            was added that path raised ``AttributeError`` (the
+            ``MetalGUIHeadless`` viewer always had it; the Qt canvas
+            didn't). 10 % padding is added around the combined bbox.
+        """
+        xmins, ymins, xmaxs, ymaxs = [], [], [], []
+        for name in component_names:
+            if name not in self.design.components:
+                continue
+            try:
+                xmin, ymin, xmax, ymax = self.design.components[name].qgeometry_bounds()
+                xmins.append(xmin)
+                ymins.append(ymin)
+                xmaxs.append(xmax)
+                ymaxs.append(ymax)
+            except Exception:  # pragma: no cover — defensive
+                continue
+        if not xmins:
+            return
+        xmin, ymin = min(xmins), min(ymins)
+        xmax, ymax = max(xmaxs), max(ymaxs)
+        dx = (xmax - xmin) * 0.1 or 0.1
+        dy = (ymax - ymin) * 0.1 or 0.1
+        for ax in self.figure.axes:
+            ax.set_xlim(xmin - dx, xmax + dx)
+            ax.set_ylim(ymin - dy, ymax + dy)
         self.refresh()
 
     def welcome_message(self):
