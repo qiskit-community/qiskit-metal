@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="MplInteraction" href="qiskit_metal.renderers.MplInteraction.html"><link rel="prev" title="QRendererAnalysis" href="qiskit_metal.renderers.QRendererAnalysis.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>PlotCanvas - Quantum Metal 0.7.2</title>
+        <title>PlotCanvas - Quantum Metal 0.7.3</title>
       <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
@@ -157,7 +157,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">Quantum Metal 0.7.2</div></a>
+      <a href="../index.html"><div class="brand">Quantum Metal 0.7.3</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -179,7 +179,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">Quantum Metal 0.7.2</span>
+  <span class="sidebar-brand-text">Quantum Metal 0.7.3</span>
   
 </a>
 <form class="sidebar-search-container" method="get" action="../search.html" role="search">
@@ -595,6 +595,14 @@ Defaults to None.</p>
 <span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/renderers/renderer_mpl/mpl_canvas.html#PlotCanvas.refresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.refresh" title="Link to this definition">¶</a></dt>
 <dd><p>Force refresh.</p>
 <p>Does not replot renderer. Just mpl refresh.</p>
+<p>Combines a synchronous <code class="docutils literal notranslate"><span class="pre">self.draw()</span></code> with <code class="docutils literal notranslate"><span class="pre">draw_idle()</span></code>: the
+latter schedules a redraw on the next Qt event-loop iteration,
+which catches the case where <code class="docutils literal notranslate"><span class="pre">self.draw()</span></code> runs before the
+underlying axes have been laid out (a real bug observed when
+<a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.highlight_components" title="qiskit_metal.renderers.PlotCanvas.highlight_components"><code class="xref py py-meth docutils literal notranslate"><span class="pre">highlight_components()</span></code></a> is called immediately after
+component instantiation — the rectangles + labels were appended
+to the axes but not visible until the user manually called
+<code class="docutils literal notranslate"><span class="pre">refresh_plot()</span></code> again).</p>
 </dd></dl>
 
 <dl class="py method">
@@ -681,6 +689,23 @@ Metal.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.zoom_on_components">
+<span class="sig-name descname"><span class="pre">zoom_on_components</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_names</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/renderers/renderer_mpl/mpl_canvas.html#PlotCanvas.zoom_on_components"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.zoom_on_components" title="Link to this definition">¶</a></dt>
+<dd><p>Zoom the canvas to fit the bounding box of the given components.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>component_names</strong> (<em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – Component names to frame.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Double-clicking a row in the <code class="docutils literal notranslate"><span class="pre">QComponents</span></code> table calls
+<code class="docutils literal notranslate"><span class="pre">gui.canvas.zoom_on_components([name])</span></code>. Before this method
+was added that path raised <code class="docutils literal notranslate"><span class="pre">AttributeError</span></code> (the
+<code class="docutils literal notranslate"><span class="pre">MetalGUIHeadless</span></code> viewer always had it; the Qt canvas
+didn’t). 10 % padding is added around the combined bbox.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.zoom_to_rectangle">
 <span class="sig-name descname"><span class="pre">zoom_to_rectangle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.10.9)"><span class="pre">Axes</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/renderers/renderer_mpl/mpl_canvas.html#PlotCanvas.zoom_to_rectangle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.zoom_to_rectangle" title="Link to this definition">¶</a></dt>
 <dd><p>Zoom to the specified rectangle.</p>
@@ -734,7 +759,7 @@ values for the bounds of the series as a whole.</p></li>
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/06/01</div>
+              Last updated on 2026/06/02</div>
           </div>
           <div class="right-details">
             
@@ -776,6 +801,7 @@ values for the bounds of the series as a whole.</p></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.style_axis"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.style_axis()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.style_figure"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.style_figure()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.welcome_message"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.welcome_message()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.zoom_on_components"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.zoom_on_components()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.zoom_to_rectangle"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.zoom_to_rectangle()</span></code></a></li>
 </ul>
 </li>
@@ -790,7 +816,7 @@ values for the bounds of the series as a whole.</p></li>
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=6dfdf7c3"></script>
+</div><script src="../_static/documentation_options.js?v=c98573da"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>

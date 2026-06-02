@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>qiskit_metal.renderers.renderer_mpl.mpl_canvas - Quantum Metal 0.7.2</title>
+        <title>qiskit_metal.renderers.renderer_mpl.mpl_canvas - Quantum Metal 0.7.3</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
@@ -156,7 +156,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">Quantum Metal 0.7.2</div></a>
+      <a href="../../../../index.html"><div class="brand">Quantum Metal 0.7.3</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -178,7 +178,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
   
   
-  <span class="sidebar-brand-text">Quantum Metal 0.7.2</span>
+  <span class="sidebar-brand-text">Quantum Metal 0.7.3</span>
   
 </a>
 <form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
@@ -1005,10 +1005,20 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Force refresh.</span>
 
 <span class="sd">        Does not replot renderer. Just mpl refresh.</span>
+
+<span class="sd">        Combines a synchronous ``self.draw()`` with ``draw_idle()``: the</span>
+<span class="sd">        latter schedules a redraw on the next Qt event-loop iteration,</span>
+<span class="sd">        which catches the case where ``self.draw()`` runs before the</span>
+<span class="sd">        underlying axes have been laid out (a real bug observed when</span>
+<span class="sd">        :meth:`highlight_components` is called immediately after</span>
+<span class="sd">        component instantiation — the rectangles + labels were appended</span>
+<span class="sd">        to the axes but not visible until the user manually called</span>
+<span class="sd">        ``refresh_plot()`` again).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>  <span class="c1"># not sure if needed</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">flush_events</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">draw_idle</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="PlotCanvas.style_axis">
@@ -1076,6 +1086,45 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Automaticlaly scale.&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">axes</span><span class="p">:</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="PlotCanvas.zoom_on_components">
+<a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.PlotCanvas.html#qiskit_metal.renderers.PlotCanvas.zoom_on_components">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">zoom_on_components</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component_names</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Zoom the canvas to fit the bounding box of the given components.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            component_names (List[str]): Component names to frame.</span>
+
+<span class="sd">        Notes:</span>
+<span class="sd">            Double-clicking a row in the ``QComponents`` table calls</span>
+<span class="sd">            ``gui.canvas.zoom_on_components([name])``. Before this method</span>
+<span class="sd">            was added that path raised ``AttributeError`` (the</span>
+<span class="sd">            ``MetalGUIHeadless`` viewer always had it; the Qt canvas</span>
+<span class="sd">            didn&#39;t). 10 % padding is added around the combined bbox.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">xmins</span><span class="p">,</span> <span class="n">ymins</span><span class="p">,</span> <span class="n">xmaxs</span><span class="p">,</span> <span class="n">ymaxs</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">component_names</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">xmin</span><span class="p">,</span> <span class="n">ymin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">qgeometry_bounds</span><span class="p">()</span>
+                <span class="n">xmins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xmin</span><span class="p">)</span>
+                <span class="n">ymins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ymin</span><span class="p">)</span>
+                <span class="n">xmaxs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xmax</span><span class="p">)</span>
+                <span class="n">ymaxs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ymax</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># pragma: no cover — defensive</span>
+                <span class="k">continue</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">xmins</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">xmin</span><span class="p">,</span> <span class="n">ymin</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">xmins</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">ymins</span><span class="p">)</span>
+        <span class="n">xmax</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">xmaxs</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">ymaxs</span><span class="p">)</span>
+        <span class="n">dx</span> <span class="o">=</span> <span class="p">(</span><span class="n">xmax</span> <span class="o">-</span> <span class="n">xmin</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.1</span> <span class="ow">or</span> <span class="mf">0.1</span>
+        <span class="n">dy</span> <span class="o">=</span> <span class="p">(</span><span class="n">ymax</span> <span class="o">-</span> <span class="n">ymin</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.1</span> <span class="ow">or</span> <span class="mf">0.1</span>
+        <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">axes</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">xmin</span> <span class="o">-</span> <span class="n">dx</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">+</span> <span class="n">dx</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">ymin</span> <span class="o">-</span> <span class="n">dy</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">+</span> <span class="n">dy</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span></div>
 
 
@@ -1355,7 +1404,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/06/01</div>
+              Last updated on 2026/06/02</div>
           </div>
           <div class="right-details">
             
@@ -1370,7 +1419,7 @@
       
     </aside>
   </div>
-</div><script src="../../../../_static/documentation_options.js?v=6dfdf7c3"></script>
+</div><script src="../../../../_static/documentation_options.js?v=c98573da"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>

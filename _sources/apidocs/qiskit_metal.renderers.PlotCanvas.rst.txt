@@ -37,6 +37,7 @@ PlotCanvas
    .. automethod:: PlotCanvas.style_axis
    .. automethod:: PlotCanvas.style_figure
    .. automethod:: PlotCanvas.welcome_message
+   .. automethod:: PlotCanvas.zoom_on_components
    .. automethod:: PlotCanvas.zoom_to_rectangle
 
    
