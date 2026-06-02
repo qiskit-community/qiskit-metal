@@ -497,7 +497,7 @@
 <p><code class="docutils literal notranslate"><span class="pre">self.add_qgeometry('junction',</span> <span class="pre">dict(rect_jj=rect_jj),</span> <span class="pre">width=p.inductor_width)</span></code></p>
 <p>In this case, the linestring is drawn between the two charge islands of the <code class="docutils literal notranslate"><span class="pre">TransmonPocket</span></code>. Much more of the junctions options are from renderer options added when the QRenderers are initiated. These are covered more in the renderer tutorials and sessions.</p>
 <p>It should be noted, currently multiple junctions in a component will receive the same renderer options. This is fine if, say, making a symmetric SQUID, though if trying to have asymmetry, (or, say fluxonium), a manner to handled multiple junction renderer options in a component is required.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
@@ -506,97 +506,6 @@
 <span class="o">?</span>TransmonPocket
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-fg">Init signature:</span>
-TransmonPocket(
-    design,
-    name: str = <span class="ansi-bold" style="color: rgb(0,135,0)">None</span>,
-    options: addict.addict.Dict = <span class="ansi-bold" style="color: rgb(0,135,0)">None</span>,
-    options_connection_pads: dict = <span class="ansi-bold" style="color: rgb(0,135,0)">None</span>,
-    make: bool = <span class="ansi-bold" style="color: rgb(0,135,0)">True</span>,
-    **kwargs,
-)
-<span class="ansi-red-fg">Docstring:</span>
-The base `TransmonPocket` class.
-
-Inherits `BaseQubit` class.
-
-Create a standard pocket transmon qubit for a ground plane,
-with two pads connected by a junction (see drawing below).
-
-Connector lines can be added using the `connection_pads`
-dictionary. Each connector pad has a name and a list of default
-properties.
-
-Sketch:
-    Below is a sketch of the qubit
-    ::
-
-             +1                            +1
-            ________________________________
-        -1  |______ ____           __________|   +1     Y
-            |      |____|         |____|     |          ^
-            |        __________________      |          |
-            |       |     island       |     |          |-----&gt;  X
-            |       |__________________|     |
-            |                 |              |
-            |  pocket         x              |
-            |        _________|________      |
-            |       |                  |     |
-            |       |__________________|     |
-            |        ______                  |
-            |_______|______|                 |
-        -1  |________________________________|   +1
-
-             -1                            -1
-
-.. image::
-    TransmonPocket.png
-
-.. meta::
-    :description: Transmon Pocket
-
-BaseQubit Default Options:
-    * connection_pads: Empty Dict -- The dictionary which contains all active connection lines for the qubit.
-    * _default_connection_pads: Empty Dict -- The default values for the (if any) connection lines of the qubit.
-
-Default Options:
-    * pad_gap: &#39;30um&#39; -- The distance between the two charge islands, which is also the resulting &#39;length&#39; of the pseudo junction
-    * inductor_width: &#39;20um&#39; -- Width of the pseudo junction between the two charge islands (if in doubt, make the same as pad_gap). Really just for simulating in HFSS / other EM software
-    * pad_width: &#39;455um&#39; -- The width (x-axis) of the charge island pads
-    * pad_height: &#39;90um&#39; -- The size (y-axis) of the charge island pads
-    * pocket_width: &#39;650um&#39; -- Size of the pocket (cut out in ground) along x-axis
-    * pocket_height: &#39;650um&#39; -- Size of the pocket (cut out in ground) along y-axis
-    * _default_connection_pads: Dict
-        * pad_gap: &#39;15um&#39; -- Space between the connector pad and the charge island it is nearest to
-        * pad_width: &#39;125um&#39; -- Width (x-axis) of the connector pad
-        * pad_height: &#39;30um&#39; -- Height (y-axis) of the connector pad
-        * pad_cpw_shift: &#39;5um&#39; -- Shift the connector pad cpw line by this much away from qubit
-        * pad_cpw_extent: &#39;25um&#39; -- Shift the connector pad cpw line by this much away from qubit
-        * cpw_width: &#39;cpw_width&#39; -- Center trace width of the CPW line
-        * cpw_gap: &#39;cpw_gap&#39; -- Dielectric gap width of the CPW line
-        * cpw_extend: &#39;100um&#39; -- Depth the connector line extense into ground (past the pocket edge)
-        * pocket_extent: &#39;5um&#39; -- How deep into the pocket should we penetrate with the cpw connector (into the fround plane)
-        * pocket_rise: &#39;65um&#39; -- How far up or downrelative to the center of the transmon should we elevate the cpw connection point on the ground plane
-        * loc_W: &#39;+1&#39; -- Width location  only +-1
-        * loc_H: &#39;+1&#39; -- Height location only +-1
-<span class="ansi-red-fg">Init docstring:</span>
-Args:
-    design (QDesign): The parent design.
-    name (str): Name of the component.
-    options (dict): User options that will override the defaults.  Defaults to None.
-    options_connection_pads(dict): User options for connection pads on qubit
-    make (bool): True if the make function should be called at the end of the init.
-            Options be used in the make function to create the geometry.  Defaults to None.
-<span class="ansi-red-fg">File:</span>           ~/CODE_REPOS/quantum_hardware/qiskit-metal/src/qiskit_metal/qlibrary/qubits/transmon_pocket.py
-<span class="ansi-red-fg">Type:</span>           type
-<span class="ansi-red-fg">Subclasses:</span>
-</pre></div></div>
 </div>
 </section>
 <section id="Exteriors,-Interiors,-and-MultiPolygons">
@@ -702,46 +611,13 @@ shapely.geometry.multipolygon.MultiPolygon
 </pre></div></div>
 </div>
 <p>The MultiPolygon can still just be passed to add_qgeometry as one would with a regular polygon. It is broken up behind the scenes so two separate rectangles (with the appropriate coordinates) are added to the poly qgeometry table. This is handled by the add_qgeometry method of QGeometryTables.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">?</span>metal.qgeometries.QGeometryTables.add_qgeometry
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-fg">Signature:</span>
-metal.qgeometries.QGeometryTables.add_qgeometry(
-    self,
-    kind: str,
-    component_name: str,
-    geometry: dict,
-    subtract: bool = <span class="ansi-bold" style="color: rgb(0,135,0)">False</span>,
-    helper: bool = <span class="ansi-bold" style="color: rgb(0,135,0)">False</span>,
-    layer: Union[int, str] = <span class="ansi-green-fg">1</span>,
-    chip: str = <span class="ansi-yellow-fg">&#39;main&#39;</span>,
-    **other_options,
-)
-<span class="ansi-red-fg">Docstring:</span>
-Main interface to add qgeometries.
-
-Args:
-    kind (str): Must be in get_element_types (&#39;path&#39;, &#39;poly&#39;, etc.).
-    component_name (str): Component name.
-    geometry (dict): Dict of shapely geometry.
-    subtract (bool): Subtract - passed through.  Defaults to False.
-    helper (bool): Helper - passed through.  Defaults to False.
-    layer (Union[int, str]): Layer - passed through.  Defaults to 1.
-    chip (str): Chip name - passed through.  Defaults to &#39;main&#39;.
-    **other_options (object): Other_options - passed through.
-<span class="ansi-red-fg">File:</span>      ~/CODE_REPOS/quantum_hardware/qiskit-metal/src/qiskit_metal/qgeometries/qgeometries_handler.py
-<span class="ansi-red-fg">Type:</span>      function
-</pre></div></div>
 </div>
 <p>This method also handles rounding of coordinates to try and avoid any numerical errors. It is called by <code class="docutils literal notranslate"><span class="pre">metal.qlibrary.core.QComponent.add_qgeometry</span></code> and should not be called directly.</p>
 </section>
@@ -750,7 +626,7 @@ Args:
 <p>As is the case with python classes, one can extend a given component by creating a qcomponent which inherits said class, making it a parent/child relationship. While python does support multiple inheritances, Metal may run into some bugs, so it is best to keep inheritances as single paths of heritage.</p>
 <p>A good example is <code class="docutils literal notranslate"><span class="pre">TransmonPocketCL</span></code>, which adds a “charge line” the a “standard” <code class="docutils literal notranslate"><span class="pre">TransmonPocket</span></code>. As can be seen in the below code, none of the charge islands or other connection pads are present, but will still be generated via the <code class="docutils literal notranslate"><span class="pre">super().make()</span></code> line in the <code class="docutils literal notranslate"><span class="pre">make()</span></code> method.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -887,13 +763,21 @@ Args:
 </div>
 </div>
 <p>We can see this is the case by generating a TransmonPocketCL in the GUI.</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span> <span class="o">=</span> <span class="n">metal</span><span class="o">.</span><span class="n">MetalGUI</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qm</span>
+
+<span class="n">gui</span> <span class="o">=</span> <span class="n">qm</span><span class="o">.</span><span class="n">gui</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div style='border-left:4px solid #6929C4;padding:8px 12px;background:#f4f1fb;color:#222;font-family:sans-serif;font-size:13px;line-height:1.4;margin:4px 0;'><b>Quantum Metal — headless viewer active.</b> Rendering inline via <code>qm.view(design)</code>; <code>gui.rebuild()</code>, <code>gui.screenshot()</code>, <code>gui.edit_component(...)</code> work as in the desktop GUI.<br>For the full desktop experience (Qt window, dockable panels): <code>pip install 'quantum-metal[gui]'</code> and re-import.</div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
@@ -914,7 +798,7 @@ Args:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.32-Create-a-QComponent-Advanced_21_0.png" class="no-scaled-link" src="../../_images/tut_2-From-components-to-chip_2.32-Create-a-QComponent-Advanced_21_0.png" width="500" />
+<img alt="../../_images/tut_2-From-components-to-chip_2.32-Create-a-QComponent-Advanced_21_0.png" src="../../_images/tut_2-From-components-to-chip_2.32-Create-a-QComponent-Advanced_21_0.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -931,8 +815,11 @@ Args:
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-{&#39;pos_x&#39;: &#39;0um&#39;,
- &#39;pos_y&#39;: &#39;0um&#39;,
+{&#39;pos_x&#39;: &#39;0.0um&#39;,
+ &#39;pos_y&#39;: &#39;0.0um&#39;,
+ &#39;orientation&#39;: &#39;0.0&#39;,
+ &#39;chip&#39;: &#39;main&#39;,
+ &#39;layer&#39;: &#39;1&#39;,
  &#39;connection_pads&#39;: {&#39;a&#39;: {&#39;pad_gap&#39;: &#39;15um&#39;,
    &#39;pad_width&#39;: &#39;125um&#39;,
    &#39;pad_height&#39;: &#39;30um&#39;,
@@ -957,14 +844,12 @@ Args:
    &#39;pocket_rise&#39;: &#39;65um&#39;,
    &#39;loc_W&#39;: -1,
    &#39;loc_H&#39;: &#39;+1&#39;}},
- &#39;chip&#39;: &#39;main&#39;,
  &#39;pad_gap&#39;: &#39;30um&#39;,
  &#39;inductor_width&#39;: &#39;20um&#39;,
  &#39;pad_width&#39;: &#39;455um&#39;,
  &#39;pad_height&#39;: &#39;90um&#39;,
  &#39;pocket_width&#39;: &#39;650um&#39;,
  &#39;pocket_height&#39;: &#39;650um&#39;,
- &#39;orientation&#39;: &#39;0&#39;,
  &#39;make_CL&#39;: True,
  &#39;cl_gap&#39;: &#39;6um&#39;,
  &#39;cl_width&#39;: &#39;10um&#39;,
@@ -974,6 +859,8 @@ Args:
  &#39;cl_off_center&#39;: &#39;100um&#39;,
  &#39;hfss_wire_bonds&#39;: False,
  &#39;q3d_wire_bonds&#39;: False,
+ &#39;aedt_q3d_wire_bonds&#39;: False,
+ &#39;aedt_hfss_wire_bonds&#39;: False,
  &#39;hfss_inductance&#39;: &#39;10nH&#39;,
  &#39;hfss_capacitance&#39;: 0,
  &#39;hfss_resistance&#39;: 0,
@@ -982,26 +869,21 @@ Args:
  &#39;q3d_capacitance&#39;: 0,
  &#39;q3d_resistance&#39;: 0,
  &#39;q3d_mesh_kw_jj&#39;: 7e-06,
- &#39;gds_cell_name&#39;: &#39;my_other_junction&#39;}
+ &#39;gds_cell_name&#39;: &#39;my_other_junction&#39;,
+ &#39;aedt_q3d_inductance&#39;: 1e-08,
+ &#39;aedt_q3d_capacitance&#39;: 0,
+ &#39;aedt_hfss_inductance&#39;: 1e-08,
+ &#39;aedt_hfss_capacitance&#39;: 0}
 </pre></div></div>
 </div>
 <p>We can see that <code class="docutils literal notranslate"><span class="pre">my_transmon_cl</span></code> inherited the appropriate options from <code class="docutils literal notranslate"><span class="pre">TransmonPocket</span></code>, and even got the junction renderer options since its parent class does declare <code class="docutils literal notranslate"><span class="pre">_qgeometry_table_junction='True'</span></code></p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># gui.main_window.close()  # no-op in headless qm.gui</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-True
-</pre></div></div>
 </div>
 </section>
 </section>

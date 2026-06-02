@@ -474,7 +474,7 @@
 <div><p>💡 <strong>Running in Colab or Binder?</strong> Skip the desktop GUI install — the cell below grabs the lite (no-Qt) wheel, and <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> auto-picks an inline matplotlib viewer with the same API (<code class="docutils literal notranslate"><span class="pre">gui.rebuild()</span></code>, <code class="docutils literal notranslate"><span class="pre">gui.screenshot()</span></code>, <code class="docutils literal notranslate"><span class="pre">gui.edit_component(...)</span></code>) as the desktop <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code>.</p>
 </div></blockquote>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In Colab / Binder, uncomment to install Quantum Metal (lite, no Qt).</span>
@@ -492,17 +492,24 @@
 <p>Creates 2 transmon pockets facing each other.</p>
 <p>Anchors are user-specified points through which the Routing must pass.</p>
 <p>Between anchors you can specify different connection algorythms.</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">designs</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">designs</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span>
 
 <span class="n">design</span> <span class="o">=</span> <span class="n">designs</span><span class="o">.</span><span class="n">DesignPlanar</span><span class="p">()</span>
 <span class="n">gui</span> <span class="o">=</span> <span class="n">qm</span><span class="o">.</span><span class="n">gui</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div style='border-left:4px solid #6929C4;padding:8px 12px;background:#f4f1fb;color:#222;font-family:sans-serif;font-size:13px;line-height:1.4;margin:4px 0;'><b>Quantum Metal — headless viewer active.</b> Rendering inline via <code>qm.view(design)</code>; <code>gui.rebuild()</code>, <code>gui.screenshot()</code>, <code>gui.edit_component(...)</code> work as in the desktop GUI.<br>For the full desktop experience (Qt window, dockable panels): <code>pip install 'quantum-metal[gui]'</code> and re-import.</div></div>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -514,7 +521,7 @@
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
@@ -544,6 +551,14 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.14-Get-them-all-with-MixedRoute_7_0.png" src="../../_images/tut_2-From-components-to-chip_2.14-Get-them-all-with-MixedRoute_7_0.png" />
+</div>
+</div>
 <section id="Single-CPW-using-one-meander-and-3-simple-segments">
 <h2>Single CPW using one meander and 3 simple segments<a class="headerlink" href="#Single-CPW-using-one-meander-and-3-simple-segments" title="Link to this heading">¶</a></h2>
 <div class="nbinput nblast docutils container">
@@ -558,7 +573,7 @@
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
@@ -621,10 +636,18 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.14-Get-them-all-with-MixedRoute_10_0.png" src="../../_images/tut_2-From-components-to-chip_2.14-Get-them-all-with-MixedRoute_10_0.png" />
+</div>
+</div>
 </section>
 <section id="Single-CPW-using-the-pathfinder-segments">
 <h2>Single CPW using the pathfinder segments<a class="headerlink" href="#Single-CPW-using-the-pathfinder-segments" title="Link to this heading">¶</a></h2>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
@@ -685,16 +708,24 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.14-Get-them-all-with-MixedRoute_12_0.png" src="../../_images/tut_2-From-components-to-chip_2.14-Get-them-all-with-MixedRoute_12_0.png" />
+</div>
+</div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># gui.screenshot()</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create an obstacle</span>
@@ -707,8 +738,16 @@
 </pre></div>
 </div>
 </div>
-<div class="nbinput docutils container">
+<div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.14-Get-them-all-with-MixedRoute_14_0.png" src="../../_images/tut_2-From-components-to-chip_2.14-Get-them-all-with-MixedRoute_14_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
@@ -719,11 +758,11 @@
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.14-Get-them-all-with-MixedRoute_15_0.png" class="no-scaled-link" src="../../_images/tut_2-From-components-to-chip_2.14-Get-them-all-with-MixedRoute_15_0.png" width="500" />
+<img alt="../../_images/tut_2-From-components-to-chip_2.14-Get-them-all-with-MixedRoute_15_0.png" src="../../_images/tut_2-From-components-to-chip_2.14-Get-them-all-with-MixedRoute_15_0.png" />
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">anchors</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
@@ -776,8 +815,16 @@
 </pre></div>
 </div>
 </div>
-<div class="nbinput docutils container">
+<div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.14-Get-them-all-with-MixedRoute_16_0.png" src="../../_images/tut_2-From-components-to-chip_2.14-Get-them-all-with-MixedRoute_16_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
@@ -788,7 +835,7 @@
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.14-Get-them-all-with-MixedRoute_17_0.png" class="no-scaled-link" src="../../_images/tut_2-From-components-to-chip_2.14-Get-them-all-with-MixedRoute_17_0.png" width="500" />
+<img alt="../../_images/tut_2-From-components-to-chip_2.14-Get-them-all-with-MixedRoute_17_0.png" src="../../_images/tut_2-From-components-to-chip_2.14-Get-them-all-with-MixedRoute_17_0.png" />
 </div>
 </div>
 </section>

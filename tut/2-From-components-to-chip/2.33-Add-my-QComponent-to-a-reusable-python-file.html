@@ -478,15 +478,24 @@
 </div></blockquote>
 <p>Preload python packages.</p>
 <p>Create a design and open the GUI</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span> <span class="o">=</span> <span class="n">designs</span><span class="o">.</span><span class="n">DesignPlanar</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">designs</span><span class="p">,</span> <span class="n">Dict</span>
+
+<span class="n">design</span> <span class="o">=</span> <span class="n">designs</span><span class="o">.</span><span class="n">DesignPlanar</span><span class="p">()</span>
 <span class="n">design</span><span class="o">.</span><span class="n">overwrite_enabled</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">gui</span> <span class="o">=</span> <span class="n">MetalGUI</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
+<span class="n">gui</span> <span class="o">=</span> <span class="n">qm</span><span class="o">.</span><span class="n">gui</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div style='border-left:4px solid #6929C4;padding:8px 12px;background:#f4f1fb;color:#222;font-family:sans-serif;font-size:13px;line-height:1.4;margin:4px 0;'><b>Quantum Metal — headless viewer active.</b> Rendering inline via <code>qm.view(design)</code>; <code>gui.rebuild()</code>, <code>gui.screenshot()</code>, <code>gui.edit_component(...)</code> work as in the desktop GUI.<br>For the full desktop experience (Qt window, dockable panels): <code>pip install 'quantum-metal[gui]'</code> and re-import.</div></div>
 </div>
 <section id="Managing-a-QComponent">
 <h3>Managing a QComponent<a class="headerlink" href="#Managing-a-QComponent" title="Link to this heading">¶</a></h3>
@@ -495,7 +504,7 @@
 <p>Create an instance of <code class="docutils literal notranslate"><span class="pre">TransmonPocket</span></code>. Notice the import needs to use the absolute path. This is to minimize the dynamic memory footprint of Qiskit Metal and to prevent QComponent sub-class naming conflicts that might occur if user creates custom ones.</p>
 <p>Observe how, at time of creation, we define some basic options of the TransmonPocket, being the number/name of connection pads(<code class="docutils literal notranslate"><span class="pre">a</span></code>-&gt;<code class="docutils literal notranslate"><span class="pre">d</span></code>). Most options can be defined/updated also after the creation of the QComponent instance, as we will show later in this section.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.qubits.transmon_pocket</span><span class="w"> </span><span class="kn">import</span> <span class="n">TransmonPocket</span>
@@ -517,8 +526,8 @@
 </div>
 <p>Turn your attention to the Qiskit Metal GUI. In the <code class="docutils literal notranslate"><span class="pre">Main</span> <span class="pre">View</span></code> tab you will not see <code class="docutils literal notranslate"><span class="pre">q1</span></code> yet. However if you open the tab <code class="docutils literal notranslate"><span class="pre">Elements</span></code>, you will observe that all of its shapes (<code class="docutils literal notranslate"><span class="pre">component_id</span></code> = 1) are now present in the QGeometry tables (show in that tab). This occurs because the <code class="docutils literal notranslate"><span class="pre">__init__()</span></code> of the QComponent class already run the <code class="docutils literal notranslate"><span class="pre">make()</span></code> of the TransmonPocket.</p>
 <p>Note that the <code class="docutils literal notranslate"><span class="pre">make()</span></code> if the component does not automatically render to the GUI, for increased usage flexibility. Therefore we need to explicit call the method <code class="docutils literal notranslate"><span class="pre">gui.rebuild()</span></code> to observe the shapes in the <code class="docutils literal notranslate"><span class="pre">Main</span> <span class="pre">View</span></code>. We do that in the next cell.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>  <span class="c1"># this updates the QComponent tables by running make()</span>
@@ -526,8 +535,16 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_8_0.png" src="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_8_0.png" />
+</div>
+</div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
@@ -538,7 +555,7 @@
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_9_0.png" class="no-scaled-link" src="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_9_0.png" width="500" />
+<img alt="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_9_0.png" src="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_9_0.png" />
 </div>
 </div>
 </section>
@@ -547,7 +564,7 @@
 <p>Now we can also change the options of the component <code class="docutils literal notranslate"><span class="pre">q1</span></code> before we re-run the make.</p>
 <p>QComponent classes can have parameterized <code class="docutils literal notranslate"><span class="pre">make()</span></code>. That means that the final shapes will be the result of a combination of input parameters. Said parameters and their defaults are described in the QComponent <code class="docutils literal notranslate"><span class="pre">default_options</span></code>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span><span class="o">.</span><span class="n">default_options</span>
@@ -555,7 +572,7 @@
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -582,7 +599,7 @@
 </div>
 <p>This list of options is also “extended” by the supported renderers. This is because the simulation/analysis can have shape- (or even QComponent-)dependent parameters to e set. See below the full list of options available for the user to update for the <code class="docutils literal notranslate"><span class="pre">TransmonPocket</span></code>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span><span class="o">.</span><span class="n">options</span>
@@ -590,7 +607,7 @@
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -680,7 +697,7 @@
 <p>The previously created TransmonPocket instance, was named <code class="docutils literal notranslate"><span class="pre">Pocket_1</span></code> by default (see in GUI or by executing <code class="docutils literal notranslate"><span class="pre">q1.name</span></code>). The first part of the name is defined in the QComponent class <code class="docutils literal notranslate"><span class="pre">component_metadata</span> <span class="pre">-&gt;</span> <span class="pre">short</span> <span class="pre">name</span></code> as we will see later, while the suffix is an incremental integer resulting from a QComponent class-specific counter.</p>
 <p>Instead of using the default name, we can assign the QComponent instance name at creation, for example: <code class="docutils literal notranslate"><span class="pre">q1</span> <span class="pre">=</span> <span class="pre">TransmonPocket(design,</span> <span class="pre">name</span> <span class="pre">=</span> <span class="pre">&quot;Q1&quot;,</span> <span class="pre">options</span> <span class="pre">=</span> <span class="pre">q1options)</span></code>. We can also rename it like this:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">rename_component</span><span class="p">(</span><span class="n">q1</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">)</span>
@@ -688,7 +705,7 @@
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -697,7 +714,7 @@ True
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
@@ -708,7 +725,7 @@ True
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_16_0.png" class="no-scaled-link" src="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_16_0.png" width="500" />
+<img alt="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_16_0.png" src="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_16_0.png" />
 </div>
 </div>
 </section>
@@ -717,7 +734,7 @@ True
 <h3>Connecting two QComponents - Nets<a class="headerlink" href="#Connecting-two-QComponents---Nets" title="Link to this heading">¶</a></h3>
 <p>Let’s demonstrate how to update the options of a component after creation by updating <code class="docutils literal notranslate"><span class="pre">pos_x</span></code> to move <code class="docutils literal notranslate"><span class="pre">Q1</span></code> towards the left. let’s go ahead and create also an identical TransmonPocket (<code class="docutils literal notranslate"><span class="pre">Q2</span></code>) to its right.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pos_x</span> <span class="o">=</span> <span class="s2">&quot;-1.5mm&quot;</span>
@@ -725,7 +742,7 @@ True
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q2</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">copy_qcomponent</span><span class="p">(</span><span class="n">q1</span><span class="p">,</span> <span class="s2">&quot;Q2&quot;</span><span class="p">)</span>
@@ -735,8 +752,8 @@ True
 </div>
 <p>To connect <code class="docutils literal notranslate"><span class="pre">Q1:a</span></code> to <code class="docutils literal notranslate"><span class="pre">Q2:b</span></code>, we will use a QComponent that inherits from the <code class="docutils literal notranslate"><span class="pre">QRoute</span></code> class. In this example, we use <code class="docutils literal notranslate"><span class="pre">RouteMeander</span></code>.</p>
 <p>Note that it is mandatory to provide the option <code class="docutils literal notranslate"><span class="pre">pin_inputs</span></code> for a QRoute to be created correctly. Indeed a QRoute generates its own pins by mirroring the pins of the QComponents it needs to connect. For <code class="docutils literal notranslate"><span class="pre">RouteMeander</span></code>, we also need to provide a <code class="docutils literal notranslate"><span class="pre">total_length</span></code>, since the meander shapes will be created to match the target transmission line length.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.tlines.meandered</span><span class="w"> </span><span class="kn">import</span> <span class="n">RouteMeander</span>
@@ -754,9 +771,17 @@ True
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_21_0.png" src="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_21_0.png" />
+</div>
+</div>
 <p>The meander was created without corner rounding because the fillet radius was not specified. Let’s go ahead and update the RouteMeander instance to smooth out those edges.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cpw</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">fillet</span> <span class="o">=</span> <span class="s2">&quot;90um&quot;</span>
@@ -767,8 +792,16 @@ True
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_23_0.png" src="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_23_0.png" />
+</div>
+</div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
@@ -779,13 +812,13 @@ True
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_24_0.png" class="no-scaled-link" src="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_24_0.png" width="500" />
+<img alt="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_24_0.png" src="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_24_0.png" />
 </div>
 </div>
 <p>Finally, observe how the <code class="docutils literal notranslate"><span class="pre">net_info</span></code> table has been updated to record the physical/electrical connection between the two TransmonPocket instances and the RouteMeander instance. Two nets were created connecting the 4 involved pins in pairs (2 pins of the RouteMenader instance and two pins one each Transmon Pocket instance).</p>
 <p>Nets always pair pins. Net can never connect more than 2 pins because every net represents a point contact between two QComponents. This could appear like an excessive constrain when compared to net definition in traditional circuit design. However, it helps normalize the quantum circuit design flow.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">net_info</span>
@@ -793,7 +826,7 @@ True
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -869,7 +902,7 @@ True
 <p>First, let’s free up space in the layout we just compoese in the previous section. Specifically let’s eliminate the cpw and Q2 instances (We will reuse Q1).</p>
 <p>Note in the following cell I am intentionally using two different methods to delete a component, just to illustrate them. YOu can use only one of the two methods in your notebooks.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">delete_component</span><span class="p">(</span><span class="s2">&quot;Q2&quot;</span><span class="p">)</span>
@@ -879,7 +912,7 @@ True
 </div>
 <p>Notice that the <code class="docutils literal notranslate"><span class="pre">net_info</span></code> table is now empty because we eliminated <code class="docutils literal notranslate"><span class="pre">cpw</span></code>, which was connecting the QComponent instances.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">net_info</span>
@@ -887,7 +920,7 @@ True
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -922,20 +955,20 @@ True
 <p>For the remainder of this section, you will need the file <code class="docutils literal notranslate"><span class="pre">my429_qcomponent.py</span></code>, which contains incremantally complex examples of custom components, intended only for illustrative purposes.</p>
 <p>Your file <code class="docutils literal notranslate"><span class="pre">my429_qcomponents.py</span></code> could be a at a different location, so you might need to update appropriately the import in the next cell.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># from qiskit_metal.qlibrary.user_components.my429_qcomponents import MyQComponent1</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;../../resources&quot;</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;../resources&quot;</span><span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">my429_qcomponents</span><span class="w"> </span><span class="kn">import</span> <span class="n">MyQComponent1</span>
 </pre></div>
 </div>
 </div>
 <p>The first class <code class="docutils literal notranslate"><span class="pre">MyQComponent1</span></code> has been designed to be as simple as possible. In fact, it is not even parameterized. It is a simple fixed-size rectangle with a pin on the left edge.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">myQC</span> <span class="o">=</span> <span class="n">MyQComponent1</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;myQC&quot;</span><span class="p">)</span>
@@ -945,9 +978,17 @@ True
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_34_0.png" src="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_34_0.png" />
+</div>
+</div>
 <p>Open the <code class="docutils literal notranslate"><span class="pre">my429_qcomponents.py</span></code> file to observe the class code. You will notice it only calls the two key methods <code class="docutils literal notranslate"><span class="pre">add_qgeometry()</span></code> and <code class="docutils literal notranslate"><span class="pre">add_pins()</span></code>. It is that simple to create a custom QComponent, you just need 2 lines of code. With the following cell you can observe that the two lines are already sufficient to route to the QComponent and get its geometries inside the QGeometry table.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
@@ -966,8 +1007,16 @@ True
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_36_0.png" src="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_36_0.png" />
+</div>
+</div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
@@ -978,12 +1027,12 @@ True
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_37_0.png" class="no-scaled-link" src="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_37_0.png" width="500" />
+<img alt="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_37_0.png" src="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_37_0.png" />
 </div>
 </div>
 <p>The previous class example did not allow for parametrization. Let’s introduce that factor with the next example class <code class="docutils literal notranslate"><span class="pre">MyQComponent2</span></code>. First observe the different shapes by running the following cell, and then compare the code by opening again the <code class="docutils literal notranslate"><span class="pre">my429_qcomponents.py</span></code> file.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cpw</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
@@ -1001,8 +1050,16 @@ True
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_39_0.png" src="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_39_0.png" />
+</div>
+</div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
@@ -1013,12 +1070,12 @@ True
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_40_0.png" class="no-scaled-link" src="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_40_0.png" width="500" />
+<img alt="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_40_0.png" src="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_40_0.png" />
 </div>
 </div>
 <p>Observe the available options with the next cell. These are only the options we listed in the <code class="docutils literal notranslate"><span class="pre">default_options</span></code>, the renderers did not add any analysis-related option to the list.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">myQC</span><span class="o">.</span><span class="n">options</span>
@@ -1026,7 +1083,7 @@ True
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1041,8 +1098,8 @@ True
 </pre></div></div>
 </div>
 <p>The reason the list of <code class="docutils literal notranslate"><span class="pre">options</span></code> and <code class="docutils literal notranslate"><span class="pre">default_options</span></code> match is because the class was not designed to import the renderer-dependent options from the renderer. To do that you will need to add the <code class="docutils literal notranslate"><span class="pre">component_metadata</span></code> to your class. We do that in <code class="docutils literal notranslate"><span class="pre">MyQComponent3</span></code> and <code class="docutils literal notranslate"><span class="pre">MyQComponent4</span></code>.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cpw</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
@@ -1074,8 +1131,16 @@ True
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_44_0.png" src="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_44_0.png" />
+</div>
+</div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
@@ -1086,12 +1151,12 @@ True
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_45_0.png" class="no-scaled-link" src="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_45_0.png" width="500" />
+<img alt="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_45_0.png" src="../../_images/tut_2-From-components-to-chip_2.33-Add-my-QComponent-to-a-reusable-python-file_45_0.png" />
 </div>
 </div>
 <p>Observe the additional renderer parameters being added to the list of options that the user can modify.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">myQC</span><span class="o">.</span><span class="n">options</span>
@@ -1099,7 +1164,7 @@ True
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="output_area docutils container">

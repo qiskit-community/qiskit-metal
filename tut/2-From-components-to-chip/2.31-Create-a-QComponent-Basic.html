@@ -530,6 +530,7 @@
  &#39;__format__&#39;,
  &#39;__ge__&#39;,
  &#39;__getattribute__&#39;,
+ &#39;__getstate__&#39;,
  &#39;__gt__&#39;,
  &#39;__hash__&#39;,
  &#39;__i_am_component__&#39;,
@@ -584,7 +585,8 @@
  &#39;qgeometry_plot&#39;,
  &#39;qgeometry_table&#39;,
  &#39;qgeometry_types&#39;,
- &#39;rebuild&#39;]
+ &#39;rebuild&#39;,
+ &#39;to_script&#39;]
 </pre></div></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">MyQComponent</span></code> creates a simple rectangle of a variable width, height, position and orientation.</p>
@@ -711,59 +713,16 @@ Currently the options are:</p>
 <p>Once you are happy with your geometries, and have them properly parameterized to allow the Front End User as much customization of your component as you wish, it is time to convert the geometries into Metal <code class="docutils literal notranslate"><span class="pre">qgeometries</span></code> via <code class="docutils literal notranslate"><span class="pre">add_qgeometry</span></code></p>
 <section id="add_qgeometry">
 <h4>add_qgeometry<a class="headerlink" href="#add_qgeometry" title="Link to this heading">¶</a></h4>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">metal</span>
 
 <span class="o">?</span>metal.qlibrary.core.QComponent.add_qgeometry
+<span class="kn">import</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qm</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-fg">Signature:</span>
-metal.qlibrary.core.QComponent.add_qgeometry(
-    self,
-    kind: str,
-    geometry: dict,
-    subtract: bool = <span class="ansi-bold" style="color: rgb(0,135,0)">False</span>,
-    helper: bool = <span class="ansi-bold" style="color: rgb(0,135,0)">False</span>,
-    layer: Union[int, str, NoneType] = <span class="ansi-bold" style="color: rgb(0,135,0)">None</span>,
-    chip: Optional[str] = <span class="ansi-bold" style="color: rgb(0,135,0)">None</span>,
-    **kwargs,
-) -&gt; <span class="ansi-bold" style="color: rgb(0,135,0)">None</span>
-<span class="ansi-red-fg">Docstring:</span>
-Add QGeometry.
-
-Takes any additional options in options.
-
-Args:
-    kind (str): The kind of QGeometry, such as &#39;path&#39;, &#39;poly&#39;, etc.
-                All geometry in the dictionary should have the same kind,
-                such as Polygon or LineString.
-    geometry (Dict[BaseGeometry]): Key-value pairs of name of the geometry
-        you want to add and the value should be a shapely geometry object, such
-        as a Polygon or a LineString.
-    subtract (bool): Subtract from the layer.  Defaults to False.
-    helper (bool): Is this a helper object. If true, subtract must be false
-                   Defaults to False.
-    layer (int, str): The layer to which the set of QGeometry will belong
-                      Defaults to None, which is converted to self.options.chip.
-    chip (str): Chip name. Defaults to None, which is converted to
-    self.options.chip.
-    kwargs (dict): Parameters dictionary
-
-Assumptions:
-    * Assumes all geometry in the `geometry` argument are homogeneous in kind;
-      i.e., all lines or polys etc.
-<span class="ansi-red-fg">File:</span>      ~/CODE_REPOS/quantum_hardware/qiskit-metal/src/qiskit_metal/qlibrary/core/base.py
-<span class="ansi-red-fg">Type:</span>      function
-</pre></div></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">add_qgeometry</span></code> is the method by which the shapely geometries you have drawn are converted into Metal qgeometries, the format which allows for the easy translatability between different renderers and the variable representation of quantum elements such as Josephson junctions.</p>
 <p>Currently there are three kinds of qgeometries, <code class="docutils literal notranslate"><span class="pre">path</span></code>, <code class="docutils literal notranslate"><span class="pre">poly</span></code> and <code class="docutils literal notranslate"><span class="pre">junction</span></code>. <code class="docutils literal notranslate"><span class="pre">path</span></code> -&gt; shapely LineString <code class="docutils literal notranslate"><span class="pre">poly</span></code> -&gt; any other shapely geometry (currently) <code class="docutils literal notranslate"><span class="pre">junction</span></code> -&gt; shapely LineString</p>
@@ -773,91 +732,13 @@ Assumptions:
 </section>
 <section id="add_pin">
 <h4>add_pin<a class="headerlink" href="#add_pin" title="Link to this heading">¶</a></h4>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">?</span>metal.qlibrary.core.QComponent.add_pin
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-fg">Signature:</span>
-metal.qlibrary.core.QComponent.add_pin(
-    self,
-    name: str,
-    points: numpy.ndarray,
-    width: float,
-    input_as_norm: bool = <span class="ansi-bold" style="color: rgb(0,135,0)">False</span>,
-    chip: Optional[str] = <span class="ansi-bold" style="color: rgb(0,135,0)">None</span>,
-    gap: Optional[float] = <span class="ansi-bold" style="color: rgb(0,135,0)">None</span>,
-) -&gt; <span class="ansi-bold" style="color: rgb(0,135,0)">None</span>
-<span class="ansi-red-fg">Docstring:</span>
-Adds a pin from two points which are normal/tangent to the intended
-plane of the pin. The normal should &#39;point&#39; in the direction of
-intended connection. Adds the new pin as a subdictionary to parent
-component&#39;s pins dictionary.
-
-Args:
-    * name (str): name of the pin
-    * points (numpy.ndarray): [[x1,y1],[x2,y2]] for the normal/tangent line
-    * width (float): the width of the intended connection (eg. qubit bus pad arm)
-    * input_as_norm (bool): Indicates if the points are tangent or normal to the pin plane.
-      Defaults to False.. Make True for normal.
-    * parent (Union[int,]): The id of the parent component.
-    * chip (str): the name of the chip the pin is located on. Defaults to None, which is
-    converted to self.options.chip.
-    * gap (float): the dielectric gap of the pin for the purpose of representing as a port
-      for simulations.  Defaults to None which is converted to 0.6 * width.
-
-Dictionary containing pins information:
-    * points (numpy.ndarray) - two (x,y) points which represent the edge of the pin for
-      another component to attach to (eg. the edge of a CPW TL)
-    * middle (numpy.ndarray) - an (x,y) which represents the middle of the points above,
-      where the pin is represented.
-    * normal (numpy.ndarray) - the normal vector of the pin, pointing in direction of
-      intended connection
-    * tangent (numpy.ndarray) - 90 degree rotation of normal vector
-    * width (float) - the width of the pin
-    * chip (str) - the chip the pin is on
-    * parent_name - the id of the parent component
-    * net_id - net_id of the pin if connected to another pin.  Defaults to 0, indicates
-      not connected))
-
-::
-
-    * = pin
-    . = outline of component
-
----&gt; = the list being passed in as &#39;points&#39; [[x1,y1],[x2,y2]]
-
-
-normal vector
-
-::
-
-    ..........
-             .
-    ---------&gt;*
-             .
-    ..........
-
-tangent vector
-
-::
-
-    ..........^
-             .|
-             .*
-             .|
-    ..........|
-<span class="ansi-red-fg">File:</span>      ~/CODE_REPOS/quantum_hardware/qiskit-metal/src/qiskit_metal/qlibrary/core/base.py
-<span class="ansi-red-fg">Type:</span>      function
-</pre></div></div>
 </div>
 <p>The final step for creating your QComponent is adding of pins. This is not necessarily a requirement for your component, but to have full functionality with Metal and be able to make use of auto-routing components with it, you will want to indicate where the “ports” of your component are.</p>
 <p>Following from the above docstring, pins can be added from two coordinates indicating either an orthogonal vector to the port plane of your component, or a tangent to the port plane of your component. For the former, you want the vector to be pointing to the middle point of your intended plane, with the latter being across the length of your intended plane (as indicated in the above figure). The <code class="docutils literal notranslate"><span class="pre">width</span></code> should be the size of the plane (say, in the case of a CPW transmission line, the trace
@@ -980,15 +861,21 @@ width), with the <code class="docutils literal notranslate"><span class="pre">ga
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span> <span class="o">=</span> <span class="n">metal</span><span class="o">.</span><span class="n">designs</span><span class="o">.</span><span class="n">DesignPlanar</span><span class="p">()</span>
 
-<span class="n">gui</span> <span class="o">=</span> <span class="n">metal</span><span class="o">.</span><span class="n">MetalGUI</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
+<span class="n">gui</span> <span class="o">=</span> <span class="n">qm</span><span class="o">.</span><span class="n">gui</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div style='border-left:4px solid #6929C4;padding:8px 12px;background:#f4f1fb;color:#222;font-family:sans-serif;font-size:13px;line-height:1.4;margin:4px 0;'><b>Quantum Metal — headless viewer active.</b> Rendering inline via <code>qm.view(design)</code>; <code>gui.rebuild()</code>, <code>gui.screenshot()</code>, <code>gui.edit_component(...)</code> work as in the desktop GUI.<br>For the full desktop experience (Qt window, dockable panels): <code>pip install 'quantum-metal[gui]'</code> and re-import.</div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
@@ -1005,7 +892,7 @@ width), with the <code class="docutils literal notranslate"><span class="pre">ga
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.31-Create-a-QComponent-Basic_28_0.png" class="no-scaled-link" src="../../_images/tut_2-From-components-to-chip_2.31-Create-a-QComponent-Basic_28_0.png" width="500" />
+<img alt="../../_images/tut_2-From-components-to-chip_2.31-Create-a-QComponent-Basic_28_0.png" src="../../_images/tut_2-From-components-to-chip_2.31-Create-a-QComponent-Basic_28_0.png" />
 </div>
 </div>
 <p>You should now see <em>my_cap</em> in the Metal gui. One can work on the layout of the component through these cells by changing the above class, such as how the parameterized values are used. By enabling <code class="docutils literal notranslate"><span class="pre">overwrite_enabled</span></code> (which should normally be kept to False), the code can quickly be iterated through until you, the component designer, is happy with the qcomponent you have just created.</p>
@@ -1019,22 +906,13 @@ width), with the <code class="docutils literal notranslate"><span class="pre">ga
 </div>
 <p>We will delve into more complex QComponent topics in the next notebook, <code class="docutils literal notranslate"><span class="pre">Creating</span> <span class="pre">a</span> <span class="pre">QComponent</span> <span class="pre">-</span> <span class="pre">Advanced</span></code></p>
 <p>Use the command below to close Metal GUI.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-True
-</pre></div></div>
 </div>
 </section>
 </section>

@@ -474,7 +474,7 @@
 <div><p>💡 <strong>Running in Colab or Binder?</strong> Skip the desktop GUI install — the cell below grabs the lite (no-Qt) wheel, and <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> auto-picks an inline matplotlib viewer with the same API (<code class="docutils literal notranslate"><span class="pre">gui.rebuild()</span></code>, <code class="docutils literal notranslate"><span class="pre">gui.screenshot()</span></code>, <code class="docutils literal notranslate"><span class="pre">gui.edit_component(...)</span></code>) as the desktop <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code>.</p>
 </div></blockquote>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In Colab / Binder, uncomment to install Quantum Metal (lite, no Qt).</span>
@@ -491,7 +491,7 @@
 </div></blockquote>
 <p>Now, let’s import Qiskit Metal:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">metal</span>
@@ -520,8 +520,8 @@
 "> Welcome to Qiskit Metal! <h1></div>
 </div>
 <p>Just as we did in the “Start Here” notebook, we’ll open the Qiskit Metal GUI and work with simple planar designs:</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span> <span class="o">=</span> <span class="n">designs</span><span class="o">.</span><span class="n">DesignPlanar</span><span class="p">()</span>
@@ -529,9 +529,15 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div style='border-left:4px solid #6929C4;padding:8px 12px;background:#f4f1fb;color:#222;font-family:sans-serif;font-size:13px;line-height:1.4;margin:4px 0;'><b>Quantum Metal — headless viewer active.</b> Rendering inline via <code>qm.view(design)</code>; <code>gui.rebuild()</code>, <code>gui.screenshot()</code>, <code>gui.edit_component(...)</code> work as in the desktop GUI.<br>For the full desktop experience (Qt window, dockable panels): <code>pip install 'quantum-metal[gui]'</code> and re-import.</div></div>
+</div>
 <p>Let’s load a QComponent with all default options, corresponding to a transmon qubit. This particular QComponent is stored in the library qiskit_metal.qlibrary.qubits and we’ll create a new object of the class TransmonPocket.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select a QComponent to create (The QComponent is a python class named `TransmonPocket`)</span>
@@ -543,8 +549,16 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_9_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_9_0.png" />
+</div>
+</div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
@@ -555,14 +569,14 @@
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_10_0.png" class="no-scaled-link" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_10_0.png" width="500" />
+<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_10_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_10_0.png" />
 </div>
 </div>
 <p>We see that this QComponent consists of two large metallic pads with a thin strip of metal connecting them, corresponding to a Josephson Junction. The transmon qubit is centered at the origin by default. In the GUI, we can see that the ID assigned to our QComponent is “1” and that the QComponent class is “Transmon Pocket.”</p>
 <p>Note that since we didn’t give the QComponent an explicit name, one was assigned automatically (“Pocket_1”) which we can also see in the GUI. Taking a look at the actual QComponent python script, we see that there is a “short name” defined in the QComponent metadata (short_name = “Pocket” in the dictionary), which is where this name comes from.</p>
 <p>It is easy to give a specific name to a QComponent object. We can delete the QComponent “Pocket_1” by just clicking the “Delete all” button in the Qiskit Metal GUI. Alternatively, this can done by executing the following command, which deletes all components in the design (more on deleting later in this tutorial):</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Delete all QComponents in our design, which in this case is just the transmon pocket &quot;Pocket_1&quot;</span>
@@ -571,15 +585,31 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_13_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_13_0.png" />
+</div>
+</div>
 <p>Then, we can create the same transmon pocket with the name “Q1” by typing the command:</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a new qcomponent object with name &#39;Q1&#39;</span>
 <span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">)</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>  <span class="c1"># rebuild the design and plot</span>
 </pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_15_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_15_0.png" />
 </div>
 </div>
 <p>The QComponent we’ve just created as a name “Q1” and a QComponent ID of 2, since an ID of 1 was already used for the now-deleted “Pocket_1” object. It is worth noting that the QComponent we’ve just created is not functional yet; it’s just two rectangular metal pads with a thin strip of metal connecting them. In order for a QComponent to be functional in an actual design, we will need to add a few additional things, such as QPins defining where the transmon pocket connects to coplanar waveguides
@@ -589,7 +619,7 @@
 <p>QComponents come with some default options, which are used in the make function of the qcomponent to create the qgeometry that you see in the GUI. These options are parsed by Qiskit Metal, and can be changed using either the GUI or the script API.</p>
 <p>We can see what the options and other parameters are for our QComponent by typing the following command:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span>
@@ -597,12 +627,12 @@
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-<span class="ansi-magenta-intense-fg ansi-bold">name:    </span><span class="ansi-blue-intense-fg ansi-bold">Pocket_2</span>
+<span class="ansi-magenta-intense-fg ansi-bold">name:    </span><span class="ansi-blue-intense-fg ansi-bold">Q1</span>
 <span class="ansi-magenta-intense-fg ansi-bold">class:   </span><span class="ansi-blue-intense-fg ansi-bold">TransmonPocket        </span>
 <span class="ansi-magenta-intense-fg ansi-bold">options: </span>
   &#39;pos_x&#39;             : &#39;0.0um&#39;,
@@ -636,12 +666,12 @@
   &#39;aedt_hfss_inductance&#39;: 1e-08,
   &#39;aedt_hfss_capacitance&#39;: 0,
 <span class="ansi-magenta-intense-fg ansi-bold">module:  </span><span class="ansi-blue-intense-fg ansi-bold">qiskit_metal.qlibrary.qubits.transmon_pocket</span>
-<span class="ansi-magenta-intense-fg ansi-bold">id:      </span><span class="ansi-blue-intense-fg ansi-bold">3</span>
+<span class="ansi-magenta-intense-fg ansi-bold">id:      </span><span class="ansi-blue-intense-fg ansi-bold">2</span>
 </pre></div></div>
 </div>
 <p>We can see the full list of template options for the class by typing this command:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">TransmonPocket</span><span class="o">.</span><span class="n">get_template_options</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
@@ -649,7 +679,7 @@
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -701,8 +731,8 @@
 <section id="Modifying-the-Options">
 <h2>Modifying the Options<a class="headerlink" href="#Modifying-the-Options" title="Link to this heading">¶</a></h2>
 <p>We can modify the QComponent by changing the default options. This can be done using either the python API or the GUI. Here’s an example where we’ll move the transmon from (0,0) to (2,2), while also modifying the pad height and width:</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Change options</span>
@@ -716,12 +746,20 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_25_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_25_0.png" />
+</div>
+</div>
 </section>
 <section id="Copying-a-QComponent">
 <h2>Copying a QComponent<a class="headerlink" href="#Copying-a-QComponent" title="Link to this heading">¶</a></h2>
 <p>We can copy a QComponent using the “design.copy_qcomponent” command. Let’s make a copy of our transmon qubit, which is located at (2,2) and place the copy at (-2,2):</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Copy q1 and place the new Qcomponent (&quot;q1_copy&quot;) at (-2,2):</span>
@@ -732,9 +770,17 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_28_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_28_0.png" />
+</div>
+</div>
 <p>We can also copy multiple QComponents at the same time. For example, let’s suppose we want to take our two transmon qubits at (-2,2) and (2,2) and create copies which are located at (-2,2) and (-2,2):</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s copy the two QComponents and change the y-coordinates of the copies to both be -2:</span>
@@ -746,8 +792,16 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_30_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_30_0.png" />
+</div>
+</div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
@@ -758,7 +812,7 @@
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_31_0.png" class="no-scaled-link" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_31_0.png" width="500" />
+<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_31_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_31_0.png" />
 </div>
 </div>
 <p>Now we have four transmon qubits located at the corners of a square: (-2,-2), (-2,2), (2,2) and (2,-2).</p>
@@ -766,23 +820,36 @@
 <h3>More copy patterns<a class="headerlink" href="#More-copy-patterns" title="Link to this heading">¶</a></h3>
 <p>The cells below — adapted from the standalone <em>How to copy a QComponent</em> tutorial — explore richer copy scenarios: bulk copies via lists, partial option overrides, default-overwrite semantics.</p>
 <p>Now we’ll put one transmon at the origin:</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s start by putting a transmon at the origin:</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.qubits.transmon_pocket</span><span class="w"> </span><span class="kn">import</span> <span class="n">TransmonPocket</span>
 
 <span class="n">design</span><span class="o">.</span><span class="n">overwrite_enabled</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="c1"># Clear any prior copies from earlier in the notebook so the</span>
+<span class="c1"># copy_qcomponent() calls below can reuse the &quot;Q1_copy&quot;/&quot;Q3&quot;/&quot;Q4&quot; names.</span>
+<span class="k">for</span> <span class="n">_name</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;Q1_copy&quot;</span><span class="p">,</span> <span class="s2">&quot;Q1_another_copy&quot;</span><span class="p">,</span> <span class="s2">&quot;Q3&quot;</span><span class="p">,</span> <span class="s2">&quot;Q4&quot;</span><span class="p">,</span> <span class="s2">&quot;Q5&quot;</span><span class="p">,</span> <span class="s2">&quot;Q6&quot;</span><span class="p">,</span> <span class="s2">&quot;Q7&quot;</span><span class="p">,</span> <span class="s2">&quot;Q8&quot;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">_name</span> <span class="ow">in</span> <span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">:</span>
+        <span class="n">design</span><span class="o">.</span><span class="n">delete_component</span><span class="p">(</span><span class="n">_name</span><span class="p">)</span>
 <span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">)</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_35_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_35_0.png" />
+</div>
+</div>
 <p>First, we’ll copy the component and then manually modify the coordinates to be at (1,0) instead of (0,0):</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now let&#39;s copy the transmon at the origin and put it at position (0,1):</span>
@@ -793,9 +860,17 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_37_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_37_0.png" />
+</div>
+</div>
 <p>Now, we’ll copy the original component and in the same step we’ll move the copy to (-1,0) by passing a dictionary to the “copy_qcomponent” command:</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now let&#39;s copy the transmon at the origin and put it at position (0,-1):</span>
@@ -805,9 +880,17 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_39_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_39_0.png" />
+</div>
+</div>
 <p>We can copy multiple components at once using the “copy_multiple_qcomponents” command. Here’s an example that copies the three components we’ve just created (Q1 and the two copies: Q1_copy and Q1_another_copy) and moves them up by 2.0mm each:</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now let&#39;s copy all three components at the same time, moving them up by +2mm in the y-direction:</span>
@@ -821,9 +904,17 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_41_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_41_0.png" />
+</div>
+</div>
 <p>Note that we can also copy multiple QComponents without passing dictionaries. In this case, the copied QComponents will sit on top of of the original QComponents in the layout:</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example of copying without giving any dictionary values; qcomponents will sit on top of the originals!</span>
@@ -835,9 +926,17 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_43_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_43_0.png" />
+</div>
+</div>
 <p>Note also that we can copy multiple QComponents but only give a dictionary to one of them. The other two dictionaries still need to exist but can be empty:</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Copy the three original components but only give a dictionary for the first one; other two dictionaries still need to exist but can be empty:</span>
@@ -851,8 +950,16 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_45_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_45_0.png" />
+</div>
+</div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
@@ -863,7 +970,7 @@
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_46_0.png" class="no-scaled-link" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_46_0.png" width="500" />
+<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_46_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_46_0.png" />
 </div>
 </div>
 </section>
@@ -873,8 +980,8 @@
 <p>We saw in an earlier example how to delete all QComponents in a design using either the “design.delete_all_components” command or by using the “Delete all” button in the GUI. But what if we only want to delete specific QComponents without deleting everything in a design?</p>
 <p>We can delete a specific QComponent using either the GUI or the python API. If you wish to remove a specific QComponent, you can do so using the “delete_component” or “_delete_component” commands. The first takes the string reference to a Qcomponent, while the second takes an integer reference to a QComponent. Suppose we want to remove qubit ‘Q1’. Presently, we do not need to pass a Boolean corresponding to whether we want to force the delete (true=1) even if the component has dependencies, or
 whether the deletion should not be executed in the event the QComponent does have dependencies (false=0). The bool option is for future potential possibilities of having QComponents with dependencies.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">delete_component</span><span class="p">(</span><span class="s2">&quot;Q1&quot;</span><span class="p">)</span>
@@ -883,9 +990,17 @@ whether the deletion should not be executed in the event the QComponent does hav
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_49_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_49_0.png" />
+</div>
+</div>
 <p>We can also delete without checking for QComponent dependencies at all. In this case, we pass only the QComponent ID. As an example, we can force delete ‘Q1_copy” which has QComponent ID=3 by typing:</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">_delete_component</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
@@ -894,12 +1009,28 @@ whether the deletion should not be executed in the event the QComponent does hav
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+07:22PM 34s WARNING [_delete_component]: Called _delete_complete, component_id: 3, but component_id is not in design.components dictionary.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_51_1.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_51_1.png" />
+</div>
+</div>
 </section>
 <section id="Renaming-a-QComponent">
 <h2>Renaming a QComponent<a class="headerlink" href="#Renaming-a-QComponent" title="Link to this heading">¶</a></h2>
 <p>In the first example in this notebook, we created a QComponent named “Pocket_1” then deleted it and created one with the name “Q1”. One can also simply rename a QComponent without deleting it and creating a new one. We can rename a QComponent by using the “design_rename.component” command. For example, let’s rename “Q3” and “Q4” to “Q_three” and “Q_four”, respectively. Note that “Q3” has a QComponent ID of 4, while “Q4” has a QComponent ID of 5.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">rename_component</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;Q_three&quot;</span><span class="p">)</span>  <span class="c1"># rename &quot;Q3&quot; to &quot;Q_three&quot;</span>
@@ -907,13 +1038,22 @@ whether the deletion should not be executed in the event the QComponent does hav
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+07:22PM 34s WARNING [rename_component]: Called rename_component, component_id=4, but component_id is not in design.components dictionary.
+07:22PM 34s WARNING [rename_component]: Called rename_component, component_id=5, but component_id is not in design.components dictionary.
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-True
+-3
 </pre></div></div>
 </div>
 </section>
@@ -921,7 +1061,7 @@ True
 <h2>Overwriting a QComponent<a class="headerlink" href="#Overwriting-a-QComponent" title="Link to this heading">¶</a></h2>
 <p>In order to enable component overwrite of QComponents with the same name, we can use the following command:</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">overwrite_enabled</span> <span class="o">=</span> <span class="kc">True</span>
@@ -930,7 +1070,7 @@ True
 </div>
 <p>This allows for the QComponent to be modified and re-built without having to delete it. Without this line, a QComponent would have to be deleted before recreating it with different options.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
@@ -941,14 +1081,14 @@ True
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_59_0.png" class="no-scaled-link" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_59_0.png" width="500" />
+<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_59_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_59_0.png" />
 </div>
 </div>
 </section>
 <section id="Closing-the-Qiskit-Metal-GUI">
 <h2>Closing the Qiskit Metal GUI<a class="headerlink" href="#Closing-the-Qiskit-Metal-GUI" title="Link to this heading">¶</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>

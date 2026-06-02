@@ -474,7 +474,7 @@
 <div><p>💡 <strong>Running in Colab or Binder?</strong> Skip the desktop GUI install — the cell below grabs the lite (no-Qt) wheel, and <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> auto-picks an inline matplotlib viewer with the same API (<code class="docutils literal notranslate"><span class="pre">gui.rebuild()</span></code>, <code class="docutils literal notranslate"><span class="pre">gui.screenshot()</span></code>, <code class="docutils literal notranslate"><span class="pre">gui.edit_component(...)</span></code>) as the desktop <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code>.</p>
 </div></blockquote>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In Colab / Binder, uncomment to install Quantum Metal (lite, no Qt).</span>
@@ -494,11 +494,12 @@
 <section id="Preparations">
 <h2>Preparations<a class="headerlink" href="#Preparations" title="Link to this heading">¶</a></h2>
 <p>Import key libraries and open the Metal GUI. Also we configure the notebook to enable overwriting of existing components</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">designs</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">designs</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span>
 
 <span class="n">design</span> <span class="o">=</span> <span class="n">designs</span><span class="o">.</span><span class="n">DesignPlanar</span><span class="p">()</span>
@@ -508,6 +509,12 @@
 <span class="n">design</span><span class="o">.</span><span class="n">overwrite_enabled</span> <span class="o">=</span> <span class="kc">True</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div style='border-left:4px solid #6929C4;padding:8px 12px;background:#f4f1fb;color:#222;font-family:sans-serif;font-size:13px;line-height:1.4;margin:4px 0;'><b>Quantum Metal — headless viewer active.</b> Rendering inline via <code>qm.view(design)</code>; <code>gui.rebuild()</code>, <code>gui.screenshot()</code>, <code>gui.edit_component(...)</code> work as in the desktop GUI.<br>For the full desktop experience (Qt window, dockable panels): <code>pip install 'quantum-metal[gui]'</code> and re-import.</div></div>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -519,7 +526,7 @@
 </div>
 <p>Create 3 Transmon Qbits with 4 pins. This uses the same definition (options) for all 3 Qbits, but it places them in 3 different (x,y) origin points.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.qubits.transmon_pocket</span><span class="w"> </span><span class="kn">import</span> <span class="n">TransmonPocket</span>
@@ -561,14 +568,14 @@
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_10_0.png" class="no-scaled-link" src="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_10_0.png" width="500" />
+<img alt="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_10_0.png" src="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_10_0.png" />
 </div>
 </div>
 <section id="Using-CPW-meanders-to-connect-the-3-Qbits">
 <h3>Using CPW meanders to connect the 3 Qbits<a class="headerlink" href="#Using-CPW-meanders-to-connect-the-3-Qbits" title="Link to this heading">¶</a></h3>
 <p>Import the RouteMeander and inspect what options are available for you to initialize</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.tlines.meandered</span><span class="w"> </span><span class="kn">import</span> <span class="n">RouteMeander</span>
@@ -578,7 +585,7 @@
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -605,7 +612,7 @@
 </div>
 <p>Let’s define a dictionary with the options we want to keep global. We will then concatenate this dictionary to the ones we will use to describe the individual Qbits</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ops</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;90um&quot;</span><span class="p">)</span>
@@ -614,7 +621,7 @@
 </div>
 <p>Let’s define the first CPW QComponent.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
@@ -643,21 +650,29 @@
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-11:13PM 00s WARNING [check_lengths]: For path table, component=cpw_1, key=trace has short segments that could cause issues with fillet. Values in (1-1)  are index(es) in shapely geometry.
-11:13PM 00s WARNING [check_lengths]: For path table, component=cpw_1, key=cut has short segments that could cause issues with fillet. Values in (1-1)  are index(es) in shapely geometry.
-11:13PM 01s WARNING [check_lengths]: For path table, component=cpw_1, key=trace has short segments that could cause issues with fillet. Values in (1-1)  are index(es) in shapely geometry.
-11:13PM 01s WARNING [check_lengths]: For path table, component=cpw_1, key=cut has short segments that could cause issues with fillet. Values in (1-1)  are index(es) in shapely geometry.
+07:22PM 10s WARNING [check_lengths]: For path table, component=cpw_1, key=trace has short segments that could cause issues with fillet. Values in (1-1)  are index(es) in shapely geometry.
+07:22PM 10s WARNING [check_lengths]: For path table, component=cpw_1, key=cut has short segments that could cause issues with fillet. Values in (1-1)  are index(es) in shapely geometry.
+07:22PM 10s WARNING [check_lengths]: For path table, component=cpw_1, key=trace has short segments that could cause issues with fillet. Values in (1-1)  are index(es) in shapely geometry.
+07:22PM 10s WARNING [check_lengths]: For path table, component=cpw_1, key=cut has short segments that could cause issues with fillet. Values in (1-1)  are index(es) in shapely geometry.
 </pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_17_1.png" src="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_17_1.png" />
+</div>
 </div>
 <p>You might have received an expected python “warning - check_lengths” message. This indicates that one of the CPW edges is too short to accommodate the fillet corner rounding previous defined at 90um. Also, the CPW “start lead” does not offer enough clearance from the Qbit, causing a short between two pins.</p>
 <p>Please take a minute to observe this behavior in the GUI</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
@@ -668,12 +683,12 @@
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_19_0.png" class="no-scaled-link" src="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_19_0.png" width="500" />
+<img alt="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_19_0.png" src="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_19_0.png" />
 </div>
 </div>
 <p>You can inspect the points forming the CPW route to find the culprit edge (the warning message should have indicated the index of the offending edge)</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cpw</span><span class="o">.</span><span class="n">get_points</span><span class="p">()</span>
@@ -681,7 +696,7 @@
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -704,8 +719,8 @@ array([[-1.075     ,  0.195     ],
 </pre></div></div>
 </div>
 <p>Turns out that both issues can be resolved by just adding enough clearance at the start of the CPW.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cpw</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;lead&quot;</span><span class="p">][</span><span class="s2">&quot;start_straight&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;100um&quot;</span>
@@ -714,8 +729,16 @@ array([[-1.075     ,  0.195     ],
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_23_0.png" src="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_23_0.png" />
+</div>
+</div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
@@ -726,12 +749,12 @@ array([[-1.075     ,  0.195     ],
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_24_0.png" class="no-scaled-link" src="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_24_0.png" width="500" />
+<img alt="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_24_0.png" src="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_24_0.png" />
 </div>
 </div>
 <p>Notice how the routing algorithm tries to prevent creation of edges too short to apply the fillet corner rounding. If your design requires it, you can disable this algorithm behavior for individual CPWs. For example try the cell below, and expect warning similar to the ones encountered earlier to show up</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cpw</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;prevent_short_edges&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;false&quot;</span>
@@ -740,18 +763,26 @@ array([[-1.075     ,  0.195     ],
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-11:13PM 27s WARNING [check_lengths]: For path table, component=cpw_1, key=trace has short segments that could cause issues with fillet. Values in (12-13)  are index(es) in shapely geometry.
-11:13PM 27s WARNING [check_lengths]: For path table, component=cpw_1, key=cut has short segments that could cause issues with fillet. Values in (12-13)  are index(es) in shapely geometry.
+07:22PM 10s WARNING [check_lengths]: For path table, component=cpw_1, key=trace has short segments that could cause issues with fillet. Values in (12-13)  are index(es) in shapely geometry.
+07:22PM 10s WARNING [check_lengths]: For path table, component=cpw_1, key=cut has short segments that could cause issues with fillet. Values in (12-13)  are index(es) in shapely geometry.
 </pre></div></div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_26_1.png" src="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_26_1.png" />
+</div>
+</div>
 <p>You can eliminate the warning by either re-enabling the algorithm, or by changing the fillet for this specific CPW. Let’s try the second approach for demonstration purposes</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cpw</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;fillet&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;65um&quot;</span>
@@ -760,9 +791,17 @@ array([[-1.075     ,  0.195     ],
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_28_0.png" src="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_28_0.png" />
+</div>
+</div>
 <p>Now let’s create other 3 CPWs for practice</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
@@ -786,8 +825,16 @@ array([[-1.075     ,  0.195     ],
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_30_0.png" src="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_30_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
@@ -811,8 +858,16 @@ array([[-1.075     ,  0.195     ],
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_31_0.png" src="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_31_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
@@ -836,8 +891,16 @@ array([[-1.075     ,  0.195     ],
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_32_0.png" src="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_32_0.png" />
+</div>
+</div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
@@ -848,13 +911,13 @@ array([[-1.075     ,  0.195     ],
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_33_0.png" class="no-scaled-link" src="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_33_0.png" width="500" />
+<img alt="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_33_0.png" src="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_33_0.png" />
 </div>
 </div>
 <p>Let’s try a more complex utilization of the leads. So far we have demonstrated <code class="docutils literal notranslate"><span class="pre">lead-&gt;start_straight</span></code> and <code class="docutils literal notranslate"><span class="pre">lead-&gt;end_straight</span></code>. We can “append” to the straight lead any number of custom jogs, which might be useful to get out of complex layout arrangements or to fine tune the meander in case of collisions with other components.</p>
 <p>To define a jogged lead, you need an ordered sequence of turn-length pairs, which we define here as an ordered dictionary. We then apply the sequence of jogs to both the start and end leads (or you could apply it to only one them, or you can define the two leads separately with two ordered dictionaries)</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrderedDict</span>
@@ -891,9 +954,17 @@ array([[-1.075     ,  0.195     ],
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_35_0.png" src="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_35_0.png" />
+</div>
+</div>
 <p>Here a few additional examples routing flexibility on a brand-new set of Qbits</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q4</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
@@ -928,8 +999,16 @@ array([[-1.075     ,  0.195     ],
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_37_0.png" src="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_37_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
@@ -951,8 +1030,16 @@ array([[-1.075     ,  0.195     ],
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_38_0.png" src="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_38_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
@@ -974,8 +1061,16 @@ array([[-1.075     ,  0.195     ],
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_39_0.png" src="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_39_0.png" />
+</div>
+</div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
@@ -986,11 +1081,11 @@ array([[-1.075     ,  0.195     ],
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_40_0.png" class="no-scaled-link" src="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_40_0.png" width="500" />
+<img alt="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_40_0.png" src="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_40_0.png" />
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># If you would like to close the GUI. Remove the comment.</span>

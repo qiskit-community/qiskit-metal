@@ -474,7 +474,7 @@
 <div><p>💡 <strong>Running in Colab or Binder?</strong> Skip the desktop GUI install — the cell below grabs the lite (no-Qt) wheel, and <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> auto-picks an inline matplotlib viewer with the same API (<code class="docutils literal notranslate"><span class="pre">gui.rebuild()</span></code>, <code class="docutils literal notranslate"><span class="pre">gui.screenshot()</span></code>, <code class="docutils literal notranslate"><span class="pre">gui.edit_component(...)</span></code>) as the desktop <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code>.</p>
 </div></blockquote>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In Colab / Binder, uncomment to install Quantum Metal (lite, no Qt).</span>
@@ -502,11 +502,12 @@
 <section id="Prerequisite">
 <h2>Prerequisite<a class="headerlink" href="#Prerequisite" title="Link to this heading">¶</a></h2>
 <p>Initialize metal</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">designs</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">designs</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span>
 
 <span class="n">design</span> <span class="o">=</span> <span class="n">designs</span><span class="o">.</span><span class="n">DesignPlanar</span><span class="p">()</span>
@@ -517,8 +518,14 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div style='border-left:4px solid #6929C4;padding:8px 12px;background:#f4f1fb;color:#222;font-family:sans-serif;font-size:13px;line-height:1.4;margin:4px 0;'><b>Quantum Metal — headless viewer active.</b> Rendering inline via <code>qm.view(design)</code>; <code>gui.rebuild()</code>, <code>gui.screenshot()</code>, <code>gui.edit_component(...)</code> work as in the desktop GUI.<br>For the full desktop experience (Qt window, dockable panels): <code>pip install 'quantum-metal[gui]'</code> and re-import.</div></div>
+</div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># enable rebuild of the same component</span>
@@ -528,7 +535,7 @@
 </div>
 <p>We will use the following classes in the notebook. Let’s import all of them at once.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># for pins:</span>
@@ -545,7 +552,7 @@
 </div>
 <p>To remove the complexity of large QComponents, we will only use the <code class="docutils literal notranslate"><span class="pre">OpenToGround</span></code> QComponent to establish pins. We want to initialize a dictionary of type <code class="docutils literal notranslate"><span class="pre">Dict</span></code> as follows (naming matching <code class="docutils literal notranslate"><span class="pre">Example</span> <span class="pre">1</span></code>). We will later update this dictionary as needed using the simpler dot notation.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pin_opt</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
@@ -560,8 +567,8 @@
 <section id="Example-1:-Straight-routing-between-two-pins">
 <h3>Example 1: Straight routing between two pins<a class="headerlink" href="#Example-1:-Straight-routing-between-two-pins" title="Link to this heading">¶</a></h3>
 <p>First, we make sure our design contains two pins to connect to.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">delete_all_components</span><span class="p">()</span>  <span class="c1"># needed only for rebuilds. will get a warning</span>
@@ -578,9 +585,17 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_14_0.png" src="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_14_0.png" />
+</div>
+</div>
 <p>Then we create the route in between them. Notice we are using the previously defined <code class="docutils literal notranslate"><span class="pre">pin_opt</span></code> to indicate which pins to connect to.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">route1</span> <span class="o">=</span> <span class="n">RouteStraight</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;cpw_1&quot;</span><span class="p">,</span> <span class="n">pin_opt</span><span class="p">)</span>
@@ -596,15 +611,15 @@
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_16_0.png" class="no-scaled-link" src="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_16_0.png" width="500" />
+<img alt="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_16_0.png" src="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_16_0.png" />
 </div>
 </div>
 </section>
 <section id="Example-2:-Any-direction">
 <h3>Example 2: Any direction<a class="headerlink" href="#Example-2:-Any-direction" title="Link to this heading">¶</a></h3>
 <p>Let’s add a few pins that we can use to connect in pairs. We here align them following a variety of orientations.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">otg21</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
@@ -631,9 +646,17 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_18_0.png" src="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_18_0.png" />
+</div>
+</div>
 <p>Then we connect pair of pins using a straight route. Notice how we update the <code class="docutils literal notranslate"><span class="pre">pin_opt</span></code> component names to the new pair, for each new <code class="docutils literal notranslate"><span class="pre">RouteStraight</span></code>. Indeed, we can only use a pin for one single connection, and we will get an error if we try to connect a second route to the same pin.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pin_opt</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">start_pin</span><span class="o">.</span><span class="n">component</span> <span class="o">=</span> <span class="s2">&quot;open2i&quot;</span>
@@ -651,8 +674,16 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_20_0.png" src="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_20_0.png" />
+</div>
+</div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
@@ -663,7 +694,7 @@
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_21_0.png" class="no-scaled-link" src="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_21_0.png" width="500" />
+<img alt="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_21_0.png" src="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_21_0.png" />
 </div>
 </div>
 </section>
@@ -671,8 +702,8 @@
 <h3>Example 3: Angles and leads<a class="headerlink" href="#Example-3:-Angles-and-leads" title="Link to this heading">¶</a></h3>
 <p>If the two pins to connect are not facing each other, the router will create the necessary jogs. Here is a simple example that shows 45° jogs.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">RouteStraight</span></code> will use a single straight line in any orientation to connect the two pins. Feel free to try using other algorithms, by replacing the class to any other <code class="docutils literal notranslate"><span class="pre">QRoute</span></code> subclass (image at the start of this notebook).</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">otg51</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
@@ -692,9 +723,25 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Ignoring fixed x limits to fulfill fixed data aspect with adjustable data limits.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_23_1.png" src="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_23_1.png" />
+</div>
+</div>
 <p>Let’s make another connection. This time, we add a lead extension to both pins. An extension is a route segment that begins from the pin coordinates and extends straight in the pin direction by the given length.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">otg61</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
@@ -717,11 +764,19 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Ignoring fixed x limits to fulfill fixed data aspect with adjustable data limits.
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_25_0.png" class="no-scaled-link" src="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_25_0.png" width="500" />
+<img alt="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_25_1.png" src="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_25_1.png" />
 </div>
 </div>
 </section>
@@ -729,7 +784,7 @@
 <h3>Example 4: 90° angles<a class="headerlink" href="#Example-4:-90°-angles" title="Link to this heading">¶</a></h3>
 <p>In most applications, you might want to limit the jogs to 90° angles. In the following example we use the same <code class="docutils literal notranslate"><span class="pre">pin_opts</span></code> of the previous example, but we replace <code class="docutils literal notranslate"><span class="pre">RouteStraight</span></code> with <code class="docutils literal notranslate"><span class="pre">RouteFramed</span></code>. You will notice that our route now has only one 90° jog.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">otg71</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
@@ -750,16 +805,24 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Ignoring fixed x limits to fulfill fixed data aspect with adjustable data limits.
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_27_0.png" class="no-scaled-link" src="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_27_0.png" width="500" />
+<img alt="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_27_1.png" src="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_27_1.png" />
 </div>
 </div>
 <p>The route resulting from the cell above, had no trace of the lead segments. That is because the length of the lead segments was less than the edge of the corner. By extending the <code class="docutils literal notranslate"><span class="pre">start_straight</span></code> for example, we can see the effect of the lead again.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">otg81</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
@@ -781,10 +844,26 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Ignoring fixed y limits to fulfill fixed data aspect with adjustable data limits.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_29_1.png" src="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_29_1.png" />
+</div>
+</div>
 <p>Notice how the <code class="docutils literal notranslate"><span class="pre">RouteFramed</span></code> executed in the previous cell needs to create 2 jogs to complete the routing, as opposed to the previous single 90° job example.</p>
 <p>This algorithm helps also connecting pins not facing each other, like in the next cell.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">otg91</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
@@ -805,16 +884,24 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Ignoring fixed x limits to fulfill fixed data aspect with adjustable data limits.
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_31_0.png" class="no-scaled-link" src="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_31_0.png" width="500" />
+<img alt="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_31_1.png" src="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_31_1.png" />
 </div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">RouteFramed</span></code> can create up to 3 segments. Observe the following case of opposing pins.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">otg101</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
@@ -837,6 +924,21 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Ignoring fixed x limits to fulfill fixed data aspect with adjustable data limits.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_33_1.png" src="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_33_1.png" />
+</div>
+</div>
 </section>
 <section id="Example-5:-Tight-control-on-leads-and-angles">
 <h3>Example 5: Tight control on leads and angles<a class="headerlink" href="#Example-5:-Tight-control-on-leads-and-angles" title="Link to this heading">¶</a></h3>
@@ -848,8 +950,8 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">angle</span></code> describe the direction in which to take the step</p></li>
 </ul>
 <p>The <code class="docutils literal notranslate"><span class="pre">angle</span></code> can be described in several ways, to accommodate different coding styles. For example, all of the options above will lead to the same 90° left turn: &gt; “L”, “L90”, “R-90”, 90, “90”, “A,90”, “left”, “left90”, “right-90”</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">otg111</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
@@ -892,6 +994,22 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Ignoring fixed y limits to fulfill fixed data aspect with adjustable data limits.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_35_1.png" src="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_35_1.png" />
+</div>
+</div>
 <p>This notebook explains the basics of <code class="docutils literal notranslate"><span class="pre">QRoute</span></code>, illustrating <strong>custom</strong> methods to route. In this same tutorial folder you will find other notebooks describing the use of more automated routing options:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">RouteMeader</span></code> to obtain a routing of an exact length</p></li>
@@ -899,16 +1017,24 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">RouteAnchors</span></code> to guarantee routing through a given set of non-oriented points</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">RouteMixed</span></code> to be able to specify what other auto-route algorithm to use in between each pair of anchors</p></li>
 </ul>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_37_0.png" src="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_37_0.png" />
+</div>
+</div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># gui.main_window.close()</span>
