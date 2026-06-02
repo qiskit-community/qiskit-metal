@@ -60,9 +60,13 @@ If you intentionally edit one folder, re-sync the other with:
 python3 _dev/sync_two_folders.py --write
 ```
 
-Per-notebook canonical choices ("which folder wins on conflict") live in
-that script's `CANONICAL` dict — update them there if you intentionally
-want a different canonical for a notebook. Then re-run the check:
+The sync script auto-detects which side has the uncommitted edit (vs
+HEAD) and copies *that* side to the other. Editing `tutorials/` → propagates
+to `docs/tut/`; editing `docs/tut/` → propagates to `tutorials/`. No
+config required for the common case. The `CANONICAL` dict in that script
+is **only** a tiebreaker for the rare case where both sides were edited
+locally before sync — the default tiebreaker is `tut` (the user-facing
+root). Re-run the CI gate to verify:
 
 ```bash
 uv run scripts/check_tutorials_sync.py

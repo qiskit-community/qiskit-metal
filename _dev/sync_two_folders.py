@@ -1,19 +1,35 @@
-"""Sync notebooks between docs/tut/ and tutorials/ based on per-notebook canonical choice.
+"""Sync notebooks between docs/tut/ and tutorials/ — direction picked automatically.
 
 Usage:
   python3 _dev/sync_two_folders.py                # dry-run
   python3 _dev/sync_two_folders.py --write        # apply
 
-Per-notebook policy (set in CANONICAL dict below):
-  'tut'  → tutorials/ is canonical, copy tutorials → docs/tut (overwrite docs/tut)
-  'docs' → docs/tut/ is canonical, copy docs/tut → tutorials (overwrite tutorials)
+How direction is chosen (per pair, in order):
+
+  1. Cell content already identical → in-sync, no copy.
+  2. Exactly one side differs from its HEAD blob → that side has the user's
+     uncommitted edit. Copy it to the other side. This is the common case
+     and means a user editing EITHER folder Just Works.
+  3. Both sides differ from HEAD (both edited locally) → conflict. Falls
+     back to the CANONICAL tiebreaker dict (defaults to 'tut' = user-facing
+     root wins). Loud warning printed.
+  4. Neither side differs from HEAD but the two files differ → HEAD itself
+     is out of sync (rare; should have been caught by the CI sync gate at
+     commit time). Picks whichever was committed more recently; CANONICAL
+     breaks ties.
+
+Net effect: a user editing ``tutorials/2.11 Routing 101.ipynb`` and running
+``--write`` will see their edit propagate to ``docs/tut/`` — not overwritten.
+Same in reverse for ``docs/tut/`` edits. CANONICAL only matters for the rare
+"both-sides-edited" case.
 
 After running, both folders contain identical cell content (just different
-filenames/folder names: hyphenated in docs/tut/, spaces in tutorials/).
+filenames: hyphenated in docs/tut/, spaces in tutorials/).
 """
 
 import json
 import shutil
+import subprocess
 import sys
 from pathlib import Path
 
@@ -234,70 +250,19 @@ PAIRS = {
     ),
 }
 
-# Per-notebook canonical choice (user-decided)
-#   'tut'  → tutorials/ wins, copy → docs/tut/
-#   'docs' → docs/tut/ wins, copy → tutorials/
-CANONICAL = {
-    # Section 1 — minor drift, docs/tut/ has the merged outputs + headless fixes
-    "1.1": "docs",
-    "1.2": "docs",
-    "1.3": "docs",
-    "1.4": "docs",
-    "1.5": "docs",
-    # Section 2 — flip to 'tut' where tutorials/ is significantly larger
-    # (rich outputs/images that source-match merge couldn't recover);
-    # keep 'docs' where sizes are similar and merge worked
-    "2.01": "tut",  # 74kB → 341kB
-    "2.11": "tut",
-    "2.12": "tut",  # 179→764, 197→703
-    "2.13": "tut",
-    "2.14": "tut",  # 90→385, 108→305
-    "2.21": "tut",
-    "2.22": "tut",  # 185→427, 142→408
-    "2.23": "docs",  # 69→17, docs LARGER
-    "2.31": "docs",
-    "2.32": "docs",  # 89→138, 95→139 (close)
-    "2.33": "tut",  # 94→757 (8x)
-    # Section 3 — user explicit
-    "3.1": "tut",
-    "3.2": "tut",
-    "3.3": "docs",
-    "3.4": "tut",
-    "3.5": "tut",
-    # Section 4 — user explicit: all docs
-    "4.01": "docs",
-    "4.02": "docs",
-    "4.03": "docs",
-    "4.04": "docs",
-    "4.05": "docs",
-    "4.05s": "docs",
-    "4.11": "docs",
-    "4.12": "docs",
-    "4.13": "docs",
-    "4.14": "docs",
-    "4.15": "docs",
-    "4.16": "docs",
-    "4.17": "docs",
-    "4.18": "docs",
-    "4.19": "docs",
-    "4.21": "docs",
-    "4.22": "docs",
-    "4.23": "docs",
-    "4.31": "docs",
-    "4.32": "docs",
-    "4.33": "docs",
-    "4.34": "docs",
-    "cqed": "docs",
-    "cross": "docs",
-    # quick-topics — docs/tut/ has the cleaner names; sync to Appendix B
-    "qt_jj": "docs",
-    "qt_pins": "docs",
-    "qt_vars": "docs",
-    "qt_open": "docs",
-    "qt_3fc": "docs",
-    "qt_id": "docs",
-    "qt_over": "docs",
-}
+# Per-pair CONFLICT TIEBREAKER (only consulted when both sides edited locally
+# or HEAD itself is drifted with equal commit times).
+#
+#   'tut'  → tutorials/ wins (user-facing root; this is the default)
+#   'docs' → docs/tut/ wins
+#
+# Empty / not listed → default 'tut'. We deliberately keep this dict empty:
+# the algorithm's "exactly-one-side-dirty" path covers virtually every real
+# scenario, so a CANONICAL override would be wrong (it would silently
+# clobber a user edit). Add entries here ONLY if you have a long-running
+# reason that docs/tut/ should win when both sides are edited.
+CANONICAL: dict[str, str] = {}
+DEFAULT_TIEBREAKER = "tut"
 
 
 def file_size(p):
@@ -307,89 +272,166 @@ def file_size(p):
         return 0
 
 
+def _cells_from_text(text: str):
+    try:
+        return json.loads(text).get("cells", [])
+    except json.JSONDecodeError:
+        return None
+
+
+def _cells_canonical(cells) -> str | None:
+    if cells is None:
+        return None
+    return json.dumps(cells, sort_keys=True)
+
+
 def cells_match(a: Path, b: Path) -> bool:
     """Return True if two notebook files have identical full cell arrays.
 
     Matches the equality definition used by
-    ``scripts/check_tutorials_sync.py`` (the canonical CI gate), which
-    serializes the full ``cells`` array with ``json.dumps(..., sort_keys=True)``
-    and compares. We include cell IDs, metadata, outputs — everything
-    under ``cells`` — because diverging cell IDs between the two folders
+    ``scripts/check_tutorials_sync.py`` (the CI gate). Cell IDs, metadata,
+    outputs — everything under ``cells`` — counts: diverging cell IDs
     cause CI drift even when the user-visible source is identical.
     """
     try:
-        with open(a) as fa, open(b) as fb:
-            cells_a = json.load(fa).get("cells", [])
-            cells_b = json.load(fb).get("cells", [])
-    except (OSError, json.JSONDecodeError):
+        a_cells = _cells_canonical(_cells_from_text(a.read_text()))
+        b_cells = _cells_canonical(_cells_from_text(b.read_text()))
+    except OSError:
         return False
+    return a_cells is not None and a_cells == b_cells
 
-    return json.dumps(cells_a, sort_keys=True) == json.dumps(cells_b, sort_keys=True)
+
+def matches_head_blob(path: Path) -> bool:
+    """True if the working-tree file's cells match the HEAD blob's cells.
+
+    Returns False if path is untracked (not in HEAD) — meaning "has
+    uncommitted state vs HEAD." Also False if either side fails to parse.
+    """
+    try:
+        head_text = subprocess.run(
+            ["git", "show", f"HEAD:{path}"],
+            capture_output=True,
+            check=True,
+            text=True,
+        ).stdout
+    except subprocess.CalledProcessError:
+        return False  # not tracked at HEAD → counts as "dirty"
+    head_cells = _cells_canonical(_cells_from_text(head_text))
+    try:
+        wt_cells = _cells_canonical(_cells_from_text(path.read_text()))
+    except OSError:
+        return False
+    return head_cells is not None and head_cells == wt_cells
+
+
+def last_commit_time(path: Path) -> int:
+    """Unix committer-time of the last commit touching ``path``. 0 if untracked."""
+    try:
+        out = subprocess.run(
+            ["git", "log", "-1", "--format=%ct", "--", str(path)],
+            capture_output=True,
+            check=True,
+            text=True,
+        ).stdout.strip()
+        return int(out) if out else 0
+    except (subprocess.CalledProcessError, ValueError):
+        return 0
+
+
+def pick_direction(key: str, docs_p: Path, tut_p: Path):
+    """Decide which side to copy FROM. Returns (src, dst, label, reason)."""
+    docs_dirty = not matches_head_blob(docs_p)
+    tut_dirty = not matches_head_blob(tut_p)
+
+    if docs_dirty and not tut_dirty:
+        return docs_p, tut_p, "docs→tut", "docs/tut/ edited"
+    if tut_dirty and not docs_dirty:
+        return tut_p, docs_p, "tut→docs", "tutorials/ edited"
+
+    if docs_dirty and tut_dirty:
+        choice = CANONICAL.get(key, DEFAULT_TIEBREAKER)
+        if choice == "docs":
+            return docs_p, tut_p, "docs→tut", "BOTH edited — CANONICAL=docs"
+        return tut_p, docs_p, "tut→docs", "BOTH edited — default tut"
+
+    # Neither dirty vs HEAD, but cells_match was False → HEAD itself drifted.
+    docs_t = last_commit_time(docs_p)
+    tut_t = last_commit_time(tut_p)
+    if docs_t > tut_t:
+        return docs_p, tut_p, "docs→tut", f"HEAD drift; docs newer ({docs_t}>{tut_t})"
+    if tut_t > docs_t:
+        return tut_p, docs_p, "tut→docs", f"HEAD drift; tut newer ({tut_t}>{docs_t})"
+    choice = CANONICAL.get(key, DEFAULT_TIEBREAKER)
+    if choice == "docs":
+        return docs_p, tut_p, "docs→tut", "HEAD drift; equal times; CANONICAL=docs"
+    return tut_p, docs_p, "tut→docs", "HEAD drift; equal times; default tut"
 
 
 def main():
     write_mode = "--write" in sys.argv
     print(f"Mode: {'WRITE' if write_mode else 'DRY-RUN'}")
     print(
-        f"{'key':<8} {'status':<10} {'choice':<6} {'src→dst':<8} {'src size':>9} {'dst size':>9}  notebook"
+        f"{'key':<8} {'status':<10} {'dir':<8} {'src size':>9} {'dst size':>9}  reason / notebook"
     )
-    print("-" * 105)
+    print("-" * 110)
 
     tut_wins = 0
     docs_wins = 0
     in_sync = 0
+    conflict = 0
     skipped = 0
 
     for key in sorted(PAIRS.keys()):
-        docs_p, tut_p = PAIRS[key]
-        if not Path(docs_p).exists():
+        docs_p_s, tut_p_s = PAIRS[key]
+        docs_p, tut_p = Path(docs_p_s), Path(tut_p_s)
+        if not docs_p.exists():
             print(f"{key:<8} MISSING docs/tut: {docs_p}")
             skipped += 1
             continue
-        if not Path(tut_p).exists():
+        if not tut_p.exists():
             print(f"{key:<8} MISSING tutorials: {tut_p}")
             skipped += 1
             continue
 
-        choice = CANONICAL.get(key, "?")
-        if choice == "tut":
-            src, dst = tut_p, docs_p
-            direction = "tut→docs"
-        elif choice == "docs":
-            src, dst = docs_p, tut_p
-            direction = "docs→tut"
-        else:
-            print(f"{key:<8} UNDECIDED — skipping")
-            skipped += 1
+        if cells_match(docs_p, tut_p):
+            print(
+                f"{key:<8} {'in-sync':<10} {'-':<8} "
+                f"{file_size(docs_p) // 1024:>6} kB {file_size(tut_p) // 1024:>6} kB  "
+                f"{docs_p.name}"
+            )
+            in_sync += 1
             continue
 
-        src_sz = file_size(src) // 1024
-        dst_sz = file_size(dst) // 1024
-
-        # Skip the actual copy when content already matches — saves
-        # disk churn and gives an accurate "what would change" summary.
-        already_in_sync = cells_match(Path(src), Path(dst))
-        if already_in_sync:
-            status = "in-sync"
-            in_sync += 1
+        src, dst, direction, reason = pick_direction(key, docs_p, tut_p)
+        status = "WILL COPY" if write_mode else "would copy"
+        if "BOTH" in reason:
+            conflict += 1
+            status = "CONFLICT" if write_mode else "conflict"
+        if direction == "tut→docs":
+            tut_wins += 1
         else:
-            status = "WILL COPY" if write_mode else "would copy"
-            if choice == "tut":
-                tut_wins += 1
-            else:
-                docs_wins += 1
+            docs_wins += 1
 
         print(
-            f"{key:<8} {status:<10} {choice:<6} {direction:<8} {src_sz:>6} kB {dst_sz:>6} kB  {Path(docs_p).name}"
+            f"{key:<8} {status:<10} {direction:<8} "
+            f"{file_size(src) // 1024:>6} kB {file_size(dst) // 1024:>6} kB  "
+            f"{reason}  ({docs_p.name})"
         )
 
-        if write_mode and not already_in_sync:
+        if write_mode:
             shutil.copyfile(src, dst)
 
-    print("-" * 105)
+    print("-" * 110)
     print(
-        f"in-sync: {in_sync} | tut→docs: {tut_wins} | docs→tut: {docs_wins} | skipped: {skipped}"
+        f"in-sync: {in_sync} | tut→docs: {tut_wins} | docs→tut: {docs_wins} | "
+        f"conflicts: {conflict} | skipped: {skipped}"
     )
+    if conflict:
+        print(
+            f"\n⚠  {conflict} pair(s) had edits on BOTH sides. The tiebreaker was "
+            "applied (see reason column). Inspect the result; if it picked the "
+            "wrong side, revert that file from git and re-run."
+        )
     if not write_mode:
         if tut_wins == 0 and docs_wins == 0:
             print("\nNothing to do — all pairs are already in sync.")
