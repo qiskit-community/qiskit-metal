@@ -95,7 +95,7 @@ class TestSNAILGeometry(unittest.TestCase):
         )
         self.assertAlmostEqual(device_right, right_node.bounds[2])
 
-    def test_upper_arm_longer_than_naive_lower_arm(self):
+    def test_realistic_footprint_dimensions(self):
         """Sanity check on the realistic dimensions: with default options
         the overall device is on the order of tens of microns and the loop
         encloses a finite area (needed for flux tunability)."""
@@ -127,6 +127,34 @@ class TestSNAILGeometry(unittest.TestCase):
             ),
         )
         self.assertEqual(len(_islands(snail)), 4)
+
+    def test_large_small_junction_gap_keeps_loop_closed(self):
+        """Regression: a large ``JJ_gap_small`` (small junction wider than
+        the upper-arm tail) must not silently break the loop. The small
+        junction is centred on the lower arm, so the loop stays a single
+        closed ring of exactly four islands instead of spawning an extra
+        inverted/degenerate piece."""
+        snail = SNAIL(
+            self.design,
+            "S4",
+            options=dict(
+                segment_a_length="3um",
+                segment_ab_length="2um",
+                segment_b_length="2um",
+                JJ_gap="0.3um",
+                JJ_gap_small="6um",
+            ),
+        )
+        islands = _islands(snail)
+        self.assertEqual(
+            len(islands),
+            4,
+            "Large small-junction gap broke the loop topology; got %d "
+            "islands" % len(islands),
+        )
+        for isl in islands:
+            self.assertTrue(isl.is_valid)
+            self.assertGreater(isl.area, 0.0)
 
     def test_rotation_and_translation(self):
         """The component must build cleanly when rotated/translated and
