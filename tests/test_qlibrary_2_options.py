@@ -51,6 +51,7 @@ from qiskit_metal.qlibrary.qubits import transmon_pocket_cl
 from qiskit_metal.qlibrary.qubits.transmon_pocket_6 import TransmonPocket6
 from qiskit_metal.qlibrary.qubits.transmon_pocket_teeth import TransmonPocketTeeth
 from qiskit_metal.qlibrary.qubits.SQUID_loop import SQUID_LOOP
+from qiskit_metal.qlibrary.qubits.SNAIL import SNAIL
 from qiskit_metal.qlibrary.couplers.tunable_coupler_01 import TunableCoupler01
 from qiskit_metal.qlibrary import _template
 from .assertions import AssertionsMixin
@@ -428,6 +429,33 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options["JJ_gap"], "0.5um")
         self.assertEqual(options["segment_b_length"], "5um")
         self.assertEqual(options["segment_b_width"], "1um")
+        self.assertEqual(options["segment_c_width"], "1um")
+        self.assertEqual(options["segment_d_length"], "10um")
+        self.assertEqual(options["segment_d_width"], "2um")
+        self.assertEqual(options["plate2_width"], "6um")
+        self.assertEqual(options["plate2_height"], "30um")
+
+    def test_qlibrary_snail_options(self):
+        """Test that default_options of SNAIL were not accidentally changed."""
+        # Setup expected test results
+        design = designs.DesignPlanar()
+        snail = SNAIL(design, "my_name")
+        options = snail.default_options
+
+        self.assertEqual(len(options), 18)
+        self.assertEqual(options["plate1_width"], "5.5um")
+        self.assertEqual(options["plate1_height"], "40um")
+        self.assertEqual(options["plate1_pos_x"], "0")
+        self.assertEqual(options["plate1_pos_y"], "0")
+        self.assertEqual(options["squid_gap"], "10um")
+        self.assertEqual(options["segment_a_length"], "10um")
+        self.assertEqual(options["segment_a_width"], "1um")
+        self.assertEqual(options["JJ_gap"], "0.5um")
+        self.assertEqual(options["segment_ab_length"], "5um")
+        self.assertEqual(options["segment_b_length"], "5um")
+        self.assertEqual(options["segment_b_width"], "1um")
+        self.assertEqual(options["JJ_gap_small"], "0.3um")
+        self.assertEqual(options["segment_lower_width"], "0.6um")
         self.assertEqual(options["segment_c_width"], "1um")
         self.assertEqual(options["segment_d_length"], "10um")
         self.assertEqual(options["segment_d_width"], "2um")

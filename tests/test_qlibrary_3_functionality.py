@@ -47,6 +47,7 @@ from qiskit_metal.qlibrary.qubits import transmon_cross_fl
 from qiskit_metal.qlibrary.qubits import transmon_pocket_6
 from qiskit_metal.qlibrary.qubits.transmon_pocket_teeth import TransmonPocketTeeth
 from qiskit_metal.qlibrary.qubits.SQUID_loop import SQUID_LOOP
+from qiskit_metal.qlibrary.qubits.SNAIL import SNAIL
 from qiskit_metal.qlibrary.couplers import tunable_coupler_01
 from .assertions import AssertionsMixin
 
@@ -349,6 +350,13 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
     def test_qlibrary_squid_loop_component_metadata(self):
         """Test component_metadata in qubits.squid_loop.py."""
         component = SQUID_LOOP
+        metadata = component.component_metadata
+        self.assertEqual(len(metadata), 1)
+        self.assertEqual(metadata["short_name"], "component")
+
+    def test_qlibrary_snail_component_metadata(self):
+        """Test component_metadata in qubits.SNAIL.py."""
+        component = SNAIL
         metadata = component.component_metadata
         self.assertEqual(len(metadata), 1)
         self.assertEqual(metadata["short_name"], "component")

@@ -130,6 +130,7 @@ Qubits
     TransmonPocketTeeth
     TunableCoupler01
     SQUID_LOOP
+    SNAIL
     StarQubit
 
 
@@ -161,6 +162,7 @@ if config.is_building_docs():
     from .qubits.JJ_Dolan import jj_dolan
     from .qubits.JJ_Manhattan import jj_manhattan
     from .qubits.SQUID_loop import SQUID_LOOP
+    from .qubits.SNAIL import SNAIL
     from .qubits.star_qubit import StarQubit
     from .qubits.transmon_concentric import TransmonConcentric
     from .qubits.transmon_concentric_type_2 import TransmonConcentricType2
