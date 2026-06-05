@@ -25,6 +25,7 @@ suite).
 
 import unittest
 
+import numpy as np
 from shapely.geometry import MultiPolygon
 from shapely.ops import unary_union
 
@@ -155,6 +156,59 @@ class TestSNAILGeometry(unittest.TestCase):
         for isl in islands:
             self.assertTrue(isl.is_valid)
             self.assertGreater(isl.area, 0.0)
+
+    def test_junction_table_three_large_one_small(self):
+        """The four Josephson junctions are emitted to the ``junction``
+        qgeometry table so HFSS/pyEPR render them as lumped Josephson
+        inductances: three large junctions sharing ``Lj`` and one small
+        junction with ``Lj_small`` (the asymmetry that makes it a SNAIL)."""
+        snail = SNAIL(self.design, "S1")
+        jt = snail.qgeometry_table("junction")
+        self.assertEqual(len(jt), 4)
+        names = set(jt["name"])
+        self.assertEqual(
+            names,
+            {"jj_large_1", "jj_large_2", "jj_large_3", "jj_small"},
+        )
+        # Per-row inductance carries the large/small asymmetry.
+        self.assertIn("hfss_inductance", jt.columns)
+        ind = dict(zip(jt["name"], jt["hfss_inductance"]))
+        self.assertEqual(ind["jj_large_1"], "0.046nH")
+        self.assertEqual(ind["jj_large_2"], "0.046nH")
+        self.assertEqual(ind["jj_large_3"], "0.046nH")
+        self.assertEqual(ind["jj_small"], "0.165nH")
+        # The component declares the junction table in its metadata.
+        self.assertEqual(snail.component_metadata["_qgeometry_table_junction"], "True")
+
+    def test_junctions_sit_in_the_gaps(self):
+        """Each junction LineString must bridge an actual break in the metal
+        (a gap between two islands), not lie on top of a conductor."""
+        snail = SNAIL(self.design, "S1")
+        metal = unary_union(list(snail.qgeometry_table("poly")["geometry"]))
+        for line in snail.qgeometry_table("junction")["geometry"]:
+            midpoint = line.interpolate(0.5, normalized=True)
+            self.assertFalse(
+                metal.contains(midpoint),
+                "A junction midpoint lies on metal instead of in a gap.",
+            )
+
+    def test_pins_point_outward(self):
+        """The SNAIL exposes pins ``a`` (plate1, left) and ``b`` (plate2,
+        right) so it can be routed into a larger design. With the default
+        orientation their normals must point away from the body (-x and +x);
+        an inward-pointing pin would route a CPW back through the device."""
+        snail = SNAIL(self.design, "S1")
+        self.assertEqual(set(snail.pins.keys()), {"a", "b"})
+        np.testing.assert_allclose(snail.pins["a"]["normal"], [-1.0, 0.0], atol=1e-6)
+        np.testing.assert_allclose(snail.pins["b"]["normal"], [1.0, 0.0], atol=1e-6)
+        # pin b sits to the right of pin a (device extends along +x)
+        self.assertGreater(snail.pins["b"]["middle"][0], snail.pins["a"]["middle"][0])
+
+    def test_pins_rotate_with_component(self):
+        """A 90 degree orientation must carry the pin normals with it."""
+        snail = SNAIL(self.design, "S2", options=dict(orientation="90"))
+        np.testing.assert_allclose(snail.pins["a"]["normal"], [0.0, -1.0], atol=1e-6)
+        np.testing.assert_allclose(snail.pins["b"]["normal"], [0.0, 1.0], atol=1e-6)
 
     def test_rotation_and_translation(self):
         """The component must build cleanly when rotated/translated and
