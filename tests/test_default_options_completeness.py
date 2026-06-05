@@ -63,6 +63,7 @@ from qiskit_metal.qlibrary.lumped.resonator_coil_rect import ResonatorCoilRect
 from qiskit_metal.qlibrary.qubits.JJ_Dolan import jj_dolan
 from qiskit_metal.qlibrary.qubits.JJ_Manhattan import jj_manhattan
 from qiskit_metal.qlibrary.qubits.SQUID_loop import SQUID_LOOP
+from qiskit_metal.qlibrary.qubits.SNAIL import SNAIL
 from qiskit_metal.qlibrary.qubits.star_qubit import StarQubit
 from qiskit_metal.qlibrary.qubits.transmon_concentric import TransmonConcentric
 from qiskit_metal.qlibrary.qubits.transmon_cross import TransmonCross
@@ -108,6 +109,7 @@ COMPONENTS_UNDER_TEST = [
     TransmonCrossFL,
     StarQubit,
     SQUID_LOOP,
+    SNAIL,
     jj_dolan,
     jj_manhattan,
     CapNInterdigital,
