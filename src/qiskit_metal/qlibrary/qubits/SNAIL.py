@@ -48,6 +48,26 @@ class SNAIL(QComponent):
     the Nonlinearity and Dissipation of a SNAIL Parametric Amplifier for
     Dynamic Range", Phys. Rev. Applied 10, 054020 (2018).
 
+    Typical device parameters (Frattini et al. 2017, for reference when
+    choosing junction values in a renderer/analysis):
+
+        * ``n = 3`` large junctions, each with critical current
+          ``I0 ~ 7.1 uA`` (Josephson inductance ``L_J ~ 46 pH``).
+        * one small junction with ``I0 ~ 2.0 uA`` (``L_J ~ 160 pH``),
+          giving the asymmetry ``alpha = I0_small / I0_large ~ 0.29``.
+        * Kerr-free three-wave-mixing operating point near
+          ``alpha ~ 0.29`` and external flux ``Phi_ext ~ 0.41 * Phi_0``.
+        * the three nominally-identical large junctions are fabricated
+          with two Dolan bridges.
+
+    Design constraint: keep ``alpha < 1/3``. For ``alpha > 1/3`` the SNAIL
+    potential develops multiple inequivalent minima and becomes hysteretic,
+    which is unusable as an amplifier. This class draws the *mask* geometry
+    only; ``alpha`` is set physically by the junction critical currents /
+    overlap areas at fabrication, not by these drawing options. The narrower
+    default ``segment_lower_width`` simply marks the lower arm as the
+    small-junction arm.
+
     The geometry follows the same rectangular-loop convention as
     ``SQUID_LOOP``. It is built from a set of rectangles: a left plate
     (``plate1``), the upper arm (``seg a`` / ``seg ab`` / ``seg b``
@@ -174,24 +194,27 @@ class SNAIL(QComponent):
         )
 
         # ----- Lower arm: single small junction -----
-        # y-centre of the lower arm
+        # The lower arm spans the same horizontal distance as the (longer)
+        # upper arm so both arms close onto the shared vertical connector.
+        # The single small junction is centred on the arm: this keeps both
+        # lower segments at equal, positive length for any ``JJ_gap_small``
+        # up to the full arm span, avoiding the silent negative-width
+        # rectangle (and broken loop) that an "extend seg b to fill"
+        # scheme produces when the small-junction gap is large.
         lower_y = -0.5 * (p.squid_gap + p.segment_lower_width)
+        lower_seg_length = max(0.0, 0.5 * (upper_arm_length - p.JJ_gap_small))
 
         segment_a_lower = draw.rectangle(
-            p.segment_a_length,
+            lower_seg_length,
             p.segment_lower_width,
-            half_p1 + 0.5 * p.segment_a_length,
+            half_p1 + 0.5 * lower_seg_length,
             lower_y,
         )
 
-        # seg b lower is padded so the lower arm closes onto the same
-        # vertical connector as the (longer) upper arm.
-        segment_b_lower_length = upper_arm_length - p.segment_a_length - p.JJ_gap_small
-        b_lower_start = half_p1 + p.segment_a_length + p.JJ_gap_small
         segment_b_lower = draw.rectangle(
-            segment_b_lower_length,
+            lower_seg_length,
             p.segment_lower_width,
-            b_lower_start + 0.5 * segment_b_lower_length,
+            half_p1 + upper_arm_length - 0.5 * lower_seg_length,
             lower_y,
         )
 
