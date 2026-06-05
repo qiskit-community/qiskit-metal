@@ -48,6 +48,22 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
       .. rubric:: ``jj_manhattan``
 
 
+   .. grid-item-card:: SNAIL (Superconducting Nonlinear Asymmetric Inductive eLement)
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/SNAIL.png
+         :alt: SNAIL (Superconducting Nonlinear Asymmetric Inductive eLement)
+         :width: 180px
+         :align: center
+
+      A SNAIL (Superconducting Nonlinear Asymmetric Inductive eLement).
+
+      .. rubric:: ``SNAIL``
+
+
    .. grid-item-card:: Squid Loop
       :link: apidocs/qlibrary
       :link-type: doc
