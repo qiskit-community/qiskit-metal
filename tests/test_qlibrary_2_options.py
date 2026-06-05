@@ -442,7 +442,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         snail = SNAIL(design, "my_name")
         options = snail.default_options
 
-        self.assertEqual(len(options), 18)
+        self.assertEqual(len(options), 22)
         self.assertEqual(options["plate1_width"], "5.5um")
         self.assertEqual(options["plate1_height"], "40um")
         self.assertEqual(options["plate1_pos_x"], "0")
@@ -461,6 +461,10 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options["segment_d_width"], "2um")
         self.assertEqual(options["plate2_width"], "6um")
         self.assertEqual(options["plate2_height"], "30um")
+        self.assertEqual(options["Lj"], "0.046nH")
+        self.assertEqual(options["Lj_small"], "0.165nH")
+        self.assertEqual(options["inductor_width"], "1um")
+        self.assertEqual(options["pin_width"], "5um")
 
     def test_qlibrary_tunable_coupler_01_options(self):
         """Test that default_options of tunable_coupler_01 were not accidentally changed."""

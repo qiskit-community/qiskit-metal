@@ -358,8 +358,10 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
         """Test component_metadata in qubits.SNAIL.py."""
         component = SNAIL
         metadata = component.component_metadata
-        self.assertEqual(len(metadata), 1)
+        self.assertEqual(len(metadata), 3)
         self.assertEqual(metadata["short_name"], "component")
+        self.assertEqual(metadata["_qgeometry_table_poly"], "True")
+        self.assertEqual(metadata["_qgeometry_table_junction"], "True")
 
     def test_qlibrary_transmon_coupler_01_component_metadata(self):
         """Test component_metadata in qubits.tunable_coupler_01.py."""
