@@ -231,5 +231,52 @@ class TestMetalParseWrapper(unittest.TestCase, AssertionsMixin):
         self.assertAlmostEqualRel(unparse_units(meters), 1.0, rel_tol=1e-12)
 
 
+class TestEigenmodeConvergencePlotHelpers(unittest.TestCase, AssertionsMixin):
+    """`analyses/simulation/eigenmode.py::plot_convergences` calls four
+    helpers from ``pyEPR.reports``. Regression guard for #1101: the lite-flip
+    (commit 9b8f502) removed the module-level import on the mistaken belief
+    they were unused, turning ``plot_convergences`` into a ``NameError``. The
+    import was restored lazily inside the method; these tests fail loudly if
+    either pyEPR relocates the helpers or the in-file import is dropped again."""
+
+    HELPERS = (
+        "plot_convergence_f_vspass",
+        "plot_convergence_max_df",
+        "plot_convergence_maxdf_vs_sol",
+        "plot_convergence_solved_elem",
+    )
+
+    def test_pyepr_reports_exposes_helpers(self):
+        """The four convergence-plot helpers must remain in pyEPR.reports."""
+        import pyEPR.reports as reports
+
+        for name in self.HELPERS:
+            self.assertTrue(
+                callable(getattr(reports, name, None)),
+                f"pyEPR.reports no longer exposes {name}",
+            )
+
+    def test_plot_convergences_runs_without_nameerror(self):
+        """End-to-end guard: plot_convergences must resolve its helpers
+        (the actual #1101 symptom was a NameError at the first helper call)."""
+        import matplotlib
+
+        matplotlib.use("Agg")
+        import pandas as pd
+
+        from qiskit_metal import designs
+        from qiskit_metal.analyses.quantization import EPRanalysis
+
+        sim = EPRanalysis(designs.DesignPlanar(), "hfss").sim
+        # Minimal frames matching the iloc[:, 0] / iloc[:, 1] access pattern.
+        sim.convergence_t = pd.DataFrame(
+            {"Solved Elements": [100, 200, 300], "Max Delta Freq. %": [5.0, 1.0, 0.2]},
+            index=[1, 2, 3],
+        )
+        sim.convergence_f = pd.DataFrame({"re(Mode(1))": [5.10, 5.05, 5.04]})
+        # Must not raise NameError; returns a matplotlib Figure.
+        sim.plot_convergences(_display=False)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

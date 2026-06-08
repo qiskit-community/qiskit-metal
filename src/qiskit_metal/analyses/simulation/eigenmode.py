@@ -222,6 +222,19 @@ class EigenmodeSim(QSimulation):
             _display (bool, optional): Display the plot? Defaults to True.
         """
 
+        # Imported lazily (at the use-site) so ``import qiskit_metal`` and the
+        # Qt-free path stay pyEPR-free; see the lite-flip in commit 9b8f502.
+        # These four helpers were dropped from the module-level imports there
+        # on the mistaken assumption they had no in-file uses -- they are
+        # called below, so a non-lazy removal turned this method into a
+        # ``NameError``. Keep the import here, not at module top.
+        from pyEPR.reports import (
+            plot_convergence_f_vspass,
+            plot_convergence_max_df,
+            plot_convergence_maxdf_vs_sol,
+            plot_convergence_solved_elem,
+        )
+
         if convergence_t is None:
             convergence_t = self.convergence_t
         if convergence_f is None:
