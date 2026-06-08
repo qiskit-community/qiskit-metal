@@ -25,6 +25,7 @@ from qiskit_metal.analyses.simulation.lumped_elements import LumpedElementsSim
 from qiskit_metal.analyses.simulation.eigenmode import EigenmodeSim
 from qiskit_metal.analyses.simulation.scattering_impedance import ScatteringImpedanceSim
 from qiskit_metal.analyses.hamiltonian.transmon_charge_basis import Hcpb
+from qiskit_metal.analyses.sweep_and_optimize.sweeping import Sweeping
 
 from .assertions import AssertionsMixin
 from qiskit_metal import designs
@@ -42,6 +43,16 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
     def tearDown(self):
         """Tie any loose ends."""
         pass
+
+    def test_analyses_sweeping_importable(self):
+        """Regression guard: sweeping.py used an unquoted ``Union`` return
+        annotation without importing it, so ``class Sweeping`` raised
+        ``NameError`` at definition time and the whole module was
+        unimportable (nothing imported it, so CI never noticed). The
+        top-level import above already fails the suite if it regresses;
+        this asserts the class and the previously-affected method survive."""
+        self.assertTrue(callable(Sweeping))
+        self.assertTrue(hasattr(Sweeping, "_extract_min_passes"))
 
     def test_analyses_instantiate_hcpb(self):
         """Test instantiation of Hcpb in analytic_transmon.py."""
