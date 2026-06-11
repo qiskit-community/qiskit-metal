@@ -13,7 +13,7 @@
 # that they have been altered from the originals.
 """Sweep a qcomponent option, and get results of analysis."""
 
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Union
 import pandas as pd
 
 from qiskit_metal import Dict
