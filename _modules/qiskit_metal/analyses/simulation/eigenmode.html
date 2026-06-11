@@ -691,6 +691,19 @@
 <span class="sd">            _display (bool, optional): Display the plot? Defaults to True.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
+        <span class="c1"># Imported lazily (at the use-site) so ``import qiskit_metal`` and the</span>
+        <span class="c1"># Qt-free path stay pyEPR-free; see the lite-flip in commit 9b8f502.</span>
+        <span class="c1"># These four helpers were dropped from the module-level imports there</span>
+        <span class="c1"># on the mistaken assumption they had no in-file uses -- they are</span>
+        <span class="c1"># called below, so a non-lazy removal turned this method into a</span>
+        <span class="c1"># ``NameError``. Keep the import here, not at module top.</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pyEPR.reports</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+            <span class="n">plot_convergence_f_vspass</span><span class="p">,</span>
+            <span class="n">plot_convergence_max_df</span><span class="p">,</span>
+            <span class="n">plot_convergence_maxdf_vs_sol</span><span class="p">,</span>
+            <span class="n">plot_convergence_solved_elem</span><span class="p">,</span>
+        <span class="p">)</span>
+
         <span class="k">if</span> <span class="n">convergence_t</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">convergence_t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convergence_t</span>
         <span class="k">if</span> <span class="n">convergence_f</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -767,7 +780,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/06/06</div>
+              Last updated on 2026/06/11</div>
           </div>
           <div class="right-details">
             
